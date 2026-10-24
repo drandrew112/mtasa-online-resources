@@ -81,5 +81,10 @@
   "v_bank.tx.work.pay.out": "Wage paid: {work}",
   "v_bank.tx.health.patient": "Treatment: {hospital}",
   "v_bank.tx.gov.company_payment": "State payment",
-  "v_bank.tx.gov.collection": "State collection"
+  "v_bank.tx.gov.collection": "State collection",
+  "v_bank.group.pt": "Public transport",
+  "v_bank.tx.pt.ticket": "Ticket: {line}, {from} → {to}",
+  "v_bank.tx.pt.fare_income": "Fare: {line}, {from} → {to}",
+  "v_bank.tx.pt.run_cost": "Running cost: {trip}",
+  "v_bank.tx.pt.stop_cost": "Stop fee: {station} ({trip})"
 }

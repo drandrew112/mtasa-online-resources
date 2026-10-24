@@ -81,5 +81,10 @@
   "v_bank.tx.work.pay.out": "Kifizetett munkabér: {work}",
   "v_bank.tx.health.patient": "Kórházi kezelés: {hospital}",
   "v_bank.tx.gov.company_payment": "Állami kifizetés",
-  "v_bank.tx.gov.collection": "Állami inkasszó"
+  "v_bank.tx.gov.collection": "Állami inkasszó",
+  "v_bank.group.pt": "Tömegközlekedés",
+  "v_bank.tx.pt.ticket": "Menetjegy: {line}, {from} → {to}",
+  "v_bank.tx.pt.fare_income": "Menetdíj: {line}, {from} → {to}",
+  "v_bank.tx.pt.run_cost": "Fenntartási költség: {trip}",
+  "v_bank.tx.pt.stop_cost": "Megállási díj: {station} ({trip})"
 }

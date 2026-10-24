@@ -364,7 +364,7 @@ function getMyOrganization(player)
     pub.salePayout, pub.assets = payout, assets
     local left, upkeep = getUpkeepInfo(c.id)
     pub.upkeepIn, pub.upkeepAmount = left, upkeep
-    pub.renameCost, pub.renameWait = BIZ.RENAME_COST, math.max(0, c.renamedAt + BIZ.RENAME_COOLDOWN - BIZ.now())
+    pub.renameCost, pub.renameWait = fee("rename", BIZ.RENAME_COST), math.max(0, c.renamedAt + BIZ.RENAME_COOLDOWN - BIZ.now())
     for _, u in ipairs(pub.units) do
         u.stockValue = CO.stockValue(c.units[u.id])
         u.refund = UNIT.refundOf(c.units[u.id])
@@ -431,8 +431,8 @@ end
 --- numbers the web pages / computer show
 function getBizConfig()
     return {
-        regFee = BIZ.REG_FEE, nameMin = BIZ.NAME_MIN, nameMax = BIZ.NAME_MAX,
-        renameCost = BIZ.RENAME_COST, renameCooldown = BIZ.RENAME_COOLDOWN,
+        regFee = fee("register", BIZ.REG_FEE), nameMin = BIZ.NAME_MIN, nameMax = BIZ.NAME_MAX,
+        renameCost = fee("rename", BIZ.RENAME_COST), renameCooldown = BIZ.RENAME_COOLDOWN,
         saleRatio = BIZ.SALE_ASSET_RATIO, propertySellRatio = BIZ.PROPERTY_SELL_RATIO,
         maxAssociates = BIZ.MAX_ASSOCIATES, upkeepInterval = BIZ.UPKEEP_INTERVAL,
         associateShare = BIZ.ASSOCIATE_SHARE, thiefShare = BIZ.THIEF_SHARE,

@@ -212,6 +212,9 @@ default: the **treasury pays, nobody receives**.
 | `gov.transfer` `{note}` | pair | state ↔ state | account | Treasury + Transfers pages |
 | `gov.company_payment` `{note}` | pair | state → company | account | Transfers page |
 | `gov.collection` `{note}` | pair (force) | company → state | account | Transfers page |
+| `pt.fare_income` `{mode, line, from, to, player}` | in | system → state / company | fare receiver | pt_tickets, after the passenger paid `pt.ticket` |
+| `pt.run_cost` `{mode, trip, category}` | pair (force) | system / state / company | system / state / company | rw_timetable, trip start |
+| `pt.stop_cost` `{mode, trip, station, count}` | pair (force) | system / state / company | system / state / company | rw_timetable, served stop |
 
 v_bank's key format gets the flag `taxable = true`; for now only on `biz.casino_hour`.
 

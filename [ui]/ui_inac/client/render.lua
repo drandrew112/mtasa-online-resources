@@ -241,6 +241,7 @@ renderMenu = function()
     -- 5️⃣ Leírás sor (5px-el az arrow sor alatt)
     local descY = arrowsY + ui(30) + ui(2)
     local desc = menu.items[MenuState.selected].desc or ""
+    if type(desc) == "function" then desc = tostring(desc() or "") end
     local descPadX = ui(12)
     local lines = wrapText(desc, w - descPadX * 2, itemSize, "default")
     local lineH = dxGetFontHeight(itemSize, "default")

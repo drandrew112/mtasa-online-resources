@@ -96,6 +96,15 @@ TX_KEYS = {
     ["atc.fee_landing"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
     ["atc.fee_overflight"] = { from = "system", to = "payee", params = { "callsign", "airline" } },
 
+    -- public transport (pt_tickets + v_gov /gov Transport page): the passenger pays the ticket
+    -- (cash or bank, the money disappears), v_gov books the same sum from nothing to the fare
+    -- receiver set for the mode (none = nobody gets it); running costs of a service (run fee per
+    -- IC / RB trip, stop fee per served stop) go from the cost payer to the cost receiver
+    ["pt.ticket"]          = { from = P, to = "system", params = { "line", "from", "to" } },
+    ["pt.fare_income"]     = { from = "system", to = "org", params = { "mode", "line", "from", "to", "player" } },
+    ["pt.run_cost"]        = { from = "org", to = "org", force = true, params = { "mode", "trip", "category" } },
+    ["pt.stop_cost"]       = { from = "org", to = "org", force = true, params = { "mode", "trip", "station", "count" } },
+
     -- admin panel
     ["admin.credit"]   = { from = "system", to = ANY, admin = true, params = { "note", "admin" } },
     ["admin.debit"]    = { from = ANY, to = "system", admin = true, force = true, params = { "note", "admin" } },
@@ -106,7 +115,7 @@ TX_KEYS = {
 }
 
 -- ledger filter groups of the website / admin panel: group -> key prefix
-TX_GROUPS = { "cash", "transfer", "work", "fine", "shop", "biz", "tax", "health", "gov", "atc", "admin" }
+TX_GROUPS = { "cash", "transfer", "work", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "admin" }
 
 --- the group of a key ("cash.deposit" -> "cash")
 function txGroup(key)

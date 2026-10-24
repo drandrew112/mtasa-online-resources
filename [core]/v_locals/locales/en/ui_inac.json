@@ -20,7 +20,7 @@
   "ui_inac.business.properties": "Properties",
   "ui_inac.business.properties_desc": "Set the GPS to one of your properties.",
   "ui_inac.business.rename": "Rename organization",
-  "ui_inac.business.rename_desc": "Costs €10,000 from the company account.",
+  "ui_inac.business.rename_desc": "Costs {amount|money} from the company account.",
   "ui_inac.business.rename_placeholder": "3-32 characters",
   "ui_inac.business.rename_title": "New organization name",
   "ui_inac.business.set_gps_desc": "{city} · set the GPS here",

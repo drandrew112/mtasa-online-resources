@@ -7,7 +7,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 News = { data = nil }
 
-local WIDTH = 560
+local WIDTH = 780
 local GAP   = 24
 local BOTTOM_MARGIN = 40 -- free space kept under the card
 

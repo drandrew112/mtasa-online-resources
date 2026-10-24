@@ -1,0 +1,26 @@
+<meta>
+    <info author="DrAndrew112" name="Public transport tickets" version="1.0.0" type="script"
+          description="Ticket sales for public transport: DX ticket panel, distance fares + IC supplement (v_gov), railway adapter (rw_passengers boarding, put off at the ticket's last stop); buses later" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/tickets.lua" type="server" />
+    <script src="server/rail.lua"    type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/panel.lua" type="client" />
+    <file src="fonts/Roboto.ttf"   type="client" />
+    <file src="fonts/RobotoB.ttf"  type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <export function="getTicket"       type="server" />
+    <export function="hasValidTicket"  type="server" />
+    <export function="endTicket"       type="server" />
+    <export function="openTicketSale"  type="server" />
+    <export function="closeTicketSale" type="server" />
+</meta>

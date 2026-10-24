@@ -19,6 +19,7 @@ RWP.CAPACITY = 30           -- passengers per coach
 -- outside door anchors (invisible, non-colliding objects attached to the coach)
 RWP.ANCHOR_MODEL = 1319
 RWP.ANCHOR_RANGE = 2.6
+RWP.BOARD_RANGE = 12        -- m from the coach centre: boardCoach (after buying a ticket) still works
 
 -- passenger coach (model 570, measured 2026-10-04): body half width 1.74 m, one door per side in
 -- the middle of the car (y = 0); the car centre is 2.595 m above the rail.

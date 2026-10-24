@@ -174,6 +174,7 @@ function CO.publish(c)
     setOwnData(c.founder, "biz:company", {
         id = c.id, name = c.name, clean = c.clean, dirty = c.dirty, paused = c.paused,
         associates = MEM.count(c.id), maxAssociates = BIZ.MAX_ASSOCIATES,
+        renameCost = BIZ.fee and BIZ.fee("rename", BIZ.RENAME_COST) or BIZ.RENAME_COST,
         office = c.units[c.hqUnit] and c.units[c.hqUnit].propertyId or nil,
     })
 end

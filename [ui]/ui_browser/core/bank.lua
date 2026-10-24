@@ -160,7 +160,7 @@ end)
 -- page
 --------------------------------------------------------------------------------
 
-local GROUPS = { "all", "cash", "transfer", "work", "tax", "fine", "shop", "biz", "health", "atc", "gov", "admin" }
+local GROUPS = { "all", "cash", "transfer", "work", "tax", "fine", "shop", "biz", "health", "atc", "pt", "gov", "admin" }
 
 local function rowText(r)
     local base = "v_bank.tx." .. tostring(r.key)

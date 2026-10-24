@@ -9,11 +9,13 @@
     const $ = id => document.getElementById(id);
     const view = $('view');
 
-    const PAGES = ['overview', 'treasury', 'transfers', 'budget', 'taxes', 'works', 'fees', 'health', 'companies', 'votes', 'news', 'members', 'log'];
+    const PAGES = ['overview', 'treasury', 'transfers', 'budget', 'taxes', 'works', 'fees', 'health', 'transport', 'companies', 'votes', 'news', 'members', 'log'];
     const VAT_GROUPS = ['weapons', 'clothing', 'vehicles', 'tuning', 'repair', 'services', 'real_estate'];
-    const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'transfer', 'admin'];
+    const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'pt', 'transfer', 'admin'];
     const ROLE_LEVEL = { viewer: 1, official: 2, minister: 3 };
     const ACC_ROLES = ['manager', 'viewer', 'owner'];
+    const PT_MODES = ['rail'];
+    const PT_NUMBERS = ['fare_km', 'fare_min', 'ic_supplement', 'cost_ic', 'cost_rb', 'cost_stop'];
     const FEE_KEYS = ['register', 'rename', 'bay_fine', 'airspace.takeoff', 'airspace.landing', 'airspace.overflight'];
 
     const KEYS = [
@@ -35,11 +37,15 @@
             'hospitals', 'receiver', 'patient_pays', 'receiver_none', 'payer_system', 'search_payer', 'search_private',
             'default_payer', 'hospital_missing', 'hospitals_offline', 'no_heal_marker', 'patient_pays_hint',
             'tf_state', 'tf_pay', 'tf_collect', 'tf_collect_hint', 'tf_from', 'tf_to', 'tf_send', 'tf_pay_btn',
-            'tf_collect_btn', 'tf_recent', 'tf_kind', 'tf_pick_company', 'confirm_transfer']
+            'tf_collect_btn', 'tf_recent', 'tf_kind', 'tf_pick_company', 'confirm_transfer',
+            'pt_fares', 'pt_fares_hint', 'pt_costs', 'pt_costs_hint', 'pt_fare_example', 'fare_receiver', 'cost_payer',
+            'cost_receiver', 'pt_nothing_booked']
             .map(k => 'v_gov.ui.' + k),
         ...PAGES.map(p => 'v_gov.page.' + p),
         ...['viewer', 'official', 'minister'].map(r => 'v_gov.role.' + r),
         ...FEE_KEYS.map(k => 'v_gov.fee.' + k),
+        ...PT_MODES.map(k => 'v_gov.pt.' + k),
+        ...PT_NUMBERS.map(k => 'v_gov.pt.' + k),
         ...GROUPS.map(g => 'v_bank.group.' + g),
         ...['shop', 'cash', 'other'].map(g => 'v_bank.group.' + g),
         ...VAT_GROUPS.map(g => 'v_gov.vat.' + g),
@@ -431,6 +437,43 @@
         return h + '</div>';
     }
 
+    // ------------------------------------------------------------ Transport page
+    // per mode: fares (per km, minimum, IC supplement) + who gets the ticket money; running costs
+    // (per IC / RB trip, per served stop) + who pays them to whom. Payer system + receiver
+    // system = nothing is booked.
+    PAGE.transport = d => {
+        const m = can('minister');
+        let h = head(T('v_gov.page.transport'));
+        for (const md of arr(d.modes)) {
+            const s = md.settings || {}, def = md.defaults || {};
+            const mode = md.mode;
+            const numRow = f => `<tr><td>${esc(T('v_gov.pt.' + f))}</td><td class="r mono dim">${money(def[f])}</td>` +
+                `<td class="r">${edit(`pt_${mode}_${f}`, s[f], 'ptNum', { mode, field: f }, { allowed: m, unit: '€', reset: 'ptReset', shown: money(s[f]) })}</td></tr>`;
+            const spec = (f, side) => {
+                const id = `pt_${mode}_${f}`;
+                if (m) usePicker(id, {
+                    state: () => side === 'payer' ? payerOpts(d) : receiverOpts(d),
+                    current: () => s[f],
+                    choose: it => change('setTransport', { mode, field: f, value: it.spec }),
+                });
+                return `<div class="gv-field"><label>${esc(T(f))}</label>${pickerBox(id, healthSpecName(d, s[f], side), m, T('search_payer'))}</div>`;
+            };
+            // example: a 4 km IC journey
+            const km = 4, base = Math.max(Math.round(km * (s.fare_km || 0)), s.fare_min || 0);
+            h += `<div class="gv-card"><h2 style="font-size:22px;color:var(--osa-text)">${esc(T('v_gov.pt.' + mode))}</h2>` +
+                `<h2>${esc(T('pt_fares'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('pt_fares_hint'))}</div>` +
+                table([[''], [T('default'), 'r'], [T('value'), 'r']], ['fare_km', 'fare_min', 'ic_supplement'].map(numRow)) +
+                `<div class="gv-sub" style="margin:8px 0">${esc(T('pt_fare_example', { km, rb: money(base), ic: money(base + (s.ic_supplement || 0)) }))}</div>` +
+                spec('fare_receiver', 'receiver') +
+                `<h2 style="margin-top:18px">${esc(T('pt_costs'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('pt_costs_hint'))}</div>` +
+                table([[''], [T('default'), 'r'], [T('value'), 'r']], ['cost_ic', 'cost_rb', 'cost_stop'].map(numRow)) +
+                spec('cost_payer', 'payer') + spec('cost_receiver', 'receiver') +
+                (s.cost_payer === 'system' && s.cost_receiver === 'system' ? `<div class="gv-sub">${esc(T('pt_nothing_booked'))}</div>` : '') +
+                '</div>';
+        }
+        return h;
+    };
+
     // ------------------------------------------------------------ Transfers page
     PAGE.transfers = d => {
         const m = can('minister');
@@ -767,6 +810,8 @@
         workParamReset(b) { change('setWork', { work: sel.work, field: 'param', key: b.dataset.key }); },
         fee(b) { const n = numOf(b.dataset.input); if (n !== null) change('setFee', { key: b.dataset.key, value: n }); },
         feeReset(b) { change('setFee', { key: b.dataset.key }); },
+        ptNum(b) { const n = numOf(b.dataset.input); if (n !== null) change('setTransport', { mode: b.dataset.mode, field: b.dataset.field, value: n }); },
+        ptReset(b) { change('setTransport', { mode: b.dataset.mode, field: b.dataset.field }); },
         healthEnabled(b) { change('setHealth', { field: 'enabled', value: b.dataset.value === 'true' }); },
         hpPrice() { const n = numOf('hpPrice'); if (n !== null) change('setHealth', { field: 'hp_price', value: n }); },
         injury(b) {

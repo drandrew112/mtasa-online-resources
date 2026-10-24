@@ -29,6 +29,7 @@
     <export function="getPassengers"       type="server" />
     <export function="getPlayerRide"       type="server" />
     <export function="removePassenger"     type="server" />
+    <export function="boardCoach"          type="server" />
     <export function="setBoardingLocked"   type="server" />
     <export function="debugCoachMenus"     type="server" />
     <export function="isInTrain"           type="client" />

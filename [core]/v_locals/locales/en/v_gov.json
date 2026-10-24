@@ -211,5 +211,22 @@
   "v_gov.ui.tf_recent": "Recent transfers",
   "v_gov.ui.tf_kind": "Type",
   "v_gov.ui.tf_pick_company": "Choose a company",
-  "v_gov.ui.confirm_transfer": "{amount}: {from} -> {to}"
+  "v_gov.ui.confirm_transfer": "{amount}: {from} -> {to}",
+  "v_gov.page.transport": "Public transport",
+  "v_gov.pt.rail": "Railway",
+  "v_gov.pt.fare_km": "Fare per km",
+  "v_gov.pt.fare_min": "Minimum fare",
+  "v_gov.pt.ic_supplement": "IC supplement (once per ticket)",
+  "v_gov.pt.cost_ic": "Running cost per IC trip",
+  "v_gov.pt.cost_rb": "Running cost per RB trip",
+  "v_gov.pt.cost_stop": "Stop fee (per served stop)",
+  "v_gov.ui.pt_fares": "Ticket prices",
+  "v_gov.ui.pt_fares_hint": "Passengers buy a ticket before boarding. Price = distance (straight line between the stops) × fare per km, at least the minimum fare, + the IC supplement on IC trains.",
+  "v_gov.ui.pt_fare_example": "Example, {km} km: RB {rb}, IC {ic}",
+  "v_gov.ui.pt_costs": "Running costs",
+  "v_gov.ui.pt_costs_hint": "Every trip pays its run fee (IC / RB) when it starts and the stop fee at every served stop, also the automatic trains.",
+  "v_gov.ui.fare_receiver": "Ticket money goes to",
+  "v_gov.ui.cost_payer": "Running costs paid by",
+  "v_gov.ui.cost_receiver": "Running costs paid to",
+  "v_gov.ui.pt_nothing_booked": "From nobody to nowhere: no running costs are booked."
 }

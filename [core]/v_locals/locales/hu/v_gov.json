@@ -211,5 +211,22 @@
   "v_gov.ui.tf_recent": "Legutóbbi pénzmozgások",
   "v_gov.ui.tf_kind": "Típus",
   "v_gov.ui.tf_pick_company": "Válassz céget",
-  "v_gov.ui.confirm_transfer": "{amount}: {from} -> {to}"
+  "v_gov.ui.confirm_transfer": "{amount}: {from} -> {to}",
+  "v_gov.page.transport": "Tömegközlekedés",
+  "v_gov.pt.rail": "Vasút",
+  "v_gov.pt.fare_km": "Kilométerdíj",
+  "v_gov.pt.fare_min": "Legkisebb jegyár",
+  "v_gov.pt.ic_supplement": "IC pótjegy (jegyenként egyszer)",
+  "v_gov.pt.cost_ic": "Fenntartási költség IC járatonként",
+  "v_gov.pt.cost_rb": "Fenntartási költség RB járatonként",
+  "v_gov.pt.cost_stop": "Megállási díj (kiszolgált megállónként)",
+  "v_gov.ui.pt_fares": "Jegyárak",
+  "v_gov.ui.pt_fares_hint": "Az utasok beszállás előtt jegyet vesznek. Ár = távolság (légvonalban a megállók között) × kilométerdíj, legalább a legkisebb jegyár, IC vonaton + az IC pótjegy.",
+  "v_gov.ui.pt_fare_example": "Példa, {km} km: RB {rb}, IC {ic}",
+  "v_gov.ui.pt_costs": "Fenntartási költségek",
+  "v_gov.ui.pt_costs_hint": "Minden járat induláskor fizeti a járatdíjat (IC / RB), és minden kiszolgált megállóban a megállási díjat, az automata vonatok is.",
+  "v_gov.ui.fare_receiver": "A jegybevétel kié",
+  "v_gov.ui.cost_payer": "A költséget fizeti",
+  "v_gov.ui.cost_receiver": "A költséget kapja",
+  "v_gov.ui.pt_nothing_booked": "Senkitől sehova: fenntartási költség nem kerül könyvelésre."
 }

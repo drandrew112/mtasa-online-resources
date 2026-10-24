@@ -130,9 +130,13 @@ local function board(player, coach, door)
     if not ok then tell(player, reason) return end
     if coach.count >= RWP.CAPACITY then tell(player, L.msg("rw_passengers.passengers.coach_is_full")) return end
 
-    -- the ticket system / conductor can refuse here (cancelEvent)
+    -- the ticket system (pt_tickets) / conductor can refuse here: cancelEvent(true, reason) shows
+    -- the reason, reason "-" = the canceller already told the player (e.g. opened the ticket sale)
     if not triggerEvent("onPlayerBoardTrain", player, coach.train, coach.index, coach.dim) then
-        tell(player, L.msg("rw_passengers.passengers.you_cannot_board_this_train"))
+        local why = getCancelReason()
+        if why ~= "-" then
+            tell(player, why ~= "" and why or L.msg("rw_passengers.passengers.you_cannot_board_this_train"))
+        end
         return
     end
 
@@ -160,22 +164,26 @@ local function board(player, coach, door)
     end, RWP.FADE_MS + 50, 1)
 end
 
+-- the side a passenger leaves on: the released one, the platform side when both are released
+-- -> "left" | "right" | nil, reason (doors closed / moving)
+local function exitSide(coach)
+    local info = core:getConsist(coach.train)
+    local sides, reason = usableSides(coach.train, info)
+    if not sides.left and not sides.right then return nil, reason end
+    if sides.left and sides.right then
+        local ok, ps = false, nil
+        if running("rw_timetable") then ok, ps = exports.rw_timetable:canOpenDoors(coach.train) end
+        return (ok and (ps == "left" or ps == "right")) and ps or "right"
+    end
+    return sides.left and "left" or "right"
+end
+
 local function leave(player, coach)
     if pending[player] then return end
     local p = Passengers[player]
     if not p or p.coach ~= coach.dim then return end
-    local info = core:getConsist(coach.train)
-    local sides, reason = usableSides(coach.train, info)
-    if not sides.left and not sides.right then tell(player, reason) return end
-    local side
-    if sides.left and sides.right then
-        -- both released: the platform side
-        local ok, ps = false, nil
-        if running("rw_timetable") then ok, ps = exports.rw_timetable:canOpenDoors(coach.train) end
-        side = (ok and (ps == "left" or ps == "right")) and ps or "right"
-    else
-        side = sides.left and "left" or "right"
-    end
+    local side, reason = exitSide(coach)
+    if not side then tell(player, reason) return end
     putOutside(player, coach, side, nil, true)
 end
 
@@ -260,13 +268,30 @@ function getPlayerRide(player)
     return { train = p.train, car = c and c.index or false, coach = p.coach }
 end
 
-function removePassenger(player, reason)
+-- platform = true: out through the released doors (the platform side, like leaving), when the
+-- doors are closed the side without a neighbouring track
+function removePassenger(player, reason, platform)
     local p = Passengers[player]
     if not p then return false end
     local c = Coaches[p.coach]
     if not c then clearState(player) return true end
-    putOutside(player, c, nil, reason, true)
+    putOutside(player, c, platform and exitSide(c) or nil, reason, true)
     return true
+end
+
+-- boards the player into coach `dim` through a usable door (the ticket sale calls this after a
+-- purchase); the player must still stand beside the coach -> true | false
+function boardCoach(player, dim)
+    local coach = Coaches[tonumber(dim)]
+    if not coach or not isElement(player) or not isElement(coach.vehicle) then return false end
+    local px, py, pz = getElementPosition(player)
+    local cx, cy, cz = getElementPosition(coach.vehicle)
+    if getDistanceBetweenPoints3D(px, py, pz, cx, cy, cz) > RWP.BOARD_RANGE then return false end
+    for _, door in ipairs(RWP.COACH_DOORS) do
+        if isDoorUsable(coach, door) then board(player, coach, door) return true end
+    end
+    board(player, coach, RWP.COACH_DOORS[1])     -- tells why it is not possible
+    return false
 end
 
 function setBoardingLocked(trainId, on, reason) return setTrainLocked(trainId, on, reason) end

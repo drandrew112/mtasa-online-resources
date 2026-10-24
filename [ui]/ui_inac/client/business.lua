@@ -77,7 +77,10 @@ function registerBusinessMenu()
             {
                 label = L("ui_inac.business.rename"),
                 type = "action",
-                desc = L("ui_inac.business.rename_desc"),
+                desc = function()
+                    local c = company()
+                    return L("ui_inac.business.rename_desc", { amount = c and tonumber(c.renameCost) or 0 })
+                end,
                 action = function()
                     local c = company()
                     if not c then return end

@@ -9,6 +9,7 @@
     <script src="server/stations.lua"  type="server" />
     <script src="server/services.lua"  type="server" />
     <script src="server/displays.lua"  type="server" />
+    <script src="server/costs.lua"     type="server" />
     <script src="client/notify.lua"    type="client" />
     <script src="client/displays.lua"  type="client" />
 

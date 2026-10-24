@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="v_gov" version="1.0.0" type="script"
-          description="The state: /gov panel, taxes (hourly company tax, income tax rate keys, VAT, property tax), work pay settings, fees, state healthcare, state companies, votes (/vote)" />
+          description="The state: /gov panel, taxes (hourly company tax, income tax rate keys, VAT, property tax), work pay settings, fees, state healthcare, public transport fares + running costs, state companies, votes (/vote)" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
@@ -17,6 +17,7 @@
     <script src="server/works.lua" type="server" />
     <script src="server/tax.lua" type="server" />
     <script src="server/health.lua" type="server" />
+    <script src="server/transport.lua" type="server" />
     <script src="server/vat.lua" type="server" />
     <script src="server/companies.lua" type="server" />
     <script src="server/votes.lua" type="server" />
@@ -66,4 +67,10 @@
     <export function="chargeHealthcare" type="server" />
     <export function="getHealthcarePayer" type="server" />
     <export function="isHealthcarePaidByPatient" type="server" />
+
+    <!-- public transport (pt_tickets fares, rw_timetable running costs) -->
+    <export function="getTransportSettings" type="server" />
+    <export function="getTransportFare" type="server" />
+    <export function="bookFareIncome" type="server" />
+    <export function="chargeTransportCost" type="server" />
 </meta>

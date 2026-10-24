@@ -12,6 +12,7 @@ local NEED = {
     overview = "viewer", treasuryLedger = "viewer", taxes = "viewer", works = "viewer", fees = "viewer",
     health = "viewer", companies = "viewer", company = "viewer", members = "viewer", log = "viewer",
     findCompanies = "viewer", budget = "viewer", votes = "viewer", news = "viewer", transfers = "viewer",
+    transport = "viewer", setTransport = "minister",
     setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setWork = "minister",
     setFee = "minister", setMember = "minister", treasuryTransfer = "minister", setVat = "minister",
     setPropertyTax = "minister", setTaxTarget = "minister", setFeeTarget = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
@@ -290,6 +291,22 @@ function A.health(p, args, reply)
     end)
 end
 
+--- the Transport page: every mode with its settings + defaults
+function A.transport(p, args, reply)
+    local modes, ids, seen = {}, {}, {}
+    for i, mode in ipairs(GOV_PT_MODES) do
+        local s = GOV.ptSettings(mode)
+        modes[i] = { mode = mode, settings = s, defaults = GOV_DEFAULTS["pt." .. mode] }
+        for _, f in ipairs(GOV_PT_SPECS) do
+            local id = tonumber(tostring(s[f]):match("^company:(%d+)$"))
+            if id and not seen[id] then seen[id] = true; ids[#ids + 1] = id end
+        end
+    end
+    companyNames(ids, function(names)
+        reply({ modes = modes, payers = payerOptions(), companies = names })
+    end)
+end
+
 function A.companies(p, args, reply)
     if not GOV.bank() then return reply(false, "v_bank.error.unavailable") end
     local payers = {}
@@ -530,6 +547,45 @@ function A.setHealth(p, args, reply, actor)
         return reply(false, "v_gov.err.bad_field")
     end
     reply(true)
+end
+
+--- { mode, field, value }: a number field (value nil = default) or a payer / receiver spec
+--- ("system" | "state:<code>" | "company:<id>", nil = default)
+function A.setTransport(p, args, reply, actor)
+    local mode, field = tostring(args.mode or ""), tostring(args.field or "")
+    if not GOV_DEFAULTS["pt." .. mode] then return reply(false, "v_gov.err.bad_key") end
+    local function store(value)
+        local cur = GOV.get("pt." .. mode)
+        cur = type(cur) == "table" and cur or {}
+        cur[field] = value
+        GOV.set("pt." .. mode, next(cur) and cur or nil, actor)
+        reply(true)
+    end
+    local isNumber, isSpec = false, false
+    for _, f in ipairs(GOV_PT_NUMBERS) do if f == field then isNumber = true end end
+    for _, f in ipairs(GOV_PT_SPECS) do if f == field then isSpec = true end end
+    if isNumber then
+        if args.value == nil then return store(nil) end
+        local v = tonumber(args.value)
+        if not v then return reply(false, "v_gov.err.bad_number") end
+        return store(math.floor(clamp(v, GOV_RANGE.ptMoney)))
+    end
+    if not isSpec then return reply(false, "v_gov.err.bad_field") end
+    local spec = args.value
+    if spec == nil then return store(nil) end
+    spec = tostring(spec)
+    if spec == "system" then return store(spec) end
+    local code = spec:match("^state:([a-z0-9_]+)$")
+    if code then
+        if code ~= "treasury" and not GOV.companyByCode(code) then return reply(false, "v_gov.err.bad_company") end
+        return store(spec)
+    end
+    local cid = tonumber(spec:match("^company:(%d+)$"))
+    if not cid then return reply(false, "v_gov.err.bad_payer") end
+    DB.query(function(rows)
+        if not (rows and rows[1]) then return reply(false, "v_gov.err.no_company") end
+        store("company:" .. int(rows[1].id))
+    end, "SELECT id FROM biz_companies WHERE id = ? AND status = 'active' LIMIT 1", cid)
 end
 
 function A.setMember(p, args, reply, actor)

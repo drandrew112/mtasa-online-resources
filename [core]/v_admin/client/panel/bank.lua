@@ -8,7 +8,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 local S, F, C = AP.S, AP.F, AP.C
 
-local GROUPS = { "all", "cash", "transfer", "work", "tax", "fine", "shop", "biz", "health", "atc", "gov", "admin" }
+local GROUPS = { "all", "cash", "transfer", "work", "tax", "fine", "shop", "biz", "health", "atc", "pt", "gov", "admin" }
 local ROLES = { "owner", "manager", "viewer", "none" }
 
 local st = { rows = nil, kind = "all", selected = nil, account = nil, ledger = nil, more = false, group = 1, tab = "ledger", role = 2 }

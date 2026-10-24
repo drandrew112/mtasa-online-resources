@@ -28,6 +28,12 @@ Roles live in `gov_members` (Members page).
   players and NPC patients): missing HP × price + injury prices. Per hospital (Healthcare page): who
   pays (nobody / the patient / treasury / state company / private company; default treasury) and who
   receives it (nobody / state / private company). Patient pays → the marker is not "free of charge".
+- **Public transport** page (setting `pt.<mode>`, now `pt.rail`, server/transport.lua): ticket
+  prices (fare per km of the journey, straight line between the stops; minimum fare; IC supplement
+  once per ticket, default €500) + who gets the ticket money (nobody / state / private company);
+  running costs per IC trip, per RB trip and per served stop + who pays them (nobody / state /
+  private company) to whom (nobody / state / private company). Payer nobody + receiver nobody
+  (the default) = nothing is booked. pt_tickets sells the tickets, rw_timetable charges the costs.
 - **Transfers** page: money between state accounts, payments to private companies, collection
   (inkasszó, forced) from private companies.
 - **VAT** (Taxes page): a rate per product group, added on top of every shop price, booked to the
@@ -69,6 +75,10 @@ Roles live in `gov_members` (Members page).
 | `healthcareCost(patient)` | amount, `{ hp, injuries }` (books nothing) |
 | `chargeHealthcare(patient, hospitalName [, taskId [, hospitalId]])` | true, amount, paidByPatient \| false, err (the hospital's payer pays) |
 | `getHealthcarePayer(hospitalId)` / `isHealthcarePaidByPatient(hospitalId)` | payer spec / does the patient pay there |
+| `getTransportSettings(mode)` | the merged `pt.<mode>` settings |
+| `getTransportFare(mode, km, category)` | ticket price (`category` "IC" adds the supplement), details |
+| `bookFareIncome(mode, amount, params)` | the paid ticket money to the fare receiver (`pt.fare_income`, nobody = nothing booked) |
+| `chargeTransportCost(mode, kind, params)` | `kind` "run" (`params.category` IC / RB) or "stop" (`params.count`): cost payer → cost receiver (`pt.run_cost` / `pt.stop_cost`) |
 
 A work resource registers its parameters on its start and on v_gov's start (see med_erm
 `server/payment.lua`, bt_dispatch `server/core.lua`, work_traindriver `server/pay.lua`,

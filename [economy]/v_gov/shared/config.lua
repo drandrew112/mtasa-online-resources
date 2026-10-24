@@ -57,7 +57,25 @@ GOV_DEFAULTS = {
         head_injury = { 700, 2000, 5000 },
         default = { 300, 800, 2000 },
     },
+
+    -- railway (pt_tickets sells the tickets, rw_timetable charges the running costs)
+    ["pt.rail"] = {
+        fare_km = 100,            -- € per km of the journey (straight line between the stops)
+        fare_min = 50,            -- the cheapest ticket
+        ic_supplement = 500,      -- once per ticket on an IC train
+        fare_receiver = "system", -- the ticket money: "system" (nobody) | "state:<code>" | "company:<id>"
+        cost_ic = 2000,           -- running cost of one IC trip
+        cost_rb = 800,            -- running cost of one RB (regional) trip
+        cost_stop = 150,          -- per served stop
+        cost_payer = "system",    -- system = nobody pays (money from nothing)
+        cost_receiver = "system", -- system = nobody receives (the money disappears)
+    },
 }
+
+-- public transport modes of the /gov Transport page (server/transport.lua, setting "pt.<mode>")
+GOV_PT_MODES = { "rail" }
+GOV_PT_NUMBERS = { "fare_km", "fare_min", "ic_supplement", "cost_ic", "cost_rb", "cost_stop" }
+GOV_PT_SPECS = { "fare_receiver", "cost_payer", "cost_receiver" }
 
 -- per-work defaults (the Works page): anything not listed = system payer, "standard" tax key,
 -- multiplier 1
@@ -74,5 +92,6 @@ GOV_RANGE = {
     fee = { 0, 10000000 },
     hpPrice = { 0, 100000 },
     injuryPrice = { 0, 1000000 },
+    ptMoney = { 0, 1000000 },
     wageFactor = 10,          -- a wage parameter may be at most this many times its default (abs)
 }
