@@ -134,7 +134,8 @@ addEventHandler("onClientKey", root, function(key, press)
     if not (rect and cache and isCursorShowing()) then return end
     local cx, cy = getCursorPosition()
     if not cx then return end
-    if not inRect(cx * sw, cy * sh, rect.x, rect.y, rect.w, rect.h) then return end
+    local mx, my = cx * sw, cy * sh
+    if mx < rect.x or mx > rect.x + rect.w or my < rect.y or my > rect.y + rect.h then return end
     local dir = key == "mouse_wheel_down" and 1 or -1
     scrollGoal = math.max(0, math.min(maxScroll(), scrollGoal + dir * ui(SCROLL_STEP)))
 end)

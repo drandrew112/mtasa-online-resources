@@ -2,7 +2,8 @@
 -- (v_news latest articles, v_weekly info). Both resources are optional: no
 -- include, they are only queried while running.
 
-local NEWS_COUNT = 10 -- candidates; the client shows as many as fit its screen
+local NEWS_COUNT = 200          -- candidates, newest first; cut to NEWS_DAYS below
+local NEWS_DAYS  = 7            -- the card shows the articles of the last 7 days
 
 local function resourceRunning(name)
     local res = getResourceFromName(name)
@@ -26,10 +27,13 @@ local function newsList()
     local ok, list = pcall(function() return exports.v_news:getLatestNews(NEWS_COUNT) end)
     if not ok or type(list) ~= "table" then return nil end
     local out = {}
-    for i, a in ipairs(list) do
-        local t = getRealTime(tonumber(a.date) or 0)
+    local since = getRealTime().timestamp - NEWS_DAYS * 86400
+    for _, a in ipairs(list) do
+        local date = tonumber(a.date) or 0
+        if date < since then break end
+        local t = getRealTime(date)
         -- title / body = the default language; texts = every language, the client picks its own
-        out[i] = { dateText = ("%04d.%02d.%02d"):format(t.year + 1900, t.month + 1, t.monthday),
+        out[#out + 1] = { dateText = ("%04d.%02d.%02d"):format(t.year + 1900, t.month + 1, t.monthday),
                    title = tostring(a.title or ""), body = tostring(a.body or ""),
                    texts = type(a.texts) == "table" and a.texts or {} }
     end
