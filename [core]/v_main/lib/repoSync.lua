@@ -59,6 +59,7 @@ local IGNORE_EXACT = {
     ["[player_interaction]/v_socialpanel/messages.xml"] = true,
     ["[core]/v_mysql/config.lua"]                       = true,
     ["[core]/v_modloader/meta.xml"]                     = true,
+    ["[core]/v_modloader/manifest.json"]                = true,
     ["[core]/v_modloader/meta.changethis.xml"]          = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
