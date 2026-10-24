@@ -280,8 +280,9 @@ local function drawHeader()
     local h, C = PhoneUI.header, PhoneUI.C
     dxDrawRectangle(h.x, h.y, h.w, h.h, C.header)
     dxDrawRectangle(h.x, h.y + h.h - 1, h.w, 1, C.line)
-    PhoneUI.text(headerTitle(), h.x + u(10), h.y, h.w - u(20), h.h,
-        C.white, u(1.35), "default-bold", "center", "center")
+    local title, scale = L.fitScale(headerTitle(), h.w - u(20), u(1.35), "default-bold", 0.75, true)
+    PhoneUI.text(title, h.x + u(10), h.y, h.w - u(20), h.h,
+        C.white, scale, "default-bold", "center", "center")
 end
 
 local function drawHome()
@@ -346,10 +347,12 @@ renderPhone = function()
     else
         local app = currentApp()
         if app then
-            if app.items then
+            -- items() returning nil = no standard list (a sub-screen drawn by render)
+            local rows = app.items and app:items()
+            if rows then
                 local hint = app.hint
                 if type(hint) == "function" then hint = app:hint() end
-                PhoneUI.drawList(app:items(), state.list, { hint = hint, empty = app.empty })
+                PhoneUI.drawList(rows, state.list, { hint = hint, empty = app.empty })
             elseif not app.render then
                 PhoneUI.drawEmpty(app.empty or L("ui_phone.phone.nothing_here_yet"))
             end

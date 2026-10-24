@@ -189,8 +189,9 @@ PhoneApp.register({
             local y = top + (i - 1) * rowH
             if call.sel == i then PhoneUI.selection("call_row_" .. i, x, y, w, rowH - u(6)) end
             local label = a.label or L(a.labelKey, { price = VAT.gross("services", a.cost) })
-            PhoneUI.text(label, x + u(14), y, w - u(24), rowH - u(6),
-                PhoneUI.C.white, u(1.05), "default-bold", "left", "center")
+            local text, scale = L.fitScale(label, w - u(24), u(1.05), "default-bold", 0.8, true)
+            PhoneUI.text(text, x + u(14), y, w - u(24), rowH - u(6),
+                PhoneUI.C.white, scale, "default-bold", "left", "center")
         end
         PhoneUI.text(L("ui_phone.contacts.backspace_back"), scr.x, scr.y + scr.h - u(22), scr.w, u(18),
             PhoneUI.C.faint, u(0.85), "default", "center", "top")

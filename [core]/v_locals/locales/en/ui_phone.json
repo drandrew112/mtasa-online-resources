@@ -112,5 +112,22 @@
   "ui_phone.settings.settings": "Settings",
   "ui_phone.settings.wallpaper": "Wallpaper",
   "ui_phone.config.heal": "Heal  -  €{price}",
-  "ui_phone.config.refill_armour": "Refill armour  -  €{price}"
+  "ui_phone.config.refill_armour": "Refill armour  -  €{price}",
+  "ui_phone.messages.title": "Messages",
+  "ui_phone.messages.empty": "No conversations yet.",
+  "ui_phone.messages.loading": "Loading…",
+  "ui_phone.messages.no_messages": "No messages yet.",
+  "ui_phone.messages.hint_list": "[Enter] read   [Backspace] back",
+  "ui_phone.messages.hint_thread": "Read only · reply in the social panel",
+  "ui_phone.mail.title": "Email",
+  "ui_phone.mail.empty": "Your inbox is empty.",
+  "ui_phone.mail.new": "NEW",
+  "ui_phone.mail.from": "From: {sender}",
+  "ui_phone.mail.hint_list": "[Enter] open   [Backspace] back",
+  "ui_phone.mail.hint_reader": "[Enter] delete   [Backspace] back",
+  "ui_phone.mail.confirm_delete": "Press Enter again to delete",
+  "ui_phone.mail.new_mails": "You have {count|int} new email(s) on your phone.",
+  "ui_phone.mail.cmd_usage": "Usage: /phonemail <account|all> <subject> | <text>",
+  "ui_phone.mail.cmd_sent": "Phone mail sent ({group}).",
+  "ui_phone.mail.cmd_failed": "Phone mail failed: {error}"
 }

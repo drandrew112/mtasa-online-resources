@@ -112,5 +112,22 @@
   "ui_phone.settings.settings": "Beállítások",
   "ui_phone.settings.wallpaper": "Háttérkép",
   "ui_phone.config.heal": "Gyógyítás  -  €{price}",
-  "ui_phone.config.refill_armour": "Páncél feltöltése  -  €{price}"
+  "ui_phone.config.refill_armour": "Páncél feltöltése  -  €{price}",
+  "ui_phone.messages.title": "Üzenetek",
+  "ui_phone.messages.empty": "Még nincs beszélgetésed.",
+  "ui_phone.messages.loading": "Betöltés…",
+  "ui_phone.messages.no_messages": "Még nincs üzenet.",
+  "ui_phone.messages.hint_list": "[Enter] olvasás   [Backspace] vissza",
+  "ui_phone.messages.hint_thread": "Csak olvasás · válaszolni a social panelen lehet",
+  "ui_phone.mail.title": "Email",
+  "ui_phone.mail.empty": "A postaládád üres.",
+  "ui_phone.mail.new": "ÚJ",
+  "ui_phone.mail.from": "Feladó: {sender}",
+  "ui_phone.mail.hint_list": "[Enter] megnyitás   [Backspace] vissza",
+  "ui_phone.mail.hint_reader": "[Enter] törlés   [Backspace] vissza",
+  "ui_phone.mail.confirm_delete": "Nyomd meg újra az Entert a törléshez",
+  "ui_phone.mail.new_mails": "{count|int} új emailed érkezett a telefonodra.",
+  "ui_phone.mail.cmd_usage": "Használat: /phonemail <fiók|all> <tárgy> | <szöveg>",
+  "ui_phone.mail.cmd_sent": "Telefonos email elküldve ({group}).",
+  "ui_phone.mail.cmd_failed": "Telefonos email hiba: {error}"
 }

@@ -16,7 +16,8 @@
       items(self)           -> array of rows for the standard list. Row fields:
                                { title, subtitle, image, circle, swatch, right, ... }
                                items() may return different lists over time
-                               (e.g. a sub-screen) - see client/apps/settings.lua
+                               (e.g. a sub-screen) - see client/apps/settings.lua;
+                               nil = no list now (render() draws the screen)
       empty                 text shown when items() is empty
       hint                  footer text, or a function returning it
       headerTitle(self)     -> string overriding the header bar text

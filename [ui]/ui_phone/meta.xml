@@ -1,6 +1,6 @@
 <meta>
     <info author="andrasxa" name="ui_phone" type="script" version="1.0"
-          description="Modular in-game phone (MyVeh, Invites, Organization, Contacts, Browser, Settings)" />
+          description="Modular in-game phone (MyVeh, Invites, Messages, Email, Organization, Contacts, Browser, Settings)" />
     <oop>false</oop>
 
     <include resource="v_locals" />
@@ -24,6 +24,8 @@
     <!-- apps (order here = order on the home grid unless `order` is set) -->
     <script src="client/apps/myveh.lua"    type="client" cache="false" />
     <script src="client/apps/invites.lua"  type="client" cache="false" />
+    <script src="client/apps/messages.lua" type="client" cache="false" />
+    <script src="client/apps/mail.lua"     type="client" cache="false" />
     <script src="client/apps/org.lua"      type="client" cache="false" />
     <script src="client/apps/contacts.lua" type="client" cache="false" />
     <script src="client/apps/browser.lua"  type="client" cache="false" />
@@ -33,6 +35,7 @@
     <script src="server/core/phone.lua"    type="server" />
     <script src="server/apps/myveh.lua"    type="server" />
     <script src="server/apps/invites.lua"  type="server" />
+    <script src="server/apps/mail.lua"     type="server" />
     <script src="server/apps/org.lua"      type="server" />
     <script src="server/apps/contacts.lua" type="server" />
     <script src="server/apps/emergency.lua" type="server" />
@@ -50,6 +53,8 @@
     <file src="img/battery.png" />
     <file src="img/apps/myveh.png" />
     <file src="img/apps/invites.png" />
+    <file src="img/apps/messages.png" />
+    <file src="img/apps/mail.png" />
     <file src="img/apps/org.png" />
     <file src="img/apps/contacts.png" />
     <file src="img/apps/browser.png" />
@@ -64,4 +69,9 @@
     <export function="phoneRemoveInvite" type="server" />
     <export function="phoneClearInvites" type="server" />
     <export function="phoneHasInvite"    type="server" />
+
+    <!-- Email app (server/apps/mail.lua, table phone_mails): in-game mails to
+         "all" / some accounts / one, multi-language, delivered on next login. -->
+    <export function="sendPhoneMail"        type="server" />
+    <export function="deletePhoneMailGroup" type="server" />
 </meta>

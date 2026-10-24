@@ -485,6 +485,30 @@ CREATE TABLE IF NOT EXISTS `mails` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------------
+-- phone_mails  (ui_phone Email app: in-game mails, exports.ui_phone:sendPhoneMail)
+-- ---------------------------------------------------------------------------
+-- One row per recipient; a send to "all" writes a row for every account that
+-- exists at that moment (group_key joins the rows of one send). texts = JSON
+-- {lang: {subject, body, sender?}}. delivered_at = 0 until the recipient is
+-- online (next login). read_at / deleted_at = 0 while unread / kept.
+-- ui_phone also creates the table on start.
+CREATE TABLE IF NOT EXISTS `phone_mails` (
+    `id`           INT AUTO_INCREMENT PRIMARY KEY,
+    `group_key`    VARCHAR(64)  NOT NULL DEFAULT '',
+    `account_name` VARCHAR(64)  NOT NULL,
+    `kind`         VARCHAR(32)  NOT NULL DEFAULT '',
+    `sender`       VARCHAR(64)  NOT NULL DEFAULT '',
+    `texts`        MEDIUMTEXT   NOT NULL,
+    `created_at`   INT          NOT NULL DEFAULT 0,
+    `delivered_at` INT          NOT NULL DEFAULT 0,
+    `read_at`      INT          NOT NULL DEFAULT 0,
+    `deleted_at`   INT          NOT NULL DEFAULT 0,
+    KEY `idx_account` (`account_name`, `deleted_at`, `id`),
+    KEY `idx_pending` (`delivered_at`, `account_name`),
+    KEY `idx_group` (`group_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
 -- admin_log  (v_admin 3.0: every admin action from the game and the web panel)
 -- ---------------------------------------------------------------------------
 -- admin = the admin's account, admin_name = the nick at the time, source = game | web,
