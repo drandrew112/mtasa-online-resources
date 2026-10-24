@@ -1,0 +1,20 @@
+{
+  "gov_office.name": "Government Office",
+  "gov_office.pc.title": "Government computer",
+  "gov_office.pc.use": "Use",
+  "gov_office.pc.use_desc": "Open the government system",
+  "gov_office.err.no_right": "Only ministers can place government computers.",
+  "gov_office.err.not_inside": "Go into the Government Office first.",
+  "gov_office.err.too_far": "Too far from the office.",
+  "gov_office.err.max": "There can be at most {max} government computers.",
+  "gov_office.err.db": "The computer could not be saved.",
+  "gov_office.ed.started": "Computer editor on. Backspace leaves it.",
+  "gov_office.ed.placed": "Computer placed.",
+  "gov_office.ed.moved": "Computer moved.",
+  "gov_office.ed.deleted": "Computer deleted.",
+  "gov_office.ed.new": "New computer",
+  "gov_office.ed.moving": "Moving computer #{id}",
+  "gov_office.ed.hover": "Computer #{id}",
+  "gov_office.ed.help": "Click: place | Wheel: rotate (Shift: fine) | Ctrl+wheel: height | Right click: pick up | Del: delete | C: cursor | Backspace: back / exit",
+  "gov_office.ed.state": "Rotation {rot}° | Height {lift} m"
+}

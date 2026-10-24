@@ -1,0 +1,20 @@
+{
+  "gov_office.name": "Kormányhivatal",
+  "gov_office.pc.title": "Kormányzati számítógép",
+  "gov_office.pc.use": "Használat",
+  "gov_office.pc.use_desc": "A kormányzati rendszer megnyitása",
+  "gov_office.err.no_right": "Kormányzati számítógépet csak miniszter helyezhet el.",
+  "gov_office.err.not_inside": "Előbb menj be a Kormányhivatalba.",
+  "gov_office.err.too_far": "Túl messze vagy a hivataltól.",
+  "gov_office.err.max": "Legfeljebb {max} kormányzati számítógép lehet.",
+  "gov_office.err.db": "A számítógépet nem sikerült elmenteni.",
+  "gov_office.ed.started": "Számítógép-szerkesztő bekapcsolva. Backspace: kilépés.",
+  "gov_office.ed.placed": "Számítógép elhelyezve.",
+  "gov_office.ed.moved": "Számítógép áthelyezve.",
+  "gov_office.ed.deleted": "Számítógép törölve.",
+  "gov_office.ed.new": "Új számítógép",
+  "gov_office.ed.moving": "#{id} számítógép áthelyezése",
+  "gov_office.ed.hover": "#{id} számítógép",
+  "gov_office.ed.help": "Kattintás: lerakás | Görgő: forgatás (Shift: finom) | Ctrl+görgő: magasság | Jobb klikk: felvétel | Del: törlés | C: kurzor | Backspace: vissza / kilépés",
+  "gov_office.ed.state": "Forgatás {rot}° | Magasság {lift} m"
+}

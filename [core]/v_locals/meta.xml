@@ -144,6 +144,7 @@
     <file src="locales/en/gov_transport.json" />
     <file src="locales/en/gov_treasury.json" />
     <file src="locales/en/gov_votes.json" />
+    <file src="locales/en/gov_office.json" />
     <file src="locales/en/gov_news.json" />
     <file src="locales/en/pt_tickets.json" />
     <file src="locales/hu/ai_land_traffic.json" />
@@ -246,6 +247,7 @@
     <file src="locales/hu/gov_transport.json" />
     <file src="locales/hu/gov_treasury.json" />
     <file src="locales/hu/gov_votes.json" />
+    <file src="locales/hu/gov_office.json" />
     <file src="locales/hu/gov_news.json" />
     <file src="locales/hu/pt_tickets.json" />
 

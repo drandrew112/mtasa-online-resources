@@ -42,6 +42,7 @@
     <export function="getGovRole" type="server" />
     <export function="canGov" type="server" />
     <export function="log" type="server" />
+    <export function="openGovPanel" type="server" />
 
     <!-- state companies -->
     <export function="getStateCompanies" type="server" />

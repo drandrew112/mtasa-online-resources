@@ -150,12 +150,18 @@ GOV.registerModule("gov_core", {
 -- /gov
 --------------------------------------------------------------------------------
 
-addCommandHandler("gov", function(player)
+--- export: opens (or closes, when open) the /gov panel of a player; also used by the
+--- gov_office computers. Without a role the player gets the "no right" notification.
+function openGovPanel(player)
+    if not isElement(player) or getElementType(player) ~= "player" then return false end
     local role = getGovRole(player)
     if not role then
         triggerClientEvent(player, "gov_core:denied", resourceRoot)
-        return
+        return false
     end
     local pages, categories = GOV.menuFor(role)
     triggerClientEvent(player, "gov_core:open", resourceRoot, role, pages, categories)
-end)
+    return true
+end
+
+addCommandHandler("gov", function(player) openGovPanel(player) end)
