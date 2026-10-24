@@ -83,10 +83,10 @@ function MONEY.creditClean(c, amount, key, params, actor)
 end
 
 --- clean spending to outside / the treasury
-function MONEY.debitClean(c, amount, key, params, actor)
+function MONEY.debitClean(c, amount, key, params, actor, toId)
     local id, b = MONEY.accountId(c), bank()
     if not id or not b then return false, "unavailable" end
-    return b:debit(id, amount, key, params, actor or "")
+    return b:debit(id, amount, key, params, actor or "", toId)
 end
 
 --------------------------------------------------------------------------------

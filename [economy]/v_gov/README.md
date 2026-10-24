@@ -15,7 +15,7 @@ Roles live in `gov_members` (Members page).
 ## What it does
 - **Company income tax**: every full hour (+30 s) the taxable ledger rows of each company account
   (now: the casino result, net) of the hour that ended are summed; a positive base pays
-  `floor(base * rate)` (default 10 %) to the treasury (`tax.company_income`). One instance runs an
+  `floor(base * rate)` (default 10 %) to the tax's account (`tax.company_income`). One instance runs an
   hour (`gov_tax_runs` claim); missed hours of the last 24 h are caught up on start.
 - **Works** (per work, Works page): payer (system by default, treasury, a state or a private
   company), every pay and XP parameter the work registered, wage multiplier, income tax rate key.
@@ -26,10 +26,13 @@ Roles live in `gov_members` (Members page).
 - **State healthcare**: med_hospitals bills every treatment (treatment marker, ambulance handover;
   players and NPC patients) to the treasury: missing HP × price + injury prices.
 - **VAT** (Taxes page): a rate per product group, added on top of every shop price, booked to the
-  treasury (`tax.vat`). Shops: `<include resource="v_gov" />` and
+  tax's account (`tax.vat`). Shops: `<include resource="v_gov" />` and
   `if not VAT then loadstring(exports.v_gov:importVat())() end`, then `VAT.gross` / `VAT.split` /
   `VAT.book` (shared/vat.lua).
 - **Property tax** (Taxes page): biz_core pays `rate × property prices` every 24 online hours.
+- **Where the taxes go** (Taxes page, setting `tax.targets`): company, income, VAT and property tax
+  each go to the state account chosen for it (the treasury or any state company). With none chosen
+  (the default) the money disappears; a chosen account that is closed / gone also means disappears.
 - **Votes** (Votes page, minister): title, description, options, length; players vote with `/vote`;
   results after the close.
 - **News** (News page, minister): title + text in every language (`gov_news`); sent as a phone email
@@ -51,9 +54,10 @@ Roles live in `gov_members` (Members page).
 | `getWorkPayer(workId)` | v_bank account id or `"system"` |
 | `getWorkMultiplier(workId)` | number |
 | `getIncomeTaxRate(workId)` | rate, key |
+| `getTaxTarget(tax)` | v_bank account id the tax (`company` / `income` / `vat` / `property`) goes to, or nil = disappears |
 | `importVat()` (server + client) | the VAT lib source (shared/vat.lua) |
 | `getVatRate(group)` / `getVatRates()` | 0..1 |
-| `bookVat(group, net, vat, item)` | the VAT of a purchase to the treasury |
+| `bookVat(group, net, vat, item)` | the VAT of a purchase to the tax's account (none = nothing booked) |
 | `getPropertyTaxRate()` | 0..1, per 24 online hours |
 | `getPublicState()` | the gov_web snapshot (30 days, no account names) |
 | `healthcareCost(patient)` | amount, `{ hp, injuries }` (books nothing) |

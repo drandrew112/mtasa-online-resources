@@ -56,9 +56,10 @@ function GOV.createCompany(code, name, description, allowNegative, actor, cb)
     description = DB.clip(tostring(description or ""):gsub("^%s+", ""):gsub("%s+$", ""), 255)
     if not code:match("^[a-z0-9_]+$") or #code < 3 or #code > 24 or code == "treasury" then return cb(false, "bad_code") end
     if name == "" or #name > 64 then return cb(false, "bad_name") end
-    if GOVCO[code] then return cb(false, "code_taken") end
     local bank = GOV.bank()
     if not bank then return cb(false, "unavailable") end
+    -- a company whose bank account is gone (row deleted by hand) may be created again
+    if GOVCO[code] and bank:getAccountInfo(GOVCO[code].accountId) then return cb(false, "code_taken") end
 
     local function insert(accountId)
         DB.query(function(ok, err)

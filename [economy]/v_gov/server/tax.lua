@@ -1,8 +1,8 @@
 -- v_gov / server/tax.lua
 -- Hourly company income tax (DESIGN.md 4). Every full hour (+GOV.TAX_RUN_DELAY s) the hour that
 -- just ended is taxed: per company account the sum of its taxable ledger rows (legal income, net)
--- in that hour; a positive base pays floor(base * rate) to the treasury (tax.company_income, may
--- push the company below 0). Only one instance runs an hour: it claims the hour in gov_tax_runs.
+-- in that hour; a positive base pays floor(base * rate) to the tax's state account (Taxes page;
+-- none = the money disappears) (tax.company_income, may push the company below 0). Only one instance runs an hour: it claims the hour in gov_tax_runs.
 
 addEvent("onGovTaxRun", false)        -- (periodStart, companies, total), source = resourceRoot
 addEvent("onGovCompanyTaxed", false)  -- (companyId, tax, base, periodStart), source = resourceRoot
@@ -27,12 +27,13 @@ local function runHour(periodStart, done)
         args[#args + 1] = periodStart + 3600
         DB.query(function(rows)
             local rate = getCompanyTaxRate()
+            local target = getTaxTarget("company")
             local companies, total = 0, 0
             for _, r in ipairs(rows or {}) do
                 local base = DB.int(r.base)
                 local tax = math.floor(base * rate)
                 if base > 0 and tax > 0 then
-                    local ok = bank:transfer(DB.int(r.account_id), nil, tax, "tax.company_income",
+                    local ok = bank:transfer(DB.int(r.account_id), target, tax, "tax.company_income",
                         { hour = hourLabel(periodStart), base = base, rate = math.floor(rate * 100 + 0.5) }, "v_gov")
                     if ok then
                         companies, total = companies + 1, total + tax

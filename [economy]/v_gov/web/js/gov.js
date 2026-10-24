@@ -31,7 +31,7 @@
             'vote_title', 'vote_description', 'vote_options', 'vote_options_hint', 'vote_hours', 'vote_ends', 'voters_n',
             'close_vote', 'cancel_vote', 'status_open', 'status_closed', 'status_cancelled', 'results_after_close',
             'winner', 'created', 'daily', 'day', 'new_news', 'news_title', 'news_body', 'news_send', 'news_hint',
-            'news_not_mailed', 'confirm_delete_news']
+            'news_not_mailed', 'confirm_delete_news', 'tax_target', 'tax_target_none', 'tax_target_missing']
             .map(k => 'v_gov.ui.' + k),
         ...PAGES.map(p => 'v_gov.page.' + p),
         ...['viewer', 'official', 'minister'].map(r => 'v_gov.role.' + r),
@@ -275,13 +275,26 @@
         return h + '</div>';
     };
 
+    // the state account a tax goes to (none = the money disappears)
+    function taxTarget(d, tax, m) {
+        const t = arr(d.targets).find(x => x.tax === tax) || {};
+        const opts = [['', T('tax_target_none')], ...arr(d.targetOptions).map(o => [o.code, o.name])];
+        if (t.code && !opts.some(o => o[0] === t.code)) opts.push([t.code, t.code]);
+        const cur = opts.find(o => o[0] === (t.code || ''));
+        return `<div class="gv-field"><label>${esc(T('tax_target'))}</label><div>` +
+            (m ? select('target_' + tax, opts, t.code || '', 'taxTarget', true).replace('<select ', `<select data-tax="${tax}" `)
+                : esc(cur ? cur[1] : t.code)) +
+            (t.missing ? `<span class="tag bad">${esc(T('tax_target_missing'))}</span>` : '') + '</div></div>';
+    }
+
     PAGE.taxes = d => {
         const m = can('minister');
         const keys = Object.entries(d.keys || {}).sort((a, b) => a[0].localeCompare(b[0]));
         let h = head(T('v_gov.page.taxes')) +
             `<div class="gv-card"><div class="gv-field"><label>${esc(T('company_tax'))}</label><div>` +
-            edit('companyTax', Math.round((d.company || 0) * 1000) / 10, 'companyTax', {}, { allowed: m, unit: '%', shown: pct(d.company) }) + '</div></div></div>' +
-            `<div class="gv-card"><h2>${esc(T('income_keys'))}</h2>` +
+            edit('companyTax', Math.round((d.company || 0) * 1000) / 10, 'companyTax', {}, { allowed: m, unit: '%', shown: pct(d.company) }) + '</div></div>' +
+            taxTarget(d, 'company', m) + '</div>' +
+            `<div class="gv-card"><h2>${esc(T('income_keys'))}</h2>` + taxTarget(d, 'income', m) +
             table([[T('tax_key')], [T('v_gov.page.works')], [T('value'), 'r'], ['', 'act']], keys.map(([k, r]) =>
                 `<tr><td><b>${esc(k)}</b></td><td class="dim">${esc(arr(d.used && d.used[k]).join(', ') || '-')}</td>` +
                 `<td class="r">${edit('key_' + k, Math.round(r * 1000) / 10, 'taxKey', { key: k }, { allowed: m, unit: '%', shown: pct(r) })}</td>` +
@@ -290,7 +303,7 @@
             h += `<div class="gv-row" style="margin-top:14px"><input class="osa-input mid" id="newKey" placeholder="${esc(T('key_name'))}" maxlength="24" data-keep="1">` +
                 `<input class="osa-input num" id="newKeyRate" placeholder="%" data-keep="1" data-enter="addTaxKey">${btn(T('add_key'), 'addTaxKey', {}, 'primary')}</div>`;
         }
-        h += `</div><div class="gv-card"><h2>${esc(T('vat'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('vat_hint'))}</div>` +
+        h += `</div><div class="gv-card"><h2>${esc(T('vat'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('vat_hint'))}</div>` + taxTarget(d, 'vat', m) +
             table([[T('group')], [T('default'), 'r'], [T('value'), 'r']], arr(d.vat).map(v =>
                 `<tr><td>${esc(T('v_gov.vat.' + v.group))}</td><td class="r mono dim">${pct(v.default)}</td>` +
                 `<td class="r">${edit('vat_' + v.group, Math.round(v.rate * 1000) / 10, 'vat', { group: v.group },
@@ -298,7 +311,7 @@
             `<div class="gv-card"><div class="gv-field"><label>${esc(T('property_tax'))}</label><div>` +
             edit('propTax', Math.round((d.property || 0) * 10000) / 100, 'propTax', {}, { allowed: m, unit: '%', reset: 'propTaxReset',
                 shown: (Math.round((d.property || 0) * 10000) / 100) + '%' }) +
-            `<div class="gv-sub">${esc(T('property_tax_hint'))}</div></div></div></div>`;
+            `<div class="gv-sub">${esc(T('property_tax_hint'))}</div></div></div>` + taxTarget(d, 'property', m) + '</div>';
         return h + `<div class="gv-card"><h2>${esc(T('tax_runs'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('history_note', { days: 30 }))}</div>${runsTable(d.runs)}</div>`;
     };
 
@@ -598,6 +611,7 @@
         vatReset(b) { change('setVat', { group: b.dataset.group }); },
         propTax() { const n = numOf('propTax'); if (n !== null) change('setPropertyTax', { value: n }); },
         propTaxReset() { change('setPropertyTax', {}); },
+        taxTarget: el => change('setTaxTarget', { tax: el.dataset.tax, code: el.value }),
         taxKey(b) { const n = numOf(b.dataset.input); if (n !== null) change('setTaxKey', { key: b.dataset.key, value: n }); },
         async addTaxKey() {
             const n = numOf('newKeyRate');

@@ -8,6 +8,7 @@
 --   "settled"  - leaves now, the caller books the matching income later in one sum
 --   "treasury" - the State Treasury (filled in by v_bank when the caller gives none)
 --   "payer"    - a state or company account given by the caller, or system when none
+--   "payee"    - a state account given by the caller, or system (the money disappears) when none
 --   { personal = true, company = true, state = true } - an account of these kinds
 --
 --   force   = the paying account may go below 0 (debt, paid off by its next income)
@@ -67,14 +68,15 @@ TX_KEYS = {
     ["biz.weed_supply"]      = { from = C, to = "system", params = { "units" } },
     ["biz.write_off"]        = { from = "system", to = C, admin = true, params = { "company" } },
 
-    -- state (v_gov)
-    ["tax.company_income"] = { from = C, to = "treasury", force = true, params = { "hour", "base", "rate" } },
-    ["tax.income"]         = { from = P, to = "treasury", force = true, params = { "work", "key", "rate" } },
+    -- state (v_gov): every tax goes to the state account set for it on the /gov Taxes page
+    -- (exports.v_gov:getTaxTarget), or disappears when none is set
+    ["tax.company_income"] = { from = C, to = "payee", force = true, params = { "hour", "base", "rate" } },
+    ["tax.income"]         = { from = P, to = "payee", force = true, params = { "work", "key", "rate" } },
     -- VAT on top of a shop price: the buyer paid net + VAT to the shop (that money disappears or
-    -- went to the shop side); v_gov books the VAT part to the treasury from nothing
-    ["tax.vat"]            = { from = "system", to = "treasury", params = { "group", "item", "net", "rate" } },
+    -- went to the shop side); v_gov books the VAT part to the tax's account from nothing
+    ["tax.vat"]            = { from = "system", to = "payee", params = { "group", "item", "net", "rate" } },
     -- property tax of an organization, every 24 online hours (biz_core)
-    ["tax.property"]       = { from = C, to = "treasury", force = true, params = { "count", "value", "rate" } },
+    ["tax.property"]       = { from = C, to = "payee", force = true, params = { "count", "value", "rate" } },
     ["health.care"]        = { from = "treasury", to = "system", force = true,
                                params = { "patient", "account", "hospital", "hp", "injuries", "task" } },
     ["gov.transfer"]       = { from = S, to = S, force = true, params = { "note" } },

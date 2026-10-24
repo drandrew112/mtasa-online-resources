@@ -39,6 +39,12 @@ end
 
 local function gov() return isResourceRunning("v_gov") and exports.v_gov or nil end
 
+--- v_bank account id the income tax goes to, or nil = it disappears (the /gov Taxes page)
+local function incomeTaxTarget()
+    local g = gov()
+    return g and tonumber(g:getTaxTarget("income")) or nil
+end
+
 --- the /gov wage multiplier of the work (1 = none)
 local function govMultiplier(workId)
     local g = gov()
@@ -69,7 +75,7 @@ end
 --             { label = "Equipment fee", amount = -20 }, ... }  -- shown in this order
 --   A positive total gets the /gov wage multiplier and the weekly multiplier (one receipt line
 --   each), then the income tax (a negative line); the gross is booked as work.pay from the payer,
---   the tax as tax.income to the treasury. total returned = what the player got.
+--   the tax as tax.income to the state account set on the /gov Taxes page (none = disappears). total returned = what the player got.
 --   A total <= 0 still shows the receipt but pays nothing; with opts.chargeNegative = true a
 --   negative total is taken from the player (work.deduction, may go into debt) and goes to the
 --   payer. workId does not have to be a currently registered work (only used for the
@@ -117,7 +123,7 @@ function payWork(player, workId, items, reason, opts)
         if ok ~= true then return false, "payment failed: " .. tostring(ok) end
         if tax > 0 then
             exports.v_bank:forceTakeMoney(player, tax, "tax.income",
-                { work = workName, key = taxKey, rate = math.floor(rate * 100 + 0.5) })
+                { work = workName, key = taxKey, rate = math.floor(rate * 100 + 0.5) }, incomeTaxTarget())
             paid = total - tax
         end
     elseif total < 0 and opts.chargeNegative then

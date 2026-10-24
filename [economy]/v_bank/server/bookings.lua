@@ -47,6 +47,7 @@ local function sideAccepts(spec, a)
     if spec == "system" or spec == "cash" or spec == "settled" then return a == nil end
     if spec == "treasury" then return a ~= nil and a.kind == "state" and a.ownerRef == BANK.TREASURY end
     if spec == "payer" then return a == nil or a.kind == "state" or a.kind == "company" end
+    if spec == "payee" then return a == nil or a.kind == "state" end
     if type(spec) == "table" then return a ~= nil and spec[a.kind] == true end
     return false
 end

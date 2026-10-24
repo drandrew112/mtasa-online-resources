@@ -14,7 +14,7 @@ local NEED = {
     findCompanies = "viewer", budget = "viewer", votes = "viewer", news = "viewer",
     setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setWork = "minister",
     setFee = "minister", setMember = "minister", treasuryTransfer = "minister", setVat = "minister",
-    setPropertyTax = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
+    setPropertyTax = "minister", setTaxTarget = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
     postNews = "minister", deleteNews = "minister",
     setHealth = "official", createCompany = "official", renameCompany = "official", deleteCompany = "official",
     describeCompany = "official", companyMember = "official", companyOverdraft = "minister",
@@ -183,6 +183,23 @@ function A.findCompanies(p, args, reply)
         like, tonumber(q) or 0)
 end
 
+--- where each tax goes: { {tax, code (nil = disappears), missing = the set account is gone}, ... }
+--- and the choosable state accounts { {code, name}, ... } (the treasury first)
+local function taxTargets()
+    local bank = GOV.bank()
+    local tid = treasuryId()
+    local t = bank and tid and bank:getAccountInfo(tid)
+    local options = {}
+    if t then options[1] = { code = "treasury", name = t.name } end
+    for _, c in ipairs(GOV.companyList()) do options[#options + 1] = { code = c.code, name = c.name } end
+    local list = {}
+    for i, tax in ipairs(GOV_TAXES) do
+        local code = GOV.taxTargetCode(tax)
+        list[i] = { tax = tax, code = code, missing = code ~= nil and getTaxTarget(tax) == nil }
+    end
+    return list, options
+end
+
 function A.taxes(p, args, reply)
     local used = {}
     for _, w in ipairs(workList()) do
@@ -196,8 +213,10 @@ function A.taxes(p, args, reply)
         end
         local vat = {}
         for i, g in ipairs(GOV_VAT_GROUPS) do vat[i] = { group = g, rate = getVatRate(g), default = GOV_DEFAULTS["tax.vat"][g] or 0 } end
+        local targets, targetOptions = taxTargets()
         reply({ company = getCompanyTaxRate(), keys = GOV.get("tax.income_keys") or {}, used = used, runs = runs,
-            vat = vat, property = getPropertyTaxRate(), propertyDefault = GOV_DEFAULTS["tax.property"] })
+            vat = vat, property = getPropertyTaxRate(), propertyDefault = GOV_DEFAULTS["tax.property"],
+            targets = targets, targetOptions = targetOptions })
     end, "SELECT period_start, companies, total FROM gov_tax_runs WHERE period_start >= ? ORDER BY period_start DESC LIMIT 48",
         GOV.historySince())
 end
@@ -300,6 +319,27 @@ function A.setPropertyTax(p, args, reply, actor)
     local v = tonumber(args.value)
     if args.value ~= nil and not v then return reply(false, "v_gov.err.bad_number") end
     GOV.set("tax.property", v and clamp(v / 100, GOV_RANGE.propertyTax) or nil, actor)
+    reply(true)
+end
+
+--- the state account a tax goes to: { tax, code } (code "" / nil = the money disappears)
+function A.setTaxTarget(p, args, reply, actor)
+    local tax = tostring(args.tax or "")
+    local known = false
+    for _, x in ipairs(GOV_TAXES) do if x == tax then known = true end end
+    if not known then return reply(false, "v_gov.err.bad_key") end
+    local code = tostring(args.code or ""):lower()
+    if code ~= "" then
+        local bank = GOV.bank()
+        if not bank then return reply(false, "v_bank.error.unavailable") end
+        if code ~= "treasury" and not GOV.companyByCode(code) then return reply(false, "v_gov.err.bad_company") end
+        local id = bank:getStateAccount(code)
+        local info = id and bank:getAccountInfo(id)
+        if not info or info.status ~= "active" then return reply(false, "v_gov.err.bad_company") end
+    end
+    local targets = GOV.get("tax.targets") or {}
+    targets[tax] = code ~= "" and code or nil
+    GOV.set("tax.targets", targets, actor)
     reply(true)
 end
 

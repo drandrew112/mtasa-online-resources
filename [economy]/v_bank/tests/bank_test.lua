@@ -30,15 +30,19 @@ local sac = acc(2, "state", "sacontrol", 0, { allowNegative = true })
 local alice = acc(10, "personal", "alice", 1000)
 local bob = acc(11, "personal", "bob", 0)
 local co = acc(20, "company", "5", 500)
--- findAcc works through the owner index, which fromRow fills: register the test accounts there
-local function index()
-    -- fromRow-like registration of the owner keys
+-- the rows of the re-read: every cached account as the database has it (fromRow fills the owner
+-- index findAcc works through)
+local function rowsOf(over)
+    local rows = {}
     for _, a in pairs(ACC) do
-        local r = { id = a.id, number = a.number, kind = a.kind, owner_ref = a.ownerRef, name = a.name,
-                    balance = a.balance, allow_negative = a.allowNegative and 1 or 0, status = a.status }
-        TEST.db = function() return { r } end
-        resyncAccounts()
+        rows[#rows + 1] = { id = a.id, number = a.number, kind = a.kind, owner_ref = a.ownerRef, name = a.name,
+            balance = (over and over[a.id]) or a.balance, allow_negative = a.allowNegative and 1 or 0, status = a.status }
     end
+    return rows
+end
+local function index()
+    TEST.db = function() return rowsOf() end
+    resyncAccounts()
     TEST.db = function() return {} end
 end
 index()
@@ -127,19 +131,52 @@ BOOK.move(nil, 10, 10, "shop.weapon_refund", { item = "AK", evil = "x" }, "x")
 for i = #TEST.execs, 1, -1 do if TEST.execs[i].sql:find("INSERT INTO bank_ledger") then e = TEST.execs[i] break end end
 check("params json without unknown keys", e and e.args[5]:find("evil") == nil and e.args[5]:find("AK") ~= nil, e and e.args[5])
 
+---------------------------------------------------------------- taxes to the chosen state account
+do
+    local before, tb = co.balance, treasury.balance
+    local ok1 = BOOK.move(20, nil, 10, "tax.company_income", {}, "x")
+    check("tax without a target disappears", ok1 and co.balance == before - 10 and treasury.balance == tb)
+    local ok2 = BOOK.move(20, 2, 10, "tax.company_income", {}, "x")
+    check("tax to a chosen state account", ok2 and sac.balance >= 10)
+    local ok3, e3 = BOOK.move(20, 10, 10, "tax.company_income", {}, "x")
+    check("tax to a personal account refused", not ok3 and e3 == "bad_key", e3)
+end
+
 ---------------------------------------------------------------- resync with deltas in flight
 co.balance, co.sync = 1000, 0
 local answer
 TEST.db = function()
     -- the SELECT went out; a booking happens before the answer arrives
     BOOK.move(nil, 20, 50, "biz.property_sell", { property = "p" }, "x")
-    answer = { { id = 20, number = "LB-20", kind = "company", owner_ref = "5", name = "5", balance = 1000 + 300,
-                 allow_negative = 0, status = "active" } }
+    answer = rowsOf({ [20] = 1000 + 300 })
     return answer
 end
 resyncAccounts()
 TEST.db = function() return {} end
 check("resync: other instance's +300 and own +50 both kept", co.balance == 1350, co.balance)
+
+---------------------------------------------------------------- resync after rows deleted by hand
+local ghost = acc(30, "state", "ghost", 0)
+index()
+check("ghost cached", findAcc("state", "ghost") == ghost)
+local recreated = false
+local rereadDone = false
+TEST.db = function(sql, ...)
+    local args = { ... }
+    if sql:find("INSERT IGNORE INTO bank_accounts") and args[2] == "treasury" then recreated = true end
+    if rereadDone then return {} end
+    rereadDone = true
+    local rows = {}
+    for _, r in ipairs(rowsOf()) do if r.id ~= 30 and r.id ~= 1 then rows[#rows + 1] = r end end
+    return rows
+end
+resyncAccounts()
+TEST.db = function() return {} end
+check("deleted account forgotten", findAcc("state", "ghost") == nil and ACC[30] == nil)
+check("deleted treasury forgotten", ACC[1] == nil)
+check("treasury recreated", recreated)
+ACC[1], treasury.sync = treasury, 0
+index()
 
 ---------------------------------------------------------------- player wrappers
 local p = TEST.player("carol")

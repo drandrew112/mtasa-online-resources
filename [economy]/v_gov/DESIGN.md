@@ -184,8 +184,8 @@ Treatment at a hospital is **free for the patient**; the state pays it from the 
 
 | Key | Dir | Kinds | Counter | Notes |
 | --- | --- | --- | --- | --- |
-| `tax.company_income` `{hour, base, rate}` | out (force) | company | treasury | hourly run |
-| `tax.income` `{work, key, rate}` | out | personal | treasury | payWork |
+| `tax.company_income` `{hour, base, rate}` | out (force) | company | tax target (payee) | hourly run |
+| `tax.income` `{work, key, rate}` | out | personal | tax target (payee) | payWork |
 | `health.care` `{patient, account, hospital, hp, injuries, task}` | out | state (treasury) | system | med_hospitals |
 | `gov.transfer` `{note}` | pair | state ↔ state | account | treasury ↔ state company |
 
@@ -261,7 +261,7 @@ v_admin keeps its Bank page for *all* accounts (statements, add / take money, fr
   repair, services, real_estate; default 27 %, real estate 5 %) is **on top of** the shop price.
   The rates are root element data `v_gov.vat`; a shop includes v_gov and imports the lib
   (`loadstring(exports.v_gov:importVat())()`): it shows and charges `VAT.gross(group, net)` and after
-  a successful purchase calls `VAT.book(group, net, vat, item)` → v_bank `tax.vat` (system → treasury).
+  a successful purchase calls `VAT.book(group, net, vat, item)` → v_bank `tax.vat` (system → the VAT's tax target; none = not booked).
   Wired into wp_shop, world_clothes-shop, v_customs (tuning, custom plate, repair), the ui_browser car
   sites, ui_phone (insurance, Julia) and biz_core (office / property purchase; illegal sites and
   upgrades have no VAT).

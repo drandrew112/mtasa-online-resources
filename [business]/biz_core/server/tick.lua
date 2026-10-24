@@ -69,8 +69,11 @@ local function payPropertyTax(c)
     c.taxSeconds = c.taxSeconds - BIZ.PROPERTY_TAX_INTERVAL
     local tax, value, n, rate = propertyTaxOf(c)
     if tax <= 0 then return end
+    -- to the state account set on the /gov Taxes page (none = the money disappears)
+    local res = getResourceFromName("v_gov")
+    local target = res and getResourceState(res) == "running" and tonumber(exports.v_gov:getTaxTarget("property")) or nil
     local ok, err = MONEY.debitClean(c, tax, "tax.property",
-        { count = n, value = value, rate = math.floor(rate * 1000 + 0.5) / 10 }, "")
+        { count = n, value = value, rate = math.floor(rate * 1000 + 0.5) / 10 }, "", target)
     if not ok then
         outputDebugString(("[biz_core] property tax of company %d failed: %s"):format(c.id, tostring(err)), 2)
         return

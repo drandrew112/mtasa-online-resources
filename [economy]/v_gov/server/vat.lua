@@ -29,13 +29,15 @@ function getVatRates()
     return out
 end
 
---- the VAT part of a purchase to the treasury (the buyer already paid net + vat) -> true | false, err
+--- the VAT part of a purchase to the tax's state account (the buyer already paid net + vat); with
+--- no account set the VAT simply disappears -> true | false, err
 function bookVat(group, net, vat, item)
     vat, net = math.floor(tonumber(vat) or 0), math.floor(tonumber(net) or 0)
     if vat <= 0 then return false, "bad_amount" end
     local bank = GOV.bank()
-    local tid = bank and bank:getStateAccount("treasury")
-    if not tid then return false, "unavailable" end
+    if not bank then return false, "unavailable" end
+    local tid = getTaxTarget("vat")
+    if not tid then return true end
     local rate = net > 0 and math.floor(vat / net * 1000 + 0.5) / 10 or 0
     local ok, err = bank:credit(tid, vat, "tax.vat",
         { group = tostring(group), item = DB.clip(item or group, 48), net = net, rate = rate }, "v_gov")

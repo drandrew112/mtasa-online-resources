@@ -32,7 +32,7 @@ Until the accounts are loaded every booking answers `"unavailable"`.
 `shared/keys.lua` lists every possible booking: the paying side (`from`) and the receiving side
 (`to`) — an account kind, `"system"` (money created / disappearing), `"cash"`, `"treasury"`
 (filled in by v_bank), `"settled"` (the caller books the income later) or `"payer"` (a state /
-company account or system). `force` keys may push the payer below 0; accounts on the **overdraft
+company account or system) / `"payee"` (a state account or system; the taxes). `force` keys may push the payer below 0; accounts on the **overdraft
 list** (`allow_negative`) may always go below 0. An unknown key, or an account on a side the key
 does not allow, is refused (`"bad_key"`). The ledger text is `v_bank.tx.<key>[.in|.out]` in
 v_locals, shown in the viewer's language.

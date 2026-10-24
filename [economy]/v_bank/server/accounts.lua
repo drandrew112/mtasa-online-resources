@@ -175,8 +175,10 @@ end)
 function resyncAccounts(cb)
     if not DB.ready then return cb and cb(false) end
     local personal = {}
+    local before = {}   -- [id] = account cached when the re-read started
     for id, a in pairs(ACC) do
         a.sync = 0
+        before[id] = a
         if a.kind == "personal" then personal[#personal + 1] = id end
     end
     local where = "kind <> 'personal'"
@@ -185,6 +187,7 @@ function resyncAccounts(cb)
         if not rows then return cb and cb(false) end
         for _, r in ipairs(rows) do
             local id = DB.int(r.id)
+            before[id] = nil
             local a = ACC[id]
             if a or tostring(r.kind) ~= "personal" then
                 local isNew = not a
@@ -197,6 +200,21 @@ function resyncAccounts(cb)
                 end
                 if a.player and isElement(a.player) then setElementData(a.player, "bank_account", a.number) end
             end
+        end
+        -- rows deleted from the database by hand: drop them, a player gets a fresh personal account
+        for id, a in pairs(before) do
+            if ACC[id] == a then
+                forget(a)
+                local player = a.player
+                if player and PLAYER_ACC[player] == id then
+                    PLAYER_ACC[player] = nil
+                    if isElement(player) then loadPlayer(player) end
+                end
+            end
+        end
+        -- the state accounts of BANK.STATE (the treasury) come back without a restart
+        for _, s in ipairs(BANK.STATE) do
+            if not findAcc("state", s.code) then createAccount("state", s.code, s.name, s.allowNegative, "resync") end
         end
         if cb then cb(true) end
     end, "SELECT " .. SELECT_COLS .. " FROM bank_accounts WHERE " .. where)

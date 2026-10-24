@@ -21,6 +21,10 @@ GOV = {
 -- (VAT.gross / VAT.split of the importVat lib); a new group needs a shop that uses it.
 GOV_VAT_GROUPS = { "weapons", "clothing", "vehicles", "tuning", "repair", "services", "real_estate" }
 
+-- the taxes whose money goes to a state account chosen on the Taxes page (setting tax.targets:
+-- tax -> state account code, e.g. "treasury" or a state company code; no entry = the money disappears)
+GOV_TAXES = { "company", "income", "vat", "property" }
+
 -- setting key -> default value
 GOV_DEFAULTS = {
     ["tax.company"] = 0.10,                                 -- hourly company income tax
@@ -29,6 +33,7 @@ GOV_DEFAULTS = {
     ["tax.vat"] = { weapons = 0.27, clothing = 0.27, vehicles = 0.27, tuning = 0.27, repair = 0.27,
                     services = 0.27, real_estate = 0.05 },
     ["tax.property"] = 0.005,                               -- of the property price, every 24 online hours
+    ["tax.targets"] = {},                                   -- tax -> state account code (none = disappears)
 
     ["fee.register"] = 50000,          -- company registration fee -> treasury
     ["fee.rename"] = 10000,            -- company rename fee -> disappears

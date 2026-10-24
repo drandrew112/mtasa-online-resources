@@ -151,6 +151,8 @@ Counterparty:
   one sum later (hospital bay fines, 6.4).
 - `"payer"` – the caller gives the paying account: a `state` or `company` account, or `system`
   (work wages, set per work in v_gov).
+- `"payee"` – the caller gives the receiving `state` account, or none = `system` (the money
+  disappears): the taxes, sent where the v_gov Taxes page says (`getTaxTarget`).
 
 Text: `L.msg("v_bank.tx.<key>", params)` in the **viewer's** language. Params hold plain values
 (work id, company name *snapshot*, hospital id, the transfer's note …).
