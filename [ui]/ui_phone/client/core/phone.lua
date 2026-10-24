@@ -95,9 +95,9 @@ local function setOpen(open)
     freezeControls(open)
     if open then
         closeCurrentApp()
-        -- Opening the phone always lands on the first app of the home grid.
+        -- Opening the phone always lands on the middle (5th) app of the 3x3 home grid.
         state.view, state.appId, state.list = "home", nil, 1
-        state.home = 1
+        state.home = math.min(5, math.max(1, #PhoneApp.list()))
         PhoneSound.select()
         phonePull()
     else

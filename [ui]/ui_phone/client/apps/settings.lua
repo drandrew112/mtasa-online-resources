@@ -53,7 +53,7 @@ PhoneApp.defer(function()
 PhoneApp.register({
     id    = "settings",
     name  = L("ui_phone.settings.settings"),
-    order = 50,
+    order = 60,
 
     open  = function() sub = nil end,
     close = function() sub = nil end,

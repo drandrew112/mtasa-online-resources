@@ -9,7 +9,7 @@ PhoneApp.defer(function()
 PhoneApp.register({
     id    = "browser",
     name  = L("ui_phone.browser.browser"),
-    order = 40,
+    order = 70,
 
     open = function()
         local res = getResourceFromName("ui_browser")

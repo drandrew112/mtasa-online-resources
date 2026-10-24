@@ -106,7 +106,7 @@ PhoneApp.defer(function()
 PhoneApp.register({
     id    = "mail",
     name  = L("ui_phone.mail.title"),
-    order = 23,
+    order = 10,
 
     badge = function() return unreadCount() end,
 

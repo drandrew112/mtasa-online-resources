@@ -15,7 +15,7 @@ PhoneApp.defer(function()
 PhoneApp.register({
     id    = "invites",
     name  = L("ui_phone.invites.invites"),
-    order = 20,
+    order = 50,
 
     badge = function() return #invites end,
 

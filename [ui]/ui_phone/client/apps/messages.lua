@@ -152,7 +152,7 @@ PhoneApp.defer(function()
 PhoneApp.register({
     id    = "messages",
     name  = L("ui_phone.messages.title"),
-    order = 22,
+    order = 20,
 
     badge = function() return unreadTotal() end,
 

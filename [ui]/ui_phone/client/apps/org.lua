@@ -29,7 +29,7 @@ PhoneApp.defer(function()
 PhoneApp.register({
     id    = "org",
     name  = L("ui_phone.org.title"),
-    order = 25,
+    order = 80,
 
     badge = function() return state and #list(state.invites) or 0 end,
 

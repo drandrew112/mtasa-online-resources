@@ -60,7 +60,7 @@ CATEGORIES[4] = { key = "boat",       name = L("ui_phone.myveh.boat")       }
 PhoneApp.register({
     id    = "myveh",
     name  = L("ui_phone.myveh.my_vehicles"),
-    order = 10,
+    order = 40,
 
     open  = function() sub = nil; phonePull() end,
     close = function() sub = nil end,
