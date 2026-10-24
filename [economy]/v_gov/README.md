@@ -21,8 +21,9 @@ Roles live in `gov_members` (Members page).
   company), every pay and XP parameter the work registered, wage multiplier, income tax rate key.
 - **Income tax rate keys** (Taxes page): `standard` 12 %, `exempt` 0 %, more can be added; work_core
   `payWork` takes the tax of the work's key from the whole positive wage.
-- **Fees & fines**: company registration fee (→ treasury), rename fee, ambulance bay fine,
-  airspace fees takeoff / landing / overflight (→ SA Control).
+- **Fees & fines**: company registration fee, rename fee, ambulance bay fine, airspace fees
+  takeoff / landing / overflight. Each goes to the state account chosen for it on the Fees page
+  (setting `fee.targets`, export `getFeeTarget`); none chosen (default) = the money disappears.
 - **State healthcare**: med_hospitals bills every treatment (treatment marker, ambulance handover;
   players and NPC patients) to the treasury: missing HP × price + injury prices.
 - **VAT** (Taxes page): a rate per product group, added on top of every shop price, booked to the
@@ -54,6 +55,7 @@ Roles live in `gov_members` (Members page).
 | `getWorkPayer(workId)` | v_bank account id or `"system"` |
 | `getWorkMultiplier(workId)` | number |
 | `getIncomeTaxRate(workId)` | rate, key |
+| `getFeeTarget(fee)` | v_bank account id the fee (`register`, `rename`, `bay_fine`, `airspace.<kind>`) goes to, or nil = disappears |
 | `getTaxTarget(tax)` | v_bank account id the tax (`company` / `income` / `vat` / `property`) goes to, or nil = disappears |
 | `importVat()` (server + client) | the VAT lib source (shared/vat.lua) |
 | `getVatRate(group)` / `getVatRates()` | 0..1 |

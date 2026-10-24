@@ -22,12 +22,15 @@ local function bayFine()
     return HOSP.BAY_FINE
 end
 
---- the violation is over: what was taken goes to the treasury, one row per offender
+--- the violation is over: what was taken goes to the fee's /gov account, one row per offender
+--- (no account set = the money just disappears)
 local function settle(v)
     if not v.fined or not isResourceRunning("v_bank") then return end
+    local target = isResourceRunning("v_gov") and tonumber(exports.v_gov:getFeeTarget("bay_fine")) or nil
+    if not target then v.fined = nil return end
     for name, f in pairs(v.fined) do
         if f.total > 0 then
-            exports.v_bank:credit(nil, f.total, "fine.hospital_bay_income",
+            exports.v_bank:credit(target, f.total, "fine.hospital_bay_income",
                 { player = name, hospital = v.hospital.name, count = f.count }, "med_hospitals")
         end
     end

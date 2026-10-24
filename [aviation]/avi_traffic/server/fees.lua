@@ -1,6 +1,7 @@
--- Airspace usage fees (v_bank DESIGN 6.5): the airline of a live AI flight pays SA Control for a
--- takeoff from / landing at a San Andreas airport and for an overflight (external -> external).
--- Money from nothing (key atc.fee_*). Amounts: v_gov fees airspace.<kind> (/gov), else TR.FEES.
+-- Airspace usage fees (v_bank DESIGN 6.5): the airline of a live AI flight pays for a takeoff from /
+-- landing at a San Andreas airport and for an overflight (external -> external). Money from nothing
+-- (key atc.fee_*) to the state account set for the fee on the /gov Fees page; none set (or no
+-- v_gov) = nothing is booked. Amounts: v_gov fees airspace.<kind> (/gov), else TR.FEES.
 
 local function running(name)
     local res = getResourceFromName(name)
@@ -24,8 +25,9 @@ addEventHandler("onAviFlightFee", resourceRoot, function(kind, callsign, icao)
     if not running("v_bank") then return end
     local amount = feeAmount(kind)
     if amount <= 0 then return end
-    local sacontrol = exports.v_bank:getStateAccount(TR.FEE_ACCOUNT)
-    if not sacontrol then return end
-    exports.v_bank:credit(sacontrol, amount, "atc.fee_" .. kind,
+    if not running("v_gov") then return end
+    local target = tonumber(exports.v_gov:getFeeTarget("airspace." .. kind))
+    if not target then return end
+    exports.v_bank:credit(target, amount, "atc.fee_" .. kind,
         { callsign = callsign, airline = airlineOf(callsign), airport = icao or nil }, "avi_traffic")
 end)

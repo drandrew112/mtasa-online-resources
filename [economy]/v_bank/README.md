@@ -7,8 +7,8 @@ one row in `bank_ledger` with a **transaction key** from `shared/keys.lua`. Desi
 - **personal** account: one per player account (created on the first login, or by the migration)
 - **company** account: one per biz_core organization — the **clean** money only (dirty money stays
   in biz_core)
-- **state** accounts: the **State Treasury** (`treasury`) and the state companies (`sacontrol` =
-  SA Control, more from `/gov`)
+- **state** accounts: the **State Treasury** (`treasury`, the only one v_bank creates) and the
+  state companies made on `/gov` (e.g. SA Control)
 
 **Cash is not tracked.** It is GTA's own money; the ledger only sees it at deposit / withdrawal.
 
@@ -19,7 +19,8 @@ delta, the cache re-reads the shared accounts every 30 s.
 
 On start: schema → migration (`server/migrate.lua`, idempotent, may run on both instances) →
 accounts. The migration
-1. creates the state accounts (treasury, SA Control; both on the overdraft list),
+1. creates the State Treasury (on the overdraft list; re-created by the 30 s re-read if its row is
+   deleted),
 2. gives every player account without a bank account one, with the old account-data `bank_money`
    as opening balance (`migration.opening` row),
 3. removes `bank_money` from the account data (from now on only the table + cache hold it),

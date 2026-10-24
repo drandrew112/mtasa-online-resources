@@ -38,7 +38,7 @@ TX_KEYS = {
 
     -- fines
     ["fine.hospital_bay"]        = { from = P, to = "settled", force = true, params = { "hospital" } },
-    ["fine.hospital_bay_income"] = { from = "settled", to = "treasury", params = { "player", "hospital", "count" } },
+    ["fine.hospital_bay_income"] = { from = "settled", to = "payee", params = { "player", "hospital", "count" } },
 
     -- shops (from the bank part of a purchase)
     ["shop.weapon"]         = { from = P, to = "system", params = { "item" } },
@@ -48,8 +48,10 @@ TX_KEYS = {
     ["phone.service"]       = { from = P, to = "system", params = { "contact", "action" } },
 
     -- organizations (biz_core)
-    ["biz.register_fee"]     = { from = P, to = "treasury", params = { "company" } },
-    ["biz.register_refund"]  = { from = "treasury", to = P, force = true, params = { "company" } },
+    -- the fees go to the state account set for them on the /gov Fees page (getFeeTarget), or
+    -- disappear when none is set; a refund comes back from the same account
+    ["biz.register_fee"]     = { from = P, to = "payee", params = { "company" } },
+    ["biz.register_refund"]  = { from = "payee", to = P, force = true, params = { "company" } },
     ["biz.office_purchase"]  = { from = P, to = "system", params = { "property" } },
     ["biz.office_refund"]    = { from = "system", to = P, params = { "property" } },
     ["biz.deposit"]          = { from = P, to = C, params = { "company", "player" } },
@@ -61,7 +63,7 @@ TX_KEYS = {
     ["biz.property_sell"]    = { from = "system", to = C, params = { "property" } },
     ["biz.property_upgrade"] = { from = C, to = "system", params = { "property", "upgrade" } },
     ["biz.upkeep"]           = { from = C, to = "system", params = { "count" } },
-    ["biz.rename_fee"]       = { from = C, to = "system", params = { "name" } },
+    ["biz.rename_fee"]       = { from = C, to = "payee", params = { "name" } },
     ["biz.launder"]          = { from = "system", to = C, params = { "amount", "fee" } },
     ["biz.casino_hour"]      = { from = "system", to = C, taxable = true, params = { "event" } },
     ["biz.casino_loss"]      = { from = C, to = "system", force = true, taxable = true, params = { "event" } },
@@ -80,10 +82,10 @@ TX_KEYS = {
     ["health.care"]        = { from = "treasury", to = "system", force = true,
                                params = { "patient", "account", "hospital", "hp", "injuries", "task" } },
     ["gov.transfer"]       = { from = S, to = S, force = true, params = { "note" } },
-    -- airspace usage fees, paid by the AI flight's airline (money from nothing)
-    ["atc.fee_takeoff"]    = { from = "system", to = S, params = { "callsign", "airline", "airport" } },
-    ["atc.fee_landing"]    = { from = "system", to = S, params = { "callsign", "airline", "airport" } },
-    ["atc.fee_overflight"] = { from = "system", to = S, params = { "callsign", "airline" } },
+    -- airspace usage fees, paid by the AI flight's airline (money from nothing) to the fee's account
+    ["atc.fee_takeoff"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
+    ["atc.fee_landing"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
+    ["atc.fee_overflight"] = { from = "system", to = "payee", params = { "callsign", "airline" } },
 
     -- admin panel
     ["admin.credit"]   = { from = "system", to = ANY, admin = true, params = { "note", "admin" } },

@@ -101,14 +101,14 @@ function MONEY.credit(c, amount, key, params, desc, actor, dirty)
     return MONEY.creditClean(c, amount, key, params, actor)
 end
 
---- clean part first, then dirty -> true | false, err
-function MONEY.debit(c, amount, key, params, desc, actor)
+--- clean part first, then dirty -> true | false, err (toId: the receiving account of the clean part)
+function MONEY.debit(c, amount, key, params, desc, actor, toId)
     amount = amountOf(amount)
     if not c or not amount then return false, "invalid" end
     if CO.balance(c) < amount then return false, "not_enough_money" end
     local fromClean = math.min(math.max(c.clean, 0), amount)
     if fromClean > 0 then
-        local ok, err = MONEY.debitClean(c, fromClean, key, params, actor)
+        local ok, err = MONEY.debitClean(c, fromClean, key, params, actor, toId)
         if not ok then return false, err end
     end
     if amount > fromClean then

@@ -48,6 +48,7 @@
     <export function="getWorkMultiplier" type="server" />
     <export function="getIncomeTaxRate" type="server" />
     <export function="getTaxTarget" type="server" />
+    <export function="getFeeTarget" type="server" />
 
     <!-- VAT (shops: loadstring(exports.v_gov:importVat())(), see shared/vat.lua) + property tax -->
     <export function="importVat" type="server" />

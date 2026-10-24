@@ -8,6 +8,14 @@ Deviations of the implementation: the airspace fee is three keys (`atc.fee_takeo
 extra keys `biz.register_refund`, `biz.office_refund`, `biz.write_off`; transfers use one key
 (`transfer.account`) with the text picked by the sign (`.in` / `.out`).
 
+Change 2026-10-24: v_bank creates only the **State Treasury** by itself; SA Control (and every other
+state body) is an ordinary state company made on the /gov Companies page. Every tax and every fee
+(registration, rename, bay fine, airspace takeoff / landing / overflight) goes to the state account
+chosen for it on the Taxes / Fees page (`tax.targets`, `fee.targets`; v_bank side `"payee"`); with
+none chosen (the default) the money disappears. The ATC work is paid from system unless /gov sets a
+payer. Statements below that send a tax or fee to the treasury or to SA Control describe the old
+default.
+
 ## 1. Goals
 
 - Every bank balance lives in MySQL in **`bank_accounts`**; every change of a balance writes one row

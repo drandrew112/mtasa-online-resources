@@ -70,8 +70,8 @@ check("zero amount refused", not ok and err == "bad_amount", err)
 
 ---------------------------------------------------------------- treasury and sides
 local before = ledgerRows()
-ok, err = BOOK.move(nil, nil, 1500, "fine.hospital_bay_income", { player = "Alice", hospital = "ASGH", count = 3 }, "x")
-check("settled income goes to the treasury", ok and treasury.balance == 1500, err)
+ok, err = BOOK.move(nil, 1, 1500, "fine.hospital_bay_income", { player = "Alice", hospital = "ASGH", count = 3 }, "x")
+check("settled income goes to the chosen account (treasury)", ok and treasury.balance == 1500, err)
 check("one row only", ledgerRows() == before + 1, ledgerRows() - before)
 
 ok, err = BOOK.move(1, nil, 99999, "health.care", { patient = "Bob" }, "x")

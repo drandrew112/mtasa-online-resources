@@ -35,10 +35,12 @@ GOV_DEFAULTS = {
     ["tax.property"] = 0.005,                               -- of the property price, every 24 online hours
     ["tax.targets"] = {},                                   -- tax -> state account code (none = disappears)
 
-    ["fee.register"] = 50000,          -- company registration fee -> treasury
-    ["fee.rename"] = 10000,            -- company rename fee -> disappears
-    ["fee.bay_fine"] = 500,            -- hospital bay fine per interval -> treasury (when the bay is left)
-    ["fee.airspace.takeoff"] = 1500,   -- airspace usage fees -> SA Control (money from nothing)
+    -- every fee goes to the state account set for it in fee.targets (none = it disappears)
+    ["fee.targets"] = {},              -- fee key -> state account code
+    ["fee.register"] = 50000,          -- company registration fee
+    ["fee.rename"] = 10000,            -- company rename fee
+    ["fee.bay_fine"] = 500,            -- hospital bay fine per interval (booked when the bay is left)
+    ["fee.airspace.takeoff"] = 1500,   -- airspace usage fees (money from nothing, the AI airline pays)
     ["fee.airspace.landing"] = 2000,
     ["fee.airspace.overflight"] = 800,
 
@@ -59,7 +61,6 @@ GOV_DEFAULTS = {
 GOV_WORK_DEFAULTS = {
     ems            = { payer = "state:treasury", taxKey = "exempt" },
     bloodtransport = { payer = "state:treasury", taxKey = "exempt" },
-    atc            = { payer = "state:sacontrol" },
 }
 
 GOV_RANGE = {

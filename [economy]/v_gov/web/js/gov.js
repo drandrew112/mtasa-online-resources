@@ -275,17 +275,18 @@
         return h + '</div>';
     };
 
-    // the state account a tax goes to (none = the money disappears)
-    function taxTarget(d, tax, m) {
-        const t = arr(d.targets).find(x => x.tax === tax) || {};
+    // the state account a tax / fee goes to (none = the money disappears); act = taxTarget | feeTarget
+    function targetPick(d, key, m, act, inline) {
+        const t = arr(d.targets).find(x => x.key === key) || {};
         const opts = [['', T('tax_target_none')], ...arr(d.targetOptions).map(o => [o.code, o.name])];
         if (t.code && !opts.some(o => o[0] === t.code)) opts.push([t.code, t.code]);
         const cur = opts.find(o => o[0] === (t.code || ''));
-        return `<div class="gv-field"><label>${esc(T('tax_target'))}</label><div>` +
-            (m ? select('target_' + tax, opts, t.code || '', 'taxTarget', true).replace('<select ', `<select data-tax="${tax}" `)
-                : esc(cur ? cur[1] : t.code)) +
-            (t.missing ? `<span class="tag bad">${esc(T('tax_target_missing'))}</span>` : '') + '</div></div>';
+        const pick = (m ? select(act + '_' + key.replace(/\./g, '_'), opts, t.code || '', act, true).replace('<select ', `<select data-key="${esc(key)}" `)
+            : esc(cur ? cur[1] : t.code)) +
+            (t.missing ? `<span class="tag bad">${esc(T('tax_target_missing'))}</span>` : '');
+        return inline ? pick : `<div class="gv-field"><label>${esc(T('tax_target'))}</label><div>${pick}</div></div>`;
     }
+    const taxTarget = (d, tax, m) => targetPick(d, tax, m, 'taxTarget');
 
     PAGE.taxes = d => {
         const m = can('minister');
@@ -362,9 +363,10 @@
     PAGE.fees = d => {
         const m = can('minister');
         return head(T('v_gov.page.fees')) + '<div class="gv-card">' +
-            table([[''], [T('default'), 'r'], [T('value'), 'r']], arr(d.fees).map(f =>
+            table([[''], [T('default'), 'r'], [T('value'), 'r'], [T('tax_target')]], arr(d.fees).map(f =>
                 `<tr><td>${esc(T('v_gov.fee.' + f.key))}</td><td class="r mono dim">${money(f.default)}</td>` +
-                `<td class="r">${edit('fee_' + f.key.replace(/\./g, '_'), f.value, 'fee', { key: f.key }, { allowed: m, unit: '€', reset: 'feeReset', shown: money(f.value) })}</td></tr>`)) + '</div>';
+                `<td class="r">${edit('fee_' + f.key.replace(/\./g, '_'), f.value, 'fee', { key: f.key }, { allowed: m, unit: '€', reset: 'feeReset', shown: money(f.value) })}</td>` +
+                `<td>${targetPick(d, f.key, m, 'feeTarget', true)}</td></tr>`)) + '</div>';
     };
 
     PAGE.health = d => {
@@ -611,7 +613,8 @@
         vatReset(b) { change('setVat', { group: b.dataset.group }); },
         propTax() { const n = numOf('propTax'); if (n !== null) change('setPropertyTax', { value: n }); },
         propTaxReset() { change('setPropertyTax', {}); },
-        taxTarget: el => change('setTaxTarget', { tax: el.dataset.tax, code: el.value }),
+        taxTarget: el => change('setTaxTarget', { key: el.dataset.key, code: el.value }),
+        feeTarget: el => change('setFeeTarget', { key: el.dataset.key, code: el.value }),
         taxKey(b) { const n = numOf(b.dataset.input); if (n !== null) change('setTaxKey', { key: b.dataset.key, value: n }); },
         async addTaxKey() {
             const n = numOf('newKeyRate');

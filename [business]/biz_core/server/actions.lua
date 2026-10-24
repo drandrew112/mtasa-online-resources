@@ -26,6 +26,13 @@ local function fee(key, fallback)
 end
 BIZ.fee = fee
 
+--- v_bank account id a fee goes to (the /gov Fees page), or nil = the money disappears
+local function feeTarget(key)
+    if not BIZ.running("v_gov") then return nil end
+    return tonumber(exports.v_gov:getFeeTarget(key)) or nil
+end
+BIZ.feeTarget = feeTarget
+
 local function playerName(p)
     return (getPlayerName(p):gsub("#%x%x%x%x%x%x", ""))
 end
@@ -70,17 +77,19 @@ function createCompany(player, name, officeId)
     local b = bank()
     if not b then return fail("unavailable") end
 
-    -- the registration fee goes to the State Treasury, the office price disappears
+    -- the registration fee goes to its /gov account (a refund comes back from it), the office
+    -- price disappears
     local regFee = fee("register", BIZ.REG_FEE)
+    local regTarget = feeTarget("register")
     local gross, vat = BIZ.grossPrice(p)
     local total = regFee + gross
     if (tonumber(b:getPlayerBalance(player)) or 0) < total then return fail("not_enough_money", { total = total }) end
     local office = BIZ.propertyName(officeId)
-    if regFee > 0 and b:takeBankMoney(player, regFee, "biz.register_fee", { company = clean }) ~= true then
+    if regFee > 0 and b:takeBankMoney(player, regFee, "biz.register_fee", { company = clean }, regTarget) ~= true then
         return fail("not_enough_money", { total = total })
     end
     if b:takeBankMoney(player, gross, "biz.office_purchase", { property = office }) ~= true then
-        if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }) end
+        if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }, regTarget) end
         return fail("not_enough_money", { total = total })
     end
 
@@ -91,7 +100,7 @@ function createCompany(player, name, officeId)
     local function refund(code)
         ACTION.creating[key] = nil
         if isElement(player) then
-            if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }) end
+            if regFee > 0 then b:giveBankMoney(player, regFee, "biz.register_refund", { company = clean }, regTarget) end
             b:giveBankMoney(player, gross, "biz.office_refund", { property = office })
             NOTIFY.player(player, L.msg("biz_core.register.failed_" .. code))
         end
@@ -188,7 +197,7 @@ function renameCompany(player, name)
             NOTIFY.player(player, L.msg("biz_core.rename.taken"))
             return
         end
-        if renameCost > 0 and not MONEY.debit(cur, renameCost, "biz.rename_fee", { name = clean }, ("Renamed from %s"):format(oldName), cur.account) then
+        if renameCost > 0 and not MONEY.debit(cur, renameCost, "biz.rename_fee", { name = clean }, ("Renamed from %s"):format(oldName), cur.account, feeTarget("rename")) then
             -- spent meanwhile: keep the new name, the fee is skipped (rare race)
             outputDebugString("[biz_core] rename fee of company " .. id .. " could not be taken", 2)
         end

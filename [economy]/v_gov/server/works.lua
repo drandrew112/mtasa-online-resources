@@ -80,15 +80,16 @@ function getCompanyTaxRate()
     return tonumber(GOV.get("tax.company")) or 0
 end
 
---- the stored state account code of a tax (GOV_TAXES), or nil = the money disappears
-function GOV.taxTargetCode(tax)
-    local code = (GOV.get("tax.targets") or {})[tostring(tax)]
+--- where the money of a tax / fee goes: setting "tax.targets" / "fee.targets" = { key -> state
+--- account code }; the stored code, or nil = the money disappears
+function GOV.targetCode(setting, key)
+    local code = (GOV.get(setting) or {})[tostring(key)]
     return type(code) == "string" and code ~= "" and code or nil
 end
 
---- v_bank account id the tax goes to, or nil (none set, or the account is gone / not active)
-function getTaxTarget(tax)
-    local code = GOV.taxTargetCode(tax)
+--- v_bank account id of a target, or nil (none set, or the account is gone / not active)
+function GOV.targetAccount(setting, key)
+    local code = GOV.targetCode(setting, key)
     local bank = GOV.bank()
     if not code or not bank then return nil end
     local id = bank:getStateAccount(code)
@@ -96,6 +97,12 @@ function getTaxTarget(tax)
     if not info or info.status ~= "active" then return nil end
     return id
 end
+
+--- the account a tax (GOV_TAXES) goes to, or nil = it disappears
+function getTaxTarget(tax) return GOV.targetAccount("tax.targets", tax) end
+
+--- the account a fee (GOV.FEES) goes to, or nil = it disappears
+function getFeeTarget(fee) return GOV.targetAccount("fee.targets", fee) end
 
 function getFee(key)
     return tonumber(GOV.get("fee." .. tostring(key))) or 0

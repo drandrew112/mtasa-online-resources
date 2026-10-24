@@ -9,10 +9,10 @@ BANK = {
     -- account number: LB-<digit>-<6-digit id>
     KIND_DIGIT = { personal = 1, company = 2, state = 9 },
 
-    -- state accounts created by v_bank itself (migration, every start: INSERT IGNORE)
+    -- state accounts created by v_bank itself (migration, every start: INSERT IGNORE); every other
+    -- state account (SA Control too) is a state company made on the /gov Companies page
     STATE = {
         { code = "treasury",  name = "State Treasury", allowNegative = true },
-        { code = "sacontrol", name = "SA Control",     allowNegative = true },
     },
     TREASURY = "treasury",
 

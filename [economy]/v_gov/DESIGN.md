@@ -6,6 +6,14 @@ in-game. Decisions in section 14. Author in meta.xml: `DrAndrew112`.
 Deviation: there is no `importWage()` lib; each work registers its parameters with
 `registerWage` and reads them with `getWage` through a small local helper.
 
+Change 2026-10-24: v_bank creates only the **State Treasury** by itself; SA Control (and every other
+state body) is an ordinary state company made on the /gov Companies page. Every tax and every fee
+(registration, rename, bay fine, airspace takeoff / landing / overflight) goes to the state account
+chosen for it on the Taxes / Fees page (`tax.targets`, `fee.targets`; v_bank side `"payee"`); with
+none chosen (the default) the money disappears. The ATC work is paid from system unless /gov sets a
+payer. Statements below that send a tax or fee to the treasury or to SA Control describe the old
+default.
+
 ## 1. What it is
 
 The state of San Andreas as a system: one place for **taxes, wages, fees and fines, state
