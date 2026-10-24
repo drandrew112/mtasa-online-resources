@@ -25,6 +25,8 @@ salary. Author in meta.xml: `DrAndrew112`.
 - **Salaries:** every group has its own salary, paid by the State Treasury **per online hour** of
   each holder, and counted in the Budget plan.
 - Elections come later and will build on this (appoint / dismiss exports are prepared, §13).
+- Aviation is part of **Transport**. **Interior** will oversee the police, fire service and
+  military; **Justice** handles the fines.
 
 ## 2. Where it lives
 
@@ -149,9 +151,19 @@ CREATE TABLE IF NOT EXISTS gov_branches (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 ```
 
-Seeded only when the table is empty: `transport` Transport, `health` Health, `finance` Finance,
-`public_works` Public works, `media` Media, `security` Security, `municipal` Municipal,
-`other` Other. `gov_companies` gets a `branch VARCHAR(24) NOT NULL DEFAULT 'other'` column, picked
+Seeded only when the table is empty:
+
+| Code | Name | Covers |
+| --- | --- | --- |
+| `transport` | Transport | public transport, railways **and aviation** (SA Control / ATC, airports, airspace) |
+| `health` | Health | hospitals, EMS, blood transport |
+| `finance` | Finance | treasury-side companies, state bank matters |
+| `interior` | Interior | police, fire service, military (later) |
+| `justice` | Justice | fines, courts, prisons (later) |
+| `public_works` | Public works | roads, maintenance |
+| `media` | Media | state news, gov.sa |
+| `municipal` | Municipal | the city companies (City of Los Santos, ...) |
+| `other` | Other | everything else | `gov_companies` gets a `branch VARCHAR(24) NOT NULL DEFAULT 'other'` column, picked
 on the State companies page. An archived branch keeps its companies (shown with the old name);
 it is no longer offered.
 
@@ -334,8 +346,24 @@ A state ↔ state transfer needs `gov.<from>.bank.pay` only; a standing order `g
 | `tax.property.edit` | 1 | `setPropertyTax` |
 | `tax.targets.edit` | 2 | `setTaxTarget` |
 | `fees.view` | 0 | `fees` |
-| `fees.edit` | 1 | `setFee` |
-| `fees.targets.edit` | 2 | `setFeeTarget` |
+| `fees.<fee>.edit` | 1 | `setFee` of one fee |
+| `fees.<fee>.target` | 2 | `setFeeTarget` of one fee |
+
+`<fee>` = every fee of gov_tax that is a **fee**: `register`, `rename`, `airspace_takeoff`,
+`airspace_landing`, `airspace_overflight` (the setting keys keep their names, only the perm
+target uses `_`). Fines are separate (Justice, below).
+
+### Justice (`gov_tax` now, a `gov_justice` module later)
+| Perm | D | Today |
+| --- | --- | --- |
+| `fines.view` | 0 | the fines part of the Fees page |
+| `fines.<fine>.edit` | 1 | `setFee` of one fine |
+| `fines.<fine>.target` | 2 | `setFeeTarget` of one fine (where the money goes) |
+
+`<fine>` = `bay_fine` (hospital bay fine) now. gov_tax marks each of its fee keys as `fee` or
+`fine`; the Fees page shows fines in their own box. Later fines (police tickets, court
+penalties) register as more `fines.<fine>` targets, so the Justice Minister gets them without a
+change of their group.
 
 ### Public services (`gov_health`, `gov_transport`, `gov_railways`)
 | Perm | D | Today |
@@ -449,9 +477,11 @@ Guarded by `gov_settings` key `perms.migrated` (one instance does it):
 | Group | rank | max | Rights |
 | --- | --- | --- | --- |
 | **Governor** (`governor`, system) | 1000 | 1 | `*` |
-| **Finance Minister** (`min_finance`) | 900 | 1 | `treasury.*`, `loans.*`, `tax.*`, `fees.*`, `gov.*.view`, `gov.*.bank.view`; `gov.*.*` + branch `finance`; `gov.treasury.*` |
-| **Transport Minister** (`min_transport`) | 900 | 1 | `transport.*`, `rail.*`, `fees.view`, `treasury.overview`; `gov.*.*` + branch `transport`; `works.traindriver.*`, `works.atc.*` |
+| **Finance Minister** (`min_finance`) | 900 | 1 | `treasury.*`, `loans.*`, `tax.*`, `fees.view`, `fees.register.*`, `fees.rename.*`, `gov.*.view`, `gov.*.bank.view`; `gov.*.*` + branch `finance`; `gov.treasury.*` |
+| **Transport Minister** (`min_transport`) | 900 | 1 | `transport.*`, `rail.*`, `treasury.overview`; aviation: `fees.view`, `fees.airspace_takeoff.*`, `fees.airspace_landing.*`, `fees.airspace_overflight.*`; `gov.*.*` + branch `transport` (incl. SA Control); `works.traindriver.*`, `works.atc.*` |
 | **Health Minister** (`min_health`) | 900 | 1 | `health.*`; `gov.*.*` + branch `health`; `works.ems.*`, `works.bloodtransport.*` |
+| **Interior Minister** (`min_interior`) | 900 | 1 | `gov.*.*` + branch `interior`; later the police / fire / military rights of their modules |
+| **Justice Minister** (`min_justice`) | 900 | 1 | `fines.*`; `gov.*.*` + branch `justice` |
 | **Employment Minister** (`min_employment`) | 900 | 1 | `works.*`, `tax.view`, `tax.income.edit` |
 | **Government Spokesperson** (`spokesperson`) | 400 | 1 | `news.*`, `votes.*` |
 
@@ -472,9 +502,6 @@ Ideas for the Branches tab, the ones that match systems on the server first:
 
 | Code | Name | Fits |
 | --- | --- | --- |
-| `aviation` | Aviation | SA Control (ATC), airports, airspace fees |
-| `emergency` | Emergency services | EMS dispatch (erm), fire / rescue later |
-| `justice` | Justice | courts, prisons, fines (with police later) |
 | `education` | Education | driving schools, licences, tutorials |
 | `energy` | Energy & utilities | power, water, waste companies |
 | `logistics` | Post & logistics | state postal / delivery company, blood transport fleet |
@@ -534,7 +561,11 @@ ledger, not in gov_log.
 
 - Bank access of state companies = rights `gov.<id>.bank.view|pay|manage`, synced into v_bank.
 - No cities on companies, no municipal layer, no seeded mayor positions.
-- Branches: editable table, seeded with §3.5; more ideas in §12.
+- Branches: editable table, seeded with §3.5; more ideas in §12. Aviation belongs to Transport;
+  Interior (police, fire service, military later) and Justice (fines) are branches with their
+  own minister.
+- Fees and fines are separate rights: `fees.<fee>.*` (Finance: registration / rename; Transport:
+  airspace) and `fines.<fine>.*` (Justice).
 - Allow-only.
 - Salary per group, per online hour, from the treasury, in the Budget plan; set by Governor / admin.
 - Several positions per official; only the Governor or an admin appoints.
