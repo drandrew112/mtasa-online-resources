@@ -11,10 +11,11 @@ addEvent("v_gov:call", true)
 local NEED = {
     overview = "viewer", treasuryLedger = "viewer", taxes = "viewer", works = "viewer", fees = "viewer",
     health = "viewer", companies = "viewer", company = "viewer", members = "viewer", log = "viewer",
-    findCompanies = "viewer", budget = "viewer", votes = "viewer",
+    findCompanies = "viewer", budget = "viewer", votes = "viewer", news = "viewer",
     setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setWork = "minister",
     setFee = "minister", setMember = "minister", treasuryTransfer = "minister", setVat = "minister",
     setPropertyTax = "minister", openVote = "minister", closeVote = "minister", cancelVote = "minister",
+    postNews = "minister", deleteNews = "minister",
     setHealth = "official", createCompany = "official", renameCompany = "official", deleteCompany = "official",
     describeCompany = "official", companyMember = "official", companyOverdraft = "minister",
     voteList = "public", voteCast = "public",
@@ -528,6 +529,23 @@ end
 
 function A.cancelVote(p, args, reply, actor)
     GOV.endVote(args.id, "cancelled", actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
+end
+
+--------------------------------------------------------------------------------
+-- news
+--------------------------------------------------------------------------------
+
+function A.news(p, args, reply)
+    GOV.newsList(function(list) reply({ list = list, langs = GOV.newsLanguages() }) end)
+end
+
+--- { texts = { [lang] = { title, body } } }
+function A.postNews(p, args, reply, actor)
+    GOV.postNews(args, actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
+end
+
+function A.deleteNews(p, args, reply, actor)
+    GOV.deleteNews(args.id, actor, function(ok, err) reply(ok or false, err and "v_gov.err." .. err) end)
 end
 
 -- /vote (any logged-in player)

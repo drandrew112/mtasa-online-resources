@@ -9,7 +9,7 @@
     const $ = id => document.getElementById(id);
     const view = $('view');
 
-    const PAGES = ['overview', 'treasury', 'budget', 'taxes', 'works', 'fees', 'health', 'companies', 'votes', 'members', 'log'];
+    const PAGES = ['overview', 'treasury', 'budget', 'taxes', 'works', 'fees', 'health', 'companies', 'votes', 'news', 'members', 'log'];
     const VAT_GROUPS = ['weapons', 'clothing', 'vehicles', 'tuning', 'repair', 'services', 'real_estate'];
     const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'transfer', 'admin'];
     const ROLE_LEVEL = { viewer: 1, official: 2, minister: 3 };
@@ -30,7 +30,8 @@
             'property_tax_hint', 'history_note', 'net', 'company_description', 'votes_open', 'votes_closed', 'new_vote',
             'vote_title', 'vote_description', 'vote_options', 'vote_options_hint', 'vote_hours', 'vote_ends', 'voters_n',
             'close_vote', 'cancel_vote', 'status_open', 'status_closed', 'status_cancelled', 'results_after_close',
-            'winner', 'created', 'daily', 'day']
+            'winner', 'created', 'daily', 'day', 'new_news', 'news_title', 'news_body', 'news_send', 'news_hint',
+            'news_not_mailed', 'confirm_delete_news']
             .map(k => 'v_gov.ui.' + k),
         ...PAGES.map(p => 'v_gov.page.' + p),
         ...['viewer', 'official', 'minister'].map(r => 'v_gov.role.' + r),
@@ -117,7 +118,7 @@
     // ------------------------------------------------------------ state + navigation
     let page = 'overview';
     const D = {};             // data per page
-    const sel = { treasury: null, group: 'all', work: null, company: null, workQ: '', logQ: '' };
+    const sel = { treasury: null, group: 'all', work: null, company: null, workQ: '', logQ: '', newsDraft: null };
     let busy = false;
 
     function nav() {
@@ -445,6 +446,22 @@
             `<h2 style="margin-top:8px">${esc(T('votes_closed'))}</h2>${done.map(card).join('') || empty()}`;
     };
 
+    PAGE.news = d => {
+        const m = can('minister');
+        const langs = arr(d.langs);
+        const card = n => {
+            const texts = n.texts || {};
+            const codes = [...langs.map(l => l.value).filter(c => texts[c]), ...Object.keys(texts).filter(c => !langs.some(l => l.value === c))];
+            return `<div class="gv-card"><div class="gv-head"><div><div class="gv-sub">${stamp(n.createdAt)} · ${esc(n.createdBy)}` +
+                `${n.mailed ? '' : ` <span class="tag bad">${esc(T('news_not_mailed'))}</span>`}</div></div>` +
+                (m ? `<div class="gv-row">${btn(T('delete'), 'deleteNews', { id: n.id }, 'danger')}</div>` : '') + '</div>' +
+                codes.map(c => `<div style="margin-top:10px"><span class="tag">${esc(c.toUpperCase())}</span> <b>${esc(texts[c].title)}</b>` +
+                    `<p class="gv-desc">${esc(texts[c].body)}</p></div>`).join('') + '</div>';
+        };
+        return head(T('v_gov.page.news'), esc(T('news_hint')), m ? btn(T('new_news'), 'newNews', {}, 'primary') : '') +
+            (arr(d.list).map(card).join('') || empty());
+    };
+
     PAGE.members = d => {
         const m = can('minister');
         const roles = ['viewer', 'official', 'minister'].map(r => [r, T('v_gov.role.' + r)]);
@@ -633,6 +650,22 @@
             if (r) change('openVote', { title: r.title, description: r.description, hours: Number(r.hours),
                 options: r.options.split('\n').map(x => x.trim()).filter(Boolean) });
         },
+        async newNews() {
+            const langs = arr((D.news || {}).langs);
+            const draft = sel.newsDraft || {};
+            const fields = [];
+            for (const l of langs) {
+                fields.push({ name: 'title_' + l.value, label: T('news_title') + ' (' + l.label + ')', value: draft['title_' + l.value] });
+                fields.push({ name: 'body_' + l.value, label: T('news_body') + ' (' + l.label + ')', type: 'textarea', value: draft['body_' + l.value] });
+            }
+            const r = await OSA.ui.form(T('new_news'), fields, T('news_send'), T('news_hint'));
+            if (!r) return;
+            sel.newsDraft = r;   // kept when the server refuses it
+            const texts = {};
+            for (const l of langs) texts[l.value] = { title: r['title_' + l.value], body: r['body_' + l.value] };
+            if (await change('postNews', { texts })) sel.newsDraft = null;
+        },
+        async deleteNews(b) { if (await OSA.ui.confirm(T('delete'), T('confirm_delete_news'), T('delete'))) change('deleteNews', { id: Number(b.dataset.id) }); },
         async closeVote(b) { if (await OSA.ui.confirm(T('close_vote'), '', T('close_vote'))) change('closeVote', { id: Number(b.dataset.id) }); },
         async cancelVote(b) { if (await OSA.ui.confirm(T('cancel_vote'), '', T('cancel_vote'))) change('cancelVote', { id: Number(b.dataset.id) }); },
         overdraft(b) { change('companyOverdraft', { id: sel.company, allow: b.dataset.value === 'true' }); },

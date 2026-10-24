@@ -169,5 +169,18 @@
   "v_gov.err.vote_unknown": "Ismeretlen szavazás.",
   "v_gov.err.vote_closed": "Ez a szavazás már lezárult.",
   "v_gov.err.bad_option": "Ismeretlen opció.",
-  "v_gov.err.code_closed": "Ez a kód egy bezárt cégé volt; válassz másik kódot."
+  "v_gov.err.code_closed": "Ez a kód egy bezárt cégé volt; válassz másik kódot.",
+  "v_gov.page.news": "Hírek",
+  "v_gov.ui.new_news": "Új kormányzati hír",
+  "v_gov.ui.news_title": "Cím",
+  "v_gov.ui.news_body": "Szöveg",
+  "v_gov.ui.news_send": "Küldés mindenkinek",
+  "v_gov.ui.news_hint": "Minden játékos telefonos e-mailben kapja meg a hírt, a saját nyelvén. Az üresen hagyott nyelv helyett egy másik nyelvű változatot kap.",
+  "v_gov.ui.news_not_mailed": "nincs elküldve",
+  "v_gov.ui.confirm_delete_news": "Törlöd ezt a hírt? Az e-maileket is visszavonja minden telefonról.",
+  "v_gov.news.sender": "San Andreas Kormánya",
+  "v_gov.err.news_empty": "Legalább egy nyelven add meg a címet és a szöveget.",
+  "v_gov.err.news_title": "Minden kitöltött nyelvhez kell cím (max. 120 karakter).",
+  "v_gov.err.news_body": "Minden kitöltött nyelvhez kell szöveg (max. 4000 karakter).",
+  "v_gov.err.news_unknown": "Ismeretlen hír."
 }

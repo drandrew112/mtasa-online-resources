@@ -272,6 +272,10 @@ v_admin keeps its Bank page for *all* accounts (statements, add / take money, fr
   options, 1–336 hours); every logged-in player votes with `/vote` (CEF page, may change the vote
   until it closes); open votes close by themselves; results only after the close (/gov Votes page,
   gov_web).
+- **News** (`gov_news`, server/news.lua): a minister / admin writes a title + text per v_locals
+  language (at least one); posting sends it to every account as a ui_phone mail (`sendPhoneMail("all")`,
+  kind `gov_news`, sender `v_gov.news.sender` per language, group key in `mail_group`); deleting it
+  takes the mails back (`deletePhoneMailGroup`). Event `onGovNewsPosted(id, texts)`.
 - **Budget** page: income / expense of the treasury and every state company by ledger group, daily
   bars of the treasury (read from `bank_ledger`).
 - **30 days**: every money list / sum of /gov and gov_web covers at most `GOV.HISTORY_DAYS` (30) days

@@ -55,8 +55,8 @@ function GOV.postNews(args, actor, cb)
         local t = type(src[l.value]) == "table" and src[l.value] or {}
         local title, body = trim(t.title), trim(t.body)
         if title ~= "" or body ~= "" then
-            if title == "" or utf8.len(title) > TITLE_MAX then return cb(false, "news_title") end
-            if body == "" or utf8.len(body) > BODY_MAX then return cb(false, "news_body") end
+            if title == "" or (utf8.len(title) or #title) > TITLE_MAX then return cb(false, "news_title") end
+            if body == "" or (utf8.len(body) or #body) > BODY_MAX then return cb(false, "news_body") end
             texts[l.value] = { title = title, body = body }
             count = count + 1
         end

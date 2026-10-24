@@ -169,5 +169,18 @@
   "v_gov.err.vote_unknown": "Unknown vote.",
   "v_gov.err.vote_closed": "This vote is already closed.",
   "v_gov.err.bad_option": "Unknown option.",
-  "v_gov.err.code_closed": "This code belonged to a closed company; choose another code."
+  "v_gov.err.code_closed": "This code belonged to a closed company; choose another code.",
+  "v_gov.page.news": "News",
+  "v_gov.ui.new_news": "New government news",
+  "v_gov.ui.news_title": "Title",
+  "v_gov.ui.news_body": "Text",
+  "v_gov.ui.news_send": "Send to everyone",
+  "v_gov.ui.news_hint": "Every player gets the news as a phone email in their own language. A language left empty falls back to another one.",
+  "v_gov.ui.news_not_mailed": "not mailed",
+  "v_gov.ui.confirm_delete_news": "Delete this news? The emails are taken back from every phone too.",
+  "v_gov.news.sender": "Government of San Andreas",
+  "v_gov.err.news_empty": "Write the title and the text in at least one language.",
+  "v_gov.err.news_title": "Every filled-in language needs a title (max 120 characters).",
+  "v_gov.err.news_body": "Every filled-in language needs a text (max 4000 characters).",
+  "v_gov.err.news_unknown": "Unknown news."
 }

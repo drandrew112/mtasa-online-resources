@@ -677,3 +677,16 @@ CREATE TABLE IF NOT EXISTS `gov_log` (
     PRIMARY KEY (`id`),
     KEY `idx_ts` (`ts`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- gov_news: government news (/gov News page), sent to every account as a
+-- phone mail (ui_phone phone_mails, kind gov_news, group key in mail_group)
+CREATE TABLE IF NOT EXISTS `gov_news` (
+    `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `texts`      MEDIUMTEXT   NOT NULL,
+    `created_by` VARCHAR(64)  NOT NULL DEFAULT '',
+    `created_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    `mail_group` VARCHAR(64)  NOT NULL DEFAULT '',
+    `deleted_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    KEY `idx_list` (`deleted_at`, `id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

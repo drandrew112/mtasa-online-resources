@@ -32,6 +32,8 @@ Roles live in `gov_members` (Members page).
 - **Property tax** (Taxes page): biz_core pays `rate × property prices` every 24 online hours.
 - **Votes** (Votes page, minister): title, description, options, length; players vote with `/vote`;
   results after the close.
+- **News** (News page, minister): title + text in every language (`gov_news`); sent as a phone email
+  to every account, deleting it takes the emails back.
 - **Budget**: treasury + every state company, income / expense by group. Money data of /gov is
   limited to the last 30 days (`GOV.HISTORY_DAYS`).
 - **State companies** (`gov_companies` + a v_bank state account each): create, rename, describe, close (balance moved to the treasury first), members (bank
