@@ -102,15 +102,52 @@ addEventHandler("acc_auth:onClientAuthError", localPlayer, function(msg)
     if Menu.open then notify(msg) end
 end)
 
+-- display name and password: same server events as the social panel's Account tab
+local displayField = TextField.new{ max = 72 }
+local curPassField = TextField.new{ max = 128 }
+local newPassField = TextField.new{ max = 128 }
+local newPass2Field = TextField.new{ max = 128 }
+local accTab = "email"        -- right panel: "email" | "password"
+local displayLoaded = false   -- the field got the current display name
+
+addEvent("sp:display:result", true)
+addEventHandler("sp:display:result", localPlayer, function(ok, msg)
+    if Menu.open then notify(L.resolve(msg)) end
+end)
+
+addEvent("acc_auth:onClientSettings", true)
+addEventHandler("acc_auth:onClientSettings", localPlayer, function(kind, ok, text)
+    if not Menu.open then return end
+    notify(text)
+    if ok and kind == "password" then
+        curPassField:setText(""); newPassField:setText(""); newPass2Field:setText("")
+    end
+end)
+
+local function submitPassword()
+    local cur, new1, new2 = curPassField:getText(), newPassField:getText(), newPass2Field:getText()
+    if cur == "" or new1 == "" then return notify(L("acc_menu.account.password_needed")) end
+    if new1 ~= new2 then return notify(L("acc_menu.account.passwords_mismatch")) end
+    triggerServerEvent("acc_auth:changePassword", localPlayer, cur, new1)
+end
+
 VIEWS.account = {
     title = function() return L("acc_menu.profile.account") end,
     onOpen = function()
         mailField:setText("")
         passField:setText("")
+        curPassField:setText(""); newPassField:setText(""); newPass2Field:setText("")
+        accTab, displayLoaded = "email", false
+        displayField:setText((Menu.data.profile or {}).account or "")
+        if isSocialRunning() then exports.v_socialpanel:spRequestSnapshot() end
         exports.acc_auth:requestEmail()
     end,
     draw = function(x, y, w, h)
         local lw = math.floor(w * 0.38)
+        if not displayLoaded and Social.snapshot and Social.snapshot.displayName then
+            displayLoaded = true
+            displayField:setText(Social.snapshot.displayName)
+        end
         panelBox(x, y, lw, S(230))
         local cx, cw = x + S(24), lw - S(48)
         heading(L("acc_menu.account.your_account"), cx, y + S(18), cw)
@@ -125,9 +162,40 @@ VIEWS.account = {
         line(L("acc_menu.account.email"), Account.has and Account.masked or L("acc_menu.account.no_email"))
         line(L("acc_menu.account.played"), tostring(p.playtime or "-"))
 
+        -- display name
+        local dy = y + S(244)
+        panelBox(x, dy, lw, S(170))
+        heading(L("acc_menu.account.display_name"), cx, dy + S(18), cw)
+        local function submitDisplay()
+            if not isSocialRunning() then return notify(L("acc_menu.social.unavailable")) end
+            triggerServerEvent("sp:display:set", localPlayer, displayField:getText())
+        end
+        field("view", "acc_display", cx, dy + S(56), cw, S(42), displayField, "", submitDisplay)
+        text(L("acc_menu.account.display_hint"), cx, dy + S(104), cw, S(20), C.dim, 0.85, FONT.row)
+        button("view", "acc_display_save", cx, dy + S(126), S(180), S(34), L("acc_menu.account.save"), submitDisplay)
+
         local rx, rw = x + lw + S(14), w - lw - S(14)
-        panelBox(rx, y, rw, S(360))
+        panelBox(rx, y, rw, S(440))
         local fx, fw = rx + S(24), math.min(rw - S(48), S(560))
+        local tw = math.floor((fw - S(12)) / 2)
+        button("view", "acc_tab_email", fx, y + S(16), tw, S(36), L("acc_menu.account.tab_email"),
+            function() accTab = "email" end, accTab ~= "email" and "ghost" or nil)
+        button("view", "acc_tab_password", fx + tw + S(12), y + S(16), tw, S(36), L("acc_menu.account.tab_password"),
+            function() accTab = "password" end, accTab ~= "password" and "ghost" or nil)
+        if accTab == "password" then
+            local py = y + S(76)
+            text(L("acc_menu.account.current_password"), fx, py, fw, S(20), C.dim, 0.85, FONT.rowB)
+            field("view", "acc_pw_cur", fx, py + S(22), fw, S(42), curPassField, "", nil, true)
+            py = py + S(76)
+            text(L("acc_menu.account.new_password"), fx, py, fw, S(20), C.dim, 0.85, FONT.rowB)
+            field("view", "acc_pw_new", fx, py + S(22), fw, S(42), newPassField, "", nil, true)
+            py = py + S(76)
+            text(L("acc_menu.account.new_password_again"), fx, py, fw, S(20), C.dim, 0.85, FONT.rowB)
+            field("view", "acc_pw_new2", fx, py + S(22), fw, S(42), newPass2Field, "", submitPassword, true)
+            button("view", "acc_pw_save", fx, py + S(82), S(180), S(42), L("acc_menu.account.save_password"), submitPassword)
+            return
+        end
+        local y = y + S(60)
         heading(Account.has and L("acc_menu.account.change_email") or L("acc_menu.account.add_email"), fx, y + S(18), fw)
         text(Account.has and L("acc_menu.account.change_info") or L("acc_menu.account.add_info"), fx, y + S(50), fw, S(44), C.dim, 0.95, FONT.row, "left", "top", true, true)
 

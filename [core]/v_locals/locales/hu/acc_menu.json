@@ -143,5 +143,14 @@
   "acc_menu.models.notice_title": "A jármű modellek nincsenek letöltve",
   "acc_menu.models.notice_body": "A szerver egyedi jármű modelljei nem töltődnek le automatikusan. Töltsd le őket a Beállítások › Modellek alatt (kb. {size}), majd kapcsold be az Egyedi jármű modellek opciót.\n\nAz automatikus frissítést ott bekapcsolva minden új jármű modell letöltődik belépéskor.",
   "acc_menu.models.notice_open": "Modellek beállításai",
-  "acc_menu.models.notice_later": "Később"
+  "acc_menu.models.notice_later": "Később",
+  "acc_menu.account.display_name": "Megjelenített név",
+  "acc_menu.account.display_hint": "Ez a név látszik másoknak a social panelen.",
+  "acc_menu.account.save": "MENTÉS",
+  "acc_menu.account.tab_email": "Email",
+  "acc_menu.account.tab_password": "Jelszó",
+  "acc_menu.account.new_password": "ÚJ JELSZÓ",
+  "acc_menu.account.new_password_again": "ÚJ JELSZÓ ÚJRA",
+  "acc_menu.account.passwords_mismatch": "A két új jelszó nem egyezik.",
+  "acc_menu.account.save_password": "Jelszó módosítása"
 }

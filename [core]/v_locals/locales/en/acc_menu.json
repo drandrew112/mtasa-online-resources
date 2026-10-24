@@ -143,5 +143,14 @@
   "acc_menu.models.notice_title": "Vehicle models are not downloaded",
   "acc_menu.models.notice_body": "The custom vehicle models of the server are not downloaded automatically. Download them in Settings › Models (about {size}), then turn on Custom vehicle models.\n\nTurn on Auto-update there to get every new vehicle model when you log in.",
   "acc_menu.models.notice_open": "Open Models settings",
-  "acc_menu.models.notice_later": "Later"
+  "acc_menu.models.notice_later": "Later",
+  "acc_menu.account.display_name": "Display name",
+  "acc_menu.account.display_hint": "Other players see this name in the social panel.",
+  "acc_menu.account.save": "SAVE",
+  "acc_menu.account.tab_email": "Email",
+  "acc_menu.account.tab_password": "Password",
+  "acc_menu.account.new_password": "NEW PASSWORD",
+  "acc_menu.account.new_password_again": "NEW PASSWORD AGAIN",
+  "acc_menu.account.passwords_mismatch": "The two new passwords don't match.",
+  "acc_menu.account.save_password": "Change password"
 }
