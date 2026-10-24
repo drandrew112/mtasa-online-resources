@@ -1,17 +1,22 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- News card: left of the login/register panel, top edges aligned. Data = the
--- newest v_news articles, pushed by the server (acc_ui:news) with every
--- language; shown in the player's language, else the default one. Display only.
--- Every article is shown in full: as many of the newest as fit the screen
--- height under the card's top edge (the newest one always).
+-- News card: left of the login/register panel, top edges aligned, down to the
+-- bottom of the screen. Data = the v_news articles of the last 7 days, pushed
+-- by the server (acc_ui:news) with every language; shown in the player's
+-- language, else the default one. Display only.
+-- Every article is shown in full; the list scrolls with the mouse wheel while
+-- the cursor is over the card.
 
 News = { data = nil }
 
 local WIDTH = 780
 local GAP   = 24
 local BOTTOM_MARGIN = 40 -- free space kept under the card
+local SCROLL_STEP   = 60 -- px per wheel tick (ui-scaled)
 
-local cache = nil -- { w, maxH, h, ops }
+local cache  = nil -- { w, h, viewH, contentH, ops }
+local target = nil -- render target the list is clipped into
+local rect   = nil -- where the card was drawn this frame (wheel hit test)
+local scroll, scrollGoal = 0, 0
 
 -- title, body of an article in the current language (else the server's default pick)
 local function localized(a)
@@ -20,17 +25,19 @@ local function localized(a)
     return a.title, a.body
 end
 
-local function build(w, maxH)
+-- ops in list coordinates (0 = top of the scroll view)
+local function build(w, h)
     local pad = ui(22)
     local innerW = w - pad * 2
+    local viewH = h - ui(52) - ui(12)
     local ops = {}
-    local y = ui(46) + ui(12)
+    local y = ui(6)
     local smallH = dxGetFontHeight(ui(1.0), "default")
     local titleH = dxGetFontHeight(ui(1.2), "default-bold")
 
     if #News.data == 0 then
         ops[#ops + 1] = { L("acc_ui.news.no_news"), pad, y, w - pad, y + ui(24), Theme.label, ui(1.1), "default", false }
-        return { w = w, maxH = maxH, h = y + ui(24) + pad, ops = ops }
+        return { w = w, h = h, viewH = viewH, contentH = y + ui(24), ops = ops }
     end
 
     for i, a in ipairs(News.data) do
@@ -38,8 +45,6 @@ local function build(w, maxH)
         local _, bh = dxGetTextSize(body, innerW, ui(1.05), "default", true)
         local top = y
         local bodyY = y + smallH + ui(2) + titleH + ui(3)
-        -- the newest one always; the others only when they fit whole
-        if i > 1 and bodyY + bh + pad > maxH then break end
 
         if i > 1 then
             ops[#ops + 1] = { rule = true, x = pad, y = top - ui(8), w = innerW }
@@ -50,33 +55,89 @@ local function build(w, maxH)
         ops[#ops + 1] = { body, pad, bodyY, w - pad, bodyY + bh, Theme.text, ui(1.05), "default", true }
         y = bodyY + bh + ui(18)
     end
-    return { w = w, maxH = maxH, h = y - ui(18) + pad, ops = ops }
+    return { w = w, h = h, viewH = viewH, contentH = y - ui(18) + ui(6), ops = ops }
+end
+
+local function maxScroll()
+    return cache and math.max(0, cache.contentH - cache.viewH) or 0
 end
 
 function News.setData(d)
     News.data = type(d) == "table" and d or nil
     cache = nil
+    scroll, scrollGoal = 0, 0
 end
 
 -- anchor: the visible form panel ({X, Y, W}); called from render.lua
 function News.draw(anchor)
+    rect = nil
     if not (News.data and anchor and anchor.X) then return end
     local w = math.min(ui(WIDTH), anchor.X - ui(GAP) - ui(20))
     if w < ui(260) then return end
     local x = anchor.X - ui(GAP) - w
     local y = anchor.Y
-    local maxH = sh - y - ui(BOTTOM_MARGIN)
-    if not cache or cache.w ~= w or cache.maxH ~= maxH then cache = build(w, maxH) end
+    local h = sh - y - ui(BOTTOM_MARGIN)
+    if h < ui(120) then return end
+    if not cache or cache.w ~= w or cache.h ~= h then cache = build(w, h) end
 
-    drawPanelFrame(x, y, w, cache.h, L("acc_ui.news.title"))
+    local viewW, viewH = math.floor(w), math.floor(cache.viewH)
+    if target and (target.w ~= viewW or target.h ~= viewH) then
+        destroyElement(target.rt)
+        target = nil
+    end
+    if not target then
+        local rt = dxCreateRenderTarget(viewW, viewH, true)
+        if rt then target = { rt = rt, w = viewW, h = viewH } end
+    end
+
+    local maxS = maxScroll()
+    scrollGoal = math.max(0, math.min(maxS, scrollGoal))
+    scroll = scroll + (scrollGoal - scroll) * 0.25
+    if math.abs(scrollGoal - scroll) < 0.5 then scroll = scrollGoal end
+
+    drawPanelFrame(x, y, w, h, L("acc_ui.news.title"))
+    rect = { x = x, y = y, w = w, h = h }
+    if not target then return end
+
+    local viewY = y + ui(52)
+    local off = math.floor(scroll)
+    dxSetRenderTarget(target.rt, true)
+    dxSetBlendMode("modulate_add")
     for _, o in ipairs(cache.ops) do
-        if o.rule then
-            dxDrawRectangle(x + o.x, y + o.y, o.w, 1, Theme.accentDim)
-        else
-            dxDrawText(o[1], x + o[2], y + o[3], x + o[4], y + o[5], o[6], o[7], o[8], "left", "top", true, o[9])
+        local top, bottom = o.rule and o.y or o[3], o.rule and o.y + 1 or o[5]
+        if bottom - off >= 0 and top - off <= viewH then
+            if o.rule then
+                dxDrawRectangle(o.x, o.y - off, o.w, 1, Theme.accentDim)
+            else
+                dxDrawText(o[1], o[2], o[3] - off, o[4], o[5] - off, o[6], o[7], o[8], "left", "top", false, o[9])
+            end
         end
     end
+    dxSetBlendMode("blend")
+    dxSetRenderTarget()
+
+    dxSetBlendMode("add")
+    dxDrawImage(x, viewY, viewW, viewH, target.rt)
+    dxSetBlendMode("blend")
+
+    -- scrollbar
+    if maxS > 0 then
+        local barH = math.max(ui(30), viewH * viewH / cache.contentH)
+        local barY = viewY + (viewH - barH) * (scroll / maxS)
+        dxDrawRectangle(x + w - ui(9), viewY, ui(3), viewH, tocolor(255, 255, 255, 18))
+        dxDrawRectangle(x + w - ui(9), barY, ui(3), barH, Theme.accent)
+    end
 end
+
+addEventHandler("onClientKey", root, function(key, press)
+    if not press or (key ~= "mouse_wheel_up" and key ~= "mouse_wheel_down") then return end
+    if not (rect and cache and isCursorShowing()) then return end
+    local cx, cy = getCursorPosition()
+    if not cx then return end
+    if not inRect(cx * sw, cy * sh, rect.x, rect.y, rect.w, rect.h) then return end
+    local dir = key == "mouse_wheel_down" and 1 or -1
+    scrollGoal = math.max(0, math.min(maxScroll(), scrollGoal + dir * ui(SCROLL_STEP)))
+end)
 
 addEvent("acc_ui:news", true)
 addEventHandler("acc_ui:news", localPlayer, News.setData)

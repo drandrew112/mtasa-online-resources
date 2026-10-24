@@ -105,6 +105,14 @@ TX_KEYS = {
     ["pt.run_cost"]        = { from = "org", to = "org", force = true, params = { "mode", "trip", "category" } },
     ["pt.stop_cost"]       = { from = "org", to = "org", force = true, params = { "mode", "trip", "station", "count" } },
 
+    -- loans (eco_loan): the lender is the bank (system) or a state / company account; personal and
+    -- company loans pay an installment every online hour, state loans every 24 h; after too many
+    -- missed installments eco_loan takes it with the forced key (the account may go below 0)
+    ["loan.payout"]             = { from = "org", to = ANY, params = { "loan" } },
+    ["loan.installment"]        = { from = ANY, to = "org", params = { "loan", "n", "of" } },
+    ["loan.installment_forced"] = { from = ANY, to = "org", force = true, params = { "loan", "n", "of" } },
+    ["loan.extra"]              = { from = ANY, to = "org", params = { "loan" } },
+
     -- admin panel
     ["admin.credit"]   = { from = "system", to = ANY, admin = true, params = { "note", "admin" } },
     ["admin.debit"]    = { from = ANY, to = "system", admin = true, force = true, params = { "note", "admin" } },
@@ -115,7 +123,7 @@ TX_KEYS = {
 }
 
 -- ledger filter groups of the website / admin panel: group -> key prefix
-TX_GROUPS = { "cash", "transfer", "work", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "admin" }
+TX_GROUPS = { "cash", "transfer", "work", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "loan", "admin" }
 
 --- the group of a key ("cash.deposit" -> "cash")
 function txGroup(key)

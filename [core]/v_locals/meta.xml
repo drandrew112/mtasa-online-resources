@@ -137,6 +137,7 @@
     <file src="locales/en/biz_weed.json" />
     <file src="locales/en/files/v_introduce/rules.txt" />
     <file src="locales/en/v_bank.json" />
+    <file src="locales/en/eco_loan.json" />
     <file src="locales/en/gov_core.json" />
     <file src="locales/en/gov_tax.json" />
     <file src="locales/en/gov_works.json" />
@@ -240,6 +241,7 @@
     <file src="locales/hu/biz_weed.json" />
     <file src="locales/hu/files/v_introduce/rules.txt" />
     <file src="locales/hu/v_bank.json" />
+    <file src="locales/hu/eco_loan.json" />
     <file src="locales/hu/gov_core.json" />
     <file src="locales/hu/gov_tax.json" />
     <file src="locales/hu/gov_works.json" />

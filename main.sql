@@ -690,3 +690,62 @@ CREATE TABLE IF NOT EXISTS `gov_news` (
     PRIMARY KEY (`id`),
     KEY `idx_list` (`deleted_at`, `id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+-- ============================================================================
+-- eco_loans / eco_loan_payments  (owner: [economy]/eco_loan)
+-- ----------------------------------------------------------------------------
+-- Loans: personal (player account, installment every online hour), company
+-- (biz_core organization, every hour the company runs) and state (state bank
+-- account, every 24 h). Money moves through v_bank loan.* keys; every payout,
+-- installment, miss and forgiveness is one eco_loan_payments row. eco_loan
+-- creates the tables itself.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `eco_loans` (
+    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `kind` VARCHAR(16) NOT NULL,
+    `borrower_ref` VARCHAR(64) NOT NULL,
+    `borrower_name` VARCHAR(64) NOT NULL DEFAULT '',
+    `borrower_acc` INT UNSIGNED NOT NULL,
+    `lender_acc` INT UNSIGNED NOT NULL DEFAULT 0,
+    `principal` BIGINT NOT NULL,
+    `rate` DECIMAL(6,2) NOT NULL DEFAULT 0,
+    `total_due` BIGINT NOT NULL,
+    `installment` BIGINT NOT NULL,
+    `installments` INT UNSIGNED NOT NULL,
+    `paid_count` INT UNSIGNED NOT NULL DEFAULT 0,
+    `paid_amount` BIGINT NOT NULL DEFAULT 0,
+    `remaining` BIGINT NOT NULL,
+    `penalties` BIGINT NOT NULL DEFAULT 0,
+    `interval_sec` INT UNSIGNED NOT NULL,
+    `progress_sec` INT UNSIGNED NOT NULL DEFAULT 0,
+    `next_due` INT UNSIGNED NOT NULL DEFAULT 0,
+    `missed` INT UNSIGNED NOT NULL DEFAULT 0,
+    `missed_streak` INT UNSIGNED NOT NULL DEFAULT 0,
+    `status` VARCHAR(16) NOT NULL DEFAULT 'pending',
+    `note` VARCHAR(64) NOT NULL DEFAULT '',
+    `created_by` VARCHAR(64) NOT NULL DEFAULT '',
+    `created_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    `last_payment_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    `closed_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    `closed_by` VARCHAR(64) NOT NULL DEFAULT '',
+    PRIMARY KEY (id),
+    KEY idx_borrower (kind, borrower_ref, status),
+    KEY idx_status (status, kind),
+    KEY idx_due (status, next_due)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `eco_loan_payments` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `loan_id` INT UNSIGNED NOT NULL,
+    `ts` INT UNSIGNED NOT NULL,
+    `kind` VARCHAR(16) NOT NULL,
+    `amount` BIGINT NOT NULL DEFAULT 0,
+    `remaining_after` BIGINT NOT NULL DEFAULT 0,
+    `info` VARCHAR(48) NOT NULL DEFAULT '',
+    `bank_ref` VARCHAR(32) NOT NULL DEFAULT '',
+    `actor` VARCHAR(64) NOT NULL DEFAULT '',
+    PRIMARY KEY (id),
+    KEY idx_loan (loan_id, id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

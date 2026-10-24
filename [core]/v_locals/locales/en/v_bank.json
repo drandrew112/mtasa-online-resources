@@ -86,5 +86,10 @@
   "v_bank.tx.pt.ticket": "Ticket: {line}, {from} → {to}",
   "v_bank.tx.pt.fare_income": "Fare: {line}, {from} → {to}",
   "v_bank.tx.pt.run_cost": "Running cost: {trip}",
-  "v_bank.tx.pt.stop_cost": "Stop fee: {station} ({trip})"
+  "v_bank.tx.pt.stop_cost": "Stop fee: {station} ({trip})",
+  "v_bank.group.loan": "Loans",
+  "v_bank.tx.loan.payout": "Loan #{loan} payout",
+  "v_bank.tx.loan.installment": "Loan #{loan} installment {n}/{of}",
+  "v_bank.tx.loan.installment_forced": "Loan #{loan} installment {n}/{of} (collected)",
+  "v_bank.tx.loan.extra": "Loan #{loan} early repayment"
 }

@@ -1,0 +1,45 @@
+<meta>
+    <info author="DrAndrew112" name="Loan manager" version="1.0.0" type="script"
+          description="Loans (personal, company, state) in MySQL eco_loans + eco_loan_payments, hourly online / 24 h installments through v_bank" />
+
+    <include resource="v_mysql" />
+    <include resource="v_bank" />
+    <include resource="v_locals" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/calc.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/db.lua" type="server" />
+    <script src="server/notify.lua" type="server" />
+    <script src="server/loans.lua" type="server" />
+    <script src="server/collect.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client.lua" type="client" />
+
+    <!-- info -->
+    <export function="isLoanReady" type="server" />
+    <export function="getLoanConfig" type="server" />
+    <export function="quoteLoan" type="server" />
+
+    <!-- open loans (cache) -->
+    <export function="getLoan" type="server" />
+    <export function="getLoans" type="server" />
+    <export function="getPlayerLoans" type="server" />
+    <export function="getCompanyLoans" type="server" />
+    <export function="getStateLoans" type="server" />
+    <export function="getDebt" type="server" />
+
+    <!-- actions -->
+    <export function="createLoan" type="server" />
+    <export function="repayLoan" type="server" />
+    <export function="payOffLoan" type="server" />
+    <export function="forgiveLoan" type="server" />
+
+    <!-- history / website / gov_* (answers later with <caller>:remoteResult) -->
+    <export function="loanCall" type="server" />
+</meta>

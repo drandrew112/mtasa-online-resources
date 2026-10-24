@@ -86,5 +86,10 @@
   "v_bank.tx.pt.ticket": "Menetjegy: {line}, {from} → {to}",
   "v_bank.tx.pt.fare_income": "Menetdíj: {line}, {from} → {to}",
   "v_bank.tx.pt.run_cost": "Fenntartási költség: {trip}",
-  "v_bank.tx.pt.stop_cost": "Megállási díj: {station} ({trip})"
+  "v_bank.tx.pt.stop_cost": "Megállási díj: {station} ({trip})",
+  "v_bank.group.loan": "Hitelek",
+  "v_bank.tx.loan.payout": "#{loan} hitel folyósítása",
+  "v_bank.tx.loan.installment": "#{loan} hitel törlesztőrészlet {n}/{of}",
+  "v_bank.tx.loan.installment_forced": "#{loan} hitel törlesztőrészlet {n}/{of} (behajtva)",
+  "v_bank.tx.loan.extra": "#{loan} hitel előtörlesztés"
 }
