@@ -1,6 +1,8 @@
 <meta>
     <info author="DrAndrew112" name="v_gov" version="1.0.0" type="script"
           description="The state: /gov panel, taxes (hourly company tax, income tax rate keys, VAT, property tax), work pay settings, fees, state healthcare, public transport fares + running costs, state companies, votes (/vote)" />
+    <!-- before every client that imports VAT on load (ui_browser 997, ui_core 999); after v_locals 1001 -->
+    <download_priority_group>1000</download_priority_group>
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
