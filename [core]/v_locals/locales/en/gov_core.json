@@ -22,12 +22,10 @@
   "gov_core.ui.overdraft_on": "May go negative",
   "gov_core.ui.overdraft_off": "May not go negative",
   "gov_core.ui.delete_company": "Close company",
-  "gov_core.ui.add_member": "Add member",
   "gov_core.ui.role": "Role",
   "gov_core.ui.account_name": "Account name",
-  "gov_core.ui.members": "Members (bank access)",
+  "gov_core.ui.members": "Bank access",
   "gov_core.ui.remove": "Remove",
-  "gov_core.ui.admins_are_ministers": "Admins from level {level} are ministers without being listed here.",
   "gov_core.ui.save": "Save",
   "gov_core.ui.close": "Close",
   "gov_core.ui.search_company": "Search: state payer or private company (name or #id)",
@@ -58,7 +56,6 @@
   "gov_core.ui.create": "Create",
   "gov_core.ui.companies": "Companies",
   "gov_core.page.companies": "State companies",
-  "gov_core.page.members": "Members",
   "gov_core.page.log": "Log",
   "gov_core.role.viewer": "Viewer",
   "gov_core.role.official": "Official",
@@ -104,5 +101,10 @@
   "gov_core.menu.admin": "Administration",
   "gov_core.menu.other": "Other",
   "gov_core.err.module_offline": "This part of the government system is not running right now.",
-  "gov_core.err.works_offline": "The works module (gov_works) is not running, so this cannot be checked now."
+  "gov_core.err.works_offline": "The works module (gov_works) is not running, so this cannot be checked now.",
+  "gov_core.ui.branch": "Branch",
+  "gov_core.ui.members_hint": "Follows the gov.<id>.bank rights of the positions (Administration > Permissions).",
+  "gov_core.role.admin": "Admin",
+  "gov_core.err.bad_branch": "Unknown branch.",
+  "gov_core.err.perms_offline": "The permission system (gov_perms) is not running right now."
 }

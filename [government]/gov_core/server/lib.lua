@@ -10,7 +10,7 @@ local LIB = [==[
 GOV = GOV or {}
 GOV.RES = getResourceName(getThisResource())
 GOV.HISTORY_DAYS = 30     -- financial rows / sums are shown at most this far back (/gov + gov_web)
-GOV.ROLES = { viewer = 1, official = 2, minister = 3 }
+GOV.ROLES = { viewer = 1, official = 2, minister = 3 }   -- the old roles, now legacy.<role> permissions
 GOV.A = GOV.A or {}       -- panel actions of this resource: [name] = function(player, args, reply, actor)
 
 if not MYSQL then loadstring(exports.v_mysql:importAsync())() end
@@ -19,6 +19,8 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end
 -- handlers of a module can be attached whether or not gov_core runs
 addEvent("onGovSettingChanged", false)   -- (key, value)
 addEvent("onGovSettingsSynced", false)   -- after every re-read of gov_core
+addEvent("onGovModulesChanged", false)   -- a module (its permissions) or a target list changed
+addEvent("onGovPermsChanged", false)     -- (account | false) of gov_perms: positions / rights changed
 
 function isResourceRunning(name)
     local res = getResourceFromName(name)
@@ -177,6 +179,75 @@ function GOV.isStateAccount(id)
 end
 
 --------------------------------------------------------------------------------
+-- permissions (gov_perms, checked through gov_core; gov_perms/DESIGN.md)
+--------------------------------------------------------------------------------
+
+local function segments(s)
+    local out = {}
+    for part in tostring(s):gmatch("[^%.]+") do out[#out + 1] = part end
+    return out
+end
+
+--- does a grant pattern cover a key? "*" alone = everything, a "*" segment = any one segment,
+--- a trailing ".*" = the rest (one or more segments)
+function GOV.permMatch(pattern, key)
+    pattern, key = tostring(pattern or ""), tostring(key or "")
+    if pattern == "*" or pattern == key then return true end
+    local p, k = segments(pattern), segments(key)
+    for i, ps in ipairs(p) do
+        if i == #p and ps == "*" then return #k >= i end
+        local ks = k[i]
+        if not ks or (ps ~= "*" and ps ~= ks) then return false end
+    end
+    return #k == #p
+end
+
+--- may the player do this? key = a permission key ("tax.vat.edit", "gov.12.bank.pay")
+function GOV.has(player, key)
+    local c = GOV.core()
+    return c and c:hasGovPerm(player, key) == true or false
+end
+
+--- the targets of a family the player reaches: "gov.*.bank.view" -> { all = true } | { ["12"] = true, ... }
+function GOV.targets(player, family)
+    local c = GOV.core()
+    local t = c and c:getGovPermTargets(player, family)
+    return type(t) == "table" and t or {}
+end
+
+--- is a target in a GOV.targets() set?
+function GOV.reach(set, target)
+    return set.all == true or set[tostring(target)] == true
+end
+
+--- the target of a state bank account in the gov.* families: "treasury" | "<company id>" | nil
+function GOV.accountTarget(accountId)
+    accountId = tonumber(accountId)
+    if not accountId then return nil end
+    if accountId == GOV.treasuryId() then return "treasury" end
+    for _, c in ipairs(GOV.companyList()) do
+        if c.accountId == accountId then return tostring(c.id) end
+    end
+end
+
+--- the target of a state account code: "treasury" | "<company id>" | nil
+function GOV.codeTarget(code)
+    if code == "treasury" then return "treasury" end
+    local c = GOV.companyByCode(code)
+    return c and tostring(c.id) or nil
+end
+
+local TARGETS = {}   -- [family prefix] = { {id, name}, ... } of this resource
+
+--- the targets of this module's generated permissions: prefix = the first segment of its
+--- families ("works" for works.*.pay), list = { { id = "ems", name = "EMS" }, ... }
+function GOV.setTargets(prefix, list)
+    TARGETS[prefix] = list
+    local c = GOV.core()
+    if c then c:setGovTargets(prefix, list) end
+end
+
+--------------------------------------------------------------------------------
 -- payer / receiver / target specs
 --------------------------------------------------------------------------------
 
@@ -298,10 +369,12 @@ end
 local MOD
 
 --- def = { settings = { prefixes = {...}, defaults = { key = value } },
----         actions = { name = "viewer" | "official" | "minister" | "public" | { role, sector } },
----         pages = { { id, category, order, need, script, sector? }, ... }, categories = { {id, order}, ... },
----         sectors = { { id, setting }, ... } }   (gov_core README "Sectors")
---- the handlers of the actions are GOV.A[name]
+---         perms = { { key, area, danger }, ... },
+---         families = { { pattern, area, danger, exclude = { target, ... } }, ... },
+---         actions = { name = "<perm key>" | "<family>" | { perm = "gov.{id}.edit", arg = "id" } | "panel" | "public" },
+---         pages = { { id, category, order, need = key | family | { ... }, script }, ... },
+---         categories = { {id, order}, ... }, sectors = { { id, setting, perms = { key, ... } }, ... } }
+--- (gov_core README). The handlers of the actions are GOV.A[name].
 function GOV.module(def)
     MOD = def
     GOV.register()
@@ -311,6 +384,7 @@ function GOV.register()
     local c = GOV.core()
     if not MOD or not c then return end
     c:registerModule(MOD)
+    for prefix, list in pairs(TARGETS) do c:setGovTargets(prefix, list) end
 end
 
 addEventHandler("onResourceStart", root, function(res)

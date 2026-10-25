@@ -1,9 +1,27 @@
 # gov_perms – design
 
-Status: **design only (2026-10-24, third revision)**, nothing implemented yet. Replaces the three
-fixed /gov roles (`viewer` < `official` < `minister`, table `gov_members`) with fine-grained
-permissions grouped into positions (Governor, Transport Minister, ...), each with its own hourly
-salary. Author in meta.xml: `DrAndrew112`.
+Status: **implemented 2026-10-24**, offline-tested only (Lua syntax + unit tests of the matching,
+branch rules and catalogue; `node --check` of the pages); **not yet tested in-game**. Replaces the
+three fixed /gov roles (`viewer` < `official` < `minister`, table `gov_members`) with
+fine-grained permissions grouped into positions (Governor, Transport Minister, ...), each with its
+own hourly salary. Author in meta.xml: `DrAndrew112`. How it is used: [README.md](README.md).
+
+**Deviations of the implementation from the text below:**
+- The rank column is `seniority` (RANK is a reserved word in MySQL 8).
+- Company creation / branch: `companies.create`, `companies.branch` (not `gov.create`): the `gov.`
+  prefix is kept for the per-company families only, so `gov.*.*` + branch never covers them.
+- No `panel.open` / `panel.office` rights: an action may need `"panel"` (anyone with any right,
+  an admin or a sector company); the gov_office computers open /gov for exactly those. The
+  `/govpcs` editor needs `office.edit`.
+- `treasury.overview` covers Overview + Budget; the Treasury / Transfers pages need any
+  `gov.*.bank.view` and list only the accounts the official sees (`treasury.transfers.view` dropped).
+  State loans: `gov.<id>.loans` for take and repay.
+- The salary key is `salary.gov` (its own ledger group "Salaries"), not `gov.salary`.
+- All right names are in the gov_perms locale namespace: `gov_perms.perm.<key>` /
+  `gov_perms.perm.<family>` (with `{target}`); an unknown key is shown as it is.
+- Transport: `transport.fares.edit` = fare per km / minimum / IC supplement; everything with money
+  flows (running costs, payer / receiver, the fare receiver) = `transport.costs.edit`.
+- Seeded positions: §11 + the Interior and Justice Ministers (§16); no `panel.office` grants.
 
 ## 1. Rules (user, 2026-10-24)
 

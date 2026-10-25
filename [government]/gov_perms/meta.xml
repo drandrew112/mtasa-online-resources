@@ -1,0 +1,46 @@
+<meta>
+    <info author="DrAndrew112" name="gov_perms" version="1.0.0" type="script"
+          description="The state permission system: catalogue of every right (static + per state company / work / hospital / fee), positions (groups) with their rights and hourly salary, appointments (Governor / admins), editable branches; state company bank access follows the rights; /gov page Permissions" />
+
+    <include resource="gov_core" />
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/config.lua" type="server" />
+    <script src="server/db.lua" type="server" />
+    <script src="server/perms.lua" type="server" />
+    <script src="server/catalogue.lua" type="server" />
+    <script src="server/setup.lua" type="server" />
+    <script src="server/bank.lua" type="server" />
+    <script src="server/salary.lua" type="server" />
+    <script src="server/panel.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/notify.lua" type="client" />
+
+    <!-- the Permissions page, loaded by the /gov shell of gov_core -->
+    <file src="web/js/pages.js" type="client" />
+
+    <!-- gov_core (every permission check) -->
+    <export function="isGovPermsReady" type="server" />
+    <export function="hasGovPerm" type="server" />
+    <export function="getGovPermTargets" type="server" />
+    <export function="hasAnyGovPerm" type="server" />
+    <export function="getGovGrants" type="server" />
+
+    <!-- other resources -->
+    <export function="getGovPositions" type="server" />
+    <export function="getGovPermCatalogue" type="server" />
+    <export function="getGovBranches" type="server" />
+    <export function="isGovSuper" type="server" />
+    <export function="getSalaryPlan" type="server" />
+
+    <!-- the election system later (PERMS.AUTOMATION) -->
+    <export function="appointGov" type="server" />
+    <export function="dismissGov" type="server" />
+</meta>

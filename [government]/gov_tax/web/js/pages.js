@@ -17,20 +17,20 @@
             (t.missing ? `<span class="tag bad">${esc(T('tax_target_missing'))}</span>` : '');
         return inline ? pick : `<div class="gv-field"><label>${esc(T('tax_target'))}</label><div>${pick}</div></div>`;
     }
-    const taxTarget = (d, tax, m) => targetPick(d, tax, m, 'taxTarget');
+    const taxTarget = (d, tax) => targetPick(d, tax, GOV.can('tax.targets.edit'), 'taxTarget');
 
     GOV.page('taxes', {
         keys: [...GOV.keys('gov_tax', ['company_tax', 'income_keys', 'add_key', 'key_name', 'vat', 'vat_hint', 'property_tax',
             'property_tax_hint', 'tax_target', 'tax_target_none', 'tax_target_missing']),
             ...VAT_GROUPS.map(g => 'gov_tax.vat.' + g), 'gov_works.page.works'],
         render(d) {
-            const m = GOV.can('minister');
+            const m = GOV.can('tax.income.edit');
             const keys = Object.entries(d.keys || {}).sort((a, b) => a[0].localeCompare(b[0]));
             let h = head(GOV.title('taxes')) +
                 `<div class="gv-card"><div class="gv-field"><label>${esc(T('company_tax'))}</label><div>` +
-                edit('companyTax', Math.round((d.company || 0) * 1000) / 10, 'companyTax', {}, { allowed: m, unit: '%', shown: pct(d.company) }) + '</div></div>' +
-                taxTarget(d, 'company', m) + '</div>' +
-                `<div class="gv-card"><h2>${esc(T('income_keys'))}</h2>` + taxTarget(d, 'income', m) +
+                edit('companyTax', Math.round((d.company || 0) * 1000) / 10, 'companyTax', {}, { allowed: GOV.can('tax.company.edit'), unit: '%', shown: pct(d.company) }) + '</div></div>' +
+                taxTarget(d, 'company') + '</div>' +
+                `<div class="gv-card"><h2>${esc(T('income_keys'))}</h2>` + taxTarget(d, 'income') +
                 table([[T('tax_key')], [T('gov_works.page.works')], [T('value'), 'r'], ['', 'act']], keys.map(([k, r]) =>
                     `<tr><td><b>${esc(k)}</b></td><td class="dim">${esc(arr(d.used && d.used[k]).join(', ') || '-')}</td>` +
                     `<td class="r">${edit('key_' + k, Math.round(r * 1000) / 10, 'taxKey', { key: k }, { allowed: m, unit: '%', shown: pct(r) })}</td>` +
@@ -39,15 +39,15 @@
                 h += `<div class="gv-row" style="margin-top:14px"><input class="osa-input mid" id="newKey" placeholder="${esc(T('key_name'))}" maxlength="24" data-keep="1">` +
                     `<input class="osa-input num" id="newKeyRate" placeholder="%" data-keep="1" data-enter="addTaxKey">${btn(T('add_key'), 'addTaxKey', {}, 'primary')}</div>`;
             }
-            h += `</div><div class="gv-card"><h2>${esc(T('vat'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('vat_hint'))}</div>` + taxTarget(d, 'vat', m) +
+            h += `</div><div class="gv-card"><h2>${esc(T('vat'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('vat_hint'))}</div>` + taxTarget(d, 'vat') +
                 table([[T('group')], [T('default'), 'r'], [T('value'), 'r']], arr(d.vat).map(v =>
                     `<tr><td>${esc(T('gov_tax.vat.' + v.group))}</td><td class="r mono dim">${pct(v.default)}</td>` +
                     `<td class="r">${edit('vat_' + v.group, Math.round(v.rate * 1000) / 10, 'vat', { group: v.group },
-                        { allowed: m, unit: '%', reset: 'vatReset', shown: pct(v.rate) })}</td></tr>`)) + '</div>' +
+                        { allowed: GOV.can('tax.vat.edit'), unit: '%', reset: 'vatReset', shown: pct(v.rate) })}</td></tr>`)) + '</div>' +
                 `<div class="gv-card"><div class="gv-field"><label>${esc(T('property_tax'))}</label><div>` +
-                edit('propTax', Math.round((d.property || 0) * 10000) / 100, 'propTax', {}, { allowed: m, unit: '%', reset: 'propTaxReset',
+                edit('propTax', Math.round((d.property || 0) * 10000) / 100, 'propTax', {}, { allowed: GOV.can('tax.property.edit'), unit: '%', reset: 'propTaxReset',
                     shown: (Math.round((d.property || 0) * 10000) / 100) + '%' }) +
-                `<div class="gv-sub">${esc(T('property_tax_hint'))}</div></div></div>` + taxTarget(d, 'property', m) + '</div>';
+                `<div class="gv-sub">${esc(T('property_tax_hint'))}</div></div></div>` + taxTarget(d, 'property') + '</div>';
             return h + `<div class="gv-card"><h2>${esc(T('tax_runs'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('history_note', { days: 30 }))}</div>${runsTable(d.runs)}</div>`;
         },
         actions: {
@@ -68,14 +68,16 @@
     });
 
     GOV.page('fees', {
-        keys: [...GOV.keys('gov_tax', ['tax_target', 'tax_target_none', 'tax_target_missing']), ...FEE_KEYS.map(k => 'gov_tax.fee.' + k)],
+        keys: [...GOV.keys('gov_tax', ['tax_target', 'tax_target_none', 'tax_target_missing', 'fees_box', 'fines_box']), ...FEE_KEYS.map(k => 'gov_tax.fee.' + k)],
         render(d) {
-            const m = GOV.can('minister');
-            return head(GOV.title('fees')) + '<div class="gv-card">' +
-                table([[''], [T('default'), 'r'], [T('value'), 'r'], [T('tax_target')]], arr(d.fees).map(f =>
+            // fees (fees.<id>.*) and fines (fines.<id>.*, Justice) in their own boxes
+            const box = (title, list) => list.length ? `<div class="gv-card"><h2>${esc(title)}</h2>` +
+                table([[''], [T('default'), 'r'], [T('value'), 'r'], [T('tax_target')]], list.map(f =>
                     `<tr><td>${esc(T('gov_tax.fee.' + f.key))}</td><td class="r mono dim">${money(f.default)}</td>` +
-                    `<td class="r">${edit('fee_' + f.key.replace(/\./g, '_'), f.value, 'fee', { key: f.key }, { allowed: m, unit: '€', reset: 'feeReset', shown: money(f.value) })}</td>` +
-                    `<td>${targetPick(d, f.key, m, 'feeTarget', true)}</td></tr>`)) + '</div>';
+                    `<td class="r">${edit('fee_' + f.key.replace(/\./g, '_'), f.value, 'fee', { key: f.key }, { allowed: GOV.can(f.perm + '.edit'), unit: '€', reset: 'feeReset', shown: money(f.value) })}</td>` +
+                    `<td>${targetPick(d, f.key, GOV.can(f.perm + '.target'), 'feeTarget', true)}</td></tr>`)) + '</div>' : '';
+            const fees = arr(d.fees);
+            return head(GOV.title('fees')) + box(T('fees_box'), fees.filter(f => !f.fine)) + box(T('fines_box'), fees.filter(f => f.fine));
         },
         actions: {
             feeTarget: el => GOV.change('setFeeTarget', { key: el.dataset.key, code: el.value }),

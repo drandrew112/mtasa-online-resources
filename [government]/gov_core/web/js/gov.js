@@ -8,6 +8,10 @@
 //
 //   GOV.call(action, args) -> Promise<result>   (rejects with the translated error text)
 //   GOV.tr(ns) -> T(key, params): <ns>.ui.<key>, else gov_core.ui.<key>, a full key as it is
+//   GOV.can(key) -> bool: the player's rights (gov_perms positions, sectors; admins: all), e.g.
+//                   GOV.can('tax.vat.edit'), GOV.can('gov.' + id + '.bank.pay'); a family with a
+//                   '*' segment (GOV.can('works.*.pay')) = any target of it. Only hides buttons:
+//                   the server checks every request.
 //
 // Texts come from v_locals: the shell asks the core keys on start (pageReady -> _init), the
 // page titles, category names and page keys once the scripts are loaded (pageStrings -> _strings).
@@ -18,16 +22,15 @@
     const $ = id => document.getElementById(id);
     const view = $('view');
 
-    const ROLE_LEVEL = { viewer: 1, official: 2, minister: 3 };
     const CORE_KEYS = [
         ...['title', 'loading', 'empty', 'saved', 'delete', 'reset', 'save', 'close', 'value', 'default', 'account', 'amount',
             'note', 'balance', 'time', 'description', 'total', 'actor', 'action', 'detail', 'filter', 'income', 'expense',
-            'group', 'net', 'role', 'remove', 'add_member', 'account_name', 'create', 'on', 'off', 'inactive', 'confirm_delete',
+            'group', 'net', 'role', 'remove', 'account_name', 'create', 'on', 'off', 'inactive', 'confirm_delete',
             'search_company', 'state_payers', 'private_companies', 'no_match', 'searching', 'payer', 'receiver', 'payer_system',
             'receiver_none', 'patient_pays', 'search_payer', 'search_private', 'private_company', 'history_note', 'period',
             'companies', 'created', 'tax_key', 'tax_runs']
             .map(k => 'gov_core.ui.' + k),
-        ...['viewer', 'official', 'minister', 'sector'].map(r => 'gov_core.role.' + r),
+        ...['admin', 'sector', 'official'].map(r => 'gov_core.role.' + r),
         'gov_core.err.bad_number',
     ];
     let STR = {};
@@ -80,11 +83,48 @@
         else w.resolve(result);
     };
 
-    let role = 'viewer';
+    // the rights (server GOV.accessOf): { super, title, grants: [{ perm, branch }], branchOf: { companyId: branch } }
+    let access = { super: false, title: '', grants: [], branchOf: {} };
     let sectors = [];          // the sectors the player's company runs (gov_core GOV.inSector)
-    const can = need => (ROLE_LEVEL[role] || 0) >= ROLE_LEVEL[need];
-    // the change actions of a sector: ministers, or a member of the company that runs it
-    const canSector = id => can('minister') || sectors.includes(id);
+
+    // the same matching as the server (gov_core lib GOV.permMatch): '*' alone = everything, a '*'
+    // segment = any one segment, a trailing '.*' = the rest
+    const permMatch = (pattern, key) => {
+        if (pattern === '*' || pattern === key) return true;
+        const p = pattern.split('.'), k = key.split('.');
+        for (let i = 0; i < p.length; i++) {
+            if (i === p.length - 1 && p[i] === '*') return k.length >= p.length;
+            if (k[i] === undefined || (p[i] !== '*' && p[i] !== k[i])) return false;
+        }
+        return k.length === p.length;
+    };
+    // can a grant pattern and a family ('works.*.pay') meet at all?
+    const overlaps = (pattern, family) => {
+        if (pattern === '*') return true;
+        const p = pattern.split('.'), f = family.split('.');
+        for (let i = 0; i < Math.max(p.length, f.length); i++) {
+            if (i === p.length - 1 && p[i] === '*' && f.length >= p.length) return true;
+            if (p[i] === undefined || f[i] === undefined) return false;
+            if (p[i] !== '*' && f[i] !== '*' && p[i] !== f[i]) return false;
+        }
+        return true;
+    };
+    const branchOk = (branch, key) => {
+        if (!branch) return true;
+        const id = (key.match(/^gov\.([^.]+)\./) || [])[1];
+        return !!id && id !== '*' && (access.branchOf || {})[id] === branch;
+    };
+    const can = key => {
+        if (access.super) return true;
+        key = String(key || '');
+        if (['viewer', 'official', 'minister'].includes(key)) key = 'legacy.' + key;
+        const family = key.split('.').includes('*');
+        return arr(access.grants).some(g => family
+            ? overlaps(g.perm, key) && (!g.branch || Object.values(access.branchOf || {}).includes(g.branch))
+            : permMatch(g.perm, key) && branchOk(g.branch, key));
+    };
+    // the change actions of a sector: its own rights, or a member of the company that runs it
+    const canSector = id => sectors.includes(id);
 
     // ------------------------------------------------------------ pages of the modules
     const PAGE = {};           // id -> def (GOV.page)
@@ -101,6 +141,12 @@
     };
     GOV.keys = (ns, list) => list.map(k => ns + '.ui.' + k);
     GOV.tr = tr;
+    // a loaded text by its full key, or undefined (the page's own fallback)
+    GOV.str = (key, params) => {
+        const s = STR[key];
+        if (s === undefined) return undefined;
+        return params ? String(s).replace(/\{(\w+)\}/g, (m, k) => params[k] ?? m) : String(s);
+    };
 
     const version = new URLSearchParams(location.search).get('v') || String(Date.now());
     const loadScript = src => new Promise(resolve => {
@@ -111,17 +157,18 @@
         document.body.appendChild(s);
     });
 
-    GOV._init = async data => {
-        role = data.role || 'viewer';
-        sectors = arr(data.sectors);
-        STR = data.strings || {};
-        MENU = arr(data.pages);
-        CATS = arr(data.categories);
-        $('title').textContent = T('title');
-        $('role').textContent = T('gov_core.role.' + role);
-        $('closeBtn').textContent = T('close') + ' (Esc)';
-        document.title = T('title');
-        await Promise.all([...new Set(MENU.map(p => '/' + p.res + '/' + p.script))].map(loadScript));
+    // the header: the highest position of the official (gov_perms), "Admin" or the sector operator
+    const showTitle = () => {
+        const t = access.title || '';
+        $('role').textContent = t === 'admin' ? T('gov_core.role.admin') : t === 'sector' ? T('gov_core.role.sector')
+            : t || T('gov_core.role.official');
+    };
+    const loaded = new Set();
+    // loads the scripts of the menu's pages (once each), then asks the texts they need
+    async function loadPages() {
+        const scripts = [...new Set(MENU.map(p => '/' + p.res + '/' + p.script))].filter(s => !loaded.has(s));
+        scripts.forEach(s => loaded.add(s));
+        await Promise.all(scripts.map(loadScript));
         const keys = new Set();
         for (const p of MENU) {
             keys.add(p.title);
@@ -129,12 +176,35 @@
         }
         for (const c of CATS) keys.add(c.key);
         mta.triggerEvent('gov_core:pageStrings', JSON.stringify([[...keys]]));
+    }
+
+    GOV._init = async data => {
+        access = data.access || access;
+        sectors = arr(data.sectors);
+        STR = data.strings || {};
+        MENU = arr(data.pages);
+        CATS = arr(data.categories);
+        $('title').textContent = T('title');
+        showTitle();
+        $('closeBtn').textContent = T('close') + ' (Esc)';
+        document.title = T('title');
+        await loadPages();
+    };
+
+    // the rights changed while the panel is open (an appointment, a dismissal, a changed position)
+    GOV._access = async data => {
+        access = data.access || access;
+        MENU = arr(data.pages);
+        CATS = arr(data.categories);
+        showTitle();
+        await loadPages();
     };
 
     GOV._strings = strings => {
         Object.assign(STR, strings || {});
         MENU = MENU.filter(p => PAGE[p.id]);
-        if (!MENU.length) { view.innerHTML = `<div class="gv-empty">${esc(T('empty'))}</div>`; return; }
+        if (!MENU.length) { page = null; nav(); view.innerHTML = `<div class="gv-empty">${esc(T('empty'))}</div>`; return; }
+        if (page && MENU.some(p => p.id === page)) { nav(); load(page); return; }   // rights changed: stay
         const last = store.get('lastPage', null);
         show(MENU.some(p => p.id === last) ? last : MENU[0].id);
     };

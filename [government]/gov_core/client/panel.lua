@@ -5,7 +5,7 @@
 --
 --   page   mta.triggerEvent("gov_core:pageCall", id, action, "[args]")
 --          -> "gov_core:call" -> server/registry.lua -> module -> "gov_core:reply" -> GOV._resolve(id, result, error)
---   page   mta.triggerEvent("gov_core:pageReady", "[[keys]]") -> GOV._init({ role, pages, categories, strings })
+--   page   mta.triggerEvent("gov_core:pageReady", "[[keys]]") -> GOV._init({ access, pages, categories, sectors, strings })
 --   page   mta.triggerEvent("gov_core:pageStrings", "[[keys]]") -> GOV._strings(strings)
 --
 -- Texts stay in v_locals: the page asks for the keys it uses, error keys are translated here.
@@ -13,7 +13,8 @@
 -- opened with the client export openGovPage(resource, page) and use the same relay.
 
 local gui, browser
-local role, pages, categories, sectors = "viewer", {}, {}, {}
+-- access = { super, title, grants = { {perm, branch} }, branchOf } (server GOV.accessOf)
+local access, pages, categories, sectors = {}, {}, {}, {}
 
 addEvent("gov_core:pageCall", false)    -- from the page (source = the browser)
 addEvent("gov_core:pageReady", false)
@@ -77,7 +78,7 @@ end)
 
 addEventHandler("gov_core:pageReady", root, function(keysJson)
     if source ~= browser then return end
-    js("_init", { role = role, pages = pages, categories = categories, sectors = sectors, strings = stringsOf(keysJson) })
+    js("_init", { access = access, pages = pages, categories = categories, sectors = sectors, strings = stringsOf(keysJson) })
     focusBrowser(browser)
 end)
 
@@ -143,12 +144,21 @@ addEventHandler("onClientKey", root, function(key, press)
 end)
 
 addEvent("gov_core:open", true)
-addEventHandler("gov_core:open", resourceRoot, function(r, p, c, sc)
-    role = r
+addEventHandler("gov_core:open", resourceRoot, function(a, p, c, sc)
+    access = type(a) == "table" and a or {}
     sectors = type(sc) == "table" and sc or {}
     pages = type(p) == "table" and p or {}
     categories = type(c) == "table" and c or {}
     if gui then close() else open("gov_core", "web/index.html") end
+end)
+
+-- positions / rights changed while the panel is open: new rights + menu (gov_perms)
+addEvent("gov_core:access", true)
+addEventHandler("gov_core:access", resourceRoot, function(a, p, c)
+    access = type(a) == "table" and a or {}
+    pages = type(p) == "table" and p or {}
+    categories = type(c) == "table" and c or {}
+    if gui then js("_access", { access = access, pages = pages, categories = categories }) end
 end)
 
 --- export: opens (or, when a gov page is open, closes) a page of another gov_* resource on the

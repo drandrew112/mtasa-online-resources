@@ -25,5 +25,7 @@
   "gov_tax.vat.real_estate": "Real estate (organization properties)",
   "gov_tax.ui.tax_target": "Goes to",
   "gov_tax.ui.tax_target_none": "Nowhere (the money disappears)",
-  "gov_tax.ui.tax_target_missing": "Account gone: the money disappears"
+  "gov_tax.ui.tax_target_missing": "Account gone: the money disappears",
+  "gov_tax.ui.fees_box": "Fees",
+  "gov_tax.ui.fines_box": "Fines (Justice)"
 }

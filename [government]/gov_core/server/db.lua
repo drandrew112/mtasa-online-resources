@@ -11,6 +11,7 @@ GOV.SCHEMA = {
         PRIMARY KEY (skey)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
 
+    -- the old roles; read once by gov_perms (migration into positions), kept for one version
     [[CREATE TABLE IF NOT EXISTS gov_members (
         account_name VARCHAR(64) NOT NULL,
         role VARCHAR(16) NOT NULL,
@@ -35,6 +36,7 @@ GOV.SCHEMA = {
         code VARCHAR(24) NOT NULL,
         name VARCHAR(64) NOT NULL,
         description VARCHAR(255) NOT NULL DEFAULT '',
+        branch VARCHAR(24) NOT NULL DEFAULT 'other',
         account_id INT UNSIGNED NULL,
         status VARCHAR(16) NOT NULL DEFAULT 'active',
         created_at INT UNSIGNED NOT NULL DEFAULT 0,
@@ -45,6 +47,15 @@ GOV.SCHEMA = {
         KEY idx_status (status)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
 }
+
+--- adds the columns that came after the first version of a table (gov_companies.branch) -> cb()
+function GOV.upgradeSchema(cb)
+    DB.query(function(rows)
+        if rows and rows[1] then return cb() end
+        DB.query(function() cb() end,
+            "ALTER TABLE gov_companies ADD COLUMN branch VARCHAR(24) NOT NULL DEFAULT 'other' AFTER description")
+    end, "SHOW COLUMNS FROM gov_companies LIKE 'branch'")
+end
 
 --- one panel change in gov_log (export log: the other gov_* resources)
 function GOV.log(actor, action, detail)

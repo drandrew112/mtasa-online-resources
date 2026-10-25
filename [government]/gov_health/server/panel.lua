@@ -1,5 +1,7 @@
 -- gov_health / server/panel.lua
 -- The Healthcare page of /gov, the public part of gov_web and the registration with gov_core.
+-- Rights (gov_perms): health.view, health.prices.edit (on / off, HP and injury prices: the state
+-- only, never a city), health.<hospital>.billing (payer / receiver of one hospital).
 
 local A = GOV.A
 
@@ -42,6 +44,11 @@ end
 
 --- { field = enabled | hp_price | injury | remove_injury | hospital, type, severity, value }
 function A.setHealth(p, args, reply, actor)
+    if args.field == "hospital" then
+        if not GOV.has(p, "health." .. tostring(args.id or "") .. ".billing") then return reply(false, "no_right") end
+    elseif not GOV.has(p, "health.prices.edit") then
+        return reply(false, "no_right")
+    end
     if args.field == "enabled" then
         GOV.set("health.enabled", args.value == true, actor)
     elseif args.field == "hp_price" then
@@ -102,8 +109,37 @@ end
 
 GOV.module({
     settings = { prefixes = { "health." }, defaults = GOV_DEFAULTS },
-    actions = { health = "viewer", setHealth = "official" },
+    perms = {
+        { "health.view",        "services", 0 },
+        { "health.prices.edit", "services", 1 },
+    },
+    -- targets: the hospitals of med_hospitals (publishHospitals)
+    families = {
+        { "health.*.billing", "services", 2 },
+    },
+    actions = { health = "health.view", setHealth = "panel" },
     pages = {
-        { id = "health", category = "services", order = 10, script = "web/js/pages.js" },
+        { id = "health", category = "services", order = 10, script = "web/js/pages.js", need = "health.view" },
     },
 })
+
+--- the targets of health.*.billing: every hospital (+ the ones only in the setting)
+local function publishHospitals()
+    local list, seen = {}, {}
+    if isResourceRunning("med_hospitals") then
+        for _, h in ipairs(exports.med_hospitals:getHospitals() or {}) do
+            local id = tostring(h.id)
+            if id:match("^[%w_]+$") then list[#list + 1] = { id = id, name = tostring(h.name or id) }; seen[id] = true end
+        end
+    end
+    for id in pairs(GOV.get("health.hospitals") or {}) do
+        id = tostring(id)
+        if not seen[id] and id:match("^[%w_]+$") then list[#list + 1] = { id = id, name = id } end
+    end
+    GOV.setTargets("health", list)
+end
+publishHospitals()
+addEventHandler("onGovSettingsSynced", root, publishHospitals)
+addEventHandler("onResourceStart", root, function(res)
+    if getResourceName(res) == "med_hospitals" then setTimer(publishHospitals, 2000, 1) end
+end)

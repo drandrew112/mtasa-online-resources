@@ -1,6 +1,7 @@
 -- gov_core / server/panel.lua
--- /gov and the panel pages of gov_core itself: State companies, Members, Log, and the private
--- company search of the pickers (findCompanies). Every change goes to gov_log.
+-- /gov and the panel pages of gov_core itself: State companies, Log, and the private company
+-- search of the pickers (findCompanies). Every change goes to gov_log. The officials and their
+-- rights are on gov_perms' Permissions page (the old Members page is gone).
 
 local A = GOV.A
 
@@ -26,29 +27,67 @@ function A.findCompanies(p, args, reply)
         like, tonumber(q) or 0)
 end
 
-function A.companies(p, args, reply)
-    if not GOV.bank() then return reply(false, "v_bank.error.unavailable") end
-    reply({ list = GOV.companyList(), payers = statePayerWorks() or {} })
+--- the branches of gov_perms: { {code, name}, ... } (only "other" while gov_perms does not run)
+local function branches()
+    if isResourceRunning("gov_perms") then
+        local ok, list = pcall(function() return exports.gov_perms:getGovBranches() end)
+        if ok and type(list) == "table" and #list > 0 then return list end
+    end
+    return { { code = "other", name = "Other" } }
 end
 
---- one state company (gov_companies id) with its bank account and the bank access list
+local function isBranch(code)
+    for _, b in ipairs(branches()) do if b.code == code then return true end end
+    return false
+end
+
+--- the companies the player may see (gov.<id>.view)
+function A.companies(p, args, reply)
+    if not GOV.bank() then return reply(false, "v_bank.error.unavailable") end
+    local reach = GOV.permTargets(p, "gov.*.view")
+    local list = {}
+    for _, c in ipairs(GOV.companyList()) do
+        if GOV.reach(reach, c.id) then list[#list + 1] = c end
+    end
+    reply({ list = list, payers = statePayerWorks() or {}, branches = branches() })
+end
+
+--- one state company (gov_companies id) with its bank account and the bank access list (the
+--- access follows the gov.<id>.bank.* rights of the positions, gov_perms)
 function A.company(p, args, reply, actor)
     local c = GOV.companyById(args.id)
     if not c then return reply(false, "bad_company") end
     GOV.bankCall("account", { id = c.accountId }, actor, function(r)
         if not r.ok then return reply(false, "v_bank.error." .. tostring(r.error)) end
         local a = r.account
-        reply({ company = { id = c.id, code = c.code, name = c.name, description = c.description, accountId = c.accountId,
-            number = a.number, balance = a.balance, allowNegative = a.allowNegative, access = a.access or {},
-            createdAt = c.createdAt, createdBy = c.createdBy } })
+        reply({ company = { id = c.id, code = c.code, name = c.name, description = c.description, branch = c.branch,
+            accountId = c.accountId, number = a.number, balance = a.balance, allowNegative = a.allowNegative,
+            access = a.access or {}, createdAt = c.createdAt, createdBy = c.createdBy } })
     end)
 end
 
+--- { code, name, description, branch } (a branch other than "other" needs companies.branch)
 function A.createCompany(p, args, reply, actor)
+    local branch = "other"
+    if args.branch and args.branch ~= "other" then
+        if not GOV.hasPerm(p, "companies.branch") then return reply(false, "no_right") end
+        if not isBranch(args.branch) then return reply(false, "bad_branch") end
+        branch = args.branch
+    end
     GOV.createCompany(args.code, args.name, args.description, args.allowNegative == true, actor, function(ok, err)
         if not ok then return reply(false, err) end
         reply(true)
-    end)
+    end, branch)
+end
+
+--- { id, branch }
+function A.setCompanyBranch(p, args, reply, actor)
+    local c = GOV.companyById(args.id)
+    if not c then return reply(false, "bad_company") end
+    local branch = tostring(args.branch or "")
+    if not isBranch(branch) then return reply(false, "bad_branch") end
+    GOV.setCompanyBranch(c, branch, actor)
+    reply(true)
 end
 
 function A.renameCompany(p, args, reply, actor)
@@ -88,37 +127,12 @@ function A.deleteCompany(p, args, reply, actor)
     reply(true)
 end
 
-function A.companyMember(p, args, reply, actor)
-    local bank = GOV.bank()
-    local c = GOV.companyById(args.id)
-    if not bank or not c or not c.accountId then return reply(false, "bad_company") end
-    local role = args.role
-    if role == "none" then role = nil end
-    if not bank:setAccess(c.accountId, tostring(args.account or ""), role, actor) then return reply(false, "bad_member") end
-    GOV.log(actor, "company.member", { code = c.code, account = args.account, role = role or "none" })
-    reply(true)
-end
-
 function A.companyOverdraft(p, args, reply, actor)
     local bank = GOV.bank()
     local c = GOV.companyById(args.id)
     if not bank or not c or not c.accountId then return reply(false, "bad_company") end
     bank:setAllowNegative(c.accountId, args.allow == true)
     GOV.log(actor, "company.overdraft", { code = c.code, allow = args.allow == true })
-    reply(true)
-end
-
-function A.members(p, args, reply)
-    local list = {}
-    for name, role in pairs(MEMBERS) do list[#list + 1] = { account = name, role = role } end
-    table.sort(list, function(a, b) return a.account < b.account end)
-    reply({ list = list, adminLevel = GOV.ADMIN_LEVEL })
-end
-
-function A.setMember(p, args, reply, actor)
-    local role = args.role
-    if role == "none" or role == "" then role = nil end
-    if not GOV.setMember(args.account, role, actor) then return reply(false, "bad_member") end
     reply(true)
 end
 
@@ -134,15 +148,40 @@ function A.log(p, args, reply)
 end
 
 GOV.registerModule("gov_core", {
+    perms = {
+        { "panel.log",         "admin",         0 },
+        { "office.edit",       "admin",         1 },
+        { "companies.create",  "organizations", 2 },
+        { "companies.branch",  "organizations", 1 },
+        -- the old roles (gov_perms migrated the gov_members rows into the legacy_* positions)
+        { "legacy.viewer",     "admin",         0 },
+        { "legacy.official",   "admin",         1 },
+        { "legacy.minister",   "admin",         3 },
+    },
+    -- targets: "treasury" + every state company id (server/companies.lua)
+    families = {
+        { "gov.*.view",        "organizations", 0 },
+        { "gov.*.edit",        "organizations", 1, exclude = { "treasury" } },
+        { "gov.*.close",       "organizations", 3, exclude = { "treasury" } },
+        { "gov.*.bank.view",   "organizations", 0 },
+        { "gov.*.bank.pay",    "organizations", 2 },
+        { "gov.*.bank.manage", "organizations", 3 },
+        { "gov.*.overdraft",   "organizations", 3, exclude = { "treasury" } },
+    },
     actions = {
-        findCompanies = "viewer", companies = "viewer", company = "viewer", members = "viewer", log = "viewer",
-        createCompany = "official", renameCompany = "official", describeCompany = "official", deleteCompany = "official",
-        companyMember = "official", companyOverdraft = "minister", setMember = "minister",
+        findCompanies = "panel", log = "panel.log",
+        companies = "gov.*.view",
+        company = { perm = "gov.{id}.view", arg = "id" },
+        createCompany = "companies.create",
+        setCompanyBranch = "companies.branch",
+        renameCompany = { perm = "gov.{id}.edit", arg = "id" },
+        describeCompany = { perm = "gov.{id}.edit", arg = "id" },
+        deleteCompany = { perm = "gov.{id}.close", arg = "id" },
+        companyOverdraft = { perm = "gov.{id}.overdraft", arg = "id" },
     },
     pages = {
-        { id = "companies", category = "organizations", order = 10, script = "web/js/pages.js" },
-        { id = "members",   category = "admin",         order = 10, script = "web/js/pages.js" },
-        { id = "log",       category = "admin",         order = 20, script = "web/js/pages.js" },
+        { id = "companies", category = "organizations", order = 10, script = "web/js/pages.js", need = "gov.*.view" },
+        { id = "log",       category = "admin",         order = 20, script = "web/js/pages.js", need = "panel.log" },
     },
 })
 
@@ -151,21 +190,30 @@ GOV.registerModule("gov_core", {
 --------------------------------------------------------------------------------
 
 --- export: opens (or closes, when open) the /gov panel of a player; also used by the
---- gov_office computers. Without a role the player gets the "no right" notification - unless
---- they are a member of a company that runs a sector (role "sector": only those pages).
+--- gov_office computers. Without any right the player gets the "no right" notification.
 function openGovPanel(player)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
-    local role = getGovRole(player)
-    local sectors = GOV.sectorsOf(player)
-    if not role and not next(sectors) then
+    if not GOV.hasPanel(player) then
         triggerClientEvent(player, "gov_core:denied", resourceRoot)
         return false
     end
-    local pages, categories = GOV.menuFor(role or "sector", sectors)
+    local pages, categories = GOV.menuFor(player)
     local list = {}
-    for id in pairs(sectors) do list[#list + 1] = id end
-    triggerClientEvent(player, "gov_core:open", resourceRoot, role or "sector", pages, categories, list)
+    for id in pairs(GOV.sectorsOf(player)) do list[#list + 1] = id end
+    triggerClientEvent(player, "gov_core:open", resourceRoot, GOV.accessOf(player), pages, categories, list)
     return true
 end
+
+--- positions / rights changed (gov_perms): the menu and rights again (the client keeps them for
+--- an open panel only); account = only that official, false = everybody
+addEventHandler("onGovPermsChanged", root, function(account)
+    for _, player in ipairs(getElementsByType("player")) do
+        local acc = GOV.accountOf(player)
+        if acc and (not account or account == acc) then
+            local pages, categories = GOV.menuFor(player)
+            triggerClientEvent(player, "gov_core:access", resourceRoot, GOV.accessOf(player), pages, categories)
+        end
+    end
+end)
 
 addCommandHandler("gov", function(player) openGovPanel(player) end)

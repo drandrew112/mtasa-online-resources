@@ -7,10 +7,11 @@
 
     // who pays the treatment, per hospital: payer (system / the patient / state / private company)
     // and receiver (nobody / state / private company)
-    function hospitalsCard(d, o) {
+    function hospitalsCard(d) {
         const list = arr(d.hospitals);
         const hs = list.find(x => x.id === sel.hospital) || list[0];
         if (hs) sel.hospital = hs.id;
+        const o = !!hs && GOV.can('health.' + hs.id + '.billing');   // gov_perms health.<hospital>.billing
         let h = `<div class="gv-card"><h2>${esc(T('hospitals'))}</h2>`;
         if (!d.hospitalsRunning) h += `<div class="gv-sub" style="margin:-6px 0 10px"><span class="tag bad">${esc(T('hospitals_offline'))}</span></div>`;
         if (!hs) return h + empty() + '</div>';
@@ -41,7 +42,7 @@
         keys: GOV.keys('gov_health', ['health_enabled', 'hp_price', 'injury_prices', 'add_injury', 'injury_type', 'severity_n',
             'hospitals', 'default_payer', 'hospital_missing', 'hospitals_offline', 'no_heal_marker', 'patient_pays_hint']),
         render(d) {
-            const o = GOV.can('official');
+            const o = GOV.can('health.prices.edit');
             const list = Object.entries(d.injuries || {}).sort((a, b) => a[0].localeCompare(b[0]));
             let h = head(GOV.title('health')) + '<div class="gv-card">' +
                 `<div class="gv-field"><label>${esc(T('health_enabled'))}</label><div>${toggle(!!d.enabled, 'healthEnabled', {}, o, [T('on'), T('off')])}</div></div>` +
@@ -54,7 +55,7 @@
                         `<td class="act">${o && type !== 'default' ? btn(T('delete'), 'removeInjury', { type }, 'danger') : ''}</td></tr>`;
                 }));
             if (o) h += `<div class="gv-row" style="margin-top:14px"><input class="osa-input mid" id="newInjury" placeholder="${esc(T('injury_type'))}" maxlength="24" data-keep="1" data-enter="addInjury">${btn(T('add_injury'), 'addInjury', {}, 'primary')}</div>`;
-            return hospitalsCard(d, o) + h + '</div>';
+            return hospitalsCard(d) + h + '</div>';
         },
         actions: {
             pickHospital(a) { sel.hospital = a.dataset.id; GOV.hidePickers(); GOV.render(); },

@@ -1,6 +1,6 @@
 -- gov_core / server/config.lua
 
-GOV.ADMIN_LEVEL = 5          -- admins from this level count as "minister" without a gov_members row
+GOV.ADMIN_LEVEL = 5          -- admins from this level may do everything in /gov without a position (gov_perms PERMS.ADMIN_LEVEL too)
 GOV.RESYNC_MS = 60000        -- settings, members and state companies re-read (the other server instance may have changed them)
 GOV.REQUEST_TIMEOUT = 30000  -- ms a module has to answer a panel request
 

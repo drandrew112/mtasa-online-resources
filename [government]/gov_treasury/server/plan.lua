@@ -8,6 +8,8 @@
 --   * railway running costs: gov_transport getRailDayCosts (the rw_timetable timetable of that
 --     day × the pt.rail cost settings) - an expense of the paying state account, an income of the
 --     receiving one
+--   * salaries of the state positions (gov_perms getSalaryPlan): an expense of the treasury,
+--     salary x the official's expected online hours per day (last 7 days, else the plan default)
 --   * standing orders: every order with the amount that falls on each day; state <-> state is an
 --     expense of the sender and an income of the receiver (the whole-state plan shows it apart,
 --     not counted: the money stays inside the state)
@@ -47,6 +49,26 @@ local function runsIn(o, t0, t1)
     return math.floor((t1 - 1 - first) / o.interval) + 1
 end
 
+--- the salaries of a day: { total, groups = { [position name] = amount } } | false (gov_perms off)
+local function salaries(plan, dayTs)
+    if not plan then return false end
+    local out = { total = 0, groups = {} }
+    for _, r in ipairs(plan.rows or {}) do
+        if r.expiresAt == 0 or r.expiresAt > dayTs then
+            local amount = math.floor(r.salary * r.hours + 0.5)
+            out.groups[r.name] = (out.groups[r.name] or 0) + amount
+            out.total = out.total + amount
+        end
+    end
+    return out
+end
+
+local function salaryPlan()
+    if not isResourceRunning("gov_perms") then return false end
+    local ok, r = pcall(function() return exports.gov_perms:getSalaryPlan() end)
+    return ok and type(r) == "table" and r or false
+end
+
 local function railCosts(ts)
     if not isResourceRunning("gov_transport") then return false end
     local ok, r = pcall(function() return exports.gov_transport:getRailDayCosts(ts) end)
@@ -82,11 +104,12 @@ function A.budgetPlan(p, args, reply)
         end
         local days, ids = {}, {}
         local ds = dayStart(GOV.now())
+        local sPlan = salaryPlan()
         for k = 1, 7 do
             local t = getRealTime(ds)
             local d = { ts = ds, weekday = weekdayOf(ds),
                 date = ("%04d-%02d-%02d"):format(t.year + 1900, t.month + 1, t.monthday),
-                rail = railCosts(ds + 12 * 3600), orders = {} }
+                rail = railCosts(ds + 12 * 3600), salary = salaries(sPlan, ds), orders = {} }
             local nextDs = dayStart(ds + 86400 + 7200)
             for _, o in ipairs(orders or {}) do
                 local n = runsIn(o, ds, nextDs)

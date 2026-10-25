@@ -39,11 +39,16 @@ function A.voteCast(p, args, reply, actor)
 end
 
 GOV.module({
+    perms = {
+        { "votes.view",  "public", 0 },
+        { "votes.open",  "public", 1 },
+        { "votes.close", "public", 1 },
+    },
     actions = {
-        votes = "viewer", openVote = "minister", closeVote = "minister", cancelVote = "minister",
+        votes = "votes.view", openVote = "votes.open", closeVote = "votes.close", cancelVote = "votes.close",
         voteList = "public", voteCast = "public",
     },
     pages = {
-        { id = "votes", category = "public", order = 10, script = "web/js/pages.js" },
+        { id = "votes", category = "public", order = 10, script = "web/js/pages.js", need = "votes.view" },
     },
 })

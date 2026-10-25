@@ -2,8 +2,9 @@ loadstring(exports.gov_core:importLib())()
 -- gov_loans / server/panel.lua
 -- The Loans page of /gov: state loans (eco_loan kind "state") of the treasury and the state
 -- companies. The bank lends; the installments are collected every 24 h by eco_loan, always (the
--- state account may go negative). Ministers take new loans and repay early; everyone with a /gov
--- role sees the open loans, the closed ones and the payments of a loan.
+-- state account may go negative). loans.view shows the open loans, the closed ones and the
+-- payments of a loan; gov.<target>.loans (target = "treasury" | state company id) takes a new
+-- loan for that account and repays its loans early.
 
 local A = GOV.A
 
@@ -61,8 +62,11 @@ function A.loans(p, args, reply, actor)
     local open = l:getLoans({ kind = "state" })
     local debt = 0
     for _, x in ipairs(open) do debt = debt + x.remaining end
+    for _, x in ipairs(open) do x.target = GOV.codeTarget(x.borrower) end
+    local states = GOV.stateAccounts()
+    for _, a in ipairs(states) do a.target = GOV.accountTarget(a.id) end
     loanCall("history", { kind = "state", status = "closed", limit = 25 }, actor, function(r)
-        reply({ open = open, closed = r.ok and r.loans or {}, debt = debt, states = GOV.stateAccounts(),
+        reply({ open = open, closed = r.ok and r.loans or {}, debt = debt, states = states,
             limits = l:getLoanConfig().state })
     end)
 end
@@ -82,6 +86,7 @@ function A.takeLoan(p, args, reply, actor)
     if not l then return reply(false, "eco_loan.error.unavailable") end
     local code, acc = codeOf(args.account)
     if not code then return reply(false, "bad_company") end
+    if not GOV.has(p, "gov." .. tostring(GOV.codeTarget(code)) .. ".loans") then return reply(false, "no_right") end
     local amount = int(args.amount)
     local options = { installments = int(args.installments), note = DB.clip(tostring(args.note or ""), 48) }
     local q, err = l:quoteLoan("state", amount, options)
@@ -99,6 +104,7 @@ function A.repayLoan(p, args, reply, actor)
     local l = loans()
     local loan = stateLoan(args.id)
     if not l or not loan then return reply(false, "eco_loan.error.no_loan") end
+    if not GOV.has(p, "gov." .. tostring(GOV.codeTarget(loan.borrower)) .. ".loans") then return reply(false, "no_right") end
     local ok, v
     if args.amount ~= nil then
         local amount = int(args.amount)
@@ -116,8 +122,15 @@ function A.repayLoan(p, args, reply, actor)
 end
 
 GOV.module({
-    actions = { loans = "viewer", loanPayments = "viewer", takeLoan = "minister", repayLoan = "minister" },
+    perms = {
+        { "loans.view", "economy", 0 },
+    },
+    -- targets: "treasury" + the state companies (gov_core)
+    families = {
+        { "gov.*.loans", "economy", 3 },
+    },
+    actions = { loans = "loans.view", loanPayments = "loans.view", takeLoan = "gov.*.loans", repayLoan = "gov.*.loans" },
     pages = {
-        { id = "loans", category = "economy", order = 40, script = "web/js/pages.js" },
+        { id = "loans", category = "economy", order = 40, script = "web/js/pages.js", need = "loans.view" },
     },
 })

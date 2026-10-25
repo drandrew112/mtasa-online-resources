@@ -1,12 +1,14 @@
 -- gov_core / server/main.lua
--- Start: schema -> settings + members -> state companies -> ready. Every RESYNC_MS the three are
+-- Start: schema (+ new columns) -> settings -> state companies -> ready. Every RESYNC_MS the three are
 -- re-read (the other server instance may have changed them), then onGovSettingsSynced.
 
 addEventHandler("onResourceStart", resourceRoot, function()
     DB.start(GOV.SCHEMA, function()
-        loadSettings(function()
-            GOV.loadCompanies(function()
-                GOV.ready = true
+        GOV.upgradeSchema(function()
+            loadSettings(function()
+                GOV.loadCompanies(function()
+                    GOV.ready = true
+                end)
             end)
         end)
         setTimer(function()

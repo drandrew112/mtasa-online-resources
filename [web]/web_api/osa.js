@@ -303,7 +303,8 @@
         if (c) c();
     };
 
-    // fields: [{ name, label, type: 'text'|'textarea'|..., value, placeholder }]
+    // fields: [{ name, label, type: 'text'|'textarea'|'select'|..., value, placeholder,
+    //           options: [{ value, label }] (select) }]
     // -> Promise of { name: trimmed value } or null when cancelled
     ui.form = function (title, fields, submitLabel, hint) {
         overlays();
@@ -313,11 +314,20 @@
             const f = create('form');
             for (const fd of fields) {
                 const l = create('label', '', fd.label);
-                const input = create(fd.type === 'textarea' ? 'textarea' : 'input');
+                const tag = fd.type === 'textarea' ? 'textarea' : fd.type === 'select' ? 'select' : 'input';
+                const input = create(tag);
                 input.name = fd.name;
+                if (tag === 'select') {
+                    input.className = 'osa-select';
+                    for (const o of fd.options || []) {
+                        const opt = create('option', '', o.label);
+                        opt.value = o.value;
+                        input.appendChild(opt);
+                    }
+                }
                 input.value = fd.value || '';
-                input.placeholder = fd.placeholder || '';
-                if (fd.type && fd.type !== 'textarea') input.type = fd.type;
+                if (tag !== 'select') input.placeholder = fd.placeholder || '';
+                if (fd.type && tag === 'input') input.type = fd.type;
                 l.appendChild(input);
                 f.appendChild(l);
             }

@@ -35,8 +35,10 @@
             'cost_run', 'cost_stops', 'cost_total', 'week', 'nobody']), 'gov_railways.err.bad_time', 'gov_railways.err.bad_last'],
         load: () => GOV.call('railways', { day: sel.railDay || 0 }),
         render(d) {
-            const edit = GOV.canSector(SECTOR);
-            const minister = GOV.can('minister');
+            // gov_perms (or the operator company: gov_core sector rights)
+            const edit = GOV.can('rail.timetable.edit');
+            const toggle = GOV.can('rail.timetable.toggle');
+            const minister = GOV.can('rail.operator.set');
             let h = head(GOV.title('railways'));
 
             // ---------------------------------------------------- operator
@@ -121,9 +123,9 @@
                     `<td>${l ? lineTag(l) : esc(r.line)}</td><td>${esc(stName(r.from))} → ${esc(stName(r.to))}</td>` +
                     `<td class="mono">${esc(depText(r))}${r.active ? '' : ` <span class="tag bad">${esc(T('paused'))}</span>`}</td>` +
                     `<td>${esc(dayText(r))}</td><td class="dim">${esc(r.note || '')}</td><td class="dim">${esc(r.updatedBy || '')}</td>` +
-                    `<td class="act">${edit ? btn(T('edit'), 'rfEdit', { id: r.id }) + ' ' +
-                        btn(T(r.active ? 'pause' : 'resume'), 'rfToggle', { id: r.id, value: r.active ? 'false' : 'true' }) + ' ' +
-                        btn(T('delete'), 'rfDelete', { id: r.id }, 'danger') : ''}</td></tr>`;
+                    `<td class="act">${edit ? btn(T('edit'), 'rfEdit', { id: r.id }) + ' ' : ''}` +
+                        `${toggle ? btn(T(r.active ? 'pause' : 'resume'), 'rfToggle', { id: r.id, value: r.active ? 'false' : 'true' }) + ' ' : ''}` +
+                        `${edit ? btn(T('delete'), 'rfDelete', { id: r.id }, 'danger') : ''}</td></tr>`;
             })) + '</div>';
 
             // ---------------------------------------------------- running costs of the week

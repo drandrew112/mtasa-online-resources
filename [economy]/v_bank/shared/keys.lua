@@ -91,6 +91,9 @@ TX_KEYS = {
     ["gov.transfer"]       = { from = S, to = S, force = true, params = { "note" } },
     ["gov.company_payment"] = { from = S, to = C, params = { "note" } },
     ["gov.collection"]     = { from = C, to = S, force = true, params = { "note" } },
+    -- salaries of the state positions (gov_perms): from the State Treasury every online hour of the
+    -- official (it may go negative, the salary is always paid); the income tax is a tax.income row
+    ["salary.gov"]         = { from = S, to = P, force = true, params = { "position" } },
     -- airspace usage fees, paid by the AI flight's airline (money from nothing) to the fee's account
     ["atc.fee_takeoff"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
     ["atc.fee_landing"]    = { from = "system", to = "payee", params = { "callsign", "airline", "airport" } },
@@ -123,7 +126,7 @@ TX_KEYS = {
 }
 
 -- ledger filter groups of the website / admin panel: group -> key prefix
-TX_GROUPS = { "cash", "transfer", "work", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "loan", "admin" }
+TX_GROUPS = { "cash", "transfer", "work", "salary", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "loan", "admin" }
 
 --- the group of a key ("cash.deposit" -> "cash")
 function txGroup(key)

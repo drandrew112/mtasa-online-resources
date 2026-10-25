@@ -91,5 +91,7 @@
   "v_bank.tx.loan.payout": "Loan #{loan} payout",
   "v_bank.tx.loan.installment": "Loan #{loan} installment {n}/{of}",
   "v_bank.tx.loan.installment_forced": "Loan #{loan} installment {n}/{of} (collected)",
-  "v_bank.tx.loan.extra": "Loan #{loan} early repayment"
+  "v_bank.tx.loan.extra": "Loan #{loan} early repayment",
+  "v_bank.tx.salary.gov": "Salary: {position}",
+  "v_bank.group.salary": "Salaries"
 }

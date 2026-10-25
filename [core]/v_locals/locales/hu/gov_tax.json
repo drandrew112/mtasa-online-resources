@@ -25,5 +25,7 @@
   "gov_tax.vat.real_estate": "Ingatlan (szervezeti ingatlanok)",
   "gov_tax.ui.tax_target": "Ide kerül",
   "gov_tax.ui.tax_target_none": "Sehova (a pénz eltűnik)",
-  "gov_tax.ui.tax_target_missing": "A számla megszűnt: a pénz eltűnik"
+  "gov_tax.ui.tax_target_missing": "A számla megszűnt: a pénz eltűnik",
+  "gov_tax.ui.fees_box": "Díjak",
+  "gov_tax.ui.fines_box": "Bírságok (Igazságügy)"
 }

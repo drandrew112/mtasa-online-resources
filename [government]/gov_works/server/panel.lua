@@ -1,5 +1,6 @@
 -- gov_works / server/panel.lua
--- The Works page of /gov and the registration with gov_core.
+-- The Works page of /gov and the registration with gov_core. Rights (gov_perms) per work:
+-- works.<id>.view, .pay (pay + XP parameters), .payer, .multiplier, .taxkey.
 
 local A = GOV.A
 
@@ -7,8 +8,15 @@ local function int(v) return DB.int(v) end
 
 local function clamp(v, r) return math.max(r[1], math.min(r[2], v)) end
 
+--- the right a setWork field needs
+local FIELD_PERM = { payer = "payer", multiplier = "multiplier", taxKey = "taxkey", param = "pay" }
+
 function A.works(p, args, reply)
-    local list = GOV.workList()
+    local reach = GOV.targets(p, "works.*.view")
+    local list = {}
+    for _, w in ipairs(GOV.workList()) do
+        if GOV.reach(reach, w.id) then list[#list + 1] = w end
+    end
     local ids, seen = {}, {}
     for _, w in ipairs(list) do
         local id = tonumber(w.payer:match("^company:(%d+)$"))
@@ -24,6 +32,8 @@ function A.setWork(p, args, reply, actor)
     local workId = tostring(args.work or "")
     if not workId:match("^[%w_]+$") then return reply(false, "bad_work") end
     local field = args.field
+    if not FIELD_PERM[field] then return reply(false, "bad_field") end
+    if not GOV.has(p, "works." .. workId .. "." .. FIELD_PERM[field]) then return reply(false, "no_right") end
     if field == "payer" then
         local spec = tostring(args.value or "system")
         if spec == "system" or spec:match("^state:[a-z0-9_]+$") then
@@ -67,8 +77,28 @@ end
 
 GOV.module({
     settings = { prefixes = { "work." }, defaults = {} },
-    actions = { works = "viewer", setWork = "minister" },
+    -- targets: every work (publishWorks)
+    families = {
+        { "works.*.view",       "employment", 0 },
+        { "works.*.pay",        "employment", 2 },
+        { "works.*.payer",      "employment", 2 },
+        { "works.*.multiplier", "employment", 1 },
+        { "works.*.taxkey",     "employment", 1 },
+    },
+    actions = { works = "works.*.view", setWork = "panel" },
     pages = {
-        { id = "works", category = "employment", order = 10, script = "web/js/pages.js" },
+        { id = "works", category = "employment", order = 10, script = "web/js/pages.js", need = "works.*.view" },
     },
 })
+
+--- the targets of the works.* rights: every registered work (work_core + the ones with wage params)
+local function publishWorks()
+    local list = {}
+    for _, w in ipairs(GOV.workList()) do list[#list + 1] = { id = w.id, name = w.name } end
+    GOV.setTargets("works", list)
+end
+publishWorks()
+addEventHandler("onGovSettingsSynced", root, publishWorks)
+addEventHandler("onResourceStart", root, function(res)
+    if getResourceName(res) == "work_core" or getResourceName(res):match("^work_") then setTimer(publishWorks, 2000, 1) end
+end)

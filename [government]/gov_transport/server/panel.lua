@@ -1,5 +1,9 @@
 -- gov_transport / server/panel.lua
--- The Public transport page of /gov and the registration with gov_core.
+-- The Public transport page of /gov and the registration with gov_core. Rights (gov_perms):
+-- transport.view, transport.fares.edit (fare per km, minimum, IC supplement),
+-- transport.costs.edit (running costs, their payer / receiver, the receiver of the fares).
+
+local FARE_FIELDS = { fare_km = true, fare_min = true, ic_supplement = true }
 
 local A = GOV.A
 
@@ -26,6 +30,7 @@ end
 function A.setTransport(p, args, reply, actor)
     local mode, field = tostring(args.mode or ""), tostring(args.field or "")
     if not GOV_DEFAULTS["pt." .. mode] then return reply(false, "bad_key") end
+    if not GOV.has(p, FARE_FIELDS[field] and "transport.fares.edit" or "transport.costs.edit") then return reply(false, "no_right") end
     local function store(value)
         local cur = GOV.get("pt." .. mode)
         cur = type(cur) == "table" and cur or {}
@@ -52,8 +57,13 @@ end
 
 GOV.module({
     settings = { prefixes = { "pt." }, defaults = GOV_DEFAULTS },
-    actions = { transport = "viewer", setTransport = "minister" },
+    perms = {
+        { "transport.view",       "services", 0 },
+        { "transport.fares.edit", "services", 1 },
+        { "transport.costs.edit", "services", 2 },
+    },
+    actions = { transport = "transport.view", setTransport = "panel" },
     pages = {
-        { id = "transport", category = "services", order = 20, script = "web/js/pages.js" },
+        { id = "transport", category = "services", order = 20, script = "web/js/pages.js", need = "transport.view" },
     },
 })

@@ -8,14 +8,14 @@
     GOV.page('news', {
         keys: GOV.keys('gov_news', ['new_news', 'news_title', 'news_body', 'news_send', 'news_hint', 'news_not_mailed', 'confirm_delete_news']),
         render(d) {
-            const m = GOV.can('minister');
+            const m = GOV.can('news.post'), del = GOV.can('news.delete');
             const langs = arr(d.langs);
             const card = n => {
                 const texts = n.texts || {};
                 const codes = [...langs.map(l => l.value).filter(c => texts[c]), ...Object.keys(texts).filter(c => !langs.some(l => l.value === c))];
                 return `<div class="gv-card"><div class="gv-head"><div><div class="gv-sub">${stamp(n.createdAt)} · ${esc(n.createdBy)}` +
                     `${n.mailed ? '' : ` <span class="tag bad">${esc(T('news_not_mailed'))}</span>`}</div></div>` +
-                    (m ? `<div class="gv-row">${btn(T('delete'), 'deleteNews', { id: n.id }, 'danger')}</div>` : '') + '</div>' +
+                    (del ? `<div class="gv-row">${btn(T('delete'), 'deleteNews', { id: n.id }, 'danger')}</div>` : '') + '</div>' +
                     codes.map(c => `<div style="margin-top:10px"><span class="tag">${esc(c.toUpperCase())}</span> <b>${esc(texts[c].title)}</b>` +
                         `<p class="gv-desc">${esc(texts[c].body)}</p></div>`).join('') + '</div>';
             };

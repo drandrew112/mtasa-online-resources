@@ -171,15 +171,22 @@ function getRailOperator() return operator() end
 
 GOV.module({
     settings = { prefixes = { "rail." }, defaults = GOV_DEFAULTS },
-    sectors = { { id = SECTOR, setting = "rail.operator" } },
+    perms = {
+        { "rail.view",             "services", 0 },
+        { "rail.timetable.edit",   "services", 1 },
+        { "rail.timetable.toggle", "services", 1 },
+        { "rail.operator.set",     "services", 2 },
+    },
+    -- the people of the operator company get these without a position (gov_core sectors)
+    sectors = { { id = SECTOR, setting = "rail.operator", perms = { "rail.view", "rail.timetable.edit", "rail.timetable.toggle" } } },
     actions = {
-        railways = { role = "viewer", sector = SECTOR },
-        saveRailRow = { role = "minister", sector = SECTOR },
-        toggleRailRow = { role = "minister", sector = SECTOR },
-        deleteRailRow = { role = "minister", sector = SECTOR },
-        setRailOperator = "minister",
+        railways = "rail.view",
+        saveRailRow = "rail.timetable.edit",
+        toggleRailRow = "rail.timetable.toggle",
+        deleteRailRow = "rail.timetable.edit",
+        setRailOperator = "rail.operator.set",
     },
     pages = {
-        { id = "railways", category = "services", order = 25, script = "web/js/pages.js", sector = SECTOR },
+        { id = "railways", category = "services", order = 25, script = "web/js/pages.js", need = "rail.view" },
     },
 })

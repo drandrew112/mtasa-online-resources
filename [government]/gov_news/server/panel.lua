@@ -17,8 +17,13 @@ function A.deleteNews(p, args, reply, actor)
 end
 
 GOV.module({
-    actions = { news = "viewer", postNews = "minister", deleteNews = "minister" },
+    perms = {
+        { "news.view",   "public", 0 },
+        { "news.post",   "public", 1 },
+        { "news.delete", "public", 1 },
+    },
+    actions = { news = "news.view", postNews = "news.post", deleteNews = "news.delete" },
     pages = {
-        { id = "news", category = "public", order = 20, script = "web/js/pages.js" },
+        { id = "news", category = "public", order = 20, script = "web/js/pages.js", need = "news.view" },
     },
 })

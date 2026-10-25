@@ -5,7 +5,9 @@
     const { esc, arr, $, money, signed, cls, stamp, val, numOf, head, kpi, empty, table, btn, select, runsTable } = GOV.ui;
     const T = GOV.tr('gov_treasury');
     const D = GOV.D, sel = GOV.sel;
-    const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'biz', 'gov', 'atc', 'pt', 'loan', 'transfer', 'admin'];
+    const GROUPS = ['all', 'tax', 'fine', 'health', 'work', 'salary', 'biz', 'gov', 'atc', 'pt', 'loan', 'transfer', 'admin'];
+    // the rights of a state account (target = "treasury" | state company id, gov_perms)
+    const canAcc = (s, right) => !!s && !!s.target && GOV.can('gov.' + s.target + '.' + right);
     const GROUP_KEYS = [...GROUPS, 'shop', 'cash', 'other'].map(g => 'v_bank.group.' + g);
     sel.group = sel.group || 'all';
     sel.soKind = sel.soKind || 'state';
@@ -46,21 +48,23 @@
     GOV.page('treasury', {
         keys: [...GOV.keys('gov_treasury', ['from_treasury', 'to_treasury', 'older']), ...GROUP_KEYS],
         async load() {
-            if (!D.overview) D.overview = await GOV.call('overview');
             const r = await GOV.call('treasuryLedger', { id: sel.treasury || undefined, group: sel.group !== 'all' ? sel.group : undefined });
             sel.treasury = r.id;
             return r;
         },
         render(d) {
-            const states = arr(D.overview && D.overview.states).filter(s => s.status !== 'closed');
+            const states = arr(d.states).filter(s => s.status !== 'closed');
             const cur = states.find(s => s.id === d.id);
+            const treasury = { target: 'treasury' };
             let h = head(GOV.title('treasury'), esc(T('history_note', { days: 30 })), cur ? `<div class="big ${cls(cur.balance)}">${money(cur.balance)}</div>` : '') +
                 `<div class="gv-row">${select('trAcc', states.map(s => [s.id, s.name]), d.id, 'trAcc', true)}` +
                 select('trGroup', GROUPS.map(g => [g, T('v_bank.group.' + g)]), sel.group, 'trGroup', true) + '</div>';
-            if (GOV.can('minister') && cur && cur.ownerRef !== 'treasury') {
+            const toCur = canAcc(treasury, 'bank.pay'), fromCur = canAcc(cur, 'bank.pay');
+            if (cur && cur.ownerRef !== 'treasury' && (toCur || fromCur)) {
                 h += `<div class="gv-card"><div class="gv-row"><input class="osa-input num" id="trAmount" placeholder="${esc(T('amount'))}" data-keep="1">` +
                     `<input class="osa-input mid" id="trNote" placeholder="${esc(T('note'))}" maxlength="60" data-keep="1">` +
-                    btn(T('from_treasury'), 'transfer', { dir: 'to' }, 'primary') + btn(T('to_treasury'), 'transfer', { dir: 'from' }) + '</div></div>';
+                    (toCur ? btn(T('from_treasury'), 'transfer', { dir: 'to' }, 'primary') : '') +
+                    (fromCur ? btn(T('to_treasury'), 'transfer', { dir: 'from' }) : '') + '</div></div>';
             }
             h += `<div class="gv-card">` + table([[T('time')], [T('description')], [T('amount'), 'r'], [T('balance'), 'r']], arr(d.rows).map(r => {
                 let txt = esc(r.text || r.key);
@@ -81,7 +85,6 @@
                 if (await GOV.change('treasuryTransfer', { id: sel.treasury, amount: n, dir: b.dataset.dir, note: val('trNote') })) {
                     $('trAmount') && ($('trAmount').value = '');
                     $('trNote') && ($('trNote').value = '');
-                    D.overview = await GOV.call('overview').catch(() => D.overview);
                     GOV.render();
                 }
             },
@@ -106,30 +109,44 @@
             'so_title', 'so_hint', 'so_every', 'so_hours', 'so_days', 'so_create', 'so_next', 'so_last', 'so_runs',
             'so_pause', 'so_resume', 'so_paused', 'confirm_delete_so', 'so_edit', 'so_editing', 'so_save', 'so_cancel']),
         render(d) {
-            const m = GOV.can('minister');
             const states = arr(d.states).filter(s => s.status !== 'closed');
-            const opts = states.map(s => [s.id, `${s.name} (${money(s.balance)})`]);
+            const all = arr(d.all);
+            const balance = id => { const s = states.find(x => x.id === id); return s ? ` (${money(s.balance)})` : ''; };
+            // from: the accounts the player may pay from / make orders of; to: every state account
+            const payable = all.filter(s => canAcc(s, 'bank.pay'));
+            const standable = all.filter(s => canAcc(s, 'standing'));
+            const fromOpts = list => list.map(s => [s.id, s.name + balance(s.id)]);
+            const opts = fromOpts(all);
+            const m = payable.length > 0 || d.collect;
             const amountNote = k => `<input class="osa-input num" id="${k}Amount" placeholder="${esc(T('amount'))}" data-keep="1">` +
                 `<input class="osa-input mid" id="${k}Note" placeholder="${esc(T('note'))}" maxlength="48" data-keep="1">`;
-            const keepSel = (id, v) => select(id, opts, v, '', true).replace('<select ', '<select data-keep="1" ');
+            const keepSel = (id, v, list) => select(id, list || opts, v, '', true).replace('<select ', '<select data-keep="1" ');
             const kindName = a => T({ 'transfer.state': 'tf_state', 'transfer.pay': 'tf_pay', 'transfer.collect': 'tf_collect' }[a] || a);
             const coName = c => c ? { name: c.name, tag: 'company' } : { name: T('tf_pick_company'), tag: '' };
             let h = head(GOV.title('transfers'), esc(T('history_note', { days: 30 })));
             if (m) {
                 GOV.usePicker('tfPay', { state: () => [], current: () => sel.tfPay && sel.tfPay.spec, choose: it => { sel.tfPay = it; GOV.render(); } });
                 GOV.usePicker('tfCol', { state: () => [], current: () => sel.tfCol && sel.tfCol.spec, choose: it => { sel.tfCol = it; GOV.render(); } });
-                const first = states[0] && states[0].id, second = states[1] ? states[1].id : first;
-                h += `<div class="gv-card"><h2>${esc(T('tf_state'))}</h2><div class="gv-row">` +
-                    `<label class="dim">${esc(T('tf_from'))}</label>${keepSel('tfsFrom', first)}<label class="dim">${esc(T('tf_to'))}</label>${keepSel('tfsTo', second)}</div>` +
-                    `<div class="gv-row" style="margin-top:10px">${amountNote('tfs')}${btn(T('tf_send'), 'tfSend', { kind: 'state' }, 'primary')}</div></div>` +
-                    `<div class="gv-card"><h2>${esc(T('tf_pay'))}</h2><div class="gv-field"><label>${esc(T('tf_from'))}</label><div>${keepSel('tfpFrom', first)}</div></div>` +
-                    `<div class="gv-field"><label>${esc(T('tf_to'))}</label>${GOV.pickerBox('tfPay', coName(sel.tfPay), true, T('search_private'))}</div>` +
-                    `<div class="gv-row" style="margin-top:10px">${amountNote('tfp')}${btn(T('tf_pay_btn'), 'tfSend', { kind: 'pay' }, 'primary')}</div></div>` +
-                    `<div class="gv-card"><h2>${esc(T('tf_collect'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('tf_collect_hint'))}</div>` +
-                    `<div class="gv-field"><label>${esc(T('tf_from'))}</label>${GOV.pickerBox('tfCol', coName(sel.tfCol), true, T('search_private'))}</div>` +
-                    `<div class="gv-field"><label>${esc(T('tf_to'))}</label><div>${keepSel('tfcTo', first)}</div></div>` +
-                    `<div class="gv-row" style="margin-top:10px">${amountNote('tfc')}${btn(T('tf_collect_btn'), 'tfSend', { kind: 'collect' }, 'danger')}</div></div>`;
-            } else {
+                const first = payable[0] && payable[0].id;
+                const second = (all.find(s => s.id !== first) || {}).id || first;
+                if (payable.length) {
+                    h += `<div class="gv-card"><h2>${esc(T('tf_state'))}</h2><div class="gv-row">` +
+                        `<label class="dim">${esc(T('tf_from'))}</label>${keepSel('tfsFrom', first, fromOpts(payable))}<label class="dim">${esc(T('tf_to'))}</label>${keepSel('tfsTo', second)}</div>` +
+                        `<div class="gv-row" style="margin-top:10px">${amountNote('tfs')}${btn(T('tf_send'), 'tfSend', { kind: 'state' }, 'primary')}</div></div>`;
+                }
+                if (payable.length && d.payCompany) {
+                    h += `<div class="gv-card"><h2>${esc(T('tf_pay'))}</h2><div class="gv-field"><label>${esc(T('tf_from'))}</label><div>${keepSel('tfpFrom', first, fromOpts(payable))}</div></div>` +
+                        `<div class="gv-field"><label>${esc(T('tf_to'))}</label>${GOV.pickerBox('tfPay', coName(sel.tfPay), true, T('search_private'))}</div>` +
+                        `<div class="gv-row" style="margin-top:10px">${amountNote('tfp')}${btn(T('tf_pay_btn'), 'tfSend', { kind: 'pay' }, 'primary')}</div></div>`;
+                }
+                if (d.collect) {
+                    h += `<div class="gv-card"><h2>${esc(T('tf_collect'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('tf_collect_hint'))}</div>` +
+                        `<div class="gv-field"><label>${esc(T('tf_from'))}</label>${GOV.pickerBox('tfCol', coName(sel.tfCol), true, T('search_private'))}</div>` +
+                        `<div class="gv-field"><label>${esc(T('tf_to'))}</label><div>${keepSel('tfcTo', all[0] && all[0].id)}</div></div>` +
+                        `<div class="gv-row" style="margin-top:10px">${amountNote('tfc')}${btn(T('tf_collect_btn'), 'tfSend', { kind: 'collect' }, 'danger')}</div></div>`;
+                }
+            }
+            if (states.length) {
                 h += `<div class="gv-card">` + table([[T('account')], [T('balance'), 'r']], states.map(s =>
                     `<tr><td>${esc(s.name)} <span class="dim mono">${esc(s.number || '')}</span></td><td class="r mono ${cls(s.balance)}">${money(s.balance)}</td></tr>`)) + '</div>';
             }
@@ -137,16 +154,23 @@
             const orders = arr(d.orders);
             h += `<div class="gv-card"><h2>${esc(T('so_title'))}</h2><div class="gv-sub" style="margin:-6px 0 10px">${esc(T('so_hint'))}</div>`;
             if (sel.soEdit && !orders.some(o => o.id === sel.soEdit)) sel.soEdit = null;   // deleted meanwhile
-            if (m) {
+            // the kinds of orders the player may make: state (gov.<from>.standing), pay (+ treasury.transfer.company), collect
+            const soKinds = [...(standable.length ? [['state', T('tf_state')]] : []), ...(standable.length && d.payCompany ? [['pay', T('tf_pay')]] : []),
+                ...(d.collect ? [['collect', T('tf_collect')]] : [])];
+            if (!soKinds.some(x => x[0] === sel.soKind) && soKinds.length) sel.soKind = soKinds[0][0];
+            const canOrder = o => o.kind === 'collect' ? !!d.collect
+                : (o.kind !== 'pay' || d.payCompany) && canAcc(all.find(s => s.id === o.from), 'standing');
+            if (soKinds.length) {
                 GOV.usePicker('soCo', { state: () => [], current: () => sel.soCo && sel.soCo.spec, choose: it => { sel.soCo = it; GOV.render(); } });
                 const k = sel.soKind;
-                const first = states[0] && states[0].id, second = states[1] ? states[1].id : first;
-                h += `<div class="gv-row">${select('soKind', [['state', T('tf_state')], ['pay', T('tf_pay')], ['collect', T('tf_collect')]], k, 'soKind', true)}` +
+                const first = standable[0] && standable[0].id;
+                const second = (all.find(s => s.id !== first) || {}).id || first;
+                h += `<div class="gv-row">${select('soKind', soKinds, k, 'soKind', true)}` +
                     (sel.soEdit ? `<b>${esc(T('so_editing', { id: sel.soEdit }))}</b>` : '') + '</div>' +
                     `<div class="gv-row" style="margin-top:10px"><label class="dim">${esc(T('tf_from'))}</label>` +
-                    (k === 'collect' ? GOV.pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soFrom', first)) +
+                    (k === 'collect' ? GOV.pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soFrom', first, fromOpts(standable))) +
                     `<label class="dim">${esc(T('tf_to'))}</label>` +
-                    (k === 'pay' ? GOV.pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soTo', k === 'state' ? second : first)) + '</div>' +
+                    (k === 'pay' ? GOV.pickerBox('soCo', coName(sel.soCo), true, T('search_private')) : keepSel('soTo', k === 'state' ? second : all[0] && all[0].id)) + '</div>' +
                     `<div class="gv-row" style="margin-top:10px">${amountNote('so')}<label class="dim">${esc(T('so_every'))}</label>` +
                     `<input class="osa-input num" id="soEvery" value="1" data-keep="1">` +
                     select('soUnit', [['3600', T('so_hours')], ['86400', T('so_days')]], '86400', '', true).replace('<select ', '<select data-keep="1" ') +
@@ -158,7 +182,7 @@
                     `<td class="r mono">${money(o.amount)}</td><td>${esc(every(o.interval))}</td>` +
                     `<td class="mono dim">${o.enabled ? stamp(o.nextRun) : esc(T('so_paused'))}</td>` +
                     `<td class="dim">${o.lastRun ? `${stamp(o.lastRun)} ${esc(o.lastStatus)}` : '-'} (${esc(T('so_runs'))}: ${o.runs})</td><td class="dim">${esc(o.note)}</td>` +
-                    `<td class="act">${m ? btn(T('so_edit'), 'soEdit', { id: o.id }) + ' ' +
+                    `<td class="act">${canOrder(o) ? btn(T('so_edit'), 'soEdit', { id: o.id }) + ' ' +
                         btn(T(o.enabled ? 'so_pause' : 'so_resume'), 'soToggle', { id: o.id, value: o.enabled ? 'false' : 'true' }) +
                         ' ' + btn(T('delete'), 'soDelete', { id: o.id }, 'danger') : ''}</td></tr>`)) + '</div>';
             return h + `<div class="gv-card"><h2>${esc(T('tf_recent'))}</h2>` +
@@ -175,7 +199,7 @@
                 const n = numOf(k + 'Amount');
                 if (n === null) return;
                 const args = { kind, amount: n, note: val(k + 'Note') };
-                const stateName = id => { const s = arr((D.transfers || {}).states).find(x => String(x.id) === String(id)); return s ? s.name : id; };
+                const stateName = id => { const s = arr((D.transfers || {}).all).find(x => String(x.id) === String(id)); return s ? s.name : id; };
                 let from, to;
                 if (kind === 'state') { args.from = Number(val('tfsFrom')); args.to = Number(val('tfsTo')); from = stateName(args.from); to = stateName(args.to); }
                 else if (kind === 'pay') {
@@ -196,7 +220,7 @@
                 const n = numOf('soAmount'), ev = numOf('soEvery');
                 if (n === null || ev === null) return;
                 const kind = sel.soKind;
-                const states = arr((D.transfers || {}).states);
+                const states = arr((D.transfers || {}).all);
                 const stateName = id => { const x = states.find(y => String(y.id) === String(id)); return x ? x.name : id; };
                 const args = { kind, amount: n, note: val('soNote'), interval: Math.round(ev * Number(val('soUnit'))) };
                 let from, to;
@@ -275,15 +299,17 @@
         'plan_fill', 'plan_edit', 'plan_rail', 'plan_rail_detail', 'plan_rail_hint', 'plan_rail_trips', 'plan_rail_stops', 'plan_rail_run',
         'plan_rail_stop', 'plan_rail_total', 'plan_rail_flow', 'plan_rail_not_state', 'plan_rail_none', 'plan_rail_offline',
         'plan_today', 'confirm_delete_plan', 'plan_none', 'plan_whole', 'plan_whole_hint', 'plan_account', 'plan_internal',
-        'plan_internal_hint', 'plan_so_to', 'plan_so_from', 'plan_empty_account', 'plan_rail_internal',
+        'plan_internal_hint', 'plan_so_to', 'plan_so_from', 'plan_empty_account', 'plan_rail_internal', 'plan_salary', 'plan_salary_hint',
         'day_1', 'day_2', 'day_3', 'day_4', 'day_5', 'day_6', 'day_7'];
     const stateCode = spec => (String(spec || '').match(/^state:(.+)$/) || [])[1] || null;
 
     GOV.page('budgetPlan', {
         keys: [...GOV.keys('gov_treasury', PLAN_KEYS), 'gov_treasury.err.bad_plan_kind'],
         render(d) {
-            const m = GOV.can('minister');
+            const m = GOV.can('treasury.plan.edit');
             const days = arr(d.days).slice().sort((a, b) => a.weekday - b.weekday);
+            // salaries of the positions (gov_perms): an expense of the treasury, one row per position
+            const salaryNames = [...new Set(days.flatMap(x => Object.keys((x.salary && x.salary.groups) || {})))].sort();
             const today = arr(d.days)[0];
             const accounts = arr(d.accounts);
             const items = arr(d.items);
@@ -331,6 +357,12 @@
                 if (!code) {
                     const internal = orders.filter(o => o.kind === 'state');
                     if (internal.length) rows.push({ label: esc(T('plan_internal')) + note(T('plan_internal_hint')), f: x => internal.reduce((s, o) => s + orderAmt(o, x), 0), side: 'info' });
+                }
+                if (!code || code === 'treasury') {
+                    for (const name of salaryNames) {
+                        rows.push({ label: esc(T('plan_salary', { name })) + note(T('plan_salary_hint')),
+                            f: x => Number(((x.salary && x.salary.groups) || {})[name]) || 0, side: 'out' });
+                    }
                 }
                 if (anyRail) {
                     const label = esc(T('plan_rail')) + note(railNote);

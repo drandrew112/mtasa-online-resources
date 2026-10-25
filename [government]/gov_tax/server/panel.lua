@@ -1,6 +1,8 @@
 -- gov_tax / server/panel.lua
 -- Fees, the Taxes + Fees pages of /gov, the public part of gov_web and the registration with
--- gov_core.
+-- gov_core. Rights (gov_perms): tax.* per tax, fees.<fee>.edit / .target per fee, fines.<fine>.*
+-- per fine (GOV.FINES, Justice); the Fees page shows the fees with fees.view, the fines with
+-- fines.view.
 
 local A = GOV.A
 
@@ -74,9 +76,22 @@ function A.taxes(p, args, reply)
         targetOptions = GOV.targetOptions() })
 end
 
+--- the right of a fee key: "fees.<id>.<what>" or, for a fine, "fines.<id>.<what>"
+local function feePerm(key, what)
+    return (GOV.FINES[key] and "fines." or "fees.") .. GOV.feeTarget(key) .. "." .. what
+end
+
 function A.fees(p, args, reply)
+    local fees, fines = GOV.has(p, "fees.view"), GOV.has(p, "fines.view")
+    if not fees and not fines then return reply(false, "no_right") end
     local list = {}
-    for i, k in ipairs(GOV.FEES) do list[i] = { key = k, value = getFee(k), default = GOV_DEFAULTS["fee." .. k] } end
+    for _, k in ipairs(GOV.FEES) do
+        local fine = GOV.FINES[k] == true
+        if (fine and fines) or (not fine and fees) then
+            list[#list + 1] = { key = k, value = getFee(k), default = GOV_DEFAULTS["fee." .. k], fine = fine,
+                perm = (fine and "fines." or "fees.") .. GOV.feeTarget(k) }
+        end
+    end
     reply({ fees = list, targets = targetsOf("fee.targets", GOV.FEES), targetOptions = GOV.targetOptions() })
 end
 
@@ -103,7 +118,10 @@ end
 
 --- the state account a tax / fee goes to: { key, code } (code "" = the money disappears)
 function A.setTaxTarget(p, args, reply, actor) setTarget("tax.targets", GOV_TAXES, args, reply, actor) end
-function A.setFeeTarget(p, args, reply, actor) setTarget("fee.targets", GOV.FEES, args, reply, actor) end
+function A.setFeeTarget(p, args, reply, actor)
+    if not GOV.has(p, feePerm(tostring(args.key or ""), "target")) then return reply(false, "no_right") end
+    setTarget("fee.targets", GOV.FEES, args, reply, actor)
+end
 
 function A.setCompanyTax(p, args, reply, actor)
     local v = tonumber(args.value)
@@ -139,6 +157,7 @@ end
 
 function A.setFee(p, args, reply, actor)
     local key = tostring(args.key or "")
+    if not GOV.has(p, feePerm(key, "edit")) then return reply(false, "no_right") end
     local known = false
     for _, k in ipairs(GOV.FEES) do if k == key then known = true end end
     if not known then return reply(false, "bad_key") end
@@ -168,13 +187,42 @@ end
 
 GOV.module({
     settings = { prefixes = { "tax.", "fee." }, defaults = GOV_DEFAULTS },
+    perms = {
+        { "tax.view",          "revenue", 0 },
+        { "tax.company.edit",  "revenue", 1 },
+        { "tax.income.edit",   "revenue", 1 },
+        { "tax.vat.edit",      "revenue", 1 },
+        { "tax.property.edit", "revenue", 1 },
+        { "tax.targets.edit",  "revenue", 2 },
+        { "fees.view",         "revenue", 0 },
+        { "fines.view",        "revenue", 0 },
+    },
+    -- targets: the fees / the fines of GOV.FEES (setTargets below)
+    families = {
+        { "fees.*.edit",    "revenue", 1 },
+        { "fees.*.target",  "revenue", 2 },
+        { "fines.*.edit",   "revenue", 1 },
+        { "fines.*.target", "revenue", 2 },
+    },
     actions = {
-        taxes = "viewer", fees = "viewer",
-        setCompanyTax = "minister", setTaxKey = "minister", deleteTaxKey = "minister", setVat = "minister",
-        setPropertyTax = "minister", setTaxTarget = "minister", setFee = "minister", setFeeTarget = "minister",
+        taxes = "tax.view", fees = "panel",
+        setCompanyTax = "tax.company.edit", setTaxKey = "tax.income.edit", deleteTaxKey = "tax.income.edit", setVat = "tax.vat.edit",
+        setPropertyTax = "tax.property.edit", setTaxTarget = "tax.targets.edit", setFee = "panel", setFeeTarget = "panel",
     },
     pages = {
-        { id = "taxes", category = "revenue", order = 10, script = "web/js/pages.js" },
-        { id = "fees",  category = "revenue", order = 20, script = "web/js/pages.js" },
+        { id = "taxes", category = "revenue", order = 10, script = "web/js/pages.js", need = "tax.view" },
+        { id = "fees",  category = "revenue", order = 20, script = "web/js/pages.js", need = { "fees.view", "fines.view" } },
     },
 })
+
+-- the targets of the fees.* / fines.* rights
+do
+    local fees, fines = {}, {}
+    for _, k in ipairs(GOV.FEES) do
+        local name = L.has("gov_tax.fee." .. k) and L.text("gov_tax.fee." .. k) or k
+        local list = GOV.FINES[k] and fines or fees
+        list[#list + 1] = { id = GOV.feeTarget(k), name = name }
+    end
+    GOV.setTargets("fees", fees)
+    GOV.setTargets("fines", fines)
+end

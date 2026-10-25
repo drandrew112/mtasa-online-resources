@@ -130,8 +130,9 @@ local function notify(player, key, params)
     triggerClientEvent(player, "gov_office:notify", resourceRoot, key, params or {})
 end
 
+--- the /govpcs editor: the office.edit right (gov_perms; admins always)
 local function canEdit(player)
-    return isResourceRunning("gov_core") and exports.gov_core:canGov(player, "minister") or false
+    return isResourceRunning("gov_core") and exports.gov_core:hasGovPerm(player, "office.edit") or false
 end
 
 addCommandHandler(OFFICE.command, function(player)

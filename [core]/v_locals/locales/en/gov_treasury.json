@@ -94,5 +94,7 @@
   "gov_treasury.ui.plan_so_to": "Standing order to {name}",
   "gov_treasury.ui.plan_so_from": "Standing order from {name}",
   "gov_treasury.ui.plan_empty_account": "Nothing planned for this account.",
-  "gov_treasury.ui.plan_rail_internal": "inside the state, not counted"
+  "gov_treasury.ui.plan_rail_internal": "inside the state, not counted",
+  "gov_treasury.ui.plan_salary": "Salaries: {name}",
+  "gov_treasury.ui.plan_salary_hint": "salary × expected online hours (Permissions page)"
 }

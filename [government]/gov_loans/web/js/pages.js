@@ -51,10 +51,12 @@
             ...['pending', 'active', 'paid', 'forgiven', 'failed'].map(s => 'eco_loan.status.' + s),
             'eco_loan.error.bad_amount', 'eco_loan.error.bad_installments'],
         render(d) {
-            const m = GOV.can('minister');
             const lim = d.limits || {};
             const open = arr(d.open);
-            const states = arr(d.states).filter(s => s.status === 'active');
+            // gov.<target>.loans: take / repay for that account (gov_perms)
+            const canLoan = target => !!target && GOV.can('gov.' + target + '.loans');
+            const states = arr(d.states).filter(s => s.status === 'active' && canLoan(s.target));
+            const m = states.length > 0;
             const perDay = open.reduce((t, l) => t + Math.min(l.installment, l.remaining) * 86400 / (l.interval || 86400), 0);
             let h = head(GOV.title('loans'), esc(T('hint'))) +
                 `<div class="gv-kpis">${kpi(T('debt'), money(d.debt), d.debt > 0 ? 'neg' : '')}${kpi(T('open_count'), String(open.length))}` +
@@ -69,7 +71,7 @@
                         `<td class="mono dim">${l.status === 'active' && l.nextIn !== false ? stamp(Date.now() / 1000 + l.nextIn) : esc(statusText(l.status))}</td>` +
                         `<td class="dim">${esc(l.note || '')}</td>` +
                         `<td class="act">${btn(T('ln_details'), 'lnPay', { id: l.id })}` +
-                        (m && l.status === 'active' ? ` <input class="osa-input num" id="lnR${l.id}" placeholder="${esc(T('amount'))}" data-keep="1"> ` + btn(T('ln_repay'), 'lnRepay', { id: l.id }) + ' ' + btn(T('ln_payoff'), 'lnPayoff', { id: l.id }, 'danger') : '') +
+                        (canLoan(l.target) && l.status === 'active' ? ` <input class="osa-input num" id="lnR${l.id}" placeholder="${esc(T('amount'))}" data-keep="1"> ` + btn(T('ln_repay'), 'lnRepay', { id: l.id }) + ' ' + btn(T('ln_payoff'), 'lnPayoff', { id: l.id }, 'danger') : '') +
                         '</td></tr>')) + '</div>';
 
             h += paymentsCard();

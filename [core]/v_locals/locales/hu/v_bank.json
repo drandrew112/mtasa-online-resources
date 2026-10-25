@@ -91,5 +91,7 @@
   "v_bank.tx.loan.payout": "#{loan} hitel folyósítása",
   "v_bank.tx.loan.installment": "#{loan} hitel törlesztőrészlet {n}/{of}",
   "v_bank.tx.loan.installment_forced": "#{loan} hitel törlesztőrészlet {n}/{of} (behajtva)",
-  "v_bank.tx.loan.extra": "#{loan} hitel előtörlesztés"
+  "v_bank.tx.loan.extra": "#{loan} hitel előtörlesztés",
+  "v_bank.tx.salary.gov": "Fizetés: {position}",
+  "v_bank.group.salary": "Fizetések"
 }

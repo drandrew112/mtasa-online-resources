@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="gov_core" version="1.0.0" type="script"
-          description="The state, foundation of the gov_* resources: settings (owned per module), roles + members, change log, state companies, the /gov panel shell (grouped menu, pages of the modules), the module helper lib (importLib)" />
+          description="The state, foundation of the gov_* resources: settings (owned per module), permission checks (gov_perms), change log, state companies, the /gov panel shell (grouped menu, pages of the modules), the module helper lib (importLib)" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
@@ -34,8 +34,14 @@
     <export function="registerModule" type="server" />
     <export function="reply" type="server" />
     <export function="isGovReady" type="server" />
+    <export function="setGovTargets" type="server" />
+    <export function="getGovPermDefs" type="server" />
 
-    <!-- settings, roles, log -->
+    <!-- permissions (gov_perms positions + sectors; admins may do everything) -->
+    <export function="hasGovPerm" type="server" />
+    <export function="getGovPermTargets" type="server" />
+
+    <!-- settings, legacy roles, log -->
     <export function="getSetting" type="server" />
     <export function="setSetting" type="server" />
     <export function="getStoredSettings" type="server" />

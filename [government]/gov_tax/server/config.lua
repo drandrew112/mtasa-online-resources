@@ -19,6 +19,12 @@ GOV_TAXES = { "company", "income", "vat", "property" }
 -- the fees of the Fees page (fee.<key>), their money goes to the account in fee.targets
 GOV.FEES = { "register", "rename", "bay_fine", "airspace.takeoff", "airspace.landing", "airspace.overflight" }
 
+-- the fees that are fines (Justice: rights fines.<id>.*, the others fees.<id>.*; gov_perms)
+GOV.FINES = { bay_fine = true }
+
+--- the permission target of a fee key ("airspace.takeoff" -> "airspace_takeoff")
+function GOV.feeTarget(key) return (tostring(key):gsub("%.", "_")) end
+
 -- setting key -> default value
 GOV_DEFAULTS = {
     ["tax.company"] = 0.10,                                 -- hourly company income tax

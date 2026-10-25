@@ -14,21 +14,23 @@
             'fare_receiver', 'cost_payer', 'cost_receiver', 'pt_nothing_booked']),
             ...PT_MODES.map(k => 'gov_transport.pt.' + k), ...PT_NUMBERS.map(k => 'gov_transport.pt.' + k)],
         render(d) {
-            const m = GOV.can('minister');
+            // gov_perms: fares (per km, minimum, IC supplement) vs costs (running costs + who pays / gets the money)
+            const fares = GOV.can('transport.fares.edit'), costs = GOV.can('transport.costs.edit');
+            const FARES = ['fare_km', 'fare_min', 'ic_supplement'];
             let h = head(GOV.title('transport'));
             for (const md of arr(d.modes)) {
                 const s = md.settings || {}, def = md.defaults || {};
                 const mode = md.mode;
                 const numRow = f => `<tr><td>${esc(T('gov_transport.pt.' + f))}</td><td class="r mono dim">${money(def[f])}</td>` +
-                    `<td class="r">${edit(`pt_${mode}_${f}`, s[f], 'ptNum', { mode, field: f }, { allowed: m, unit: '€', reset: 'ptReset', shown: money(s[f]) })}</td></tr>`;
+                    `<td class="r">${edit(`pt_${mode}_${f}`, s[f], 'ptNum', { mode, field: f }, { allowed: FARES.includes(f) ? fares : costs, unit: '€', reset: 'ptReset', shown: money(s[f]) })}</td></tr>`;
                 const spec = (f, side) => {
                     const id = `pt_${mode}_${f}`;
-                    if (m) GOV.usePicker(id, {
+                    if (costs) GOV.usePicker(id, {
                         state: () => side === 'payer' ? payerOpts(d) : receiverOpts(d),
                         current: () => s[f],
                         choose: it => GOV.change('setTransport', { mode, field: f, value: it.spec }),
                     });
-                    return `<div class="gv-field"><label>${esc(T(f))}</label>${GOV.pickerBox(id, specName(d, s[f], side), m, T('search_payer'))}</div>`;
+                    return `<div class="gv-field"><label>${esc(T(f))}</label>${GOV.pickerBox(id, specName(d, s[f], side), costs, T('search_payer'))}</div>`;
                 };
                 // example: a 4 km IC journey
                 const km = 4, base = Math.max(Math.round(km * (s.fare_km || 0)), s.fare_min || 0);

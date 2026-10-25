@@ -639,8 +639,9 @@ CREATE TABLE IF NOT EXISTS `bank_ledger` (
 -- gov_settings / gov_members / gov_log (owner: [government]/gov_core), gov_tax_runs (gov_tax)
 -- ----------------------------------------------------------------------------
 -- The /gov panel: state settings (JSON values, defaults in the owner gov_*
--- module's config), gov roles, the claimed hours of the hourly company tax
--- (one instance runs an hour) and the change log.
+-- module's config), the old gov roles (gov_members: read once by gov_perms,
+-- which moved them into positions; kept for one version), the claimed hours of
+-- the hourly company tax (one instance runs an hour) and the change log.
 -- ============================================================================
 
 CREATE TABLE IF NOT EXISTS `gov_settings` (
@@ -689,6 +690,102 @@ CREATE TABLE IF NOT EXISTS `gov_news` (
     `deleted_at` INT UNSIGNED NOT NULL DEFAULT 0,
     PRIMARY KEY (`id`),
     KEY `idx_list` (`deleted_at`, `id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================================
+-- gov_perms / gov_perms_groups / gov_perms_group_perms / gov_perms_members /
+-- gov_branches / gov_perms_salaries  (owner: [government]/gov_perms)
+-- ----------------------------------------------------------------------------
+-- The state permission system (gov_perms/DESIGN.md). gov_perms = the catalogue
+-- of every right (static keys + one row per state company / work / hospital /
+-- fee of the generated families, mirrored from the modules; inactive rows stay).
+-- Groups are the positions (rank in `seniority`, single holder = max_holders 1,
+-- hourly salary paid by the State Treasury per online hour, income tax key);
+-- their rights are keys or patterns ("rail.*", "gov.*.bank.pay" + branch).
+-- Appointments may end (expires_at); salary_sec counts the online seconds to
+-- the next salary. gov_branches = the editable branch list of the state
+-- companies (gov_companies.branch, added by gov_core). Salary payouts are kept
+-- 30 days. The bank access of the state accounts follows the
+-- gov.<id>.bank.view|pay|manage rights.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `gov_perms` (
+    `perm`       VARCHAR(64)       NOT NULL,
+    `module`     VARCHAR(32)       NOT NULL,
+    `area`       VARCHAR(24)       NOT NULL,
+    `family`     VARCHAR(48)       NOT NULL DEFAULT '',
+    `target`     VARCHAR(32)       NOT NULL DEFAULT '',
+    `danger`     TINYINT UNSIGNED  NOT NULL DEFAULT 1,
+    `sort`       SMALLINT UNSIGNED NOT NULL DEFAULT 100,
+    `active`     TINYINT(1)        NOT NULL DEFAULT 1,
+    `first_seen` INT UNSIGNED      NOT NULL DEFAULT 0,
+    `last_seen`  INT UNSIGNED      NOT NULL DEFAULT 0,
+    PRIMARY KEY (`perm`),
+    KEY `idx_module` (`module`),
+    KEY `idx_family` (`family`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_perms_groups` (
+    `id`          INT UNSIGNED      NOT NULL AUTO_INCREMENT,
+    `code`        VARCHAR(32)       NOT NULL,
+    `name`        VARCHAR(64)       NOT NULL,
+    `description` VARCHAR(255)      NOT NULL DEFAULT '',
+    `kind`        VARCHAR(16)       NOT NULL DEFAULT 'position',
+    `seniority`   SMALLINT UNSIGNED NOT NULL DEFAULT 100,
+    `max_holders` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+    `salary`      INT UNSIGNED      NOT NULL DEFAULT 0,
+    `tax_key`     VARCHAR(24)       NOT NULL DEFAULT 'standard',
+    `color`       CHAR(7)           NOT NULL DEFAULT '#888888',
+    `status`      VARCHAR(16)       NOT NULL DEFAULT 'active',
+    `created_by`  VARCHAR(64)       NOT NULL DEFAULT '',
+    `created_at`  INT UNSIGNED      NOT NULL DEFAULT 0,
+    `updated_at`  INT UNSIGNED      NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_perms_group_perms` (
+    `group_id`   INT UNSIGNED NOT NULL,
+    `perm`       VARCHAR(64)  NOT NULL,
+    `branch`     VARCHAR(24)  NOT NULL DEFAULT '',
+    `granted_by` VARCHAR(64)  NOT NULL DEFAULT '',
+    `granted_at` INT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`group_id`, `perm`, `branch`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_perms_members` (
+    `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `account_name` VARCHAR(64)  NOT NULL,
+    `group_id`     INT UNSIGNED NOT NULL,
+    `granted_by`   VARCHAR(64)  NOT NULL DEFAULT '',
+    `granted_at`   INT UNSIGNED NOT NULL DEFAULT 0,
+    `expires_at`   INT UNSIGNED NOT NULL DEFAULT 0,
+    `salary_sec`   INT UNSIGNED NOT NULL DEFAULT 0,
+    `note`         VARCHAR(128) NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uq_member` (`account_name`, `group_id`),
+    KEY `idx_group` (`group_id`),
+    KEY `idx_expires` (`expires_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_branches` (
+    `code`   VARCHAR(24)       NOT NULL,
+    `name`   VARCHAR(64)       NOT NULL,
+    `sort`   SMALLINT UNSIGNED NOT NULL DEFAULT 100,
+    `status` VARCHAR(16)       NOT NULL DEFAULT 'active',
+    PRIMARY KEY (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `gov_perms_salaries` (
+    `id`           BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ts`           INT UNSIGNED    NOT NULL,
+    `account_name` VARCHAR(64)     NOT NULL,
+    `group_id`     INT UNSIGNED    NOT NULL,
+    `gross`        INT UNSIGNED    NOT NULL,
+    `tax`          INT UNSIGNED    NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`),
+    KEY `idx_ts` (`ts`),
+    KEY `idx_group_ts` (`group_id`, `ts`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 

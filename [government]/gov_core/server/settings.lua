@@ -3,12 +3,11 @@
 -- Every key prefix ("tax.", "work.", ...) belongs to one module (registerModule settings.prefixes);
 -- only that module may change it (export setSetting). Both server instances re-read the table
 -- every GOV.RESYNC_MS; the instance that changes a value applies it at once.
--- Also the gov_members roles.
+-- (The old gov_members roles are gone: positions and rights live in gov_perms, which migrated them.)
 
 SETTINGS = {}   -- [key] = value (only the stored ones)
 DEFAULTS = {}   -- [key] = value, registered by the owner modules
 OWNERS = {}     -- [prefix] = resource name
-MEMBERS = {}    -- [account name] = role
 
 addEvent("onGovSettingChanged", false)  -- (key, value), source = gov_core resourceRoot
 addEvent("onGovSettingsSynced", false)  -- after every re-read, source = gov_core resourceRoot
@@ -104,13 +103,7 @@ function loadSettings(cb)
                 end
             end
         end
-        DB.query(function(mrows)
-            if mrows then
-                MEMBERS = {}
-                for _, r in ipairs(mrows) do MEMBERS[tostring(r.account_name):lower()] = tostring(r.role) end
-            end
-            if cb then cb() end
-        end, "SELECT account_name, role FROM gov_members")
+        if cb then cb() end
     end, "SELECT skey, value FROM gov_settings")
 end
 
@@ -142,42 +135,4 @@ function setSetting(key, value, actor)
         return false
     end
     return GOV.set(key, value, actor)
-end
-
---------------------------------------------------------------------------------
--- roles
---------------------------------------------------------------------------------
-
---- "viewer" | "official" | "minister" | false
-function getGovRole(player)
-    local name = GOV.accountOf(player)
-    if not name then return false end
-    local level = isResourceRunning("v_mysql") and tonumber(exports.v_mysql:getAccData(player, "admin_level")) or 0
-    if level >= GOV.ADMIN_LEVEL then return "minister" end
-    return MEMBERS[name] or false
-end
-
---- has the player at least this role?
-function GOV.can(player, need)
-    local role = getGovRole(player)
-    return role and GOV.ROLES[role] >= (GOV.ROLES[need] or 99) or false
-end
-
-function canGov(player, need) return GOV.can(player, need) end
-
-function GOV.setMember(accountName, role, actor)
-    accountName = tostring(accountName or ""):lower()
-    if accountName == "" then return false end
-    if role ~= nil and not GOV.ROLES[role] then return false end
-    if role then
-        MEMBERS[accountName] = role
-        DB.exec("INSERT INTO gov_members (account_name, role, granted_by, granted_at) VALUES (?, ?, ?, ?) "
-            .. "ON DUPLICATE KEY UPDATE role = VALUES(role), granted_by = VALUES(granted_by), granted_at = VALUES(granted_at)",
-            accountName, role, DB.clip(actor, 64), GOV.now())
-    else
-        MEMBERS[accountName] = nil
-        DB.exec("DELETE FROM gov_members WHERE account_name = ?", accountName)
-    end
-    GOV.log(actor, "member.set", { account = accountName, role = role or "none" })
-    return true
 end

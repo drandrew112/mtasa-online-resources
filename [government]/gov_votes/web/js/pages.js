@@ -9,7 +9,7 @@
             'vote_options_hint', 'vote_hours', 'vote_ends', 'voters_n', 'close_vote', 'cancel_vote', 'status_open', 'status_closed',
             'status_cancelled', 'results_after_close', 'winner']),
         render(d) {
-            const m = GOV.can('minister');
+            const m = GOV.can('votes.open'), close = GOV.can('votes.close');
             const list = arr(d.list);
             const now = Date.now() / 1000;
             const card = v => {
@@ -33,7 +33,7 @@
                 return `<div class="gv-card"><div class="gv-head"><div><h2 style="margin:0">${esc(v.title)}</h2>` +
                     `<div class="gv-sub"><span class="tag ${status === 'open' ? 'state' : status === 'cancelled' ? 'bad' : ''}">${esc(T('status_' + status))}</span> ` +
                     `${esc(T('voters_n', { n: v.voters }))} · ${esc(T('vote_ends'))} ${stamp(v.status === 'open' ? v.endsAt : (v.closedAt || v.endsAt))} · ${esc(v.createdBy)}</div></div>` +
-                    (m && v.status === 'open' ? `<div class="gv-row">${btn(T('close_vote'), 'closeVote', { id: v.id })}${btn(T('cancel_vote'), 'cancelVote', { id: v.id }, 'danger')}</div>` : '') +
+                    (close && v.status === 'open' ? `<div class="gv-row">${btn(T('close_vote'), 'closeVote', { id: v.id })}${btn(T('cancel_vote'), 'cancelVote', { id: v.id }, 'danger')}</div>` : '') +
                     `</div>${v.description ? `<p class="gv-desc">${esc(v.description)}</p>` : ''}${body}</div>`;
             };
             const open = list.filter(v => v.status === 'open'), done = list.filter(v => v.status !== 'open');
