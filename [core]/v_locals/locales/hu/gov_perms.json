@@ -91,7 +91,6 @@
   "gov_perms.perm.panel.log": "Változásnapló",
   "gov_perms.perm.office.edit": "A Kormányhivatal gépeinek elhelyezése (/govpcs)",
   "gov_perms.perm.companies.create": "Állami cégek létrehozása",
-  "gov_perms.perm.companies.branch": "Állami cégek ágazatának beállítása",
   "gov_perms.perm.legacy.viewer": "Régi szerepkör: megtekintő",
   "gov_perms.perm.legacy.official": "Régi szerepkör: hivatalnok",
   "gov_perms.perm.legacy.minister": "Régi szerepkör: miniszter",

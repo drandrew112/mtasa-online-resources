@@ -66,11 +66,12 @@ function A.company(p, args, reply, actor)
     end)
 end
 
---- { code, name, description, branch } (a branch other than "other" needs companies.branch)
+--- { code, name, description, branch }: a branch other than "other" only by the Governor / an
+--- admin (perms.manage): the branch decides which minister reaches the company
 function A.createCompany(p, args, reply, actor)
     local branch = "other"
     if args.branch and args.branch ~= "other" then
-        if not GOV.hasPerm(p, "companies.branch") then return reply(false, "no_right") end
+        if not GOV.hasPerm(p, "perms.manage") then return reply(false, "no_right") end
         if not isBranch(args.branch) then return reply(false, "bad_branch") end
         branch = args.branch
     end
@@ -80,7 +81,8 @@ function A.createCompany(p, args, reply, actor)
     end, branch)
 end
 
---- { id, branch }
+--- { id, branch }: the Governor / an admin (perms.manage) attaches a company to a branch; the
+--- ministers whose rights cover that branch (gov.*.… + branch) reach it at once
 function A.setCompanyBranch(p, args, reply, actor)
     local c = GOV.companyById(args.id)
     if not c then return reply(false, "bad_company") end
@@ -152,7 +154,6 @@ GOV.registerModule("gov_core", {
         { "panel.log",         "admin",         0 },
         { "office.edit",       "admin",         1 },
         { "companies.create",  "organizations", 2 },
-        { "companies.branch",  "organizations", 1 },
         -- the old roles (gov_perms migrated the gov_members rows into the legacy_* positions)
         { "legacy.viewer",     "admin",         0 },
         { "legacy.official",   "admin",         1 },
@@ -173,7 +174,7 @@ GOV.registerModule("gov_core", {
         companies = "gov.*.view",
         company = { perm = "gov.{id}.view", arg = "id" },
         createCompany = "companies.create",
-        setCompanyBranch = "companies.branch",
+        setCompanyBranch = "perms.manage",   -- the Governor / admins only (gov_perms)
         renameCompany = { perm = "gov.{id}.edit", arg = "id" },
         describeCompany = { perm = "gov.{id}.edit", arg = "id" },
         deleteCompany = { perm = "gov.{id}.close", arg = "id" },

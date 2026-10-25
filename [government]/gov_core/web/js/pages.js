@@ -34,7 +34,7 @@
                 `<div class="gv-sub" style="margin:8px 0 6px">${esc(T('pays_works', { works: pays.join(', ') || '-' }))}</div>` +
                 `<div class="gv-field"><label>${esc(T('company_name'))}</label><div>${edit('cName', a.name, 'renameCompany', {}, { allowed: edits, cls: 'mid' })}</div></div>` +
                 `<div class="gv-field"><label>${esc(T('company_description'))}</label><div>${edit('cDesc', a.description || '', 'describeCompany', {}, { allowed: edits, cls: 'wide', shown: a.description || '-' })}</div></div>` +
-                `<div class="gv-field"><label>${esc(T('branch'))}</label><div>${GOV.can('companies.branch')
+                `<div class="gv-field"><label>${esc(T('branch'))}</label><div>${GOV.can('perms.manage')
                     ? select('cBranch', branches.map(b => [b.code, b.name]), a.branch, 'companyBranch', true) : esc(branchName(a.branch))}</div></div>` +
                 `<div class="gv-field"><label>${esc(T('overdraft'))}</label><div>${toggle(!!a.allowNegative, 'overdraft', {}, GOV.can('gov.' + a.id + '.overdraft'), [T('overdraft_on'), T('overdraft_off')])}</div></div>` +
                 (GOV.can('gov.' + a.id + '.close') ? `<div class="gv-field"><label></label><div>${btn(T('delete_company'), 'closeCompany', {}, 'danger')}</div></div>` : '') +
@@ -56,7 +56,7 @@
                     { name: 'description', label: T('company_description'), type: 'textarea' },
                 ];
                 const branches = arr((D.companies || {}).branches);
-                if (GOV.can('companies.branch') && branches.length) {
+                if (GOV.can('perms.manage') && branches.length) {
                     fields.push({ name: 'branch', label: T('branch'), type: 'select', value: 'other', options: branches.map(b => ({ value: b.code, label: b.name })) });
                 }
                 const r = await OSA.ui.form(T('create_company'), fields, T('create'));

@@ -8,8 +8,11 @@ own hourly salary. Author in meta.xml: `DrAndrew112`. How it is used: [README.md
 
 **Deviations of the implementation from the text below:**
 - The rank column is `seniority` (RANK is a reserved word in MySQL 8).
-- Company creation / branch: `companies.create`, `companies.branch` (not `gov.create`): the `gov.`
-  prefix is kept for the per-company families only, so `gov.*.*` + branch never covers them.
+- Company creation: `companies.create` (not `gov.create`): the `gov.` prefix is kept for the
+  per-company families only, so `gov.*.*` + branch never covers it.
+- The branch of a company is set by the Governor / admins only (user rule 2026-10-25): the action
+  needs `perms.manage`, there is no separate branch right. Attaching a company to a branch gives
+  the ministers of that branch the company at once (catalogue rebuild + bank access sync).
 - No `panel.open` / `panel.office` rights: an action may need `"panel"` (anyone with any right,
   an admin or a sector company); the gov_office computers open /gov for exactly those. The
   `/govpcs` editor needs `office.edit`.

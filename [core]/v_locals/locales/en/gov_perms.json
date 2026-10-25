@@ -91,7 +91,6 @@
   "gov_perms.perm.panel.log": "Change log",
   "gov_perms.perm.office.edit": "Place the Government Office computers (/govpcs)",
   "gov_perms.perm.companies.create": "Create state companies",
-  "gov_perms.perm.companies.branch": "Set the branch of state companies",
   "gov_perms.perm.legacy.viewer": "Old role: viewer",
   "gov_perms.perm.legacy.official": "Old role: official",
   "gov_perms.perm.legacy.minister": "Old role: minister",

@@ -23,7 +23,7 @@
         'plan_hours', 'plan_hours_hint', 'cost_day', 'cost_total', 'copy_prompt', 'read_only', 'none', 'positions'];
     const AREA_KEYS = ['top', 'economy', 'revenue', 'services', 'employment', 'organizations', 'public', 'admin', 'other'].map(a => 'gov_core.menu.' + a);
     // the names of the rights known when this was written (later modules: the key itself is shown)
-    const PERM_KEYS = ['panel.log', 'office.edit', 'companies.create', 'companies.branch', 'legacy.viewer', 'legacy.official',
+    const PERM_KEYS = ['panel.log', 'office.edit', 'companies.create', 'legacy.viewer', 'legacy.official',
         'legacy.minister', 'perms.view', 'perms.manage', 'treasury.overview', 'treasury.transfer.company', 'treasury.collect',
         'treasury.plan.view', 'treasury.plan.edit', 'loans.view', 'tax.view', 'tax.company.edit', 'tax.income.edit', 'tax.vat.edit',
         'tax.property.edit', 'tax.targets.edit', 'fees.view', 'fines.view', 'health.view', 'health.prices.edit', 'transport.view',

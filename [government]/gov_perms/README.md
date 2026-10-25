@@ -20,8 +20,9 @@ salary per position. Design and decisions: [DESIGN.md](DESIGN.md). Implemented 2
 - **Only the Governor or an admin** (level ≥ 5) appoints and edits positions (`perms.manage`, held
   only by the Governor's system group). System groups (Governor, the legacy roles) are changed by
   admins only.
-- **Branches** (`gov_branches`, editable): every state company has one; a minister's grant
-  `gov.*.*` + branch `health` covers every health company, also future ones.
+- **Branches** (`gov_branches`, editable): every state company has one, set by the Governor / an
+  admin only (State companies page, needs `perms.manage`); a minister's grant `gov.*.*` + branch
+  `health` covers every health company at once, also future ones.
 - **Bank access of the state accounts = rights:** `gov.<id>.bank.manage` → v_bank owner, `.pay` →
   manager, `.view` → viewer, nothing → removed (synced 2 s after a change and every 60 s). The
   company page shows the access read-only.
