@@ -37,7 +37,14 @@
   },
   "skins": {
     "275": "Paramedic Female",
-    "276": "Paramedic OMSZ"
+    "276": "Paramedic OMSZ",
+    "280": "lapd1",
+    "281": "sfpd1",
+    "282": "lvpd1",
+    "283": "csher",
+    "284": "lapdm1",
+    "286": "fbi",
+    "287": "army"
   },
   "weapons": {
   },
