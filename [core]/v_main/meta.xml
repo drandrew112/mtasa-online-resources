@@ -36,6 +36,8 @@
     <script src="commandAuth.lua" type="server" />
     <script src="restartAllResources.lua" type="server" />
     <script src="manageResources.lua" type="server" />
+    <!-- /restartgroup <name>: named resource groups (gov, med, rw) -->
+    <script src="resourceGroups.lua" type="server" />
 
     <!-- GitHub updater library (github.com/fresholia/mtasa-git-resource-updater) -->
     <script src="lib/updater/classes.lua" type="server" />

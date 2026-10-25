@@ -3135,5 +3135,11 @@
   "world_interiors|{desc} | also: {aliases}": "world_interiors.admin.also",
   "world_interiors|{id} | dim {dimension|int} | int {interior|int} | by {resource}": "world_interiors.admin.dim_int_by",
   "world_interiors|{x|1f}, {y|1f}, {z|1f} (int {interior|int}, dim {dimension|int})": "world_interiors.admin.int_dim",
-  "v_socialpanel|You are doing that too fast. Wait a moment.": "v_socialpanel.server.slow_down"
+  "v_socialpanel|You are doing that too fast. Wait a moment.": "v_socialpanel.server.slow_down",
+  "v_main|Usage: /restartgroup <name> - groups: {groups}": "v_main.resourcegroups.usage",
+  "v_main|Unknown resource group: '{name}'. Groups: {groups}": "v_main.resourcegroups.unknown_group",
+  "v_main|A group restart is already in progress - ignoring this request.": "v_main.resourcegroups.busy",
+  "v_main|No running resources in group '{name}'.": "v_main.resourcegroups.nothing_running",
+  "v_main|Restarting group '{name}': {count|int} resource(s) (by {player}).": "v_main.resourcegroups.restarting",
+  "v_main|Group '{name}' restarted - started: {started|int}, failed: {failed|int}.": "v_main.resourcegroups.done"
 }

@@ -137,6 +137,10 @@ end
 -- stopping resources. Only starts resources that are not already running.
 loadAllResources = startAll
 
+-- Shared with resourceGroups.lua (/restartgroup): name->resource map + the
+-- dependency-ordered name list, so a partial restart starts in the same order.
+buildResourceOrder = buildOrder
+
 addEventHandler("onResourceStart", resourceRoot, function()
     startAll()
 end)
