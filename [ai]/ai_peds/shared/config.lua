@@ -134,3 +134,10 @@ EV_THREAT = "ai_peds:threat"    -- client -> server: kind ("shot" | "damage"), .
 EV_VIEW = "ai_peds:view"        -- client -> server: camera
 EV_NOTIFY = "ai_peds:notify"    -- server -> client: admin text
 EV_DEBUG = "ai_peds:debug"      -- server -> client: toggle the debug view
+
+-- element data (set by the server): the syncer's move state ("walk" | "run" | "sprint" | false), the other clients
+-- play the walk with it (control states are not synced, without it they see the ped slide)
+DATA_MOVE = "ai_peds.mv"
+-- the same for fighting: { t = target, me = melee, r = range, acc, burst, pause } while the syncer aims + fires / hits,
+-- else false. Each client's own shots only hurt its own player (the others are hit on their own clients)
+DATA_FIGHT = "ai_peds.fight"

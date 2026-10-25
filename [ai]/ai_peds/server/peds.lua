@@ -6,7 +6,7 @@
 --
 -- p = { el, id, kind ("traffic" | "driver" | "scripted"), behaviour, b (behaviour state), task, group, weapon,
 --       combat = { aggro, leash, accuracy, retaliate, home }, role (navmesh route role), speed,
---       cmd (current motor command), syncer, x, y, z, born, seenAt, dead, deadAt, grudges = { [el] = until } }
+--       cmd (current motor command), syncer, mv / fighting / fight (syncer's move and fight state, DATA_MOVE / DATA_FIGHT), x, y, z, born, seenAt, dead, deadAt, grudges = { [el] = until } }
 --
 -- cmd = { m = mode ("idle" | "move" | "wait" | "combat" | "exit"), v = version, pts = { {x, y}, ... }, i = next point,
 --         sp = "walk" | "run" | "sprint", t = target, r = attack range, me = melee, acc = accuracy,
@@ -82,6 +82,8 @@ function Peds.remove(p, reason, keepElement)
         if p.syncer and isElement(p.syncer) and P.ready[p.syncer] then triggerClientEvent(p.syncer, EV_DROP, resourceRoot, p.el) end
         if keepElement then
             removeElementData(p.el, "ai_peds")
+            removeElementData(p.el, DATA_MOVE)
+            removeElementData(p.el, DATA_FIGHT)
         else
             destroyElement(p.el)
         end
@@ -106,6 +108,37 @@ function Peds.setBehaviour(p, name, args)
     return true
 end
 
+------------------------------------------------------------------------ the other clients (DATA_MOVE, DATA_FIGHT)
+
+-- the syncer's move state
+local MOVES = { walk = true, run = true, sprint = true }
+
+local function setMove(p, mv)
+    mv = MOVES[mv] and mv or false
+    if p.mv == mv then return end
+    p.mv = mv
+    if isElement(p.el) then setElementData(p.el, DATA_MOVE, mv) end
+end
+
+-- while the syncer fights (aims + fires / hits in melee range): the combat command's target and firing pattern
+local function refreshFight(p)
+    local c = p.cmd
+    local d = false
+    if p.fighting and c.m == "combat" and isElement(c.t) then
+        d = { t = c.t, me = c.me, r = c.r, acc = c.acc, burst = c.burst, pause = c.pause }
+    end
+    local o = p.fight
+    if not d and not o then return end
+    if d and o and d.t == o.t and d.me == o.me and d.r == o.r and d.acc == o.acc then return end
+    p.fight = d
+    if isElement(p.el) then setElementData(p.el, DATA_FIGHT, d) end
+end
+
+local function setFighting(p, on)
+    p.fighting = on and true or false
+    refreshFight(p)
+end
+
 ------------------------------------------------------------------------ commands
 
 local function send(p)
@@ -121,6 +154,7 @@ function Peds.setCmd(p, cmd)
     cmd.v = p.cmdVer
     cmd.i = cmd.i or 1
     p.cmd = cmd
+    refreshFight(p)
     send(p)
 end
 
@@ -128,6 +162,7 @@ end
 function Peds.updateCmd(p)
     p.cmdVer = p.cmdVer + 1
     p.cmd.v = p.cmdVer
+    refreshFight(p)
     send(p)
 end
 
@@ -170,6 +205,8 @@ local function setSyncer(p, s)
     if p.syncer == s then return end
     local old = p.syncer
     p.syncer = s
+    setMove(p, false)   -- the new syncer reports its own
+    setFighting(p, false)
     -- only clients whose scripts are loaded (EV_READY): a joining player has no handler yet
     if old and isElement(old) and P.ready[old] then triggerClientEvent(old, EV_DROP, resourceRoot, p.el) end
     send(p)
@@ -203,7 +240,7 @@ end)
 addEventHandler("onPlayerQuit", root, function()
     P.ready[source] = nil
     for _, p in pairs(P.list) do
-        if p.syncer == source then p.syncer = nil end
+        if p.syncer == source then p.syncer = nil; setMove(p, false); setFighting(p, false) end
         p.grudges[source] = nil
     end
 end)
@@ -217,6 +254,12 @@ addEventHandler(EV_REPORT, resourceRoot, function(el, kind, data)
     if kind == "wp" then
         local i = tonumber(data)
         if i and p.cmd.pts and data and i > p.cmd.i and i <= #p.cmd.pts + 1 then p.cmd.i = i end
+        return
+    elseif kind == "mv" then
+        setMove(p, data)
+        return
+    elseif kind == "fight" then
+        setFighting(p, data == true)
         return
     end
     local b = Behaviours[p.behaviour]

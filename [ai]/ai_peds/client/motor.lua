@@ -1,7 +1,9 @@
 -- Motor (client): drives the AI peds this client syncs. The server sends a command per ped (EV_CMD) to its syncer;
 -- every frame the ped is turned and moved with control states: walk the points, stand / face, fight (aim + fire,
 -- melee, pull an unarmed ped's target out of its vehicle), get out of a vehicle (exit animation). Only peds that are streamed in and synced here are driven; the
--- per-frame handler is attached only while there are commands.
+-- per-frame handler is attached only while there are commands or puppets.
+-- Puppets: control states are not synced, so every other client plays the walk / run / sprint and the aiming /
+-- firing of a streamed-in AI ped from the state its syncer reports (DATA_MOVE / DATA_FIGHT element data).
 --
 -- st = { cmd, i (next point), yaw, ctl = { [control] = state }, ... runtime timers }
 
@@ -92,16 +94,28 @@ end
 
 ------------------------------------------------------------------------ moving
 
--- forward probe: something right in front -> step around it for a moment
+-- something (vehicle, ped, player, object) within len along yaw?
+local function blocked(ped, x, y, z, yaw, len, ignore)
+    local fx, fy = -sin(rad(yaw)), cos(rad(yaw))
+    local hit, _, _, _, el = processLineOfSight(x, y, z, x + fx * len, y + fy * len, z, false, true, true, true,
+        false, false, false, false, ped)
+    return hit and el ~= ignore
+end
+
+-- forward probe: something right in front -> step around it for a moment, on the clearer side. Still blocked while
+-- stepping around: the same side (flipping every probe zig-zagged in place in front of standing players)
 local function avoid(ped, st, now, x, y, z, ignore)
     if now >= (st.probeAt or 0) then
         st.probeAt = now + 250
-        local fx, fy = -sin(rad(st.yaw or 0)), cos(rad(st.yaw or 0))
-        local hit, _, _, _, el = processLineOfSight(x, y, z, x + fx * 1.3, y + fy * 1.3, z, false, true, true, true,
-            false, false, false, false, ped)
-        if hit and el ~= ignore then
+        local yaw = st.yaw or 0
+        if blocked(ped, x, y, z, yaw, 1.3, ignore) then
+            if now >= (st.avoidUntil or 0) then
+                local l = not blocked(ped, x, y, z, yaw + 55, 1.5, ignore)
+                local r = not blocked(ped, x, y, z, yaw - 55, 1.5, ignore)
+                if l ~= r then st.avoidDir = l and 1 or -1
+                elseif not st.avoidDir then st.avoidDir = random() < 0.5 and 1 or -1 end
+            end
             st.avoidUntil = now + 700
-            st.avoidDir = st.avoidDir == 1 and -1 or 1
         end
     end
     if now < (st.avoidUntil or 0) then return 55 * (st.avoidDir or 1) end
@@ -244,6 +258,7 @@ local function combat(ped, st, now, dt, x, y, z)
                 stuckCheck(ped, st, now, x, y)
             end
         else
+            st.fightNow = true
             setMove(ped, st, false)
             turnTo(ped, st, yaw, 720, dt)
             local phase = (now - (st.meleeT0 or now)) % 700
@@ -254,6 +269,7 @@ local function combat(ped, st, now, dt, x, y, z)
     end
 
     if st.los and d <= (c.r or 30) then
+        st.fightNow = true
         setMove(ped, st, false)
         turnTo(ped, st, yaw, 720, dt)
         local ax, ay, az = aimPoint(st, t, tx, ty, tz, d, now)
@@ -294,10 +310,80 @@ local function leaveJacked(ped, st, now)
     st.jackOutAt = now + (setPedExitVehicle(ped) and 1500 or 500)
 end
 
+------------------------------------------------------------------------ the other clients
+
+-- control states are not synced: the other clients would see the ped slide without the walk and never shoot. The
+-- syncer tells the server its move state (DATA_MOVE) and whether it fights (DATA_FIGHT); an end only after a moment
+-- (turning on the spot, short waits stay a walk; a line of sight lost for a moment stays a fight)
+local function publish(ped, st, now, kind, value)
+    local sent = st.sent[kind]
+    if value == sent then st.endAt[kind] = nil; return end
+    if not value and sent ~= nil then
+        st.endAt[kind] = st.endAt[kind] or now + 300
+        if now < st.endAt[kind] then return end
+    end
+    st.sent[kind], st.endAt[kind] = value, nil
+    report(ped, kind, value)
+end
+
+local function publishState(ped, st, now)
+    local c = st.ctl
+    publish(ped, st, now, "mv", c.forwards and (c.sprint and "sprint" or c.walk and "walk" or "run") or false)
+    publish(ped, st, now, "fight", st.fightNow or false)
+end
+
+-- streamed-in AI peds synced elsewhere: walk / run / sprint of DATA_MOVE along their synced facing, aim + fire bursts
+-- (or melee hits in range) at the DATA_FIGHT target with the same pattern. Their shots here only hurt the local
+-- player (the other players are hit on their own clients, the syncer reports the shots and the damage to AI peds).
+-- [ped] = { ctl, fight (DATA_FIGHT value), cmd (the fight being played), burst / melee timers }
+local Puppets = {}
+
+local function puppetFight(ped, pst, now)
+    local f = pst.cmd
+    local t = f.t
+    if not isElement(t) or ((getElementType(t) == "ped" or getElementType(t) == "player") and isPedDead(t)) then
+        stopCombat(ped, pst)
+        return
+    end
+    local x, y, z = getElementPosition(ped)
+    local tx, ty, tz = getElementPosition(t)
+    local d = sqrt((tx - x) ^ 2 + (ty - y) ^ 2 + (tz - z) ^ 2)
+    if f.me then
+        ctl(ped, pst, "aim_weapon", false)
+        if d > (f.r or T.MELEE_RANGE) + 0.4 then ctl(ped, pst, "fire", false); return end
+        if not pst.meleeT0 then pst.meleeT0 = now end
+        ctl(ped, pst, "fire", (now - pst.meleeT0) % 700 < 150)
+        return
+    end
+    local ax, ay, az = aimPoint(pst, t, tx, ty, tz, d, now)
+    setPedAimTarget(ped, ax, ay, az)
+    ctl(ped, pst, "aim_weapon", true)
+    fireBursts(ped, pst, now)
+end
+
+local function puppet(ped, pst, now)
+    local mv, f = false, false
+    if not isPedDead(ped) and not getPedOccupiedVehicle(ped) then
+        mv = getElementData(ped, DATA_MOVE) or false
+        f = type(pst.fight) == "table" and pst.fight or false
+    end
+    setMove(ped, pst, mv and true or false, mv)
+    if mv then
+        local _, _, rz = getElementRotation(ped)
+        setPedCameraRotation(ped, camSign * rz)
+    end
+    if f ~= pst.cmd then
+        pst.cmd = f
+        pst.burstEnd, pst.meleeT0 = nil, nil
+    end
+    if f then puppetFight(ped, pst, now) else stopCombat(ped, pst) end
+end
+
 ------------------------------------------------------------------------ frame
 
 local function drive(ped, st, now, dt)
     if st.jumpOff and now >= st.jumpOff then st.jumpOff = nil; ctl(ped, st, "jump", false) end
+    st.fightNow = false   -- combat() sets it while aiming + firing / hitting
     local c = st.cmd
     if getPedOccupiedVehicle(ped) then
         if c.m == "exit" then exitVehicle(ped, st, now)
@@ -336,15 +422,33 @@ local function frame(slice)
         elseif isElementStreamedIn(ped) and isElementSyncer(ped) and not isPedDead(ped) then
             if not st.active then
                 st.active = true
-                st.ctl, st.yaw = {}, nil
+                st.yaw, st.sent, st.endAt = nil, {}, {}
+                releaseAll(ped, st)   -- also the walk played here while another client synced it
             end
             drive(ped, st, now, dt)
+            publishState(ped, st, now)
         elseif st.active then
             st.active = false
+            st.sent, st.endAt = {}, {}
             releaseAll(ped, st)
         end
     end
-    if not next(S) and attached then
+    -- after the motor: its releaseAll on taking over / handing over comes first
+    for ped, pst in pairs(Puppets) do
+        if not isElement(ped) then
+            Puppets[ped] = nil
+        elseif isElementSyncer(ped) then
+            -- synced here: the motor drives it (it released the controls when it took over)
+            if next(pst.ctl) then
+                local st = S[ped]
+                if st and st.active then pst.ctl = {} else releaseAll(ped, pst) end
+                pst.cmd = nil
+            end
+        else
+            puppet(ped, pst, now)
+        end
+    end
+    if not next(S) and not next(Puppets) and attached then
         attached = false
         removeEventHandler("onClientPreRender", root, frame)
     end
@@ -363,7 +467,7 @@ addEventHandler(EV_CMD, resourceRoot, function(ped, cmd)
     if not isElement(ped) or type(cmd) ~= "table" then return end
     local st = S[ped]
     if not st then
-        st = { ctl = {} }
+        st = { ctl = {}, sent = {}, endAt = {} }
         S[ped] = st
     end
     if st.cmd and st.cmd.v == cmd.v then return end
@@ -389,6 +493,51 @@ end)
 
 addEventHandler("onClientElementDestroy", root, function()
     if S[source] then S[source] = nil end
+    Puppets[source] = nil
+end)
+
+------------------------------------------------------------------------ puppets (peds synced elsewhere)
+
+local function isAIPed(el)
+    return getElementType(el) == "ped" and getElementData(el, "ai_peds") and true or false
+end
+
+local function track(ped)
+    if not Puppets[ped] and isElementStreamedIn(ped) and isAIPed(ped) then
+        Puppets[ped] = { ctl = {}, fight = getElementData(ped, DATA_FIGHT) }
+        attach()
+    end
+end
+
+local function untrack(ped)
+    local pst = Puppets[ped]
+    if not pst then return end
+    Puppets[ped] = nil
+    -- the motor's own controls stay (it releases them itself)
+    if isElement(ped) and not isElementSyncer(ped) then releaseAll(ped, pst) end
+end
+
+addEventHandler("onClientElementStreamIn", root, function()
+    if getElementType(source) == "ped" then track(source) end
+end)
+
+addEventHandler("onClientElementStreamOut", root, function()
+    untrack(source)
+end)
+
+-- DATA_FIGHT kept here: read every frame it would be a new table each time (the burst pattern restarting)
+addEventHandler("onClientElementDataChange", root, function(key, _, new)
+    if key == DATA_FIGHT then
+        local pst = Puppets[source]
+        if pst then pst.fight = new end
+        return
+    end
+    if key ~= "ai_peds" or getElementType(source) ~= "ped" then return end
+    if isAIPed(source) then track(source) else untrack(source) end
+end)
+
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    for _, ped in ipairs(getElementsByType("ped", root, true)) do track(ped) end
 end)
 
 function Motor.debugInfo(ped)

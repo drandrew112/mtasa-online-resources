@@ -22,6 +22,15 @@ run, with straight-line moves and no ped traffic). Modules:
   within `ped_syncer_distance`, 100 m default; tracked with `onElementStartSync` / `onElementStopSync` and re-checked every
   second); **a ped without a syncer stands still** and its behaviour is paused. The per-frame handler only runs while the
   client has commands.
+- **Other clients** (`client/motor.lua` puppets): control states are not synced, so the other players would see the ped
+  slide without a walk animation. The syncer reports its move state (`walk` / `run` / `sprint` / stop, a stop only after
+  300 ms), the server puts it in the `ai_peds.mv` element data (`DATA_MOVE`), and every other client that streams the ped
+  in plays that walk along the synced facing; the ped sync corrects the position. Fighting the same way: while the
+  syncer aims + fires (or hits in melee range) it reports `fight`, the server puts the combat command's target and
+  firing pattern in `ai_peds.fight` (`DATA_FIGHT`, false otherwise), and the other clients aim at that target and fire
+  bursts / hit with the same pattern. Each client's own shots only hurt its own player, so every player can be hit;
+  shot reports and damage to AI peds still come only from the syncer.
+- **Steering around obstacles**: a blocked forward probe picks the clearer side and keeps it while still blocked.
 - **Routes** (`server/route.lua`, `server/tasks.lua`): sidewalk walks are navmesh random walks (`getPedRandomWalk` with
   the `WALK_KINDS` edges: sidewalks + crossings, no park / hiking paths), continued from the last node before the end;
   goto / patrol / flee / chase routes are async navmesh ped routes (`requestRoute("ped")`; role `civilian` for
