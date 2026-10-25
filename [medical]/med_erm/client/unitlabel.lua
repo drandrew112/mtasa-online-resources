@@ -92,10 +92,13 @@ renderLabels = function()
     if isPlayerMapVisible() then return end
     local cx, cy, cz = getCameraMatrix()
     local dim, int = getElementDimension(localPlayer), getElementInterior(localPlayer)
+    local ownVeh = getPedOccupiedVehicle(localPlayer)  -- no label over the vehicle we sit in
 
     for veh in pairs(tagged) do
         local data = isElement(veh) and getElementData(veh, LABEL_KEY)
-        if type(data) == "table" and getElementDimension(veh) == dim and getElementInterior(veh) == int then
+        if veh == ownVeh then
+            -- skip
+        elseif type(data) == "table" and getElementDimension(veh) == dim and getElementInterior(veh) == int then
             local x, y, z = getElementPosition(veh)
             local _, _, _, _, _, maxZ = getElementBoundingBox(veh)
             z = z + (maxZ or 1.5) + HEIGHT
