@@ -64,6 +64,9 @@ end
 --                     plate = "EMS", data = { key = value } }, ... }
 --   platePrefix = "A-" instead of plate: a unique plate of the prefix + random digits
 --   (plateDigits, default: fills the 8 plate characters)
+--   tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60, ... } (v_customs:applyVehicleTuning)
+--   elsExtra = 1 (v_els extra index), sirenType = "fsvas320" (v_els siren type),
+--   paintjob = "hu_ovsz" (v_paintjobs name of the model)
 local function normaliseVehicles(list)
     local out = {}
     if type(list) ~= "table" then return out end
@@ -84,6 +87,10 @@ local function normaliseVehicles(list)
                 platePrefix = prefix,
                 plateDigits = prefix and digits or nil,
                 data = type(def.data) == "table" and def.data or nil,
+                tuning = type(def.tuning) == "table" and def.tuning or nil,
+                elsExtra = num(def.elsExtra) and math.floor(num(def.elsExtra)) or nil,
+                sirenType = def.sirenType and tostring(def.sirenType) or nil,
+                paintjob = def.paintjob and tostring(def.paintjob) or nil,
             }
         end
     end

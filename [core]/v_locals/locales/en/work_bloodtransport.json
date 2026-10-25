@@ -10,6 +10,7 @@
   "work_bloodtransport.config.skin_lab_coat": "Lab coat",
   "work_bloodtransport.config.skin_suit": "Suit",
   "work_bloodtransport.config.vehicle": "Blood transport vehicle",
+  "work_bloodtransport.config.vehicle_ovsz": "Blood transport vehicle (OVSZ)",
   "work_bloodtransport.tut.card.click_again_to_skip": "Click again to skip the tutorial",
   "work_bloodtransport.tut.card.press_for_cursor": "Press {cursor_key} for the cursor  ·  /{command} skip",
   "work_bloodtransport.tut.card.skip": "Skip tutorial",

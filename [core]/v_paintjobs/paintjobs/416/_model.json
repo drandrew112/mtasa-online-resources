@@ -1,0 +1,9 @@
+{
+  "texture": "remapsprinterbody512",
+  "names": {
+    "hu_omsz": "OMSZ Ambulance",
+    "hu_omsz_old": "OMSZ Ambulance (old)",
+    "hu_omsz_white": "OMSZ Ambulance (white)",
+    "hu_pd": "Hungarian Police"
+  }
+}

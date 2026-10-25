@@ -68,6 +68,34 @@ local function generatePlate(prefix, digits)
     return text
 end
 
+local function isRunning(name)
+    local res = getResourceFromName(name)
+    return res and getResourceState(res) == "running"
+end
+
+-- tuning (v_customs), paintjob (v_paintjobs), ELS extra and siren type (v_els) of a vehicle
+-- definition; each is skipped when its resource is not running
+local function applyVehicleExtras(vehicle, def)
+    if def.tuning and isRunning("v_customs") then
+        pcall(function() exports.v_customs:applyVehicleTuning(vehicle, def.tuning) end)
+    end
+    if def.paintjob and isRunning("v_paintjobs") then
+        local ok, done = pcall(function() return exports.v_paintjobs:setVehicleCustomPaintjob(vehicle, def.paintjob) end)
+        if not ok or not done then
+            outputDebugString(("[work_core] paintjob %s not found for model %d"):format(def.paintjob, def.model), 2)
+        end
+    end
+    if def.elsExtra and isRunning("v_els") then
+        pcall(function() exports.v_els:setElsExtra(vehicle, def.elsExtra) end)
+    end
+    if def.sirenType and isRunning("v_els") then
+        local ok, done = pcall(function() return exports.v_els:setElsSirenType(vehicle, def.sirenType) end)
+        if not ok or not done then
+            outputDebugString(("[work_core] siren type %s could not be set on model %d"):format(def.sirenType, def.model), 2)
+        end
+    end
+end
+
 -- -> vehicle | false, errorText
 function spawnWorkVehicle(player, marker, index)
     local m = Markers[marker]
@@ -96,6 +124,7 @@ function spawnWorkVehicle(player, marker, index)
     if def.data then
         for k, v in pairs(def.data) do setElementData(vehicle, k, v) end
     end
+    applyVehicleExtras(vehicle, def)
     setElementData(vehicle, WORK_DATA.VEHICLE_WORK, m.work)
     setElementData(vehicle, WORK_DATA.VEHICLE_OWNER, player)
 

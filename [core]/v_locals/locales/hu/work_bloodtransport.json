@@ -10,6 +10,7 @@
   "work_bloodtransport.config.skin_lab_coat": "Laborköpeny",
   "work_bloodtransport.config.skin_suit": "Öltöny",
   "work_bloodtransport.config.vehicle": "Vérszállító autó",
+  "work_bloodtransport.config.vehicle_ovsz": "Vérszállító autó (OVSZ)",
   "work_bloodtransport.tut.card.click_again_to_skip": "Kattints újra a kihagyáshoz",
   "work_bloodtransport.tut.card.press_for_cursor": "{cursor_key}: kurzor  ·  /{command} skip",
   "work_bloodtransport.tut.card.skip": "Oktatás kihagyása",

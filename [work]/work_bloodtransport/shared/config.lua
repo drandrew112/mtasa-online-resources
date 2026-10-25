@@ -30,7 +30,10 @@ BTWORK = {
     PLATE_PREFIX = "BT-",
     PLATE_DIGITS = 4,
     VEHICLES = {
-        { model = 415, name = L.text("work_bloodtransport.config.vehicle") },
+        { model = 415, name = L.text("work_bloodtransport.config.vehicle"), sirenType = "soundoff" },
+        { model = 598, name = L.text("work_bloodtransport.config.vehicle_ovsz"), paintjob = "hu_ovsz", elsExtra = 1,
+          sirenType = "fsvas320",
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
     },
 
     -- Stations: duty marker, vehicle marker and the vehicle spawn points { x, y, z, rot }

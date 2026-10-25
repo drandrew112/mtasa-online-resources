@@ -137,6 +137,41 @@ local function applyItem(player, veh, node, optIdx)
 end
 
 --------------------------------------------------------------------------------
+-- Scripted tuning (free, no workshop session) - e.g. work_core duty vehicles
+--------------------------------------------------------------------------------
+
+-- performance packs by Customs.parts index (shared/tuning.lua, never sorted)
+local PACKS = { engine = 1, turbo = 2, brakes = 3, tires = 4, weight = 5 }
+
+-- exports.v_customs:applyVehicleTuning(veh, spec) -> true | false
+--   spec: engine / turbo / brakes / tires / weight = 0..4 (upgrade level, 0 = stock),
+--         wheels = "verynarrow" | "narrow" | "default" | "wide" | "verywide" (both axles),
+--         frontWheels / rearWheels = the same per axle,
+--         steeringLock = degrees (like the Steering lock extra, e.g. 60)
+--   Parts the vehicle type can't take are skipped.
+function applyVehicleTuning(veh, spec)
+    if not isElement(veh) or getElementType(veh) ~= "vehicle" or type(spec) ~= "table" then return false end
+    for key, idx in pairs(PACKS) do
+        local level = tonumber(spec[key])
+        local part = Customs.parts[idx]
+        local node = level and part and part.options[math.floor(level) + 1]
+        if node and Customs.isPartAvailable(veh, part) then applyItem(nil, veh, node) end
+    end
+    if getVehicleType(veh) == "Automobile" or getVehicleType(veh) == "Monster Truck" then
+        local front = Customs.WHEEL_SIZE[spec.frontWheels or spec.wheels]
+        local rear = Customs.WHEEL_SIZE[spec.rearWheels or spec.wheels]
+        if front then Customs.setHandlingFlagByte(veh, 3, front) end
+        if rear then Customs.setHandlingFlagByte(veh, 4, rear) end
+    end
+    local lock = tonumber(spec.steeringLock)
+    if lock then
+        setVehicleHandling(veh, "steeringLock", lock, false)
+        reapplySlotUpgrades(veh)
+    end
+    return true
+end
+
+--------------------------------------------------------------------------------
 -- Buy
 --------------------------------------------------------------------------------
 

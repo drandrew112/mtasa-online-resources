@@ -195,15 +195,14 @@ end, 3000, 0)
 -- KLIENS KÉRÉSEK
 ------------------------------------------------------------
 
-addEvent("siren:setData", true)
-addEventHandler("siren:setData", resourceRoot, function(veh, key, value)
-    if not isSirenVehicle(veh) then return end
-    if getVehicleController(veh) ~= client then return end
-    if not isValidValue(veh, key, value) then return end
+-- egy ELS adat beállítása ellenőrzéssel és a függő állapotok követésével
+-- (kliens kérés és exportok közös útja); true, ha elfogadta
+local function applyData(veh, key, value)
+    if not isValidValue(veh, key, value) then return false end
 
     if key == "sirenType" then
         setSirenType(veh, value)
-        return
+        return true
     end
 
     setElementData(veh, key, value)
@@ -224,7 +223,67 @@ addEventHandler("siren:setData", resourceRoot, function(veh, key, value)
     if key == "mkjState" then
         setVehicleSirensOn(veh, wantsNativeSirens(veh))
     end
+    return true
+end
+
+addEvent("siren:setData", true)
+addEventHandler("siren:setData", resourceRoot, function(veh, key, value)
+    if not isSirenVehicle(veh) then return end
+    if getVehicleController(veh) ~= client then return end
+    applyData(veh, key, value)
 end)
+
+------------------------------------------------------------
+-- SZIRÉNA EXPORTOK
+------------------------------------------------------------
+
+-- exports.v_els:setElsState(vehicle, key, value): bármelyik ELS adat
+-- (mkjState, sirenState, sirenIndex, sirenHorn, sirenSecondary, sirenType, elsPattern),
+-- ugyanazokkal az ellenőrzésekkel, mint a sofőr gombjainál (pl. extrás modellen extra nélkül
+-- semmi nem kapcsolható be). true, ha elfogadta.
+function setElsState(veh, key, value)
+    if not isSirenVehicle(veh) or SIREN_DATA_KEYS[key] == nil then return false end
+    if getElementData(veh, "mkjState") == nil then
+        prepareVehicle(veh)
+    end
+    return applyData(veh, key, value)
+end
+
+-- fények be/ki (kikapcsoláskor a sziréna is leáll)
+function setElsLights(veh, state)
+    return setElsState(veh, "mkjState", state and true or false)
+end
+
+-- sziréna be/ki, opcionálisan a hang sorszámával (bekapcsoláskor a fények is felkapcsolnak)
+function setElsSiren(veh, state, index)
+    if index ~= nil and not setElsState(veh, "sirenIndex", index) then return false end
+    return setElsState(veh, "sirenState", state and true or false)
+end
+
+-- sziréna típus beállítása (sirenTypes kulcs); a jármű megtartja, amíg újra nem állítják
+function setElsSirenType(veh, sirenType)
+    return setElsState(veh, "sirenType", sirenType)
+end
+
+-- az elérhető sziréna típusok kulcsai (ábécé sorrendben)
+function getElsSirenTypes()
+    local list = {}
+    for key in pairs(sirenTypes) do
+        list[#list + 1] = key
+    end
+    table.sort(list)
+    return list
+end
+
+-- az ELS állapota táblában (nil, ha nem ELS-es jármű)
+function getElsState(veh)
+    if not isSirenVehicle(veh) then return nil end
+    local state = { extra = getElsExtra(veh) }
+    for key in pairs(SIREN_DATA_KEYS) do
+        state[key] = getElementData(veh, key)
+    end
+    return state
+end
 
 ------------------------------------------------------------
 -- JÁRMŰ ESEMÉNYEK
@@ -261,6 +320,44 @@ addEventHandler("onElementDestroy", root, function()
     configured[source] = nil
     extraApplied[source] = nil
 end)
+
+------------------------------------------------------------
+-- EXTRA EXPORTOK
+------------------------------------------------------------
+
+-- exports.v_els:setElsExtra(vehicle, index | false): az index. extra felrakása,
+-- false = levétel; true = az utoljára használt (alapból az 1.) extra.
+-- Visszatérés: true ha sikerült, false ha a jármű nem extrás modell vagy érvénytelen index.
+function setElsExtra(veh, index)
+    local cfg = isElement(veh) and getElementType(veh) == "vehicle" and extraVehicles[getElementModel(veh)]
+    if not cfg then return false end
+
+    if index == false or index == nil then
+        setExtra(veh, false)
+        return true
+    elseif index == true then
+        setExtra(veh, true)
+        return true
+    end
+    if type(index) ~= "number" or index % 1 ~= 0 or index < 1 or index > cfg.count then
+        return false
+    end
+    setExtra(veh, true, index)
+    return true
+end
+
+-- a felrakott extra sorszáma, vagy false ha nincs rajta (nil: nem extrás jármű)
+function getElsExtra(veh)
+    if not isElement(veh) or not extraVehicles[getElementModel(veh)] then return nil end
+    if getElementData(veh, "elsExtra") ~= true then return false end
+    return getElementData(veh, "elsExtraIndex") or 1
+end
+
+-- a modellen választható extrák száma (0 = nem extrás)
+function getElsExtraCount(model)
+    local cfg = extraVehicles[model]
+    return cfg and cfg.count or 0
+end
 
 ------------------------------------------------------------
 -- EXTRA PARANCS

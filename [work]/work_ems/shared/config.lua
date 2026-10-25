@@ -40,8 +40,18 @@ EMS = {
     PLATE_PREFIX = "A-",
     PLATE_DIGITS = 4,
     VEHICLES = {
-        { model = 416, name = L.text("work_ems.config.mercedes_sprinter_hu") },
-        { model = 456, name = L.text("work_ems.config.mission_row_ambulance") },
+        { model = 416, name = L.text("work_ems.config.mercedes_sprinter_omsz"), paintjob = "hu_omsz", sirenType = "fsvas320",
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 416, name = L.text("work_ems.config.mercedes_sprinter_omsz_white"), paintjob = "hu_omsz_white", sirenType = "fsvas320",
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 416, name = L.text("work_ems.config.mercedes_sprinter_omsz_old"), paintjob = "hu_omsz_old", sirenType = "premier_hazard_7109",
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 456, name = L.text("work_ems.config.mission_row_ambulance"),
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 598, name = L.text("work_ems.config.skoda_octavia_omsz"), paintjob = "hu_omsz", elsExtra = 1, sirenType = "soundoff",
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 598, name = L.text("work_ems.config.skoda_octavia_omsz_white"), paintjob = "hu_omsz_white", elsExtra = 1, sirenType = "soundoff",
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
     },
 
     -- Stations: a duty marker and (optionally) a duty vehicle marker with spawn points.

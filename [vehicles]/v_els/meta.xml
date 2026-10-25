@@ -19,6 +19,16 @@
     <script src="client/beacons.lua"  type="client" />
     <script src="client/editor.lua"   type="client" />
 
+    <export function="setElsExtra" type="server" />
+    <export function="getElsExtra" type="server" />
+    <export function="getElsExtraCount" type="server" />
+    <export function="setElsState" type="server" />
+    <export function="setElsLights" type="server" />
+    <export function="setElsSiren" type="server" />
+    <export function="getElsState" type="server" />
+    <export function="setElsSirenType" type="server" />
+    <export function="getElsSirenTypes" type="server" />
+
     <!-- lights.json: read and written by the server only (not downloaded) -->
 
     <!-- ================= SOUNDS ================= -->

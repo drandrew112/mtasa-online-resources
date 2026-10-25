@@ -26,6 +26,7 @@ local function setup()
     local vehicles = {}
     for i, v in ipairs(BTWORK.VEHICLES) do
         vehicles[i] = { model = v.model, name = v.name, color = v.color, data = v.data,
+                        tuning = v.tuning, elsExtra = v.elsExtra, sirenType = v.sirenType, paintjob = v.paintjob,
                         platePrefix = BTWORK.PLATE_PREFIX, plateDigits = BTWORK.PLATE_DIGITS }
     end
 
