@@ -347,7 +347,7 @@ function signOn(player)
         if not vehicle or vehicle ~= tutorial.vehicle then return false, "no_vehicle" end
     else
         if not isRunning("work_core") or not exports.work_core:isPlayerOnDuty(player, BTD.WORK_ID) then return false, "no_duty" end
-        if not vehicle or vehicle ~= exports.work_core:getPlayerWorkVehicle(player) or getElementModel(vehicle) ~= 415 then
+        if not vehicle or vehicle ~= exports.work_core:getPlayerWorkVehicle(player) or not BTD.VEHICLE_MODELS[getElementModel(vehicle)] then
             return false, "no_vehicle"
         end
     end

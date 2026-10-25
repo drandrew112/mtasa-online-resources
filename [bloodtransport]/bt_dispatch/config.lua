@@ -2,6 +2,8 @@
 
 BTD = {
     WORK_ID = "bloodtransport",
+    -- Work vehicle models a service can be started in (work_bloodtransport VEHICLES)
+    VEHICLE_MODELS = { [415] = true, [598] = true },
 
     -- Pay at the end of a service (work_core payWork, itemised receipt)
     PAY = {
