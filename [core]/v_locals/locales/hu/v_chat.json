@@ -1,6 +1,8 @@
 {
+  "v_chat.chat.channel_global": "Globális",
+  "v_chat.chat.channel_local": "Helyi",
   "v_chat.chat.slow_down": "Túl gyorsan küldesz üzeneteket. Várj pár másodpercet.",
-  "v_chat.chat.text": "#FFFFFF{sender}: #dcdcdc{text}",
+  "v_chat.chat.text": "{sender}: {text}",
   "v_chat.mute.invalid_duration": "Érvénytelen időtartam",
   "v_chat.mute.invalid_player": "Érvénytelen játékos",
   "v_chat.mute.is_not_muted": "{player} nincs némítva",

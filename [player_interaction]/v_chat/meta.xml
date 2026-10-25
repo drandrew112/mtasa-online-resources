@@ -18,4 +18,6 @@
   <export function="mutePlayer" type="server"/>
   <!-- server unmutePlayer(player, admin_name) -->
   <export function="unmutePlayer" type="server"/>
+  <!-- client isPlayerTyping(player) -> true while the player's chat input is open (element data "chatTyping") -->
+  <export function="isPlayerTyping" type="client"/>
 </meta>

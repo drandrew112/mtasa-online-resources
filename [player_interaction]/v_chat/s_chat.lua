@@ -53,18 +53,36 @@ local function allowMessage(player)
     return true
 end
 
-function sendMessageToAll(sender, text)
+-- Local chat reaches players within this many metres, in the same dimension and interior.
+local LOCAL_RANGE = 30
+
+-- channel: "global" (default) | "local"
+function sendMessageToAll(sender, text, channel)
+    channel = (channel == "local") and "local" or "global"
+    local x, y, z, dim, int
+    if channel == "local" then
+        x, y, z = getElementPosition(sender)
+        dim, int = getElementDimension(sender), getElementInterior(sender)
+    end
     for i,player in ipairs( getElementsByType("player") ) do
-        triggerClientEvent(player, "addMessage", sender, sender, text)
+        local reach = true
+        if channel == "local" and player ~= sender then
+            local px, py, pz = getElementPosition(player)
+            reach = getElementDimension(player) == dim and getElementInterior(player) == int
+                and getDistanceBetweenPoints3D(x, y, z, px, py, pz) <= LOCAL_RANGE
+        end
+        if reach then
+            triggerClientEvent(player, "addMessage", sender, sender, text, channel)
+        end
     end
 end
 
 -- Fired (server side only) after a chat message has been accepted and sent.
--- source = the sender, argument: the cleaned message text.
+-- source = the sender, arguments: the cleaned message text, channel ("global" | "local").
 addEvent("onPlayerChatMessage")
 
 addEvent("sendMessageToAll", true)
-addEventHandler("sendMessageToAll", getRootElement(), function(_, text)
+addEventHandler("sendMessageToAll", getRootElement(), function(_, text, channel)
     -- The sender is always the real caller: the first argument from the client is ignored.
     local player = client
     if not isElement(player) or getElementType(player) ~= "player" then return end
@@ -84,9 +102,11 @@ addEventHandler("sendMessageToAll", getRootElement(), function(_, text)
         return
     end
 
-    sendMessageToAll(player, text)
-    exports.v_discordmanager:sendWebhook("chat", "**"..getPlayerName(player).."**: "..text)
-    triggerEvent("onPlayerChatMessage", player, text)
+    channel = (channel == "local") and "local" or "global"
+    sendMessageToAll(player, text, channel)
+    local tag = (channel == "local") and "[Local] " or ""
+    exports.v_discordmanager:sendWebhook("chat", tag.."**"..getPlayerName(player).."**: "..text)
+    triggerEvent("onPlayerChatMessage", player, text, channel)
 end)
 
 addEventHandler("onPlayerQuit", root, function()

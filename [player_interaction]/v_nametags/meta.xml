@@ -6,4 +6,8 @@
 	<script src="locals.lua" type="client" />
 	<script src="sourceC.lua" type="client" />
 	<!--script src="server.lua" type="server" /-->
+
+	<file src="img/mic.png" />
+	<file src="img/bubble.png" />
+	<file src="img/dot.png" />
 </meta>

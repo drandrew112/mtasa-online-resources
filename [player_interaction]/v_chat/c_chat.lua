@@ -6,8 +6,15 @@ local safe_x,safe_y = uicore:getSafeZone()
 
 local messages = {} -- { lines = { colour coded line, ... }, time = tick }
 local input_text = ""
+-- chat channels: Tab switches the one the input box sends to
+local CHANNELS = {
+    global = { colour = "#FFFFFF", rgb = {255,255,255}, label = "v_chat.chat.channel_global", next = "local" },
+    ["local"] = { colour = "#8FD3FF", rgb = {143,211,255}, label = "v_chat.chat.channel_local", next = "global" },
+}
+local channel = "global"
 setElementData(localPlayer, "showChat", true)
 setElementData(localPlayer, "showChatInput", false)
+setElementData(localPlayer, "chatTyping", false)
 local max_char = 150 -- same as MAX_CHARS in s_chat.lua
 local hide_message = 30 -- secs
 local fade_time = 1000 -- ms, fade-out at the end of hide_message
@@ -62,13 +69,17 @@ local function wrapText(text, width)
     return lines
 end
 
-function addMessage(sender, text)
+function addMessage(sender, text, msg_channel)
     local name = getElementData(sender, "displayName") or getPlayerName(sender)
+    local ch = CHANNELS[msg_channel] or CHANNELS.global
     messages[#messages+1] = {
-        lines = wrapText(L("v_chat.chat.text", { sender = name, text = text }), CHAT_W - PAD*2),
+        -- colour codes of the catalog text are dropped: the whole line is the channel colour
+        lines = wrapText(ch.colour..L("v_chat.chat.text", { sender = name, text = text }):gsub("#%x%x%x%x%x%x", ""), CHAT_W - PAD*2),
         time = getTickCount(),
     }
     if #messages > keep_messages then table.remove(messages, 1) end
+    -- F8 console log
+    outputConsole(("[%s] %s: %s"):format(msg_channel == "local" and "Local" or "Global", name:gsub("#%x%x%x%x%x%x", ""), text))
 end
 addEvent("addMessage", true)
 addEventHandler("addMessage", getRootElement(), addMessage)
@@ -117,8 +128,12 @@ function renderChat()
 
         if inputOpen then
             -- show input box
+            local ch = CHANNELS[channel]
+            local r, g, b = ch.rgb[1], ch.rgb[2], ch.rgb[3]
             dxDrawRectangle(left, input_y, CHAT_W, INPUT_H, tocolor(0,0,0, 180))
-            dxDrawLine(left, input_y+INPUT_H-1, right, input_y+INPUT_H-1, tocolor(255,255,255, 255), 2)
+            dxDrawLine(left, input_y+INPUT_H-1, right, input_y+INPUT_H-1, tocolor(r,g,b, 255), 2)
+            -- channel label under the box (Tab switches)
+            dxDrawText(L(ch.label), left+5, input_y+INPUT_H+4, _,_, tocolor(r,g,b, 255), 1.2, "default-bold", "left", "top")
             -- character counter
             local counter = L.len(input_text).."/"..max_char
             local counter_w = dxGetTextWidth(counter, 1, "default") + 10
@@ -134,19 +149,37 @@ function renderChat()
             dxDrawText(
                 shown,
                 left+5, input_y+INPUT_H/2, _,_,
-                tocolor(255,255,255, 255),
+                tocolor(r,g,b, 255),
                 FONT_SCALE, "default", "left", "center"
             )
             dxDrawLine(
                 left+5+text_w, input_y+INPUT_H-5,
                 left+5+text_w+10, input_y+INPUT_H-5,
-                tocolor(255,255,255, 255),
+                tocolor(r,g,b, 255),
                 3
             )
         end
     end
 end
 addEventHandler("onClientRender", getRootElement(), renderChat)
+
+-- "showChatInput": UI state, other panels check it to block their own input.
+-- "chatTyping": synced to everyone (nametags use it), true while the chat input is open.
+function setInputOpen(state)
+    setElementData(localPlayer, "showChatInput", state)
+    if getElementData(localPlayer, "chatTyping") ~= state then
+        setElementData(localPlayer, "chatTyping", state)
+    end
+end
+
+-- client export: is this player typing in the chat?
+function isPlayerTyping(player)
+    return isElement(player) and getElementData(player, "chatTyping") == true
+end
+
+addEventHandler("onClientResourceStop", resourceRoot, function()
+    if getElementData(localPlayer, "chatTyping") then setElementData(localPlayer, "chatTyping", false) end
+end)
 
 -- input backend
 addEventHandler("onClientCharacter", getRootElement(), function (char)
@@ -166,9 +199,13 @@ addEventHandler("onClientKey", getRootElement(), function (btn, isPress)
                 input_text = L.sub(input_text, 1, -2)
             end
 
+        -- Switch channel
+        elseif btn=="tab" then
+            channel = CHANNELS[channel].next
+
         -- Send message
         elseif btn=="enter" then
-            setElementData(localPlayer, "showChatInput", false)
+            setInputOpen(false)
             uicore:toggleMoveControls(true)
             if (input_text ~= "") then
                 if (input_text[1] == "/") then
@@ -176,13 +213,13 @@ addEventHandler("onClientKey", getRootElement(), function (btn, isPress)
                     cmd = string.sub(args[1], 2, -1)
                     outputDebugString("cmd="..cmd)
                 else
-                    triggerServerEvent("sendMessageToAll", localPlayer, localPlayer, input_text)
+                    triggerServerEvent("sendMessageToAll", localPlayer, localPlayer, input_text, channel)
                 end
             end
             input_text = ""
         -- Close input
         elseif btn=="escape" then
-            setElementData(localPlayer, "showChatInput", false)
+            setInputOpen(false)
             uicore:toggleMoveControls(true)
             input_text = ""
         end
@@ -204,6 +241,6 @@ bindKey("t", "down", function()
     end
     uicore:toggleMoveControls(false)
     input_text = ""
-    setTimer(setElementData, 10,1, localPlayer, "showChatInput", true)
+    setTimer(function() setInputOpen(true) end, 10, 1)
 end)
 
