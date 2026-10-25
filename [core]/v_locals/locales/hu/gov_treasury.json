@@ -43,7 +43,7 @@
   "gov_treasury.ui.so_editing": "#{id} szerkesztése",
   "gov_treasury.ui.so_save": "Módosítás mentése",
   "gov_treasury.ui.so_cancel": "Mégse",
-  "gov_treasury.page.budgetPlan": "Költségvetési terv",
+  "gov_treasury.page.budget_plan": "Költségvetési terv",
   "gov_treasury.ui.plan_hint": "A tervezett 24 óra a következő hét minden napjára: az egész államra, majd külön az Államkincstárra és minden állami cégre. Tervtételek, állandó átutalások és a vasút fenntartási költsége (menetrend × költségbeállítások).",
   "gov_treasury.ui.plan_income": "Bevétel",
   "gov_treasury.ui.plan_expense": "Kiadás",

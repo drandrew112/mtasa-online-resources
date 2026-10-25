@@ -307,6 +307,8 @@ GOV.module({
         { id = "treasury",  category = "economy", order = 10, script = "web/js/pages.js", need = "gov.*.bank.view" },
         { id = "transfers", category = "economy", order = 20, script = "web/js/pages.js", need = "gov.*.bank.view" },
         { id = "budget",    category = "economy", order = 30, script = "web/js/pages.js", need = "treasury.overview" },
-        { id = "budgetPlan", category = "economy", order = 35, script = "web/js/pages.js", need = "treasury.plan.view" },
+        -- title key: v_locals keys are lower case only
+        { id = "budgetPlan", category = "economy", order = 35, script = "web/js/pages.js", need = "treasury.plan.view",
+          title = "gov_treasury.page.budget_plan" },
     },
 })

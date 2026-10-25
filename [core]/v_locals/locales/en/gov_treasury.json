@@ -43,7 +43,7 @@
   "gov_treasury.ui.so_editing": "Editing order #{id}",
   "gov_treasury.ui.so_save": "Save changes",
   "gov_treasury.ui.so_cancel": "Cancel",
-  "gov_treasury.page.budgetPlan": "Budget plan",
+  "gov_treasury.page.budget_plan": "Budget plan",
   "gov_treasury.ui.plan_hint": "The planned 24 hours for every day of the next week: for the whole state, then for the State Treasury and every state company. Plan items, standing orders and the railway running costs (timetable × cost settings).",
   "gov_treasury.ui.plan_income": "Income",
   "gov_treasury.ui.plan_expense": "Expense",

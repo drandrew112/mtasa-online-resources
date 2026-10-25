@@ -11,7 +11,8 @@ PERMS.ready = false
 local function whenReady(cb)
     local bank = GOV.bank()
     if GOV.coreReady() and bank and bank:isBankReady() == true then return cb() end
-    setTimer(whenReady, 2000, 1, cb)
+    -- a closure: setTimer does not pass a function on as a timer argument
+    setTimer(function() whenReady(cb) end, 2000, 1)
 end
 
 addEventHandler("onResourceStart", resourceRoot, function()

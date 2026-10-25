@@ -50,11 +50,13 @@
     };
     const covers = (d, g, key) => match(g.perm, key) && (!g.branch || companyBranch(d, key) === g.branch);
 
+    // text keys: v_locals keys are a-z 0-9 _ . only, so the "*" of a family is "_" (gov_perms.perm.gov._.bank.pay)
+    const textKey = k => 'gov_perms.perm.' + k.replace(/\*/g, '_');
     const permText = r => {
-        if (r.family) return GOV.str('gov_perms.perm.' + r.family, { target: r.targetName || r.target }) || r.perm;
-        return GOV.str('gov_perms.perm.' + r.perm) || r.perm;
+        if (r.family) return GOV.str(textKey(r.family), { target: r.targetName || r.target }) || r.perm;
+        return GOV.str(textKey(r.perm)) || r.perm;
     };
-    const familyText = f => (GOV.str('gov_perms.perm.' + f, { target: '…' }) || f);
+    const familyText = f => (GOV.str(textKey(f), { target: '…' }) || f);
     const dangerTag = n => n >= 3 ? `<span class="tag bad">${esc(T('danger_3'))}</span>` : n >= 2 ? `<span class="tag bad" style="opacity:.75">${esc(T('danger_2'))}</span>` : '';
     const dot = c => `<i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${esc(c || '#888')};margin-right:6px"></i>`;
     const tabs = () => `<div class="gv-row" style="margin-bottom:14px">${TABS.map(t => btn(T('tab_' + t), 'permTab', { tab: t }, sel.permTab === t ? 'primary' : '')).join('')}</div>`;
@@ -137,11 +139,12 @@
             `<div class="gv-list">${groups.map(x => `<a data-act="groupPick" data-id="${x.id}" class="${g && x.id === g.id ? 'on' : ''}${x.status !== 'active' ? ' dim' : ''}">` +
                 `<span>${dot(x.color)}${esc(x.name)}${x.kind === 'system' ? ` <span class="tag">${esc(T('system'))}</span>` : ''}</span>` +
                 `<small class="mono">${x.holders}/${x.maxHolders || '∞'} · ${money(x.salary)}${esc(T('salary_h'))}</small></a>`).join('') || empty()}</div>` +
-            `<div class="gv-card" style="margin-top:10px"><div class="gv-field"><label>${esc(T('plan_hours'))}</label><div>` +
-            (d.canManage ? `<span class="gv-row" style="display:inline-flex"><input class="osa-input num" id="pgPlanHours" value="${esc(hours)}" data-orig="${esc(hours)}">` +
-                btn(T('save'), 'planHours', {}, 'primary') + '</span>' : esc(hours)) +
-            `<div class="gv-sub">${esc(T('plan_hours_hint'))}</div></div></div>` +
-            `<div class="gv-sub">${esc(T('cost_total', { amount: money(costDay) }))}</div></div></div>`;
+            // the narrow left column: label, input + Save, hint and the daily cost below each other
+            `<div class="gv-card" style="margin-top:10px"><div style="font-weight:600;margin-bottom:6px">${esc(T('plan_hours'))}</div>` +
+            (d.canManage ? `<div class="gv-row"><input class="osa-input num" id="pgPlanHours" value="${esc(hours)}" data-orig="${esc(hours)}">` +
+                btn(T('save'), 'planHours', {}, 'primary') + '</div>' : `<div class="mono">${esc(hours)}</div>`) +
+            `<div class="gv-sub" style="margin-top:6px">${esc(T('plan_hours_hint'))}</div>` +
+            `<div class="gv-sub" style="margin-top:6px">${esc(T('cost_total', { amount: money(costDay) }))}</div></div></div>`;
         if (!g) return h + `<div class="gv-card dim">${esc(T('empty'))}</div></div>`;
         const can = editable(d, g);
         const keys = Object.keys(d.taxKeys || {}).sort();
@@ -252,7 +255,7 @@
 
     // ------------------------------------------------------------ the page
     GOV.page('perms', {
-        keys: [...GOV.keys('gov_perms', UI), ...AREA_KEYS, ...PERM_KEYS.map(k => 'gov_perms.perm.' + k)],
+        keys: [...GOV.keys('gov_perms', UI), ...AREA_KEYS, ...PERM_KEYS.map(textKey)],
         async load() {
             const r = await GOV.call('perms');
             if (sel.permTab === 'catalogue') D.permCatalogue = arr((await GOV.call('permCatalogue')).list);
