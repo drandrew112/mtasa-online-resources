@@ -32,8 +32,8 @@ BAG = {
     -- On the side of the stretcher (med_stretcher object 2146, local space: y = its long axis).
     -- The stretcher is scaled on the clients, these offsets are not: tune them in-game.
     STRETCHER_OFFSETS = {
-        bag = { 0.0, -0.55, -0.30, 0, 0, 90 },      -- lower shelf, foot end
-        monitor = { 0.30, 0.55, 0.20, 0, 0, 90 },   -- side rail, head end, screen outwards
+        bag = { 0.0, 0.2, -0.35, 0, 0, 0 },      -- lower shelf, foot end
+        monitor = { 0.0, 1.10, 0.20, 0, 0, 180 },   -- side rail, head end, screen outwards
     },
 
     AUTO_DROP_ON_TREAT = true,      -- a medsys procedure starts: carried items go down by the patient
