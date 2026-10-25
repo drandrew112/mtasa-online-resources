@@ -3,7 +3,6 @@ local uicore = exports["ui_core"]
 local sw,sh = uicore:getScreenWH()
 local safe_x, safe_y = uicore:getSafeZone()
 
-local isDownloading = false
 local res_name = "res_name"
 local file_name = "file_name"
 local file_size = "file_size"
@@ -31,8 +30,14 @@ local TEST_ADMIN_LEVEL = 5
 -- adja a haladast, nem a transfer box. { owner, title, done, total, label, cancellable }
 local external = nil
 
+-- Csatlakozasi letoltes: a resource indulasatol addig tart, amig a transfer box
+-- eltunt ES a szerver altal kuldott osszes kliens resource fut (lasd server.lua).
+-- Kozben a kepernyo a box gapjeiben is fennmarad. Ha mar belepett jatekosnal
+-- indul ujra a resource, nincs csatlakozasi letoltes.
+local joinPending = getElementData(localPlayer, "isLogged") ~= true
+
 local function screenActive()
-    return isTransferBoxActive() or external ~= nil or debug_ds
+    return isTransferBoxActive() or joinPending or external ~= nil or debug_ds
 end
 
 -- A letolto kepernyo alatt elrejtjuk a HUD-ot (hideHUD = true). Amikor a
@@ -144,6 +149,8 @@ function render()
         restoreHud()
         setCursor(false)
         if MG.isPlaying() then MG.stop() end
+        fadeCamera(true)
+        setElementData(localPlayer, "download_screen", false)
     end
 end
 
@@ -179,39 +186,104 @@ addEventHandler ("onClientTransferBoxProgressChange", root, function (downloaded
     total = tonumber(string.format("%.2f", tostring(totalSize/1024/1024) ))
 end)
 
--- MTA sometimes splits a download into several small chunks: the transfer box hides and shows again
--- right away. Wait 100ms after it hides and re-check before announcing the end of the download.
+-- A box eltunese utan meg ennyit varunk az ellenorzessel (a kovetkezo csoport
+-- box-a altalaban azonnal jon).
 local FINISH_RECHECK_MS = 100
-local finishTimer
+-- Ha a box nem aktiv, es a hianyzo resource-ok listaja ennyi ideig nem valtozik,
+-- megis befejezzuk (pl. a meta.xml alapjan kliensesnek hitt resource nem indul el
+-- a kliensen), hogy senki ne ragadjon be a letolto kepernyon.
+local STALL_MS = 15000
 
-local function finishDownload()
+local expected = nil -- { [nev] = true }, a szervertol
+local finishTimer, pollTimer
+local stallKey, stallSince
+
+local function missingResources()
+    local missing = {}
+    for name in pairs(expected) do
+        local res = getResourceFromName(name)
+        if not res or getResourceState(res) ~= "running" then missing[#missing + 1] = name end
+    end
+    table.sort(missing)
+    return missing
+end
+
+local function finishJoin()
+    joinPending = false
+    stallKey, stallSince = nil, nil
+    if isTimer(finishTimer) then killTimer(finishTimer) end
+    if isTimer(pollTimer) then killTimer(pollTimer) end
+    finishTimer, pollTimer = nil, nil
+    -- a cleanup render() (kurzor, minijatek, HUD, fadeCamera) a download:finished elott fut
+    syncRender()
+    triggerServerEvent("ui_download:joinDone", resourceRoot)
+    triggerEvent("download:finished", root)
+end
+
+local function checkJoin()
     finishTimer = nil
-    if isTransferBoxActive() then return end -- still downloading, the next hide will retry
-    isDownloading = false
-    -- a kulso letoltes alatt felbukkano transfer box nem a csatlakozasi letoltes:
-    -- a kepernyot az endExternal zarja, a download:finished nem sul el
+    if not joinPending or not expected then return end
+    if isTransferBoxActive() then stallKey, stallSince = nil, nil return end
+    -- a kulso letoltes (v_modloader) vegen a closeExternal ujra ellenoriz
     if external then return end
 
-    if not debug_ds then
-        setCursor(false)
-        MG.stop()
+    local missing = missingResources()
+    if #missing > 0 then
+        local key = table.concat(missing, ",")
+        if key ~= stallKey then
+            stallKey, stallSince = key, getTickCount()
+            return
+        end
+        if getTickCount() - stallSince < STALL_MS then return end
+        outputDebugString("[ui_download] join download finished without: " .. key, 2)
     end
-    fadeCamera(true)
-    setElementData(localPlayer, "download_screen", false)
-    restoreHud()
+    finishJoin()
+end
 
-    triggerEvent("download:finished", root)
+local function scheduleCheck()
+    if not joinPending then return end
+    if isTimer(finishTimer) then killTimer(finishTimer) end
+    finishTimer = setTimer(checkJoin, FINISH_RECHECK_MS, 1)
+end
+
+addEvent("ui_download:expected", true)
+addEventHandler("ui_download:expected", resourceRoot, function(names)
+    expected = {}
+    for _, name in ipairs(names) do expected[name] = true end
+    scheduleCheck()
+end)
+
+addEvent("ui_download:expectAdd", true)
+addEventHandler("ui_download:expectAdd", resourceRoot, function(name)
+    if expected then expected[name] = true end
+end)
+
+addEvent("ui_download:expectRemove", true)
+addEventHandler("ui_download:expectRemove", resourceRoot, function(name)
+    if expected then expected[name] = nil scheduleCheck() end
+end)
+
+addEventHandler("onClientResourceStart", root, function(res)
+    if res == resource then return end
+    scheduleCheck()
+end)
+
+if joinPending then
+    syncRender()
+    triggerServerEvent("ui_download:requestExpected", resourceRoot)
+    -- tartalek: a stall-figyeleshez akkor is ellenorzunk, ha nem jon esemeny
+    pollTimer = setTimer(function()
+        if not isTimer(finishTimer) then checkJoin() end
+    end, 1000, 0)
 end
 
 function on_TransferBoxVisibilityChange (state)
     syncRender()
-    if state==true then
-        isDownloading = true
+    if state == true then
         if isTimer(finishTimer) then killTimer(finishTimer) end
         finishTimer = nil
-    elseif state==false then
-        if isTimer(finishTimer) then killTimer(finishTimer) end
-        finishTimer = setTimer(finishDownload, FINISH_RECHECK_MS, 1)
+    else
+        scheduleCheck()
     end
 end
 addEventHandler ("onClientTransferBoxVisibilityChange", root, on_TransferBoxVisibilityChange)
@@ -245,8 +317,9 @@ end)
 
 -- exports
 
+-- true amig a csatlakozasi letoltes tart: utana jon a download:finished
 function isDownloadingActive()
-    return isDownloading
+    return joinPending
 end
 
 -- Kulso letoltes (a hivo resource adja a haladast):
@@ -260,6 +333,7 @@ addEvent("onClientDownloadCancel")
 local function closeExternal()
     if not external then return end
     external = nil
+    if joinPending then scheduleCheck() return end
     if isTransferBoxActive() or debug_ds then return end
     setCursor(false)
     MG.stop()
