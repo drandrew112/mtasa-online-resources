@@ -23,6 +23,14 @@
 /\[core\]/v_modloader/objects/*
 !/\[core\]/v_modloader/*/.gitkeep
 
+# --- v_paintjobs: the script is versioned; paintjob textures, the generated meta.xml and manifest are not ---
+# (only meta.changethis.xml is in the repo - /paintjobs update builds meta.xml from it)
+/\[core\]/v_paintjobs/meta.xml
+/\[core\]/v_paintjobs/meta.new.xml
+/\[core\]/v_paintjobs/manifest.json
+/\[core\]/v_paintjobs/paintjobs/*
+!/\[core\]/v_paintjobs/paintjobs/.gitkeep
+
 # --- v_ownveh: the /vehspawn collector file ---
 # (spawnpoints.lua is hand-maintained, so it is versioned; vehicle data now
 #  lives in the shared MySQL database, not a local vehicles.db)

@@ -48,6 +48,7 @@ local IGNORE_PREFIX = {
     "[core]/v_modloader/weapons/",
     "[core]/v_modloader/objects/",
     "[core]/v_modloader/logs/",
+    "[core]/v_paintjobs/paintjobs/",   -- paintjob textures + generated meta are local only
     "v_modmenu/",              -- local/dev only, git-ignored (ISSUES.md SEC-04)
     -- MTA's database-credentials protection blocks other resources from
     -- reading/writing v_mysql's files, so we cannot touch them from here.
@@ -61,6 +62,9 @@ local IGNORE_EXACT = {
     ["[core]/v_modloader/meta.xml"]                     = true,
     ["[core]/v_modloader/manifest.json"]                = true,
     ["[core]/v_modloader/meta.changethis.xml"]          = true,
+    ["[core]/v_paintjobs/meta.xml"]                     = true,
+    ["[core]/v_paintjobs/manifest.json"]                = true,
+    ["[core]/v_paintjobs/meta.changethis.xml"]          = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
 local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py", ".sql" }
