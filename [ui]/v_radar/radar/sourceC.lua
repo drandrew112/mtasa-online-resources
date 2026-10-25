@@ -703,6 +703,29 @@ function renderMinimap(x, y, w, h)
 				end
 			end
 
+			-- Other players in the same dimension / interior (same toggle as on the bigmap).
+			-- Skipped when a script already attached a blip to them, or when they are invisible.
+			if playerCanSeePlayers then
+				local myDim, myInt = getElementDimension(localPlayer), getElementInterior(localPlayer)
+				for _, v in ipairs(getElementsByType("player")) do
+					if v ~= localPlayer and getElementDimension(v) == myDim and getElementInterior(v) == myInt and getElementAlpha(v) > 0 then
+						local hasBlip = false
+						for _, att in ipairs(getAttachedElements(v)) do
+							if getElementType(att) == "blip" then
+								hasBlip = true
+								break
+							end
+						end
+
+						if not hasBlip then
+							local otherX, otherY = getElementPosition(v)
+							renderBlip("blips/1.png", otherX, otherY, remapPlayerPosX, remapPlayerPosY, 14, 14, tocolor(160, 200, 255), cameraRotation, false, farBlipsCount + manualBlipsCount + defaultBlipsCount)
+							defaultBlipsCount = defaultBlipsCount + 1
+						end
+					end
+				end
+			end
+
 			-- Waypoint + objective blips: always far-shown, drawn on top of the rest.
 			for _, b in ipairs(getSpecialBlips()) do
 				renderBlip(b.icon, b.x, b.y, remapPlayerPosX, remapPlayerPosY, 24, 24, 0xFFFFFFFF, cameraRotation, true, b.key)

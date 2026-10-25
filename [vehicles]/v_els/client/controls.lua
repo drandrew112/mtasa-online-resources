@@ -9,6 +9,15 @@ function getControlledSirenVehicle()
     end
 end
 
+-- a 0-5 gombokhoz: sofőr vagy első utas (jobb1) ülés, hátsó ülésekről nem
+local function getSirenPanelVehicle()
+    local veh = getPedOccupiedVehicle(localPlayer)
+    local seat = getPedOccupiedVehicleSeat(localPlayer)
+    if veh and (seat == 0 or seat == 1) and sirenVehicles[getElementModel(veh)] then
+        return veh
+    end
+end
+
 local function requestData(veh, key, value)
     triggerServerEvent("siren:setData", resourceRoot, veh, key, value)
 end
@@ -19,7 +28,7 @@ end
 
 -- 0: FÉNYEK BE/KI
 bindKey("0", "down", function()
-    local veh = getControlledSirenVehicle()
+    local veh = getSirenPanelVehicle()
     if veh then
         requestData(veh, "mkjState", not getElementData(veh, "mkjState"))
     end
@@ -27,7 +36,7 @@ end)
 
 -- 1: SZIRÉNA BE/KI (mindig az első hanggal indul; kikapcsolt fényt a szerver felkapcsolja)
 function turnSiren(state)
-    local veh = getControlledSirenVehicle()
+    local veh = getSirenPanelVehicle()
     if veh then
         requestData(veh, "sirenIndex", 1)
         if state ~= nil then
@@ -41,7 +50,7 @@ bindKey("1", "down", function() turnSiren() end)
 
 -- 2: KÖVETKEZŐ SZIRÉNA HANG
 function nextTone()
-    local veh = getControlledSirenVehicle()
+    local veh = getSirenPanelVehicle()
     if not veh then return end
     
     local cfg = sirenTypes[getElementData(veh, "sirenType") or getDefaultSirenType(getElementModel(veh))]
@@ -53,7 +62,7 @@ bindKey("2", "down", nextTone)
 
 -- 3: KÜRT (lenyomva tartva)
 local function setHorn(state)
-    local veh = getControlledSirenVehicle()
+    local veh = getSirenPanelVehicle()
     if veh then
         requestData(veh, "sirenHorn", state)
     end
@@ -63,7 +72,7 @@ bindKey("3", "up",   function() setHorn(false) end)
 
 -- 4: MÁSODLAGOS SZIRÉNA BE/KI (csak szóló fő szirénánál, ha a típusnak van ilyen hangja)
 bindKey("4", "down", function()
-    local veh = getControlledSirenVehicle()
+    local veh = getSirenPanelVehicle()
     if not veh then return end
 
     local secondary = getElementData(veh, "sirenSecondary") == true
@@ -75,7 +84,7 @@ end)
 
 -- 5: KÖVETKEZŐ VILLOGÁSI MINTA
 bindKey("5", "down", function()
-    local veh = getControlledSirenVehicle()
+    local veh = getSirenPanelVehicle()
     if veh then
         requestData(veh, "elsPattern", nextIndex(getElementData(veh, "elsPattern"), #ELS_PATTERNS))
     end

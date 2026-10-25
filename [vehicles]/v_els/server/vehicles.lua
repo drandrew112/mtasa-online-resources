@@ -229,7 +229,9 @@ end
 addEvent("siren:setData", true)
 addEventHandler("siren:setData", resourceRoot, function(veh, key, value)
     if not isSirenVehicle(veh) then return end
-    if getVehicleController(veh) ~= client then return end
+    -- sofőr vagy első utas (jobb1); hátsó ülésekről nem
+    local seat = getPedOccupiedVehicleSeat(client)
+    if getPedOccupiedVehicle(client) ~= veh or (seat ~= 0 and seat ~= 1) then return end
     applyData(veh, key, value)
 end)
 
@@ -302,7 +304,7 @@ addEventHandler("onVehicleEnter", root, function(_, seat)
 end)
 
 addEventHandler("onVehicleExit", root, function(_, seat)
-    if seat == 0 and isSirenVehicle(source) and getElementData(source, "sirenHorn") then
+    if (seat == 0 or seat == 1) and isSirenVehicle(source) and getElementData(source, "sirenHorn") then
         setElementData(source, "sirenHorn", false)
     end
 end)

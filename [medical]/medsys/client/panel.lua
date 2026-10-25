@@ -196,9 +196,12 @@ local function drawInjuries(x, y, data)
             dxDrawText(L("medsys.panel.bleeding", { bleeding = MEDIC_BLEEDING[injury.bleeding] }), x + s(300), y, x + s(460), y + rowH,
                 BLEEDING_COLOR[injury.bleeding], 1, fonts.body, "left", "center")
         end
-        local status = injury.treated and injury.treatedLabel or (injury.hospital and L("medsys.panel.needs_hospital")) or L("medsys.panel.untreated")
-        dxDrawText(status, x, y, x + W - PAD * 2, y + rowH, injury.treated and C.good or C.muted, 1,
-            fonts.body, "right", "center")
+        -- treatingBy: another medic is working on this wound right now
+        local status = injury.treated and injury.treatedLabel
+            or (injury.treatingBy and L("medsys.panel.treating_by", { name = injury.treatingBy }))
+            or (injury.hospital and L("medsys.panel.needs_hospital")) or L("medsys.panel.untreated")
+        local statusColor = injury.treated and C.good or (injury.treatingBy and C.accent) or C.muted
+        dxDrawText(status, x, y, x + W - PAD * 2, y + rowH, statusColor, 1, fonts.body, "right", "center")
         y = y + rowH
     end
     if #injuries > MAX_INJURY_ROWS then

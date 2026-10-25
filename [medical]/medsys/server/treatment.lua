@@ -4,7 +4,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Examining[medic] = target                      -- open examination panels
 -- Watchers[target] = { [medic] = true }          -- reverse index for the per-tick panel updates
 -- Treatments[medic] = { target, action, option, sessionId, timer, aborted }
--- Locks[target] = { [action] = medic }           -- one medic per procedure per patient
+-- Locks[target] = { [key] = medic }              -- one medic per procedure per patient; the key is
+--                                                   the action, or "action:injuryId" / "action:base"
+--                                                   for a procedure on one wound (procedure.pick)
 
 addEvent("onMedicalStateChange", false)
 addEvent("onMedicalCardiacArrest", false)
@@ -144,11 +146,36 @@ end
 -- Procedures
 ---------------------------------------------------------------------------
 
--- The wound a bandage goes on: the worst bleeder first, then the worst untreated injury
-local function findBandageTarget(state)
+-- Lock key of a procedure on one wound: picked = an injury or "base" (bleeding without one)
+local function pickKey(action, picked)
+    return action .. ":" .. (picked == "base" and "base" or tostring(picked.id))
+end
+
+-- The live locks on a patient: { [key] = medic }
+local function getClaims(target)
+    local claims = {}
+    for key, medic in pairs(Locks[target] or {}) do
+        if isElement(medic) then claims[key] = medic end
+    end
+    return claims
+end
+
+-- A medic working on this kind of procedure (any wound), or nil
+local function findClaim(claims, action)
+    local prefix = action .. ":"
+    for key, medic in pairs(claims or {}) do
+        if key == action or key:sub(1, #prefix) == prefix then return medic end
+    end
+    return nil
+end
+
+-- The wound a bandage goes on: the worst bleeder first, then the worst untreated injury.
+-- claims: wounds another medic is already working on are skipped
+local function findBandageTarget(state, claims)
     local best, bestScore
     for _, injury in ipairs(state.injuries) do
-        if not injury.treated and MEDIC_INJURIES[injury.type].treat == "bandage" then
+        if not injury.treated and MEDIC_INJURIES[injury.type].treat == "bandage"
+            and not (claims and claims[pickKey("bandage", injury)]) then
             local score = injury.bleeding * 10 + injury.severity
             if not bestScore or score > bestScore then best, bestScore = injury, score end
         end
@@ -156,15 +183,32 @@ local function findBandageTarget(state)
     return best
 end
 
--- The fracture a splint goes on: the worst untreated one
-local function findSplintTarget(state)
+local function pickBandage(state, claims)
+    local injury = findBandageTarget(state, claims)
+    if injury then return injury end
+    if state.baseBleeding > 0 and not (claims and claims["bandage:base"]) then return "base" end
+    return nil
+end
+
+-- The fracture a splint goes on: the worst untreated one (claims as above)
+local function findSplintTarget(state, claims)
     local best
     for _, injury in ipairs(state.injuries) do
-        if not injury.treated and MEDIC_INJURIES[injury.type].treat == "splint" then
+        if not injury.treated and MEDIC_INJURIES[injury.type].treat == "splint"
+            and not (claims and claims[pickKey("splint", injury)]) then
             if not best or injury.severity > best.severity then best = injury end
         end
     end
     return best
+end
+
+-- Is the picked wound still there and untreated (it is applied at the end of the minigame)
+local function isPickedOpen(state, picked)
+    if picked == "base" then return state.baseBleeding > 0 end
+    for _, injury in ipairs(state.injuries) do
+        if injury == picked then return not injury.treated end
+    end
+    return false
 end
 
 local function worstSeverity(state, injuryType)
@@ -183,36 +227,42 @@ local function isResourceRunning(name)
 end
 
 -- resource     minigame resource that has to be running (none for a timed procedure)
--- can(state)   -> true | false, reason
+-- can(state, claims) -> true | false, reason (claims: getClaims of the patient)
+-- pick(state, claims) optional: the wound it goes on (injury | "base"), locked per wound, so
+--              other medics can work on the other wounds at the same time; nil = none free
 -- validate(state, option) optional, checks the option sent by the panel (e.g. the medicine)
--- start(medic, target, state) -> session id or false
+-- start(medic, target, state, picked) -> session id or false
 -- duration     timed procedure without a minigame: it succeeds after this many seconds
 -- progress(option, state) text of the progress bar of a timed procedure
 -- stop(medic)  aborts the minigame (it fires its finish event)
 -- cleanup(state) optional, runs when the procedure ends in any way
 -- finishEvent  the minigame's result event, sessionArg = position of the session id in it
 -- apply(state, success, ...) applies the result, returns the line shown on the panel
+--              (with pick: apply(state, success, picked), picked = nil when it is gone meanwhile)
 -- animated     the minigame has no animation of its own, the medic kneels by the patient
 local PROCEDURES = {}
 
 PROCEDURES.bandage = {
     resource = "mg_arrows",
-    can = function(state)
-        if findBandageTarget(state) or state.baseBleeding > 0 then return true end
+    can = function(state, claims)
+        if pickBandage(state, claims) then return true end
+        local other = findClaim(claims, "bandage")
+        if other then return false, L.msg("medsys.treatment.name_is_already_treating_it", { name = getDisplayName(other) }) end
         return false, L.msg("medsys.treatment.nothing_to_bandage")
     end,
-    start = function(medic, target, state)
-        local injury = findBandageTarget(state)
-        local severity = injury and injury.severity or state.baseBleeding
+    pick = pickBandage,
+    start = function(medic, target, state, picked)
+        local severity = picked == "base" and state.baseBleeding or picked.severity
         return exports.mg_arrows:startArrowsGame(medic, 8 + severity * 4, { speed = 0.85 + severity * 0.15 })
     end,
     stop = function(medic) exports.mg_arrows:stopArrowsGame(medic) end,
     finishEvent = "onArrowsGameFinish",
     sessionArg = 6, -- success, hits, total, percent, reason, sessionId
     animated = true,
-    apply = function(state, success)
+    apply = function(state, success, picked)
         if not success then return L.msg("medsys.treatment.bandage_did_not_hold") end
-        local injury = findBandageTarget(state)
+        if not picked then return L.msg("medsys.treatment.already_treated") end
+        local injury = picked ~= "base" and picked
         if injury then
             local def = MEDIC_INJURIES[injury.type]
             injury.treated = true
@@ -227,27 +277,26 @@ PROCEDURES.bandage = {
 
 PROCEDURES.splint = {
     resource = "mg_splinting",
-    can = function(state)
-        if findSplintTarget(state) then return true end
+    can = function(state, claims)
+        if findSplintTarget(state, claims) then return true end
+        local other = findClaim(claims, "splint")
+        if other then return false, L.msg("medsys.treatment.name_is_already_treating_it", { name = getDisplayName(other) }) end
         return false, L.msg("medsys.treatment.no_fracture_to_splint")
     end,
-    start = function(medic, target, state)
-        local injury = findSplintTarget(state)
-        local severity = injury.severity
+    pick = findSplintTarget,
+    start = function(medic, target, state, picked)
+        local severity = picked.severity
         return exports.mg_splinting:startSplintGame(medic, target, 6 + severity * 2, { speed = 0.85 + severity * 0.15 })
     end,
     stop = function(medic) exports.mg_splinting:stopSplintGame(medic) end,
     finishEvent = "onSplintGameFinish",
     sessionArg = 6, -- success, hits, total, percent, reason, sessionId
-    apply = function(state, success)
+    apply = function(state, success, picked)
         if not success then return L.msg("medsys.treatment.splint_did_not_hold") end
-        local injury = findSplintTarget(state)
-        if injury then
-            local def = MEDIC_INJURIES[injury.type]
-            injury.treated = true
-            return ("%s: %s"):format(def.label, def.treatedLabel:lower())
-        end
-        return L.msg("medsys.treatment.fracture_splinted")
+        if not picked then return L.msg("medsys.treatment.already_treated") end
+        local def = MEDIC_INJURIES[picked.type]
+        picked.treated = true
+        return ("%s: %s"):format(def.label, def.treatedLabel:lower())
     end,
 }
 
@@ -451,11 +500,15 @@ PROCEDURES.neuro = {
 local function getAvailability(state, target, equipment)
     local result = {}
     local dead = not state or state.dead
+    local claims = getClaims(target)
     for action, procedure in pairs(PROCEDURES) do
         if dead then
             result[action] = L.msg("medsys.rhythm.patient_is_dead")
+        elseif not procedure.pick and claims[action] then
+            -- the medic doing it is busy (no panel), so everyone watching sees the same
+            result[action] = L.msg("medsys.treatment.name_is_already_doing_this", { name = getDisplayName(claims[action]) })
         else
-            local ok, reason = procedure.can(state)
+            local ok, reason = procedure.can(state, claims)
             result[action] = ok or reason
         end
     end
@@ -476,6 +529,14 @@ local function getPanelSnapshot(target)
     -- the panel shows what the medic sees: the glucose only comes from the glucometer, the hidden
     -- conditions only through their findings
     snapshot.glucose, snapshot.conditions = nil, nil
+    -- who is working on which wound (the injury list shows it)
+    local claims = getClaims(target)
+    for _, injury in ipairs(snapshot.injuries or {}) do
+        for action, procedure in pairs(PROCEDURES) do
+            local medic = procedure.pick and claims[pickKey(action, injury)]
+            if medic then injury.treatingBy = getDisplayName(medic) end
+        end
+    end
     snapshot.transportPhase, snapshot.transportTimeLeft = getTransportStatus(target)
     return snapshot
 end
@@ -640,8 +701,8 @@ local function releaseTreatment(medic)
     end
     local target, action = treatment.target, treatment.action
     local locks = Locks[target]
-    if locks and locks[action] == medic then
-        locks[action] = nil
+    if locks and locks[treatment.lockKey] == medic then
+        locks[treatment.lockKey] = nil
         if not next(locks) then Locks[target] = nil end
     end
     local procedure = PROCEDURES[action]
@@ -652,6 +713,8 @@ local function releaseTreatment(medic)
         refreshSubscription(medic, target)
         triggerClientEvent(medic, "medic:busy", resourceRoot, false)
     end
+    -- the other medics' panels show the freed procedure / wound at once
+    if isElement(target) and Patients[target] then sendPanelUpdates(Patients[target]) end
     return treatment
 end
 
@@ -668,7 +731,13 @@ local function finishTreatment(medic, success, ...)
         -- stopped by the patient's change (interruptProcedure): it counts as done, nothing to apply
         success, message, isError = true, treatment.interrupt, treatment.interruptError
     else
-        message = PROCEDURES[treatment.action].apply(state, success, ...)
+        local procedure = PROCEDURES[treatment.action]
+        if procedure.pick then
+            local picked = isPickedOpen(state, treatment.picked) and treatment.picked or nil
+            message = procedure.apply(state, success, picked)
+        else
+            message = procedure.apply(state, success, ...)
+        end
         isError = not success
         if success == true then onEquipmentTreatmentDone(medic, target, treatment.action, treatment.option, state) end
     end
@@ -735,7 +804,11 @@ function startTreatment(medic, target, action, option)
 
     local state = getLivePatient(target)
     if not state or state.dead then return false, L.msg("medsys.rhythm.patient_is_dead") end
-    local ok, reason = procedure.can(state)
+    local claims = getClaims(target)
+    if not procedure.pick and claims[action] then
+        return false, L.msg("medsys.treatment.name_is_already_doing_this", { name = getDisplayName(claims[action]) })
+    end
+    local ok, reason = procedure.can(state, claims)
     if not ok then return false, reason end
     if procedure.validate then
         ok, reason = procedure.validate(state, option)
@@ -744,15 +817,16 @@ function startTreatment(medic, target, action, option)
     ok, reason = onEquipmentTreatmentCheck(medic, target, action, option, state)
     if not ok then return false, reason end
 
-    local locks = Locks[target]
-    if locks and isElement(locks[action]) then
-        return false, L.msg("medsys.treatment.someone_else_is_already_doing_this")
-    end
+    -- one medic per wound (pick) or per procedure
+    local picked = procedure.pick and procedure.pick(state, claims)
+    if procedure.pick and not picked then return false, L.msg("medsys.treatment.someone_else_is_already_doing_this") end
+    local lockKey = picked and pickKey(action, picked) or action
 
     closeExamination(medic)
-    Locks[target] = locks or {}
-    Locks[target][action] = medic
-    Treatments[medic] = { target = target, action = action, option = option }
+    Locks[target] = Locks[target] or {}
+    Locks[target][lockKey] = medic
+    Treatments[medic] = { target = target, action = action, option = option, picked = picked, lockKey = lockKey }
+    sendPanelUpdates(state) -- the others see at once who took it
     refreshSubscription(medic, target)
     triggerClientEvent(medic, "medic:busy", resourceRoot, true)
     if procedure.animated then lockMedic(medic, target, true) end
@@ -768,7 +842,7 @@ function startTreatment(medic, target, action, option)
         return true
     end
 
-    local sessionId = procedure.start(medic, target, state)
+    local sessionId = procedure.start(medic, target, state, picked)
     if not sessionId then
         releaseTreatment(medic)
         openExamination(medic, target, L.msg("medsys.treatment.could_not_start_procedure"), true)
@@ -784,11 +858,11 @@ end
 function stopTreatmentsOn(target, reopen)
     local locks = Locks[target]
     if not locks then return end
-    for action, medic in pairs(locks) do
+    for _, medic in pairs(locks) do
         local treatment = Treatments[medic]
         if treatment and treatment.target == target then
             treatment.aborted = true
-            if isElement(medic) then PROCEDURES[action].stop(medic) end -- fires the finish event
+            if isElement(medic) then PROCEDURES[treatment.action].stop(medic) end -- fires the finish event
             releaseTreatment(medic)
             if reopen and isElement(medic) and isElement(target) then openExamination(medic, target) end
         end
