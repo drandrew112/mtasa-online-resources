@@ -142,6 +142,23 @@ local function colorOptions(part, prefix)
     return items, paths
 end
 
+local function paintjobOptions(part, prefix)
+    local cur = getElementData(curVeh, "paintjob:custom") or false
+    local items, paths = {}, {}
+
+    paths[1] = prefix .. "/1"
+    items[1] = makeOption(paths[1], L("v_customs.tuning.no_paintjob"), 0, cur == false,
+        { kind = "paintjob", name = false })
+
+    for k, entry in ipairs(Customs.paintjobs(curVeh)) do
+        local p = prefix .. "/" .. (k + 1)
+        paths[k + 1] = p
+        items[k + 1] = makeOption(p, entry.label, part.price, cur == entry.name,
+            { kind = "paintjob", name = entry.name })
+    end
+    return items, paths
+end
+
 local function staticOptions(part, prefix)
     local active = activeStatic(part)
     local items, paths = {}, {}
@@ -164,6 +181,8 @@ local function buildPart(part, prefix, uiPrefix)
         opts, paths = opticalOptions(part, prefix)
     elseif part.group == "color" then
         opts, paths = colorOptions(part, prefix)
+    elseif part.group == "paintjob" then
+        opts, paths = paintjobOptions(part, prefix)
     else
         opts, paths = staticOptions(part, prefix)
     end

@@ -18,6 +18,21 @@ sirenVehicles = {
     [415] = "soundoff"    -- Skoda Octavia Blood Transporter
 }
 
+-- Kapcsolható extrás modellek: a fényhíd a modell egyik extra komponense, amit
+-- az /elsextra paranccsal lehet fel- és levenni. Extra nélkül az ELS nem működik
+-- (se fény, se sziréna, se kürt).
+-- count: hány választható extra van a modellen (extra1..extraN); az /elsextra <n>
+--        az n. extrát teszi fel (setVehicleVariant n-1)
+extraVehicles = {
+    [598] = { count = 2 },
+}
+
+-- true, ha a jármű ELS-e használható: nem extrás modell, vagy fel van téve az extra
+function hasElsExtra(veh)
+    if not extraVehicles[getElementModel(veh)] then return true end
+    return getElementData(veh, "elsExtra") == true
+end
+
 DEFAULT_SIREN_TYPE = "fsvas320"
 
 function getDefaultSirenType(model)

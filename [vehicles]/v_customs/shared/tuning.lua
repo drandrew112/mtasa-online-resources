@@ -5,7 +5,8 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 -- Top level is an alphabetically sorted list of entries. An entry is either:
 --   folder : { name, folder = true, items = { <part>, ... } }
 --   part   : static { name, options = { <option leaf>, ... } }
---            group  { name, group = "optical"|"color", slot?, price }
+--            group  { name, group = "optical"|"color"|"paintjob", slot?, price }
+--            ("paintjob": option 1 = none, then v_paintjobs:getPaintjobs(model) in its order)
 --
 -- Option leaf : { name, price, kind, data, ... }
 --
@@ -151,6 +152,7 @@ Customs.parts = {
         { name = L.text("v_customs.tuning.primary_color"),   group = "color", slot = "primary",   price = 4000 },
         { name = L.text("v_customs.tuning.secondary_color"), group = "color", slot = "secondary", price = 2400 },
         { name = L.text("v_customs.tuning.headlight_color"), group = "color", slot = "headlight", price = 350, types = MOTOR },
+        { name = L.text("v_customs.tuning.paintjob"),        group = "paintjob", price = 6000 },
     }},
 
     -- Extras (flat) ------------------------------------------------
@@ -219,7 +221,14 @@ function Customs.isPartAvailable(veh, part)
         local ups = getVehicleCompatibleUpgrades(veh, part.slot)
         if not ups or #ups == 0 then return false end
     end
+    if part.group == "paintjob" and #Customs.paintjobs(veh) == 0 then return false end
     return true
+end
+
+-- v_paintjobs list of the vehicle's model ({ { name, label } }, empty when it is not running)
+function Customs.paintjobs(veh)
+    local ok, list = pcall(function() return exports.v_paintjobs:getPaintjobs(getElementModel(veh)) end)
+    return (ok and type(list) == "table") and list or {}
 end
 
 -- Applies Customs.PRICE_MULT (rounded to whole euros).

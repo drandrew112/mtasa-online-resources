@@ -310,6 +310,8 @@
     "v_customs.menu.exit": "Exit",
     "v_customs.menu.repair_vehicle": "Repair vehicle",
     "v_customs.tuning.vehicle_repaired": "Vehicle repaired.",
+    "v_customs.tuning.paintjob": "Paintjob",
+    "v_customs.tuning.no_paintjob": "None",
     "ui_inac.main.spawn_jailed": "You can't spawn a vehicle while in admin jail.",
     "ui_inac.main.spawn_in_job": "You can't spawn a vehicle while in a job.",
     "ui_inac.main.spawn_cooldown": "You can spawn a vehicle again in {seconds} s.",

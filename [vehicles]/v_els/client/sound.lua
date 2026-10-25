@@ -66,7 +66,7 @@ end
 -- path, volume, isHorn, introPath
 local function getSoundPath(veh)
     local cfg = getSirenConfig(veh)
-    if not cfg then return end
+    if not cfg or not hasElsExtra(veh) then return end
 
     -- kürt alatt a fő sziréna szünetel
     if getElementData(veh, "sirenHorn") then
@@ -128,7 +128,7 @@ fadeIntros = function()
 end
 
 local function getSecondaryPath(veh)
-    if getElementData(veh, "sirenHorn") then return end
+    if getElementData(veh, "sirenHorn") or not hasElsExtra(veh) then return end
     if not (getElementData(veh, "sirenState") and getElementData(veh, "sirenSecondary")) then return end
     local cfg = getSirenConfig(veh)
     if cfg and cfg.secondary then
@@ -164,8 +164,8 @@ local function updateVehicleSound(veh)
     end
 end
 
-local soundDataKeys     = { sirenState = true, sirenIndex = true, sirenHorn = true, sirenType = true }
-local secondaryDataKeys = { sirenState = true, sirenSecondary = true, sirenHorn = true, sirenType = true }
+local soundDataKeys     = { sirenState = true, sirenIndex = true, sirenHorn = true, sirenType = true, elsExtra = true }
+local secondaryDataKeys = { sirenState = true, sirenSecondary = true, sirenHorn = true, sirenType = true, elsExtra = true }
 
 addEventHandler("onClientElementDataChange", root, function(dataName)
     if getElementType(source) ~= "vehicle" then return end

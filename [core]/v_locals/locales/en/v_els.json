@@ -57,5 +57,10 @@
   "v_els.editor.unsaved_changes_will_be_lost": "Unsaved changes will be lost!",
   "v_els.editor.x_y_z": "#AAAAAAx {x|3f}   y {y|3f}   z {z|3f}",
   "v_els.editor.x_y_z_size": "x {x|2f}  y {y|2f}  z {z|2f}  size {size|2f}",
-  "v_els.editor.you_do_not_have_access_to": "You do not have access to the ELS editor."
+  "v_els.editor.you_do_not_have_access_to": "You do not have access to the ELS editor.",
+  "v_els.extra.invalid": "Invalid option. Choose 1-{count} or off.",
+  "v_els.extra.list": "Light bar options: {count} (/elsextra 1-{count}, /elsextra off). Mounted: {current}",
+  "v_els.extra.mounted": "Light bar #{index} mounted.",
+  "v_els.extra.no_extra_vehicle": "Get in a vehicle with a light bar option as driver.",
+  "v_els.extra.removed": "Light bar removed."
 }

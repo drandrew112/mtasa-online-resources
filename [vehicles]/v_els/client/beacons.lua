@@ -203,7 +203,7 @@ local function track(veh)
         return
     end
     local state = vehicles[veh] or { offset = math.random(0, 2000) }
-    state.on = getElementData(veh, "mkjState") == true
+    state.on = getElementData(veh, "mkjState") == true and hasElsExtra(veh)
     state.pattern = getElementData(veh, "elsPattern") or 1
     vehicles[veh] = state
 end
@@ -237,7 +237,7 @@ addEventHandler("onClientElementModelChange", root, function()
 end)
 
 addEventHandler("onClientElementDataChange", root, function(key)
-    if (key == "mkjState" or key == "elsPattern") and vehicles[source] then
+    if (key == "mkjState" or key == "elsPattern" or key == "elsExtra") and vehicles[source] then
         track(source)
         refreshRendering()
     end

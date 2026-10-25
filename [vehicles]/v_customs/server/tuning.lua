@@ -68,6 +68,16 @@ local function applyItem(player, veh, node, optIdx)
             setVehicleColor(veh, unpack(c))
         end
         return true
+
+    elseif node.group == "paintjob" then
+        local name = false
+        if optIdx and optIdx > 1 then
+            local entry = Customs.paintjobs(veh)[optIdx - 1]
+            if not entry then return false end
+            name = entry.name
+        end
+        local ok, done = pcall(function() return exports.v_paintjobs:setVehicleCustomPaintjob(veh, name) end)
+        return ok and done == true
     end
 
     -- ---- option leaves --------------------------------------------------
@@ -142,8 +152,8 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     if not node then return end
     if not node.group and not node.kind then return end
 
-    -- first option of an optical group ("Default") is free
-    local freeReset = node.group == "optical" and optIdx == 1
+    -- first option of an optical / paintjob group ("Default" / "None") is free
+    local freeReset = (node.group == "optical" or node.group == "paintjob") and optIdx == 1
     local net = freeReset and 0 or Customs.netPrice(node.price or 0)
     local price, vat = VAT.split("tuning", net)
 

@@ -8,6 +8,7 @@
 -- info shapes from client/menu.lua:
 --   { kind = "color",   slot, rgb }
 --   { kind = "optical",  slot, upgrade }
+--   { kind = "paintjob", name }   (name = false: none)
 --   { kind = "performance"|"handlingProp"|"wheelWidth"|"flagToggle", opt = <option> }
 
 Preview = { veh = nil }
@@ -95,6 +96,23 @@ local function apply(info)
         Customs.setHandlingFlagByte(veh, opt.side == "front" and 3 or 4, Customs.WHEEL_SIZE[opt.data] or 0)
         return function() setVehicleHandling(veh, "handlingFlags", base.flags, false) end
 
+    elseif k == "paintjob" then
+        -- v_paintjobs shows it locally; the remap is tinted by primary colour 1, so white
+        -- like the server sets it on purchase
+        pcall(function() exports.v_paintjobs:previewPaintjob(veh, info.name) end)
+        local extras = getElementData(veh, "customs:extras")
+        local old = type(extras) == "table" and extras.customPaintjobColor   -- colour before the paintjob
+        local rgb = info.name and { 255, 255, 255 } or (type(old) == "table" and old)
+        if rgb then
+            local c = { getVehicleColor(veh, true) }
+            c[1], c[2], c[3] = tonumber(rgb[1]) or 0, tonumber(rgb[2]) or 0, tonumber(rgb[3]) or 0
+            setVehicleColor(veh, unpack(c))
+        end
+        return function()
+            pcall(function() exports.v_paintjobs:previewPaintjob(veh, nil) end)
+            setVehicleColor(veh, unpack(base.colors))
+        end
+
     elseif k == "flagToggle" and opt.flag == "lsdDoor" then
         setElementData(veh, "tuning.lsdDoor", opt.data and true or nil)
         setDoors(opt.data and true or false)
@@ -122,6 +140,10 @@ function Preview.commit(info)
     if type(info) ~= "table" or not isElement(Preview.veh) then return end
     active = nil
     local veh = Preview.veh
+    if info.kind == "paintjob" then
+        -- the bought one is the vehicle's element data now
+        pcall(function() exports.v_paintjobs:previewPaintjob(veh, nil) end)
+    end
     base.colors = { getVehicleColor(veh, true) }
     base.head   = { getVehicleHeadLightColor(veh) }
     base.flags  = getVehicleHandling(veh).handlingFlags

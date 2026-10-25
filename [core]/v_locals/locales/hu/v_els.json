@@ -57,5 +57,10 @@
   "v_els.editor.unsaved_changes_will_be_lost": "A nem mentett módosítások elvesznek!",
   "v_els.editor.x_y_z": "#AAAAAAx {x|3f}   y {y|3f}   z {z|3f}",
   "v_els.editor.x_y_z_size": "x {x|2f}  y {y|2f}  z {z|2f}  méret {size|2f}",
-  "v_els.editor.you_do_not_have_access_to": "Nincs hozzáférésed az ELS szerkesztőhöz."
+  "v_els.editor.you_do_not_have_access_to": "Nincs hozzáférésed az ELS szerkesztőhöz.",
+  "v_els.extra.invalid": "Érvénytelen opció. Válassz 1-{count} között, vagy off.",
+  "v_els.extra.list": "Fényhíd opciók: {count} db (/elsextra 1-{count}, /elsextra off). Felszerelve: {current}",
+  "v_els.extra.mounted": "Fényhíd #{index} felszerelve.",
+  "v_els.extra.no_extra_vehicle": "Ülj be sofőrként egy fényhíd-kapcsolós járműbe.",
+  "v_els.extra.removed": "Fényhíd leszerelve."
 }
