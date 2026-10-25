@@ -21,6 +21,7 @@ addEvent("onGovSettingChanged", false)   -- (key, value)
 addEvent("onGovSettingsSynced", false)   -- after every re-read of gov_core
 addEvent("onGovModulesChanged", false)   -- a module (its permissions) or a target list changed
 addEvent("onGovPermsChanged", false)     -- (account | false) of gov_perms: positions / rights changed
+addEvent("gov_core:ready", false)        -- gov_core loaded settings + state companies (the modules start loading, GOV.onReady)
 
 function isResourceRunning(name)
     local res = getResourceFromName(name)
@@ -103,6 +104,30 @@ function GOV.coreReady()
     local c = GOV.core()
     return c and c:isGovReady() == true or false
 end
+
+--- the start of a module: fn runs once, after this resource started and gov_core is ready (at once,
+--- or at gov_core:ready). Use it instead of onResourceStart for everything that loads data or
+--- starts timers; the fns run in the order they were added, after the module got registered.
+local readyQueue, started = {}, false
+
+local function flushReady()
+    if not started or not GOV.coreReady() then return end
+    GOV.register()
+    local q = readyQueue
+    readyQueue = {}
+    for _, fn in ipairs(q) do fn() end
+end
+
+function GOV.onReady(fn)
+    readyQueue[#readyQueue + 1] = fn
+    flushReady()
+end
+
+addEventHandler("onResourceStart", resourceRoot, function()
+    started = true
+    flushReady()
+end)
+addEventHandler("gov_core:ready", root, flushReady)
 
 --- an error key of a reply: a full key stays, else <resource>.err.<k> when this resource has it,
 --- else gov_core.err.<k>
@@ -243,8 +268,7 @@ local TARGETS = {}   -- [family prefix] = { {id, name}, ... } of this resource
 --- families ("works" for works.*.pay), list = { { id = "ems", name = "EMS" }, ... }
 function GOV.setTargets(prefix, list)
     TARGETS[prefix] = list
-    local c = GOV.core()
-    if c then c:setGovTargets(prefix, list) end
+    if started and GOV.coreReady() then GOV.core():setGovTargets(prefix, list) end
 end
 
 --------------------------------------------------------------------------------
@@ -362,8 +386,8 @@ function GOV.bankCall(action, args, actor, cb)
 end
 
 --------------------------------------------------------------------------------
--- the module: settings defaults, panel actions + pages (registered with gov_core now and again
--- whenever gov_core starts)
+-- the module: settings defaults, panel actions + pages (registered with gov_core once it is ready,
+-- and again at every gov_core:ready)
 --------------------------------------------------------------------------------
 
 local MOD
@@ -380,16 +404,14 @@ function GOV.module(def)
     GOV.register()
 end
 
+--- registers the module (only with a ready gov_core; again at every gov_core:ready, so a module
+--- that kept running through a gov_core restart gets back in, see flushReady)
 function GOV.register()
+    if not MOD or not started or not GOV.coreReady() then return end
     local c = GOV.core()
-    if not MOD or not c then return end
     c:registerModule(MOD)
     for prefix, list in pairs(TARGETS) do c:setGovTargets(prefix, list) end
 end
-
-addEventHandler("onResourceStart", root, function(res)
-    if res ~= getThisResource() and getResourceName(res) == "gov_core" then GOV.register() end
-end)
 
 addEvent("onGovAction", false)
 addEventHandler("onGovAction", resourceRoot, function(reqId, action, args, actor, player)

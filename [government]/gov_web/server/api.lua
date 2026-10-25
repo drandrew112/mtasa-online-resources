@@ -24,8 +24,16 @@ end
 
 local PUBLIC = { ready = false }
 
+addEvent("gov_core:ready", false)
+
+local function coreReady()
+    if not running("gov_core") then return false end
+    local ok, v = pcall(function() return exports.gov_core:isGovReady() end)
+    return ok and v == true
+end
+
 local function rebuild()
-    if not running("gov_core") then PUBLIC = { ready = false }; return end
+    if not coreReady() then PUBLIC = { ready = false }; return end
     local finance = ask("gov_treasury", "getPublicFinance") or {}
     local taxes = ask("gov_tax", "getPublicTaxes") or {}
     local works = ask("gov_works", "getPublicWorks") or {}
@@ -50,10 +58,13 @@ local function rebuild()
     }
 end
 
+-- built once gov_core is ready (the modules load their data right after gov_core:ready, so a few
+-- seconds later), then every PUBLIC_REFRESH_MS
 addEventHandler("onResourceStart", resourceRoot, function()
-    setTimer(rebuild, 10000, 1)
+    if coreReady() then rebuild() end
     setTimer(rebuild, PUBLIC_REFRESH_MS, 0)
 end)
+addEventHandler("gov_core:ready", root, function() setTimer(rebuild, 5000, 1) end)
 
 function govWebState()
     if not running("gov_core") then return { ok = false, error = "offline" } end

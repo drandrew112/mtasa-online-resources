@@ -74,12 +74,20 @@ GOV.module({
     pages = { { id = "myPage", category = "services", order = 30, script = "web/js/pages.js", need = "my.view" } },
     categories = { { id = "mine", order = 35 } },                           -- optional, text key <module>.menu.mine
 })
+-- the start: never onResourceStart (gov_core may not have loaded its settings yet)
+GOV.onReady(function() DB.start(SCHEMA, loadMyData) end)
 ```
+**Start order:** gov_core is ready once schema, settings and state companies are loaded (async MySQL);
+then it triggers `gov_core:ready` (source = gov_core resourceRoot, listen on `root`; export
+`isGovReady()`). A module loads nothing before that: `GOV.onReady(fn)` runs fn once, after the module
+started and gov_core is ready (at once, or at `gov_core:ready`), and the module is registered (pages,
+actions, settings defaults) only then — before the onReady fns, and again at every `gov_core:ready`
+(gov_core restarted).
+
 The lib gives `DB.*` (incl. `DB.start(schema, cb)`), `GOV.get/set/log`, `GOV.companyList / companyByCode /
 companyById / stateAccounts / treasuryId`, `GOV.specAccount / targetAccount / checkSpec / payerOptions /
-targetOptions / companyNames`, `GOV.bankCall`, `GOV.err`, `GOV.coreReady`, the permission helpers
-`GOV.has / targets / reach / setTargets / accountTarget / codeTarget / permMatch`. It re-registers the module
-whenever gov_core starts. Error keys: `reply(false, "x")` → `<module>.err.x` if it exists, else
+targetOptions / companyNames`, `GOV.bankCall`, `GOV.err`, `GOV.coreReady / onReady`, the permission helpers
+`GOV.has / targets / reach / setTargets / accountTarget / codeTarget / permMatch`. Error keys: `reply(false, "x")` → `<module>.err.x` if it exists, else
 `gov_core.err.x`. Texts: `<module>.ui.*`, `<module>.page.<id>` (page title), shared ones `gov_core.ui.*`.
 
 ## Server exports

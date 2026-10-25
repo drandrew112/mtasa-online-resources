@@ -200,7 +200,7 @@ local function runDue()
     end, "SELECT * FROM gov_standing_orders WHERE enabled = 1 AND next_run <= ? ORDER BY next_run LIMIT 50", now)
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     DB.start(SCHEMA, function()
         setTimer(runDue, GOV.STANDING_CHECK_MS, 0)
     end)

@@ -160,7 +160,7 @@ local function startTaxesWhenReady()
     setTimer(startTaxesWhenReady, 5000, 1)
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     DB.start(SCHEMA, function()
         GOV.refreshRuns()
         setTimer(GOV.refreshRuns, GOV.CACHE_MS, 0)

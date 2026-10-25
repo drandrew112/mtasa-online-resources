@@ -203,7 +203,7 @@ addEventHandler("onPlayerQuit", root, function() editing[source] = nil end)
 -- start
 --------------------------------------------------------------------------------
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     registerOffice()
     DB.start(SCHEMA, loadPcs)
 end)

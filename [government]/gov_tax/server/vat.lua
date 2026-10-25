@@ -14,10 +14,8 @@ end
 addEventHandler("onGovSettingChanged", root, function(key)
     if key == "tax.vat" then publish() end
 end)
-addEventHandler("onResourceStart", resourceRoot, publish)
-addEventHandler("onResourceStart", root, function(res)
-    if getResourceName(res) == "gov_core" then publish() end
-end)
+GOV.onReady(publish)
+addEventHandler("gov_core:ready", root, publish)   -- gov_core restarted
 addEventHandler("onResourceStop", resourceRoot, function()
     removeElementData(root, "gov_tax.vat")
 end)

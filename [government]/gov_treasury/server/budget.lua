@@ -85,7 +85,7 @@ local function rebuild()
     end)
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     setTimer(rebuild, 5000, 1)
     setTimer(rebuild, GOV.PUBLIC_REFRESH_MS, 0)
 end)

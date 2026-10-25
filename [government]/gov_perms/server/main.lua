@@ -15,7 +15,7 @@ local function whenReady(cb)
     setTimer(function() whenReady(cb) end, 2000, 1)
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     DB.start(PERMS.SCHEMA, function()
         whenReady(function()
             PERMS.setup(function()

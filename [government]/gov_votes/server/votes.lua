@@ -197,7 +197,7 @@ end
 
 function getPublicVotes() return PUBLIC end
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     DB.start(SCHEMA, function()
         closeExpired()
         setTimer(closeExpired, GOV.VOTE_CHECK_MS, 0)

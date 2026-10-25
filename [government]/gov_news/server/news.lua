@@ -116,6 +116,6 @@ function GOV.deleteNews(id, actor, cb)
     end, "SELECT id, mail_group FROM gov_news WHERE id = ? AND deleted_at = 0", id)
 end
 
-addEventHandler("onResourceStart", resourceRoot, function()
+GOV.onReady(function()
     DB.start(SCHEMA)
 end)
