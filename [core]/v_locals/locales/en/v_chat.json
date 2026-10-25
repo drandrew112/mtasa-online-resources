@@ -1,6 +1,6 @@
 {
-  "v_chat.chat.channel_global": "Global",
-  "v_chat.chat.channel_local": "Local",
+  "v_chat.chat.channel_global": "[TAB] Global",
+  "v_chat.chat.channel_local": "[TAB] Local",
   "v_chat.chat.slow_down": "You are sending messages too fast. Wait a few seconds.",
   "v_chat.chat.text": "{sender}: {text}",
   "v_chat.mute.invalid_duration": "Invalid duration",
