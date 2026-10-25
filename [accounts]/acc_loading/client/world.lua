@@ -4,10 +4,13 @@
 
 addEvent("acc_loading:startWorldCheck", true)
 
+local WORLD_TIMEOUT = 20000 -- ms; go on anyway (interior spawn, ground that never reports loaded)
+
 local worldTimer
 local worldCheckCompleted = false
 local preloadStarted = false
 local stableChecks = 0
+local worldStart = 0
 
 local function stopWorldCheck()
     if isTimer(worldTimer) then
@@ -19,6 +22,14 @@ end
 local function checkWorldLoaded()
     if worldCheckCompleted then
         stopWorldCheck()
+        return
+    end
+
+    if getTickCount() - worldStart > WORLD_TIMEOUT then
+        outputDebugString("[acc_loading] world check timed out, spawning anyway", 2)
+        worldCheckCompleted = true
+        stopWorldCheck()
+        triggerServerEvent("acc_loading:clientWorldLoaded", localPlayer)
         return
     end
 
@@ -64,6 +75,7 @@ addEventHandler("acc_loading:startWorldCheck", localPlayer, function()
     worldCheckCompleted = false
     preloadStarted = false
     stableChecks = 0
+    worldStart = getTickCount()
 
     worldTimer = setTimer(checkWorldLoaded, 200, 0)
 end)

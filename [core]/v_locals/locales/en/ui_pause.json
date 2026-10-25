@@ -94,7 +94,7 @@
   "ui_pause.settings.update_mails_desc": "Every Tuesday an email with the news of the week and the weekly bonuses, to the address of your account.",
   "ui_pause.settings.models": "Models",
   "ui_pause.settings.models_vehicles": "Custom vehicle models",
-  "ui_pause.settings.models_vehicles_desc": "Loads the downloaded custom vehicle models. They are not downloaded automatically: use Download vehicle models.",
+  "ui_pause.settings.models_vehicles_desc": "Loads the downloaded custom vehicle models (on by default). They are not downloaded automatically: use Download vehicle models.",
   "ui_pause.settings.models_objects": "Custom object models",
   "ui_pause.settings.models_objects_desc": "Loads the custom object models (downloaded automatically). A few objects are always loaded.",
   "ui_pause.settings.models_weapons": "Custom weapon models",

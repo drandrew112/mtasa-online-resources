@@ -1,6 +1,6 @@
 -- Same limit as the client input box (c_chat.lua max_char), checked again here:
 -- the client can send anything.
-local MAX_CHARS = 45
+local MAX_CHARS = 150
 
 -- Flood control: at most FLOOD_MAX messages in FLOOD_WINDOW ms, then a short cooldown.
 local FLOOD_MAX = 3

@@ -69,6 +69,9 @@ end
 
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, runDeferred)
+-- also when this resource started after the loading screen appeared (acc_loading asks again)
+addEvent("onClientReadyCheck")
+addEventHandler("onClientReadyCheck", root, runDeferred)
 addEventHandler("onClientResourceStart", resourceRoot, function()
     if getElementData(localPlayer, "loaded") then runDeferred() end
 end)

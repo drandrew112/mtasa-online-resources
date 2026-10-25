@@ -278,12 +278,21 @@ function registerMenus()
 
     exports.acc_loading:resourceReady()
 end
-addEvent("onClientLoadingStarted", true)
-addEventHandler("onClientLoadingStarted", root, function()
+-- once per resource start: the loading start, the ready check and a restart
+-- while loaded may all ask
+local menusRegistered = false
+local function registerOnce()
+    if menusRegistered then return end
+    menusRegistered = true
     registerMenus()
-end)
+end
+addEvent("onClientLoadingStarted", true)
+addEventHandler("onClientLoadingStarted", root, registerOnce)
+-- also when this resource started after the loading screen appeared (acc_loading asks again)
+addEvent("onClientReadyCheck")
+addEventHandler("onClientReadyCheck", root, registerOnce)
 addEventHandler("onClientResourceStart", resourceRoot, function()
     if getElementData(localPlayer, "loaded") then
-        registerMenus()
+        registerOnce()
     end
 end)

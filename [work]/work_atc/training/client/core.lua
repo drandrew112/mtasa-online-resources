@@ -469,6 +469,9 @@ local function loadTexts()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)
+-- also when this resource started after the loading screen appeared (acc_loading asks again)
+addEvent("onClientReadyCheck")
+addEventHandler("onClientReadyCheck", root, loadTexts)
 addEventHandler("onClientResourceStart", resourceRoot, function()
     if getElementData(localPlayer, "loaded") then loadTexts() end
 end)

@@ -141,7 +141,7 @@
   "acc_menu.models.reminder": "{count} vehicle models are not downloaded ({size})",
   "acc_menu.models.reminder_hint": "SETTINGS › MODELS  ›",
   "acc_menu.models.notice_title": "Vehicle models are not downloaded",
-  "acc_menu.models.notice_body": "The custom vehicle models of the server are not downloaded automatically. Download them in Settings › Models (about {size}), then turn on Custom vehicle models.\n\nTurn on Auto-update there to get every new vehicle model when you log in.",
+  "acc_menu.models.notice_body": "The custom vehicle models of the server are not downloaded automatically. Download them in Settings › Models (about {size}); they are loaded right after the download.\n\nTurn on Auto-update there to get every new vehicle model when you log in.",
   "acc_menu.models.notice_open": "Open Models settings",
   "acc_menu.models.notice_later": "Later",
   "acc_menu.account.display_name": "Display name",

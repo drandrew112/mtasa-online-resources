@@ -141,7 +141,7 @@
   "acc_menu.models.reminder": "{count} jármű modell nincs letöltve ({size})",
   "acc_menu.models.reminder_hint": "BEÁLLÍTÁSOK › MODELLEK  ›",
   "acc_menu.models.notice_title": "A jármű modellek nincsenek letöltve",
-  "acc_menu.models.notice_body": "A szerver egyedi jármű modelljei nem töltődnek le automatikusan. Töltsd le őket a Beállítások › Modellek alatt (kb. {size}), majd kapcsold be az Egyedi jármű modellek opciót.\n\nAz automatikus frissítést ott bekapcsolva minden új jármű modell letöltődik belépéskor.",
+  "acc_menu.models.notice_body": "A szerver egyedi jármű modelljei nem töltődnek le automatikusan. Töltsd le őket a Beállítások › Modellek alatt (kb. {size}), a letöltés után azonnal betöltődnek.\n\nAz automatikus frissítést ott bekapcsolva minden új jármű modell letöltődik belépéskor.",
   "acc_menu.models.notice_open": "Modellek beállításai",
   "acc_menu.models.notice_later": "Később",
   "acc_menu.account.display_name": "Megjelenített név",

@@ -7,7 +7,7 @@
 --   default   loading on / off while the player never changed the setting
 MODLOADER = {
     categories = {
-        { name = "vehicles", min = 400, max = 611,   download = "manual", setting = "models_vehicles", default = false },
+        { name = "vehicles", min = 400, max = 611,   download = "manual", setting = "models_vehicles", default = true  },
         { name = "skins",    min = 0,   max = 312,   download = "auto",   setting = "models_skins",    default = true },
         { name = "weapons",  min = 321, max = 373,   download = "auto",   setting = "models_weapons",  default = true },
         { name = "objects",  min = 615, max = 19999, download = "auto",   setting = "models_objects",  default = true },

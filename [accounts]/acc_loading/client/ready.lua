@@ -72,11 +72,26 @@ end)
 
 -- a stopped resource has to report again after its restart
 addEventHandler("onClientResourceStop", root, function(res)
-    if res ~= resource then READY[getResourceName(res)] = nil end
+    if res == resource then return end
+    READY[getResourceName(res)] = nil
+    -- a required resource stopped for good is not waited for any more
+    if checking then setTimer(tryReport, 100, 1) end
+end)
+
+-- a resource (re)started while the check is already running missed both
+-- onClientLoadingStarted and the check's onClientReadyCheck: ask again
+addEventHandler("onClientResourceStart", root, function(res)
+    if res == resource or not checking or READY[getResourceName(res)] then return end
+    triggerEvent("onClientReadyCheck", localPlayer)
+    tryReport()
 end)
 
 -- Resources that tried to report before acc_loading ran on this client (their
--- export call failed) get one more chance now.
+-- export call failed) get one more chance now. Only for a loaded player: before
+-- the loading the resources must not set up their texts yet (they would lock
+-- them in before the login), and the loading's own check asks them anyway.
 addEventHandler("onClientResourceStart", resourceRoot, function()
-    triggerEvent("onClientReadyCheck", localPlayer)
+    if getElementData(localPlayer, "loaded") == true then
+        triggerEvent("onClientReadyCheck", localPlayer)
+    end
 end)

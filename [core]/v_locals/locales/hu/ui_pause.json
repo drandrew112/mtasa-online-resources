@@ -94,7 +94,7 @@
   "ui_pause.settings.update_mails_desc": "Minden kedden egy email a hét híreivel és a heti bónuszokkal a fiókod email címére.",
   "ui_pause.settings.models": "Modellek",
   "ui_pause.settings.models_vehicles": "Egyedi jármű modellek",
-  "ui_pause.settings.models_vehicles_desc": "Betölti a letöltött egyedi jármű modelleket. Ezek nem töltődnek le maguktól: használd a Jármű modellek letöltése opciót.",
+  "ui_pause.settings.models_vehicles_desc": "Betölti a letöltött egyedi jármű modelleket (alapból bekapcsolva). Ezek nem töltődnek le maguktól: használd a Jármű modellek letöltése opciót.",
   "ui_pause.settings.models_objects": "Egyedi tárgy modellek",
   "ui_pause.settings.models_objects_desc": "Betölti az egyedi tárgy modelleket (automatikusan letöltődnek). Néhány tárgy mindig betöltődik.",
   "ui_pause.settings.models_weapons": "Egyedi fegyver modellek",
