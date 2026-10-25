@@ -20,6 +20,7 @@
         <acl name="SuperModerator"></acl>
         <acl name="Admin"></acl>
         <acl name="RPC"></acl>
+        <object name="user.drandrew112"></object>
     </group>
     <group name="Console">
         <acl name="Moderator"></acl>
@@ -80,6 +81,7 @@
         <object name="resource.web_manager"></object>
         <object name="resource.web_api"></object>
         <object name="resource.claude-mcp"></object>
+        <object name="resource.ui_download"></object>
     </group>
     <group name="DebugHook">
         <acl name="DebugHook"></acl>
