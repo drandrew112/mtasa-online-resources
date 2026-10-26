@@ -10,6 +10,6 @@
     <file src="wasted.mp3" type="client" cache="false" />
 
     <!-- getRandomFreeRespawnPoint([radius = 4]) -> x, y, z, rot | false
-         a random respawn point with no player / vehicle / ped near it (acc_savesys: Random spawn) -->
+         a random respawn point with no player / vehicle / ped near it (v_accounts: Random spawn) -->
     <export function="getRandomFreeRespawnPoint" type="server" />
 </meta>

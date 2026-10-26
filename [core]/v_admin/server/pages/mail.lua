@@ -71,9 +71,9 @@ PAGES.register("mail", {
 -- a circular finished: tell the admin who sent it (in game; the web page sees it in the history)
 addEvent("onMailCircularDone")
 addEventHandler("onMailCircularDone", root, function(admin, sent, failed, isTest)
-    if not resourceRunning("acc_auth") then return end
+    if not resourceRunning("v_accounts") then return end
     for _, p in ipairs(getElementsByType("player")) do
-        if tostring(exports.acc_auth:getName(p) or ""):lower() == tostring(admin):lower() then
+        if tostring(exports.v_accounts:getName(p) or ""):lower() == tostring(admin):lower() then
             adminAlert(p, L.msg(isTest and "v_mail.server.test_done" or "v_mail.server.done", { sent = sent, failed = failed }),
                 failed == 0 and 110 or 255, failed == 0 and 220 or 200, failed == 0 and 130 or 90)
         end

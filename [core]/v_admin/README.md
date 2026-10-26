@@ -321,4 +321,4 @@ logs, Server, Commands). Built on `web_api`; English only; signs in with the gam
 * Server: `server/pages.lua` (`PAGES.register`, `PAGES.run`, `REMOTE.call` for exports that answer later), page handlers in `server/pages/*.lua`; web: `adminWebCall` / `adminWebResult`.
 * `/weekly`, `/news`, `/mail` now open these pages (`ADMIN.pageCommands`); the old panels of v_weekly / v_news / v_mail were removed, those resources expose exports instead.
 * Every admin action goes to the MySQL table `admin_log` (`server/adminlog.lua`).
-* acc_auth stores `last_login`, `last_serial`, `last_ip` in accData on login.
+* v_accounts stores `last_login`, `last_serial`, `last_ip` in accData on login.

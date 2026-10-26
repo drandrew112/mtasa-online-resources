@@ -6,7 +6,7 @@
 local KEY = "phone.wallpaper"
 
 local function accountOf(player)
-    if not isElement(player) or not exports.acc_auth:isLoggedIn(player) then return nil end
+    if not isElement(player) or not exports.v_accounts:isLoggedIn(player) then return nil end
     return player
 end
 

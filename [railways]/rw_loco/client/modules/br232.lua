@@ -256,7 +256,7 @@ end
 
 registerLocoModule("br232", M)
 
--- Texts load only once the player is loaded (acc_loading gate).
+-- Texts load only once the player is loaded (v_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
@@ -264,11 +264,11 @@ local function loadTexts()
     build_G()
     build_LAMPS()
     build_CONTROLS()
-    exports.acc_loading:resourceReady()
+    exports.v_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)
--- also when this resource started after the loading screen appeared (acc_loading asks again)
+-- also when this resource started after the loading screen appeared (v_loading asks again)
 addEvent("onClientReadyCheck")
 addEventHandler("onClientReadyCheck", root, loadTexts)
 addEventHandler("onClientResourceStart", resourceRoot, function()

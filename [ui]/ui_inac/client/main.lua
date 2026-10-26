@@ -66,7 +66,7 @@ function registerMenus()
         }
     })
 
-    -- PREFERENCES (saved on the account by acc_savesys, through server/preferences.lua)
+    -- PREFERENCES (saved on the account by v_accounts, through server/preferences.lua)
     registerMenu({
         id = "preferences",
         title = L("ui_inac.main.preferences"),
@@ -276,7 +276,7 @@ function registerMenus()
     registerOwnvehMenu()
     registerBusinessMenu()
 
-    exports.acc_loading:resourceReady()
+    exports.v_loading:resourceReady()
 end
 -- once per resource start: the loading start, the ready check and a restart
 -- while loaded may all ask
@@ -288,7 +288,7 @@ local function registerOnce()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, registerOnce)
--- also when this resource started after the loading screen appeared (acc_loading asks again)
+-- also when this resource started after the loading screen appeared (v_loading asks again)
 addEvent("onClientReadyCheck")
 addEventHandler("onClientReadyCheck", root, registerOnce)
 addEventHandler("onClientResourceStart", resourceRoot, function()

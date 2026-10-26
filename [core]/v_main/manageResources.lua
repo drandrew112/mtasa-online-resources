@@ -23,12 +23,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 local PROTECT = {
     [getResourceName(resource)] = true,   -- ourselves (v_main)
     ["v_mysql"]    = true,                -- shared DB layer - backs the level check
-    ["acc_auth"]    = true,             -- login / account system
-    ["acc_bans"]    = true,
-    ["acc_savesys"] = true,
-    ["acc_loading"] = true,
-    ["acc_ui"]      = true,
-    ["acc_menu"]    = true,
+    ["v_accounts"] = true,                -- login / account system
+    ["v_loading"]  = true,
+    ["v_mainmenu"] = true,
     ["v_admin"]    = true,                -- in-game admin commands
 }
 

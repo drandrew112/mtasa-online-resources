@@ -259,7 +259,7 @@ local function doEnter(player, info)
         id = info.unitId, propertyId = info.propertyId, kind = info.kind, companyId = info.companyId,
         companyName = info.companyName, role = info.role,
     }, "local")
-    -- acc_savesys saves this instead of the position inside (the inside may be gone next time)
+    -- v_accounts saves this instead of the position inside (the inside may be gone next time)
     local x, y, z = outsideOf(info.building)
     if x then setElementData(player, "save.position", { x, y, z, 0, 0 }, false) end
     triggerClientEvent(player, "bizint:fadeIn", resourceRoot)
@@ -281,7 +281,7 @@ local function leave(player, reason, instant)
     PU[player] = nil
     if isElement(player) then
         removeElementData(player, "biz:unit")
-        -- on quit acc_savesys still has to save the outside position
+        -- on quit v_accounts still has to save the outside position
         if reason ~= "quit" then removeElementData(player, "save.position") end
     end
     local building = inst and inst.building

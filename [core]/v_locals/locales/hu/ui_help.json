@@ -1,0 +1,20 @@
+{
+  "ui_help.title": "SÚGÓ",
+  "ui_help.close_hint": "F1 / ESC  bezárás",
+  "ui_help.back": "Vissza",
+  "ui_help.crumb.home": "Súgó",
+  "ui_help.search.placeholder": "Keresés a súgóban...",
+  "ui_help.search.results.one": "{count} találat",
+  "ui_help.search.results.other": "{count} találat",
+  "ui_help.search.no_results": "Nincs találat erre: „{query}”.",
+  "ui_help.list.empty": "Még nincsenek súgótémák.",
+  "ui_help.coming_soon": "Hamarosan érkezik",
+  "ui_help.coming_soon_desc": "A súgó oldalai még készülnek. Nézz vissza később!",
+  "ui_help.home.title": "Üdv a súgóban",
+  "ui_help.home.text": "Válassz egy témát bal oldalt, vagy kezdj el gépelni a kereséshez.",
+  "ui_help.category.other": "Egyéb",
+  "ui_help.block.tip": "TIPP",
+  "ui_help.block.warning": "FIGYELEM",
+  "ui_help.related": "Kapcsolódó témák",
+  "ui_help.missing_topic": "Ez a súgóoldal nem érhető el."
+}

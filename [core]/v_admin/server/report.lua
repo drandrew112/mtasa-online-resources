@@ -47,7 +47,7 @@ end
 -- Account of an admin (player element or web actor) - the identity of a claim.
 local function actorAccount(admin)
     if isWebActor(admin) then return admin.account end
-    return exports.acc_auth:getName(admin) or false
+    return exports.v_accounts:getName(admin) or false
 end
 
 -- Someone holds the claim right now: the claiming player is online, or (web claim)

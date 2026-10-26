@@ -39,9 +39,9 @@ local function lower(s) return utf8.lower and utf8.lower(tostring(s or "")) or t
 local function sameName(a, b) return a and b and tostring(a):lower() == tostring(b):lower() end
 
 local function playerOfAccount(name)
-    if not resourceRunning("acc_auth") then return nil end
+    if not resourceRunning("v_accounts") then return nil end
     for _, p in ipairs(getElementsByType("player")) do
-        if sameName(exports.acc_auth:getName(p), name) then return p end
+        if sameName(exports.v_accounts:getName(p), name) then return p end
     end
 end
 
@@ -73,7 +73,7 @@ local LIST_SQL = "SELECT id, account_name, email, display_name, admin_level, cre
     .. jsonKey("Online.minutes") .. " AS minutes, "
     .. jsonKey("last_login") .. " AS last_login, "
     .. jsonKey("receiveUpdateMails") .. " AS upd "
-    .. "FROM `accounts` WHERE account_name NOT LIKE '#%'" -- "#..." = acc_auth pool rows, not accounts
+    .. "FROM `accounts` WHERE account_name NOT LIKE '#%'" -- "#..." = v_accounts pool rows, not accounts
 
 --------------------------------------------------------------------------------
 -- the list (cache)
@@ -147,10 +147,10 @@ end
 -- live values of online players
 local function onlineInfo()
     local out = {}
-    if not resourceRunning("acc_auth") then return out end
+    if not resourceRunning("v_accounts") then return out end
     local t = now()
     for _, p in ipairs(getElementsByType("player")) do
-        local name = exports.acc_auth:getName(p)
+        local name = exports.v_accounts:getName(p)
         if name then
             local muteUntil = tonumber(getElementData(p, "mute_until"))
             out[name:lower()] = {
@@ -387,7 +387,7 @@ local SANCTION_LOG = {
     { "^kicked .* %((.*)%)$", "kick" },
 }
 local LIFT_LOG = { { "^unmuted ", "mute" }, { "^released .* from admin jail$", "jail" } }
--- the bans table has every ban (also the ones from acc_bans), so the log lines are left out
+-- the bans table has every ban (also the ones from v_accounts), so the log lines are left out
 local SKIP_LOG = { "^banned account ", "^unbanned account " }
 
 --- Sanctions: bans (table) + mutes / admin jails / kicks (admin log), newest first,
@@ -691,19 +691,19 @@ function EDIT.unban(actor, name)
     return true
 end
 
--- the address goes through acc_auth (format, UNIQUE check, its cache); "" removes it
+-- the address goes through v_accounts (format, UNIQUE check, its cache); "" removes it
 function EDIT.email(actor, name, a)
-    if not resourceRunning("acc_auth") then return fail("v_admin.page.resource_missing", { name = "acc_auth" }) end
+    if not resourceRunning("v_accounts") then return fail("v_admin.page.resource_missing", { name = "v_accounts" }) end
     local mail = argText(a.value)
-    local done, err = exports.acc_auth:adminSetAccountEmail(name, mail)
+    local done, err = exports.v_accounts:adminSetAccountEmail(name, mail)
     if not done then return false, L.msg(err or "v_admin.page.save_failed") end
     adminLog(actor, mail == "" and ("removed the e-mail of " .. name) or ("set the e-mail of " .. name), name)
     return ok(mail == "" and "v_admin.accounts.email_removed" or "v_admin.accounts.email_saved")
 end
 
 function EDIT.pwreset(actor, name)
-    if not resourceRunning("acc_auth") then return fail("v_admin.page.resource_missing", { name = "acc_auth" }) end
-    local done, err = exports.acc_auth:adminSendPasswordReset(name, actorAccount(actor) or actorName(actor))
+    if not resourceRunning("v_accounts") then return fail("v_admin.page.resource_missing", { name = "v_accounts" }) end
+    local done, err = exports.v_accounts:adminSendPasswordReset(name, actorAccount(actor) or actorName(actor))
     if not done then return false, L.msg(err or "v_admin.page.request_failed") end
     adminLog(actor, "mailed a password reset code to " .. name, name)
     return ok("v_admin.accounts.pwreset_sent")

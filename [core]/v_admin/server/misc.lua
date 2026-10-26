@@ -55,7 +55,7 @@ end)
 -- ------------------------------------------------------------
 --  /setskin <ID> <skin>  – change a player's skin (ped model)
 --  A player on work duty is taken off duty first, so the new skin
---  is the civilian one (that is what acc_savesys saves).
+--  is the civilian one (that is what v_accounts saves).
 -- ------------------------------------------------------------
 local validSkins = {}
 for _, id in ipairs(getValidPedModels()) do validSkins[id] = true end
@@ -149,7 +149,7 @@ addCommandHandler("listacc", function(player)
     end
 
     local n = 0
-    for _, name in ipairs(exports.acc_auth:getAllAccountNames()) do
+    for _, name in ipairs(exports.v_accounts:getAllAccountNames()) do
         outputServerLog("[v_admin] Account: " .. name)
         n = n + 1
     end

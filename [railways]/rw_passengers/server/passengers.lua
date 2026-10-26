@@ -68,7 +68,7 @@ end
 
 ------------------------------------------------------------------ state
 
--- quitting = the player is leaving the server: save.position stays for acc_savesys' quit save
+-- quitting = the player is leaving the server: save.position stays for v_accounts' quit save
 local function clearState(player, quitting)
     local p = Passengers[player]
     if not p then return nil end

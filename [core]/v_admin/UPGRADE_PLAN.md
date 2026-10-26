@@ -46,7 +46,7 @@ A keresett „még egy parancs” a **`/news`** (v_news, saját szerkesztő pane
   - *Notes* – admin megjegyzések az accounthoz (új accData kulcs vagy `admin_notes` tábla).
 - Akciók (meglévő `admin*` függvények + újak): admin szint, money szerkesztés, mail küldése ennek az accountnak, ban/unban, unmute, work XP/szint, XP, achievement adás/elvétel, jelszó-visszaállító mail küldése; online esetén goto/spectate. Offline accountnál minden akció accData-n keresztül megy (`v_mysql:setAccData`).
 - **Teljesítmény**: a szerver egyszerre tölti be az `accounts` táblát (async, `importAsync`), a JSON `account_data`-t egyszer parse-olja, és ~30 s-os cache-ben tartja; szűrés/rendezés Lua-ban a cache-en, a kliens csak az aktuális oldalt kapja meg. Online játékosoknál a cache helyett az élő accData az irányadó.
-- Hiányzó adatok, amiket az acc_auth-nak menteni kell: `last_login`, `last_serial`, `last_ip`, `playtime` (ha még nincs).
+- Hiányzó adatok, amiket az v_accounts-nak menteni kell: `last_login`, `last_serial`, `last_ip`, `playtime` (ha még nincs).
 
 ### 2.2 Online players
 - A régi Players fül átnevezve, ugyanazok a műveletek; új gomb: **Open account** → az Accounts oldal részletlapja nyílik meg erre az accountra.
@@ -100,14 +100,14 @@ A keresett „még egy parancs” a **`/news`** (v_news, saját szerkesztő pane
 | **v_levelsys** | `getAccountLevel(name)`, `adminGiveXP/ResetLevel` | |
 | **v_inventory** | `getAccountInventorySummary(name)` | csak olvasás |
 | **v_socialpanel** | `getAccountSocial(name)` (friends, crew) | |
-| **acc_bans** | `listBans(filter, page)`, `getAccountBans(name)` | unban már van |
-| **acc_auth** | `sendPasswordReset(name)`; `last_login/serial/ip` mentése belépéskor | |
+| **v_accounts** | `listBans(filter, page)`, `getAccountBans(name)` | unban már van |
+| **v_accounts** | `sendPasswordReset(name)`; `last_login/serial/ip` mentése belépéskor | |
 | **v_main** | `listResources()`, `adminResourceAction(actor, name, action)` | a parancsok logikája exportként |
 
 ## 5. Ütemezés
 
 1. Core átalakítás: teljes képernyő, oldalsáv + kategóriák, `addPage`, új widgetek, `panelCall`/`adminWebCall`, `admin_log`. A meglévő fülek átköltöztetése (Online players, Reports, Server, Commands).
-2. Accounts (lista + szűrés + Overview/Vehicles/Mails/Punishments), Online players → Open account. acc_auth `last_*` mezők.
+2. Accounts (lista + szűrés + Overview/Vehicles/Mails/Punishments), Online players → Open account. v_accounts `last_*` mezők.
 3. Weekly, News, Mail (+ update teszt) oldalak; régi panelek törlése, parancsok átirányítása.
 4. Web panel ugyanezekkel az oldalakkal.
 5. Javasolt extrák: Dashboard, Bans & mutes, Admin log oldal, Resources, Achievements, további részletfülek.

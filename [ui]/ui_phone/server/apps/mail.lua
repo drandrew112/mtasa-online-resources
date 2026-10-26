@@ -66,8 +66,8 @@ addEventHandler("mysql:connected", root, ensureTable)
 
 local function accName(player)
     if not isElement(player) or getElementType(player) ~= "player" then return nil end
-    if not exports.acc_auth:isLoggedIn(player) then return nil end
-    local n = exports.acc_auth:getName(player)
+    if not exports.v_accounts:isLoggedIn(player) then return nil end
+    local n = exports.v_accounts:getName(player)
     return (type(n) == "string" and n ~= "") and n or nil
 end
 

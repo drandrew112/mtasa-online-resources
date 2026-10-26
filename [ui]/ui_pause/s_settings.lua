@@ -16,7 +16,7 @@ local PUSH_DELAY = 1500 -- ms after login before pushing, so client-side
 -- Returns the player when logged in (the account-data store is keyed by the
 -- player element), or nil.
 local function accountOf(player)
-    if not isElement(player) or not exports.acc_auth:isLoggedIn(player) then return nil end
+    if not isElement(player) or not exports.v_accounts:isLoggedIn(player) then return nil end
     return player
 end
 
@@ -82,7 +82,7 @@ addEventHandler("onPlayerLoaded", root, function()
     setTimer(sendSaved, PUSH_DELAY, 1, source)
 end)
 
--- Logged in (acc_auth), before the account menu: the menu's Settings page
+-- Logged in (v_accounts), before the account menu: the menu's Settings page
 -- (c_api.lua) shows and changes the saved values before the spawn.
 addEvent("onPlayerAccountLogin")
 addEventHandler("onPlayerAccountLogin", root, function()

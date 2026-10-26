@@ -1,6 +1,6 @@
 -- Web "ERM Admin" mode: everything /ermadmin offers in game (shift + task history, details,
--- auto dispatch switch), in the browser. Login with the acc_auth account
--- (exports.acc_auth:httpLogin); the admin level (Config.ADMIN_LEVEL or higher) is re-checked
+-- auto dispatch switch), in the browser. Login with the v_accounts account
+-- (exports.v_accounts:httpLogin); the admin level (Config.ADMIN_LEVEL or higher) is re-checked
 -- on every call. The queries are the ones of server/admin.lua (AdminHandlers). English only.
 
 WebAdmin = {
@@ -15,7 +15,7 @@ local fails = {}                -- [client] = { timestamps }
 local DENIED = { ok = false, error = "unauthorized" }
 
 local function accountsRunning()
-    local res = getResourceFromName("acc_auth")
+    local res = getResourceFromName("v_accounts")
     return res and getResourceState(res) == "running"
 end
 
@@ -24,7 +24,7 @@ end
 local function adminLevelOf(account)
     if accountsRunning() then
         for _, p in ipairs(getElementsByType("player")) do
-            if exports.acc_auth:getName(p) == account then
+            if exports.v_accounts:getName(p) == account then
                 return tonumber(exports.v_mysql:getAccData(p, "admin_level")) or 0
             end
         end
@@ -83,7 +83,7 @@ function ermAdminLogin(_, username, password)
     if tooManyFails(id) then return { ok = false, error = "Too many failed attempts. Try again in a minute." } end
     if not accountsRunning() then return { ok = false, error = "Account system is not available." } end
 
-    local ok, account = exports.acc_auth:httpLogin(username, password)
+    local ok, account = exports.v_accounts:httpLogin(username, password)
     local level = ok and adminLevelOf(account) or 0
     if not ok or level < Config.ADMIN_LEVEL then
         table.insert(fails[id], now())

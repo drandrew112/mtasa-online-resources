@@ -64,7 +64,7 @@ function STORE.get(who)
         if name:lower() == lower then return entry end
     end
 
-    local canon = exports.acc_auth:accountNameExists(who)
+    local canon = exports.v_accounts:accountNameExists(who)
     if not canon then return nil end
     for _, p in ipairs(getElementsByType("player")) do
         if loggedName(p) == canon then return loadOnline(p, canon) end

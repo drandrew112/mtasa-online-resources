@@ -30,7 +30,7 @@ local function setData(who, key, value) return exports.v_mysql:setAccData(who, k
 
 local function accName(player)
     if not isElement(player) then return nil end
-    local n = exports.acc_auth:getName(player)
+    local n = exports.v_accounts:getName(player)
     return (type(n) == "string" and n ~= "") and n or nil
 end
 
@@ -50,7 +50,7 @@ local function accountByName(name)
     if type(name) ~= "string" or name == "" then return nil end
     local online = onlinePlayerByAccount(name)
     if online then return accName(online) end
-    local canonical = exports.acc_auth:accountNameExists(name)
+    local canonical = exports.v_accounts:accountNameExists(name)
     return canonical or nil
 end
 
@@ -60,9 +60,9 @@ end
 local function dispOf(name, offlineOK)
     if type(name) ~= "string" then return name end
     local online = onlinePlayerByAccount(name)
-    if online then return exports.acc_auth:getDisplayName(online) end
+    if online then return exports.v_accounts:getDisplayName(online) end
     if offlineOK == false then return name end
-    return exports.acc_auth:getDisplayName(name)
+    return exports.v_accounts:getDisplayName(name)
 end
 
 -- level + played time: prefer live element data, fall back to account data.

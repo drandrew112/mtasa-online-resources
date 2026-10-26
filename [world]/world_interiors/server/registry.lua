@@ -144,7 +144,7 @@ function getPlayerInterior(player)
     return best or false
 end
 
--- acc_savesys saves "save.position" instead of the real position: a player who quits
+-- v_accounts saves "save.position" instead of the real position: a player who quits
 -- inside an interior comes back at its enter marker (like biz_int)
 local function setSavedOutside(player, rec)
     local o = rec.outside
@@ -208,7 +208,7 @@ addEventHandler("world_interiors:use", resourceRoot, function(marker)
     if kind == "enter" then enterInterior(p, id) else exitInterior(p, id) end
 end)
 
--- only the table entry goes on quit: acc_savesys still saves the outside point from the element data
+-- only the table entry goes on quit: v_accounts still saves the outside point from the element data
 addEventHandler("onPlayerQuit", root, function() busy[source] = nil; savedOut[source] = nil end)
 -- respawned somewhere else (death): the outside point no longer applies
 addEventHandler("onPlayerSpawn", root, function() clearSavedOutside(source) end)

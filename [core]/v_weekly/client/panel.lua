@@ -137,17 +137,17 @@ addEventHandler("weekly:notify", localPlayer, function(text, title)
     uicore:addNotification(title or L("v_weekly.admin.weekly"), tostring(text), title == nil)
 end)
 
--- Texts load only once the player is loaded (acc_loading gate).
+-- Texts load only once the player is loaded (v_loading gate).
 -- (Was in client/admin.lua; the /weekly editor moved to the v_admin panel.)
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
-    exports.acc_loading:resourceReady()
+    exports.v_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)
--- also when this resource started after the loading screen appeared (acc_loading asks again)
+-- also when this resource started after the loading screen appeared (v_loading asks again)
 addEvent("onClientReadyCheck")
 addEventHandler("onClientReadyCheck", root, loadTexts)
 addEventHandler("onClientResourceStart", resourceRoot, function()

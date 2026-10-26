@@ -73,7 +73,7 @@ local EXP = {
         mysqlExec = function(sql, ...) table.insert(TEST.execs, { sql = sql, args = { ... } }) return true end,
         getAccData = function() return 0 end, setAccData = function() return true end,
     },
-    acc_auth = { getName = function(p) return p.account end },
+    v_accounts = { getName = function(p) return p.account end },
     -- v_bank: accounts in TEST.acc[id]; company account id = "c:<id>", personal = "p:<name>"
     v_bank = (function()
         local function book(id, delta, key, params)

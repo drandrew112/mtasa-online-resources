@@ -41,8 +41,8 @@ end
 --- Account name of an admin (player or web actor), or nil.
 function actorAccount(actor)
     if isWebActor(actor) then return actor.account end
-    if isElement(actor) and resourceRunning("acc_auth") then
-        return exports.acc_auth:getName(actor) or nil
+    if isElement(actor) and resourceRunning("v_accounts") then
+        return exports.v_accounts:getName(actor) or nil
     end
 end
 

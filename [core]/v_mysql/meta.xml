@@ -40,7 +40,7 @@
     <export function="getAccData"   type="server" />
     <export function="setAccData"   type="server" />
     <export function="flushAccData" type="server" />
-    <!-- loadAccDataAsync(eventName, requestId, name): acc_auth login - reads the
+    <!-- loadAccDataAsync(eventName, requestId, name): v_accounts login - reads the
          row fresh into the session cache; the answer event carries ok=false when
          the data could not be read (the login is then refused). -->
     <export function="loadAccDataAsync" type="server" />

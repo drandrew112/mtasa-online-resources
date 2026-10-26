@@ -107,7 +107,7 @@ end
 --------------------------------------------------------------------------------
 
 -- who -> account-name string, or nil. Player elements resolve through the
--- "accName" element data acc_auth sets on login.
+-- "accName" element data v_accounts sets on login.
 local function resolveName(who)
     if type(who) == "string" then
         return who ~= "" and who or nil
@@ -303,7 +303,7 @@ local function persist(name, c, changed)
 end
 
 -- Forget an account on quit so a later login reads fresh from the DB. Deferred
--- one tick: other resources' onPlayerQuit handlers (acc_savesys savePlayer, ...)
+-- one tick: other resources' onPlayerQuit handlers (v_accounts savePlayer, ...)
 -- run after this one and would otherwise re-fill the cache for good.
 addEventHandler("onPlayerQuit", root, function()
     local n = getElementData(source, "accName")
@@ -358,7 +358,7 @@ function setAccData(who, key, value)
     return persist(name, c, changed)
 end
 
--- Internal: called by acc_auth right after it creates a row, so the cache
+-- Internal: called by v_accounts right after it creates a row, so the cache
 -- does not keep a stale "account does not exist" view.
 function flushAccData(name)
     if type(name) == "string" then
@@ -367,7 +367,7 @@ function flushAccData(name)
     end
 end
 
--- Non-blocking load of an account that is ABOUT to log in (acc_auth): reads the
+-- Non-blocking load of an account that is ABOUT to log in (v_accounts): reads the
 -- row fresh, puts it into the session cache and answers
 --   triggerEvent(eventName, <caller resourceRoot>, requestId, ok)
 -- ok = false: the data could not be read, the login must be refused (a login on

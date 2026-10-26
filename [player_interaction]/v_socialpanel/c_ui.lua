@@ -893,7 +893,7 @@ end
 --------------------------------------------------------------------------------
 -- ACCOUNT (settings of the own profile): display name, email, password.
 -- The account name itself can never be changed. Email and password go to
--- acc_auth (it checks the current password), the display name to the server
+-- v_accounts (it checks the current password), the display name to the server
 -- of this resource.
 --------------------------------------------------------------------------------
 
@@ -911,11 +911,11 @@ function openAccount()
     for _, id in ipairs({ "acc_email", "acc_email_pw", "acc_pw_cur", "acc_pw_new", "acc_pw_new2" }) do
         UI.clearInput(id)
     end
-    exports.acc_auth:requestEmail()
+    exports.v_accounts:requestEmail()
 end
 
-addEvent("acc_auth:onClientEmail", true)
-addEventHandler("acc_auth:onClientEmail", localPlayer, function(masked, has, notice)
+addEvent("v_accounts:onClientEmail", true)
+addEventHandler("v_accounts:onClientEmail", localPlayer, function(masked, has, notice)
     accEmail.masked, accEmail.has = masked, has and true or false
     if notice and content_id == 6 then
         setAccStatus(notice, true)
@@ -923,8 +923,8 @@ addEventHandler("acc_auth:onClientEmail", localPlayer, function(masked, has, not
     end
 end)
 
-addEvent("acc_auth:onClientSettings", true)
-addEventHandler("acc_auth:onClientSettings", localPlayer, function(kind, ok, text)
+addEvent("v_accounts:onClientSettings", true)
+addEventHandler("v_accounts:onClientSettings", localPlayer, function(kind, ok, text)
     if content_id ~= 6 then return end
     setAccStatus(text, ok)
     if ok and kind == "password" then
@@ -932,8 +932,8 @@ addEventHandler("acc_auth:onClientSettings", localPlayer, function(kind, ok, tex
     end
 end)
 
-addEvent("acc_auth:onClientAuthError", true)
-addEventHandler("acc_auth:onClientAuthError", localPlayer, function(msg)
+addEvent("v_accounts:onClientAuthError", true)
+addEventHandler("v_accounts:onClientAuthError", localPlayer, function(msg)
     if content_id == 6 then setAccStatus(msg, false) end
 end)
 
@@ -981,7 +981,7 @@ function renderAccount()
         mailPw = UI.input("acc_email_pw", rx, Y + 214, rw, 34, { placeholder = L("v_socialpanel.ui.email_password_needed"), mask = true, max = 128 })
     end
     if UI.button(rx + rw - bw, Y + 174, bw, 34, L("v_socialpanel.ui.save"), { size = 1.2, bg = C.accent, hoverBg = C.dark, hoverTxt = C.white }) then
-        if mail ~= "" then exports.acc_auth:setEmail(mail, mailPw) end
+        if mail ~= "" then exports.v_accounts:setEmail(mail, mailPw) end
     end
 
     -- password
@@ -996,7 +996,7 @@ function renderAccount()
         elseif new1 ~= new2 then
             setAccStatus(L("v_socialpanel.ui.passwords_do_not_match"), false)
         else
-            triggerServerEvent("acc_auth:changePassword", localPlayer, cur, new1)
+            triggerServerEvent("v_accounts:changePassword", localPlayer, cur, new1)
         end
     end
 
@@ -1005,18 +1005,18 @@ function renderAccount()
     end
 end
 
--- Texts load only once the player is loaded (acc_loading gate).
+-- Texts load only once the player is loaded (v_loading gate).
 local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
     build_TABS()
     build_SOCIAL_TABS()
-    exports.acc_loading:resourceReady()
+    exports.v_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)
--- also when this resource started after the loading screen appeared (acc_loading asks again)
+-- also when this resource started after the loading screen appeared (v_loading asks again)
 addEvent("onClientReadyCheck")
 addEventHandler("onClientReadyCheck", root, loadTexts)
 addEventHandler("onClientResourceStart", resourceRoot, function()

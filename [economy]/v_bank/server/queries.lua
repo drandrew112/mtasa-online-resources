@@ -23,7 +23,7 @@ local function displayNames(refs, cb)
         local key = tostring(ref):lower()
         if key ~= "" and not seen[key] then
             seen[key] = true
-            local online = exports.acc_auth:playerOnAccount(key)
+            local online = exports.v_accounts:playerOnAccount(key)
             local d = online and getElementData(online, "displayName")
             if type(d) == "string" and d ~= "" then map[key] = d
             elseif not online then need[#need + 1] = key end

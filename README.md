@@ -94,16 +94,16 @@ system** (`logIn` / `getAccountData` / `setAccountData` / …) at all.
     the DB credentials), fill in `MYSQL_CONFIG`, and run [`main.sql`](main.sql)
     (the whole schema) against the database.
   - See [`[core]/v_mysql/README.md`](%5Bcore%5D/v_mysql/README.md).
-- **Accounts (`[accounts]/acc_*`)** – `acc_auth` (login, registration with an
-  optional email, remember-me token, password reset by email through
-  `acc_auth/web/forgotpasswd.php`, identity exports), `acc_bans` (bans), `acc_ui`
-  (login / register / reset / ban panels, News + Weekly cards), `acc_menu` (tile
-  menu after the login: profile, statistics, vehicles, collectibles, social,
-  settings, Join game), `acc_loading` (loading screen + gate, `resourceReady`)
-  and `acc_savesys` (saved state, spawn location preference). An "account" is a
+- **Accounts (`[accounts]`)** – `v_accounts`, one resource in modules: `auth/`
+  (login, registration with an optional email, remember-me token, password
+  reset by email, identity exports), `bans/` (bans), `ui/` (login / register /
+  reset / ban panels, News + Weekly cards) and `savesys/` (saved state, spawn
+  location preference). Separate: `v_mainmenu` (tile menu after the login:
+  profile, statistics, vehicles, collectibles, social, settings, Join game) and
+  `v_loading` (loading screen + gate, `resourceReady`). An "account" is a
   row in the `accounts` table; the password is a **bcrypt hash**. A logged-in
   player is identified by the `accName` element data (there is no MTA account
-  element). Other resources call `exports.acc_auth:getName(player)` /
+  element). Other resources call `exports.v_accounts:getName(player)` /
   `isLoggedIn(player)` and read/write the player's data through `getAccData` /
   `setAccData`. Join game (or a registration) starts the **loading screen**, the
   saved state is restored, the player is spawned and **`onPlayerLoaded`** fires.

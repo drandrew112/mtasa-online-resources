@@ -11,7 +11,7 @@ local function isAdmin(player)
 end
 
 local function accountName(player)
-    local ok, name = pcall(function() return exports.acc_auth:getName(player) end)
+    local ok, name = pcall(function() return exports.v_accounts:getName(player) end)
     return ok and type(name) == "string" and name ~= "" and name or getPlayerName(player)
 end
 

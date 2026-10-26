@@ -353,7 +353,7 @@ function signOn(player)
     end
     if isPedDead(player) then return false, "dead" end
     local unit = (getVehiclePlateText(vehicle) or ""):gsub("^%s+", ""):gsub("%s+$", "")
-    local account = isRunning("acc_auth") and exports.acc_auth:getName(player) or nil
+    local account = isRunning("v_accounts") and exports.v_accounts:getName(player) or nil
     local shift = {
         player = player, vehicle = vehicle, unit = unit, name = getPlayerName(player):gsub("#%x%x%x%x%x%x", ""),
         account = account or getPlayerName(player), windDown = false, order = {}, delivered = 0, startedTick = getTickCount(),

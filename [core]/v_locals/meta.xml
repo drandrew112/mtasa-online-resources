@@ -3,7 +3,7 @@
     <download_priority_group>1001</download_priority_group>
 
     <!-- Account language is stored in accData "locale.language" (v_mysql).
-         The acc_* resources are NOT included on purpose: they consume
+         v_accounts / v_mainmenu / v_loading are NOT included on purpose: they consume
          v_locals (login screen), so the dependency must point this way only. -->
     <include resource="v_mysql" />
 
@@ -78,16 +78,15 @@
     <file src="locales/en/ui_browser.json" />
     <file src="locales/en/ui_core.json" />
     <file src="locales/en/ui_download.json" />
+    <file src="locales/en/ui_help.json" />
     <file src="locales/en/v_modloader.json" />
     <file src="locales/en/ui_inac.json" />
     <file src="locales/en/ui_interactobject.json" />
     <file src="locales/en/ui_pause.json" />
     <file src="locales/en/ui_phone.json" />
-    <file src="locales/en/acc_auth.json" />
-    <file src="locales/en/acc_bans.json" />
-    <file src="locales/en/acc_loading.json" />
-    <file src="locales/en/acc_menu.json" />
-    <file src="locales/en/acc_ui.json" />
+    <file src="locales/en/v_accounts.json" />
+    <file src="locales/en/v_loading.json" />
+    <file src="locales/en/v_mainmenu.json" />
     <file src="locales/en/v_achievements.json" />
     <file src="locales/en/v_admin.json" />
     <file src="locales/en/v_arenawar.json" />
@@ -185,16 +184,15 @@
     <file src="locales/hu/ui_browser.json" />
     <file src="locales/hu/ui_core.json" />
     <file src="locales/hu/ui_download.json" />
+    <file src="locales/hu/ui_help.json" />
     <file src="locales/hu/v_modloader.json" />
     <file src="locales/hu/ui_inac.json" />
     <file src="locales/hu/ui_interactobject.json" />
     <file src="locales/hu/ui_pause.json" />
     <file src="locales/hu/ui_phone.json" />
-    <file src="locales/hu/acc_auth.json" />
-    <file src="locales/hu/acc_bans.json" />
-    <file src="locales/hu/acc_loading.json" />
-    <file src="locales/hu/acc_menu.json" />
-    <file src="locales/hu/acc_ui.json" />
+    <file src="locales/hu/v_accounts.json" />
+    <file src="locales/hu/v_loading.json" />
+    <file src="locales/hu/v_mainmenu.json" />
     <file src="locales/hu/v_achievements.json" />
     <file src="locales/hu/v_admin.json" />
     <file src="locales/hu/v_arenawar.json" />

@@ -1,0 +1,39 @@
+<meta>
+    <info author="DrAndrew112" name="Help" type="script" version="1.0.0" />
+    <!-- Help panel (F1 or /help): searchable help pages. README.md describes the content format. -->
+
+    <include resource="v_locals" />
+    <script src="locals.lua" type="client" />
+
+    <!-- CLIENT -->
+    <script src="content/index.lua" type="client" />
+    <script src="client/markup.lua" type="client" />
+    <script src="client/content.lua" type="client" />
+    <script src="client/search.lua" type="client" />
+    <script src="client/panel.lua" type="client" />
+    <script src="client/exports.lua" type="client" />
+
+    <!-- SERVER -->
+    <script src="server/exports.lua" type="server" />
+
+    <!-- FILES -->
+    <file src="files/Roboto.ttf" type="client" />
+    <file src="files/RobotoB.ttf" type="client" />
+
+    <!-- HELP CONTENT: every page (content/en/..., content/hu/...) and image
+         (content/images/...) used by content/index.lua must be listed here -->
+
+    <!-- EXPORTS: CLIENT -->
+    <export function="openHelp" type="client" />
+    <export function="closeHelp" type="client" />
+    <export function="toggleHelp" type="client" />
+    <export function="isHelpOpen" type="client" />
+    <export function="addHelpCategory" type="client" />
+    <export function="removeHelpCategory" type="client" />
+    <export function="addHelpTopic" type="client" />
+    <export function="removeHelpTopic" type="client" />
+    <export function="getHelpTopics" type="client" />
+
+    <!-- EXPORTS: SERVER -->
+    <export function="openHelp" type="server" />
+</meta>

@@ -172,7 +172,7 @@ function Tutorial.start(player)
     }
     sessions[player] = s
 
-    -- acc_savesys saves this position instead of the tutorial one
+    -- v_accounts saves this position instead of the tutorial one
     setElementData(player, "save.position", { x, y, z, s.saved.int, s.saved.dim }, false)
     if not exports.bt_core:hasRight(player) then
         exports.bt_core:setRight(player, true)

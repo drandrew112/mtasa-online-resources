@@ -1,4 +1,4 @@
--- receiveUpdateMails on the client (ui_pause Settings > Online, acc_menu Settings).
+-- receiveUpdateMails on the client (ui_pause Settings > Online, v_mainmenu Settings).
 -- The server owns the value (accData, server/updates.lua) and pushes it after the
 -- login and on start; until then it reads true (the default).
 

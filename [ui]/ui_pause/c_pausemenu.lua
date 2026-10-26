@@ -1405,7 +1405,7 @@ addEventHandler("onClientModelDownloadFinish", root, function()
 end)
 
 --------------------------------------------------------------------------------
--- texts: built once the player is loaded (acc_loading gate); the settings tree
+-- texts: built once the player is loaded (v_loading gate); the settings tree
 -- may already exist from the account menu (ensureSettingsTree)
 --------------------------------------------------------------------------------
 
@@ -1415,11 +1415,11 @@ local function loadTexts()
     textsBuilt = true
     buildJobTexts()
     buildSettingsTree()
-    exports.acc_loading:resourceReady()
+    exports.v_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)
 addEventHandler("onClientLoadingStarted", root, loadTexts)
--- also when this resource started after the loading screen appeared (acc_loading asks again)
+-- also when this resource started after the loading screen appeared (v_loading asks again)
 addEvent("onClientReadyCheck")
 addEventHandler("onClientReadyCheck", root, loadTexts)
 addEventHandler("onClientResourceStart", resourceRoot, function()

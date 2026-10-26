@@ -16,7 +16,7 @@ local spawned = {}
 -- for a logged-in player (or the string as-is), or nil.
 local function resolveAccountName(who)
     if isElement(who) and getElementType(who) == "player" then
-        local name = exports.acc_auth:getName(who)
+        local name = exports.v_accounts:getName(who)
         return (type(name) == "string" and name ~= "") and name or nil
     elseif type(who) == "string" and who ~= "" then
         return who

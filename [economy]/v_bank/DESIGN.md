@@ -378,7 +378,7 @@ the "bank" edit becomes an `admin.credit`/`admin.debit` of the difference.
 | biz_pc, biz_web | finance pages | `bank_ledger` (clean) + `biz_ledger` (dirty) merged by time |
 | biz_core tests | `tests/stubs.lua` | new v_bank stub |
 | **v_admin** | `server/pages/accounts.lua`, new `server/pages/bank.lua` + web page | section 9 |
-| acc_savesys | `server/modules.lua:115` | menu balance from `getBalance` / join, not account data |
+| v_accounts | `savesys/server/modules.lua:115` | menu balance from `getBalance` / join, not account data |
 | ui_core, ui_pause, browser HUD, v_admin panel | – | no change (element data mirror) |
 | v_introduce | `modules/06_money` texts | mention transfers / statements (text only) |
 | v_jobmanager, v_gangwar, v_timetrial, v_weekly, v_customs, clothes shop, v_shop_robbery, v_admin `/money` | – | **no change** – cash only, not tracked |
@@ -388,7 +388,7 @@ the "bank" edit becomes an `admin.credit`/`admin.debit` of the difference.
 1. v_bank core: schema, keys, cache, bookings, exports, migration (incl. treasury + SA Control),
    locales, README.
 2. Callers: work_core (+payer, chargeNegative), avi_controller, med_hospitals, wp_shop, dealership,
-   ui_phone, acc_savesys.
+   ui_phone, v_accounts.
 3. biz_core + biz_casino + biz_weed + biz_pc/biz_web ledger merge + tests.
 4. Liberty Bank website (accounts, ledger, transfer).
 5. v_admin Bank page (accounts, ledger, add/take, state companies, overdraft list) + Accounts page.

@@ -13,7 +13,7 @@ local J = ADMIN.jail
 
 local function getData(player, key) return exports.v_mysql:getAccData(player, key) end
 local function setData(player, key, value) return exports.v_mysql:setAccData(player, key, value) end
-local function isLogged(player) return exports.acc_auth:isLoggedIn(player) end
+local function isLogged(player) return exports.v_accounts:isLoggedIn(player) end
 
 local ajCol = createColCuboid(
     J.colOrigin.x, J.colOrigin.y, J.colOrigin.z,

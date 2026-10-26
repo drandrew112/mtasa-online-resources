@@ -41,14 +41,14 @@ function hasValue(list, value)
 end
 
 local function accountsRunning()
-    local res = getResourceFromName("acc_auth")
+    local res = getResourceFromName("v_accounts")
     return res and getResourceState(res) == "running"
 end
 
--- Account name of a player (acc_auth), falling back to the nick.
+-- Account name of a player (v_accounts), falling back to the nick.
 function accountName(player)
     if accountsRunning() then
-        local name = exports.acc_auth:getName(player)
+        local name = exports.v_accounts:getName(player)
         if name then return name end
     end
     return getPlayerName(player)
@@ -56,7 +56,7 @@ end
 
 function isAccountLoggedIn(player)
     if accountsRunning() then
-        return exports.acc_auth:isLoggedIn(player) and true or false
+        return exports.v_accounts:isLoggedIn(player) and true or false
     end
     return true
 end

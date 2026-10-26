@@ -1,11 +1,11 @@
 -- v_modloader (client): replaces / restores the models.
 --
--- Nothing is loaded before acc_loading starts the loading (onClientLoadingStarted), or
+-- Nothing is loaded before v_loading starts the loading (onClientLoadingStarted), or
 -- before this resource starts on a client that is already loading / loaded. From then on
 -- the loaded set follows the options: a model is loaded when its category is turned on
 -- (or it is an ALWAYS_LOAD_OBJECTS id) and every file of it is on this PC.
 -- Loading runs in time slices, every mod inside pcall: a broken file is skipped and
--- reported, never blocks the rest. acc_loading waits for resourceReady() until the first
+-- reported, never blocks the rest. v_loading waits for resourceReady() until the first
 -- pass is done.
 
 local started = false
@@ -73,7 +73,7 @@ end
 local function reportReady()
     if readyReported then return end
     readyReported = true
-    pcall(function() exports.acc_loading:resourceReady() end)
+    pcall(function() exports.v_loading:resourceReady() end)
 end
 
 --- Brings the loaded models in line with the options and the files on this PC.
@@ -161,7 +161,7 @@ function onOptionChanged(id)
     if started then syncModels() end
 end
 
---- done, total, finished of the first loading pass (acc_loading screen).
+--- done, total, finished of the first loading pass (v_loading screen).
 function getLoadProgress()
     return progress.done, progress.total, progress.finished, started and Mods ~= nil
 end
@@ -178,6 +178,6 @@ end)
 addEventHandler("onClientResourceStart", resourceRoot, function()
     -- restarted while the player is loading / playing
     local loadingActive = false
-    pcall(function() loadingActive = exports.acc_loading:isLoadingActive() end)
+    pcall(function() loadingActive = exports.v_loading:isLoadingActive() end)
     if loadingActive or getElementData(localPlayer, "loaded") == true then start() end
 end)

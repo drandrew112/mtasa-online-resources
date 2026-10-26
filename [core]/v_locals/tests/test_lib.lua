@@ -206,7 +206,7 @@ eq("back to en", L("t.hello"), "Hello")
 localPlayer = {}
 function getElementData() return false end
 local readyCalls = 0
-exports = { acc_loading = { resourceReady = function() readyCalls = readyCalls + 1 end } }
+exports = { v_loading = { resourceReady = function() readyCalls = readyCalls + 1 end } }
 CFG = { name = "keep" }
 local held
 L.config(function()

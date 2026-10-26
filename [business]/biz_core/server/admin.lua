@@ -165,7 +165,7 @@ function A.transfer(args, done, admin)
     local acc = tostring(args.account or "")
     if not id or acc == "" then return done({ ok = false, error = "bad_id" }) end
     if CO.byId[id] then return done({ ok = false, error = "founder_online" }) end
-    local canon = BIZ.running("acc_auth") and exports.acc_auth:accountNameExists(acc)
+    local canon = BIZ.running("v_accounts") and exports.v_accounts:accountNameExists(acc)
     if not canon then return done({ ok = false, error = "no_account" }) end
     if CO.playerOf(canon) then return done({ ok = false, error = "target_online" }) end
     DB.query(function(orows)

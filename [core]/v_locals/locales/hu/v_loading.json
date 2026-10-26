@@ -1,0 +1,19 @@
+{
+  "v_loading.screen.account_data": "Fiók adatok",
+  "v_loading.screen.game_resources": "Játék erőforrások",
+  "v_loading.screen.loading": "Betöltés",
+  "v_loading.screen.setting_up": "Erőforrások beállítása",
+  "v_loading.screen.streaming": "betöltés",
+  "v_loading.screen.waiting": "várakozás",
+  "v_loading.screen.world": "Világ",
+  "v_loading.screen.custom_models": "Egyedi modellek",
+  "v_loading.fail.title": "A betöltés túl sokáig tart",
+  "v_loading.fail.subtitle": "Valamit nem sikerült betölteni. Az újracsatlakozás általában megoldja.",
+  "v_loading.fail.missing": "Nem töltődött be:",
+  "v_loading.fail.world": "A spawn környéki világ",
+  "v_loading.fail.game_resources": "Játék erőforrások (a letöltés vagy indítás nem fejeződött be)",
+  "v_loading.fail.custom_models": "Egyedi modellek ({done} / {total})",
+  "v_loading.fail.reconnect": "Újracsatlakozás [ENTER]",
+  "v_loading.fail.wait": "Várakozás [ESC]",
+  "v_loading.fail.hint": "Ha ismétlődik, jelezd a fenti listát egy adminnak."
+}

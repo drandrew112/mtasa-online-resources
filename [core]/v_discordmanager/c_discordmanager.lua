@@ -38,7 +38,7 @@ local function stripColors(s)
 end
 
 local function playerName()
-    -- the account name is applied as the native player name by acc_auth
+    -- the account name is applied as the native player name by v_accounts
     return stripColors(getPlayerName(localPlayer))
 end
 

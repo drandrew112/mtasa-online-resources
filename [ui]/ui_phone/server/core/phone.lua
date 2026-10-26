@@ -61,7 +61,7 @@ addEventHandler("phone:pull", root, function()
     runPulls(client)
 end)
 
--- onPlayerLoaded fires after acc_auth has loaded the account data from the
+-- onPlayerLoaded fires after v_accounts has loaded the account data from the
 -- shared MySQL store, so the phone data is already settled here.
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()

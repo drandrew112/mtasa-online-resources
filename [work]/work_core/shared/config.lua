@@ -56,7 +56,7 @@ WORK = {
 -- Element data keys
 WORK_DATA = {
     PLAYER_WORK = "work.id",          -- player: id of the work he is on duty in (synced) / false
-    CIVIL_SKIN  = "work.civilSkin",   -- player: model before duty (server only, read by acc_savesys)
+    CIVIL_SKIN  = "work.civilSkin",   -- player: model before duty (server only, read by v_accounts)
     MARKER_KIND = "work.marker",      -- marker: "duty" | "vehicle"
     MARKER_WORK = "work.markerWork",  -- marker: work id
     MARKER_VEHICLES = "work.vehicles",-- vehicle marker: { { model, name }, ... }

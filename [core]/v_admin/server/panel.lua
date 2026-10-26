@@ -58,7 +58,7 @@ local function collectPlayer(player)
     local now = getRealTime().timestamp
     local x, y, z = getElementPosition(player)
     local veh = getPedOccupiedVehicle(player)
-    local accName = exports.acc_auth:getName(player)
+    local accName = exports.v_accounts:getName(player)
     local level = getAdminLevel(player)
 
     local muteUntil = tonumber(getElementData(player, "mute_until"))
@@ -197,14 +197,14 @@ local ACTIONS = {
     ["unjail"]  = function(admin, t)       adminUnjail(admin, t) end,
     ["kick"]    = function(admin, t, a)    adminKick(admin, t, text(a)) end,
     ["ban"]     = function(admin, t, a)
-        local accName = exports.acc_auth:getName(t)
+        local accName = exports.v_accounts:getName(t)
         if not accName then
             return adminAlert(admin, L.msg("v_admin.panel.that_player_is_not_logged_in"), 255, 90, 90)
         end
         adminBan(admin, accName, text(a))
     end,
     ["unban"]   = function(admin, t)
-        local accName = getElementData(t, "banned_account") or exports.acc_auth:getName(t)
+        local accName = getElementData(t, "banned_account") or exports.v_accounts:getName(t)
         if not accName then
             return adminAlert(admin, L.msg("v_admin.panel.no_banned_account_on_that_player"), 255, 90, 90)
         end

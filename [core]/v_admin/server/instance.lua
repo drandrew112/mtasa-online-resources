@@ -15,7 +15,7 @@ local CFG = ADMIN.instances
 local TABLE = CFG.table
 local ready = false
 local remote = {}    -- account_name:lower() -> { server, serverName, id } of the OTHER instances
-local mine = {}      -- player -> account name written for it (acc_auth may forget it before onPlayerQuit)
+local mine = {}      -- player -> account name written for it (v_accounts may forget it before onPlayerQuit)
 
 local function now() return getRealTime().timestamp end
 
@@ -57,7 +57,7 @@ local function ensure()
 end
 
 local function accountOf(player)
-    return resourceRunning("acc_auth") and exports.acc_auth:getName(player) or nil
+    return resourceRunning("v_accounts") and exports.v_accounts:getName(player) or nil
 end
 
 local function put(player, account)

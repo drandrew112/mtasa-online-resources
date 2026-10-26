@@ -18,7 +18,7 @@ Extended: `ui_core` (stat tracker `progress` bar), `ui_inac` (My organization on
 menu), `ui_phone` (Organization app), `ai_land_traffic` (scripted `pursuit` + `engageScriptedVehicle`),
 `v_inventory` (`biz_supply_crate` item), `v_weekly` (Business sale multipliers), `v_stats` (Business
 category), `v_achievements` (12 achievements), `v_admin` (Organizations page in game + web, account
-tile, Weekly → Business tab), `acc_menu` / `ui_pause` (Business stat category).
+tile, Weekly → Business tab), `v_mainmenu` / `ui_pause` (Business stat category).
 
 ## Rules (user decisions)
 

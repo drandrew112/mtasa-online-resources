@@ -47,7 +47,7 @@ end
 function CO.accountOf(player)
     if not isElement(player) or getElementType(player) ~= "player" then return nil end
     local name
-    if running("acc_auth") then name = exports.acc_auth:getName(player) end
+    if running("v_accounts") then name = exports.v_accounts:getName(player) end
     if not name then name = getElementData(player, "accName") end
     if type(name) ~= "string" or name == "" then return nil end
     return name

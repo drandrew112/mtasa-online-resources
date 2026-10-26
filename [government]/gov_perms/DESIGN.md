@@ -484,7 +484,7 @@ One menu item (replaces Members), visible with `perms.view`, editable with `perm
 | Tab | What |
 | --- | --- |
 | **Groups** | list: name, rank, color, holders x / max, salary / h, cost / day. Editor: name, code, kind, rank, max holders, salary, tax key, color; the **rights tree** by area (the menu categories) – a checkbox per static right; for families (state companies, works, hospitals) a row per family with "all" / "branch: …" / a checklist of the targets; danger colors; inactive rights greyed. Save, copy as new group, archive. |
-| **Officials** | everyone with a position: account, display name (`acc_auth:getDisplayName`), positions (expiry, salary, paid in 30 days). Appoint (account picker + group + optional expiry + note), dismiss, replace. "Effective rights" of one official, each with the position it comes from. |
+| **Officials** | everyone with a position: account, display name (`v_accounts:getDisplayName`), positions (expiry, salary, paid in 30 days). Appoint (account picker + group + optional expiry + note), dismiss, replace. "Effective rights" of one official, each with the position it comes from. |
 | **Branches** | the branch list: add, rename, reorder, archive; number of companies per branch. |
 | **Catalogue** | every `gov_perms` row by area / family: name, key, module, danger, active; which groups hold it; purge inactive. |
 

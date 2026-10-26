@@ -1,0 +1,19 @@
+{
+  "v_loading.screen.account_data": "Account data",
+  "v_loading.screen.game_resources": "Game resources",
+  "v_loading.screen.loading": "Loading",
+  "v_loading.screen.setting_up": "Setting up resources",
+  "v_loading.screen.streaming": "loading",
+  "v_loading.screen.waiting": "waiting",
+  "v_loading.screen.world": "World",
+  "v_loading.screen.custom_models": "Custom models",
+  "v_loading.fail.title": "Loading is taking too long",
+  "v_loading.fail.subtitle": "Something could not be loaded. Reconnecting usually fixes it.",
+  "v_loading.fail.missing": "Not loaded:",
+  "v_loading.fail.world": "World around the spawn point",
+  "v_loading.fail.game_resources": "Game resources (download or start did not finish)",
+  "v_loading.fail.custom_models": "Custom models ({done} / {total})",
+  "v_loading.fail.reconnect": "Reconnect [ENTER]",
+  "v_loading.fail.wait": "Keep waiting [ESC]",
+  "v_loading.fail.hint": "If it keeps happening, report the list above to an admin."
+}

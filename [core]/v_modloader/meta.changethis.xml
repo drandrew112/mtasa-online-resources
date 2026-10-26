@@ -15,8 +15,8 @@
          getModelStatus(category) -> { ok, total, new, outdated, bytes, totalBytes, names, checking }
          getMissingModels() -> count, bytes, checking   (every "manual" category)
          downloadModels(category) -> bool   isModelDownloadActive() -> bool
-         autoUpdate() -> bool   (acc_menu, after the login)
-         getLoadProgress() -> done, total, finished, active   (acc_loading screen)
+         autoUpdate() -> bool   (v_mainmenu, after the login)
+         getLoadProgress() -> done, total, finished, active   (v_loading screen)
          Local events: onClientModelDownloadStart (category), onClientModelDownloadFinish
          (category, files, failed, cancelled), onClientModelStatusChange -->
     <export function="getModelOption"        type="client" />

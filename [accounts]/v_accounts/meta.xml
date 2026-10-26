@@ -1,0 +1,150 @@
+<meta>
+    <info author="DrAndrew112" name="Accounts" version="2.0.0" type="script"
+          description="Account system in modules: auth (login, registration, email, password reset, identity), bans, savesys (player data), ui (login panels, news, music)" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="v_mail" />
+    <include resource="ui_core" />
+    <include resource="dgs" />
+
+    <!-- v_locals import: must stay the first script -->
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <!-- bans -->
+    <script src="bans/server/bans.lua" type="server" />
+
+    <!-- auth. auth/config.lua is gitignored: copy auth/config.example.lua to auth/config.lua.
+         Reset emails go out through v_mail (it holds the Brevo API key). -->
+    <script src="auth/config.lua" type="server" />
+    <script src="auth/server/db.lua" type="server" />
+    <script src="auth/server/identity.lua" type="server" />
+    <script src="auth/server/online.lua" type="server" />
+    <script src="auth/server/login.lua" type="server" />
+    <script src="auth/server/pool.lua" type="server" />
+    <script src="auth/server/register.lua" type="server" />
+    <script src="auth/server/email.lua" type="server" />
+    <script src="auth/server/settings.lua" type="server" />
+    <script src="auth/server/recovery.lua" type="server" />
+
+    <!-- savesys -->
+    <script src="savesys/config.lua" type="server" />
+    <script src="savesys/server/modules.lua" type="server" />
+    <script src="savesys/server/main.lua" type="server" />
+
+    <!-- ui -->
+    <script src="ui/server/feed.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <!-- auth -->
+    <script src="auth/client/token.lua" type="client" />
+
+    <!-- ui -->
+    <script src="ui/client/state.lua" type="client" />
+    <script src="ui/client/theme.lua" type="client" />
+    <script src="ui/client/userdata.lua" type="client" />
+    <script src="ui/client/main.lua" type="client" />
+    <script src="ui/client/music.lua" type="client" />
+    <script src="ui/client/language.lua" type="client" />
+    <script src="ui/client/settings.lua" type="client" />
+    <script src="ui/client/header.lua" type="client" />
+    <script src="ui/client/news.lua" type="client" />
+    <script src="ui/client/weekly.lua" type="client" />
+    <script src="ui/client/render.lua" type="client" />
+
+    <script src="ui/client/panels/login.lua" type="client" />
+    <script src="ui/client/panels/register.lua" type="client" />
+    <script src="ui/client/panels/forgot.lua" type="client" />
+    <script src="ui/client/panels/banned.lua" type="client" />
+
+    <!-- ================= EXPORTS: auth ================= -->
+    <!-- Identity (the mod does not use MTA accounts). getName(player) -> account
+         name | false; isLoggedIn(player) -> bool; accountNameExists(name) ->
+         canonical name | false; getAllAccountNames() -> { name, ... }. -->
+    <export function="getName"            type="server" />
+    <export function="getDisplayName"     type="server" />
+    <export function="playerOnAccount"    type="server" />
+    <export function="syncDisplayName"    type="server" />
+    <export function="isLoggedIn"         type="server" />
+    <export function="accountNameExists"  type="server" />
+    <export function="getAllAccountNames" type="server" />
+    <!-- httpLogin(username, password) -> true, accountName | false, error. Credential check
+         without a player (web logins); does not log anyone in. -->
+    <export function="httpLogin"          type="server" />
+    <!-- v_admin Accounts page: adminSendPasswordReset(account, adminName), adminSetAccountEmail(account, email | "") -> true | false, errorKey -->
+    <export function="adminSendPasswordReset" type="server" />
+    <export function="adminSetAccountEmail"   type="server" />
+
+    <!-- Client API (v_mainmenu, v_socialpanel). Answers arrive as client events:
+           v_accounts:onClientAuthError (text)
+           v_accounts:onClientLoggedIn (accountName, isNewAccount)
+           v_accounts:onClientTokenInvalid ()
+           v_accounts:onClientResetState (step = "sending" | "code" | "done" | "failed", info)
+           v_accounts:onClientEmail (maskedEmail | false, hasEmail, noticeText | nil) -->
+    <export function="login"                type="client" />
+    <export function="loginWithToken"       type="client" />
+    <export function="register"             type="client" />
+    <export function="getSavedAccountName"  type="client" />
+    <export function="forgetSavedLogin"     type="client" />
+    <export function="requestPasswordReset" type="client" />
+    <export function="confirmPasswordReset" type="client" />
+    <export function="usePasswordResetCode" type="client" />
+    <export function="requestEmail"         type="client" />
+    <export function="setEmail"             type="client" />
+
+    <!-- ================= EXPORTS: bans ================= -->
+    <!-- banAccount(account_name, reason, admin_name) -> true | false, error
+         unbanAccount(account_name, admin_name)      -> true | false, error
+         (NOT banPlayer/unbanPlayer - those are built-in MTA function names) -->
+    <export function="banAccount"     type="server" />
+    <export function="unbanAccount"   type="server" />
+    <!-- getActiveBan(serial | nil, account_name | nil) -> { date, admin, reason, account } | false -->
+    <export function="getActiveBan"   type="server" />
+    <!-- applyBan(player, ban) puts the ban state on a player (frozen, ban panel);
+         isPlayerBanned(player) -> bool -->
+    <export function="applyBan"       type="server" />
+    <export function="isPlayerBanned" type="server" />
+
+    <!-- ================= EXPORTS: savesys ================= -->
+    <!-- getProfile(player) -> { account, money, level, xp, playtime, skin, position = { x, y, z, interior, dimension, zone },
+                                 collectibles = { [id] = n }, preferences = { spawnLocation = "last" | "random" } } | false
+         spawnFromSave(player, mode)  "normal" | "fresh" (brand-new account: default spawn); v_loading calls it
+         savePlayer(player)           immediate save (only after the player is loaded)
+         getPreference(player, id) / setPreference(player, id, value) -> value | bool    ids: spawnLocation
+         getCollectibles(player) -> { { id, label, count, total }, ... } / addCollectible(player, id, amount)
+         event onPlayerDataReady (accountName)  source = player; the profile is ready, v_mainmenu opens -->
+    <export function="getProfile"      type="server" />
+    <export function="spawnFromSave"   type="server" />
+    <export function="savePlayer"      type="server" />
+    <export function="getPreference"   type="server" />
+    <export function="setPreference"   type="server" />
+    <export function="getCollectibles" type="server" />
+    <export function="addCollectible"  type="server" />
+
+    <!-- ================= EXPORTS: ui ================= -->
+    <!-- Menu music for v_mainmenu: setMusicActive(on) keeps it playing while no
+         login panel is up; isMusicEnabled() / setMusicEnabled(bool) = the player's choice.
+         getBackgroundImage() -> path of this session's background (":v_accounts/ui/bgs/N.png") -->
+    <export function="setMusicActive"     type="client" />
+    <export function="isMusicEnabled"     type="client" />
+    <export function="setMusicEnabled"    type="client" />
+    <export function="getBackgroundImage" type="client" />
+
+    <file src="ui/audio/ui_btn_click.mp3" />
+    <file src="ui/audio/ui_btn_hover.mp3" />
+    <file src="ui/audio/main_menu.mp3" />
+    <file src="ui/freev.png" />
+    <file src="ui/rounded.fx" />
+    <file src="ui/bgs/1.png" />
+    <file src="ui/bgs/2.png" />
+    <file src="ui/bgs/3.png" />
+    <file src="ui/bgs/4.png" />
+    <file src="ui/bgs/5.png" />
+    <file src="ui/bgs/6.png" />
+    <file src="ui/bgs/7.png" />
+    <file src="ui/bgs/8.png" />
+    <file src="ui/bgs/9.png" />
+    <file src="ui/bgs/10.png" />
+    <file src="ui/bgs/11.png" />
+</meta>

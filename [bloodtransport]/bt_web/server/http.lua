@@ -1,6 +1,6 @@
 -- Blood Transport web page API. The functions are exported with http="true" (meta.xml) and called by
 -- the page over HTTP (POST /bt_web/call/<function>) or through the web_api bridge in ui_browser.
--- Public: btPublic, btStock. Admin: btAdminLogin / btAdminLogout / btAdminQuery (acc_auth login,
+-- Public: btPublic, btStock. Admin: btAdminLogin / btAdminLogout / btAdminQuery (v_accounts login,
 -- the admin level is re-checked on every call). English only.
 
 local DENIED = { ok = false, error = "unauthorized" }
@@ -60,9 +60,9 @@ local function adminLevelNeeded()
 end
 
 local function adminLevelOf(account)
-    if isRunning("acc_auth") and isRunning("v_mysql") then
+    if isRunning("v_accounts") and isRunning("v_mysql") then
         for _, p in ipairs(getElementsByType("player")) do
-            if exports.acc_auth:getName(p) == account then
+            if exports.v_accounts:getName(p) == account then
                 return tonumber(exports.v_mysql:getAccData(p, "admin_level")) or 0
             end
         end
@@ -109,8 +109,8 @@ function btAdminLogin(_, username, password)
     local id = exports.web_api:getCallerId(hostname)
     fails[id] = fails[id] or {}
     if tooManyFails(id) then return { ok = false, error = "Too many failed attempts. Try again in a minute." } end
-    if not isRunning("acc_auth") then return { ok = false, error = "Account system is not available." } end
-    local ok, account = exports.acc_auth:httpLogin(username, password)
+    if not isRunning("v_accounts") then return { ok = false, error = "Account system is not available." } end
+    local ok, account = exports.v_accounts:httpLogin(username, password)
     local level = ok and adminLevelOf(account) or 0
     local need = adminLevelNeeded()
     if not ok or level < need then

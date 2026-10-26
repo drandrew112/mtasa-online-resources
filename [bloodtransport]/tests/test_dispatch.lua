@@ -112,7 +112,7 @@ exports = setmetatable({}, { __index = function(_, name)
             clearObjectives = function() removedObjectives = removedObjectives + 1 end,
             addObjective = function(_, p, x, y, z, label) objectives[p] = label; return "s1" end,
         },
-        acc_auth = { getName = function(_, p) return p.name:lower() end },
+        v_accounts = { getName = function(_, p) return p.name:lower() end },
     }
     return r[name]
 end })

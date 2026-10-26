@@ -1,12 +1,12 @@
 -- v_modloader (client): downloads the "manual" categories (download="false" files).
 --
 --   downloadModels(category) starts it from Settings > Models; autoUpdate() after the login
---   (acc_menu) when Auto-update is on. One file at a time through downloadFile, the progress
+--   (v_mainmenu) when Auto-update is on. One file at a time through downloadFile, the progress
 --   on ui_download's external mode; Backspace there cancels (the finished files stay).
 --   Local events (source = localPlayer):
 --     onClientModelDownloadStart  (category)
 --     onClientModelDownloadFinish (category, downloadedFiles, failedFiles, cancelled)
---   The panel that was open hides on Start and comes back on Finish (ui_pause, acc_menu).
+--   The panel that was open hides on Start and comes back on Finish (ui_pause, v_mainmenu).
 --   Loading still follows the options: a download alone never loads a turned-off category.
 
 addEvent("onClientModelDownloadStart")
@@ -178,7 +178,7 @@ local function runAutoUpdate()
     end
 end
 
---- acc_menu calls it once the account menu is up: with Auto-update on, the new / changed
+--- v_mainmenu calls it once the account menu is up: with Auto-update on, the new / changed
 --- "manual" models are downloaded right away (once per connection).
 function autoUpdate()
     if autoChecked then return false end

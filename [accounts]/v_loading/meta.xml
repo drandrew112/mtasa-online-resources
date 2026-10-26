@@ -1,0 +1,33 @@
+<meta>
+    <info author="DrAndrew112" name="Loading" version="1.1.0" type="script"
+          description="Loading screen and gate between Join game and onPlayerLoaded: client resources, resourceReady reports (kept from before the loading), providers, world streaming, spawn camera" />
+
+    <include resource="v_locals" />
+    <include resource="ui_core" />
+    <include resource="v_accounts" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="config.lua" type="client" />
+
+    <script src="server/gate.lua" type="server" />
+    <script src="server/flow.lua" type="server" />
+
+    <script src="client/ready.lua" type="client" />
+    <script src="client/screen.lua" type="client" />
+    <script src="client/world.lua" type="client" />
+
+    <!-- beginLoading(player [, mode = "normal" | "fresh"])  "fresh" = brand-new account: default
+         spawn, no world wait, no v_mapcam (v_introduce takes over on onPlayerLoaded)
+         loadingComplete(player, type)   an external provider finished preparing `type`
+         isPlayerLoading(player) -> bool
+         Events: onPlayerLoadingStarted (accountName) / onPlayerLoaded (accountName), source = player
+         Client events: onClientLoadingStarted, onClientReadyCheck, onClientPlayerLoaded (accountName) -->
+    <export function="beginLoading"    type="server" />
+    <export function="loadingComplete" type="server" />
+    <export function="isPlayerLoading" type="server" />
+
+    <!-- resourceReady(): a REQUIRED resource (config.lua) reports it is set up. Kept from
+         the moment it arrives, also before the loading started. isLoadingActive() -> bool -->
+    <export function="resourceReady"   type="client" />
+    <export function="isLoadingActive" type="client" />
+</meta>
