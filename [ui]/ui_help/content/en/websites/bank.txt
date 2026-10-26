@@ -1,0 +1,32 @@
+# Liberty Bank – libertybank.eu
+@keywords: bank, Liberty Bank, libertybank, bank account, balance, deposit, withdraw, cash, transfer, statement, transactions, account number, loan, company account
+@related: web, web_registry, feature_browser
+
+**Liberty Bank** is the bank of San Andreas. On its website you manage every bank account you have access to: your own personal account, and the company or state accounts you were given rights to.
+
+![300](content/images/features/browser_bank.jpg)
+
+## Accounts
+
+The buttons at the top switch between your accounts: **Personal** is your own, the others are the company and state accounts you have rights to. Each one shows its type, account number (for example `LB-1-000042`) and balance. A frozen or closed account is marked in red.
+
+## Deposit and withdraw
+
+On your **personal** account you can pay cash in (**Deposit cash**) and take cash out (**Withdraw cash**): pick an amount or **All**. Next to it you see the cash on hand.
+
+## Transfer
+
+1. **Recipient** – the account number of the recipient.
+2. **Amount** – how much to send.
+3. **Note** – optional message for the recipient.
+4. **Check** – the bank shows who receives the money; **Confirm transfer** sends it, **Cancel** drops it.
+
+From a company or state account you can only send money if your rights allow it.
+
+## Statement
+
+The **Statement** lists the transactions of the selected account: incoming and outgoing money, with the date and the note.
+
+## Loans
+
+Under **Loans** you see your running loans and can take a new personal loan. On a company account you see the loans of the company instead (if you have the right).

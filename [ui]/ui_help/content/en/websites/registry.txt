@@ -1,0 +1,27 @@
+# SA Business Registry – sabusinessregistry.eu
+@keywords: business registry, company registry, sabusinessregistry, register company, organization, company, headquarters, office, move headquarters, registration fee, top organizations, company value
+@related: web, web_bank, feature_interaction
+
+The **San Andreas Business Registry** is the official register of the private companies (organizations). Here you register a company, move its headquarters, and anyone can look up the registered companies.
+
+## Register – founding a company
+
+One organization per person. The registration has three steps:
+
+1. **Name** – the name of your organization.
+2. **Headquarters** – click a building on the map to choose your office.
+3. **Payment** – the registration fee plus the price of the headquarters, paid from your bank account. Your balance is shown next to the total.
+
+Press **Register organization**. From then on you run the company on the computer in your office, under **My organization** in the interaction menu and in the **Organization** phone app.
+
+## Moving the headquarters
+
+If you already have a company, the Register page shows its details (company value, headquarters, founding date) and the **Move headquarters** option. The new office is paid from the company account; the old one is bought back at half its price.
+
+## Registry – the public database
+
+**Registry** lists every active organization of San Andreas: its name, founder, headquarters, the legal **activities** it runs and the date it was founded. Anyone can look at it, so the legal business of every private company is public.
+
+## Top organizations
+
+The companies ranked by **company value**: properties, upgrades, stock and balance together.

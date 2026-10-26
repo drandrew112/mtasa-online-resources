@@ -89,6 +89,24 @@
     <file src="content/hu/binds/work.txt" type="client" />
     <file src="content/hu/binds/creator.txt" type="client" />
     <file src="content/hu/binds/admin.txt" type="client" />
+    <file src="content/en/websites/overview.txt" type="client" />
+    <file src="content/en/websites/vehicles.txt" type="client" />
+    <file src="content/en/websites/bank.txt" type="client" />
+    <file src="content/en/websites/registry.txt" type="client" />
+    <file src="content/en/websites/gov.txt" type="client" />
+    <file src="content/en/websites/ems.txt" type="client" />
+    <file src="content/en/websites/bloodtransport.txt" type="client" />
+    <file src="content/en/websites/transit.txt" type="client" />
+    <file src="content/en/websites/atc.txt" type="client" />
+    <file src="content/hu/websites/overview.txt" type="client" />
+    <file src="content/hu/websites/vehicles.txt" type="client" />
+    <file src="content/hu/websites/bank.txt" type="client" />
+    <file src="content/hu/websites/registry.txt" type="client" />
+    <file src="content/hu/websites/gov.txt" type="client" />
+    <file src="content/hu/websites/ems.txt" type="client" />
+    <file src="content/hu/websites/bloodtransport.txt" type="client" />
+    <file src="content/hu/websites/transit.txt" type="client" />
+    <file src="content/hu/websites/atc.txt" type="client" />
 
     <!-- EXPORTS: CLIENT -->
     <export function="openHelp" type="client" />

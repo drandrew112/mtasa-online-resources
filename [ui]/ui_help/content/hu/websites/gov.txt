@@ -1,0 +1,33 @@
+# State of San Andreas – gov.sa
+@keywords: állam, kormány, gov.sa, State of San Andreas, átláthatóság, nyilvánosság, kincstár, államkincstár, költségvetés, adó, adók, jövedelemadó, áfa, ingatlanadó, társasági adó, díjak, bírság, büntetés, egészségügy, állami fizetés, bér, fizetés, szavazás
+@related: web, web_bank, web_registry
+
+A **gov.sa** San Andreas állam hivatalos weboldala. Átláthatósági okokból az állam működése nyilvános: bárki láthatja, honnan jön és hová megy a pénz. Az oldalak a felső menüben vannak.
+
+## Overview – áttekintés
+
+Az állam egy pillantásra, az **államkincstár napi bevétele és kiadása** grafikonon, valamint a kincstár **kategóriánkénti** bontása.
+
+## Budget – költségvetés
+
+Minden **állami cég** bevétele és kiadása. Az általa fizetett közmunkák bérei a cég alatt szerepelnek.
+
+## Taxes – adók
+
+- **Társasági és ingatlanadó**.
+- **Személyi jövedelemadó kulcsai** – melyik jövedelemre melyik kulcs vonatkozik.
+- **Áfa termékcsoportonként** – az áfa a bolti ár fölé jön, és az államkincstárba kerül.
+
+## Fees – díjak és bírságok
+
+Az állam **díjai és bírságai (büntetései)**, valamint az **állami egészségügy** (mennyibe kerül az orvosi ellátás).
+
+## Public pay – állami fizetések
+
+Melyik munkát ki fizeti, mekkora a **bérszorzója** és milyen jövedelemadó-kulcs vonatkozik rá.
+
+## Votes – szavazások
+
+Az állami szavazások. A polgárok játékban a `/vote` paranccsal szavaznak; az eredmény a szavazás lezárásakor jelenik meg.
+
+> A pénzügyi adatok csak az utolsó 30 napra visszamenőleg látszanak.

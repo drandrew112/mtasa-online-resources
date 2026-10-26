@@ -1,0 +1,25 @@
+# Járműkereskedések – lvcars.eu, legendary.eu
+@keywords: járművásárlás, autó vásárlás, autókereskedés, kereskedés, lvcars, Las Venturas Cars, legendary, Legendary Wheels, hiperautó, használt autó, saját jármű, áfa
+@related: web, feature_browser, feature_phone
+
+Saját autót a **Járművek** kategória két weboldalán vehetsz. Mindkettő ugyanúgy működik, csak a kínálat más.
+
+![300](content/images/features/browser_lvcars.jpg)
+
+- **Las Venturas Cars** (`lvcars.eu`) – megbízható, garanciás használt autók, a kis városi autóktól a terepjárókon át a rali kupékig. A lista ár szerint rendezhető.
+- **Legendary Wheels** (`legendary.eu`) – hiperautók az állam legexkluzívabb szalonjából.
+
+## Vásárlás
+
+1. Nyisd meg az oldalt, és válassz autót a listából.
+2. Válaszd ki a színét.
+3. Nyomd meg a vásárlás gombot. Az ár már tartalmazza az áfát.
+
+Először a készpénzedből fizetsz; ha az nem elég, a maradék a bankszámládról megy le. Az autó a játékos accountodhoz kerül.
+
+## Vásárlás után
+
+- Az autót a telefon **Járműveim** alkalmazásából vagy az interakciós menü **Saját jármű lehívása** pontjából hívod elő.
+- Műhelyben csak saját autót lehet tuningolni.
+
+> Minden vásárlás áfája az államkincstárba kerül; ezt a [[web_gov|gov.sa]] oldalon követheted.

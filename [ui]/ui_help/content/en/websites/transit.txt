@@ -1,0 +1,25 @@
+# San Andreas Transit – sa-transit.sa
+@keywords: transit, public transport, sa-transit, San Andreas Transit, Sunline Rail, train, railway, bus, journey planner, route planner, timetable, departures, arrivals, live map, train driver, railway worker
+@related: web
+
+**San Andreas Transit** is the public transport website: trains now, buses soon. The pages are on the menu at the top.
+
+## Journey planner
+
+Plan a trip on public transport. Pick the **From** and **To** stops (or click a stop on the map), choose **Now** or a departure time, then **Search journeys**. The results use live times and include the changes between lines.
+
+## Departures
+
+The live departure and arrival boards of every stop – the same as on the station displays.
+
+## Network
+
+The lines of the network and their timetables.
+
+## Live map
+
+Every train on the network, live: where it is, its next stops, its timetable and its delay. The stations show their departures and arrivals as well.
+
+## Work with us
+
+The works connected to public transport. **Sunline Rail** is looking for train drivers: drive regional and intercity services between Los Santos, San Fierro and Las Venturas, get paid for every service and climb the ranks. The page tells you how to start.

@@ -1,0 +1,33 @@
+# State of San Andreas – gov.sa
+@keywords: state, government, gov.sa, State of San Andreas, open government, transparency, treasury, budget, tax, taxes, income tax, VAT, property tax, company tax, fees, fines, healthcare, public pay, wages, salary, vote, votes
+@related: web, web_bank, web_registry
+
+**gov.sa** is the official website of the State of San Andreas. For transparency the state's operation is public: anyone can see where the money comes from and where it goes. The pages are on the menu at the top.
+
+## Overview
+
+The state at a glance, the **treasury's daily income and expense** on a chart and the treasury broken down **by category**.
+
+## Budget
+
+The income and expense of every **state company**. The wages of the public works a company pays are listed under it.
+
+## Taxes
+
+- **Company and property tax**.
+- **Personal income tax keys** – which key applies to which income.
+- **VAT by product group** – VAT is added on top of the shop price and goes to the State Treasury.
+
+## Fees
+
+The **fees and fines** of the state and the **state healthcare** (what medical care costs).
+
+## Public pay
+
+Who pays each work, its **wage multiplier** and its income tax key.
+
+## Votes
+
+The state votes. Citizens vote in game with `/vote`; the results are published when a vote closes.
+
+> Money data is shown for the last 30 days only.

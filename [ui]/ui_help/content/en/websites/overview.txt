@@ -1,0 +1,18 @@
+# In-game websites
+@keywords: website, websites, internet, browser, site, address, Open SE, web page
+@related: feature_browser, feature_phone
+
+The in-game browser (the **Browser** app of the phone) opens the server's own websites. Type the address into the search field of the Open SE home page, or pick the site from its category. How the browser itself works is on the [[feature_browser|In-game browser]] page.
+
+## The sites
+
+[[web_vehicles|Vehicle dealers – lvcars.eu, legendary.eu]]
+[[web_bank|Liberty Bank – libertybank.eu]]
+[[web_registry|SA Business Registry – sabusinessregistry.eu]]
+[[web_gov|State of San Andreas – gov.sa]]
+[[web_ems|San Andreas EMS – ems-dispatch.eu]]
+[[web_bloodtransport|Blood Transport – blood-transport.eu]]
+[[web_transit|San Andreas Transit – sa-transit.sa]]
+[[web_atc|San Andreas Control – sanandreascontrol.eu]]
+
+> Pages that need your identity (bank, company registration) use the account you are logged in with; you never type a password in the in-game browser.

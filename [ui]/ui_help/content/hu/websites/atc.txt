@@ -1,0 +1,30 @@
+# San Andreas Control – sanandreascontrol.eu
+@keywords: SA Control, San Andreas Control, sanandreascontrol, légiirányítás, légiforgalmi irányítás, ATC, irányító, torony, bevezető, radar, légtér, FIR, dokumentumok, Letter of Agreement, üzemeltetési kézikönyv, eljárások, SID, STAR, irányítói szoftver, légtér térkép
+@related: web
+
+A **San Andreas Control** a légiforgalmi irányítás weboldala. Itt található a légiforgalmi irányításhoz tartozó összes dokumentáció és segédlet: légtérismeret, eljárások, az irányítói szoftver, és hogy hogyan lehetsz irányító. A dokumentumok minden szolgálatban lévő irányítóra kötelezőek.
+
+## Home – kezdőlap
+
+- **Élő állapot** – hány pozíció nyitott, hány gép van a levegőben és a földön, és a szél.
+- **Controllers online** (szolgálatban lévő irányítók) és a **repülőterek**.
+- **How do I become an air traffic controller?** – szolgálatba lépés a San Fierro-i San Andreas Control épületben, az előmenetel (torony az elejétől, bevezető irányító az 5. szinttől, radar a 8. szinttől), a képzési modulok, és hogy melyik pozícióhoz mely dokumentumokat kell elolvasni.
+
+## Documents – dokumentumok
+
+Az irányítói dokumentumok könyvtára:
+
+- **Airspace and navigation** – a légtér felépítése, a navigációs pontok és a SID / STAR / átstartolási eljárások.
+- **ATC software manual** – az irányítói szoftver: bejelentkezés, a scope, a címkék, a parancsmenü, a listák.
+- **Operations Manual** 1–4. rész – általános szabályok, majd a toronyirányítás, a bevezető irányítás és a körzeti irányítás.
+- **Letter of Agreement** – hol, mikor és milyen magasságon adják át egymásnak a gépeket az egységek.
+
+> Toronyirányítóként kezdéshez elég az Operations Manual 2 – Aerodrome control és a Letter of Agreement néhány pontja.
+
+## Procedures – eljárások
+
+Minden repülőtér indulási, érkezési és átstartolási eljárásai.
+
+## Airspace map – légtér térkép
+
+A légtér térképe kapcsolható rétegekkel (FIR határ és szektorhatár, TMA, CTR, fixpontok, VOR / NDB, végső megközelítési fixek). Az Eljárások oldalon kiválasztott eljárás rá is rajzolódik.

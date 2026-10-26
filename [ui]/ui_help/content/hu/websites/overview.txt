@@ -1,0 +1,18 @@
+# Játékbeli weboldalak
+@keywords: weboldal, weboldalak, honlap, internet, böngésző, oldal, cím, Open SE
+@related: feature_browser, feature_phone
+
+A játékbeli böngésző (a telefon **Böngésző** alkalmazása) a szerver saját weboldalait nyitja meg. Írd be a címet az Open SE kezdőlap keresőmezőjébe, vagy válaszd ki az oldalt a kategóriájából. Magának a böngészőnek a kezelése a [[feature_browser|Játékbeli böngésző]] oldalon van.
+
+## Az oldalak
+
+[[web_vehicles|Járműkereskedések – lvcars.eu, legendary.eu]]
+[[web_bank|Liberty Bank – libertybank.eu]]
+[[web_registry|SA Business Registry – sabusinessregistry.eu]]
+[[web_gov|State of San Andreas – gov.sa]]
+[[web_ems|San Andreas EMS – ems-dispatch.eu]]
+[[web_bloodtransport|Blood Transport – blood-transport.eu]]
+[[web_transit|San Andreas Transit – sa-transit.sa]]
+[[web_atc|San Andreas Control – sanandreascontrol.eu]]
+
+> Azok az oldalak, amelyeknek tudniuk kell, ki vagy (bank, cégalapítás), a bejelentkezett accountodat használják; a játékbeli böngészőben soha nem kell jelszót beírnod.

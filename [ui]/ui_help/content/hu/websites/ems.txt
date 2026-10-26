@@ -1,0 +1,28 @@
+# San Andreas EMS – ems-dispatch.eu
+@keywords: EMS, mentő, mentőszolgálat, ems-dispatch, med_web, vészhelyzet, mentős, diszpécser, mentésirányító, diszpécseri felület, tablet, ERM, Emergency Response Manager, prioritás, P1, kórházak, szolgálatban, külső böngésző
+@related: web, medical, web_bloodtransport
+
+A **San Andreas Emergency Medical Services**, vagyis a mentőszolgálat weboldala. Bárki olvashatja; a munkafelületek csak a személyzetnek érhetők el.
+
+## Nyilvános rész
+
+- **Live service status** – hány mentőegység van szolgálatban, hány szabad most, hány aktív hívás van, és a kórházak. Az egységek aszerint is látszanak, mit csinálnak: **Available** (szabad), **En route** (úton), **On scene** (helyszínen), **Handover** (átadás a kórházban).
+- **What we do** – a szolgálat részei: mentés, diszpécserközpont, kórházhálózat, képzés.
+- **How we prioritise** – a prioritások P1-től (életveszély) P4-ig (nem sürgős).
+- **Hospitals** – a szolgálat befogadó kórházai térképen.
+- **Join us** – hogyan lehetsz mentős, orvos vagy diszpécser.
+
+> Vészhelyzetben a telefonodról hívd a mentőt: **Emergency Services** névjegy, majd **EMS**.
+
+## Staff portal – a személyzet felületei
+
+- **Diszpécseri konzol** – a manuális diszpécseri felület: a beérkező hívásokból feladatok lesznek, a diszpécser beállítja a prioritásukat (P1–P4), egységeket küld ki és üzen nekik. Zárt felület: a **diszpécser kóddal** lépsz be, amit a szolgálat vezetésétől kapsz.
+- **Egység tablet** – a mentőegység tabletje a böngészőben, a játékos accountoddal lépsz be. Automatikusan követi az egységedet, mutatja az aktív esetet, a diszpécser üzeneteit és az eset chatet. Előbb a mentőautóban lévő tableten kell bejelentkezned egy egységbe.
+
+## Játékon kívül
+
+Az oldal sima böngészőben is megnyitható, játék nélkül:
+
+`http://<szerver IP>:<szerver port>/med_web/`
+
+Innen a diszpécseri konzol és az egység tablet is működik, így például a tabletet nyitva tarthatod egy második monitoron vagy a telefonodon játék közben.

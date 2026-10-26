@@ -1,0 +1,30 @@
+# San Andreas Control – sanandreascontrol.eu
+@keywords: SA Control, San Andreas Control, sanandreascontrol, air traffic control, ATC, controller, tower, approach, radar, airspace, FIR, documents, Letter of Agreement, operations manual, procedures, SID, STAR, ATC software, scope, airspace map
+@related: web
+
+**San Andreas Control** is the air traffic control website. All the documentation and help of air traffic control is here: the airspace, the procedures, the controller software and how to become a controller. The documents are binding for every controller on duty.
+
+## Home
+
+- **Live status** – how many positions are open, how many aircraft are airborne and on the ground, and the wind.
+- **Controllers online** and the **airports**.
+- **How do I become an air traffic controller?** – going on duty in the San Andreas Control building in San Fierro, the career (tower from the start, approach from level 5, radar from level 8), the training modules, and which documents to read for each position.
+
+## Documents
+
+The library of the controller documents:
+
+- **Airspace and navigation** – the airspace structure, the navigation points and the SID / STAR / go-around procedures.
+- **ATC software manual** – logging in, the scope, the labels, the command menu, the lists.
+- **Operations Manual** parts 1–4 – general rules, then aerodrome (tower), approach and area control.
+- **Letter of Agreement** – where, when and at what level the units hand aircraft over to each other.
+
+> To start as a tower controller you only need Operations Manual 2 – Aerodrome control and a few sections of the Letter of Agreement.
+
+## Procedures
+
+The departure, arrival and go-around procedures of every airport.
+
+## Airspace map
+
+The map of the airspace with switchable layers (FIR boundary and sector line, TMA, CTR, fixes, VOR / NDB, final fixes). A procedure picked on the Procedures page is drawn on it.

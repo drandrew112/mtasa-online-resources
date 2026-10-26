@@ -1,0 +1,25 @@
+# Vehicle dealers – lvcars.eu, legendary.eu
+@keywords: buy vehicle, buy car, car dealer, dealership, lvcars, Las Venturas Cars, legendary, Legendary Wheels, hypercar, used car, personal vehicle, VAT
+@related: web, feature_browser, feature_phone
+
+Personal cars are bought on two websites of the **Vehicles** category. Both work the same way, only the offer differs.
+
+![300](content/images/features/browser_lvcars.jpg)
+
+- **Las Venturas Cars** (`lvcars.eu`) – certified used cars with warranty, from city runabouts to SUVs and rally coupes. The list can be sorted by price.
+- **Legendary Wheels** (`legendary.eu`) – hypercars from the most exclusive showroom in the state.
+
+## Buying a car
+
+1. Open the site and pick a car from the list.
+2. Choose its colour.
+3. Press buy. The price already includes VAT.
+
+You pay from your cash first; if that is not enough, the rest comes from your bank account. The car is registered to your game account.
+
+## After the purchase
+
+- Summon the car with the **My Vehicles** phone app or with **Request personal vehicle** in the interaction menu.
+- Only owned cars can be tuned in a workshop.
+
+> The VAT of every purchase goes to the State Treasury; you can follow it on [[web_gov|gov.sa]].

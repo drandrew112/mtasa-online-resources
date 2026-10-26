@@ -1,0 +1,28 @@
+# San Andreas EMS – ems-dispatch.eu
+@keywords: EMS, ambulance, ems-dispatch, med_web, emergency, paramedic, dispatcher, dispatch, dispatcher console, unit tablet, tablet, ERM, Emergency Response Manager, priority, P1, hospitals, units on duty, external browser
+@related: web, medical, web_bloodtransport
+
+The website of the **San Andreas Emergency Medical Services**. Anyone can read it; the working pages are closed to staff.
+
+## Public part
+
+- **Live service status** – how many ambulance units are on duty, how many are available now, the active calls and the hospitals. The units are also broken down by what they are doing: **Available**, **En route**, **On scene**, **Handover**.
+- **What we do** – the parts of the service: emergency response, the dispatch centre, the hospital network, training.
+- **How we prioritise** – the priorities P1 (life-threatening) to P4 (non-urgent).
+- **Hospitals** – the receiving hospitals of the service on a map.
+- **Join us** – how to become a paramedic, doctor or dispatcher.
+
+> In an emergency call the ambulance from your phone: the **Emergency Services** contact, then **EMS**.
+
+## Staff portal
+
+- **Dispatcher console** – the manual dispatcher interface: the incoming calls become tasks, the dispatcher sets their priority (P1–P4), sends units and messages them. It is closed: you sign in with your **dispatcher code**, which you get from the service management.
+- **Unit tablet** – the tablet of an ambulance crew in the browser, signed in with your game account. It follows your unit automatically and shows the active case, dispatch messages and the case chat. You must first sign in to a unit on the tablet inside an ambulance.
+
+## Outside the game
+
+The site also opens in an ordinary web browser, without the game:
+
+`http://<server IP>:<server port>>/med_web/`
+
+From there the dispatcher console and the unit tablet work too, so you can, for example, keep the tablet open on a second screen or on your phone while you play.

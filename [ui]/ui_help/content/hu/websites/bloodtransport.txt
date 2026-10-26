@@ -1,0 +1,20 @@
+# Blood Transport – blood-transport.eu
+@keywords: vérszállítás, vérszállító, blood transport, blood-transport, vérbank, vér, laborminta, élő térkép, GPS, követés, készlet, feladatok, kiszállítás, statisztika
+@related: web, web_ems
+
+San Andreas **vérszállító szolgálatának** weboldala. A vérszállítók vérkészítményeket, labormintákat és sürgős gyógyszereket visznek a vérellátó központok és a kórházak között.
+
+## Kezdőlap
+
+- **Számok** – hány vérszállító van most szolgálatban, az aktív feladatok (felvételre vár + úton) és az összes eddigi teljesített szállítás.
+- **What does a blood transporter do?** – felvétel, tervezés, leadás, együttműködés.
+- **How do I become a blood transporter?** – a lépések a szolgálati markertől az első feladatig.
+
+## Élő térkép
+
+A szolgálat nyilvános **GPS követése**: minden szolgálatban lévő vérszállító autó élőben látszik a térképen, a vérbankokkal és kórházakkal együtt. Ha az egeret egy egység fölé viszed, látod a feladatait. A térkép mellett:
+
+- **Units on duty** – a szolgálatban lévő egységek listája (csak olvasható).
+- **Stock** – a központok és kórházak vérkészlete.
+
+> A térkép nyilvános: bárki követheti a vérszállítókat, ehhez nem kell szolgálatban lenned.

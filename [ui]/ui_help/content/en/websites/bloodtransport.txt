@@ -1,0 +1,20 @@
+# Blood Transport – blood-transport.eu
+@keywords: blood transport, blood transporter, blood-transport, blood bank, blood, lab sample, live map, GPS, tracking, stock, tasks, deliveries, statistics
+@related: web, web_ems
+
+The website of the **blood transport service** of San Andreas. Blood transporters carry blood products, lab samples and urgent medicine between the blood supply centres and the hospitals.
+
+## Home
+
+- **Figures** – how many transporters are on duty now, the active tasks (waiting for pickup plus in transit) and the completed deliveries of all time.
+- **What does a blood transporter do?** – pick up, plan, deliver, cooperate.
+- **How do I become a blood transporter?** – the steps from the duty marker to the first task.
+
+## Live map
+
+A public **GPS tracking** of the service: every blood transport car on duty is shown live on the map, together with the blood banks and hospitals. Hover a unit to see its tasks. Next to the map:
+
+- **Units on duty** – a read-only list of the units.
+- **Stock** – the blood stock of the centres and the hospitals.
+
+> The map is public: anyone can follow the transporters, you do not need to be on duty.

@@ -1,0 +1,32 @@
+# Liberty Bank – libertybank.eu
+@keywords: bank, Liberty Bank, libertybank, bankszámla, számla, egyenleg, befizetés, kivét, készpénz, átutalás, utalás, számlakivonat, tranzakció, számlaszám, hitel, céges számla
+@related: web, web_registry, feature_browser
+
+A **Liberty Bank** San Andreas bankja. A weboldalán minden olyan bankszámlát kezelhetsz, amihez hozzáférést kaptál: a saját személyes számládat, és azokat a céges vagy állami számlákat, amelyekhez jogod van.
+
+![300](content/images/features/browser_bank.jpg)
+
+## Számlák
+
+A felső gombokkal váltasz a számláid között: a **Personal** a sajátod, a többi a céges és állami számlák, amelyekhez jogod van. Mindegyiknél látszik a típusa, a számlaszáma (például `LB-1-000042`) és az egyenlege. A befagyasztott vagy megszüntetett számla pirossal jelölve.
+
+## Befizetés és kivét
+
+A **saját** számládra készpénzt fizethetsz be (**Deposit cash**) és vehetsz fel (**Withdraw cash**): válassz összeget, vagy az **All** gombbal az egészet. Mellette látod a nálad lévő készpénzt.
+
+## Átutalás
+
+1. **Recipient** – a kedvezményezett számlaszáma.
+2. **Amount** – az összeg.
+3. **Note** – közlemény (nem kötelező).
+4. **Check** – a bank megmutatja, ki kapja a pénzt; a **Confirm transfer** elküldi, a **Cancel** elveti.
+
+Céges vagy állami számláról csak akkor utalhatsz, ha a jogaid megengedik.
+
+## Számlakivonat
+
+A **Statement** a kiválasztott számla tranzakcióit listázza: a bejövő és kimenő összegeket dátummal és közleménnyel.
+
+## Hitelek
+
+A **Loans** részben látod a futó hiteleidet, és új személyi hitelt vehetsz fel. Céges számlán a cég hitelei látszanak (ha van hozzá jogod).

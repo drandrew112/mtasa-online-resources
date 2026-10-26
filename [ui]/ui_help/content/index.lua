@@ -26,6 +26,7 @@ HELP_INDEX = {
     categories = {
         { id = "features", order = 10, title = { en = "Menus and apps", hu = "Menük és alkalmazások" } },
         { id = "binds", order = 20, title = { en = "Key binds", hu = "Billentyűk" } },
+        { id = "websites", order = 30, title = { en = "In-game websites", hu = "Játékbeli weboldalak" } },
         { id = "medical", order = 40, title = { en = "Medical system", hu = "Orvosi rendszer" } },
     },
     topics = {
@@ -50,6 +51,17 @@ HELP_INDEX = {
         { id = "binds_work",        category = "binds", order = 110, file = "binds/work.txt" },
         { id = "binds_creator",     category = "binds", order = 120, file = "binds/creator.txt" },
         { id = "binds_admin",       category = "binds", order = 130, file = "binds/admin.txt" },
+
+        -- websites: one page per in-game site (ui_browser / web_api apps), overview links every page
+        { id = "web",                category = "websites", order = 10, file = "websites/overview.txt" },
+        { id = "web_vehicles",       category = "websites", order = 20, file = "websites/vehicles.txt" },
+        { id = "web_bank",           category = "websites", order = 30, file = "websites/bank.txt" },
+        { id = "web_registry",       category = "websites", order = 40, file = "websites/registry.txt" },
+        { id = "web_gov",            category = "websites", order = 50, file = "websites/gov.txt" },
+        { id = "web_ems",            category = "websites", order = 60, file = "websites/ems.txt" },
+        { id = "web_bloodtransport", category = "websites", order = 70, file = "websites/bloodtransport.txt" },
+        { id = "web_transit",        category = "websites", order = 80, file = "websites/transit.txt" },
+        { id = "web_atc",            category = "websites", order = 90, file = "websites/atc.txt" },
 
         -- medical: medsys / med_bag / mg_* minigames (overview links every page)
         { id = "medical",            category = "medical", order = 10, file = "medical/overview.txt" },

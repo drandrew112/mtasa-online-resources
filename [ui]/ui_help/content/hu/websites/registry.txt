@@ -1,0 +1,27 @@
+# SA Business Registry – sabusinessregistry.eu
+@keywords: cégjegyzék, cégnyilvántartás, sabusinessregistry, business registry, cégalapítás, cég regisztráció, szervezet, cég, székhely, iroda, székhely költöztetés, regisztrációs díj, top cégek, cégérték
+@related: web, web_bank, feature_interaction
+
+A **San Andreas Business Registry** a magáncégek (szervezetek) hivatalos cégjegyzéke. Itt alapíthatsz céget, költöztetheted a székhelyét, és bárki megnézheti a bejegyzett cégeket.
+
+## Register – cégalapítás
+
+Fejenként egy cég lehet. A regisztráció három lépés:
+
+1. **Name** – a szervezet neve.
+2. **Headquarters** – kattints egy épületre a térképen, ez lesz az irodád.
+3. **Payment** – a regisztrációs díj és a székhely ára, a bankszámládról fizetve. Az összeg mellett látod az egyenlegedet.
+
+Nyomd meg a **Register organization** gombot. Ettől kezdve a cégedet az irodai számítógépen, az interakciós menü **Saját cégem** pontjában és a telefon **Organization** alkalmazásában kezeled.
+
+## Székhely költöztetése
+
+Ha már van céged, a Register oldal a cég adatait mutatja (cégérték, székhely, alapítás dátuma) és a **Move headquarters** lehetőséget. Az új irodát a cég számlája fizeti; a régit fél áron visszavásárolják.
+
+## Registry – a nyilvános adatbázis
+
+A **Registry** San Andreas összes működő szervezetét listázza: név, alapító, székhely, a cég legális **tevékenységei** és az alapítás dátuma. Bárki megnézheti, így minden magáncég legális működése nyilvános.
+
+## Top organizations
+
+A cégek **cégérték** szerinti rangsora: ingatlanok, fejlesztések, készlet és egyenleg együtt.

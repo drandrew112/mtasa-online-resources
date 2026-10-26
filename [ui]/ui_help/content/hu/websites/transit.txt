@@ -1,0 +1,25 @@
+# San Andreas Transit – sa-transit.sa
+@keywords: tömegközlekedés, közlekedés, sa-transit, San Andreas Transit, Sunline Rail, vonat, vasút, busz, útvonaltervező, menetrend, indulások, érkezések, élő térkép, mozdonyvezető, vasutas
+@related: web
+
+A **San Andreas Transit** a tömegközlekedés weboldala: most vonatok, hamarosan buszok. Az oldalak a felső menüben vannak.
+
+## Journey planner – útvonaltervező
+
+Tervezd meg az utad tömegközlekedéssel. Válaszd ki az indulási (**From**) és a cél (**To**) megállót (vagy kattints egy megállóra a térképen), válaszd a **Now** (most) lehetőséget vagy egy indulási időt, majd **Search journeys**. A találatok élő időkkel számolnak, az átszállásokkal együtt.
+
+## Departures – indulások
+
+Minden megálló élő indulási és érkezési táblája – ugyanaz, mint az állomások kijelzőin.
+
+## Network – hálózat
+
+A hálózat vonalai és menetrendjeik.
+
+## Live map – élő térkép
+
+A hálózat összes vonata élőben: hol jár, melyik megállók következnek, a menetrendje és a késése. Az állomásoknál az indulások és érkezések is látszanak.
+
+## Work with us – munka
+
+A tömegközlekedéshez kapcsolódó munkák leírása. A **Sunline Rail** mozdonyvezetőket keres: regionális és intercity járatokat vezetsz Los Santos, San Fierro és Las Venturas között, minden járatért fizetést kapsz, és rangot léphetsz. Az oldal leírja, hogyan kezdj hozzá.
