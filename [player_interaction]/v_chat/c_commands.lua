@@ -78,7 +78,7 @@ addEventHandler("v_chat:commands", root, function(list)
     if type(list) ~= "table" then return end
     serverDB = {}
     for _, c in ipairs(list) do
-        serverDB[c[1]:lower()] = { name = c[1], params = c[2] or "", level = c[3] or 0, desc = c[4] }
+        serverDB[c[1]:lower()] = { name = c[1], params = c[2] or "", level = c[3] or 0, desc = c[4], auto = c[5] }
     end
 end)
 
@@ -140,11 +140,18 @@ local function matches(prefix, exact)
                     if (params == nil or params == "") then params = other.params end
                     if not desc then desc = other.desc end
                 end
-                found[#found + 1] = { name = e.name, key = k, params = params or "", level = math.max(e.level, other and other.level or 0), desc = desc }
+                found[#found + 1] = {
+                    name = e.name, key = k, params = params or "", level = math.max(e.level, other and other.level or 0), desc = desc,
+                    auto = e.auto and (not other or other.auto) or false, -- registered on either side counts as registered
+                }
             end
         end
     end
-    table.sort(found, function(a, b) return a.key < b.key end)
+    -- registered commands first, then the automatic ones; alphabetical inside each group
+    table.sort(found, function(a, b)
+        if a.auto ~= b.auto then return not a.auto end
+        return a.key < b.key
+    end)
     return found
 end
 

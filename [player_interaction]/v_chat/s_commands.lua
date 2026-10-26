@@ -34,7 +34,7 @@ end
 local function pushList(target)
     local list = {}
     for _, e in pairs(DB) do
-        list[#list + 1] = { e.name, e.params, e.level, e.desc }
+        list[#list + 1] = { e.name, e.params, e.level, e.desc, e.auto }
     end
     triggerClientEvent(target, "v_chat:commands", root, list)
 end
