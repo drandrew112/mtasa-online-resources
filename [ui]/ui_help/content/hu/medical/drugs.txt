@@ -1,0 +1,97 @@
+# Gyógyszerek
+@keywords: gyógyszer, gyógyszerek, medication, Ketamine, Calypsol, Rocuronium, Esmeron, Fentanyl, Adrenalin, Epinephrine, Tonogen, Captopril, Tensiomin, Nitroglycerin, Glucose, glükóz, cukor gél, Insulin, inzulin, Actrapid, Naloxone, Narcan, Salbutamol, Ventolin, Midazolam, Dormicum, mellékhatás, adag, RSI, fájdalomcsillapító, IV
+@related: medical_exam, medical_procedures, medical_diagnosis, medical_injuries, medical_equipment
+
+A **C sor – Gyógyszerek** gomb megnyitja a gyógyszerrácsot. Egy beadás 3 másodperc. Ha nincs szájon át / inhalálva / orrba jelölve, a gyógyszer az IV kanülön megy be: előbb köss be **IV hozzáférés**-t. Alább a tele táskában lévő adagok (a kártyán xN); feltölteni kórházi mentő beállóban lehet.
+
+A hatások összeadódnak: két adag vérnyomáscsökkentő kétszer annyival viszi le. Minden gyógyszer egy ideig hat (az **AKTÍV GYÓGYSZEREK** listában látszik), utána a pulzusra és a vérnyomásra gyakorolt hatása megszűnik. Amit meggyógyított, az gyógyult marad.
+
+>! A gyógyszerek nem „gyógyít” gombok. Rossz betegnek adva rontanak a helyzeten, némelyik meg is állíthatja a szívet.
+
+## Ketamine (Calypsol)
+
+- **Csoport:** altató – RSI 1. lépés. IV. Tele táskában: 2 adag. Hatás: 10 perc.
+- **Mit csinál:** elaltatja a beteget, és MINDEN fájdalmat elvesz.
+- **Mikor:** intubálás előtt (mindig a Rocuronium ELŐTT); elviselhetetlen fájdalomban lévő beteg, akit mozgatni kell.
+- **Mellékhatás:** a vérnyomás kb. 15-tel, a pulzus 8-cal nő. Az altatott beteg nem tudja védeni a légútját, és a neuro vizsgálat nem értékelhető.
+
+## Rocuronium bromide (Esmeron)
+
+- **Csoport:** izomrelaxáns – RSI 2. lépés. IV. Tele táskában: 2 adag. Hatás: 40 perc.
+- **Mit csinál:** 15 másodperc után minden izmot megbénít, a légzést is.
+- **Mikor:** csak intubáláshoz, rögtön a Ketamine után. Ekkor válik aktívvá az **Intubálás** gomb.
+- **Mellékhatás:** nincs légzés: az SpO2 esik (O2 maszkon lassabban), amíg be nem kerül a tubus. ÉBER betegnek adva pánikba esik: pulzus +50, vérnyomás +35, miközben fullad. Ha az intubálás nem sikerül, a beteg 40 percig nem tud lélegezni: gyorsan próbáld újra.
+
+## Fentanyl
+
+- **Csoport:** fájdalomcsillapító. IV. Tele táskában: 3 adag. Hatás: 30 perc.
+- **Mit csinál:** a fájdalom kb. 70%-át elveszi.
+- **Mikor:** törés, égés, lőtt seb éber betegnél. Kevesebb fájdalom = kevésbé kábult, nyugodtabb pulzus.
+- **Mellékhatás:** a vérnyomást kb. 10-zel csökkenti. Sokkban óvatosan.
+
+## Adrenalin (Tonogen)
+
+- **Csoport:** szívstimuláns. IV. Tele táskában: 5 adag. Hatás: 5 perc.
+- **Mit csinál:** pulzus +30, vérnyomás +30. Szívmegállásban növeli az esélyét, hogy a CPR újraindítja a szívet (+15%).
+- **Mikor:** szívmegállás (főleg PEA / asystole), néhány percenként. Nagyon alacsony vérnyomás ROSC után.
+- **Mellékhatás:** az adagok összeadódnak. Dobogó szívre túl sok adag 200-ig hajtja a pulzust: a szív megáll (VF).
+
+## Captopril (Tensiomin)
+
+- **Csoport:** vérnyomáscsökkentő. Szájon át (nyelv alá), nem kell IV. Tele táskában: 3 adag. Hatás: 10 perc.
+- **Mit csinál:** a szisztolés vérnyomást kb. 40-nel csökkenti.
+- **Mikor:** hipertóniás krízis (szisztolés 180+). 180 felett a mentő nem viszi el a beteget.
+- **Mellékhatás:** a normális vagy alacsony vérnyomást is csökkenti. Sokkban adva a vérnyomás 30-ra eshet: szívmegállás. Normális vérnyomású stroke-os betegnek nem.
+
+## Nitroglycerin spray
+
+- **Csoport:** értágító. Szájon át (spray a nyelv alá). Tele táskában: 3 adag. Hatás: 10 perc.
+- **Mit csinál:** kb. 30-cal csökkenti a vérnyomást, és kitisztítja a folyadékot a tüdőből.
+- **Mikor:** tüdőödéma (ropogó légzés, rózsaszín habos köpet, magas vérnyomás), oxigénnel együtt.
+- **Mellékhatás:** mint a Captopril: alacsony vérnyomásnál soha.
+
+## Glucose 40%
+
+- **Csoport:** vércukorszint-emelő. IV. Tele táskában: 2 adag.
+- **Mit csinál:** azonnal kb. 100 mg/dL-rel emeli a vércukrot.
+- **Mikor:** hipoglikémia, főleg eszméletlen betegnél. Mérj előtte és utána.
+- **Mellékhatás:** érdemi nincs; az ok újra leviheti a cukrot – később mérj újra.
+
+## Oral glucose gel
+
+- **Csoport:** vércukorszint-emelő. Szájon át, a pofazacskóba. Tele táskában: 2 adag.
+- **Mit csinál:** kb. +40 mg/dL.
+- **Mikor:** enyhe hipoglikémia ÉBER (stabil vagy zavart) betegnél, aki tud nyelni. Nem kell IV.
+- **Korlát:** a kábult vagy eszméletlen beteg nem tud nyelni: adj Glucose 40%-ot IV-ben.
+
+## Insulin (Actrapid)
+
+- **Csoport:** vércukorcsökkentő. IV. Tele táskában: 1 adag. Hatás: 15 perc.
+- **Mit csinál:** lassan csökkenti a cukrot (kb. 20 mg/dL percenként, összesen kb. 300-at).
+- **Mikor:** diabéteszes ketoacidózis (cukor 350+), IV folyadékkal együtt.
+- **Mellékhatás:** normális vagy alacsony cukornál súlyos hipoglikémiát, akár szívmegállást okoz. Mindig mérj előtte.
+
+## Naloxone (Narcan)
+
+- **Csoport:** opioid ellenszer. Orrspray, nem kell IV. Tele táskában: 2 adag.
+- **Mit csinál:** visszafordítja az opioid (heroin, fentanyl) túladagolást: visszatér a légzés és az eszmélet.
+- **Mikor:** tűhegynyi pupillák + lassú légzés + eszméletlen, tűnyomok vagy fecskendő a közelben.
+- **Korlát:** alkoholra, altatóra és más mérgekre nem hat.
+
+## Salbutamol (Ventolin)
+
+- **Csoport:** hörgőtágító. Inhalálva (porlasztó), nem kell IV. Tele táskában: 2 adag. Hatás: 15 perc.
+- **Mit csinál:** kitágítja a légutakat.
+- **Mikor:** asztmás roham, COPD (sípoló légzés). Az O2 maszkkal együtt.
+- **Mellékhatás:** a pulzus kb. 12-vel nő. COPD-ben csak részben segít – ott az oxigén a fontosabb.
+
+## Midazolam (Dormicum)
+
+- **Csoport:** nyugtató. IV. Tele táskában: 2 adag. Hatás: 20 perc.
+- **Mit csinál:** megnyugtatja az izgatott beteget; pulzus −15, vérnyomás −15.
+- **Mikor:** stimuláns mérgezés (kokain, amfetamin: tág pupillák, nagyon gyors pulzus, magas vérnyomás).
+- **Mellékhatás:** bárkinél csökkenti a pulzust és a vérnyomást, és gyengítheti a légzést: figyeld az SpO2-t.
+
+## IV folyadék
+
+Nem gyógyszer gomb: amint bent van az **IV hozzáférés**, a folyadék magától folyik, és pótolja az elvesztett vért (jobb kanüllel gyorsabban). A nagyon magas cukrot (180 felett) is lassan csökkenti.

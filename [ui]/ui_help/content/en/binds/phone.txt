@@ -1,0 +1,22 @@
+# Phone
+@keywords: B, phone, contacts, call, ambulance, emergency, email, mail, messages, browser
+@related: binds, binds_social, feature_phone, feature_browser
+
+`B` takes out the phone. It is fully keyboard controlled.
+
+## Keys
+
+- `B` – take out / put away
+- Arrows – move between the apps on the home screen
+- `Up` `Down` arrow – move in a list
+- `Enter` – open an app, select an item
+- `Backspace` – back; on the home screen it puts the phone away
+- `Esc` – put the phone away
+
+## Apps
+
+- **Contacts** – calls, for example the emergency services (ambulance) or the insurance.
+- **Messages** – the messages of the social panel.
+- **Email** – mails sent by the server.
+- **Browser** – the in-game websites.
+- **My vehicles**, **Organization**, **Invites**, **Settings**.

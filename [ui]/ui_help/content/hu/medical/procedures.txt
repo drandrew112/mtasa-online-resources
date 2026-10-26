@@ -1,0 +1,76 @@
+# Ellátás és szállítás
+@keywords: ellátás, kezelés, kötözés, sínezés, CPR, újraélesztés, IV, IV hozzáférés, kanül, vénabiztosítás, folyadék, intubálás, RSI, légút, tubus, O2 maszk, oxigén, szállítás, szállítás kérése, hordágy, kórház, átadás, mentő beálló, halottszállító
+@related: medical_exam, medical_minigames, medical_drugs, medical_monitor, medical_equipment, medical_cases
+
+Minden gomb egy rövid beavatkozást indít: vagy minijátékot ([[medical_minigames|hogyan működnek]]), vagy időzített műveletet folyamatjelzővel. Közben a beteg mellett térdelsz, és nem tudsz mozogni. Az eredmény megjelenik a panelen.
+
+## AB – Légút, légzés
+
+### O2 maszk
+
+Felrakni vagy levenni (**O2 levétele**) 3 másodperc. Ha a légút rendben van, 100%-ra emeli az SpO2-t, egyébként 10%-kal emeli az SpO2 célértékét, és gyorsabban helyreállítja. A relaxált beteg maszkon feleolyan gyorsan deszaturál. A táska palackjából fogyasztja az oxigént (tele palack 15 perc maszkidőre elég). Kritikus légúti problémán csak a tubus segít.
+
+### Intubálás (gyors indukciós intubálás, RSI)
+
+A tubus a végleges légút: a beteget lélegeztetik, a fulladás megoldódik, nő a ROSC esélye. Sorrend:
+
+1. **O2 maszk** fel (preoxigenizálás).
+2. **Ketamine** – a beteg elalszik.
+3. **Rocuronium** – 15 másodperc után ellazulnak az izmok, és megáll a légzés. Most aktív az **Intubálás** gomb.
+4. **Intubálás** – a légút minijáték. A beteget előbb ballonnal 95%-ig lélegeztetik; a próbálkozás alatt esik az SpO2. 80% alatt a próbálkozás sikertelen.
+
+Szívmegállásban is kellenek a gyógyszerek. Kell hozzá a táskából a légútbiztosító készlet (nem fogy el). Az intubált beteg altatva marad, amíg stabil nem lesz. A tubusnak oxigén kell: ha kiürül a palack, a lélegeztetés hatástalan (**Légút: tubus, NINCS OXIGÉN**).
+
+>! Éber betegnek soha ne adj Rocuroniumot: pánikba esik, miközben fullad.
+
+## C – Keringés
+
+### Kötözés
+
+Először a legrosszabbul vérző sebet látja el (utána az égéseket). Nyilas minijáték: súlyosabb sebnél több és gyorsabb nyíl. A kritikus lőtt seb a kórházig kicsit szivárog. Egy kötszert fogyaszt.
+
+### Sínezés
+
+A legrosszabb ellátatlan törést rögzíti, a fájdalom sokat csökken. Időzítős minijáték. Egy sínt fogyaszt. A nyílt törésre kötés is kell.
+
+### CPR
+
+Csak pulzus nélkül. 30 másodperc mellkaskompresszió (`Szóköz` 90–130 / perc ütemben). Egy jó kör 45 másodpercet ad a halál időzítőhöz. 10 másodperc jó kompresszió után a ritmus bármikor megváltozhat (a minijáték leáll). Nem kell hozzá felszerelés. Részletek: [[medical_monitor|Újraélesztés]].
+
+### IV hozzáférés
+
+Kanülözős minijáték. Összeesett vénáknál nehezebb: nagy vérvesztés után (85% / 70% alatt) és szívmegállásban. Minden próbálkozás egy IV készletet fogyaszt. Ha bent van, adhatók IV gyógyszerek, és folyik a folyadék: pótolja az elvesztett vért (jobb minőségű kanüllel gyorsabban).
+
+### Gyógyszerek
+
+Lásd [[medical_drugs|Gyógyszerek]].
+
+## D – Neurológiai állapot
+
+**Neuro vizsgálat** (4 mp) és **Vércukormérő** (5 mp a mérés). Lásd [[medical_diagnosis|Diagnózis]].
+
+## Monitor
+
+**Monitor / defibrillátor rákötése** a szívfrekvencia mezőn (4 mp). Lásd [[medical_monitor|Lifepak 15]].
+
+## Szállítás
+
+### A saját mentővel (hordágyon)
+
+Ez a rendes út egy kiosztott esetnél (EMS tablet).
+
+1. A mentő hátsó ajtajánál: **Hordágy kivétele**.
+2. **Hordágy tolása** a beteghez (futni is lehet), majd **Beteg ráfektetése a hordágyra**.
+3. Tolás közben a nálad lévő táska és Lifepak a hordágyra kerül.
+4. Vissza a hátsó ajtóhoz, a mentő felé fordulva: **Berakás a mentőbe**.
+5. Hajts egy kórházhoz, és állj be egy sárga **Mentő beálló** markerbe: az egység **Átadás** állapotba kerül.
+6. **Hordágy kivétele (beteggel)**, és told a beteget a kék **Betegátadás** markerbe. 5 másodperc után a beteg át van adva, az eset lezárul.
+
+### Szállítás kérése
+
+A **Szállítás kérése** gomb egy MI által vezetett mentőt hív: 30 másodperc alatt odaér, berakja a beteget és elmegy. Csak ha:
+
+- a beteg **stabil**, vagy **intubált** és eszméletlen,
+- a szisztolés vérnyomás **90 és 180** között van (emeld folyadékkal / Adrenalinnal, csökkentsd Captoprillal).
+
+Halott betegért halottszállító jön; náluk ez az egyetlen gomb.

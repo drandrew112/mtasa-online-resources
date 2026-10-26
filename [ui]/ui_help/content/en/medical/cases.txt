@@ -1,0 +1,108 @@
+# Example patients
+@keywords: example, examples, case, cases, patient, scenario, walkthrough, gunshot, shock, cardiac arrest, VF, overdose, opioid, hypoglycaemia, diabetes, ketoacidosis, house fire, burns, intubation, stroke, asthma
+@related: medical, medical_diagnosis, medical_monitor, medical_drugs, medical_procedures
+
+Real patients do not come with a label. These examples show how to put the signs together and in what order to treat. The numbers are typical; every patient is a little different.
+
+## 1. Gunshot to the torso – haemorrhagic shock
+
+**Call:** a man was shot in a street fight. He lies on the pavement.
+
+**What you find:** dazed. Injury: **Gunshot wound – Critical, Untreated**. Bleeding: **Critical**. Skin: **pale, cold, clammy**. Breathing rapid. Feeling the pulse: 135.
+
+**Thinking:** critical bleeding loses 12 ml every second – in about 3 minutes the heart stops. The pale, clammy skin and the racing pulse say he already lost a lot. Everything else waits.
+
+1. **Bandage** at once (with two medics: one bandages, the other takes the bag and places the IV).
+2. **IV access** – the veins are collapsing, it is harder than usual. Fluids start running.
+3. Attach the **monitor**: pressure 70/45, SpO2 91%. **O2 mask**.
+4. Watch the pressure climb as the fluids run. Do not give Fentanyl yet: it lowers the pressure.
+5. When the systolic is over 90: stretcher, ambulance, hospital. The critical wound still oozes a little – do not wait on scene.
+
+**If the heart stops first:** the monitor most likely shows **PEA**. CPR, but the heart cannot restart while half of the blood is missing: the IV fluids are the real treatment. Then Adrenalin.
+
+## 2. Collapsed on the sidewalk – VF arrest
+
+**Call:** a 55 year old man collapsed in front of a shop. A passer-by says he grabbed his chest.
+
+**What you find:** **Clinical death**, Time left 04:40, **no pulse**, not breathing, skin cyanotic.
+
+1. **CPR** immediately – every good round buys 45 seconds.
+2. Your partner attaches the **monitor**: **Ventricular Fibrillation**. Shockable!
+3. When the CPR round ends (or is interrupted): **CHARGE**, wait for the tone, **SHOCK**.
+4. **Shock delivered – continue CPR, check the rhythm.** Next CPR round. Meanwhile the partner places the **IV access** and gives **Adrenalin**.
+5. The rhythm changes during CPR: **Pulseless Ventricular Tachycardia** – shock again.
+6. **Pulse restored (ROSC).** Pulse 118, pressure 78/50, SpO2 60%.
+7. After ROSC: O2 mask, fluids are running, measure the **glucose**. He is unconscious and snoring: **RSI** (Ketamine, wait, Rocuronium, wait 15 s, Intubate).
+8. The monitor suddenly shows **Ventricular Tachycardia with Pulse**, pressure falling: **SYNC**, CHARGE, SHOCK – cardioversion. Without SYNC the shock can send it back to VF.
+9. Stable rhythm, systolic over 90: transport.
+
+>! If the monitor shows **Asystole** or **PEA**: no shock. CPR + Adrenalin, and look for the cause.
+
+## 3. Unconscious in the park – which poison?
+
+**Call:** a young man unresponsive on a park bench.
+
+**What you find:** unconscious, **no visible injuries**. Breathing **slow, shallow**. Skin cyanotic. Pulse 55.
+
+**Thinking:** unconscious without an injury: sugar, poison, stroke, seizure, head injury? Rule them out one by one.
+
+1. **O2 mask** – the SpO2 is low, he barely breathes.
+2. **Glucometer**: 92 mg/dL – normal, not the sugar.
+3. **Neuro exam**: **Responds to pain only**, **Pupils: pinpoint**, **Needle marks on the arms**, **FAST: not assessable**.
+4. Pinpoint pupils + slow breathing + needle marks = **opioid overdose**. **Naloxone** (nose spray, no IV needed).
+5. Within a short time he wakes up, the breathing becomes normal, the SpO2 rises.
+
+**If the pupils were "normal size, sluggish" with empty pill packets nearby:** sleeping pills. Naloxone would do nothing: keep him on oxygen, intubate if he starts snoring, and take him to hospital.
+**If they were dilated, with a very fast pulse and sweating:** stimulants – Midazolam.
+
+## 4. The confused diabetic – too low and too high
+
+**4a.** A woman behaves strangely at a bus stop. **Confused**, skin **pale, sweaty**, pulse 100.
+
+1. Pale + sweaty + confused: measure the **glucose**: **52 mg/dL**. Hypoglycaemia.
+2. Confused but can she swallow? Yes (confused counts as awake): **Oral glucose gel** (+40). If she were dazed or unconscious: IV access and **Glucose 40%**.
+3. Measure again after a minute or two: it should be over 70 and she becomes oriented. If it falls again, give more.
+
+**4b.** A man found at home, **confused**, breathing **deep and rapid**, skin **pale**, low pressure, fast pulse.
+
+1. **Glucometer**: **520 mg/dL**. The **neuro exam** finds a **fruity (acetone) smell** – diabetic ketoacidosis.
+2. **IV access** – he lost a lot of fluid with the sugar (that is why he is pale), the fluids raise his pressure and slowly lower the sugar.
+3. **Insulin** – once, after measuring. It works slowly over 15 minutes.
+4. Measure every few minutes. Never give a second Insulin "to be sure": an overshoot is a hypoglycaemia.
+
+## 5. House fire – burns and a burned airway
+
+**Call:** a man carried out of a burning house. Soot around the mouth.
+
+**What you find:** dazed. Injuries: **Burn – Critical**, **Suffocation – Minor**. Pain 9/10. Breathing laboured. Monitor: SpO2 84% and falling, pressure 110/70.
+
+**Thinking:** a critical burn means the airway is burned too: it will swell, and the O2 mask cannot fix it. Intubate early, while the SpO2 still allows it – it is the hardest intubation (blood, swollen tissue).
+
+1. **O2 mask** immediately (pre-oxygenation).
+2. **IV access** – the burn leaks plasma, the pressure will fall.
+3. **Ketamine** – he falls asleep, the pain is gone.
+4. **Rocuronium** – 15 seconds, then **Intubate**. The SpO2 falls during the attempt: be quick. Use `E` to suction the blood.
+5. **Bandage** the burn (dressing) – the plasma loss nearly stops.
+6. Transport. Watch the **oxygen** in the bag: the tube needs it all the way to the handover.
+
+## 6. Stroke – keep the pressure, move fast
+
+**Call:** an old woman suddenly cannot speak properly.
+
+**What you find:** **confused**, no visible injury. Monitor: pressure 165/100, sinus rhythm.
+
+1. **Neuro exam**: **FAST: face droops on the left side**, **left arm drifts down, weak grip**, **speech slurred, words mixed up**. Stroke.
+2. **Glucometer** – low sugar can look like a stroke. 105: normal.
+3. Do NOT give Captopril: a systolic between 130 and 220 is what her brain needs. Too low or too high makes the stroke worse 2.5 times faster.
+4. O2 mask if the SpO2 is low. The stroke worsens every 8 minutes: no time to waste, transport at once.
+5. If she becomes unconscious and starts snoring: the airway is at risk – RSI.
+
+## 7. Asthma attack
+
+**Call:** a teenager cannot breathe after running.
+
+**What you find:** **wheezing**, **speaks in short phrases only**, pulse 120, SpO2 85%.
+
+1. **O2 mask** and **Salbutamol** (inhaled, no IV needed).
+2. The SpO2 rises, the breathing calms down. Salbutamol raises the pulse a little – that is normal.
+3. **Warning sign:** **Silent chest, exhausted** / **cannot speak** – almost no air moves. Salbutamol + O2 at once; if the SpO2 keeps falling under 75%, RSI.

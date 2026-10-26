@@ -1,0 +1,51 @@
+# A vizsgálati panel
+@keywords: vizsgálati panel, beteg vizsgálata, panel, szívfrekvencia, pulzus, vérzés, bőr, légzés, IV hozzáférés, légút, fájdalom, sérülések, AB, C, D, gombok, TÁSKA, MONITOR, O2, aktív gyógyszerek
+@related: medical, medical_diagnosis, medical_monitor, medical_procedures, medical_equipment
+
+`X` a beteg 3D menüjén, majd **Beteg vizsgálata**. A panel nyitva marad, amíg 4 méteren belül vagy; a panel jobb felső `X` gombja bezárja.
+
+![560](content/images/medical/exam_panel.jpg)
+
+## Fejléc
+
+- **A beteg neve** – „Ismeretlen beteg”, ha senki sem ismeri.
+- **O2 / TÁSKA / MONITOR címkék** – a táska oxigénpalackjában maradt oxigén, és hogy az orvosi táska és a Lifepak elég közel van-e a használathoz. Zöld aláhúzás = megvan, szürke címke = hiányzik: hozd ide.
+- **Tudat** – az állapot nagy betűkkel (lásd [[medical|Áttekintés]]). Klinikai halálban mellette a **Hátralévő idő** számláló.
+
+## Szívfrekvencia mező
+
+- Monitor nélkül csak a pulzust tapintod: egy szám BPM-ben, vagy **nincs pulzus**.
+- Az EKG görbe helyén egy **Monitor / defibrillátor rákötése** gomb van. 4 másodperc, és kell hozzá a Lifepak a beteg mellett. Utána a mezőben az EKG görbe és a ritmus neve látszik, bal oldalt pedig megnyílik a Lifepak ablaka. Lásd [[medical_monitor|Lifepak 15]].
+
+>! A vérnyomás és az SpO2 csak a Lifepakon látszik. Monitor nélkül csak tippelsz.
+
+## Vérzés mező
+
+- **Vérzés** – Nincs / Enyhe / Erős / Kritikus: a legrosszabbul vérző seb.
+- **Bőr** – amit látsz és tapintasz. Lásd [[medical_diagnosis|Diagnózis]].
+- **Légzés** – hogyan lélegzik a beteg, a súlyosság szerint színezve.
+
+## Állapot sor
+
+- **IV hozzáférés: nincs / van** – a legtöbb gyógyszerhez és a folyadékhoz kell.
+- **Légút: nincs biztosítva / O2 maszk / biztosítva** – a **tubus, NINCS OXIGÉN** azt jelenti, hogy kiürült a palack: a tubus már nem segít.
+- **Fájdalom: x/10** – fájdalomcsillapító csökkenti.
+
+## Sérülések
+
+Minden sérülés a súlyosságával (Csekély / Súlyos / Kritikus) és állapotával: **Ellátatlan**, ellátva (Bekötözve, Sínezve, Ellátva, Légút biztosítva), vagy **Kórház kell**, ha az utcán nem oldható meg. A rejtett betegségek (agyvérzés, mérgezés, asztma...) NEM szerepelnek itt: a jeleikből ismered fel őket. A **Nincs látható sérülés** nem jelenti, hogy a beteg jól van.
+
+A sérülések alatt jelennek meg a **Neuro vizsgálat** leletei és az **AKTÍV GYÓGYSZEREK** listája (gyógyszer és hátralévő idő).
+
+## Gombok
+
+- **AB – Légút, légzés**: **Intubálás**, **O2 maszk** / **O2 levétele**.
+- **C – Keringés**: **Kötözés**, **Sínezés**, **CPR**, **IV hozzáférés** (a szám = megmaradt IV készlet), **Gyógyszerek**.
+- **D – Neurológiai állapot**: **Neuro vizsgálat**, **Vércukormérő** / **Mérő elrakása**.
+- **Szállítás**: **Szállítás kérése**.
+
+Egy tiltott gomb megmondja, miért, ha rámutatsz (nincs sínezendő törés, a betegnek van pulzusa, az orvosi táska kell hozzá, elfogyott...). Minden beavatkozás eredménye egy sorban megjelenik a panelen.
+
+## Gyógyszer menü
+
+A **Gyógyszerek** gomb megnyitja a gyógyszerrácsot. Minden kártyán a gyógyszer, a csoportja és a táskában maradt adagok (xN). Mutass egy kártyára, és leírja, mit csinál. A szájon át / inhalálva / orrba adott szerekhez nem kell IV, a többihez igen. Egy gyógyszer beadása 3 másodperc. Az összes gyógyszer: [[medical_drugs|Gyógyszerek]].

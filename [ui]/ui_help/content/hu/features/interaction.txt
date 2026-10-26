@@ -1,0 +1,38 @@
+# Interakciós menü
+@keywords: M, interakció, interakciós menü, inac, cég, saját cégem, szervezet, organization, társak, telephely, átnevezés, jármű, spawn, saját jármű, lehívás, visszaállítás, javítás, sziréna, gyorsutazás, gyűjthető, preferenciák, spawn hely
+@related: binds_interaction, feature_phone, feature_browser
+
+Az `M` gombbal nyíló interakciós menü a saját karakteredről szól: céged, járműveid, beállításaid. A `Fel` / `Le` nyíllal lépkedsz, `Enter`-rel választasz, a `Bal` / `Jobb` nyíl a választós sorok értékét váltja, `Backspace`-szel jössz vissza.
+
+![350](content/images/features/interaction_main.jpg)
+
+## Saját cégem
+
+Ez a sor csak akkor jelenik meg a menü tetején, ha van saját céged (szervezeted). Cégalapítás a böngészőben, a **sabusinessregistry.eu** oldalon.
+
+- **Egyenleg** – a cég számlája (tiszta + tisztításra váró pénz). Kezelni az irodai számítógépen tudod.
+- **Társak** – hány társad van online. Társakat a telefon **Organization** alkalmazásában hívhatsz meg.
+- **Telephelyek** – a céged ingatlanjai; egyet kiválasztva oda állítja a GPS-t.
+- **Cég átnevezése** – új név a cég számlájának terhére; nem lehet túl gyakran.
+
+## Jármű
+
+- **Jármű létrehozása** – bármelyik játékbeli (és egyedi) jármű lehívása kategóriák szerint, kipróbálásra. Ezek ideiglenesek: nem tuningolhatók, nem mentődnek, egyszerre egy lehet kint (egy új lecseréli a régit). Csak kint, a szabad világban működik, jobban vagy admin börtönben nem, és percenként egyszer.
+- **Saját jármű lehívása** – a megvásárolt járműveid listája; a kiválasztott a közeledben jelenik meg. Egyszerre egy saját jármű lehet kint.
+- **Saját jármű visszaállítása** – a kint lévő saját járművedet elteszi a garázsba (ha senki sem ül benne).
+- **Jármű megjavítása** – megjavítja azt a járművet, amiben ülsz.
+- **Sziréna típusa** – megkülönböztető jelzéses járműben a sziréna hangja (például Federal Signal, Code3, Hella, olasz mentő).
+
+> A saját járművek a vásárlás után a telefon **Járműveim** alkalmazásából is lehívhatók. Csak saját járművet lehet tuningolni.
+
+## Egyéb
+
+- **Gyorsutazás** – teleport a három repülőtér egyikére (LS, LV, SF). Járműben nem működik.
+- **Gyűjthető tárgyak** – a stunt ugrások (szárazföldi és légi) és az UFO alkatrészek állása.
+- **Statisztikák** – játékidő és szint.
+
+## Preferenciák
+
+- **Spawn hely** – hol jelenj meg belépéskor: **Utolsó hely** (ahol kiléptél) vagy **Véletlen** (egy szabad újraéledési pont). `Bal` / `Jobb` nyíllal választasz, `Enter`-rel mented; a következő belépéstől érvényes.
+
+[[binds_interaction|Az interakciós menü gombjai]]

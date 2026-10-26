@@ -1,0 +1,38 @@
+# How the treatment minigames work
+@keywords: minigame, minigames, arrows, bandage, splint, splinting, CPR, compressions, IV, cannulation, intubation, airway, laryngoscope, tube, cuff, mg_arrows, mg_splinting, mg_cpr, mg_intravenous, mg_airway
+@related: medical_procedures, medical_exam, medical_monitor
+
+Five treatments are skill games. You kneel next to the patient while you play; the result goes back to the patient. If the patient dies or changes meanwhile, the game stops.
+
+## Bandage – arrows
+
+Arrows slide from left to right along the bottom of the screen. Press the matching arrow key (`Up`, `Down`, `Left`, `Right`) while the arrow is inside the ring. Green = hit, red = wrong key or missed. Win: **more than 70%** hits. A worse wound means more arrows (12 / 16 / 20) and faster ones.
+
+## Splint – timing gauge
+
+A needle sweeps back and forth over a gauge. Press `Space` while it is in the green middle window to cinch a wrap. Missing the window is not punished: wait for the next pass. Win: more than 70% of the wraps good (8 / 10 / 12 wraps by severity).
+
+## CPR – rhythm
+
+`Space` = one chest compression. Keep the rate between **90 and 130 per minute** for 30 seconds (after a 3 second countdown). Every press is judged: GOOD / TOO FAST / TOO SLOW; long pauses count as missed. Win: at least **70%** accuracy. Tip: the beat of "Stayin' Alive" is about right.
+
+## IV access – cannulation
+
+The screen shows the forearm from above (with the vein under the skin) and a cross-section along the needle.
+
+1. **Aim** – move the mouse over the vein (the hand trembles a little), then `LMB` to puncture the skin. Off-centre = a thinner target.
+2. **Advance** – hold `LMB` to push the needle. When blood appears in the flashback chamber, the tip is in the vein: go about 1 mm deeper, then release. Too deep = through the back wall, never reaching it = missed.
+3. **Withdraw** – hold `LMB` and drag the mouse **left** to pull the needle out, slowly: too fast fills the strain bar and the cannula comes out.
+
+A mistake costs an attempt (and an IV kit). The result has a quality (0–100%): centred, at the right depth, gently withdrawn. Better quality = faster fluids.
+
+## Intubation – airway
+
+Get the tube into the windpipe before the SpO2 falls below **80%** (it is shown during the game).
+
+1. **Laryngoscopy** – hold `Space` to lift the laryngoscope; keep it in the green zone for 1.5 seconds. Levering too hard chips a tooth.
+2. **Pass the cords** – aim the tube tip with the **mouse** and hold `Space` to push it between the vocal cords while they are open. Pushing against closed cords = trauma; into the slit behind them = the oesophagus (wrong pipe).
+3. **Tube depth** – `Space` push, `S` pull back; release at **20.5–23.5 cm** at the teeth. Past 25.5 cm it goes into one lung (pulled back).
+4. **Cuff** – `Space` inflate, `S` deflate; release at **20–30 cmH2O**. Too soft leaks, over 40 damages the airway.
+
+On harder cases (critical suffocation, critical burns) blood runs into the view: hold `E` to suction. Each mistake uses up one of the allowed mistakes; one more fails the intubation.

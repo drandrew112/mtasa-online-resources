@@ -1,0 +1,35 @@
+# Világ: markerek és 3D menük
+@keywords: E, X, Q, marker, jelölő, ajtó, belépés, bolt, lift, óriáskerék, 3D menü, interakció, Y, HUD
+@related: binds
+
+## Jelölők (markerek)
+
+A legtöbb jelölőben az `E` gomb a használat. Mindig kiírja a képernyő, ha egy jelölőben vagy.
+
+- **Ajtók, épületek** – be- és kilépés
+- **Boltok** – fegyverbolt (Ammu-Nation), ruhabolt (Binco)
+- **Munkák** – munka felvétele, leadása
+- **Lift** – emelet választása
+- **Szervezetek** – irodák, telephelyek
+- **Repülés** – reptéri jelölők
+- **Időfutam** – futam indítása (sofőrként)
+- **Arena War** – az Arena War panel
+
+## Óriáskerék
+
+- `K` – beszállás a kabinba
+- `L` – kiszállás
+
+## 3D menük tárgyakon
+
+Egyes tárgyak, járművek és szereplők fölött kis menü jelenik meg (például hordágy, mentőtáska).
+
+- `Q` / `E` – az előző / következő közeli menü kiválasztása
+- `X` – a kiválasztott menü megnyitása / bezárása
+- `1`–`9` (vagy a numerikus billentyűk) – a menüpont kiválasztása
+- `0` – következő oldal, ha a menü hosszabb
+- `Backspace` – vissza egy szinttel / bezárás
+
+## HUD
+
+- `Y` – pár másodpercig megmutatja a HUD információkat (pénz, szint és XP)

@@ -1,0 +1,18 @@
+# Fegyverek
+@keywords: Tab, fegyver, fegyverválasztó, kerék, újratöltés, R, tár
+@related: binds, binds_vehicle
+
+## Fegyverválasztó kerék
+
+- `Tab` nyomva tartva – a kerék megnyitása
+- Egér mozgatása – a kategória kiválasztása
+- Görgő – fegyver váltása a kategórián belül
+- `Tab` elengedése – a kiválasztott fegyver kézbe vétele
+
+Amíg a kerék nyitva van, tovább sétálhatsz, de lőni nem tudsz.
+
+## Egyéb
+
+- `R` – újratöltés (gyalog, ha a tár nincs tele és van még lőszered)
+
+> Fegyvert az Ammu-Nation boltokban vehetsz: a bolt jelölőjében nyomd meg az `E` gombot.

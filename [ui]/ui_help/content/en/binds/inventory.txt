@@ -1,0 +1,19 @@
+# Inventory
+@keywords: I, H, E, inventory, bag, item, hands, drop, trunk, storage, port
+@related: binds
+
+The inventory shows the items you carry (in your hands, on your back, in your bags). It cannot be opened in a vehicle.
+
+## Keys
+
+- `I` – open / close your own inventory
+- `Esc` – close
+- `H` – put the items in your hands down on the ground
+- `E` – in a storage marker (for example at a trunk) open the storage
+- Mouse wheel – scroll the left or right list (the one under the mouse)
+
+## Moving items
+
+- Left mouse button + drag – drag an item to another place or to the other side
+- Hold `Shift` while dragging – move only one piece
+- The arrow buttons next to the selected item move it to the other side quickly (with `Shift`: one piece)

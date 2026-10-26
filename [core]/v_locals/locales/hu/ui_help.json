@@ -8,8 +8,6 @@
   "ui_help.search.results.other": "{count} találat",
   "ui_help.search.no_results": "Nincs találat erre: „{query}”.",
   "ui_help.list.empty": "Még nincsenek súgótémák.",
-  "ui_help.coming_soon": "Hamarosan érkezik",
-  "ui_help.coming_soon_desc": "A súgó oldalai még készülnek. Nézz vissza később!",
   "ui_help.home.title": "Üdv a súgóban",
   "ui_help.home.text": "Válassz egy témát bal oldalt, vagy kezdj el gépelni a kereséshez.",
   "ui_help.category.other": "Egyéb",

@@ -1,0 +1,63 @@
+# In-game browser
+@keywords: browser, website, internet, Open SE, search, buy vehicle, buy car, car dealer, lvcars, legendary, bank, Liberty Bank, loan, transfer, company, organization, register company, sabusinessregistry, state, gov.sa, tax, budget, transparency, ambulance, EMS, ems-dispatch, SA Control, air traffic control, ATC, sanandreascontrol, transit, train
+@related: feature_phone, feature_interaction
+
+The game has its own "internet": websites where you buy vehicles, do your banking, register a company and see what is going on on the server. Open the browser with the **Browser** app of the phone. Use it with the mouse: the wheel scrolls, the button top left goes back, **X** top right closes it; the right mouse button also goes back. While it is open, your cash and bank balance show top right.
+
+![300](content/images/features/browser_home.jpg)
+
+## Open SE – the home page
+
+The home page is a search engine. Type an address (for example `lvcars.eu`), a category or any words into the field. Below it are the categories (Entertainment, Finance, Business, Vehicles, Property, Services) and a few recommended sites.
+
+## Buying a vehicle – lvcars.eu, legendary.eu
+
+![300](content/images/features/browser_lvcars.jpg)
+
+- **Las Venturas Cars** (`lvcars.eu`) – certified used cars with warranty, sortable by price.
+- **Legendary Wheels** (`legendary.eu`) – hypercars from the most exclusive showroom in the state.
+
+Pick a car and a colour, then buy it. Prices include VAT; you pay from your cash first and from your bank account if the cash is not enough. The car is registered to your account: summon it from the **My Vehicles** phone app or with **Request personal vehicle** in the interaction menu. Only owned cars can be tuned.
+
+## Bank – libertybank.eu
+
+![300](content/images/features/browser_bank.jpg)
+
+**Liberty Bank** is your bank account: balance, deposit and withdraw cash, transfers to others, your statement, plus taking a personal loan and your running loans. Accounts of the state or a company that you have rights to show on their own tabs.
+
+## Registering a company – sabusinessregistry.eu
+
+On the **San Andreas Business Registry**:
+
+- **Register** – register an organization (company): a name, a headquarters (office), then the payment from your bank account (registration fee + the price of the headquarters). One organization per person.
+- **Registry** – search the registered companies.
+- **Top organizations** – the most valuable companies.
+
+After that you run your company on the office computer, under **My organization** in the interaction menu and in the **Organization** phone app.
+
+## State transparency – gov.sa
+
+The **State of San Andreas** site shows the state's finances publicly, anyone can look:
+
+- **Overview** – the state at a glance, the treasury's daily income and expense by category.
+- **Budget** – the budget of the state companies.
+- **Taxes** – company and property tax, the personal income tax keys, VAT by product group.
+- **Fees** – fees, fines and the state healthcare.
+- **Public pay** – the state salaries.
+- **Votes** – the state votes.
+
+Every financial item is shown at most 30 days back.
+
+## Ambulance service – ems-dispatch.eu
+
+The **San Andreas EMS** site: an introduction, live (anonymous) figures of the rescues and a map of the hospitals. The **dispatcher console** and the **unit tablet** used by the paramedics and dispatchers on duty also open from here.
+
+## Air traffic control – sanandreascontrol.eu
+
+**San Andreas Control** is the air traffic control site: how to become a controller, the letters of agreement, the procedures, the airspace map, the live ATC status (which positions are staffed) and the ATC software manual.
+
+## More sites
+
+- `sa-transit.sa` – **San Andreas Transit**: journey planner, departures and the live map of the trains.
+- `blood-transport.eu` – the blood transport service: live map, stock of the blood banks and hospitals, how to join.
+- `diamond.eu` – the Diamond Casino, opening soon.

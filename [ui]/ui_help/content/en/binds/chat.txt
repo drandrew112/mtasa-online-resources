@@ -1,0 +1,24 @@
+# Chat
+@keywords: chat, message, write, T, channel, global, local, command
+@related: binds
+
+In the chat you can talk to the other players and run commands.
+
+## Keys
+
+- `T` – open the chat input
+- `Enter` – send the message (empty: just closes the input)
+- `Esc` – close the input without sending
+- `Backspace` – delete the last character
+- `Tab` – switch channel: **Global** (white) and **Local** (light blue)
+
+## Channels
+
+- **Global** – everyone on the server sees it.
+- **Local** – only players within about 30 metres see it.
+
+## Commands
+
+A message starting with `/` runs as a command (for example `/help`). While you type, the matching commands are listed under the input, and `Tab` completes the command name instead of switching the channel.
+
+> While you type, a bubble above your name shows the others that you are typing.

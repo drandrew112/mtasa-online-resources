@@ -113,10 +113,6 @@ function Help.removeOwned(owner)
     if n > 0 then changed() end
 end
 
-function Help.isEmpty()
-    return next(Help.topics) == nil
-end
-
 --------------------------------------------------------------------------------
 -- resolved data (cached per language)
 --------------------------------------------------------------------------------

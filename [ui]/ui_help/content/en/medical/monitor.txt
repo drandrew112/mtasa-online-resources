@@ -1,0 +1,67 @@
+# Lifepak 15: monitor and defibrillator
+@keywords: Lifepak, monitor, defibrillator, defib, ECG, EKG, heart rhythm, rhythm, VF, ventricular fibrillation, VT, ventricular tachycardia, PEA, asystole, sinus, bradycardia, tachycardia, shock, charge, analyze, sync, cardioversion, SpO2, NIBP, blood pressure, ROSC
+@related: medical_exam, medical_procedures, medical_drugs, medical_equipment, medical_cases
+
+Bring the Lifepak from the ambulance, then press **Attach monitor / defibrillator** on the heart rate tile of the panel (4 seconds). The monitor stays on the patient; its window opens left of the examination panel.
+
+![380](content/images/medical/lifepak.jpg)
+
+## The screen
+
+- **Top** – Shocks given so far, the clock and the energy (**200 J**, fixed).
+- **HR** – the heart rate and the ECG curve. The **rhythm name** is written under the curve, in red when it is dangerous. With no pulse the number is **---**.
+- **SpO2** – oxygen saturation (%). Healthy: 95–100. Under 90 low, under 85 the skin turns blue, under 70 the patient passes out.
+- **NIBP** – blood pressure: the systolic in big, the diastolic under it, the mean pressure in brackets.
+- A beep on every heartbeat and an alarm on dangerous values.
+
+## The buttons
+
+- **ENERGY SELECT** – inactive, the energy is always 200 J.
+- **CHARGE** – charges the defibrillator (about 5 seconds, a rising tone). A charge that is not delivered within 60 seconds is dumped.
+- **SHOCK** – delivers the charge. Whoever does CPR lets go for the shock. Shout "stand clear"!
+- **ANALYZE** – AED mode: analyses the rhythm in 4 seconds and says **Shock advised** (it charges by itself, then press SHOCK) or **No shock advised**. Only on an unresponsive patient.
+- **SYNC** – synchronised shock, for **VT with pulse** only (cardioversion).
+- **SOUND** – mutes the beep and the alarm (the defibrillator sounds stay).
+
+## Heart rhythms
+
+**With pulse:**
+
+- **Normal Sinus Rhythm** – 60–100 / min. Normal.
+- **Sinus Bradycardia** – under 60. Opioid, sedative, head injury, a drug overdose. Find the cause.
+- **Sinus Tachycardia** – over 100. Pain, blood loss, low oxygen, fear, stimulants, low sugar. Treat the cause, not the number.
+- **Ventricular Tachycardia with Pulse** – wide, fast (about 180) rhythm, the pressure falls. Within 2 minutes it turns pulseless. **SYNC + CHARGE + SHOCK** (cardioversion, works 3 times out of 4). Without SYNC it works less often and can throw the heart into VF.
+
+**Without pulse (cardiac arrest):**
+
+- **Ventricular Fibrillation (VF)** – chaotic waves. **Shockable.**
+- **Pulseless Ventricular Tachycardia** – fast wide waves, no pulse. **Shockable.**
+- **Pulseless Electrical Activity (PEA)** – low broad waves, but no pulse and no beep. **NOT shockable**: CPR, Adrenalin, find the cause (blood loss, oxygen).
+- **Asystole** – flat line. **NOT shockable**: CPR and Adrenalin.
+
+>! A shock on a heart that beats (sinus rhythm) always stops it: VF. Check the rhythm before every shock.
+
+## Resuscitation (cardiac arrest)
+
+1. **CPR** at once. Every good 30 second round adds 45 seconds to the death timer.
+2. Attach the monitor and read the rhythm.
+3. **VF / pulseless VT**: CHARGE, SHOCK, continue CPR. A shock ends VF / pVT half of the time; then the pulse comes back, or PEA / asystole follows. CPR alone rarely ends a shockable rhythm.
+4. **PEA / Asystole**: CPR, IV access, **Adrenalin**. Do not shock.
+5. **IV access**, a secured airway (**intubation**) and **Adrenalin** all raise the chance of a returning pulse.
+6. After 10 seconds of good compressions the rhythm can change at any moment: the CPR minigame stops and the panel shows the new rhythm. "Pulse restored (ROSC)" = stop CPR.
+
+Untreated arrest rhythms get worse: pulseless VT turns into VF in a minute, VF into asystole in 4 minutes, PEA into asystole in 3 minutes. CPR pauses this.
+
+### After ROSC
+
+A restarted heart is weak: pulse about 118, systolic about 78, SpO2 55% or more. Sometimes it starts in VT with pulse (cardioversion). Oxygen, fluids, check the glucose, and keep the monitor on: it can stop again.
+
+## How the arrest started
+
+The first rhythm depends on the cause:
+
+- **Lack of oxygen, low sugar** – PEA or asystole.
+- **Blood loss** – mostly PEA. Fluids first, or the heart cannot restart.
+- **Very low pressure (drug)** – mostly PEA, sometimes VF.
+- **Pulse at 200+, lasting VT** – VF or pulseless VT.
+- **Electric shock** – VF.

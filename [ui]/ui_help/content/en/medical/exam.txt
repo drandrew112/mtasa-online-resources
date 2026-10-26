@@ -1,0 +1,51 @@
+# The examination panel
+@keywords: examination panel, examine patient, panel, heart rate, pulse, bleeding, skin, breathing, IV access, airway, pain, injuries, AB, C, D, buttons, BAG, MONITOR, O2, active medication
+@related: medical, medical_diagnosis, medical_monitor, medical_procedures, medical_equipment
+
+`X` on the patient's 3D menu, then **Examine patient**. The panel stays open while you are within 4 metres of the patient; `X` on the panel (top right) closes it.
+
+![560](content/images/medical/exam_panel.jpg)
+
+## Header
+
+- **Patient name** – "Unknown patient" when nobody knows them.
+- **O2 / BAG / MONITOR chips** – the oxygen left in the cylinder of the bag, and whether the medical bag and the Lifepak are close enough to use. A green underline means it is there, a grey chip means it is missing: carry it here.
+- **Consciousness** – the state in big letters (see [[medical|Overview]]). In clinical death the **Time left** counter is next to it.
+
+## Heart rate tile
+
+- Without the monitor you only feel the pulse: a number in BPM, or **no pulse**.
+- In place of the ECG curve there is an **Attach monitor / defibrillator** button. It takes 4 seconds and needs the Lifepak next to the patient. After that the tile shows the ECG curve and the rhythm name, and the Lifepak window opens on the left. See [[medical_monitor|Lifepak 15]].
+
+>! The blood pressure and the SpO2 are only shown on the Lifepak. Without the monitor you are guessing.
+
+## Bleeding tile
+
+- **Bleeding** – None / Mild / Severe / Critical: the worst bleeding wound.
+- **Skin** – what you see and feel. See [[medical_diagnosis|Diagnosis]].
+- **Breathing** – how the patient breathes, coloured by how bad it is.
+
+## Status line
+
+- **IV access: none / in place** – needed for most medicines and for fluids.
+- **Airway: not secured / O2 mask / secured** – **tube, NO OXYGEN** means the cylinder is empty: the tube does not help any more.
+- **Pain: x/10** – painkillers bring it down.
+
+## Injuries
+
+Every injury with its severity (Minor / Serious / Critical) and state: **Untreated**, treated (Bandaged, Splinted, Dressed, Airway secured) or **Needs hospital** for those you cannot fix on the street. Hidden medical conditions (stroke, poisoning, asthma...) are NOT listed here: you find them through their signs. **No visible injuries** does not mean the patient is fine.
+
+Under the injuries the **Neuro exam** findings and the **ACTIVE MEDICATION** list (medicine and time left) appear once you have them.
+
+## Buttons
+
+- **AB – Airway, Breathing**: **Intubate**, **O2 mask** / **Remove O2**.
+- **C – Circulation**: **Bandage**, **Splint**, **CPR**, **IV access** (the number = IV kits left), **Medication**.
+- **D – Disability**: **Neuro exam**, **Glucometer** / **Put meter away**.
+- **Transport**: **Request transport**.
+
+A disabled button tells why when you point at it (no fracture to splint, the patient has a pulse, needs the medical bag, out of stock...). The result of every procedure appears as a line on the panel.
+
+## Medication menu
+
+**Medication** opens the medicine grid. Each card shows the medicine, its group and the doses left in the bag (xN). Point at a card to read what it does. Oral / inhaled / nasal medicines work without IV access, every other one needs it. Giving a medicine takes 3 seconds. All medicines: [[medical_drugs|Medicines]].

@@ -1,0 +1,19 @@
+# Job Creator
+@keywords: job creator, editor, map, race, deathmatch, freecam, F5, undo
+@related: binds, binds_pause
+
+Start the Job Creator from the pause menu: **Online > Jobs > Creator**. Here you can build your own race and deathmatch maps.
+
+## Keys
+
+- `R` – the editor menu
+- `F5` – switch between free camera and on foot
+- Hold the right mouse button – look around in the free camera
+- Left mouse button – place / select
+- `Enter` – confirm
+- `Backspace` – cancel placing or moving, clear the selection
+- `Delete` – delete the selected item
+- `Ctrl + Z` – undo
+- `Ctrl + Y` – redo
+- `Space` – take the photo (in photo mode)
+- `F6` – stop the test

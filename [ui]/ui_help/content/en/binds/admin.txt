@@ -1,0 +1,14 @@
+# Admin keys
+@keywords: admin, panel, O, noclip, N, fly, report
+@related: binds
+
+These keys only work with the required admin level.
+
+- `O` – open / close the admin panel
+- `N` – noclip (fly) on / off; speed: `/flyspd <number>`
+- Right mouse button – on the report panel, hide / bring back the cursor
+
+## Editors
+
+- **Gang war editor** – `R` menu; while recording a patrol `1` adds a point, `2` removes the last point, `3` finishes; while dragging an attacker `1` or left click puts it down, `2` or right click cancels, the mouse wheel rotates.
+- **Scene editor (EMS)** – `R` menu.

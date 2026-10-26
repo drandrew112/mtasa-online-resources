@@ -1,0 +1,97 @@
+# Medicines
+@keywords: medicine, medicines, drug, drugs, medication, Ketamine, Calypsol, Rocuronium, Esmeron, Fentanyl, Adrenalin, Adrenaline, Epinephrine, Tonogen, Captopril, Tensiomin, Nitroglycerin, Glucose, glucose gel, Insulin, Actrapid, Naloxone, Narcan, Salbutamol, Ventolin, Midazolam, Dormicum, side effects, dose, RSI, painkiller, IV
+@related: medical_exam, medical_procedures, medical_diagnosis, medical_injuries, medical_equipment
+
+**C row – Medication** opens the medicine grid. Giving one takes 3 seconds. Unless it is marked oral / inhaled / nasal, the medicine goes through the IV line: place the **IV access** first. The doses in a full bag are shown below (xN on the card); restock in a hospital bay.
+
+Effects add up: two doses of a blood pressure medicine lower it twice as much. Each medicine works for a while (shown in the **ACTIVE MEDICATION** list), then its effect on the pulse and pressure ends. A condition it treated stays treated.
+
+>! The medicines are not "heal" buttons. Given to the wrong patient they make things worse, and some can stop the heart.
+
+## Ketamine (Calypsol)
+
+- **Group:** anaesthetic – RSI step 1. IV. Full bag: 2 doses. Works 10 minutes.
+- **What it does:** puts the patient to sleep and takes away ALL pain.
+- **Use:** before intubation (always BEFORE Rocuronium); a patient in unbearable pain who has to be moved.
+- **Side effects:** the pressure rises by about 15, the pulse by 8. A sedated patient cannot protect the airway and the neuro exam is not assessable.
+
+## Rocuronium bromide (Esmeron)
+
+- **Group:** muscle relaxant – RSI step 2. IV. Full bag: 2 doses. Works 40 minutes.
+- **What it does:** after 15 seconds it paralyses every muscle, the breathing too.
+- **Use:** only for intubation, right after Ketamine. Then the **Intubate** button becomes active.
+- **Side effects:** no breathing: the SpO2 falls (slower on the O2 mask) until the tube is in. Given to an AWAKE patient they panic: pulse +50, pressure +35, while they suffocate. If the intubation fails, the patient cannot breathe for 40 minutes: try again fast.
+
+## Fentanyl
+
+- **Group:** painkiller. IV. Full bag: 3 doses. Works 30 minutes.
+- **What it does:** takes away about 70% of the pain.
+- **Use:** fractures, burns, gunshot wounds in an awake patient. Less pain = less "dazed", calmer pulse.
+- **Side effects:** lowers the blood pressure by about 10. Careful in shock.
+
+## Adrenalin (Tonogen)
+
+- **Group:** heart stimulant. IV. Full bag: 5 doses. Works 5 minutes.
+- **What it does:** pulse +30, pressure +30. In cardiac arrest it makes CPR more likely to restart the heart (+15%).
+- **Use:** cardiac arrest (especially PEA / asystole), every few minutes. Very low pressure after ROSC.
+- **Side effects:** doses add up. Too many on a beating heart drive the pulse to 200: the heart stops (VF).
+
+## Captopril (Tensiomin)
+
+- **Group:** blood pressure lowering. Oral (tablet under the tongue), no IV needed. Full bag: 3 doses. Works 10 minutes.
+- **What it does:** lowers the systolic pressure by about 40.
+- **Use:** hypertensive crisis (systolic 180+). The ambulance does not take a patient over 180.
+- **Side effects:** it also lowers a normal or low pressure. Given in shock the pressure can fall to 30: cardiac arrest. Not for a stroke patient with a normal pressure.
+
+## Nitroglycerin spray
+
+- **Group:** vasodilator. Oral (spray under the tongue). Full bag: 3 doses. Works 10 minutes.
+- **What it does:** lowers the pressure by about 30 and clears the fluid from the lungs.
+- **Use:** pulmonary oedema (crackles, pink frothy sputum, high pressure), with oxygen.
+- **Side effects:** like Captopril: never with a low pressure.
+
+## Glucose 40%
+
+- **Group:** blood sugar raising. IV. Full bag: 2 doses.
+- **What it does:** raises the blood glucose by about 100 mg/dL at once.
+- **Use:** hypoglycaemia, mainly an unconscious patient. Measure before and after.
+- **Side effects:** none to speak of; the cause may bring the sugar down again – measure again later.
+
+## Oral glucose gel
+
+- **Group:** blood sugar raising. Oral, into the cheek. Full bag: 2 doses.
+- **What it does:** about +40 mg/dL.
+- **Use:** mild hypoglycaemia in an AWAKE patient (stable or confused) who can swallow. No IV needed.
+- **Limits:** a dazed or unconscious patient cannot swallow: give Glucose 40% IV.
+
+## Insulin (Actrapid)
+
+- **Group:** blood sugar lowering. IV. Full bag: 1 dose. Works 15 minutes.
+- **What it does:** slowly lowers the glucose (about 20 mg/dL per minute, around 300 in total).
+- **Use:** diabetic ketoacidosis (sugar 350+), together with IV fluids.
+- **Side effects:** given with a normal or low sugar it causes a severe hypoglycaemia, even cardiac arrest. Always measure first.
+
+## Naloxone (Narcan)
+
+- **Group:** opioid antidote. Nasal spray, no IV needed. Full bag: 2 doses.
+- **What it does:** reverses an opioid overdose (heroin, fentanyl): breathing and consciousness come back.
+- **Use:** pinpoint pupils + slow breathing + unconscious, needle marks or a syringe nearby.
+- **Limits:** no effect on alcohol, sleeping pills or other poisons.
+
+## Salbutamol (Ventolin)
+
+- **Group:** bronchodilator. Inhaled (nebuliser), no IV needed. Full bag: 2 doses. Works 15 minutes.
+- **What it does:** opens the airways.
+- **Use:** asthma attack, COPD (wheezing). Together with the O2 mask.
+- **Side effects:** the pulse rises by about 12. In COPD it helps only partly – oxygen matters more.
+
+## Midazolam (Dormicum)
+
+- **Group:** sedative. IV. Full bag: 2 doses. Works 20 minutes.
+- **What it does:** calms an agitated patient; pulse −15, pressure −15.
+- **Use:** stimulant intoxication (cocaine, amphetamine: dilated pupils, very fast pulse, high pressure).
+- **Side effects:** lowers the pulse and the pressure in anyone, and it can weaken the breathing: watch the SpO2.
+
+## IV fluids
+
+Not a medicine button: once the **IV access** is in, fluids run on their own and replace the lost blood volume (faster with a better cannula). They also slowly bring a very high glucose (over 180) down.

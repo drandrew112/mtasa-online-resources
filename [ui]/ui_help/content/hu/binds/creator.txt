@@ -1,0 +1,19 @@
+# Job Creator
+@keywords: job creator, szerkesztő, pálya, verseny, deathmatch, freecam, F5, visszavonás
+@related: binds, binds_pause
+
+A Job Creatort a szünet menü **Online > Jobs > Creator** pontjából indíthatod. Itt saját verseny- és deathmatch pályákat építhetsz.
+
+## Gombok
+
+- `R` – a szerkesztő menüje
+- `F5` – váltás szabad kamera és gyalogos mód között
+- Jobb egérgomb nyomva tartva – körülnézés szabad kamerában
+- Bal egérgomb – lerakás / kijelölés
+- `Enter` – megerősítés
+- `Backspace` – lerakás vagy mozgatás megszakítása, kijelölés törlése
+- `Delete` – a kijelölt elem törlése
+- `Ctrl + Z` – visszavonás
+- `Ctrl + Y` – újra
+- `Space` – fotó készítése (fotó módban)
+- `F6` – a tesztelés leállítása

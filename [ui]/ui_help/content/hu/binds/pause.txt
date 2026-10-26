@@ -1,0 +1,35 @@
+# Szünet menü és térkép
+@keywords: szünet, pause, P, menü, térkép, map, waypoint, gps, beállítások, statisztika, online, jobs, arena war
+@related: binds, feature_pause
+
+A `P` gombbal nyílik a szünet menü. Négy füle van: **Térkép**, **Online**, **Statisztikák** és **Beállítások**.
+
+## Menü kezelése
+
+- `P` – megnyitás / bezárás
+- `Bal` `Jobb` nyíl – fülek közötti váltás
+- `Enter` vagy `Le` nyíl – belépés a kiválasztott fülre
+- `Fel` `Le` nyíl – lépkedés a listában
+- `Enter` – kiválasztás, kapcsoló váltása
+- `Bal` `Jobb` nyíl – a Beállításoknál érték állítása (csúszka, választó)
+- `Backspace` – egy szinttel vissza; a fülsoron bezárja a menüt
+
+## Mit érhetsz el?
+
+- **Térkép** – a nagy térkép, útvonaltervezés.
+- **Online** – gyors Job (verseny / deathmatch lobbi), lobbik böngészése, hivatalos és közösségi jobok, a Job Creator, Arena War, kilépés a szerverről.
+- **Statisztikák** – szint, XP és a saját statisztikáid kategóriánként.
+- **Beállítások** – grafika (látótávolság, LOD, színszűrő, …), modellek letöltése, megjelenítés, nyelv, online beállítások (saját névtábla, frissítő e-mailek).
+
+## Térkép
+
+A nagy térkép csak a szünet menüből nyílik meg (az `F11` nem működik).
+
+- Bal egérgomb nyomva tartva + húzás – a térkép mozgatása
+- `W` `A` `S` `D` – a térkép mozgatása
+- Görgő vagy `Num +` / `Num -` – nagyítás / kicsinyítés
+- `Space` – vissza a saját pozíciódra
+- Bal kattintás – útpont (waypoint) lerakása / törlése; a GPS megtervezi az utat
+- `Enter` – útpont a térkép közepére
+- Nyilak – a jelölők (blipek) listájában lépkedés, ha van ilyen
+- `Backspace` – a térkép bezárása

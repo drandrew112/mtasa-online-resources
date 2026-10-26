@@ -1,0 +1,18 @@
+# Weapons
+@keywords: Tab, weapon, weapon wheel, selector, reload, R, clip
+@related: binds, binds_vehicle
+
+## Weapon wheel
+
+- Hold `Tab` – open the wheel
+- Move the mouse – choose a category
+- Mouse wheel – switch weapon inside the category
+- Release `Tab` – take the selected weapon
+
+While the wheel is open you can keep walking, but you cannot shoot.
+
+## Other
+
+- `R` – reload (on foot, when the clip is not full and you have ammo left)
+
+> You can buy weapons in the Ammu-Nation shops: press `E` in the shop marker.

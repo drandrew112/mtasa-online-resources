@@ -1,0 +1,22 @@
+# Telefon
+@keywords: B, telefon, phone, névjegy, hívás, mentő, segélyhívó, email, levél, üzenet, böngésző
+@related: binds, binds_social, feature_phone, feature_browser
+
+A `B` gombbal veszed elő a telefont. Teljesen billentyűzettel kezelhető.
+
+## Gombok
+
+- `B` – elővétel / eltevés
+- Nyilak – a kezdőképernyőn az alkalmazások között lépkedés
+- `Fel` `Le` nyíl – listában lépkedés
+- `Enter` – alkalmazás megnyitása, elem kiválasztása
+- `Backspace` – vissza; a kezdőképernyőn eltevés
+- `Esc` – a telefon eltevése
+
+## Alkalmazások
+
+- **Névjegyek** – hívások, például a segélyhívó (mentők) vagy a biztosító.
+- **Üzenetek** – a közösségi panel üzenetei.
+- **E-mail** – a szerver által küldött levelek.
+- **Böngésző** – a játékbeli weboldalak.
+- **Járműveim**, **Szervezet**, **Meghívások**, **Beállítások**.

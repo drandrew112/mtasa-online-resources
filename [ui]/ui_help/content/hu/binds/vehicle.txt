@@ -1,0 +1,34 @@
+# Járművek
+@keywords: jármű, autó, fényszóró, L, rádió, Q, sziréna, ELS, villogó, kürt, drive-by, kiszállás
+@related: binds, binds_interaction
+
+## Alap
+
+- `L` – fényszóró be / ki (csak a sofőr)
+- `Q` nyomva tartva – rádió választó; görgővel váltasz állomást, elengedve bezárul (repülőben és helikopterben nincs)
+
+## Megkülönböztető jelzés (sziréna, villogók)
+
+Megkülönböztető jelzéses járműben, sofőrként:
+
+- `0` – villogók be / ki
+- `1` – sziréna be / ki
+- `2` – következő szirénahang
+- `3` nyomva tartva – légkürt
+- `4` – második sziréna be / ki (ha a típusnak van)
+- `5` – következő villogási minta
+- Kürt röviden – sziréna be, majd újabb rövid nyomásra hangváltás
+- Kürt kétszer gyorsan – sziréna ki
+- Kürt nyomva tartva – sima kürt
+
+A sziréna típusát az `M` menü **Jármű > Sziréna típusa** pontjában választhatod ki.
+
+## Drive-by (utasként)
+
+- Jobb egérgomb – drive-by be / ki
+- `E` / `Q` – következő / előző fegyver drive-by közben
+
+## Garázs (tuning)
+
+- Egér mozgatása – a kamera forgatása a jármű körül
+- Görgő – közelítés / távolítás

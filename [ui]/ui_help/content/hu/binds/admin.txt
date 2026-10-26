@@ -1,0 +1,14 @@
+# Admin gombok
+@keywords: admin, panel, O, noclip, N, repülés, report, jelentés
+@related: binds
+
+Ezek a gombok csak a megfelelő admin szinttel működnek.
+
+- `O` – admin panel megnyitása / bezárása
+- `N` – noclip (repülés) be / ki; a sebesség: `/flyspd <szám>`
+- Jobb egérgomb – a report panelen a kurzor elrejtése / visszahozása
+
+## Szerkesztők
+
+- **Bandaháború szerkesztő** – `R` menü; járőrút rögzítésekor `1` pont hozzáadása, `2` utolsó pont törlése, `3` befejezés; támadó áthúzásakor `1` vagy bal klikk lerakás, `2` vagy jobb klikk mégse, görgő forgatás.
+- **Jelenet szerkesztő (mentő)** – `R` menü.

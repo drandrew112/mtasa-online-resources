@@ -1,0 +1,102 @@
+# Diagnózis: neuro vizsgálat, vércukor, bőr, légzés
+@keywords: diagnózis, neuro vizsgálat, AVPU, pupilla, FAST, agyvérzés, stroke, vércukormérő, vércukor, cukor, mg/dL, mmol/L, hipoglikémia, hiperglikémia, bőr, cianotikus, sápadt, verítékes, légzés, sípoló, horkolás, ropogó, Kussmaul, aceton, D, neurológiai állapot
+@related: medical_exam, medical_monitor, medical_injuries, medical_drugs, medical_cases
+
+A betegségek (mérgezés, agyvérzés, alacsony cukor, asztma...) nincsenek kiírva a panelre. A jeleikből ismered fel őket: a neuro vizsgálatból, a vércukorból, a bőrből, a légzésből és a monitoron látható életjelekből. Rakd össze a jeleket, mint egy igazi mentős.
+
+## Neuro vizsgálat
+
+**D sor – Neuro vizsgálat**. 4 másodperc, nem kell hozzá felszerelés, és a leletek a panelen maradnak (élőben frissülnek). Színek: fehér = normális, sárga / narancs = kóros, piros = súlyos.
+
+### Reakció (AVPU)
+
+- **Éber és tájékozott** – rendben.
+- **Éber, de zavart, tájékozatlan** – mérgezés, cukor, agyvérzés, roham után, fejsérülés.
+- **Álmos, hangra reagál** – romlik: figyelj a légútra.
+- **Csak fájdalomra reagál** – eszméletlen. A légút veszélyben.
+- **Szedált - nem értékelhető** – te altattad el (Ketamine / Rocuronium).
+- **Nem reagál, a pupillák fixek és tágak** – szívmegállás vagy halál.
+
+### Pupillák
+
+- **Egyenlők, fényre reagálnak** – normális.
+- **Tűhegynyi** – opioid (heroin, fentanyl). Adj **Naloxone**-t.
+- **Tág** – stimuláns (kokain, amfetamin). Adj **Midazolam**-ot.
+- **Normál méretű, renyhe / renyhe** – altató, nyugtató. Nincs ellenszer: támogasd a légzést.
+- **EGYENLŐTLEN – az egyik tág és lassú** – súlyos fejsérülés, nyomás az agyon. Gyorsan kórházba.
+
+### FAST (stroke teszt)
+
+FAST = **F**ace (arc), **A**rms (karok), **S**peech (beszéd), **T**ime (idő).
+
+- **FAST: negatív** – arc, karok, beszéd normális.
+- **FAST: az arc a bal / jobb oldalon megereszkedik**, **a kar lesüllyed, gyenge a fogás**, **akadozó beszéd** – **agyvérzés (stroke)**. Tartsd a szisztolés vérnyomást 130 és 220 között, és szállítsd. Csak a kórház tudja kezelni.
+- **Bal / Jobb oldali bénulás**, **a szemek az egyik oldalra fordultak** – súlyos stroke.
+- **FAST: nem értékelhető** – a beteg eszméletlen.
+
+### Árulkodó jelek
+
+A vizsgálat azt is jelzi, amit a beteg körül észreveszel:
+
+- **Tűnyomok a karokon**, **fecskendő a beteg mellett** – opioid.
+- **Üres tablettatartók a közelben**, **nincs öklendezési reflex** – nyugtató túladagolás.
+- **Izgatott, gyorsan beszél**, **összeszorítja az állkapcsát, izzad**, **paranoid, forró tapintású** – stimuláns.
+- **Erősen alkoholszagú**, **hányt, nem tud állni**, **hányadék a száj körül** – alkohol. A hányás elzárhatja a légutat.
+- **Megharapott nyelv**, **vizes nadrág**, **nem emlékszik, mi történt** – epilepsziás roham után. Magától elmúlik.
+- **Fejbőr alatti vérömleny**, **újra és újra ugyanazt kérdezi**, **kétszer hányt**, **vér / tiszta folyadék a fülből** – fejsérülés.
+- **Teljes mondatokban beszél / csak rövid kifejezésekben beszél / nem tud beszélni** – mennyire súlyos az asztmás roham.
+- **Összeszorított ajkú légzés, régi dohányos** – COPD.
+- **Duzzadt bokák**, **rózsaszín habos köpet** – folyadék a tüdőben (tüdőödéma).
+- **Izzadt, remegő, sápadt** – alacsony vércukor.
+- **Gyümölcsös (aceton) lehelet** – nagyon magas vércukor (ketoacidózis).
+
+## Vércukormérő
+
+![300](content/images/medical/glucometer.jpg)
+
+A **D sor – Vércukormérő** megnyitja a mérőt a panel mellett (kell hozzá a vércukormérő a táskából). Nyomd meg a **MÉRÉS** gombot: az ujjbegyes mérés eredménye 5 másodperc múlva jön. Ez egyetlen mérés, nem folyamatos érték: alatta látszik, mennyi ideje mérted, ezért ellátás után mérj újra. Mérés közben maradj a beteg mellett. Az **ELRAKÁS** bezárja.
+
+- Az érték **mg/dL**-ben, alatta **mmol/L**-ben (mg/dL / 18).
+- **LO** = 20 alatt, **HI** = 600 felett. Szívmegállásban nincs érték (nincs véráramlás).
+
+### Az érték értelmezése
+
+- **70–180 mg/dL** – normális (egészségesen 95).
+- **70 alatt** – hipoglikémia: izzadt, sápadt, gyors pulzus. 58 alatt zavart, 45 alatt kábult, 30 alatt eszméletlen. 4 percig 20 alatt a szív megáll. Éber beteg: **Oral glucose gel**; eszméletlen: **Glucose 40%** IV.
+- **300 felett** – a beteg folyadékot veszít (száraz, meleg bőr, esik a vérnyomás). 350 felett mély, gyors légzés és aceton lehelet (**ketoacidózis**). 420 felett zavart, 550 felett kábult, 700 felett eszméletlen. IV folyadék és **Insulin**.
+
+>! Mérés nélkül soha ne adj Insulint: normális cukornál veszélyes hipoglikémiát okoz.
+
+## Bőr
+
+A vérzés mezőn, mindig látszik (látod és tapintod).
+
+- **Meleg, normál** – rendben.
+- **Sápadt** – vesztett némi vért (85% alatt).
+- **Sápadt, hideg, nyirkos** – sok vért vesztett (70% alatt): sokk.
+- **Sápadt, verítékes** – alacsony cukor vagy stimuláns.
+- **Száraz, meleg** – nagyon magas cukor.
+- **Cianotikus** (kék) – az SpO2 85% alatt: kevés az oxigén.
+- **Hideg, foltos** – halott.
+
+## Légzés
+
+- **Normál**, **Lélegeztetve** (tubuson át) – rendben.
+- **Gyors** – fájdalom, gyors pulzus, stimuláns.
+- **Sípoló légzés** – asztma vagy COPD. **Salbutamol**, O2 maszk.
+- **Néma mellkas, kimerült** – életveszélyes asztma: alig mozog levegő.
+- **Nehezített** / **Nehezített, ropogó** – alacsony SpO2; ropogó = folyadék a tüdőben (**Nitroglycerin**).
+- **Mély és gyors** – ketoacidózis (nagyon magas cukor).
+- **Lassú, felületes** – opioid vagy nyugtató.
+- **Horkolás** – az eszméletlen beteg nyelve elzárja a légutat. Intubálás.
+- **Kapkodó légzés** – agonális légzés, a szív hamarosan megáll.
+- **Nem lélegzik** – szívmegállás, vagy tubus nélküli, relaxált beteg.
+
+## Életjelek a monitoron
+
+A ritmusokat lásd: [[medical_monitor|Lifepak 15]]. Gyors értelmezés:
+
+- **Gyors pulzus + alacsony vérnyomás + sápadt** – vér- vagy folyadékvesztés: állítsd el a vérzést, IV folyadék.
+- **Nagyon magas vérnyomás + lassú pulzus + egyenlőtlen pupillák** – nyomás az agyon (fejsérülés).
+- **Nagyon magas vérnyomás + pozitív FAST** – agyvérzés.
+- **Alacsony SpO2** – légút vagy tüdő: O2 maszk, Salbutamol / Nitroglycerin, intubálás.

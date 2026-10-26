@@ -1,0 +1,38 @@
+# Hogyan működnek az ellátási minijátékok
+@keywords: minijáték, minijátékok, nyilak, kötözés, sínezés, CPR, kompresszió, IV, kanülözés, intubálás, légút, laringoszkóp, tubus, mandzsetta, mg_arrows, mg_splinting, mg_cpr, mg_intravenous, mg_airway
+@related: medical_procedures, medical_exam, medical_monitor
+
+Öt ellátás ügyességi játék. Játék közben a beteg mellett térdelsz; az eredmény a betegre hat. Ha közben a beteg meghal vagy megváltozik az állapota, a játék leáll.
+
+## Kötözés – nyilak
+
+A képernyő alján balról jobbra nyilak csúsznak. Nyomd meg a megfelelő nyilat (`Fel`, `Le`, `Bal`, `Jobb`), amikor a nyíl a körben van. Zöld = talált, piros = rossz gomb vagy elmaradt. Győzelem: **70% feletti** találat. Súlyosabb sebnél több (12 / 16 / 20) és gyorsabb nyíl jön.
+
+## Sínezés – időzítés
+
+Egy mutató ide-oda leng egy skálán. Nyomj `Szóköz`-t, amikor a zöld középső ablakban van, így megszorítasz egy kötést. Az elmulasztott ablakért nincs büntetés: várd meg a következő lendületet. Győzelem: a tekerések több mint 70%-a jó (súlyosság szerint 8 / 10 / 12 tekerés).
+
+## CPR – ritmus
+
+`Szóköz` = egy mellkaskompresszió. Tartsd a tempót **90 és 130 / perc** között 30 másodpercig (3 másodperces visszaszámlálás után). Minden lenyomást értékel: GOOD (jó) / TOO FAST (túl gyors) / TOO SLOW (túl lassú); a hosszú szünet kimaradt kompressziónak számít. Győzelem: legalább **70%** pontosság. Tipp: a „Stayin' Alive” üteme nagyjából jó.
+
+## IV hozzáférés – kanülözés
+
+A képernyőn felülről látod az alkart (a bőr alatti vénával), mellette a tű menti keresztmetszetet.
+
+1. **Célzás** – vidd az egeret a véna fölé (a kéz kicsit remeg), majd `Bal egérgomb`-bal szúrd át a bőrt. Középtől távolabb = vékonyabb célpont.
+2. **Előretolás** – tartsd nyomva a `Bal egérgomb`-ot a tű tolásához. Ha vér jelenik meg a visszafolyási kamrában, a tű hegye a vénában van: tolj még kb. 1 mm-t, majd engedd el. Túl mélyre = átszúrtad a hátsó falat, soha el sem érted = mellé.
+3. **Visszahúzás** – tartsd nyomva a `Bal egérgomb`-ot, és húzd az egeret **balra**, lassan: túl gyorsan megtelik a terhelés sáv, és a kanül kicsúszik.
+
+Egy hiba egy próbálkozásba (és egy IV készletbe) kerül. Az eredménynek minősége van (0–100%): középen, jó mélységben, finoman visszahúzva. Jobb minőség = gyorsabb folyadékpótlás.
+
+## Intubálás – légút
+
+Juttasd a tubust a légcsőbe, mielőtt az SpO2 **80%** alá esik (játék közben látszik).
+
+1. **Laringoszkópia** – tartsd nyomva a `Szóköz`-t a laringoszkóp emeléséhez; tartsd a zöld zónában 1,5 másodpercig. Túl erős feszítés kitöri a fogat.
+2. **Hangszalagok** – célozd a tubus végét az **egérrel**, és tartsd a `Szóköz`-t, hogy a nyitott hangszalagok közé told. Zárt hangszalagnak tolva = sérülés; a mögöttük lévő résbe = nyelőcső (rossz cső).
+3. **Tubus mélység** – `Szóköz` tolás, `S` visszahúzás; a fogaknál **20,5–23,5 cm**-nél engedd el. 25,5 cm felett az egyik tüdőbe megy (visszahúzzák).
+4. **Mandzsetta** – `Szóköz` felfújás, `S` leengedés; **20–30 vízcm**-nél engedd el. Túl puha = szivárog, 40 felett károsítja a légutat.
+
+Nehezebb esetekben (kritikus fulladás, kritikus égés) vér folyik a képbe: tartsd az `E`-t a leszíváshoz. Minden hiba elhasznál egyet a megengedett hibákból; eggyel több, és az intubálás sikertelen.

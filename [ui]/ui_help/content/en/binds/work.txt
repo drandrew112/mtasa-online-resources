@@ -1,0 +1,32 @@
+# Work jobs
+@keywords: work, EMS, ambulance, tablet, J, blood transport, train driver, train, timetable, Sifa, F2, tutorial, stretcher, ATC
+@related: binds, binds_world
+
+Take a work job with `E` in its marker. You can have only one work job at a time.
+
+## Tutorials
+
+- `F2` – show / hide the cursor for the buttons of the tutorial card
+
+## EMS
+
+- `J` – open / close the EMS tablet (in an ambulance)
+- Patients and equipment are handled with the 3D menus (`Q` / `E` / `X`, see the world page)
+- Stretcher: right mouse button – cursor on / off, `Backspace` – cancel the selection
+
+## Blood transport
+
+- `J` – enlarge the panel in the bottom right corner (duty, tasks, handover)
+
+## Train driver
+
+- `Left Ctrl` – cursor on / off for the cab panel
+- `F6` – open / close the timetable (scroll with the mouse wheel)
+- `Space` – vigilance button (Sifa): press it now and then while moving and when a signal changes, or the train makes an emergency stop
+- Hold the horn key – the train horn
+- `F` – leave the cab (only from a standing train)
+
+## Air traffic controller (ATC)
+
+- `E` – in the training marker, open the training menu
+- `F2` – cursor for the training cards

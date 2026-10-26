@@ -1,0 +1,24 @@
+# Chat
+@keywords: chat, üzenet, írás, T, csatorna, globális, helyi, parancs
+@related: binds
+
+A chatben a többi játékossal beszélhetsz, és innen parancsokat is futtathatsz.
+
+## Gombok
+
+- `T` – a chat beviteli mezőjének megnyitása
+- `Enter` – az üzenet elküldése (üresen csak bezárja a mezőt)
+- `Esc` – a mező bezárása küldés nélkül
+- `Backspace` – az utolsó karakter törlése
+- `Tab` – csatornaváltás: **Globális** (fehér) és **Helyi** (világoskék)
+
+## Csatornák
+
+- **Globális** – mindenki látja a szerveren.
+- **Helyi** – csak a kb. 30 méteren belül lévő játékosok látják.
+
+## Parancsok
+
+Ha az üzenet `/` jellel kezdődik, parancsként fut le (például `/help`). Írás közben a mező alatt megjelennek a lehetséges parancsok, a `Tab` ilyenkor kiegészíti a parancs nevét csatornaváltás helyett.
+
+> Amíg írsz, a neved fölött egy buborék jelzi a többieknek, hogy gépelsz.

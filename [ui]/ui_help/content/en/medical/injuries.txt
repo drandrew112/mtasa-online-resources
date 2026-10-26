@@ -1,0 +1,42 @@
+# Injuries and medical conditions
+@keywords: injury, injuries, gunshot, wound, fracture, burn, suffocation, drowning, head injury, stroke, opioid, overdose, sedative, stimulant, cocaine, alcohol, seizure, epilepsy, asthma, COPD, pulmonary oedema, hypertension, hypoglycaemia, ketoacidosis, diabetes, bleeding, shock, severity, needs hospital
+@related: medical_diagnosis, medical_drugs, medical_procedures, medical_cases
+
+Every injury has a severity: **Minor**, **Serious** or **Critical**. Visible injuries are listed on the panel; medical conditions are hidden, you find them through the signs ([[medical_diagnosis|Diagnosis]]).
+
+## Bleeding
+
+Mild bleeding loses 1.5 ml of blood per second, severe 5 ml/s, critical 12 ml/s. A critical bleed empties half of the 5 litres in about 3.5 minutes: then the heart stops. Bleeding goes on slowly during a cardiac arrest too.
+
+- Under 85% blood: pale skin, fast pulse.
+- Under 70%: pale, cold, clammy – **haemorrhagic shock**, low pressure.
+- 50%: cardiac arrest, and the heart cannot restart until fluids bring the volume back.
+
+Stop it with **Bandage**, replace it with **IV access** (the fluids run by themselves while the IV is in).
+
+## Visible injuries
+
+- **Gunshot wound** – bleeds (mild / severe / critical), hurts. **Bandage.** A critical wound keeps oozing a little after the bandage, until the hospital.
+- **Fracture** – hurts a lot; a critical one is an open fracture and bleeds. **Splint** (+ Bandage for the bleeding). Painkiller: Fentanyl.
+- **Burn** – no bleeding but it loses plasma (fluid), so the pressure falls slowly; very painful. **Bandage** dresses it (the loss nearly stops). A critical burn also burns the airway: the SpO2 drifts to 80% and the dressing does not help. Intubate early – this is the hardest intubation.
+- **Suffocation** (drowning, smoke, choking) – the SpO2 drifts down: to 88% (minor), 65% (serious) or 0% (critical). The O2 mask lifts it a little, **Intubation** solves it.
+- **Head injury** – confused / dazed / unconscious. Severe: snoring, the pressure rises while the pulse falls, unequal pupils, fluid from the ear. **Needs hospital** – support the airway and transport.
+
+## Hidden medical conditions
+
+- **Stroke** – FAST positive (face, arm, speech on one side), high pressure. Gets one step worse every 8 minutes; 2.5 times faster with the systolic outside 130–220. Do not push a high pressure down to normal. **Needs hospital.**
+- **Opioid overdose** – pinpoint pupils, slow shallow breathing, low SpO2, slow pulse, unconscious. **Naloxone** (nose spray) brings them back.
+- **Sedative overdose** – sleeping pills: sluggish pupils, slow breathing or snoring, empty pill packets. No antidote: O2, airway, intubation if needed, **Needs hospital**.
+- **Stimulant intoxication** – cocaine, amphetamine: dilated pupils, agitated, sweating, very fast pulse and high pressure. **Midazolam** calms it.
+- **Alcohol intoxication** – smell of alcohol, confused, vomiting. Severe: unconscious, vomit in the airway (snoring, SpO2 falls). No antidote: airway, **Needs hospital**.
+- **Post-seizure state** – after an epileptic fit: bitten tongue, wet trousers, sleepy, fast pulse. Wears off by itself in 4–12 minutes; protect the airway.
+- **Asthma attack** – wheezing, low SpO2, speaks in short phrases. Life-threatening: silent chest. **Salbutamol** + O2.
+- **COPD exacerbation** – long-time smoker, pursed lips, wheezing / laboured breathing. Salbutamol helps a little, oxygen more.
+- **Pulmonary oedema** – fluid on the lungs (heart failure): crackles, pink frothy sputum, swollen ankles, HIGH pressure. **Nitroglycerin** + O2. Never with a low pressure.
+- **Hypertensive crisis** – very high blood pressure (190/125). **Captopril**.
+- **Hypoglycaemia** – low sugar: sweaty, pale, confused or unconscious. **Glucose 40%** IV / **Oral glucose gel**.
+- **Diabetic ketoacidosis** – very high sugar (500+): dry skin, dehydrated, deep rapid breathing, acetone breath. IV fluids + **Insulin**.
+
+## Needs hospital
+
+Conditions without a street treatment show **Needs hospital**: keep the patient alive (airway, oxygen, pressure, sugar) and take them in. See [[medical_procedures|Transport]].

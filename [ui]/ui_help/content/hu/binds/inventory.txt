@@ -1,0 +1,19 @@
+# Inventory
+@keywords: I, H, E, inventory, táska, tárgy, kéz, letesz, csomagtartó, tároló, port
+@related: binds
+
+Az inventory a nálad lévő tárgyakat mutatja (kézben, háton, a táskákban). Járműben ülve nem nyitható meg.
+
+## Gombok
+
+- `I` – a saját inventory megnyitása / bezárása
+- `Esc` – bezárás
+- `H` – a kezedben lévő tárgyak letétele a földre
+- `E` – egy tároló jelölőjében (például csomagtartónál) a tároló megnyitása
+- Görgő – a bal vagy jobb oldali lista görgetése (amelyik fölött az egér van)
+
+## Tárgyak mozgatása
+
+- Bal egérgomb + húzás – tárgy áthúzása másik helyre vagy a másik oldalra
+- `Shift` nyomva tartva húzás közben – csak egy darabot mozgatsz
+- A kijelölt tárgy melletti nyíl gombokkal gyorsan a másik oldalra teheted (`Shift`-tel egy darabot)

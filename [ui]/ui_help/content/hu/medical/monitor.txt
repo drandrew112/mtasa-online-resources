@@ -1,0 +1,67 @@
+# Lifepak 15: monitor és defibrillátor
+@keywords: Lifepak, monitor, defibrillátor, defi, EKG, ECG, szívritmus, ritmus, VF, kamrafibrilláció, VT, kamrai tachycardia, PEA, asystole, sinus, bradycardia, tachycardia, sokk, töltés, charge, analyze, elemzés, sync, kardioverzió, SpO2, NIBP, vérnyomás, ROSC, újraélesztés
+@related: medical_exam, medical_procedures, medical_drugs, medical_equipment, medical_cases
+
+Hozd ki a Lifepakot a mentőből, majd nyomd meg a panel szívfrekvencia mezőjén a **Monitor / defibrillátor rákötése** gombot (4 másodperc). A monitor a betegen marad; az ablaka a vizsgálati panel bal oldalán nyílik meg.
+
+![380](content/images/medical/lifepak.jpg)
+
+## A képernyő
+
+- **Felül** – az eddig leadott sokkok száma (Shocks), az óra és az energia (**200 J**, fix).
+- **HR** – a szívfrekvencia és az EKG görbe. A görbe alatt a **ritmus neve**, pirossal, ha veszélyes. Pulzus nélkül a szám helyén **---**.
+- **SpO2** – oxigénszaturáció (%). Egészségesen 95–100. 90 alatt alacsony, 85 alatt kékül a bőr, 70 alatt a beteg elveszti az eszméletét.
+- **NIBP** – vérnyomás: nagy számmal a szisztolés, alatta a diasztolés, zárójelben a középnyomás.
+- Minden szívverésnél sípolás, veszélyes értékeknél riasztás.
+
+## A gombok
+
+- **ENERGY SELECT** – nem működik, az energia mindig 200 J.
+- **CHARGE** – feltölti a defibrillátort (kb. 5 másodperc, emelkedő hang). Ha 60 másodpercen belül nem adod le, a töltés elvész.
+- **SHOCK** – leadja a sokkot. Aki CPR-t csinál, elengedi a beteget. Kiáltsd: „álljatok hátra”!
+- **ANALYZE** – AED mód: 4 másodperc alatt elemzi a ritmust, és kiírja: **Sokk javasolt** (magától tölt, utána nyomd meg a SHOCK-ot) vagy **Sokk nem javasolt**. Csak nem reagáló betegen.
+- **SYNC** – szinkronizált sokk, csak **pulzussal járó VT**-re (kardioverzió).
+- **SOUND** – lenémítja a sípolást és a riasztást (a defibrillátor hangjai megmaradnak).
+
+## Szívritmusok
+
+**Pulzussal:**
+
+- **Normal Sinus Rhythm** (normál sinusritmus) – 60–100 / perc. Normális.
+- **Sinus Bradycardia** – 60 alatt. Opioid, nyugtató, fejsérülés, gyógyszer túladagolás. Keresd az okát.
+- **Sinus Tachycardia** – 100 felett. Fájdalom, vérvesztés, oxigénhiány, félelem, stimuláns, alacsony cukor. Az okot kezeld, ne a számot.
+- **Ventricular Tachycardia with Pulse** (pulzussal járó kamrai tachycardia) – széles, gyors (kb. 180) ritmus, esik a vérnyomás. 2 percen belül pulzus nélkülivé válik. **SYNC + CHARGE + SHOCK** (kardioverzió, 4-ből 3-szor sikerül). SYNC nélkül ritkábban sikerül, és VF-be viheti a szívet.
+
+**Pulzus nélkül (szívmegállás):**
+
+- **Ventricular Fibrillation** (VF, kamrafibrilláció) – kaotikus hullámok. **Sokkolható.**
+- **Pulseless Ventricular Tachycardia** (pulzus nélküli VT) – gyors, széles hullámok, nincs pulzus. **Sokkolható.**
+- **Pulseless Electrical Activity** (PEA) – alacsony, széles hullámok, de nincs pulzus és nincs sípolás. **NEM sokkolható**: CPR, Adrenalin, keresd az okát (vérvesztés, oxigén).
+- **Asystole** – egyenes vonal. **NEM sokkolható**: CPR és Adrenalin.
+
+>! A dobogó szívre (sinusritmus) leadott sokk mindig megállítja: VF. Minden sokk előtt nézd meg a ritmust.
+
+## Újraélesztés (szívmegállás)
+
+1. Azonnal **CPR**. Minden jó, 30 másodperces kör 45 másodpercet ad a halál időzítőhöz.
+2. Kösd rá a monitort, és olvasd le a ritmust.
+3. **VF / pulzus nélküli VT**: CHARGE, SHOCK, folytasd a CPR-t. A sokk az esetek felében megszünteti a VF-et / pVT-t; utána vagy visszatér a pulzus, vagy PEA / asystole jön. Csak CPR-rel ritkán szűnik meg a sokkolható ritmus.
+4. **PEA / Asystole**: CPR, IV hozzáférés, **Adrenalin**. Ne sokkolj.
+5. Az **IV hozzáférés**, a biztosított légút (**intubálás**) és az **Adrenalin** mind növeli az esélyét, hogy visszatér a pulzus.
+6. 10 másodperc jó kompresszió után a ritmus bármikor megváltozhat: a CPR minijáték leáll, és a panel kiírja az új ritmust. „A pulzus visszatért (ROSC)” = hagyd abba a CPR-t.
+
+A kezeletlen leállási ritmusok romlanak: a pulzus nélküli VT egy perc alatt VF-be megy át, a VF 4 perc alatt asystoléba, a PEA 3 perc alatt asystoléba. A CPR ezt megállítja.
+
+### ROSC után
+
+Az újraindult szív gyenge: pulzus kb. 118, szisztolés kb. 78, SpO2 legalább 55%. Néha pulzussal járó VT-vel indul (kardioverzió). Oxigén, folyadék, mérd meg a cukrot, és hagyd rajta a monitort: újra megállhat.
+
+## Mitől állt meg a szív
+
+Az első ritmus az októl függ:
+
+- **Oxigénhiány, alacsony cukor** – PEA vagy asystole.
+- **Vérvesztés** – többnyire PEA. Előbb folyadék, különben a szív nem indul újra.
+- **Nagyon alacsony vérnyomás (gyógyszer)** – többnyire PEA, néha VF.
+- **200 feletti pulzus, tartós VT** – VF vagy pulzus nélküli VT.
+- **Áramütés (sokk)** – VF.

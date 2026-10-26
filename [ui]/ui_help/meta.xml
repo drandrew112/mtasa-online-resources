@@ -22,6 +22,73 @@
 
     <!-- HELP CONTENT: every page (content/en/..., content/hu/...) and image
          (content/images/...) used by content/index.lua must be listed here -->
+    <file src="content/images/medical/exam_panel.jpg" type="client" />
+    <file src="content/images/medical/lifepak.jpg" type="client" />
+    <file src="content/images/medical/glucometer.jpg" type="client" />
+    <file src="content/en/medical/overview.txt" type="client" />
+    <file src="content/en/medical/exam.txt" type="client" />
+    <file src="content/en/medical/diagnosis.txt" type="client" />
+    <file src="content/en/medical/monitor.txt" type="client" />
+    <file src="content/en/medical/injuries.txt" type="client" />
+    <file src="content/en/medical/drugs.txt" type="client" />
+    <file src="content/en/medical/procedures.txt" type="client" />
+    <file src="content/en/medical/minigames.txt" type="client" />
+    <file src="content/en/medical/equipment.txt" type="client" />
+    <file src="content/en/medical/cases.txt" type="client" />
+    <file src="content/hu/medical/overview.txt" type="client" />
+    <file src="content/hu/medical/exam.txt" type="client" />
+    <file src="content/hu/medical/diagnosis.txt" type="client" />
+    <file src="content/hu/medical/monitor.txt" type="client" />
+    <file src="content/hu/medical/injuries.txt" type="client" />
+    <file src="content/hu/medical/drugs.txt" type="client" />
+    <file src="content/hu/medical/procedures.txt" type="client" />
+    <file src="content/hu/medical/minigames.txt" type="client" />
+    <file src="content/hu/medical/equipment.txt" type="client" />
+    <file src="content/hu/medical/cases.txt" type="client" />
+    <file src="content/images/features/browser_home.jpg" type="client" />
+    <file src="content/images/features/browser_lvcars.jpg" type="client" />
+    <file src="content/images/features/browser_bank.jpg" type="client" />
+    <file src="content/images/features/pause_map.jpg" type="client" />
+    <file src="content/images/features/pause_online.jpg" type="client" />
+    <file src="content/images/features/pause_settings.jpg" type="client" />
+    <file src="content/images/features/interaction_main.jpg" type="client" />
+    <file src="content/images/features/social_friends.jpg" type="client" />
+    <file src="content/en/features/pause.txt" type="client" />
+    <file src="content/en/features/interaction.txt" type="client" />
+    <file src="content/en/features/social.txt" type="client" />
+    <file src="content/en/features/phone.txt" type="client" />
+    <file src="content/en/features/browser.txt" type="client" />
+    <file src="content/hu/features/pause.txt" type="client" />
+    <file src="content/hu/features/interaction.txt" type="client" />
+    <file src="content/hu/features/social.txt" type="client" />
+    <file src="content/hu/features/phone.txt" type="client" />
+    <file src="content/hu/features/browser.txt" type="client" />
+    <file src="content/en/binds/overview.txt" type="client" />
+    <file src="content/en/binds/chat.txt" type="client" />
+    <file src="content/en/binds/pause.txt" type="client" />
+    <file src="content/en/binds/interaction.txt" type="client" />
+    <file src="content/en/binds/social.txt" type="client" />
+    <file src="content/en/binds/phone.txt" type="client" />
+    <file src="content/en/binds/inventory.txt" type="client" />
+    <file src="content/en/binds/weapons.txt" type="client" />
+    <file src="content/en/binds/vehicle.txt" type="client" />
+    <file src="content/en/binds/world.txt" type="client" />
+    <file src="content/en/binds/work.txt" type="client" />
+    <file src="content/en/binds/creator.txt" type="client" />
+    <file src="content/en/binds/admin.txt" type="client" />
+    <file src="content/hu/binds/overview.txt" type="client" />
+    <file src="content/hu/binds/chat.txt" type="client" />
+    <file src="content/hu/binds/pause.txt" type="client" />
+    <file src="content/hu/binds/interaction.txt" type="client" />
+    <file src="content/hu/binds/social.txt" type="client" />
+    <file src="content/hu/binds/phone.txt" type="client" />
+    <file src="content/hu/binds/inventory.txt" type="client" />
+    <file src="content/hu/binds/weapons.txt" type="client" />
+    <file src="content/hu/binds/vehicle.txt" type="client" />
+    <file src="content/hu/binds/world.txt" type="client" />
+    <file src="content/hu/binds/work.txt" type="client" />
+    <file src="content/hu/binds/creator.txt" type="client" />
+    <file src="content/hu/binds/admin.txt" type="client" />
 
     <!-- EXPORTS: CLIENT -->
     <export function="openHelp" type="client" />

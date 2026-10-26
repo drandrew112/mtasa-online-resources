@@ -1,0 +1,22 @@
+# Social panel
+@keywords: Home, Num 7, social, friend, friends, crew, message, messages
+@related: binds, binds_phone, feature_social
+
+On the social panel you manage your friends, your crew and your messages.
+
+## Keys
+
+- `Home` or `Num 7` – open / close
+- `Esc` – close
+- Mouse wheel – scroll the lists
+- Mouse – click the buttons and text fields
+- `Enter` – send / confirm in the active text field
+- `Backspace` – delete in the active text field
+
+## What can you do here?
+
+- **Friends** – send and accept friend requests, your friend list.
+- **Crew** – create a crew, members, invitations.
+- **Messages** – private messages to other players.
+
+> You can read your messages in the phone's Messages app too.

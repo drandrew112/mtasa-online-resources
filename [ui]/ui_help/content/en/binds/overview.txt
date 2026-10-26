@@ -1,0 +1,43 @@
+# Key binds – overview
+@keywords: keys, binds, bind, keyboard, controls, hotkey, shortcut
+
+These are the server's own keys. The standard GTA controls (walking, driving, shooting) are unchanged in the MTA settings and are not listed here. Every panel has its own page: click the links for the details.
+
+> While most panels are open, the keys of the other panels do not work. Close the open one first (usually `Backspace` or `Esc`).
+
+## The most important keys
+
+- `F1` – this help panel
+- `T` – write in the chat
+- `P` – pause menu (map, Online, stats, settings)
+- `M` – interaction menu
+- `Home` (or `Num 7`) – social panel (friends, crew, messages)
+- `B` – phone
+- `I` – inventory
+- `Tab` (hold) – weapon wheel
+- `Y` – HUD info (money, level) for a few seconds
+- `E` – use key in most markers
+- `X` – 3D menu of nearby objects
+
+## Panels and their keys
+
+[[binds_chat|Chat]]
+[[binds_pause|Pause menu and map]]
+[[binds_interaction|Interaction menu (M)]]
+[[binds_social|Social panel]]
+[[binds_phone|Phone]]
+[[binds_inventory|Inventory]]
+[[binds_weapons|Weapons]]
+[[binds_vehicle|Vehicles]]
+[[binds_world|World: markers and 3D menus]]
+[[binds_work|Work jobs]]
+[[binds_creator|Job Creator]]
+[[binds_admin|Admin keys]]
+
+## Introduction (first join)
+
+- `Space` – continue to the next step (when the step allows it)
+- `PgDn` – skip the current module
+- `End` – skip the whole introduction
+
+> If a key does nothing, check that no other panel is open and that you are not typing in the chat.

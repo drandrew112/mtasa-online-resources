@@ -1,0 +1,102 @@
+# Diagnosis: neuro exam, glucose, skin, breathing
+@keywords: diagnosis, neuro exam, AVPU, pupils, FAST, stroke, glucometer, blood glucose, blood sugar, mg/dL, mmol/L, hypoglycaemia, hyperglycaemia, skin, cyanotic, pale, sweaty, breathing, wheezing, snoring, crackles, Kussmaul, acetone, D, disability
+@related: medical_exam, medical_monitor, medical_injuries, medical_drugs, medical_cases
+
+Medical conditions (poisoning, stroke, low sugar, asthma...) are not written on the panel. You find them from the signs: the neuro exam, the glucose, the skin, the breathing and the vital signs on the monitor. Put the signs together, like a real medic.
+
+## Neuro exam
+
+**D row – Neuro exam**. It takes 4 seconds, needs no equipment, and the findings stay on the panel (updated live). Colours: white = normal, yellow / orange = abnormal, red = serious.
+
+### Responsiveness (AVPU)
+
+- **Alert and oriented** – fine.
+- **Awake but confused, disoriented** – intoxication, sugar, stroke, after a seizure, head injury.
+- **Drowsy, responds to voice** – getting worse: watch the airway.
+- **Responds to pain only** – unconscious. The airway is at risk.
+- **Sedated – not assessable** – you put them to sleep (Ketamine / Rocuronium).
+- **Unresponsive, pupils fixed and dilated** – cardiac arrest or death.
+
+### Pupils
+
+- **Equal, react to light** – normal.
+- **Pinpoint** – opioid (heroin, fentanyl). Give **Naloxone**.
+- **Dilated** – stimulant (cocaine, amphetamine). Give **Midazolam**.
+- **Normal size, sluggish / sluggish** – sleeping pills, sedatives. No antidote: support the breathing.
+- **UNEQUAL – one is wide and slow** – serious head injury, pressure on the brain. Hospital fast.
+
+### FAST (stroke test)
+
+FAST = **F**ace, **A**rms, **S**peech, **T**ime.
+
+- **FAST: negative** – face, arms and speech normal.
+- **FAST: face droops on the left / right side**, **arm drifts down, weak grip**, **speech slurred** – **stroke**. Keep the systolic pressure between 130 and 220 and transport. Only the hospital treats it.
+- **Left / Right side paralysed**, **eyes deviated to one side** – severe stroke.
+- **FAST: not assessable** – the patient is unconscious.
+
+### Clues
+
+The exam also reports what you notice around the patient:
+
+- **Needle marks on the arms**, **syringe lying next to the patient** – opioid.
+- **Empty pill packets nearby**, **no gag reflex** – sedative overdose.
+- **Agitated, talks fast**, **jaw clenching, sweating**, **paranoid, hot to the touch** – stimulant.
+- **Smells strongly of alcohol**, **vomited, cannot stand**, **vomit around the mouth** – alcohol. Vomit can block the airway.
+- **Bitten tongue**, **wet trousers**, **does not remember what happened** – after an epileptic seizure. It wears off by itself.
+- **Scalp haematoma**, **asks the same questions again**, **vomited twice**, **blood / clear fluid from the ear** – head injury.
+- **Speaks in full sentences / short phrases only / cannot speak** – how bad an asthma attack is.
+- **Pursed-lip breathing, long-time smoker** – COPD.
+- **Swollen ankles**, **pink frothy sputum** – fluid on the lungs (pulmonary oedema).
+- **Sweaty, trembling, pale** – low blood sugar.
+- **Fruity (acetone) smell on the breath** – very high blood sugar (ketoacidosis).
+
+## Glucometer
+
+![300](content/images/medical/glucometer.jpg)
+
+**D row – Glucometer** opens the meter next to the panel (it needs the glucometer from the bag). Press **MEASURE**: the finger prick reading comes after 5 seconds. It is a single reading, not a live value: the time since the last measurement is shown under it, so measure again after treatment. Stay close while it measures. **PUT AWAY** closes it.
+
+- The reading is in **mg/dL**, with **mmol/L** under it (mg/dL / 18).
+- **LO** = under 20, **HI** = over 600. In cardiac arrest there is no reading (no blood flow).
+
+### Reading the value
+
+- **70–180 mg/dL** – normal (95 healthy).
+- **Under 70** – hypoglycaemia: sweaty, pale, fast pulse. Under 58 confused, under 45 dazed, under 30 unconscious. Under 20 for 4 minutes the heart stops. Awake patient: **Oral glucose gel**; unconscious: **Glucose 40%** IV.
+- **Over 300** – the patient loses fluid (dry, warm skin, the blood pressure drops). Over 350: deep, rapid breathing and acetone breath (**ketoacidosis**). Over 420 confused, over 550 dazed, over 700 unconscious. Give IV fluids and **Insulin**.
+
+>! Never give Insulin without measuring: with a normal sugar it causes a dangerous hypoglycaemia.
+
+## Skin
+
+Shown on the bleeding tile, always visible (you see it and touch it).
+
+- **Warm, normal** – fine.
+- **Pale** – lost some blood (under 85%).
+- **Pale, cold, clammy** – lost a lot of blood (under 70%): shock.
+- **Pale, sweaty** – low sugar or stimulants.
+- **Dry, warm** – very high sugar.
+- **Cyanotic** (blue) – SpO2 under 85%: not enough oxygen.
+- **Cold, mottled** – dead.
+
+## Breathing
+
+- **Normal**, **Ventilated** (through the tube) – fine.
+- **Rapid** – pain, fast pulse, stimulants.
+- **Wheezing** – asthma or COPD. **Salbutamol**, O2 mask.
+- **Silent chest, exhausted** – life-threatening asthma: almost no air moves.
+- **Laboured** / **Laboured, crackles** – SpO2 low; crackles = fluid on the lungs (**Nitroglycerin**).
+- **Deep and rapid** – ketoacidosis (very high sugar).
+- **Slow, shallow** – opioid or sedative.
+- **Snoring** – the tongue blocks the airway of an unconscious patient. Intubate.
+- **Gasping** – agonal breathing, the heart is about to stop.
+- **Not breathing** – cardiac arrest, or a paralysed patient without a tube.
+
+## Vital signs on the monitor
+
+See [[medical_monitor|Lifepak 15]] for the rhythms. Quick reading:
+
+- **Pulse fast + pressure low + pale** – blood or fluid loss: stop the bleeding, IV fluids.
+- **Pressure very high + slow pulse + unequal pupils** – pressure on the brain (head injury).
+- **Pressure very high + FAST positive** – stroke.
+- **SpO2 low** – the airway or the lungs: O2 mask, Salbutamol / Nitroglycerin, intubation.

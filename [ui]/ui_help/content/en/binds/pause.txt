@@ -1,0 +1,35 @@
+# Pause menu and map
+@keywords: pause, P, menu, map, waypoint, gps, settings, stats, online, jobs, arena war
+@related: binds, feature_pause
+
+`P` opens the pause menu. It has four tabs: **Map**, **Online**, **Stats** and **Settings**.
+
+## Using the menu
+
+- `P` – open / close
+- `Left` `Right` arrow – switch tabs
+- `Enter` or `Down` arrow – enter the selected tab
+- `Up` `Down` arrow – move in the list
+- `Enter` – select, flip a toggle
+- `Left` `Right` arrow – change a value in Settings (slider, choice)
+- `Backspace` – one level back; on the tab row it closes the menu
+
+## What can you do here?
+
+- **Map** – the big map, route planning.
+- **Online** – quick Job (race / deathmatch lobby), browse lobbies, official and community jobs, the Job Creator, Arena War, leave the server.
+- **Stats** – level, XP and your statistics by category.
+- **Settings** – graphics (draw distance, LOD, colour grading, …), model downloads, display, language, online options (own nametag, update e-mails).
+
+## Map
+
+The big map only opens from the pause menu (`F11` does nothing).
+
+- Hold the left mouse button and drag – move the map
+- `W` `A` `S` `D` – move the map
+- Mouse wheel or `Num +` / `Num -` – zoom in / out
+- `Space` – back to your own position
+- Left click – place / remove a waypoint; the GPS plans the route
+- `Enter` – waypoint at the centre of the map
+- Arrows – move in the blip list, when there is one
+- `Backspace` – close the map

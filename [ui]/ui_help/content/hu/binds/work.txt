@@ -1,0 +1,32 @@
+# Munkák
+@keywords: munka, mentő, EMS, tablet, J, vérszállító, mozdonyvezető, vonat, menetrend, Sifa, F2, tutorial, hordágy, ATC
+@related: binds, binds_world
+
+Munkát a munka jelölőjében az `E` gombbal vehetsz fel. Egyszerre csak egy munkád lehet.
+
+## Bemutatók (tutorialok)
+
+- `F2` – kurzor megjelenítése / elrejtése a bemutató kártya gombjaihoz
+
+## Mentő (EMS)
+
+- `J` – a mentő tablet megnyitása / bezárása (mentőben ülve)
+- A betegeket és felszereléseket a 3D menükkel kezeled (`Q` / `E` / `X`, lásd a világ oldalát)
+- Hordágy: jobb egérgomb – kurzor be / ki, `Backspace` – a kijelölés megszakítása
+
+## Vérszállító
+
+- `J` – a jobb alsó sarokban lévő panel kinagyítása (szolgálat, feladatok, átadás)
+
+## Mozdonyvezető
+
+- `Bal Ctrl` – kurzor be / ki a vezetőállás kezelőpultjához
+- `F6` – menetrend megnyitása / bezárása (görgővel görgethető)
+- `Space` – éberségi gomb (Sifa): menet közben időnként és jelzésváltáskor meg kell nyomni, különben a vonat vészfékez
+- Kürt gomb nyomva tartva – a mozdony kürtje
+- `F` – kiszállás (csak álló vonatból)
+
+## Légiforgalmi irányító (ATC)
+
+- `E` – a képzés jelölőjében a képzés menü megnyitása
+- `F2` – kurzor a képzés kártyáihoz

@@ -8,8 +8,6 @@
   "ui_help.search.results.other": "{count} results",
   "ui_help.search.no_results": "No results for \"{query}\".",
   "ui_help.list.empty": "No help topics yet.",
-  "ui_help.coming_soon": "Coming soon",
-  "ui_help.coming_soon_desc": "The help pages are still being written. Check back later!",
   "ui_help.home.title": "Welcome to the help",
   "ui_help.home.text": "Choose a topic on the left or start typing to search.",
   "ui_help.category.other": "Other",

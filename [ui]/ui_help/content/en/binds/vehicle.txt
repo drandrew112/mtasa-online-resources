@@ -1,0 +1,34 @@
+# Vehicles
+@keywords: vehicle, car, headlights, L, radio, Q, siren, ELS, lights, horn, drive-by, exit
+@related: binds, binds_interaction
+
+## Basics
+
+- `L` – headlights on / off (driver only)
+- Hold `Q` – radio selector; switch station with the mouse wheel, release to close (not in planes and helicopters)
+
+## Emergency lights and siren
+
+In an emergency vehicle, as the driver:
+
+- `0` – lights on / off
+- `1` – siren on / off
+- `2` – next siren tone
+- Hold `3` – air horn
+- `4` – secondary siren on / off (if the type has one)
+- `5` – next flash pattern
+- Short horn press – siren on, then another short press changes the tone
+- Double horn tap – siren off
+- Hold the horn – normal horn
+
+Choose the siren type in the `M` menu under **Vehicle > Siren type**.
+
+## Drive-by (as a passenger)
+
+- Right mouse button – drive-by on / off
+- `E` / `Q` – next / previous weapon during drive-by
+
+## Garage (tuning)
+
+- Move the mouse – turn the camera around the vehicle
+- Mouse wheel – zoom in / out

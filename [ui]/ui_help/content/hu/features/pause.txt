@@ -1,0 +1,42 @@
+# Szünet menü
+@keywords: szünet, pause, P, menü, térkép, nagy térkép, map, waypoint, útpont, gps, online, jobok, job, lobbi, arena war, statisztika, stats, szint, xp, beállítások, grafika, modellek, nyelv, kilépés
+@related: binds_pause, feature_interaction, feature_social
+
+A `P` gombbal nyílik a szünet menü. Négy füle van: **TÉRKÉP**, **ONLINE**, **STATISZTIKÁK** és **BEÁLLÍTÁSOK**. A fülek között a `Bal` / `Jobb` nyíllal lépkedsz, `Enter`-rel lépsz be, `Backspace`-szel jössz vissza.
+
+![300](content/images/features/pause_map.jpg)
+
+## Térkép
+
+Az `Enter` a TÉRKÉP fülön megnyitja a teljes képernyős, nagy térképet. Húzással vagy `W` `A` `S` `D`-vel mozgatod, görgővel nagyítasz. Bal kattintással **útpontot** (waypoint) teszel le: a GPS megtervezi az utat, és a minimap meg a 3D útvonal is mutatja. A térképen látod a fontos helyeket (boltok, munkahelyek, kórházak, céges telephelyek…) jelölőkkel.
+
+## Online
+
+![300](content/images/features/pause_online.jpg)
+
+- **Jobok** – a verseny és deathmatch játékok, lobbikban (GTA Online stílusban):
+  - **Quick Job** – beléptet egy véletlen nyitott lobbiba, vagy újat indít egy véletlen játékkal.
+  - **Csatlakozás lobbihoz** – az összes nyitott lobbi: játék, mód, házigazda.
+  - **Hivatalos** és **Közösség által készített** – a szerver csapata, illetve a játékosok által készített jobok, Race és Deathmatch szerint.
+  - **Készítő** – a Job Creator, amivel saját jobot építhetsz.
+- **Csatlakozás az Arena Warhoz** – járműves harc egy zárt arénában: felfegyverzett autóval kell kiiktatni a többieket, újraéledés után megy tovább a harc, a pontszám a kiiktatásaid száma.
+- **Kilépés a szerverről**.
+
+> A jobokról külön fejezet is lesz a súgóban.
+
+## Statisztikák
+
+A szinted, az összes XP-d, mennyi kell a következő szinthez, és a saját statisztikáid kategóriákra bontva: tevékenységek, harc, megtett távolság, járművekben töltött idő, munka és üzlet. Az XP-t mérföldkövekből, jobokból és munkából kapod.
+
+## Beállítások
+
+![300](content/images/features/pause_settings.jpg)
+
+Bal oldalt a kategória, jobb oldalt a beállítás; `Bal` / `Jobb` nyíllal állítod az értéket, `Enter`-rel kapcsolsz. A beállításaid az accountodhoz mentődnek.
+
+- **Grafika** – látótávolság, modell / ped / jármű LOD, színszűrő és erőssége, részletes textúrák, dinamikus égbolt, dinamikus járműfények. Ha alacsony az FPS-ed, először itt vegyél vissza.
+- **Modellek** – egyedi jármű, tárgy, fegyver és skin modellek be- és kikapcsolása. Az egyedi járműmodelleket a **Jármű modellek letöltése** sorral töltheted le, vagy kapcsold be az automatikus frissítést.
+- **Megjelenítés** – 3D blipek és 3D navigáció, valamint a játék **nyelve** (magyar / angol).
+- **Online** – a saját névtáblád mutatása és a heti frissítés e-mail (minden kedden a hét hírei és a heti bónuszok).
+
+[[binds_pause|A szünet menü és a térkép gombjai]]

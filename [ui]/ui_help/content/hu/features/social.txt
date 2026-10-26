@@ -1,0 +1,45 @@
+# Közösségi panel
+@keywords: social, közösségi, Home, Num 7, barát, barátok, kérés, crew, üzenet, chat, mérföldkő, achievement, XP, profil, account, fiók, jelszó, e-mail, megjelenített név
+@related: binds_social, feature_phone, feature_pause
+
+A közösségi panel a többi játékosról szól: barátok, crew-k, üzenetek, és itt látod a saját profilodat és mérföldköveidet is. A `Home` vagy a `Num 7` gombbal nyílik, egérrel kezelhető, `Esc` zárja.
+
+![300](content/images/features/social_friends.jpg)
+
+A felső sávban négy fül van: **KEZDŐLAP**, **MÉRFÖLDKÖVEK**, **SOCIAL**, a jobb szélen pedig a **PROFIL** a neveddel.
+
+## Kezdőlap
+
+Bal oldalt a **heti frissítések** helye, jobb oldalt az épp online barátaid listája.
+
+## Social – barátok és crew
+
+A SOCIAL fülön bal oldalt hat rész közül választhatsz:
+
+- **BARÁTOK** – a barátaid listája, ki van épp online. Egy barátra kattintva megnyílik a profilja, onnan írhatsz neki vagy törölheted.
+- **KÉRÉSEK** – a neked küldött barátkérések, itt fogadhatod el vagy utasíthatod el őket.
+- **JÁTÉKOS KERESÉS** – név alapján keres az online és az offline (regisztrált) játékosok között is. A profiljukon a **Barát hozzáadása** gombbal küldhetsz kérést.
+- **ÜZENETEK** – privát beszélgetéseid és a crew chat. Új beszélgetést egy profil vagy egy barát **Üzenet** gombjával kezdhetsz.
+- **CREWEM** – a saját crew-d: tagok, alapító. Az alapító szabhatja testre (név, tag, szín, leírás) és rúghat ki tagot, bárki kiléphet. Ha még nincs crew-d, itt hozhatsz létre egyet (név 3–24 karakter + rövid tag).
+- **CREW KERESÉS** – a meglévő crew-k listája, ahová csatlakozhatsz. Egyszerre egy crew-ban lehetsz.
+
+> A crew tagja a neved mellett is látszik a névtáblán, a crew színe pedig a telefon háttérképe is lehet.
+
+## Mérföldkövek
+
+A mérföldkövek (achievementek) a játékban elért eredményeid. Kategóriánként láthatod őket: Általános, Vezetés, Gyaloglás, Hajózás, Repülés, Munka, Játékok, Üzlet. Mindegyik ad XP-t, ami a szintedbe számít. Látod, mennyit oldottál fel és mikor; néhány mérföldkő rejtett, amíg meg nem szerzed.
+
+![300](content/images/features/social_achievements.jpg)
+
+## Profil és account beállítások
+
+A **PROFIL** fül a nyilvános profilod: így látnak téged a többiek (megjelenített név, szint, játékidő, crew). Innen nyílnak az **Account beállítások**:
+
+- **Megjelenített név** – ezt a nevet látják mások a panelen, a chatben és a névtáblán.
+- **E-mail cím** – a módosításhoz a jelenlegi jelszavad is kell. Erre a címre jönnek a heti frissítés e-mailek (bekapcsolni a szünet menü Beállítások / Online részében lehet).
+- **Jelszó módosítása** – jelenlegi jelszó, majd az új kétszer.
+- Az account neve (amivel belépsz) nem változtatható.
+
+> Az üzeneteidet a telefon Üzenetek alkalmazásában is elolvashatod.
+
+[[binds_social|A közösségi panel gombjai]]

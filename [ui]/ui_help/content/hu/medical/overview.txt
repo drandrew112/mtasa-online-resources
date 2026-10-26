@@ -1,0 +1,64 @@
+# Orvosi rendszer: áttekintés
+@keywords: orvosi, egészségügy, mentő, mentős, EMS, beteg, vizsgálat, ABCDE, klinikai halál, szívmegállás, tudat, életjelek, vitális paraméterek, halál időzítő, kórház, medsys
+@related: medical_exam, medical_diagnosis, medical_monitor, medical_injuries, medical_drugs, medical_procedures, medical_equipment, medical_cases, binds_work
+
+A betegek sérült vagy beteg NPC-k: baleseti sérültek, meglőtt emberek, túladagolások, szívrohamok, agyvérzések. Játékosoknak nincs orvosi állapotuk. Csak a **mentős szolgálatban** lévő játékosok (mentős szerep, lásd az EMS munkát) vizsgálhatják és láthatják el őket.
+
+## Hogyan kezdj hozzá
+
+1. Menj oda a beteghez, nyomj `X`-et a **Beteg** 3D menün, és válaszd a **Beteg vizsgálata** sort. Megnyílik a vizsgálati panel.
+2. Haladj fentről lefelé: **A** – légút, **B** – légzés, **C** – keringés, **D** – neurológiai állapot (ABCDE szemlélet). A panel gombjai is így vannak csoportosítva.
+3. Előbb azt oldd meg, ami a leggyorsabban öl: nincs pulzus, aztán légzés / oxigén, aztán vérzés, aztán a többi.
+4. Stabilizáld a beteget, majd hordágyon vidd kórházba (vagy kérj szállítást).
+
+> A legtöbb beavatkozáshoz kell az **orvosi táska** és a **Lifepak** (monitor / defibrillátor) a beteg mellett. Előbb vedd ki őket a mentőből: [[medical_equipment|Mentő felszerelése]].
+
+## Életjelek
+
+Egy egészséges felnőtt pulzusa kb. **72 / perc**, vérnyomása **120/80 Hgmm**, oxigénszaturációja (**SpO2**) **98%**, **5 liter** vére van, vércukra kb. **95 mg/dL**. Minden érték egy célérték felé mozog, amit a sérülések, betegségek és gyógyszerek határoznak meg, ezért a változás pár másodperc, nem egy pillanat.
+
+- A pulzus mindig emelkedik, ahogy a vérnyomás esik (a szervezet kompenzál). Szapora pulzus alacsony vérnyomással = sokk.
+- 7/10 feletti fájdalom, 88% alatti SpO2 vagy 90 alatti szisztolés vérnyomás mellett a beteg **kábult**.
+- 70% alatti SpO2 vagy 65 alatti szisztolés mellett a beteg **eszméletlen**.
+
+## Tudat
+
+A legjobbtól a legrosszabbig:
+
+- **Stabil** – éber, tájékozott.
+- **Zavart** – ébren van, de tájékozatlan (mérgezés, alacsony / magas cukor, agyvérzés, roham után).
+- **Kábult** – álmos, csak hangra reagál.
+- **Eszméletlen** – csak fájdalomra reagál.
+- **Klinikai halál** – nincs pulzus. A panelen **Hátralévő idő** számláló jelenik meg.
+- **Halott** – biológiai halál. Csak a **Szállítás kérése** (halottszállító) marad.
+
+## Szívmegállás és a halál időzítő
+
+A szív megáll, ha:
+
+- az SpO2 0%-ra esik,
+- a vér fele elfolyt (2,5 liter),
+- a szisztolés vérnyomás 30 Hgmm-re esik (például rosszul adott vérnyomáscsökkentőtől),
+- a pulzus 5 másodpercig 200 felett van,
+- a vércukor 4 percig 20 mg/dL alatt marad,
+- áramütés (sokk) éri a dobogó szívet.
+
+Ettől kezdve **5 perced** van. Minden jó CPR kör **45 másodpercet** ad a számlálóhoz. Ha lejár, a beteg meghal.
+
+>! Ha a beteg túl sok vért vesztett, a pulzus nem tér vissza, akármilyen jó a CPR. Az újraélesztés alatt köss be IV-t, hogy folyjon a folyadék.
+
+## Több mentős egy betegen
+
+Egy beteget egyszerre több mentős is elláthat, mindenki mást csinál: az egyik kötöz, a másik vénát szúr, a harmadik CPR-t végez. Ugyanazt a sebet ketten sosem látják el: a sérülés sorában ott a **„név látja el”**, és a többieknél a gomb tiltott.
+
+## A fejezet oldalai
+
+- [[medical_exam|A vizsgálati panel]]
+- [[medical_diagnosis|Diagnózis: neuro vizsgálat, vércukor, bőr, légzés]]
+- [[medical_monitor|Lifepak 15 monitor / defibrillátor, szívritmusok]]
+- [[medical_injuries|Sérülések és betegségek]]
+- [[medical_drugs|Gyógyszerek]]
+- [[medical_procedures|Ellátás és szállítás]]
+- [[medical_minigames|Hogyan működnek az ellátási minijátékok]]
+- [[medical_equipment|Mentő felszerelése, feltöltés]]
+- [[medical_cases|Példa betegek]]

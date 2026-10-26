@@ -1,0 +1,45 @@
+# Social panel
+@keywords: social, Home, Num 7, friend, friends, request, crew, message, chat, achievement, milestone, XP, profile, account, password, email, display name
+@related: binds_social, feature_phone, feature_pause
+
+The social panel is about the other players: friends, crews and messages. You also find your own profile and achievements here. Open it with `Home` or `Num 7`, use it with the mouse, close it with `Esc`.
+
+![300](content/images/features/social_friends.jpg)
+
+The top bar has four tabs: **HOME**, **ACHIEVEMENTS**, **SOCIAL** and, on the right edge next to your name, **PROFILE**.
+
+## Home
+
+The **weekly updates** on the left, the friends who are online right now on the right.
+
+## Social – friends and crews
+
+On the SOCIAL tab pick one of six sections on the left:
+
+- **FRIENDS** – your friend list and who is online. Click a friend to open their profile, where you can message or remove them.
+- **REQUESTS** – friend requests sent to you; accept or decline them here.
+- **FIND PLAYER** – searches online and offline (registered) players by name. Send a request with **Add friend** on their profile.
+- **MESSAGES** – your private chats and the crew chat. Start a new chat with the **Message** button of a profile or a friend.
+- **MY CREW** – your crew: members and founder. The founder can customise it (name, tag, colour, description) and kick members; anyone can leave. Without a crew you can create one here (name 3–24 characters + a short tag).
+- **FIND CREW** – the existing crews you can join. You can be in one crew at a time.
+
+> Your crew tag also shows on your nametag, and the crew colour can be your phone wallpaper.
+
+## Achievements
+
+Achievements are the milestones you reach in the game, listed by category: General, Driving, Walking, Sailing, Flying, Work, Games, Business. Each one gives XP towards your level. You see how many you unlocked and when; some stay hidden until you earn them.
+
+![300](content/images/features/social_achievements.jpg)
+
+## Profile and account settings
+
+The **PROFILE** tab is your public profile: this is how others see you (display name, level, played time, crew). **Account settings** open from here:
+
+- **Display name** – the name others see in the panel, the chat and on your nametag.
+- **Email address** – changing it needs your current password. The weekly update emails go to this address (turn them on in the pause menu, Settings / Online).
+- **Change password** – current password, then the new one twice.
+- The account name (the one you log in with) can't be changed.
+
+> You can also read your messages in the Messages app of the phone.
+
+[[binds_social|Social panel keys]]

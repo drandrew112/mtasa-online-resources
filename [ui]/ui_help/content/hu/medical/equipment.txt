@@ -1,0 +1,54 @@
+# Mentő felszerelése és feltöltés
+@keywords: felszerelés, orvosi táska, táska, Lifepak, monitor, defibrillátor, feltöltés, újratöltés, kórház, mentő beálló, oxigén, palack, IV készlet, kötszer, sín, vércukormérő, légútbiztosító készlet, adag, készlet, tartalom, mentőautó, orvosi autó, helikopter, Maverick, otthagyott, 7
+@related: medical_exam, medical_procedures, medical_drugs, medical_monitor, binds_inventory, binds_work
+
+Minden mentőautóban, orvosi autóban (Skoda Octavia) és mentőhelikopterben (Maverick) van egy **orvosi táska** és egy **Lifepak 15** monitor / defibrillátor. Csak szolgálatban lévő mentős használhatja őket.
+
+## Kivétel
+
+Állj a mentő oldalajtajához (az orvosi autó csomagtartójához, a helikopter jobb hátsó ajtajához), és nyomj `X`-et a **Mentő felszerelése** 3D menün. A sort a számával választod:
+
+1. **Orvosi táska felvétele**
+2. **Monitor / defibrillátor felvétele**
+3. **Mindkettő felvétele**
+4. **Orvosi táska visszatétele**
+5. **Monitor visszatétele**
+6. **Mindent vissza**
+7. **Táska feltöltése**
+8. **Tartalom ellenőrzése** – mi maradt a táskában (csak megtekintés).
+
+A tárgyak a kezedbe kerülnek. A `H` leteszi őket a földre. Ha beavatkozást kezdesz, a nálad lévő tárgyakat automatikusan leteszed a beteg mellé. A letett tárgyat a saját 3D menüjéből veheted fel újra. Minden mentő csak a saját felszerelését veszi vissza.
+
+## Mihez mi kell
+
+Beavatkozás indításához a tárgyaknak **4 méteren** belül kell lenniük a betegtől (6 méteren belül a futó beavatkozás, például az oxigén, kapcsolatban marad).
+
+- **Orvosi táska:** Kötözés, Sínezés, IV hozzáférés, Intubálás, O2 maszk, Gyógyszerek, Vércukormérő.
+- **Lifepak:** a monitor és a defibrillátor.
+- **Semmi:** Neuro vizsgálat, CPR, Szállítás kérése.
+
+## Mi van egy tele táskában
+
+- **IV készlet:** 6 – minden IV próbálkozás (a sikertelen is) egyet elhasznál.
+- **Kötszer:** 6 – sikeres kötésenként egy.
+- **Sín:** 2 – sikeres sínezésenként egy.
+- **Oxigénpalack:** 100% – folyamatosan fogy, amíg egy betegen O2 maszk vagy tubus van, a hordágyon, a mentőben és az átadáskor is. Egy tele palack **15 percig** elég. 20%-nál figyelmeztet.
+- **Vércukormérő**, **légútbiztosító készlet** – kell, de nem fogy el.
+- **Gyógyszerek:** Adrenalin 5, Fentanyl 3, Captopril 3, Nitroglycerin 3, Ketamine 2, Rocuronium 2, Glucose 40% 2, Oral glucose gel 2, Naloxone 2, Salbutamol 2, Midazolam 2, Insulin 1.
+
+A panel mutatja a készletet: xN a gyógyszerkártyákon, szám az **IV hozzáférés** gombon és az **O2 %** címke. Figyelmeztetés jön, ha valami a negyedére fogy. Ha elfogy, a gombon: **Elfogyott – töltsd fel a táskát egy kórházban**.
+
+## Feltöltés
+
+1. Tedd vissza a táskát a mentőbe (**Orvosi táska visszatétele**).
+2. Hajts egy kórházhoz, és állj be egy sárga **Mentő beálló** markerbe.
+3. Az oldalajtónál: `X`, majd `7` – **Táska feltöltése**.
+4. Várj 6 másodpercet. Minden feltöltődik, az oxigén is. Ingyenes.
+
+Amíg a mentő hiányzó felszereléssel áll a beállóban, az oldalajtó fölött **EQUIPMENT MISSING** (hiányzó felszerelés) felirat látszik.
+
+## Ne hagyj ott semmit
+
+Ha a táska vagy a Lifepak 60 méterre a mentőjétől a földön marad (20 méterre, ha a mentő elhajt), és nincs mellette mentős, figyelmeztetést és piros jelölést kapsz a térképen. **10 perc** után magától visszakerül a mentőbe, de **üresen**: a gyógyszerek, IV készletek, kötszerek és sínek eltűnnek, a palack kiürül. Töltsd fel.
+
+> A hordágyon: tolás közben a nálad lévő tárgyak a hordágy oldalán utaznak, és a beteggel együtt kerülnek a mentőbe.

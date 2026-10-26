@@ -1,0 +1,63 @@
+# Játékbeli böngésző
+@keywords: böngésző, browser, weboldal, internet, Open SE, kereső, járművásárlás, autó vásárlás, autókereskedés, lvcars, legendary, bank, Liberty Bank, hitel, átutalás, cég, cégalapítás, szervezet, sabusinessregistry, állam, gov.sa, adó, költségvetés, átláthatóság, mentő, EMS, ems-dispatch, SA Control, légiirányítás, ATC, sanandreascontrol, közlekedés, vonat
+@related: feature_phone, feature_interaction
+
+A játékban van egy saját "internet": weboldalak, ahol járművet vehetsz, bankolhatsz, céget alapíthatsz, és megnézheted, mi történik a szerveren. A böngészőt a telefon **Böngésző** alkalmazásával nyitod meg. Egérrel kezelhető: görgővel görgetsz, bal felül a vissza gomb, jobb felül az **X** zár be; a jobb egérgomb is visszalép. Amíg nyitva van, jobb felül látod a készpénzedet és a bankszámlád egyenlegét.
+
+![300](content/images/features/browser_home.jpg)
+
+## Open SE – a kezdőlap
+
+A kezdőlap egy kereső. A mezőbe írhatsz címet (például `lvcars.eu`), kategóriát vagy bármilyen szót. Alatta a kategóriák (Szórakozás, Pénzügy, Üzlet, Járművek, Ingatlan, Szolgáltatások) és néhány ajánlott oldal.
+
+## Járművásárlás – lvcars.eu, legendary.eu
+
+![300](content/images/features/browser_lvcars.jpg)
+
+- **Las Venturas Cars** (`lvcars.eu`) – megbízható, garanciás autók, ár szerint rendezhetők.
+- **Legendary Wheels** (`legendary.eu`) – hiperautók a legexkluzívabb szalonból.
+
+Válassz autót és színt, majd vásárolj. Az ár az áfát is tartalmazza; először a készpénzedből, ha az nem elég, a bankszámládról fizetsz. A megvett autó az accountodhoz kerül: a telefon **Járműveim** alkalmazásából vagy az interakciós menü **Saját jármű lehívása** pontjából hívod elő. Csak saját autót lehet tuningolni.
+
+## Bank – libertybank.eu
+
+![300](content/images/features/browser_bank.jpg)
+
+A **Liberty Bank** a bankszámlád: egyenleg, készpénz befizetése és felvétele, átutalás másnak, számlakivonat, valamint személyi hitel felvétele és a futó hiteleid. Ha egy állami vagy céges számlához jogod van, az is külön fülön jelenik meg.
+
+## Cégalapítás – sabusinessregistry.eu
+
+A **San Andreas Business Registry** oldalon:
+
+- **Register** – szervezet (cég) alapítása: név, székhely (iroda) kiválasztása, majd a fizetés a bankszámládról (regisztrációs díj + a székhely ára). Fejenként egy cég lehet.
+- **Registry** – a bejegyzett cégek keresése.
+- **Top organizations** – a legértékesebb cégek.
+
+Utána a cégedet az irodai számítógépen, az interakciós menü **Saját cégem** pontjában és a telefon **Organization** alkalmazásában kezeled.
+
+## Az állam átláthatósága – gov.sa
+
+A **State of San Andreas** oldal nyilvánosan mutatja az állam pénzügyeit, bárki megnézheti:
+
+- **Overview** – az állam egy pillantásra, a kincstár napi bevételei és kiadásai kategóriánként.
+- **Budget** – az állami cégek költségvetése.
+- **Taxes** – társasági és ingatlanadó, a személyi jövedelemadó kulcsai, az áfa termékcsoportonként.
+- **Fees** – díjak, bírságok és az állami egészségügy.
+- **Public pay** – az állami fizetések.
+- **Votes** – az állami szavazások.
+
+Minden pénzügyi adat legfeljebb 30 napra visszamenőleg látszik.
+
+## Mentőszolgálat – ems-dispatch.eu
+
+A **San Andreas EMS** oldala: bemutatkozás, élő (névtelen) számok a mentésekről és a kórházak térképe. Innen érhető el a **mentésirányítói konzol** és a mentőegységek **tabletje** is, amiket a szolgálatban lévő mentősök és irányítók használnak.
+
+## Légiirányítás – sanandreascontrol.eu
+
+A **San Andreas Control** a légiforgalmi irányítás oldala: hogyan lehetsz irányító, az együttműködési megállapodások (letters of agreement), az eljárások, a légtér térképe, az élő ATC állapot (melyik pozíció foglalt), és az irányító szoftver kézikönyve.
+
+## További oldalak
+
+- `sa-transit.sa` – **San Andreas Transit**: útvonaltervező, indulások és a vonatok élő térképe.
+- `blood-transport.eu` – a vérszállító szolgálat: élő térkép, a vérbankok és kórházak készlete, csatlakozás.
+- `diamond.eu` – a Diamond Casino, hamarosan nyit.

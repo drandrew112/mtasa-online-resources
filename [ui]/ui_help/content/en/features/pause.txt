@@ -1,0 +1,42 @@
+# Pause menu
+@keywords: pause, P, menu, map, big map, waypoint, gps, online, jobs, job, lobby, arena war, statistics, stats, level, xp, settings, graphics, models, language, leave, quit
+@related: binds_pause, feature_interaction, feature_social
+
+Press `P` to open the pause menu. It has four tabs: **MAP**, **ONLINE**, **STATS** and **SETTINGS**. Move between the tabs with the `Left` / `Right` arrows, enter one with `Enter`, go back with `Backspace`.
+
+![300](content/images/features/pause_map.jpg)
+
+## Map
+
+`Enter` on the MAP tab opens the big full-screen map. Drag it or use `W` `A` `S` `D` to move, the mouse wheel to zoom. Left click places a **waypoint**: the GPS plans the route and shows it on the minimap and as a 3D route. The map marks the important places (shops, workplaces, hospitals, company sites…) with blips.
+
+## Online
+
+![300](content/images/features/pause_online.jpg)
+
+- **Jobs** – race and deathmatch games in lobbies (GTA Online style):
+  - **Quick Job** – joins a random open lobby, or starts a new one with a random game.
+  - **Join Lobby** – every open lobby: game, mode and host.
+  - **Official** and **Community created** – jobs made by the server team and by other players, split into Race and Deathmatch.
+  - **Creator** – the Job Creator, to build your own job.
+- **Join Arena War** – vehicle combat in a closed arena: wreck the other players with a weaponised car, respawn and keep fighting; your score is your kills.
+- **Leave Server**.
+
+> Jobs get their own chapter in the help as well.
+
+## Stats
+
+Your level, total XP, the XP you need for the next level, and your own statistics by category: Activities, Combat, Distance, Vehicle time, Work and Business. You earn XP from achievements, jobs and work.
+
+## Settings
+
+![300](content/images/features/pause_settings.jpg)
+
+The category is on the left, the settings on the right; change a value with the `Left` / `Right` arrows, toggle with `Enter`. Your settings are saved to your account.
+
+- **Graphics** – render distance, model / ped / vehicle LOD, colour grading and its intensity, detail textures, dynamic sky, dynamic vehicle lights. With low FPS, lower these first.
+- **Models** – turn the custom vehicle, object, weapon and skin models on or off. Get the custom vehicle models with **Download vehicle models**, or turn on the auto-update.
+- **Display** – 3D blips and 3D navigation, and the game **language** (English / Hungarian).
+- **Online** – show your own nametag, and the weekly update email (every Tuesday: the news of the week and the weekly bonuses).
+
+[[binds_pause|Pause menu and map keys]]

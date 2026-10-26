@@ -1,0 +1,35 @@
+# World: markers and 3D menus
+@keywords: E, X, Q, marker, door, enter, shop, elevator, ferris wheel, 3D menu, interact, Y, HUD
+@related: binds
+
+## Markers
+
+In most markers `E` is the use key. The screen always tells you when you stand in one.
+
+- **Doors, buildings** – go in and out
+- **Shops** – weapon shop (Ammu-Nation), clothes shop (Binco)
+- **Work** – take or finish a work job
+- **Elevator** – choose a floor
+- **Organizations** – offices, sites
+- **Aviation** – airport markers
+- **Time trial** – start a run (as a driver)
+- **Arena War** – the Arena War panel
+
+## Ferris wheel
+
+- `K` – get into the cabin
+- `L` – get out
+
+## 3D menus on objects
+
+A small menu appears above some objects, vehicles and characters (for example a stretcher or a medical bag).
+
+- `Q` / `E` – focus the previous / next nearby menu
+- `X` – open / close the focused menu
+- `1`–`9` (or the number pad) – pick a menu item
+- `0` – next page, when the menu is longer
+- `Backspace` – one level back / close
+
+## HUD
+
+- `Y` – shows the HUD info for a few seconds (money, level and XP)

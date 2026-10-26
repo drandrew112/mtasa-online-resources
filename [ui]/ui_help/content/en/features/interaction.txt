@@ -1,0 +1,38 @@
+# Interaction menu
+@keywords: M, interaction, interaction menu, inac, business, my organization, organization, company, associates, properties, rename, vehicle, spawn, personal vehicle, request, store, restore, repair, siren, fast travel, collectibles, preferences, spawn location
+@related: binds_interaction, feature_phone, feature_browser
+
+The interaction menu (`M`) is about your own character: your organization, your vehicles, your preferences. Move with the `Up` / `Down` arrows, select with `Enter`, change the value of a choice row with `Left` / `Right`, go back with `Backspace`.
+
+![350](content/images/features/interaction_main.jpg)
+
+## My organization
+
+This row shows on top of the menu only while you own an organization. You register one in the browser, on **sabusinessregistry.eu**.
+
+- **Balance** – the company account (clean + unlaundered money). Manage it on the office computer.
+- **Associates** – how many of your associates are online. Invite associates in the **Organization** app of your phone.
+- **Properties** – your company's properties; pick one to set the GPS there.
+- **Rename organization** – a new name, paid from the company account; not too often.
+
+## Vehicle
+
+- **Spawn vehicle** – pull any game (or custom) vehicle by category, to mess around with. These are temporary: no tuning, no saving, one at a time (a new one replaces the old). Only outside in the open world, not in a job or in admin jail, and once a minute.
+- **Request personal vehicle** – the list of vehicles you bought; the one you pick appears near you. One personal vehicle can be out at a time.
+- **Restore personal vehicle** – stores your personal vehicle that is out (when nobody sits in it).
+- **Repair vehicle** – repairs the vehicle you are in.
+- **Siren Type** – the siren sound in an emergency vehicle (for example Federal Signal, Code3, Hella, Italian ambulance).
+
+> After buying, personal vehicles can also be summoned from the **My Vehicles** phone app. Only owned vehicles can be tuned.
+
+## Other
+
+- **Fast Travel** – jump to one of the three airports (LS, LV, SF). Not while in a vehicle.
+- **Collectibles** – your stunt jumps (land and air) and UFO spaceship parts.
+- **Stats** – played time and level.
+
+## Preferences
+
+- **Spawn location** – where you appear when you join: **Last location** (where you left) or **Random** (a free respawn point). Pick with `Left` / `Right`, save with `Enter`; it applies from your next join.
+
+[[binds_interaction|Interaction menu keys]]

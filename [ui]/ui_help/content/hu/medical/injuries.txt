@@ -1,0 +1,42 @@
+# Sérülések és betegségek
+@keywords: sérülés, sérülések, lövés, lőtt seb, seb, csonttörés, törés, égés, fulladás, vízbefulladás, fejsérülés, agyvérzés, stroke, opioid, túladagolás, nyugtató, stimuláns, kokain, alkohol, roham, epilepszia, asztma, COPD, tüdőödéma, magas vérnyomás, hipoglikémia, ketoacidózis, cukorbetegség, vérzés, sokk, súlyosság, kórház kell
+@related: medical_diagnosis, medical_drugs, medical_procedures, medical_cases
+
+Minden sérülésnek van súlyossága: **Csekély**, **Súlyos** vagy **Kritikus**. A látható sérülések a panelen vannak; a betegségek rejtettek, a jeleikből ismered fel őket ([[medical_diagnosis|Diagnózis]]).
+
+## Vérzés
+
+Az enyhe vérzés másodpercenként 1,5 ml vért visz el, az erős 5 ml-t, a kritikus 12 ml-t. Kritikus vérzésnél az 5 liter fele kb. 3,5 perc alatt elfolyik: ekkor megáll a szív. Szívmegállás alatt is folyik tovább, lassan.
+
+- 85% vér alatt: sápadt bőr, gyors pulzus.
+- 70% alatt: sápadt, hideg, nyirkos – **vérzéses sokk**, alacsony vérnyomás.
+- 50%: szívmegállás, és a szív addig nem indul újra, amíg a folyadék vissza nem pótolja a térfogatot.
+
+Megállítani **Kötözés**-sel kell, pótolni **IV hozzáférés**-sel (a folyadék magától folyik, amíg bent van a kanül).
+
+## Látható sérülések
+
+- **Lőtt seb** – vérzik (enyhe / erős / kritikus), fáj. **Kötözés.** A kritikus seb a kötés után is szivárog egy kicsit, a kórházig.
+- **Csonttörés** – nagyon fáj; a kritikus nyílt törés, és vérzik. **Sínezés** (+ Kötözés a vérzésre). Fájdalomcsillapító: Fentanyl.
+- **Égés** – nem vérzik, de plazmát (folyadékot) veszít, ezért a vérnyomás lassan esik; nagyon fájdalmas. A **Kötözés** ellátja (a vesztés majdnem megáll). A kritikus égés a légutat is megégeti: az SpO2 80% felé esik, és ezen a kötés nem segít. Intubálj korán – ez a legnehezebb intubálás.
+- **Fulladás (légúti elzáródás)** (vízbefulladás, füst, félrenyelés) – az SpO2 lefelé tart: 88%-ig (csekély), 65%-ig (súlyos) vagy 0%-ig (kritikus). Az O2 maszk kicsit emeli, az **Intubálás** megoldja.
+- **Fejsérülés** – zavart / kábult / eszméletlen. Súlyosan: horkol, a vérnyomás nő, miközben a pulzus esik, egyenlőtlen pupillák, folyadék a fülből. **Kórház kell** – tartsd szabadon a légutat és szállítsd.
+
+## Rejtett betegségek
+
+- **Agyvérzés (stroke)** – pozitív FAST (arc, kar, beszéd az egyik oldalon), magas vérnyomás. 8 percenként egy fokkal romlik; 2,5-szer gyorsabban, ha a szisztolés 130–220-on kívül van. A magas vérnyomást ne vidd le normálisra. **Kórház kell.**
+- **Opioid túladagolás** – tűhegynyi pupillák, lassú, felületes légzés, alacsony SpO2, lassú pulzus, eszméletlen. A **Naloxone** (orrspray) visszahozza.
+- **Nyugtató túladagolás** – altató: renyhe pupillák, lassú légzés vagy horkolás, üres tablettatartók. Nincs ellenszer: O2, légút, ha kell intubálás, **Kórház kell**.
+- **Stimuláns mérgezés** – kokain, amfetamin: tág pupillák, izgatott, izzad, nagyon gyors pulzus, magas vérnyomás. A **Midazolam** megnyugtatja.
+- **Alkoholmérgezés** – alkoholszag, zavart, hány. Súlyosan: eszméletlen, hányadék a légútban (horkolás, esik az SpO2). Nincs ellenszer: légút, **Kórház kell**.
+- **Roham utáni állapot** – epilepsziás roham után: megharapott nyelv, vizes nadrág, álmos, gyors pulzus. 4–12 perc alatt magától elmúlik; védd a légutat.
+- **Asztmás roham** – sípoló légzés, alacsony SpO2, csak rövid kifejezésekben beszél. Életveszélyes: néma mellkas. **Salbutamol** + O2.
+- **COPD súlyosbodása** – régi dohányos, összeszorított ajkú, sípoló / nehezített légzés. A Salbutamol kicsit segít, az oxigén jobban.
+- **Tüdőödéma** – folyadék a tüdőben (szívelégtelenség): ropogó légzés, rózsaszín habos köpet, duzzadt bokák, MAGAS vérnyomás. **Nitroglycerin** + O2. Alacsony vérnyomásnál soha.
+- **Hipertóniás krízis** – nagyon magas vérnyomás (190/125). **Captopril**.
+- **Hipoglikémia** – alacsony cukor: izzadt, sápadt, zavart vagy eszméletlen. **Glucose 40%** IV / **Oral glucose gel**.
+- **Diabéteszes ketoacidózis** – nagyon magas cukor (500+): kiszáradt, mély és gyors légzés, aceton lehelet. IV folyadék + **Insulin**.
+
+## Kórház kell
+
+Az utcán nem kezelhető állapotoknál **Kórház kell** áll: tartsd életben a beteget (légút, oxigén, vérnyomás, cukor), és vidd be. Lásd [[medical_procedures|Szállítás]].

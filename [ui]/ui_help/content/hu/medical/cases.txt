@@ -1,0 +1,108 @@
+# Példa betegek
+@keywords: példa, példák, eset, esetek, beteg, forgatókönyv, lövés, sokk, szívmegállás, VF, túladagolás, opioid, hipoglikémia, cukorbeteg, ketoacidózis, lakástűz, égés, intubálás, agyvérzés, stroke, asztma
+@related: medical, medical_diagnosis, medical_monitor, medical_drugs, medical_procedures
+
+Az igazi betegeken nincs címke. Ezek a példák megmutatják, hogyan rakd össze a jeleket, és milyen sorrendben láss el. A számok jellemzőek; minden beteg egy kicsit más.
+
+## 1. Lövés a törzsbe – vérzéses sokk
+
+**Hívás:** egy férfit lelőttek egy utcai verekedésben. A járdán fekszik.
+
+**Amit találsz:** kábult. Sérülés: **Lőtt seb – Kritikus, Ellátatlan**. Vérzés: **Kritikus**. Bőr: **sápadt, hideg, nyirkos**. Légzés gyors. Tapintott pulzus: 135.
+
+**Gondolkodás:** a kritikus vérzés másodpercenként 12 ml-t visz el – kb. 3 perc múlva megáll a szív. A sápadt, nyirkos bőr és a száguldó pulzus azt mutatja, hogy már sokat vesztett. Minden más várhat.
+
+1. Azonnal **Kötözés** (két mentőssel: az egyik kötöz, a másik hozza a táskát és vénát szúr).
+2. **IV hozzáférés** – a vénák összeesőben, a szokásosnál nehezebb. Elindul a folyadék.
+3. Kösd rá a **monitort**: vérnyomás 70/45, SpO2 91%. **O2 maszk**.
+4. Figyeld, ahogy a folyadéktól emelkedik a vérnyomás. Fentanylt még ne adj: csökkenti a vérnyomást.
+5. Ha a szisztolés 90 felett van: hordágy, mentő, kórház. A kritikus seb még szivárog egy kicsit – ne várj a helyszínen.
+
+**Ha előbb megáll a szív:** a monitor valószínűleg **PEA**-t mutat. CPR, de a szív nem indul újra, amíg a vér fele hiányzik: az igazi kezelés az IV folyadék. Utána Adrenalin.
+
+## 2. Összeesett a járdán – VF-es szívmegállás
+
+**Hívás:** egy 55 éves férfi összeesett egy bolt előtt. Egy járókelő szerint a mellkasához kapott.
+
+**Amit találsz:** **Klinikai halál**, Hátralévő idő 04:40, **nincs pulzus**, nem lélegzik, a bőr cianotikus.
+
+1. Azonnal **CPR** – minden jó kör 45 másodpercet nyer.
+2. A társad rákötöz a **monitort**: **Ventricular Fibrillation**. Sokkolható!
+3. Amikor a CPR kör véget ér (vagy megszakad): **CHARGE**, várd meg a hangot, **SHOCK**.
+4. **Sokk leadva - folytasd a CPR-t, ellenőrizd a ritmust.** Következő CPR kör. Közben a társad bekötöz egy **IV hozzáférés**-t, és **Adrenalin**t ad.
+5. CPR közben ritmusváltás: **Pulseless Ventricular Tachycardia** – újra sokk.
+6. **A pulzus visszatért (ROSC).** Pulzus 118, vérnyomás 78/50, SpO2 60%.
+7. ROSC után: O2 maszk, a folyadék folyik, mérd meg a **vércukrot**. Eszméletlen és horkol: **RSI** (Ketamine, várj, Rocuronium, várj 15 mp-et, Intubálás).
+8. A monitor hirtelen **Ventricular Tachycardia with Pulse**-t mutat, esik a vérnyomás: **SYNC**, CHARGE, SHOCK – kardioverzió. SYNC nélkül a sokk visszaviheti VF-be.
+9. Stabil ritmus, a szisztolés 90 felett: szállítás.
+
+>! Ha a monitor **Asystole**-t vagy **PEA**-t mutat: nincs sokk. CPR + Adrenalin, és keresd az okát.
+
+## 3. Eszméletlen a parkban – melyik méreg?
+
+**Hívás:** egy fiatal férfi nem reagál egy parkpadon.
+
+**Amit találsz:** eszméletlen, **nincs látható sérülés**. Légzés **lassú, felületes**. A bőr cianotikus. Pulzus 55.
+
+**Gondolkodás:** eszméletlen, sérülés nélkül: cukor, méreg, agyvérzés, roham, fejsérülés? Zárd ki őket egyenként.
+
+1. **O2 maszk** – alacsony az SpO2, alig lélegzik.
+2. **Vércukormérő**: 92 mg/dL – normális, nem a cukor.
+3. **Neuro vizsgálat**: **Csak fájdalomra reagál**, **Pupillák: tűhegynyi**, **Tűnyomok a karokon**, **FAST: nem értékelhető**.
+4. Tűhegynyi pupillák + lassú légzés + tűnyomok = **opioid túladagolás**. **Naloxone** (orrspray, nem kell IV).
+5. Rövidesen magához tér, a légzése normális lesz, nő az SpO2.
+
+**Ha a pupillák „normál méretűek, renyhék”, és üres tablettatartók vannak a közelben:** altató. A Naloxone nem hatna: tartsd oxigénen, intubáld, ha horkolni kezd, és vidd kórházba.
+**Ha tágak, nagyon gyors pulzussal és izzadással:** stimuláns – Midazolam.
+
+## 4. A zavart cukorbeteg – túl alacsony és túl magas
+
+**4a.** Egy nő furcsán viselkedik egy buszmegállóban. **Zavart**, a bőre **sápadt, verítékes**, pulzus 100.
+
+1. Sápadt + verítékes + zavart: mérd meg a **vércukrot**: **52 mg/dL**. Hipoglikémia.
+2. Zavart, de tud nyelni? Igen (a zavart ébernek számít): **Oral glucose gel** (+40). Ha kábult vagy eszméletlen lenne: IV hozzáférés és **Glucose 40%**.
+3. Egy-két perc múlva mérj újra: 70 felett kell lennie, és visszatér a tájékozottsága. Ha újra esik, adj még.
+
+**4b.** Egy férfit otthon találnak, **zavart**, a légzése **mély és gyors**, a bőre **sápadt**, alacsony vérnyomás, gyors pulzus.
+
+1. **Vércukormérő**: **520 mg/dL**. A **neuro vizsgálat** **gyümölcsös (aceton) leheletet** talál – diabéteszes ketoacidózis.
+2. **IV hozzáférés** – a cukorral sok folyadékot vesztett (ezért sápadt), a folyadék emeli a vérnyomását, és lassan csökkenti a cukrot.
+3. **Insulin** – egyszer, mérés után. Lassan, 15 perc alatt hat.
+4. Pár percenként mérj. Soha ne adj „biztos, ami biztos” második Insulint: a túllövés hipoglikémia.
+
+## 5. Lakástűz – égés és megégett légút
+
+**Hívás:** egy férfit kihoztak egy égő házból. Korom a szája körül.
+
+**Amit találsz:** kábult. Sérülések: **Égés – Kritikus**, **Fulladás (légúti elzáródás) – Csekély**. Fájdalom 9/10. Nehezített légzés. Monitor: SpO2 84% és esik, vérnyomás 110/70.
+
+**Gondolkodás:** a kritikus égés azt jelenti, hogy a légút is megégett: be fog dagadni, és az O2 maszk ezt nem oldja meg. Intubálj korán, amíg az SpO2 engedi – ez a legnehezebb intubálás (vér, duzzadt szövetek).
+
+1. Azonnal **O2 maszk** (preoxigenizálás).
+2. **IV hozzáférés** – az égés plazmát veszít, esni fog a vérnyomás.
+3. **Ketamine** – elalszik, a fájdalom megszűnik.
+4. **Rocuronium** – 15 másodperc, aztán **Intubálás**. A próbálkozás alatt esik az SpO2: légy gyors. Az `E`-vel szívd le a vért.
+5. **Kötözés** az égésre – a plazmavesztés majdnem megáll.
+6. Szállítás. Figyeld a táska **oxigén**jét: a tubusnak végig kell, egészen az átadásig.
+
+## 6. Agyvérzés – tartsd a vérnyomást, siess
+
+**Hívás:** egy idős nő hirtelen nem tud rendesen beszélni.
+
+**Amit találsz:** **zavart**, nincs látható sérülés. Monitor: vérnyomás 165/100, sinusritmus.
+
+1. **Neuro vizsgálat**: **FAST: az arc a bal oldalon megereszkedik**, **a bal kar lesüllyed, gyenge a fogás**, **akadozó beszéd, összekeveri a szavakat**. Agyvérzés.
+2. **Vércukormérő** – az alacsony cukor is utánozhatja a stroke-ot. 105: normális.
+3. NE adj Captoprilt: a 130 és 220 közötti szisztolés kell az agyának. Túl alacsony vagy túl magas vérnyomásnál 2,5-szer gyorsabban romlik.
+4. O2 maszk, ha alacsony az SpO2. Az agyvérzés 8 percenként romlik: nincs vesztegetni való idő, azonnal szállítsd.
+5. Ha eszméletlenné válik és horkol: veszélyben a légút – RSI.
+
+## 7. Asztmás roham
+
+**Hívás:** egy tinédzser futás után nem kap levegőt.
+
+**Amit találsz:** **sípoló légzés**, **csak rövid kifejezésekben beszél**, pulzus 120, SpO2 85%.
+
+1. **O2 maszk** és **Salbutamol** (inhalálva, nem kell IV).
+2. Nő az SpO2, megnyugszik a légzés. A Salbutamol kicsit emeli a pulzust – ez normális.
+3. **Vészjel:** **Néma mellkas, kimerült** / **nem tud beszélni** – alig mozog levegő. Azonnal Salbutamol + O2; ha az SpO2 tovább esik 75% alá, RSI.

@@ -1,8 +1,7 @@
 # ui_help – súgó panel
 
 F1 (vagy `/help`) nyitja és zárja. Bal oldalt a kereső és a témalista (kategóriák, kattintásra
-összecsukhatók), jobb oldalt a kiválasztott oldal görgethetően. Amíg nincs egy téma sem,
-a jobb oldalon a „Hamarosan érkezik” (en: „Coming soon”) felirat látszik.
+összecsukhatók), jobb oldalt a kiválasztott oldal görgethetően.
 
 ## Fájlok
 

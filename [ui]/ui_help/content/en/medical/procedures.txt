@@ -1,0 +1,76 @@
+# Treatments and transport
+@keywords: treatment, bandage, splint, CPR, resuscitation, IV, IV access, cannula, fluids, intubate, intubation, RSI, airway, tube, O2 mask, oxygen, transport, request transport, stretcher, hospital, handover, ambulance bay, hearse
+@related: medical_exam, medical_minigames, medical_drugs, medical_monitor, medical_equipment, medical_cases
+
+Every button starts a short procedure: either a minigame ([[medical_minigames|how they work]]) or a timed action with a progress bar. During a procedure you kneel by the patient and cannot move. The result is shown on the panel.
+
+## AB – Airway, Breathing
+
+### O2 mask
+
+3 seconds to put on or take off (**Remove O2**). Raises the SpO2 to 100% if the airway is fine, otherwise it lifts the SpO2 target by 10% and helps it recover faster. A paralysed patient desaturates half as fast on the mask. It uses oxygen from the cylinder in the bag (a full cylinder lasts 15 minutes of mask time). A critical airway problem still needs the tube.
+
+### Intubate (rapid sequence intubation, RSI)
+
+The tube is the definitive airway: the patient is ventilated, suffocation is solved, the ROSC chance rises. Order:
+
+1. **O2 mask** on (pre-oxygenation).
+2. **Ketamine** – the patient falls asleep.
+3. **Rocuronium** – after 15 seconds the muscles relax and the breathing stops. Now the **Intubate** button is active.
+4. **Intubate** – the airway minigame. The patient is bagged up to 95% first; during the attempt the SpO2 falls. Under 80% the attempt fails.
+
+In cardiac arrest the drugs are still required. The airway kit from the bag is needed (it is not used up). The intubated patient stays asleep until stable. The tube needs oxygen: when the cylinder runs empty, the ventilation stops working (**Airway: tube, NO OXYGEN**).
+
+>! Never give Rocuronium to an awake patient: they panic while they suffocate.
+
+## C – Circulation
+
+### Bandage
+
+Stops the worst bleeding wound first (then dresses burns). Arrow minigame: more arrows and faster for a worse wound. A critical gunshot wound keeps oozing a little until the hospital. Uses one bandage.
+
+### Splint
+
+Fixes the worst untreated fracture, the pain falls a lot. Timing minigame. Uses one splint. An open fracture also needs a bandage.
+
+### CPR
+
+Only without a pulse. 30 seconds of chest compressions (`Space` at 90–130 / min). A good round adds 45 seconds to the death timer. After 10 seconds of good compressions the rhythm can change at any moment (the minigame stops). Needs no equipment. Details: [[medical_monitor|Resuscitation]].
+
+### IV access
+
+Cannulation minigame. Harder with collapsed veins: after big blood loss (under 85% / 70%) and in cardiac arrest. Every attempt uses one IV kit. Once in, IV medicines can be given and fluids run: they replace the lost blood (faster with a better quality cannula).
+
+### Medication
+
+See [[medical_drugs|Medicines]].
+
+## D – Disability
+
+**Neuro exam** (4 s) and **Glucometer** (5 s reading). See [[medical_diagnosis|Diagnosis]].
+
+## Monitor
+
+**Attach monitor / defibrillator** on the heart rate tile (4 s). See [[medical_monitor|Lifepak 15]].
+
+## Transport
+
+### By your own ambulance (stretcher)
+
+This is the normal way for a dispatched case (EMS tablet).
+
+1. At the rear doors of the ambulance: **Take out stretcher**.
+2. **Push stretcher** to the patient (sprint is allowed), **Place patient on stretcher**.
+3. The carried bag and Lifepak go onto the stretcher while you push.
+4. Back at the rear doors, facing into the ambulance: **Load into ambulance**.
+5. Drive to a hospital and park in a yellow **Ambulance Bay**: the unit goes to **Handover**.
+6. **Take out stretcher (with patient)** and push the patient into the blue **Patient Handover** marker. After 5 seconds the patient is handed over and the case is closed.
+
+### Request transport
+
+The **Request transport** button calls an ambulance driven by the AI: it arrives in 30 seconds, loads the patient and leaves. Only for:
+
+- a **stable** patient, or an **intubated** unconscious one,
+- with a systolic pressure between **90 and 180** (raise it with fluids / Adrenalin, lower it with Captopril).
+
+A dead patient gets a hearse instead; for them this is the only button.

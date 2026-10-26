@@ -1,0 +1,21 @@
+# Interakciós menü (M)
+@keywords: M, interakció, menü, gyorsutazás, jármű, saját jármű, javítás, gyűjtögetés, beállítások, spawn
+@related: binds, binds_vehicle, feature_interaction
+
+Az `M` gombbal nyíló menü a gyakori dolgok gyors elérése. Ugyanezt a menüt használják más rendszerek is ideiglenes menüként (például boltokban, szerkesztőkben).
+
+## Gombok
+
+- `M` – megnyitás / bezárás
+- `Fel` `Le` nyíl – lépkedés
+- `Bal` `Jobb` nyíl – választós sorban az érték váltása
+- `Enter` – kiválasztás, almenübe lépés
+- `Backspace` – vissza egy szinttel / bezárás
+
+## Mit érhetsz el?
+
+- **Gyorsutazás** – a három repülőtér (LS, LV, SF) között.
+- **Jármű** – saját jármű lehívása, visszaállítása, javítás, sziréna típusa.
+- **Gyűjthető tárgyak** – stunt ugrások és UFO alkatrészek állása.
+- **Statisztikák** – játékidő, szint.
+- **Beállítások** – hol jelenj meg belépéskor (utolsó hely / véletlen).

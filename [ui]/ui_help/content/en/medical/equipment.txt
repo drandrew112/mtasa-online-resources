@@ -1,0 +1,54 @@
+# Ambulance equipment and restocking
+@keywords: equipment, medical bag, bag, Lifepak, monitor, defibrillator, restock, refill, hospital, ambulance bay, oxygen, cylinder, IV kit, bandage, splint, glucometer, airway kit, doses, stock, contents, ambulance, doctor car, helicopter, Maverick, left behind, 7
+@related: medical_exam, medical_procedures, medical_drugs, medical_monitor, binds_inventory, binds_work
+
+Every ambulance, doctor car (the Skoda Octavia) and rescue helicopter (Maverick) carries one **medical bag** and one **Lifepak 15** monitor / defibrillator. Only medics on duty can use them.
+
+## Taking them out
+
+Stand at the side door of the ambulance (the boot of the doctor car, the right rear door of the helicopter) and press `X` on the **Ambulance equipment** 3D menu. Pick the line with its number key:
+
+1. **Take medical bag**
+2. **Take monitor / defibrillator**
+3. **Take both**
+4. **Put medical bag back**
+5. **Put monitor back**
+6. **Put everything back**
+7. **Restock bag**
+8. **Check contents** – what is left in the bag (view only).
+
+The items go into your hands. `H` puts them down on the ground. When a procedure starts, carried items are put down next to the patient automatically. A dropped item is picked up again from its own 3D menu. Each ambulance takes back only its own items.
+
+## What the panel needs
+
+The items must be within **4 metres** of the patient to start a procedure (6 metres keeps a running one connected, for example the oxygen).
+
+- **Medical bag:** Bandage, Splint, IV access, Intubate, O2 mask, Medication, Glucometer.
+- **Lifepak:** the monitor and the defibrillator.
+- **Nothing:** Neuro exam, CPR, Request transport.
+
+## What is in a full bag
+
+- **IV kits:** 6 – one is used up by every IV attempt (also a failed one).
+- **Bandages:** 6 – one per successful dressing.
+- **Splints:** 2 – one per successful splint.
+- **Oxygen cylinder:** 100% – used all the time while a patient has the O2 mask on or is intubated, also on the stretcher, in the ambulance and at the handover. A full cylinder lasts **15 minutes**. Warning at 20%.
+- **Glucometer**, **airway kit** – needed, not used up.
+- **Medicines:** Adrenalin 5, Fentanyl 3, Captopril 3, Nitroglycerin 3, Ketamine 2, Rocuronium 2, Glucose 40% 2, Oral glucose gel 2, Naloxone 2, Salbutamol 2, Midazolam 2, Insulin 1.
+
+The panel shows the stock: the xN on the medicine cards, the number on the **IV access** button and the **O2 %** chip. A warning comes when something drops to a quarter. When something runs out, the button says **out of stock – restock the bag at a hospital**.
+
+## Restocking
+
+1. Put the bag back into the ambulance (**Put medical bag back**).
+2. Drive to a hospital and park in a yellow **Ambulance Bay** marker.
+3. At the side door: `X`, then `7` – **Restock bag**.
+4. Wait 6 seconds. Everything is refilled, the oxygen too. It is free.
+
+While the ambulance stands in a bay with items missing, **EQUIPMENT MISSING** is shown above the side door.
+
+## Do not leave anything behind
+
+When the bag or the Lifepak lies on the ground 60 metres from its ambulance (20 metres while the ambulance drives away) and no medic is near it, you get a warning and a red blip on the map. After **10 minutes** it returns to the ambulance by itself, but **empty**: the medicines, IV kits, bandages and splints are gone and the cylinder is empty. Restock it.
+
+> On the stretcher: the carried items ride on the side of the stretcher while you push it, and go into the ambulance with the patient.

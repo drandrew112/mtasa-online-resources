@@ -1,0 +1,31 @@
+# Phone
+@keywords: B, phone, app, contacts, call, Julia, Markus, insurance, emergency, ambulance, EMS, messages, email, mail, browser, my vehicles, organization, associate, invites, lobby, wallpaper
+@related: binds_phone, feature_browser, feature_social, feature_interaction
+
+Take out the phone with `B`. It works with the keyboard: move with the arrows, open something with `Enter`, go back with `Backspace`.
+
+![300](content/images/features/phone_home.jpg)
+
+## Apps
+
+- **Contacts** – people you can call, see below.
+- **Messages** – the chats of the social panel (read only). Write in the social panel.
+- **Email** – the server's mails, for example the weekly updates (the news of the week, weekly bonuses).
+- **Browser** – opens the in-game browser (buying vehicles, bank, registering a company, the state's site…).
+- **My Vehicles** – the vehicles you bought, by type (land, boat, helicopter, plane). Pick one to have it brought near you. You see which one is out and which one is destroyed.
+- **Organization** – your company's people: invite players as associates (with their distance), remove associates; when someone invites you, accept or decline here, and leave here. Without a company, register one on sabusinessregistry.eu.
+- **Invites** – lobby invitations you received (jobs); `Enter` joins.
+- **Settings** – the phone wallpaper, even in your crew's colour.
+
+## Contacts
+
+Call a contact in **Contacts**; after a short ring you see what you can ask for:
+
+![300](content/images/features/phone_contacts.jpg)
+
+- **Julia** – heals you (full health) and refills your armour. Costs money (with VAT), paid in cash.
+- **Markus** – gets you into **Arena War**. **Request Job** does not work yet; Markus will get back to you later.
+- **Insurance** – when one of your own vehicles is destroyed, claim its repair here (one fee per vehicle with VAT; from your bank account first, cash if the bank is not enough). With no destroyed vehicle the call does not connect.
+- **Emergency Services** – **Ambulance (EMS)**: give a short title and a description of the emergency, and the dispatch opens a case at your position; an ambulance crew on duty comes out. With nobody on duty the call does not go through. The police and fire department lines are not available yet.
+
+[[binds_phone|Phone keys]]

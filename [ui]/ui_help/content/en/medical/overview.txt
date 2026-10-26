@@ -1,0 +1,64 @@
+# Medical system: overview
+@keywords: medical, medic, EMS, ambulance, patient, examine, ABCDE, clinical death, cardiac arrest, consciousness, vitals, death timer, hospital, medsys
+@related: medical_exam, medical_diagnosis, medical_monitor, medical_injuries, medical_drugs, medical_procedures, medical_equipment, medical_cases, binds_work
+
+Patients are injured or sick NPCs: crash victims, people who were shot, overdoses, heart attacks, strokes. Players never get a medical state. Only players on **EMS duty** (the medic role, see the EMS work) can examine and treat them.
+
+## How to start
+
+1. Walk up to the patient, press `X` on the **Patient** 3D menu and pick **Examine patient**. The examination panel opens.
+2. Go through the patient from the top: **A**irway, **B**reathing, **C**irculation, **D**isability (the ABCDE approach). The buttons of the panel are grouped the same way.
+3. Fix what kills first: no pulse, then breathing / oxygen, then bleeding, then the rest.
+4. Stabilise the patient, then bring them to a hospital on the stretcher (or request transport).
+
+> Most interventions need the **medical bag** and the **Lifepak** (monitor / defibrillator) next to the patient. Take them out of the ambulance first: [[medical_equipment|Ambulance equipment]].
+
+## Vital signs
+
+A healthy adult has a pulse of about **72 / min**, a blood pressure of **120/80 mmHg**, an oxygen saturation (**SpO2**) of **98%**, **5 litres** of blood and a blood glucose of about **95 mg/dL**. Every value moves towards a target that the injuries, conditions and medicines set, so changes take a few seconds, not one instant.
+
+- The pulse always rises as the blood pressure falls (the body tries to compensate). A racing pulse with a low pressure is shock.
+- Pain above 7/10, an SpO2 below 88% or a systolic pressure below 90 makes the patient **dazed**.
+- An SpO2 below 70% or a systolic pressure below 65 makes the patient **unconscious**.
+
+## Consciousness
+
+From best to worst:
+
+- **Stable** – awake, oriented.
+- **Confused** – awake but disoriented (intoxication, low / high sugar, stroke, after a seizure).
+- **Dazed** – drowsy, only responds to voice.
+- **Unconscious** – responds to pain only.
+- **Clinical death** – no pulse. The panel shows a **Time left** counter.
+- **Dead** – biological death. Only **Request transport** (hearse) is left.
+
+## Cardiac arrest and the death timer
+
+The heart stops when:
+
+- the SpO2 falls to 0%,
+- half of the blood is lost (2.5 litres),
+- the systolic pressure falls to 30 mmHg (for example a wrongly given blood pressure medicine),
+- the pulse stays at 200 or above for 5 seconds,
+- the blood glucose stays under 20 mg/dL for 4 minutes,
+- an electric shock hits a beating heart.
+
+From then on you have **5 minutes**. Every good CPR round adds **45 seconds** to the counter. When it runs out, the patient is dead.
+
+>! A patient who lost too much blood cannot get a pulse back however well you do CPR. Get IV access and run fluids during the resuscitation.
+
+## Several medics on one patient
+
+More medics can work on the same patient at the same time, each on a different thing: one bandages, the other places the IV, a third does CPR. Two medics never treat the same wound: the injury row shows **"name is treating it"** and the button is disabled for the others.
+
+## Pages of this chapter
+
+- [[medical_exam|The examination panel]]
+- [[medical_diagnosis|Diagnosis: neuro exam, glucose, skin, breathing]]
+- [[medical_monitor|Lifepak 15 monitor / defibrillator, heart rhythms]]
+- [[medical_injuries|Injuries and medical conditions]]
+- [[medical_drugs|Medicines]]
+- [[medical_procedures|Treatments and transport]]
+- [[medical_minigames|How the treatment minigames work]]
+- [[medical_equipment|Ambulance equipment, restocking]]
+- [[medical_cases|Example patients]]

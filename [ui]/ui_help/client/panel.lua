@@ -121,8 +121,6 @@ local function buildFonts()
         small  = mkFont("files/Roboto.ttf", 9.5),
         smallB = mkFont("files/RobotoB.ttf", 9.5, true),
         head   = mkFont("files/RobotoB.ttf", 15, true),
-        big    = mkFont("files/RobotoB.ttf", 40, true),
-        soon   = mkFont("files/RobotoB.ttf", 24, true),
     }
 end
 
@@ -443,11 +441,6 @@ local function buildPage()
     P.page.key = key
     STYLE = STYLE or { fonts = F, hex = HEX, S = S }
 
-    if Help.isEmpty() then
-        P.page.layout = { soon = true, items = {}, h = 0 }
-        return
-    end
-
     local w = v.w - v.padX * 2
     local blocks, header
     local t = P.topic and Help.topics[P.topic]
@@ -468,27 +461,8 @@ local function buildPage()
     P.page.layout = Markup.layout(blocks, w, STYLE, header)
 end
 
-local function drawComingSoon()
-    local v = G.body
-    local cx, cy = v.x + v.w / 2, v.y + v.h / 2 - S(40)
-    local r = S(52)
-    rect(cx - r, cy - r, r * 2, r * 2, COL.noteBg)
-    rect(cx - r, cy + r - S(3), r * 2, S(3), COL.accent)
-    text("?", cx - r, cy - r, r * 2, r * 2, COL.accent, F.big, "center")
-    local ty = cy + r + S(30)
-    text(L("ui_help.coming_soon"), v.x, ty, v.w, F.soon.h, COL.h, F.soon, "center", "top")
-    local dw = min(v.w - S(80), S(520))
-    dxDrawText(L("ui_help.coming_soon_desc"), cx - dw / 2, ty + F.soon.h + S(12), cx + dw / 2, v.y + v.h - S(20),
-        col(COL.muted), F.body.s, F.body.f, "center", "top", true, true)
-end
-
 local function drawPage()
     local v, s, lay = G.body, P.page, P.page.layout
-    if lay.soon then
-        drawComingSoon()
-        return
-    end
-
     local ox, oy = beginView(v, s.scroll)
     local inside = within(v.x, v.y, v.w, v.h)
     for _, it in ipairs(lay.items) do

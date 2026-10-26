@@ -1,0 +1,21 @@
+# Interaction menu (M)
+@keywords: M, interaction, menu, fast travel, vehicle, personal vehicle, repair, collectibles, preferences, spawn
+@related: binds, binds_vehicle, feature_interaction
+
+The menu on `M` gives quick access to common things. Other systems use the same menu as a temporary menu too (for example in shops and editors).
+
+## Keys
+
+- `M` – open / close
+- `Up` `Down` arrow – move
+- `Left` `Right` arrow – change the value of a choice row
+- `Enter` – select, open a submenu
+- `Backspace` – one level back / close
+
+## What can you do here?
+
+- **Fast travel** – between the three airports (LS, LV, SF).
+- **Vehicle** – request or restore your personal vehicle, repair, siren type.
+- **Collectibles** – your stunt jumps and UFO parts.
+- **Stats** – played time, level.
+- **Preferences** – where you spawn when you join (last location / random).

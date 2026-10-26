@@ -1,0 +1,43 @@
+# Billentyűk – áttekintés
+@keywords: gombok, bind, bindek, billentyű, irányítás, kezelés, hotkey, gyorsbillentyű
+
+Itt a szerver saját gombjai vannak összegyűjtve. A GTA alap irányítása (séta, vezetés, lövés) az MTA beállításaiban változatlan, ezek nincsenek itt felsorolva. Minden panelnek külön oldala van, a linkekre kattintva részletesen is megnézheted.
+
+> A legtöbb panel nyitva tartása alatt a többi panel gombja nem működik. Előbb zárd be azt, ami nyitva van (általában `Backspace` vagy `Esc`).
+
+## A legfontosabb gombok
+
+- `F1` – ez a súgó panel
+- `T` – chat írása
+- `P` – szünet menü (térkép, Online, statisztikák, beállítások)
+- `M` – interakciós menü
+- `Home` (vagy `Num 7`) – közösségi panel (barátok, crew, üzenetek)
+- `B` – telefon
+- `I` – inventory (táska)
+- `Tab` (nyomva tartva) – fegyverválasztó kerék
+- `Y` – HUD információk (pénz, szint) pár másodpercre
+- `E` – a legtöbb jelölőben (marker) a használat gombja
+- `X` – a közeli tárgyak 3D menüje
+
+## Panelek és gombjaik
+
+[[binds_chat|Chat]]
+[[binds_pause|Szünet menü és térkép]]
+[[binds_interaction|Interakciós menü (M)]]
+[[binds_social|Közösségi panel]]
+[[binds_phone|Telefon]]
+[[binds_inventory|Inventory]]
+[[binds_weapons|Fegyverek]]
+[[binds_vehicle|Járművek]]
+[[binds_world|Világ: markerek és 3D menük]]
+[[binds_work|Munkák]]
+[[binds_creator|Job Creator]]
+[[binds_admin|Admin gombok]]
+
+## Bemutató (első belépés)
+
+- `Space` – tovább a következő lépésre (amikor a lépés engedi)
+- `PgDn` – az aktuális modul átugrása
+- `End` – a teljes bemutató átugrása
+
+> Ha valamelyik gomb nem reagál, nézd meg, nincs-e nyitva egy másik panel, vagy nem írsz-e éppen a chatbe.

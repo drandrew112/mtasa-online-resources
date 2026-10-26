@@ -1,0 +1,22 @@
+# Közösségi panel
+@keywords: Home, Num 7, közösségi, social, barát, barátok, crew, üzenet, üzenetek
+@related: binds, binds_phone, feature_social
+
+A közösségi panelen a barátaidat, a crew-dat és az üzeneteidet kezelheted.
+
+## Gombok
+
+- `Home` vagy `Num 7` – megnyitás / bezárás
+- `Esc` – bezárás
+- Görgő – a listák görgetése
+- Egér – kattintás a gombokra és szövegmezőkre
+- `Enter` – a kijelölt szövegmezőben küldés / megerősítés
+- `Backspace` – törlés a kijelölt szövegmezőben
+
+## Mit érhetsz el?
+
+- **Barátok** – barátkérés küldése, elfogadása, barátok listája.
+- **Crew** – crew létrehozása, tagok, meghívások.
+- **Üzenetek** – privát üzenetek a többi játékosnak.
+
+> Az üzeneteidet a telefon Üzenetek alkalmazásában is elolvashatod.

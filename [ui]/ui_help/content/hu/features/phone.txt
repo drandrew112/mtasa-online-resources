@@ -1,0 +1,31 @@
+# Telefon
+@keywords: B, telefon, phone, alkalmazás, app, névjegyek, kontakt, hívás, Julia, Markus, biztosítás, segélyhívó, mentő, EMS, üzenetek, e-mail, levél, böngésző, járműveim, organization, társ, meghívó, lobbi, háttérkép
+@related: binds_phone, feature_browser, feature_social, feature_interaction
+
+A `B` gombbal veszed elő a telefont. Billentyűzettel kezelhető: nyilakkal lépkedsz, `Enter`-rel nyitsz meg valamit, `Backspace`-szel jössz vissza.
+
+![300](content/images/features/phone_home.jpg)
+
+## Alkalmazások
+
+- **Névjegyek** – a hívható kontaktok, lásd lent.
+- **Üzenetek** – a közösségi panel beszélgetései (olvasásra). Írni a közösségi panelen tudsz.
+- **Email** – a szerver levelei, például a heti frissítések (a hét hírei, heti bónuszok).
+- **Böngésző** – megnyitja a játékbeli böngészőt (járművásárlás, bank, cégalapítás, állami oldal…).
+- **Járműveim** – a megvásárolt járműveid típus szerint (szárazföldi, hajó, helikopter, repülő). Kiválasztva a közeledbe hívod a járművet. Látod, melyik van kint, és melyik tört össze.
+- **Organization** – a cégedhez tartozó dolgok: játékosok meghívása társnak (a távolságukkal együtt), társak eltávolítása; ha téged hívnak meg, itt fogadod el vagy utasítod el, és itt lépsz ki. Ha nincs céged, a sabusinessregistry.eu oldalon alapíthatsz.
+- **Meghívók** – a kapott lobbi meghívások (jobokba); `Enter`-rel csatlakozol.
+- **Beállítások** – a telefon háttérképe, akár a crew-d színével.
+
+## Kontaktok
+
+A **Névjegyek**-ben egy kontaktot felhívva rövid csengés után megjelenik, mit kérhetsz tőle:
+
+![300](content/images/features/phone_contacts.jpg)
+
+- **Julia** – gyógyítás (teljes életerő) és páncél feltöltése. Pénzbe kerül (áfával), készpénzből fizeted.
+- **Markus** – csatlakoztat az **Arena War**-hoz. A **Job kérése** még nem működik, Markus később visszahív.
+- **Biztosítás** – ha egy saját járműved összetört, itt kérheted a helyreállítását (járművenként egy díj áfával; előbb a bankszámládról, ha ott nincs elég, készpénzből). Ha nincs összetört járműved, a hívás nem kapcsol.
+- **Segélyhívó** – **Mentő (EMS)**: megadod a vészhelyzet rövid címét és leírását, és a mentésirányítás esetet nyit a helyszínedre; ha van szolgálatban mentőegység, kivonul. Ha nincs szolgálatban senki, a hívás nem megy át. A rendőrség és a tűzoltóság vonala még nem elérhető.
+
+[[binds_phone|A telefon gombjai]]
