@@ -10,6 +10,8 @@ sound = nil
 bindKey("q", "down", function()
     local veh = getPedOccupiedVehicle(localPlayer)
     if not veh then return end
+    local vtype = getVehicleType(veh)
+    if vtype == "Plane" or vtype == "Helicopter" then return end
     selectedStation = getElementData(veh, "radiostation_id") or 0
     radioOpen = true
     addEventHandler("onClientRender", root, drawRadioUI)
