@@ -36,8 +36,13 @@ local external = nil
 -- indul ujra a resource, nincs csatlakozasi letoltes.
 local joinPending = getElementData(localPlayer, "isLogged") ~= true
 
+-- Letoltesi hiba: { res, file, reason, test }. Amig fennall, a letolto kepernyo
+-- aktiv marad, a minijatekok eltunnek (a futo jatek kilep), a helyukon a hiba latszik.
+-- Megszunik: ugyanazon fajl sikeres letoltesekor vagy (teszt eseten) /downloadtest-tel.
+local dlError = nil
+
 local function screenActive()
-    return isTransferBoxActive() or joinPending or external ~= nil or debug_ds
+    return isTransferBoxActive() or joinPending or external ~= nil or debug_ds or dlError ~= nil
 end
 
 -- A letolto kepernyo alatt elrejtjuk a HUD-ot (hideHUD = true). Amikor a
@@ -71,7 +76,7 @@ local function setCursor(on)
 end
 
 -- minijatekok: csak letoltes kozben (vagy /downloadtest alatt) jatszhatok
-MG.allowed = function() return screenActive() end
+MG.allowed = function() return screenActive() and dlError == nil end
 -- a teljes tartalom (logo + menu + kartyak, ~545 ui) a kepernyo kozepere kerul
 local logoY = math.max(uicore:ui(20), (sh - uicore:ui(545)) / 2)
 local gameAreaBottom = sh - safe_y - uicore:ui(120)
@@ -82,8 +87,44 @@ local function restoreHud()
     setElementData(localPlayer, "hideHUD", false)
 end
 
+-- A hiba felirata a minijatekok helyen: cim, fajl, ok (vagy F8 konzol), hibaelharitas.
+local function drawError(top)
+    local w = math.min(sw - 2 * safe_x, uicore:ui(900))
+    local x = sw / 2 - w / 2
+    local scale = uicore:ui(1.2)
+    local lines = {}
+    lines[#lines + 1] = { L("ui_download.err.title"), tocolor(255, 90, 90), uicore:ui(1.8), "default-bold" }
+    if dlError.file then
+        local name = (dlError.res and (dlError.res .. "/") or "") .. dlError.file
+        lines[#lines + 1] = { L("ui_download.err.file", { file = name }), tocolor(220, 220, 220), scale, "default" }
+    end
+    if dlError.reason then
+        lines[#lines + 1] = { L("ui_download.err.reason", { reason = dlError.reason }), tocolor(255, 200, 90), scale, "default" }
+    else
+        lines[#lines + 1] = { L("ui_download.err.console"), tocolor(255, 200, 90), scale, "default" }
+    end
+    lines[#lines + 1] = { L("ui_download.err.help_title"), tocolor(120, 200, 255), uicore:ui(1.4), "default-bold", uicore:ui(14) }
+    lines[#lines + 1] = { L("ui_download.err.help"), tocolor(235, 235, 235), scale, "default" }
+
+    local pad = uicore:ui(16)
+    local heights, total = {}, 0
+    for i, ln in ipairs(lines) do
+        local _, th = dxGetTextSize(ln[1], w - 2 * pad, ln[3], ln[4], true)
+        heights[i] = th + (ln[5] or 0) + uicore:ui(6)
+        total = total + heights[i]
+    end
+    dxDrawRectangle(x, top, w, total + 2 * pad, tocolor(10, 10, 20, 215))
+    dxDrawRectangle(x, top, uicore:ui(4), total + 2 * pad, tocolor(255, 90, 90))
+    local y = top + pad
+    for i, ln in ipairs(lines) do
+        local gapTop = ln[5] or 0
+        dxDrawText(ln[1], x + pad, y + gapTop, x + w - pad, y + heights[i], ln[2], ln[3], ln[4], "left", "top", false, true, false, false)
+        y = y + heights[i]
+    end
+end
+
 function render()
-    if debug_ds and not isTransferBoxActive() then
+    if debug_ds and not dlError and not isTransferBoxActive() then
         -- fake, animated progress a "letoltes" teszthez
         local pct = (getTickCount() / 60) % 100
         progresz = math.ceil(pct)
@@ -116,12 +157,18 @@ function render()
             dxDrawText(L("ui_download.client.welcome_to_freev_while_you_wait"), sw/2+10, logoY+logosize/2, _,_, tocolor(255,255,255), uicore:ui(1.5), "default", "left", "center", false,false,false,true)
         end
 
-        MG.draw(logoY + logosize + uicore:ui(95), gameAreaBottom)
+        if dlError then
+            drawError(logoY + logosize + uicore:ui(40))
+        else
+            MG.draw(logoY + logosize + uicore:ui(95), gameAreaBottom)
+        end
 
         dxDrawText( L("ui_download.client.join_our_discord_community_press_c", { discord = discord }), sw/2, sh-safe_y, _,_, tocolor(255,255,255), uicore:ui(1.1), "default", "center", "bottom", false,false,false,true)
 
         local downloadtext
-        if external and not isTransferBoxActive() then
+        if dlError then
+            downloadtext = L("ui_download.err.failed_line")
+        elseif external and not isTransferBoxActive() then
             local pct = external.total > 0 and math.floor(external.done / external.total * 100) or 0
             downloadtext = L("ui_download.client.downloading_external", { label = external.label or external.title or "", progresz = pct })
         else
@@ -170,12 +217,48 @@ local function syncRender()
 end
 syncRender()
 
-function on_fileDownload (res, file, size, state)
-    --if state=="failed" then 
-        res_name = getResourceName( res )
-        file_name = file
-        file_size = tonumber(string.format("%.2f", tostring(size/1024/1024) ))
-    --end
+-- A letoltesi hiba okat az MTA a konzolra irja; amit el tudunk kapni
+-- (onClientDebugMessage), azt kiirjuk. Egyebkent az F8 konzolra utalunk.
+local REASON_PATTERNS = { "mismatch", "unable to delete", "not readable", "download error", "download failed" }
+local lastReason, lastReasonTick
+
+local function matchReason(msg)
+    if type(msg) ~= "string" then return end
+    local low = msg:lower()
+    for _, pat in ipairs(REASON_PATTERNS) do
+        if low:find(pat, 1, true) then
+            return (msg:gsub("[\r\n]+", " "):sub(1, 220))
+        end
+    end
+end
+
+local function setDownloadError(resName, file)
+    if dlError then return end
+    local reason
+    if lastReason and getTickCount() - lastReasonTick < 10000 then reason = lastReason end
+    dlError = { res = resName, file = file, reason = reason }
+    -- a minijatekok eltunnek, a jatekban levo kilep
+    if MG.isPlaying() then MG.stop() end
+    syncRender()
+end
+
+addEventHandler("onClientDebugMessage", root, function(message)
+    local reason = matchReason(message)
+    if not reason then return end
+    lastReason, lastReasonTick = reason, getTickCount()
+    if dlError and not dlError.test and not dlError.reason then dlError.reason = reason end
+end)
+
+function on_fileDownload (res, file, size, completed)
+    res_name = getResourceName( res )
+    file_name = file
+    file_size = tonumber(string.format("%.2f", tostring(size/1024/1024) ))
+    if completed == false then
+        setDownloadError(res_name, file)
+    elseif completed == true and dlError and not dlError.test and dlError.res == res_name and dlError.file == file then
+        dlError = nil -- az ujraprobalas sikerult
+        syncRender()
+    end
 end
 addEventHandler ("onClientResourceFileDownload", root, on_fileDownload)
 
@@ -223,6 +306,7 @@ end
 local function checkJoin()
     finishTimer = nil
     if not joinPending or not expected then return end
+    if dlError then return end -- hibas letoltesnel a kepernyo nem allhat le
     if isTransferBoxActive() then stallKey, stallSince = nil, nil return end
     -- a kulso letoltes (v_modloader) vegen a closeExternal ujra ellenoriz
     if external then return end
@@ -289,28 +373,51 @@ end
 addEventHandler ("onClientTransferBoxVisibilityChange", root, on_TransferBoxVisibilityChange)
 
 -- /downloadtest: a letolto kepernyo elonezete, csak admin_level 7+ szamara
-addCommandHandler("downloadtest", function()
+-- /downloadtest fail: szimulalt letoltesi hiba (felvaltva okkal / ok nelkul -> F8 szoveg)
+local testFailWithReason = true
+
+local function stopTest()
+    debug_ds = false
+    if dlError and dlError.test then dlError = nil end
+    syncRender()
+    if screenActive() then return end
+    setCursor(false)
+    MG.stop()
+    fadeCamera(true)
+    showChat(true)
+    hudHiddenByUs = false
+    setElementData(localPlayer, "hideHUD", false)
+    setElementData(localPlayer, "download_screen", false)
+end
+
+addCommandHandler("downloadtest", function(_, arg)
     local level = tonumber(getElementData(localPlayer, "admin_level")) or 0
     if level < TEST_ADMIN_LEVEL then
         outputChatBox("#ff4444[downloadtest]#ffffff Nincs jogosultsagod ehhez a parancshoz.", 255, 255, 255, true)
         return
     end
 
-    debug_ds = not debug_ds
-    syncRender()
+    if arg == "fail" then
+        if dlError and not dlError.test then return end
+        debug_ds = true
+        if MG.isPlaying() then MG.stop() end
+        dlError = {
+            test = true, res = "test_resource", file = "models/test.dff",
+            reason = testFailWithReason and "HTTP server file mismatch" or nil,
+        }
+        testFailWithReason = not testFailWithReason
+        syncRender()
+        outputChatBox("#44ff44[downloadtest]#ffffff Szimulalt letoltesi hiba #ff4444BEKAPCSOLVA#ffffff (/downloadtest = kikapcs, /downloadtest fail = a masik valtozat).", 255, 255, 255, true)
+        return
+    end
 
     if debug_ds then
-        outputChatBox("#44ff44[downloadtest]#ffffff Teszt letolto kepernyo #00ff00BEKAPCSOLVA#ffffff.", 255, 255, 255, true)
-    else
         outputChatBox("#44ff44[downloadtest]#ffffff Teszt letolto kepernyo #ff4444KIKAPCSOLVA#ffffff.", 255, 255, 255, true)
-
-        setCursor(false)
-        MG.stop()
-        fadeCamera(true)
-        showChat(true)
-        hudHiddenByUs = false
-        setElementData(localPlayer, "hideHUD", false)
-        setElementData(localPlayer, "download_screen", false)
+        stopTest()
+    else
+        debug_ds = true
+        syncRender()
+        outputChatBox("#44ff44[downloadtest]#ffffff Teszt letolto kepernyo #00ff00BEKAPCSOLVA#ffffff.", 255, 255, 255, true)
     end
 end)
 

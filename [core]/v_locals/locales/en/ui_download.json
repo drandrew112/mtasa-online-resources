@@ -26,5 +26,12 @@
   "ui_download.mg.controls_back": "Backspace: back to menu",
   "ui_download.client.downloading_external": "Downloading {label}  ({progresz}%)",
   "ui_download.client.cancel_hint": "Press BACKSPACE to cancel the download",
-  "ui_download.client.cancel_leave_game": "Leave the mini-game (BACKSPACE) to cancel the download"
+  "ui_download.client.cancel_leave_game": "Leave the mini-game (BACKSPACE) to cancel the download",
+  "ui_download.err.title": "Download error",
+  "ui_download.err.file": "File: {file}",
+  "ui_download.err.reason": "Reason: {reason}",
+  "ui_download.err.console": "The cause could not be determined. Open the F8 console to see the details.",
+  "ui_download.err.help_title": "Troubleshooting",
+  "ui_download.err.help": "If the error is \"HTTP server file mismatch\", \"Unable to delete old file\" or \"File not readable\":\n1. Open the MTA folder (usually C:\\Program Files (x86)\\MTA San Andreas 1.6).\n2. Open the properties of the \"mods\" folder and turn off the read-only attribute.\n3. Restart MTA:SA.",
+  "ui_download.err.failed_line": "Download failed"
 }

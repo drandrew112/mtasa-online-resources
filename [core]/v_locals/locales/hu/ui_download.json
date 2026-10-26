@@ -26,5 +26,12 @@
   "ui_download.mg.controls_back": "Backspace: vissza a menübe",
   "ui_download.client.downloading_external": "Letöltés: {label}  ({progresz}%)",
   "ui_download.client.cancel_hint": "A letöltés megszakításához nyomd meg a BACKSPACE-t",
-  "ui_download.client.cancel_leave_game": "A letöltés megszakításához előbb lépj ki a minijátékból (BACKSPACE)"
+  "ui_download.client.cancel_leave_game": "A letöltés megszakításához előbb lépj ki a minijátékból (BACKSPACE)",
+  "ui_download.err.title": "Letöltési hiba",
+  "ui_download.err.file": "Fájl: {file}",
+  "ui_download.err.reason": "Ok: {reason}",
+  "ui_download.err.console": "Az ok nem állapítható meg. Nyisd meg az F8 konzolt a részletekért.",
+  "ui_download.err.help_title": "Hibaelhárítás",
+  "ui_download.err.help": "Ha a hiba \"HTTP server file mismatch\", \"Unable to delete old file\" vagy \"File not readable\":\n1. Nyisd meg az MTA mappát (általában C:\\Program Files (x86)\\MTA San Andreas 1.6).\n2. A \"mods\" mappa tulajdonságait megnyitva kapcsold ki az írásvédettséget.\n3. Indítsd újra az MTA:SA-t.",
+  "ui_download.err.failed_line": "A letöltés sikertelen"
 }
