@@ -60,6 +60,9 @@ STRETCHER = {
             REAR_DOORS = { 1 },
             PATIENT_STAYS_ON = true,
         },
+        [600] = {
+            PATIENT_STAYS_ON = true,
+        },
     },
     DOOR_TIME = 600,               -- ms, the rear doors open / close
     ALIGN_TIME = 500,              -- ms, loading: the stretcher lines up behind the vehicle
