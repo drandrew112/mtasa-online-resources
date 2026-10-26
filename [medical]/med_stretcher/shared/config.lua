@@ -54,6 +54,12 @@ STRETCHER = {
             LOAD_ZONE_WIDTH = 2.4,       -- across the vehicle (x): the stretcher points into the door
             LOAD_ZONE_LENGTH = 1.4,
         },
+        -- Toyota Hiace: the boot (door 1) is the rear hatch. It has no rear seats, so the patient
+        -- stays on the stretcher, which stays visible in the cargo area (STOW_OFFSET) while loaded.
+        [582] = {
+            REAR_DOORS = { 1 },
+            PATIENT_STAYS_ON = true,
+        },
     },
     DOOR_TIME = 600,               -- ms, the rear doors open / close
     ALIGN_TIME = 500,              -- ms, loading: the stretcher lines up behind the vehicle
@@ -108,6 +114,7 @@ STRETCHER = {
     PATIENT_RANGE = 3.0,           -- metres around the stretcher: who can be selected as patient
     SELECT_MAX_DISTANCE = 6.0,     -- the selection ends if the medic walks this far from the stretcher
     REAR_SEATS = { 2, 3 },         -- ambulance seats the patient is warped into
+    PATIENT_STAYS_ON = false,      -- true: no seat, the patient rides lying on the stowed stretcher
 
     -- Menu (on the stretcher object; while stowed it is reached at the rear of the ambulance)
     MENU_RANGE = 2.5,

@@ -25,6 +25,8 @@
   "work_ems.config.mission_row_ambulance": "Mission Row mentőállomás",
   "work_ems.config.skoda_octavia_omsz": "Skoda Octavia MK3 (OMSZ)",
   "work_ems.config.skoda_octavia_omsz_white": "Skoda Octavia MK3 (OMSZ fehér)",
+  "work_ems.config.mercedes_sprinter_2018_omsz": "2018 Mercedes Sprinter (OMSZ)",
+  "work_ems.config.toyota_hiace_omsz": "Toyota Hiace (OMSZ)",
   "work_ems.config.air_ambulance": "Mentőhelikopter",
   "work_ems.config.paramedic": "Paramedikus",
   "work_ems.config.paramedic_omsz": "Paramedikus (OMSZ)",

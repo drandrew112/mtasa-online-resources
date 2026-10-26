@@ -25,6 +25,7 @@ local patientOf = {}       -- ped -> object (lying on it)
 local pusherOf = {}        -- player -> object
 local lockedIn = {}        -- ped -> vehicle (patient on a rear seat, cannot get out)
 local blown = {}           -- vehicle -> true between explode and respawn
+local stow                 -- defined below (Stretcher positions)
 
 -- ---------------------------------------------------------------------------------------------
 -- Helpers
@@ -226,7 +227,10 @@ function removePatient(s, place)
             end
         end
     end
-    if Stretchers[s.object] then onStretcherChanged(s) end
+    if Stretchers[s.object] then
+        -- an empty stowed stretcher hides at the rear doors again (PATIENT_STAYS_ON)
+        if s.state == "stowed" then stow(s) else onStretcherChanged(s) end
+    end
 end
 
 -- Can this ped be laid on the stretcher? (same rules as the client's selector in client/select.lua)
@@ -260,7 +264,8 @@ end
 
 -- Hidden inside the ambulance. Invisible and without collisions, so it is parked at the rear
 -- doors (STOWED_MENU_POINT): its menu is reached there, not at the real cargo position.
-local function stow(s)
+-- With a patient on it (PATIENT_STAYS_ON models) it stays visible at STOW_OFFSET instead.
+stow = function(s)
     clearPusher(s)
     local obj, vehicle = s.object, s.vehicle
     if isElementAttached(obj) then detachElements(obj) end
@@ -268,8 +273,8 @@ local function stow(s)
     setElementInterior(obj, getElementInterior(vehicle))
     setElementFrozen(obj, false)
     setElementCollisionsEnabled(obj, false)
-    setElementAlpha(obj, 0)
-    local o = vehicleOffset(vehicle, "STOWED_MENU_POINT")
+    setElementAlpha(obj, s.patient and 255 or 0)
+    local o = vehicleOffset(vehicle, s.patient and "STOW_OFFSET" or "STOWED_MENU_POINT")
     attachElements(obj, vehicle, o[1], o[2], o[3], o[4], o[5], o[6])
     setState(s, "stowed")
 end
@@ -346,7 +351,7 @@ function takeOutStretcher(s, player)
 end
 
 -- "Load": the stretcher lines up behind the ambulance, is lifted to the rear edge and slides
--- in; the patient goes onto a free rear seat; the doors close.
+-- in; the patient goes onto a free rear seat (or stays on it: PATIENT_STAYS_ON); the doors close.
 function loadStretcher(s, player)
     if s.state ~= "ground" and s.state ~= "pushing" then return false end
     local obj, vehicle = s.object, s.vehicle
@@ -358,8 +363,9 @@ function loadStretcher(s, player)
         return false, L.msg("med_stretcher.stretcher.turn_stretcher_to_face_into_ambulance")
     end
 
+    local staysOn = modelSetting(vehicle, "PATIENT_STAYS_ON")
     local seat
-    if s.patient then
+    if s.patient and not staysOn then
         for _, candidate in ipairs(STRETCHER.REAR_SEATS) do
             if not getVehicleOccupant(vehicle, candidate) then seat = candidate break end
         end
@@ -401,7 +407,7 @@ function loadStretcher(s, player)
         steps[#steps + 1] = { time = STRETCHER.SLIDE_TIME, x = sx, y = sy, z = sz }
     end
     runPath(s, steps, function()
-        local ped = s.patient
+        local ped = not staysOn and s.patient
         if ped then
             removePatient(s, false)
             if isElement(ped) and isElement(vehicle) then
@@ -423,7 +429,7 @@ function loadStretcher(s, player)
         stow(s)
         setRearDoors(vehicle, false)
         holdVehicle(s, false)
-        triggerEvent("onStretcherLoaded", obj, player, vehicle, s.seated or false)
+        triggerEvent("onStretcherLoaded", obj, player, vehicle, s.seated or s.patient or false)
     end)
     return true
 end

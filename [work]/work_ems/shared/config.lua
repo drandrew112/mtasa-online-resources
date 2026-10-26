@@ -54,6 +54,10 @@ EMS = {
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
         { model = 598, name = L.text("work_ems.config.skoda_octavia_omsz_white"), paintjob = "hu_omsz_white", elsExtra = 1, sirenType = "soundoff",
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 600, name = L.text("work_ems.config.mercedes_sprinter_2018_omsz"),
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 582, name = L.text("work_ems.config.toyota_hiace_omsz"),
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
         { model = 487, name = L.text("work_ems.config.air_ambulance"), level = 3 },
     },
 

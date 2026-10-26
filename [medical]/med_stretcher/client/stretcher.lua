@@ -59,13 +59,15 @@ local function applyStretcher(obj)
     if not isElement(obj) then return end
     local state = getElementData(obj, D.STATE)
     if not state then return end
+    -- stowed with a patient on it (PATIENT_STAYS_ON): visible in the cargo area, where the server put it
+    local hidden = state == "stowed" and not getElementData(obj, D.PATIENT)
 
     -- stowed: alpha 0 does not hide the custom model, so it is shrunk to nothing as well
-    setObjectScale(obj, state == "stowed" and 0.001 or getFitScale(obj))
-    if state == "stowed" then placeStowed(obj) end
+    setObjectScale(obj, hidden and 0.001 or getFitScale(obj))
+    if hidden then placeStowed(obj) end
     -- stowed: invisible and without collisions, so it cannot push the ambulance around;
     -- moving / pushing: no collisions with the vehicle, the pusher, the patient or anybody on the way
-    setElementAlpha(obj, state == "stowed" and 0 or 255)
+    setElementAlpha(obj, hidden and 0 or 255)
     setElementCollisionsEnabled(obj, state == "ground")
 end
 
@@ -119,7 +121,8 @@ addEventHandler("onClientElementStreamIn", root, function()
     elseif elementType == "vehicle" then
         -- the stowed stretcher may have streamed in before its ambulance
         for _, obj in ipairs(getAttachedElements(source)) do
-            if getElementType(obj) == "object" and getElementData(obj, D.STATE) == "stowed" then placeStowed(obj) end
+            if getElementType(obj) == "object" and getElementData(obj, D.STATE) == "stowed"
+                and not getElementData(obj, D.PATIENT) then placeStowed(obj) end
         end
     elseif elementType == "ped" or elementType == "player" then
         applyPatient(source)
@@ -127,7 +130,7 @@ addEventHandler("onClientElementStreamIn", root, function()
 end)
 
 addEventHandler("onClientElementDataChange", root, function(key)
-    if key == D.STATE then
+    if key == D.STATE or key == D.PATIENT then
         applyStretcher(source)
     elseif key == D.ON then
         applyPatient(source)

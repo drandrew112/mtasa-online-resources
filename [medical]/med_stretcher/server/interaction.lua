@@ -54,7 +54,7 @@ local LOAD_ITEM = { label = L.msg("med_stretcher.interaction.load_into_ambulance
 
 local function stretcherItems(s)
     if s.state == "stowed" then
-        return { { label = s.seated and L.msg("med_stretcher.interaction.take_out_stretcher_with_patient") or L.msg("med_stretcher.interaction.take_out_stretcher"),
+        return { { label = (s.seated or s.patient) and L.msg("med_stretcher.interaction.take_out_stretcher_with_patient") or L.msg("med_stretcher.interaction.take_out_stretcher"),
             value = "take", desc = L.msg("med_stretcher.interaction.stand_at_rear_doors") } }
     elseif s.state == "pushing" then
         return {
