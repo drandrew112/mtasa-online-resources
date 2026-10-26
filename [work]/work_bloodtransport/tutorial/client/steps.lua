@@ -88,13 +88,6 @@ local function windowRect(key)
     end
 end
 
-local function boxSlotRect()
-    local w = window()
-    for _, slot in pairs(w and w.slots or {}) do
-        if slot.d == BOX_ITEM then return slot.rect end
-    end
-end
-
 local function cargoRow(side)
     return function()
         local w = window()
@@ -191,11 +184,8 @@ STEP_SUBS = {
     box = {
         { text = S("box_get_out"), check = function() return not inVehicle() end },
         { text = S("box_take"), check = carryingBox },
-        { text = S("box_hud", keys), next = true, rect = hudRect },
-        { text = S("box_open_inventory", keys), check = function() return windowOpen("own") end },
-        { text = S("box_slots"), next = true, needWindow = "own", rect = boxSlotRect },
-        { text = S("box_container", keys), check = function() return not windowOpen() end, rect = windowRect("leftArea"),
-          leave = serverNext },
+        -- the inventory window is not needed: the box goes to the port with E and back into the vehicle by menu
+        { text = S("box_hud", keys), next = true, rect = hudRect, leave = serverNext },
     },
     pickup = {
         { text = S("pickup_port", fromTo), check = function() return windowOpen("port") end,

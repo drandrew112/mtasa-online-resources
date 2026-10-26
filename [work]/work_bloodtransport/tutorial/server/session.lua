@@ -398,6 +398,10 @@ addCommandHandler(TUTORIAL.COMMAND, function(player, _, arg)
     if not ok then tell(player, err) end
 end)
 
+-- v_chat command list (CMD helper, no <include> needed)
+loadstring(exports.v_chat:importCommands())()
+CMD.register(TUTORIAL.COMMAND, "[skip]", 0, "Starts the blood transport tutorial, or ends it with skip.")
+
 ---------------------------------------------------------------- work duty
 
 for _, name in ipairs({ "onPlayerWorkDutyStart", "onPlayerWorkDutyEnd" }) do addEvent(name) end

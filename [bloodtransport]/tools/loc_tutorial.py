@@ -30,7 +30,7 @@ en = {
 
     st + "label_panel": "Step 1/8 · Transport panel",
     st + "label_task": "Step 2/8 · The task",
-    st + "label_box": "Step 3/8 · Blood box and inventory",
+    st + "label_box": "Step 3/8 · Blood box",
     st + "label_pickup": "Step 4/8 · Pickup",
     st + "label_drive": "Step 5/8 · On the road",
     st + "label_deliver": "Step 6/8 · Delivery",
@@ -41,7 +41,7 @@ en = {
     st + "start": "Start tutorial",
     st + "finish": "Finish",
 
-    st + "offer": "Is this your first blood transport service? The tutorial shows the transport panel, a task, the blood box and the inventory, a pickup and a delivery (about 5 minutes, with a short drive).\n\nYou can start it later with /{command}.",
+    st + "offer": "Is this your first blood transport service? The tutorial shows the transport panel, a task, the blood box, a pickup and a delivery (about 5 minutes, with a short drive).\n\nYou can start it later with /{command}.",
 
     st + "panel_small": "You are sitting in a blood transport vehicle in front of {from}.\n\nBottom right is the transport panel. Its small view shows whether you are in service and the cargo you are carrying.",
     st + "panel_open": "Press {panel} to open the big view of the panel.",
@@ -55,7 +55,7 @@ en = {
 
     st + "box_get_out": "The cargo travels in the blood box of the vehicle. Get out of the vehicle.",
     st + "box_take": "Go to the rear of the vehicle: the menu of the transport box appears there. Choose Take the blood box.",
-    st + "box_hud": "The box is in your hand. The list on the right shows what is in your hands and on your back, with the details of the box.\n\n{drop} puts down what you hold, {inventory} opens your inventory. You can never get into a vehicle with something in your hands.",
+    st + "box_hud": "The box is in your hand. The list on the right shows what is in your hands and on your back, with the details of the box.\n\n{drop} puts down what you hold. You can never get into a vehicle with something in your hands.",
     st + "box_open_inventory": "Press {inventory} to open your inventory.",
     st + "box_slots": "At the top are your slots: left hand, right hand and back (only backpacks go on the back). The blood box is a container: it shows how many kg of its capacity are used.",
     st + "box_container": "Below is the content of the open container. Items move with drag and drop or a double click; Shift moves one piece, and dragging an item out of the window puts it down.\n\nClose the inventory with {inventory} or ESC.",
@@ -117,7 +117,7 @@ hu = {
 
     st + "label_panel": "1/8. lépés · Szállítási panel",
     st + "label_task": "2/8. lépés · A feladat",
-    st + "label_box": "3/8. lépés · Vérdoboz és tárgyak",
+    st + "label_box": "3/8. lépés · Vérdoboz",
     st + "label_pickup": "4/8. lépés · Felvétel",
     st + "label_drive": "5/8. lépés · Úton",
     st + "label_deliver": "6/8. lépés · Átadás",
@@ -128,7 +128,7 @@ hu = {
     st + "start": "Oktatás indítása",
     st + "finish": "Kész",
 
-    st + "offer": "Ez az első vérszállító szolgálatod? Az oktatás bemutatja a szállítási panelt, egy feladatot, a vérdobozt és a tárgykezelést, egy felvételt és egy átadást (kb. 5 perc, egy rövid vezetéssel).\n\nKésőbb is elindíthatod: /{command}.",
+    st + "offer": "Ez az első vérszállító szolgálatod? Az oktatás bemutatja a szállítási panelt, egy feladatot, a vérdobozt, egy felvételt és egy átadást (kb. 5 perc, egy rövid vezetéssel).\n\nKésőbb is elindíthatod: /{command}.",
 
     st + "panel_small": "Egy vérszállító autóban ülsz a(z) {from} előtt.\n\nJobbra lent van a szállítási panel. A kis nézete mutatja, hogy szolgálatban vagy-e, és milyen szállítmány van nálad.",
     st + "panel_open": "Nyomd meg a(z) {panel} gombot a panel nagy nézetéhez.",
@@ -142,7 +142,7 @@ hu = {
 
     st + "box_get_out": "A szállítmány az autó vérdobozában utazik. Szállj ki az autóból.",
     st + "box_take": "Menj az autó hátuljához: ott jelenik meg a szállítódoboz menüje. Válaszd a Vérdoboz kivétele pontot.",
-    st + "box_hud": "A doboz a kezedben van. A jobb oldali lista mutatja, mi van a kezedben és a hátadon, a doboz adataival együtt.\n\n{drop}: leteszed, ami a kezedben van, {inventory}: megnyitod a tárgyaidat. Ha valami a kezedben van, nem szállhatsz be járműbe.",
+    st + "box_hud": "A doboz a kezedben van. A jobb oldali lista mutatja, mi van a kezedben és a hátadon, a doboz adataival együtt.\n\n{drop}: leteszed, ami a kezedben van. Ha valami a kezedben van, nem szállhatsz be járműbe.",
     st + "box_open_inventory": "Nyomd meg a(z) {inventory} gombot a tárgyaid megnyitásához.",
     st + "box_slots": "Fent vannak a helyeid: bal kéz, jobb kéz és hát (a hátadra csak hátizsák kerülhet). A vérdoboz tároló: mutatja, hány kg-ot használsz a kapacitásából.",
     st + "box_container": "Alatta a megnyitott tároló tartalma. A tárgyakat húzással vagy dupla kattintással mozgathatod; Shifttel egy darabot, és ha egy tárgyat kihúzol az ablakból, leteszed.\n\nZárd be a tárgyakat: {inventory} vagy ESC.",
