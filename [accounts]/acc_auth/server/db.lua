@@ -39,7 +39,7 @@ end
 -- (MySQL string compare is case-insensitive, so this also fixes up casing.)
 -- Blocks only for a name not seen before.
 function accountNameExists(name)
-    if type(name) ~= "string" or name == "" then return false end
+    if type(name) ~= "string" or name == "" or name:sub(1, 1) == "#" then return false end -- "#..." = pool row
     local hit = known[name:lower()]
     if hit then return hit end
     if not mysqlReady() then return false end
@@ -70,7 +70,7 @@ end
 function getAllAccountNames()
     if not mysqlReady() then return {} end
     local res = exports.v_mysql:mysqlQuerySync(
-        "SELECT account_name FROM `" .. TABLE .. "` ORDER BY account_name ASC")
+        "SELECT account_name FROM `" .. TABLE .. "` WHERE account_name NOT LIKE '#%' ORDER BY account_name ASC")
     local out = {}
     for _, row in ipairs(res or {}) do
         if type(row.account_name) == "string" then out[#out + 1] = row.account_name end

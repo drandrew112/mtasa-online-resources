@@ -73,7 +73,7 @@ local LIST_SQL = "SELECT id, account_name, email, display_name, admin_level, cre
     .. jsonKey("Online.minutes") .. " AS minutes, "
     .. jsonKey("last_login") .. " AS last_login, "
     .. jsonKey("receiveUpdateMails") .. " AS upd "
-    .. "FROM `accounts`"
+    .. "FROM `accounts` WHERE account_name NOT LIKE '#%'" -- "#..." = acc_auth pool rows, not accounts
 
 --------------------------------------------------------------------------------
 -- the list (cache)

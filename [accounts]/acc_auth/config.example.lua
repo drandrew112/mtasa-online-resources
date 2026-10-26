@@ -13,6 +13,7 @@ AUTH = {
     ONLINE_STALE          = 120,        -- s: rows not refreshed for this long = crashed server, ignored
     REGISTER_MIN_INTERVAL = 3000,       -- ms between two registration attempts of one player
     REGISTER_TIMEOUT      = 15000,      -- ms
+    POOL_SIZE             = 2,          -- reserved `accounts` rows per server instance (0-2, server/pool.lua): no id gaps
     PASSWORD_MIN          = 5,
     EMAIL_MAX             = 254,
     EMAIL_MIN_INTERVAL    = 2000,       -- ms between two email changes of one player

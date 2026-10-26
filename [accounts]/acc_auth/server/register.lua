@@ -2,7 +2,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Registration runs without blocking the server (PERF-01):
 --   1. acc_auth:register        name / email checks, name lookup (async)
 --   2. acc_auth:registerName    bcrypt hash (async)
---   3. createAccountRowAsync    insert; the UNIQUE account_name / email decide a race
+--   3. createAccountRowPooled   takes a reserved pool row (pool.lua) or inserts;
+--                               the UNIQUE account_name / email decide a race
 --   4. acc_auth:registerRow     log in as the new account (onPlayerAccountLogin, isNew = true)
 
 local registerPending = {} -- [player] = { id, username, password, email, timer } until step 4 or an error
@@ -90,7 +91,7 @@ addEventHandler("acc_auth:registerName", resourceRoot, function(id, rows)
         if type(hashed) ~= "string" then
             return registerError(player, "acc_auth.server.registration_failed")
         end
-        if not createAccountRowAsync(p.username, hashed, p.email, "acc_auth:registerRow", id) then
+        if not createAccountRowPooled(p.username, hashed, p.email, "acc_auth:registerRow", id) then
             -- No answer is coming (v_mysql stopped): without a database connection
             -- the answer already came and cleared the request.
             if registerOf(id) ~= player then return end

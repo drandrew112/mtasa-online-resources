@@ -10,8 +10,8 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql asy
 local TABLE = AUTH.ONLINE_TABLE or "online_players"
 local STALE = AUTH.ONLINE_STALE or 120
 
--- v_main instance id of this server (0 = v_main not running)
-local function instanceId()
+-- v_main instance id of this server (0 = v_main not running); pool.lua uses it too
+function serverInstanceId()
     if not resourceRunning("v_main") then return 0 end
     local ok, id = pcall(function() return exports.v_main:getServerInstanceId() end)
     return ok and tonumber(id) or 0
@@ -30,5 +30,5 @@ function onlineElsewhere(account, cb)
         if not r then return cb(false) end
         cb({ server = tonumber(r.server) or 0, serverName = r.server_name ~= "" and r.server_name or false })
     end, "SELECT server, server_name FROM `" .. TABLE .. "` WHERE account_name = ? AND server <> ? AND seen >= ? LIMIT 1",
-        account, instanceId(), getRealTime().timestamp - STALE)
+        account, serverInstanceId(),getRealTime().timestamp - STALE)
 end
