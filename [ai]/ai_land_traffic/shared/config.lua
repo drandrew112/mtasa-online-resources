@@ -41,6 +41,7 @@ TRAFFIC = {
     -- outside the cities (getZoneName city level) density target and AREA_MAX are multiplied by this
     CITIES = { ["Los Santos"] = true, ["San Fierro"] = true, ["Las Venturas"] = true },
     RURAL_FACTOR = 1 / 3,
+    CITY_FACTOR = 0.5,          -- inside the cities target and AREA_MAX are multiplied by this
 
     -- cameras: clients report their camera; a vehicle no camera can see (behind / far to the side)
     -- disappears after CULL_AFTER if it is farther than CULL_MIN_DIST from every player

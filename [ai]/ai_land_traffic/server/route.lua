@@ -233,7 +233,7 @@ local function build(p, hx, hy, speed, now)
     -- fewer vehicles while the player stands
     local f = T.STILL_FACTOR + (1 - T.STILL_FACTOR) * min(1, max(0, speed - T.STILL_SPEED) / (T.FULL_SPEED - T.STILL_SPEED))
     -- and fewer outside the cities, where they would only pile up
-    if not Route.inCity(p.x, p.y, p.z) then f = f * T.RURAL_FACTOR end
+    if Route.inCity(p.x, p.y, p.z) then f = f * T.CITY_FACTOR else f = f * T.RURAL_FACTOR end
     area.factor = f
     area.target = floor(min(T.MAX_PER_PLAYER, area.total / T.LANE_PER_VEHICLE) * f + 0.5)
     return area

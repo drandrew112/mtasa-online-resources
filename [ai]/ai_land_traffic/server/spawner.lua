@@ -63,7 +63,7 @@ local function trySpawn(p, idx, area, minDist, visibleMin, players, loads, now)
         if (x - q.x) ^ 2 + (y - q.y) ^ 2 + ((z - q.z) * 0.5) ^ 2 < min2 then return false end
     end
     if not fitsLoads(x, y, players, loads, idx, area.target) then return false end
-    local areaMax = Route.inCity(x, y, z) and T.AREA_MAX or math.ceil(T.AREA_MAX * T.RURAL_FACTOR)
+    local areaMax = Route.inCity(x, y, z) and math.ceil(T.AREA_MAX * T.CITY_FACTOR) or math.ceil(T.AREA_MAX * T.RURAL_FACTOR)
     if load(x, y, T.AREA_RADIUS) >= areaMax then return false end
     local seen = Views.nearestSeeing(players, x, y, z + 1, now)
     if seen and seen < visibleMin then return false end
