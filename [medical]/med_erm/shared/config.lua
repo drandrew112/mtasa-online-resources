@@ -14,6 +14,8 @@ Config.TABLET_VEHICLES = {
     [456] = true,
     [487] = true,
     [563] = true,
+    [598] = true,
+    [600] = true,
 }
 
 -- Unit types selectable on the sign-in screen.
