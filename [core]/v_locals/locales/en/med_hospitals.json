@@ -54,5 +54,11 @@
   "med_hospitals.tutorial.use_stretcher_of_your_ambulance": "Use the stretcher of your ambulance.",
   "med_hospitals.config.stand_here_s_patient_pays": "Stand here · {heal_time|int} s · you pay the treatment",
   "med_hospitals.heal.treatment_started_paid": "Treatment started - stay in the marker for {heal_time|int} seconds. You pay the treatment from your bank account.",
-  "med_hospitals.heal.you_paid_for_treatment": "You paid {amount|money} for the treatment."
+  "med_hospitals.heal.you_paid_for_treatment": "You paid {amount|money} for the treatment.",
+  "med_hospitals.config.helipad": "Helipad",
+  "med_hospitals.config.land_here_to_start_handover": "Land here to start the handover",
+  "med_hospitals.config.helicopter_patient_handover": "Helicopter Patient Handover",
+  "med_hospitals.handover.your_helicopter_is_on_the_helipad": "Your helicopter is on the helipad: use the helicopter handover marker",
+  "med_hospitals.handover.your_ambulance_is_in_a_ground_bay": "Your ambulance is in an ambulance bay: use the ground handover marker",
+  "med_hospitals.hospitals.heli_needs_landing_and_handover": "{id}: heli needs a landing and a handover with x, y, z"
 }

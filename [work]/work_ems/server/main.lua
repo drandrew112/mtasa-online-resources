@@ -41,7 +41,7 @@ local function setup()
     local vehicles = {}
     for i, v in ipairs(EMS.VEHICLES) do
         vehicles[i] = { model = v.model, name = v.name, color = v.color, data = v.data,
-                        tuning = v.tuning, elsExtra = v.elsExtra, sirenType = v.sirenType, paintjob = v.paintjob,
+                        tuning = v.tuning, elsExtra = v.elsExtra, sirenType = v.sirenType, paintjob = v.paintjob, level = v.level,
                         platePrefix = EMS.PLATE_PREFIX, plateDigits = EMS.PLATE_DIGITS }
     end
 

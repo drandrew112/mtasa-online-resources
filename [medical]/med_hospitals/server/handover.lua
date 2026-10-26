@@ -8,6 +8,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- 3. A medic pushes the patient on that ambulance's stretcher into a handover marker of the same
 --    hospital -> 5 s -> the ped disappears (a player patient is treated and released), the unit's
 --    handover is completed in ERM, which ends the task.
+-- A helicopter lands on a hospital's helipad ("heli" in hospitals.json) and its patient goes to
+-- the heli handover marker; ambulances use the ground bays and handover markers.
 -- The tablet's Handover button is refused (onErmUnitHandoverRequest): only the hospital starts it.
 
 addEvent("onHospitalHandoverStart", false)    -- (unitId, hospitalId)
@@ -53,6 +55,8 @@ local function onVehicleParked(bay, vehicle)
     if not unit or active[unit.id] then return end
     -- no patient aboard: the ambulance simply drives through the bay (a unit already in
     -- handover after a reload is still taken over, its patient may be out on the stretcher)
+    -- helicopters use the helipad only, ground vehicles the bays
+    if (getVehicleType(vehicle) == "Helicopter") ~= (bay.heli == true) then return end
     if unit.status ~= "handover" and not hasPatientAboard(vehicle) then return end
     if unit.task == 0 then
         local driver = getVehicleOccupant(vehicle, 0)
@@ -156,6 +160,10 @@ local function checkHandover(player, point)
     end
     if a.hospital ~= point.hospital then
         return false, L.msg("med_hospitals.handover.your_ambulance_is_parked_at", { name = a.hospital.name })
+    end
+    if (a.bay.heli == true) ~= (point.heli == true) then
+        return false, a.bay.heli and L.msg("med_hospitals.handover.your_helicopter_is_on_the_helipad")
+            or L.msg("med_hospitals.handover.your_ambulance_is_in_a_ground_bay")
     end
     return true, { obj = obj, patient = patient, unitId = unit.id }
 end

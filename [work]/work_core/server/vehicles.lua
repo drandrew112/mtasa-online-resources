@@ -104,6 +104,10 @@ function spawnWorkVehicle(player, marker, index)
     if not def then return false, L.msg("work_core.vehicles.invalid_vehicle") end
     if not isPlayerOnDuty(player, m.work) then return false, L.msg("work_core.vehicles.you_must_be_on_duty_to") end
     if isPedInVehicle(player) then return false, L.msg("work_core.vehicles.leave_your_vehicle_first") end
+    if def.level and def.level > 1 and getPlayerWorkLevel(player, m.work) < def.level then
+        local work = Works[m.work]
+        return false, L.msg("work_core.vehicles.vehicle_needs_level", { name = work and work.name or m.work, need = def.level })
+    end
 
     local old = getPlayerWorkVehicle(player)
     if old and hasOtherOccupants(old, player) then

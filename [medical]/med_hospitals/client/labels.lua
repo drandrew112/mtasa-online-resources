@@ -21,6 +21,8 @@ local STYLE = {
     handover = { color = { 56, 132, 244 },  icon = "cross" },
     heal     = { color = { 46, 160, 67 },   icon = "cross" },
     healPaid = { color = { 46, 160, 67 },   icon = "cross" },
+    heliBay  = { color = { 230, 190, 40 },  icon = "H" },
+    heliHandover = { color = { 56, 132, 244 }, icon = "cross" },
     bayRestricted = { color = { 218, 54, 51 }, icon = "!" },
 }
 
@@ -160,10 +162,13 @@ addEventHandler("onClientRender", root, function()
             if kind == "bay" and getElementData(m, HOSP_DATA.RESTRICTED) then
                 kind, occupied = "bayRestricted", false
             end
+            local heli = getElementData(m, HOSP_DATA.HELI)
+            if heli and kind == "bay" then kind = "heliBay" end
+            if heli and kind == "handover" then kind = "heliHandover" end
             -- the patient pays here: no "free of charge" hint
             if kind == "heal" and getElementData(m, HOSP_DATA.PAID) then kind = "healPaid" end
 
-            if STYLE[kind] and dist <= maxDist and not occupied and (kind ~= "handover" or seesHandover or getElementData(m, HOSP_DATA.TUTORIAL)) then
+            if STYLE[kind] and dist <= maxDist and not occupied and ((kind ~= "handover" and kind ~= "heliHandover") or seesHandover or getElementData(m, HOSP_DATA.TUTORIAL)) then
                 local lz = z + HOSP.LABEL_HEIGHT
                 if isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
                     local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)

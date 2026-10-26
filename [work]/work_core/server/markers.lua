@@ -67,6 +67,7 @@ end
 --   tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60, ... } (v_customs:applyVehicleTuning)
 --   elsExtra = 1 (v_els extra index), sirenType = "fsvas320" (v_els siren type),
 --   paintjob = "hu_ovsz" (v_paintjobs name of the model)
+--   level = 3 (work level needed to request the vehicle)
 local function normaliseVehicles(list)
     local out = {}
     if type(list) ~= "table" then return out end
@@ -91,6 +92,7 @@ local function normaliseVehicles(list)
                 elsExtra = num(def.elsExtra) and math.floor(num(def.elsExtra)) or nil,
                 sirenType = def.sirenType and tostring(def.sirenType) or nil,
                 paintjob = def.paintjob and tostring(def.paintjob) or nil,
+                level = num(def.level) and math.floor(num(def.level)) or nil,
             }
         end
     end
@@ -135,7 +137,7 @@ function createDutyVehicleMarker(workId, x, y, z, vehicles, opts)
     m.vehicles = list
     m.spawns = normaliseSpawns(opts.spawns or opts.spawn, num(x), num(y), num(z), num(opts.rotation))
     local public = {}
-    for i, v in ipairs(list) do public[i] = { model = v.model, name = v.name } end
+    for i, v in ipairs(list) do public[i] = { model = v.model, name = v.name, level = v.level } end
     setElementData(marker, WORK_DATA.MARKER_VEHICLES, public)
 
     if not opts.public then

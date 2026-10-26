@@ -44,6 +44,11 @@ end
 local function placeStowed(obj)
     local vehicle = getElementAttachedTo(obj)
     if not vehicle or getElementType(vehicle) ~= "vehicle" or not isElementStreamedIn(vehicle) then return end
+    local own = STRETCHER.MODELS and STRETCHER.MODELS[getElementModel(vehicle)]
+    if own and own.STOWED_MENU_POINT then
+        local p = own.STOWED_MENU_POINT
+        return setElementAttachedOffsets(obj, p[1], p[2], p[3], p[4] or 0, p[5] or 0, p[6] or 0)
+    end
     local y = rearDoorY(vehicle)
     if not y then return end
     local o = STRETCHER.STOWED_MENU_POINT

@@ -25,6 +25,7 @@
   "work_ems.config.mission_row_ambulance": "Mission Row mentőállomás",
   "work_ems.config.skoda_octavia_omsz": "Skoda Octavia MK3 (OMSZ)",
   "work_ems.config.skoda_octavia_omsz_white": "Skoda Octavia MK3 (OMSZ fehér)",
+  "work_ems.config.air_ambulance": "Mentőhelikopter",
   "work_ems.config.paramedic": "Paramedikus",
   "work_ems.config.paramedic_omsz": "Paramedikus (OMSZ)",
   "work_ems.config.place_breathing_tube_while_oxygen_level": "Helyezd fel a légzőcsövet, miközben az oxigénszint esik. Altatott (Ketamine) és izomrelaxált (Rocuronium) betegen, vagy szívmegállásban.",

@@ -105,8 +105,14 @@ local function openVehicleMenu(marker)
     end
 
     local items = {}
+    local lv = getPlayerWorkLevel(localPlayer, workId)
     for i, v in ipairs(getElementData(marker, WORK_DATA.MARKER_VEHICLES) or {}) do
-        items[i] = { label = v.name, desc = L("work_core.menus.request_this_work_vehicle"), value = { a = "spawn", i = i } }
+        if (v.level or 1) > lv then
+            items[i] = { label = L("work_core.menus.level", { name = v.name, level = v.level }), desc = L("work_core.menus.unlocks_at_level", { name = work.name, level = v.level }),
+                         value = { a = "locked" } }
+        else
+            items[i] = { label = v.name, desc = L("work_core.menus.request_this_work_vehicle"), value = { a = "spawn", i = i } }
+        end
     end
     if #items == 0 then return end
     open({ title = title, items = items }, marker, "vehicle")

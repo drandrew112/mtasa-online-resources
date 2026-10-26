@@ -25,6 +25,7 @@
   "work_ems.config.mission_row_ambulance": "Mission Row Ambulance",
   "work_ems.config.skoda_octavia_omsz": "Skoda Octavia MK3 (OMSZ)",
   "work_ems.config.skoda_octavia_omsz_white": "Skoda Octavia MK3 (OMSZ White)",
+  "work_ems.config.air_ambulance": "Air Ambulance",
   "work_ems.config.paramedic": "Paramedic",
   "work_ems.config.paramedic_omsz": "Paramedic (OMSZ)",
   "work_ems.config.place_breathing_tube_while_oxygen_level": "Place the breathing tube while the oxygen level falls. On a patient put to sleep (Ketamine) and relaxed (Rocuronium), or in cardiac arrest.",

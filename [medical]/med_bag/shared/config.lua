@@ -10,6 +10,7 @@ BAG = {
         [416] = true,              -- Mercedes Sprinter (HU)
         [456] = true,              -- Mission Row Ambulance
         [598] = true,              -- Skoda Octavia (doctor car): no stretcher, kit in the boot
+        [487] = true,              -- Maverick (rescue helicopter): kit at the right rear door
     },
 
     -- Side-door menu point, vehicle-local { x, y, z }. Positioned by hand: /bagpos prints the
@@ -18,10 +19,12 @@ BAG = {
         [416] = { 0.9, 0.3, -0.2 },
         [456] = { 1.40, -0.9, 0.0 },
         [598] = { 0.0, -2.75, 0.0 },   -- behind the boot (guess, tune with /bagpos)
+        [487] = { 1.6, 0.0, -0.3 },    -- right rear door (guess, tune with /bagpos)
     },
     DEFAULT_SIDE_POINT = { 1.35, -0.6, 0.0 },
     SIDE_DOOR = {                  -- [model] = door id opened while taking / putting back, nil = none
         [598] = 1,                 -- boot
+        [487] = 5,                 -- right rear door
     },
     DOOR_TIME = 400,               -- ms
     ANCHOR_MODEL = 1598,           -- small invisible prop the side-door menu hangs on

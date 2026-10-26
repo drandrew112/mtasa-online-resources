@@ -1,8 +1,16 @@
 -- Helpers used by both sides: per-model offsets and the load zone behind the ambulance.
 
+-- STRETCHER[name], or the vehicle model's own value from STRETCHER.MODELS
+function modelSetting(vehicle, name)
+    local m = STRETCHER.MODELS and STRETCHER.MODELS[getElementModel(vehicle)]
+    if m and m[name] ~= nil then return m[name], true end
+    return STRETCHER[name], false
+end
+
 -- STRETCHER[name] (a vehicle-local offset) with the vehicle model's MODEL_Y_SHIFT applied
 function vehicleOffset(vehicle, name)
-    local o = STRETCHER[name]
+    local o, own = modelSetting(vehicle, name)
+    if own then return { o[1], o[2], o[3], o[4] or 0, o[5] or 0, o[6] or 0 } end
     local shift = STRETCHER.MODEL_Y_SHIFT[getElementModel(vehicle)]
     if not shift then return o end
     return { o[1], o[2] + shift, o[3], o[4] or 0, o[5] or 0, o[6] or 0 }
@@ -20,7 +28,7 @@ end
 -- Vehicle-local centre (x, y), half width (x) and half length (y) of the load zone
 function getLoadZone(vehicle)
     local c = vehicleOffset(vehicle, "LOAD_ZONE_CENTER")
-    return c[1], c[2], STRETCHER.LOAD_ZONE_WIDTH / 2, STRETCHER.LOAD_ZONE_LENGTH / 2
+    return c[1], c[2], modelSetting(vehicle, "LOAD_ZONE_WIDTH") / 2, modelSetting(vehicle, "LOAD_ZONE_LENGTH") / 2
 end
 
 -- Is the world point (the stretcher) inside the load zone of the vehicle?
@@ -35,6 +43,8 @@ end
 -- stowed direction)?
 function isLoadAligned(vehicle, yaw)
     local _, _, vrz = getElementRotation(vehicle)
-    local diff = (yaw - (vrz + STRETCHER.STOW_OFFSET[6]) + 180) % 360 - 180
+    local enter = STRETCHER.MODELS and STRETCHER.MODELS[getElementModel(vehicle)]
+    enter = enter and enter.ENTER_OFFSET
+    local diff = (yaw - (vrz + (enter and enter[6] or STRETCHER.STOW_OFFSET[6])) + 180) % 360 - 180
     return math.abs(diff) <= STRETCHER.LOAD_ZONE_MAX_ANGLE
 end

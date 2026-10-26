@@ -54,5 +54,11 @@
   "med_hospitals.tutorial.use_stretcher_of_your_ambulance": "Használd a mentőd hordágyát.",
   "med_hospitals.config.stand_here_s_patient_pays": "Állj ide · {heal_time|int} mp · a kezelést te fizeted",
   "med_hospitals.heal.treatment_started_paid": "A kezelés elkezdődött - maradj a markerben {heal_time|int} másodpercig. A kezelést a bankszámládról fizeted.",
-  "med_hospitals.heal.you_paid_for_treatment": "A kezelésért {amount|money} összeget fizettél."
+  "med_hospitals.heal.you_paid_for_treatment": "A kezelésért {amount|money} összeget fizettél.",
+  "med_hospitals.config.helipad": "Helikopter leszálló",
+  "med_hospitals.config.land_here_to_start_handover": "Szállj le ide az átadás megkezdéséhez",
+  "med_hospitals.config.helicopter_patient_handover": "Helikopteres betegátadás",
+  "med_hospitals.handover.your_helicopter_is_on_the_helipad": "A helikoptered a leszállón áll: használd a helikopteres átadó pontot",
+  "med_hospitals.handover.your_ambulance_is_in_a_ground_bay": "A mentőd mentő beállóban áll: használd a földi átadó pontot",
+  "med_hospitals.hospitals.heli_needs_landing_and_handover": "{id}: a heli blokkhoz leszálló és átadó pont kell (x, y, z)"
 }

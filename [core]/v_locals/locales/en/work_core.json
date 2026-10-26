@@ -58,6 +58,7 @@
   "work_core.requests.you_are_too_far_from_marker": "You are too far from the marker.",
   "work_core.vehicles.everyone_has_to_get_out_first": "Everyone has to get out first.",
   "work_core.vehicles.invalid_vehicle": "Invalid vehicle.",
+  "work_core.vehicles.vehicle_needs_level": "This vehicle needs {name} level {need|int}.",
   "work_core.vehicles.invalid_vehicle_point": "Invalid vehicle point.",
   "work_core.vehicles.leave_your_vehicle_first": "Leave your vehicle first.",
   "work_core.vehicles.only_on_duty_workers_can_drive": "Only on-duty workers can drive this vehicle.",

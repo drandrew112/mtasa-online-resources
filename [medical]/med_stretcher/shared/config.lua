@@ -8,6 +8,7 @@ STRETCHER = {
     VEHICLE_MODELS = {             -- ambulances that carry a stretcher
         [416] = true,              -- Mercedes Sprinter (HU)
         [456] = true,              -- Mission Row Ambulance
+        [487] = true,              -- Maverick (rescue helicopter): side door
     },
     OBJECT_MODEL = 2146,           -- hospital trolley
 
@@ -31,6 +32,26 @@ STRETCHER = {
     -- STOW / EDGE / OUT_OFFSET, STOWED_MENU_POINT, REAR_POINT and LOAD_ZONE_CENTER
     MODEL_Y_SHIFT = {
         [456] = -0.8,              -- Mission Row Ambulance
+    },
+    -- Per-model overrides of the settings above (vehicle-local, MODEL_Y_SHIFT is not applied to them).
+    -- ENTER_OFFSET: the stretcher slides in through the door up to here, then turns from the
+    -- entry yaw (ENTER_OFFSET[6], also the yaw it must have outside, see isLoadAligned) to the
+    -- STOW_OFFSET yaw and moves to STOW_OFFSET; taking out runs it backwards.
+    -- Heli 487: left rear door (4) for the stretcher. In: along x through the door, turns 90 deg
+    -- right (to point backwards) and moves a bit back. All values are guesses, tune in-game.
+    MODELS = {
+        [487] = {
+            REAR_DOORS = { 4 },
+            STOW_OFFSET = { 0.0, 0.85, 0.0, 0, 0, 180 },
+            ENTER_OFFSET = { -0.1, 1.3, 0.0, 0, 0, 270 },
+            EDGE_OFFSET = { -1.2, 1.3, 0.0 },
+            OUT_OFFSET = { -2.4, 1.3, -0.18 },
+            STOWED_MENU_POINT = { -1.3, 1.3, 0.2, 0, 0, 0 },
+            REAR_POINT = { -2.4, 1.3, 0.0 },
+            LOAD_ZONE_CENTER = { -2.4, 1.3 },
+            LOAD_ZONE_WIDTH = 2.4,       -- across the vehicle (x): the stretcher points into the door
+            LOAD_ZONE_LENGTH = 1.4,
+        },
     },
     DOOR_TIME = 600,               -- ms, the rear doors open / close
     ALIGN_TIME = 500,              -- ms, loading: the stretcher lines up behind the vehicle

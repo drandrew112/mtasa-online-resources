@@ -113,6 +113,16 @@ local function parseHospital(raw, index)
         if not point then return nil, L.msg("med_hospitals.hospitals.handover_needs_x_y_z", { id = id, i = i }) end
         h.handover[#h.handover + 1] = point
     end
+    -- helicopter handover: a landing point (like a bay, helicopters only) + its own handover marker
+    if raw.heli ~= nil then
+        local heli = type(raw.heli) == "table" and raw.heli or {}
+        local landing = parsePoint(heli.landing, HOSP.HELI_SIZE)
+        local handover = parsePoint(heli.handover, HOSP.HANDOVER_SIZE)
+        if not landing or not handover then return nil, L.msg("med_hospitals.hospitals.heli_needs_landing_and_handover", { id = id }) end
+        landing.heli, handover.heli = true, true
+        h.bays[#h.bays + 1] = landing
+        h.handover[#h.handover + 1] = handover
+    end
     if raw.heal ~= nil then
         h.heal = parsePoint(raw.heal, HOSP.HEAL_SIZE)
         if not h.heal then return nil, L.msg("med_hospitals.hospitals.heal_needs_x_y_z", { id = id }) end
@@ -123,7 +133,11 @@ local function parseHospital(raw, index)
     end
 
     -- objective point: the first bay (ambulances), else the heal / handover marker
-    local main = h.bays[1] or h.heal or h.handover[1]
+    local main
+    for _, bay in ipairs(h.bays) do
+        if not bay.heli then main = bay break end
+    end
+    main = main or h.heal or h.handover[1] or h.bays[1]
     if not main then return nil, L.msg("med_hospitals.hospitals.no_bays_handover_or_heal_marker", { id = id }) end
     h.x, h.y, h.z = main.x, main.y, main.z
     return h
@@ -140,16 +154,18 @@ end
 
 local function buildPoint(h, point, kind, index, color)
     point.hospital, point.kind, point.index = h, kind, index
+    if point.heli then color = kind == "bay" and HOSP.HELI_COLOR or color end
     local marker = track(createMarker(point.x, point.y, point.z, "cylinder", point.size,
         color[1], color[2], color[3], color[4]))
     local radius = point.size / 2 + 0.6
-    local height = kind == "bay" and HOSP.BAY_HEIGHT or 3
+    local height = kind == "bay" and (point.heli and HOSP.HELI_HEIGHT or HOSP.BAY_HEIGHT) or 3
     local col = track(createColTube(point.x, point.y, point.z - 1, radius, height))
     if not marker or not col then return false end
     inWorld(marker, h)
     inWorld(col, h)
     setElementData(marker, HOSP_DATA.KIND, kind)
     setElementData(marker, HOSP_DATA.NAME, h.name)
+    setElementData(marker, HOSP_DATA.HELI, point.heli and true or false)
     point.marker, point.col = marker, col
     return true
 end

@@ -93,8 +93,10 @@ local function isDown(ped)
 end
 
 local function setRearDoors(vehicle, open)
-    if not isElement(vehicle) or not STRETCHER.REAR_DOORS then return end
-    for _, door in ipairs(STRETCHER.REAR_DOORS) do
+    if not isElement(vehicle) then return end
+    local doors = modelSetting(vehicle, "REAR_DOORS")
+    if not doors then return end
+    for _, door in ipairs(doors) do
         setVehicleDoorOpenRatio(vehicle, door, open and 1 or 0, STRETCHER.DOOR_TIME)
     end
 end
@@ -308,6 +310,10 @@ function takeOutStretcher(s, player)
     local ex, ey, ez = offsetOf(vehicle, ed[1], ed[2], ed[3])
     local ox, oy, oz = offsetOf(vehicle, out[1], out[2], out[3])
     local _, _, vrz = getElementRotation(vehicle)
+    local en = STRETCHER.MODELS and STRETCHER.MODELS[getElementModel(vehicle)]
+    en = en and en.ENTER_OFFSET
+    local enx, eny, enz
+    if en then enx, eny, enz = offsetOf(vehicle, en[1], en[2], en[3]) end
 
     -- visible at the stowed position, then the path runs in world space
     detachElements(obj)
@@ -325,11 +331,13 @@ function takeOutStretcher(s, player)
     triggerEvent("onStretcherTakeOut", obj, player, vehicle, s.patient or false)
 
     setRearDoors(vehicle, true)
-    runPath(s, {
-        { time = STRETCHER.DOOR_TIME },
-        { time = STRETCHER.SLIDE_TIME, x = ex, y = ey, z = ez },
-        { time = STRETCHER.LOWER_TIME, x = ox, y = oy, z = oz },
-    }, function()
+    local steps = { { time = STRETCHER.DOOR_TIME } }
+    if en then  -- side door: turn to face the door first
+        steps[#steps + 1] = { time = STRETCHER.ALIGN_TIME, x = enx, y = eny, z = enz, rz = angleDelta(st[6], en[6]) }
+    end
+    steps[#steps + 1] = { time = STRETCHER.SLIDE_TIME, x = ex, y = ey, z = ez }
+    steps[#steps + 1] = { time = STRETCHER.LOWER_TIME, x = ox, y = oy, z = oz }
+    runPath(s, steps, function()
         setRearDoors(vehicle, false)
         holdVehicle(s, false)
         settle(s, isElement(player) and player or nil)
@@ -375,15 +383,24 @@ function loadStretcher(s, player)
     local ex, ey, ez = offsetOf(vehicle, ed[1], ed[2], ed[3])
     local ox, oy, oz = offsetOf(vehicle, out[1], out[2], out[3])
     local _, _, vrz = getElementRotation(vehicle)
-    local turn = angleDelta(rz, vrz + st[6])
+    local en = STRETCHER.MODELS and STRETCHER.MODELS[getElementModel(vehicle)]
+    en = en and en.ENTER_OFFSET
+    local turn = angleDelta(rz, vrz + (en and en[6] or st[6]))
 
     triggerEvent("onStretcherLoadStart", obj, player, vehicle, s.patient or false)
     setRearDoors(vehicle, true)
-    runPath(s, {
+    local steps = {
         { time = math.max(STRETCHER.ALIGN_TIME, STRETCHER.DOOR_TIME), x = ox, y = oy, z = oz, rz = turn },
         { time = STRETCHER.LOWER_TIME, x = ex, y = ey, z = ez },
-        { time = STRETCHER.SLIDE_TIME, x = sx, y = sy, z = sz },
-    }, function()
+    }
+    if en then  -- side door: slide in, then turn 90 deg right and move back
+        local enx, eny, enz = offsetOf(vehicle, en[1], en[2], en[3])
+        steps[#steps + 1] = { time = STRETCHER.SLIDE_TIME, x = enx, y = eny, z = enz }
+        steps[#steps + 1] = { time = STRETCHER.ALIGN_TIME, x = sx, y = sy, z = sz, rz = angleDelta(en[6], st[6]) }
+    else
+        steps[#steps + 1] = { time = STRETCHER.SLIDE_TIME, x = sx, y = sy, z = sz }
+    end
+    runPath(s, steps, function()
         local ped = s.patient
         if ped then
             removePatient(s, false)

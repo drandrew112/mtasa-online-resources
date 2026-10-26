@@ -70,11 +70,11 @@ function createTutorialHandover(player, hospitalId, dimension, vehicle)
         bays = {}, handover = {}, elements = {},
     }
     for _, raw in ipairs(h.bays) do
-        local p = buildTutorialPoint(t, raw, "bay", HOSP.BAY_COLOR)
+        local p = not raw.heli and buildTutorialPoint(t, raw, "bay", HOSP.BAY_COLOR)
         if p then t.bays[#t.bays + 1] = p end
     end
     for _, raw in ipairs(h.handover) do
-        local p = buildTutorialPoint(t, raw, "handover", HOSP.HANDOVER_COLOR)
+        local p = not raw.heli and buildTutorialPoint(t, raw, "handover", HOSP.HANDOVER_COLOR)
         if p then t.handover[#t.handover + 1] = p end
     end
     sessions[t.id] = t

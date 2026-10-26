@@ -12,6 +12,7 @@ Config.TABLET_KEY = "j"
 Config.TABLET_VEHICLES = {
     [416] = true,
     [456] = true,
+    [487] = true,
     [563] = true,
 }
 

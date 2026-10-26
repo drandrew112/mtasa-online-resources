@@ -13,6 +13,13 @@ HOSP = {
     BAY_MAX_SPEED = 6,             -- km/h: the vehicle counts as parked below this
     BAY_COLOR = { 230, 190, 40, 110 },
 
+    -- Helicopter landing point (hospitals.json "heli"): a bay for helicopters only; the unit's
+    -- handover starts when the helicopter has landed on it with a patient aboard, and the
+    -- patient is pushed into the hospital's heli handover marker.
+    HELI_SIZE = 12.0,
+    HELI_HEIGHT = 6.0,
+    HELI_COLOR = { 230, 190, 40, 110 },
+
     -- Ambulances only: any vehicle in a bay that is not an on-duty ERM unit's turns the marker
     -- red, and its driver is fined (v_bank forceTakeMoney, bank may go negative) every interval until it leaves.
     -- Not enforced while med_erm is stopped (on-duty units cannot be told apart).
@@ -57,6 +64,7 @@ HOSP_DATA = {
     OCCUPIED = "hosp.occupied",    -- bay: a vehicle is parked in it
     RESTRICTED = "hosp.restricted",-- bay: a non-ambulance vehicle is in it (red marker)
     TUTORIAL = "hosp.tutorial",    -- private tutorial marker: labelled regardless of HANDOVER_WORK
+    HELI = "hosp.heli",            -- bay / handover: belongs to the helicopter handover
     PAID = "hosp.paid",            -- heal: the patient pays the treatment (gov_health payer "player")
 }
 
@@ -65,6 +73,8 @@ HOSP_TEXT = {
     handover = { title = L.text("med_hospitals.config.patient_handover"), hint = L.text("med_hospitals.config.push_patient_in_on_stretcher") },
     bayRestricted = { title = L.text("med_hospitals.config.ambulances_only"),
                       hint = L.text("med_hospitals.config.leave_bay_fine_every_s", { bay_fine = HOSP.BAY_FINE, bay_fine_interval = HOSP.BAY_FINE_INTERVAL / 1000 }) },
+    heliBay  = { title = L.text("med_hospitals.config.helipad"),          hint = L.text("med_hospitals.config.land_here_to_start_handover") },
+    heliHandover = { title = L.text("med_hospitals.config.helicopter_patient_handover"), hint = L.text("med_hospitals.config.push_patient_in_on_stretcher") },
     heal     = { title = L.text("med_hospitals.config.treatment"),       hint = L.text("med_hospitals.config.stand_here_s_free_of_charge", { heal_time = HOSP.HEAL_TIME / 1000 }) },
     healPaid = { title = L.text("med_hospitals.config.treatment"),       hint = L.text("med_hospitals.config.stand_here_s_patient_pays", { heal_time = HOSP.HEAL_TIME / 1000 }) },
 }

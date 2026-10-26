@@ -58,6 +58,7 @@
   "work_core.requests.you_are_too_far_from_marker": "Túl messze vagy a markertől.",
   "work_core.vehicles.everyone_has_to_get_out_first": "Előbb mindenkinek ki kell szállnia.",
   "work_core.vehicles.invalid_vehicle": "Érvénytelen jármű.",
+  "work_core.vehicles.vehicle_needs_level": "Ehhez a járműhöz {name} {need|int}. szint kell.",
   "work_core.vehicles.invalid_vehicle_point": "Érvénytelen járműpont.",
   "work_core.vehicles.leave_your_vehicle_first": "Előbb szállj ki a járművedből.",
   "work_core.vehicles.only_on_duty_workers_can_drive": "Ezt a járművet csak szolgálatban lévő dolgozók vezethetik.",

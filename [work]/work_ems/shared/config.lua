@@ -36,7 +36,7 @@ EMS = {
     },
 
     -- Vehicles offered at the duty vehicle markers. Plates: PLATE_PREFIX + PLATE_DIGITS random digits.
-    -- Ambulances only for now (no emergency doctor car / helicopter yet).
+    -- level = work level needed to request the vehicle.
     PLATE_PREFIX = "A-",
     PLATE_DIGITS = 4,
     VEHICLES = {
@@ -52,6 +52,7 @@ EMS = {
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
         { model = 598, name = L.text("work_ems.config.skoda_octavia_omsz_white"), paintjob = "hu_omsz_white", elsExtra = 1, sirenType = "soundoff",
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+        { model = 487, name = L.text("work_ems.config.air_ambulance"), level = 3 },
     },
 
     -- Stations: a duty marker and (optionally) a duty vehicle marker with spawn points.
