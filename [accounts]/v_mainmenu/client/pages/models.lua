@@ -37,7 +37,7 @@ function drawModelsReminder(x, y, w)
     local count, bytes = missingModels()
     if count <= 0 then return 0 end
     local h = S(58)
-    local focused = Menu.reg("page", "home_models", x, y, w, h, { activate = openModelSettings }) or Menu.hovered(x, y, w, h)
+    local focused = Menu.reg("page", "home_models", x, y, w, h, { activate = openModelSettings })
     dxDrawRectangle(x, y, w, h, C_WARNBG)
     dxDrawRectangle(x, y, S(6), h, C_WARN)
     if focused then
@@ -88,9 +88,7 @@ function ModelsNotice.draw()
     local defs = { { "v_mainmenu.models.notice_open", true }, { "v_mainmenu.models.notice_later", false } }
     for i, d in ipairs(defs) do
         local bx = x + pad + (i - 1) * (bw + S(16))
-        local mx, my = cursorPos()
-        local hover = mx >= bx and mx <= bx + bw and my >= by and my <= by + bh
-        local on = ModelsNotice.sel == i or hover
+        local on = ModelsNotice.sel == i
         local bg = i == 1 and (on and tocolor(226, 146, 50, 255) or C_WARN) or (on and C.ghostFoc or C.ghost)
         dxDrawRectangle(bx, by, bw, bh, bg)
         if on then dxDrawRectangle(bx, by + bh - S(3), bw, S(3), C.white) end
@@ -111,6 +109,19 @@ function ModelsNotice.key(key)
         closeNotice(false)
     end
     return true
+end
+
+-- the moving mouse selects the button under it (core.lua hoverFocus)
+function ModelsNotice.hover(px, py)
+    for i, b in ipairs(buttons) do
+        if px >= b.x and px <= b.x + b.w and py >= b.y and py <= b.y + b.h then
+            if ModelsNotice.sel ~= i then
+                ModelsNotice.sel = i
+                playUI("move")
+            end
+            return
+        end
+    end
 end
 
 function ModelsNotice.click(px, py)

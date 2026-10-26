@@ -95,13 +95,6 @@ function cursorPos()
     return cx * sw, cy * sh
 end
 
--- mouse over the rect (not through the models modal): draws the focus look
-function Menu.hovered(x, y, w, h)
-    if ModelsNotice and ModelsNotice.open then return false end
-    local mx, my = cursorPos()
-    return mx >= x and mx <= x + w and my >= y and my <= y + h
-end
-
 -- the dx fonts are created at the screen's size (scale 1); the built-in
 -- fallback fonts ("default", ...) need the screen scale
 function fontScale(font)
@@ -155,15 +148,14 @@ end
 -- A tile. content(x, y, w, h, focused) draws inside; activate() on Enter / click.
 function tile(layer, id, x, y, w, h, title, subtitle, content, activate, style)
     local focused = Menu.reg(layer, id, x, y, w, h, { activate = activate })
-    local lit = focused or Menu.hovered(x, y, w, h)
     if style == "join" then
         dxDrawRectangle(x, y, w, h, C.join2)
         dxDrawRectangle(x, y, w, h * 0.55, C.join1)
     else
-        dxDrawRectangle(x, y, w, h, lit and C.tileFoc or C.tile)
+        dxDrawRectangle(x, y, w, h, focused and C.tileFoc or C.tile)
         dxDrawRectangle(x, y, w, 1, C.tileLine)
     end
-    if lit then
+    if focused then
         local t = S(3)
         dxDrawRectangle(x, y, w, t, C.white)
         dxDrawRectangle(x, y + h - t, w, t, C.white)
@@ -188,13 +180,12 @@ end
 -- style: "primary" | "ghost" | "danger"
 function button(layer, id, x, y, w, h, label, fn, style)
     local focused = Menu.reg(layer, id, x, y, w, h, { activate = fn })
-    local lit = focused or Menu.hovered(x, y, w, h)
     local bg
-    if style == "ghost" then bg = lit and C.ghostFoc or C.ghost
-    elseif style == "danger" then bg = lit and tocolor(170, 60, 60, 255) or tocolor(122, 45, 45, 255)
-    else bg = lit and C.btnFoc or C.btn end
+    if style == "ghost" then bg = focused and C.ghostFoc or C.ghost
+    elseif style == "danger" then bg = focused and tocolor(170, 60, 60, 255) or tocolor(122, 45, 45, 255)
+    else bg = focused and C.btnFoc or C.btn end
     dxDrawRectangle(x, y, w, h, bg)
-    if lit then dxDrawRectangle(x, y + h - S(3), w, S(3), C.white) end
+    if focused then dxDrawRectangle(x, y + h - S(3), w, S(3), C.white) end
     text(label, x, y, w, h, C.white, 1.0, FONT.rowB, "center", "center")
     return focused
 end
@@ -228,9 +219,8 @@ end
 -- A selectable list row; left/right handlers make it a value row (settings).
 function row(layer, id, x, y, w, h, opts)
     local focused = Menu.reg(layer, id, x, y, w, h, opts)
-    local lit = focused or Menu.hovered(x, y, w, h)
-    dxDrawRectangle(x, y, w, h, lit and C.rowSel or C.row)
-    if lit then dxDrawRectangle(x, y, S(3), h, C.accent) end
+    dxDrawRectangle(x, y, w, h, focused and C.rowSel or C.row)
+    if focused then dxDrawRectangle(x, y, S(3), h, C.accent) end
     return focused
 end
 
@@ -389,7 +379,7 @@ local function drawTop()
         local on = Menu.page == id
         text(label, x, S(26), w, S(40), on and C.white or C.faint, 1.25, FONT.head, "left", "center")
         if on then dxDrawRectangle(x, S(66), w - S(8), S(3), C.accent) end
-        if focused or Menu.hovered(x - S(4), S(26), w + S(8), S(40)) then
+        if focused then
             dxDrawRectangle(x - S(10), S(22), w + S(12), S(2), C.white)
             dxDrawRectangle(x - S(10), S(70), w + S(12), S(2), C.white)
         end
@@ -438,6 +428,32 @@ local function drawHint()
 end
 
 local dragging, dragFrom = nil, nil -- TextField under a held left click / press point (selection)
+local lastMouseX, lastMouseY        -- cursor of the previous frame (hover focus)
+
+-- The focus follows the mouse while it moves; the arrows take over until it
+-- moves again. Fields still take the focus by click only (typing target).
+-- In a view the tabs are left to the click (that leaves the view).
+local function hoverFocus()
+    local mx, my = cursorPos()
+    local moved = lastMouseX and (mx ~= lastMouseX or my ~= lastMouseY)
+    lastMouseX, lastMouseY = mx, my
+    if not moved or mx < 0 or dragging or getKeyState("mouse1") then return end
+    if ModelsNotice.open then return ModelsNotice.hover(mx, my) end
+    local layers = Menu.view and { "view" } or { "tabs", "page" }
+    for _, layer in ipairs(layers) do
+        local list = lastRegs[layer]
+        for i = #list, 1, -1 do
+            local r = list[i]
+            if inRect(mx, my, r) then
+                if not r.field and not Menu.isFocused(layer, r.id) then
+                    Menu.setFocus(layer, r.id)
+                    playUI("move")
+                end
+                return
+            end
+        end
+    end
+end
 
 local function render()
     if dragging then
@@ -472,6 +488,7 @@ local function render()
     ModelsNotice.draw()
 
     lastRegs = regs
+    hoverFocus()
     -- keep a valid focus in the active layer
     local layer = Menu.layer
     if not findReg(layer, Menu.focus[layer]) then
