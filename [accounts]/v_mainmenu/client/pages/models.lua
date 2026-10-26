@@ -37,7 +37,7 @@ function drawModelsReminder(x, y, w)
     local count, bytes = missingModels()
     if count <= 0 then return 0 end
     local h = S(58)
-    local focused = Menu.reg("page", "home_models", x, y, w, h, { activate = openModelSettings })
+    local focused = Menu.reg("page", "home_models", x, y, w, h, { activate = openModelSettings }) or Menu.hovered(x, y, w, h)
     dxDrawRectangle(x, y, w, h, C_WARNBG)
     dxDrawRectangle(x, y, S(6), h, C_WARN)
     if focused then
@@ -93,7 +93,7 @@ function ModelsNotice.draw()
         local on = ModelsNotice.sel == i or hover
         local bg = i == 1 and (on and tocolor(226, 146, 50, 255) or C_WARN) or (on and C.ghostFoc or C.ghost)
         dxDrawRectangle(bx, by, bw, bh, bg)
-        if ModelsNotice.sel == i then dxDrawRectangle(bx, by + bh - S(3), bw, S(3), C.white) end
+        if on then dxDrawRectangle(bx, by + bh - S(3), bw, S(3), C.white) end
         text(L(d[1]), bx, by, bw, bh, C.white, 1.1, FONT.rowB, "center", "center")
         buttons[i] = { x = bx, y = by, w = bw, h = bh, settings = d[2] }
     end

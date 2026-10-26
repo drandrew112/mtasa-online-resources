@@ -95,6 +95,13 @@ function cursorPos()
     return cx * sw, cy * sh
 end
 
+-- mouse over the rect (not through the models modal): draws the focus look
+function Menu.hovered(x, y, w, h)
+    if ModelsNotice and ModelsNotice.open then return false end
+    local mx, my = cursorPos()
+    return mx >= x and mx <= x + w and my >= y and my <= y + h
+end
+
 -- the dx fonts are created at the screen's size (scale 1); the built-in
 -- fallback fonts ("default", ...) need the screen scale
 function fontScale(font)
@@ -148,14 +155,15 @@ end
 -- A tile. content(x, y, w, h, focused) draws inside; activate() on Enter / click.
 function tile(layer, id, x, y, w, h, title, subtitle, content, activate, style)
     local focused = Menu.reg(layer, id, x, y, w, h, { activate = activate })
+    local lit = focused or Menu.hovered(x, y, w, h)
     if style == "join" then
         dxDrawRectangle(x, y, w, h, C.join2)
         dxDrawRectangle(x, y, w, h * 0.55, C.join1)
     else
-        dxDrawRectangle(x, y, w, h, focused and C.tileFoc or C.tile)
+        dxDrawRectangle(x, y, w, h, lit and C.tileFoc or C.tile)
         dxDrawRectangle(x, y, w, 1, C.tileLine)
     end
-    if focused then
+    if lit then
         local t = S(3)
         dxDrawRectangle(x, y, w, t, C.white)
         dxDrawRectangle(x, y + h - t, w, t, C.white)
@@ -180,14 +188,13 @@ end
 -- style: "primary" | "ghost" | "danger"
 function button(layer, id, x, y, w, h, label, fn, style)
     local focused = Menu.reg(layer, id, x, y, w, h, { activate = fn })
-    local mx, my = cursorPos()
-    local hover = mx >= x and mx <= x + w and my >= y and my <= y + h
+    local lit = focused or Menu.hovered(x, y, w, h)
     local bg
-    if style == "ghost" then bg = (focused or hover) and C.ghostFoc or C.ghost
-    elseif style == "danger" then bg = (focused or hover) and tocolor(170, 60, 60, 255) or tocolor(122, 45, 45, 255)
-    else bg = (focused or hover) and C.btnFoc or C.btn end
+    if style == "ghost" then bg = lit and C.ghostFoc or C.ghost
+    elseif style == "danger" then bg = lit and tocolor(170, 60, 60, 255) or tocolor(122, 45, 45, 255)
+    else bg = lit and C.btnFoc or C.btn end
     dxDrawRectangle(x, y, w, h, bg)
-    if focused then dxDrawRectangle(x, y + h - S(3), w, S(3), C.white) end
+    if lit then dxDrawRectangle(x, y + h - S(3), w, S(3), C.white) end
     text(label, x, y, w, h, C.white, 1.0, FONT.rowB, "center", "center")
     return focused
 end
@@ -221,8 +228,9 @@ end
 -- A selectable list row; left/right handlers make it a value row (settings).
 function row(layer, id, x, y, w, h, opts)
     local focused = Menu.reg(layer, id, x, y, w, h, opts)
-    dxDrawRectangle(x, y, w, h, focused and C.rowSel or C.row)
-    if focused then dxDrawRectangle(x, y, S(3), h, C.accent) end
+    local lit = focused or Menu.hovered(x, y, w, h)
+    dxDrawRectangle(x, y, w, h, lit and C.rowSel or C.row)
+    if lit then dxDrawRectangle(x, y, S(3), h, C.accent) end
     return focused
 end
 
@@ -381,7 +389,7 @@ local function drawTop()
         local on = Menu.page == id
         text(label, x, S(26), w, S(40), on and C.white or C.faint, 1.25, FONT.head, "left", "center")
         if on then dxDrawRectangle(x, S(66), w - S(8), S(3), C.accent) end
-        if focused then
+        if focused or Menu.hovered(x - S(4), S(26), w + S(8), S(40)) then
             dxDrawRectangle(x - S(10), S(22), w + S(12), S(2), C.white)
             dxDrawRectangle(x - S(10), S(70), w + S(12), S(2), C.white)
         end
