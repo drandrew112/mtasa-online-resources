@@ -21,6 +21,11 @@ local IGNORE = {
     ["web_manager"]             = true,   -- [web] - started by mtaserver.conf default resource
 }
 
+-- Started before all other resources (right after their own <include> dependencies).
+local PRIORITY = {
+    "v_chat",   -- command database: resources register their chat commands on start
+}
+
 local function log(msg)
     outputServerLog("[v_main:loadResources] " .. msg)
 end
@@ -97,6 +102,12 @@ local function buildOrder()
         mark[name] = 2
 
         order[#order + 1] = name
+    end
+
+    -- Priority resources go first (after their own includes), so they are running
+    -- when everything else starts and registers with them.
+    for _, name in ipairs(PRIORITY) do
+        if resources[name] then visit(name) end
     end
 
     for _, name in ipairs(names) do

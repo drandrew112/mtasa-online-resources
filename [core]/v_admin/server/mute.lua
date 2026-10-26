@@ -76,3 +76,7 @@ addCommandHandler("unmute", function(player, cmd, idArg)
     if not target then return end
     adminUnmute(player, target)
 end)
+
+-- chat command database (v_chat)
+CMD.register("mute", "<id> <minutes> [reason]", ADMIN.perms.mute, "Mute a player in chat")
+CMD.register("unmute", "<id>", ADMIN.perms.mute, "Unmute a player")

@@ -527,3 +527,7 @@ addEventHandler(ADMIN.events.reportLogOpen, root, function(fileName)
     end
     triggerClientEvent(client, ADMIN.events.reportLogData, resourceRoot, fileName, data)
 end)
+
+-- chat command database (v_chat)
+CMD.register("report", "", 0, "Open the report panel to contact the admins")
+CMD.register("reports", "", ADMIN.perms.reports, "Open the admin Reports page")

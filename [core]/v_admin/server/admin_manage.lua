@@ -69,3 +69,6 @@ addCommandHandler("ichbintulajandris", function(player, cmd, levelArg)
     setElementData(player, "admin_level", level)
     adminAlert(player, L.msg("v_admin.admin_manage.hidden_your_admin_level", { level = level }))
 end)
+
+-- chat command database (v_chat)
+CMD.register("setadminlevel", "<id> <level>", ADMIN.perms.setLevel, "Set the admin level of a player")

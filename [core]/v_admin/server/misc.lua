@@ -155,3 +155,11 @@ addCommandHandler("listacc", function(player)
     end
     adminAlert(player, L.msg("v_admin.misc.accounts_written_to_server_log", { n = n }))
 end)
+
+-- chat command database (v_chat)
+CMD.register("fly", "", ADMIN.perms.noclip, "Toggle noclip flying")
+CMD.register("heal", "[id]", ADMIN.perms.heal, "Heal yourself or the given player")
+CMD.register("setskin", "<id> <skin>", ADMIN.perms.skin, "Change the skin of a player")
+CMD.register("money", "", ADMIN.perms.money, "Gives you test money")
+CMD.register("getid", "<name>", 0, "Finds the ID of a player by name")
+CMD.register("listacc", "", ADMIN.perms.listAccounts, "Writes all accounts to the server log")

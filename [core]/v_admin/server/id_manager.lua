@@ -52,3 +52,6 @@ end)
 addCommandHandler("myid", function(player)
     adminAlert(player, L.msg("v_admin.id_manager.your_id", { player = tostring(getElementData(player, "ID") or "none") }))
 end)
+
+-- chat command database (v_chat)
+CMD.register("myid", "", 0, "Shows your ID")

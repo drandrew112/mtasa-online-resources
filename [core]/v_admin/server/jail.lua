@@ -184,3 +184,7 @@ addCommandHandler("ajailout", function(player, cmd, idArg)
     if not target then return end
     adminUnjail(player, target)
 end)
+
+-- chat command database (v_chat)
+CMD.register("ajail", "<id> <minutes> [reason]", ADMIN.perms.jail, "Put a player in admin jail")
+CMD.register("ajailout", "<id>", ADMIN.perms.jail, "Release a player from admin jail")

@@ -169,3 +169,8 @@ for page, cmd in pairs(ADMIN.pageCommands) do
         openAdminPanel(player, page)
     end)
 end
+
+for page, cmd in pairs(ADMIN.pageCommands) do
+    local def = PAGES.defs[page]
+    CMD.register(cmd, "", permLevel(def and def.perm or "panel"), "Open the " .. page .. " page of the admin panel")
+end

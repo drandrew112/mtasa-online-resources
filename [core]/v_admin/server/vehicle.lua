@@ -119,3 +119,8 @@ addCommandHandler("getout", function(player, cmd, idArg)
     local target = resolveTarget(player, idArg)
     if target then adminGetOut(player, target) end
 end)
+
+-- chat command database (v_chat)
+CMD.register("fixveh", "[id]", ADMIN.perms.vehicle, "Repair the vehicle of a player")
+CMD.register("flipveh", "[id]", ADMIN.perms.vehicle, "Flip the vehicle of a player upright")
+CMD.register("getout", "<id>", ADMIN.perms.vehicle, "Throw a player out of their vehicle")

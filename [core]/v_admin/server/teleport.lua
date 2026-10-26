@@ -36,6 +36,7 @@ addCommandHandler("goto", function(player, cmd, idArg)
     local target = resolveTarget(player, idArg)
     if target then adminGoto(player, target) end
 end)
+CMD.register("goto", "<id>", ADMIN.perms.teleport, "Teleport to a player")
 
 -- ------------------------------------------------------------
 --  /gethere <ID>  – bring the given player to you
@@ -76,3 +77,6 @@ addCommandHandler("gethere", function(player, cmd, idArg)
     local target = resolveTarget(player, idArg)
     if target then adminGethere(player, target) end
 end)
+
+-- chat command database (v_chat)
+CMD.register("gethere", "<id>", ADMIN.perms.teleport, "Bring a player to you")

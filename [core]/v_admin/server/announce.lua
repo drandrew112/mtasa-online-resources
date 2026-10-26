@@ -32,3 +32,7 @@ local function adminCall(player, cmd, ...)
 end
 addCommandHandler("af", adminCall)
 addCommandHandler("adminannounce", adminCall)
+
+-- chat command database (v_chat)
+CMD.register("af", "<message>", ADMIN.perms.adminCall, "Admin call: announcement to the whole server")
+CMD.register("adminannounce", "<message>", ADMIN.perms.adminCall, "Admin call: announcement to the whole server")

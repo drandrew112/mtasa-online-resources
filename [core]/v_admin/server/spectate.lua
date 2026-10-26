@@ -81,3 +81,7 @@ end)
 addEventHandler("onResourceStop", resourceRoot, function()
     for admin in pairs(spectating) do stop(admin, true) end
 end)
+
+-- chat command database (v_chat)
+CMD.register("spec", "<id>", ADMIN.perms.spectate, "Spectate a player")
+CMD.register("specoff", "", ADMIN.perms.spectate, "Stop spectating")

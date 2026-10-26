@@ -108,3 +108,8 @@ addCommandHandler("kick", function(player, cmd, idArg, ...)
     if not target then return end
     adminKick(player, target, reason)
 end)
+
+-- chat command database (v_chat)
+CMD.register("ban", "<account> [reason]", ADMIN.perms.ban, "Ban an account")
+CMD.register("unban", "<account>", ADMIN.perms.ban, "Remove the ban of an account")
+CMD.register("kick", "<id> [reason]", ADMIN.perms.kick, "Kick a player")
