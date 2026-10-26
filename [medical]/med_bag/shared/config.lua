@@ -9,6 +9,7 @@ BAG = {
     VEHICLE_MODELS = {
         [416] = true,              -- Mercedes Sprinter (HU)
         [456] = true,              -- Mission Row Ambulance
+        [598] = true,              -- Skoda Octavia (doctor car): no stretcher, kit in the boot
     },
 
     -- Side-door menu point, vehicle-local { x, y, z }. Positioned by hand: /bagpos prints the
@@ -16,9 +17,12 @@ BAG = {
     SIDE_POINT = {
         [416] = { 0.9, 0.3, -0.2 },
         [456] = { 1.40, -0.9, 0.0 },
+        [598] = { 0.0, -2.75, 0.0 },   -- behind the boot (guess, tune with /bagpos)
     },
     DEFAULT_SIDE_POINT = { 1.35, -0.6, 0.0 },
-    SIDE_DOOR = {},                -- [model] = door id opened while taking / putting back, nil = none
+    SIDE_DOOR = {                  -- [model] = door id opened while taking / putting back, nil = none
+        [598] = 1,                 -- boot
+    },
     DOOR_TIME = 400,               -- ms
     ANCHOR_MODEL = 1598,           -- small invisible prop the side-door menu hangs on
     MENU_RANGE = 1.8,              -- metres from the side point
