@@ -234,3 +234,17 @@ function sendWebhookEmbed(id, embeds, options)
         allowed_mentions = { parse = parse },
     })
 end
+
+
+-- ---------------------------------------------------------------- /discord
+
+loadstring(exports.v_chat:importCommands())()
+
+local INVITE_URL = "https://discord.gg/R7YtNeynjj"
+
+addEvent("v_discordmanager:copyInvite", true)
+
+CMD.register("discord", "", 0, "Copies the Discord invite link to your clipboard.")
+addCommandHandler("discord", function(player)
+    triggerClientEvent(player, "v_discordmanager:copyInvite", resourceRoot, INVITE_URL)
+end)

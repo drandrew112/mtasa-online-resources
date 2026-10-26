@@ -198,3 +198,11 @@ end
 function getDiscordPresence()
     return buildDetails(), buildState()
 end
+
+
+addEvent("v_discordmanager:copyInvite", true)
+addEventHandler("v_discordmanager:copyInvite", resourceRoot, function(url)
+    if setClipboard(url) then
+        exports.ui_core:setAlert("Discord invite copied to the clipboard: " .. url, 114, 137, 218, 4000)
+    end
+end)
