@@ -322,9 +322,15 @@ local function tickRun(run, now)
     refreshViewers(run)
 end
 
+-- a player who is on a work_core work (on duty) cannot start a gang war
+local function hasWork(player)
+    return resourceRunning("work_core") and exports.work_core:getPlayerWork(player) and true or false
+end
+
 -- may the player take this gang war right now (also re-checked when the isRunning claim answers)
 local function canReserve(player, gw, rt, ignoreRunning)
     if starterRun[player] or Runs[gw.id] or isPedDead(player) or getElementData(player, "isLogged") ~= true then return false end
+    if hasWork(player) then return false end
     if gw.dimension ~= getElementDimension(player) or gw.interior ~= getElementInterior(player) then return false end
     local px, py = getElementPosition(player)
     return dist2(px, py, gw.x, gw.y) <= gw.trigger_radius ^ 2 and GangWars.isOpen(gw, rt, ignoreRunning)
@@ -357,7 +363,7 @@ local function tryReserve(player, rt)
         if not Runs[id] and not claiming[id] and gw.dimension == dim and gw.interior == int
             and dist2(px, py, gw.x, gw.y) <= gw.trigger_radius ^ 2 and GangWars.isOpen(gw, rt) then
             if armed == nil then armed = isPlayerArmed(player) end
-            if not armed then return end
+            if not armed or hasWork(player) then return end
             claimAndReserve(gw, player)
             return
         end
