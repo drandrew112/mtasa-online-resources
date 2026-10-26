@@ -5,5 +5,6 @@
   "v_modloader.download.done": "{count} vehicle models downloaded.",
   "v_modloader.download.failed": "Download finished, {count} file(s) failed. Try again later.",
   "v_modloader.download.cancelled": "Download cancelled · {ok} / {total} vehicle models downloaded",
-  "v_modloader.download.up_to_date": "Every vehicle model is up to date."
+  "v_modloader.download.up_to_date": "Every vehicle model is up to date.",
+  "v_modloader.download.background": "Downloading {count} new vehicle model(s) in the background ({total} MB)."
 }

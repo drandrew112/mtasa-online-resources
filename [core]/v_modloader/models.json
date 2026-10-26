@@ -5,7 +5,8 @@
     "410": "1987 Ford Festiva",
     "411": "McLaren F1 LM",
     "415": "Skoda Octavia Blood Transporter",
-    "416": "Mercedes Sprinter Ambulance (HU)",
+    "416": "Mercedes Sprinter (with lightbar)",
+    "418": "moonbeam",
     "421": "Renault Talisman",
     "426": "2003 Audi A8",
     "427": "Riot (GTA5)",
@@ -29,11 +30,13 @@
     "560": "2006 Subaru Impreza WRX STi",
     "562": "BMW M3 GTR",
     "580": "1993 Honda Civic",
+    "582": "Toyota HiAce XH10 Ambulance",
     "585": "Alfa Romeo 75",
     "596": "Ford Crown Vic Police",
     "597": "Vapid Police Cruiser (GTA5)",
     "598": "Skoda Octavia MK3 Facelift",
-    "599": "Police Ranger (NYPD)"
+    "599": "Police Ranger (NYPD)",
+    "600": "picador"
   },
   "skins": {
     "272": "",

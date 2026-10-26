@@ -1,8 +1,10 @@
 -- v_modloader (client): downloads the "manual" categories (download="false" files).
 --
 --   downloadModels(category) starts it from Settings > Models; autoUpdate() after the login
---   (v_mainmenu) when Auto-update is on. One file at a time through downloadFile, the progress
---   on ui_download's external mode; Backspace there cancels (the finished files stay).
+--   (v_mainmenu) and after a restart of this resource when Auto-update is on. One file at a
+--   time through downloadFile, the progress on ui_download's external mode; Backspace there
+--   cancels (the finished files stay). In game (spawned) auto-update runs in the background:
+--   no download screen, no Start event, a notification instead.
 --   Local events (source = localPlayer):
 --     onClientModelDownloadStart  (category)
 --     onClientModelDownloadFinish (category, downloadedFiles, failedFiles, cancelled)
@@ -57,6 +59,7 @@ local function progressLabel()
 end
 
 local function updateProgress()
+    if dl.silent then return end
     uiDownload("setExternalProgress", dl.doneBytes, dl.totalBytes, progressLabel())
 end
 
@@ -64,7 +67,7 @@ local function finish()
     local d = dl
     dl = nil
     saveRegistry()
-    uiDownload("endExternal")
+    if not d.silent then uiDownload("endExternal") end
     statusChanged()
     triggerServerEvent("modloader:downloaded", resourceRoot, d.files, d.doneBytes, d.failed, d.cancelled)
 
@@ -142,7 +145,8 @@ addEventHandler("onClientDownloadCancel", root, function()
 end)
 
 --- Downloads the not current files of a "manual" category. Returns true when it started.
-function downloadModels(catName)
+--- silent = in the background (auto-update in game): no download screen, no Start event.
+function downloadModels(catName, silent)
     catName = catName or "vehicles"
     local cat = modloaderCategory(catName)
     if dl or not Mods or not cat or cat.download ~= "manual" or isVerifying() then return false end
@@ -155,10 +159,15 @@ function downloadModels(catName)
     dl = {
         cat = catName, queue = queue, index = 1, tries = 0, doneBytes = 0, totalBytes = bytes,
         files = 0, failed = 0, cancelled = false, models = status.new + status.outdated,
+        silent = silent == true,
     }
-    -- the panel hides first, then the download screen comes up
-    triggerEvent("onClientModelDownloadStart", localPlayer, catName)
-    uiDownload("beginExternal", L("v_modloader.download.title_" .. catName), true)
+    if dl.silent then
+        notify(L("v_modloader.download.background", { count = dl.models, total = mb(bytes) }))
+    else
+        -- the panel hides first, then the download screen comes up
+        triggerEvent("onClientModelDownloadStart", localPlayer, catName)
+        uiDownload("beginExternal", L("v_modloader.download.title_" .. catName), true)
+    end
     nextFile()
     return true
 end
@@ -169,20 +178,25 @@ end
 
 local function runAutoUpdate()
     autoWaiting = false
-    if getElementData(localPlayer, "loaded") == true then return end -- only between the login and the spawn
+    -- the saved options come with the manifest: checked here, not before it arrived
+    if not optionValue(MODLOADER.AUTOUPDATE_SETTING) then return end
+    if dl then return end
+    -- spawned: in the background, the game goes on
+    local silent = getElementData(localPlayer, "loaded") == true
     for _, cat in ipairs(MODLOADER.categories) do
         if cat.download == "manual" and #pendingFiles(cat.name) > 0 then
-            downloadModels(cat.name)
+            downloadModels(cat.name, silent)
             return
         end
     end
 end
 
---- v_mainmenu calls it once the account menu is up: with Auto-update on, the new / changed
---- "manual" models are downloaded right away (once per connection).
+--- With Auto-update on, the new / changed "manual" models are downloaded right away (once
+--- per start of this resource). v_mainmenu calls it once the account menu is up; a restart
+--- of this resource with the player logged in calls it itself.
 function autoUpdate()
     if autoChecked then return false end
-    if not optionValue(MODLOADER.AUTOUPDATE_SETTING) then return false end
+    if Mods and not isVerifying() and not optionValue(MODLOADER.AUTOUPDATE_SETTING) then return false end
     autoChecked = true
     if not Mods or isVerifying() then
         autoWaiting = true    -- onVerifyDone runs it
@@ -192,13 +206,18 @@ function autoUpdate()
     return true
 end
 
+-- restarted while logged in (menu or game): v_mainmenu does not ask again
+addEventHandler("onClientResourceStart", resourceRoot, function()
+    if getElementData(localPlayer, "isLogged") == true then autoUpdate() end
+end)
+
 -- state.lua hook: the manifest is checked against this PC
 function onVerifyDone()
     if autoWaiting then runAutoUpdate() end
 end
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
-    if not dl then return end
+    if not dl or dl.silent then return end
     uiDownload("endExternal")
     -- the hidden panel comes back
     triggerEvent("onClientModelDownloadFinish", localPlayer, dl.cat, dl.files, dl.failed, true)

@@ -9,13 +9,15 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 sirenVehicles = {
     [416] = "fsvas320",   -- Mercedes Sprinter (HU)
     [456] = "soundoff",   -- Mission Row Ambulance
-    [596] = "hella_rtk7", -- Police LS
+    [596] = "code3_z3", -- Police LS
     [597] = "hella_rtk7", -- Police SF
     [598] = "hella_rtk7", -- Police LV
     [599] = "rumbler",    -- Police Ranger
     [490] = "code3_z3",   -- FBI Rancher (Mercedes B-Class)
     [407] = "premier_hazard_6009",   -- Fire Truck
-    [415] = "soundoff"    -- Skoda Octavia Blood Transporter
+    [415] = "soundoff",   -- Skoda Octavia Blood Transporter
+    [582] = "dal",        -- Toyota Hiace
+    [600] = "fsvas320"    -- Mercedes Sprinter 2018
 }
 
 -- Kapcsolható extrás modellek: a fényhíd a modell egyik extra komponense, amit

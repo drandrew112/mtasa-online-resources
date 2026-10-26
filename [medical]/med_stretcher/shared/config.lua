@@ -7,6 +7,8 @@
 STRETCHER = {
     VEHICLE_MODELS = {             -- ambulances that carry a stretcher
         [416] = true,              -- Mercedes Sprinter (HU)
+        [600] = true,              -- Mercedes Sprinter 2018
+        [582] = true,              -- Toyota Hiace
         [456] = true,              -- Mission Row Ambulance
         [487] = true,              -- Maverick (rescue helicopter): side door
     },
