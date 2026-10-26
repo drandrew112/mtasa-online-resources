@@ -1,4 +1,8 @@
 <meta>
 	<info author="[CIF]BranD" version="2.1" type="script" description="You can see where the players are looking" />
 	<script src="lookSync.lua" type="client" protected="true"/>
+
+	<!-- ui_pause Settings > Display > Head Look Sync -->
+	<export function="setLookSyncEnabled" type="client" />
+	<export function="isLookSyncEnabled" type="client" />
 </meta>

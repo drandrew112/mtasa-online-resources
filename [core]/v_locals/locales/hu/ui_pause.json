@@ -111,5 +111,7 @@
   "ui_pause.settings.models_pending": "{count} új · {size}",
   "ui_pause.settings.models_downloaded": "Letöltve: {ok} / {total} (összesen {size})",
   "ui_pause.settings.models_more": "+{count} további",
-  "ui_pause.settings.models_new": "Letöltendő: {names}"
+  "ui_pause.settings.models_new": "Letöltendő: {names}",
+  "ui_pause.pausemenu.head_look_sync": "Fejmozgás szinkron",
+  "ui_pause.pausemenu.head_look_sync_desc": "A játékosok arra fordítják a fejüket, amerre néznek. Kikapcsolva minden fej egyenesen előre néz."
 }

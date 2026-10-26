@@ -130,6 +130,11 @@ local function skyAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function lookSyncAvailable()
+    local res = getResourceFromName("looksync")
+    return res and getResourceState(res) == "running"
+end
+
 local function vehLightsAvailable()
     local res = getResourceFromName("dynamic_lighting_vehicles")
     return res and getResourceState(res) == "running"
@@ -392,6 +397,14 @@ SETTINGS_TREE = {
                 available = radarAvailable,
                 get = function() return radarAvailable() and exports.v_radar:getEnable3DNavigation() end,
                 set = function(v) if radarAvailable() then exports.v_radar:setEnable3DNavigation(v) end end,
+            },
+            {
+                -- on by default; off = other players' (and our own) head stays fixed
+                id = "looksync", label = L("ui_pause.pausemenu.head_look_sync"), type = "toggle",
+                desc = L("ui_pause.pausemenu.head_look_sync_desc"),
+                available = lookSyncAvailable,
+                get = function() return lookSyncAvailable() and exports.looksync:isLookSyncEnabled() end,
+                set = function(v) if lookSyncAvailable() then exports.looksync:setLookSyncEnabled(v) end end,
             },
             {
                 -- D12: the language of the game texts. v_locals stores it on the

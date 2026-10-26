@@ -14,6 +14,7 @@ PAUSE_SETTINGS = {
     { id = "toggleOwnNametag",   type = "boolean" },
     { id = "show3dblips",        type = "boolean" },
     { id = "enable3dnavigation", type = "boolean" },
+    { id = "looksync",           type = "boolean" },
     { id = "gfx_farclip",        type = "number" },
     { id = "gfx_modellod",       type = "number" },
     { id = "gfx_pedlod",         type = "number" },

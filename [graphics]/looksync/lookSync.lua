@@ -1,4 +1,8 @@
 
+-- on by default; ui_pause Settings > Display switches it (setLookSyncEnabled)
+local enabled = true
+local syncTimer
+
 function lookSync ()
     for _, player in pairs(getElementsByType("player", root, true)) do
         if (getPedTask(player, "secondary", 0) ~= "TASK_SIMPLE_USE_GUN" and (not isPedDoingGangDriveby(player))) then
@@ -13,4 +17,22 @@ function lookSync ()
         end
     end
 end
-setTimer(lookSync, 120, 0)
+syncTimer = setTimer(lookSync, 120, 0)
+
+-- off: the timer stops, the 150 ms look runs out and every head stays straight ahead
+function setLookSyncEnabled (state)
+    state = state and true or false
+    if state == enabled then return true end
+    enabled = state
+    if enabled then
+        syncTimer = setTimer(lookSync, 120, 0)
+    elseif isTimer(syncTimer) then
+        killTimer(syncTimer)
+        syncTimer = nil
+    end
+    return true
+end
+
+function isLookSyncEnabled ()
+    return enabled
+end
