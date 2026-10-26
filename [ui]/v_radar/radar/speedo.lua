@@ -3,7 +3,7 @@
 -- position, visibility (bigmap, hideHUD) and size.
 
 local SPEEDO_MAX = 240          -- km/h at a full arc
-local SPEEDO_STEPS = 120        -- fill arc is rebuilt every SPEEDO_MAX / SPEEDO_STEPS km/h
+local SPEEDO_SEG_DEG = 3        -- fill arc is a triangle strip, one segment per this many degrees
 local SPEEDO_GAP = 6            -- px between the minimap and the gauge (ui scaled)
 local SPEEDO_ARC_START = 135    -- deg, svg angles run clockwise from +x
 local SPEEDO_ARC_SPAN = 270
@@ -19,8 +19,6 @@ local LAND_VEHICLE_TYPES = {
 
 local speedoSize = 0
 local speedoBase
-local speedoFill
-local speedoFillStep = -1
 local speedoFont
 local shownSpeed = 0
 
@@ -38,10 +36,8 @@ end
 
 local function destroySpeedo()
 	if isElement(speedoBase) then destroyElement(speedoBase) end
-	if isElement(speedoFill) then destroyElement(speedoFill) end
 	if isElement(speedoFont) then destroyElement(speedoFont) end
-	speedoBase, speedoFill, speedoFont = nil, nil, nil
-	speedoFillStep = -1
+	speedoBase, speedoFont = nil, nil
 end
 
 local function buildSpeedo(size)
@@ -54,14 +50,33 @@ local function buildSpeedo(size)
 	speedoFont = dxCreateFont("files/RobotoB.ttf", math.max(8, floor(size * 0.3)), false, "antialiased")
 end
 
-local function setFill(step)
-	if step == speedoFillStep then return end
-	speedoFillStep = step
-	if isElement(speedoFill) then destroyElement(speedoFill) end
-	speedoFill = nil
-	if step <= 0 or not svgCreate then return end
-	local a1 = SPEEDO_ARC_START + SPEEDO_ARC_SPAN * step / SPEEDO_STEPS
-	speedoFill = svgCreate(speedoSize * 2, speedoSize * 2, svgDoc(speedoSize, arcPath(speedoSize, SPEEDO_ARC_START, a1):format("#ffffff", "1")))
+-- Fill arc drawn as geometry every frame: no texture is rebuilt, so it cannot flicker.
+local function drawFillArc(cx, cy, size, fraction)
+	if fraction <= 0 then return end
+	local rMid, half = size * 50 / 120, size * 3.5 / 120
+	local color = tocolor(255, 255, 255, 255)
+	local span = SPEEDO_ARC_SPAN * fraction
+	local segs = max(1, ceil(span / SPEEDO_SEG_DEG))
+	local strip = {}
+	for i = 0, segs do
+		local a = rad(SPEEDO_ARC_START + span * i / segs)
+		local ca, sa = cos(a), sin(a)
+		strip[#strip + 1] = {cx + ca * (rMid + half), cy + sa * (rMid + half), color}
+		strip[#strip + 1] = {cx + ca * (rMid - half), cy + sa * (rMid - half), color}
+	end
+	dxDrawPrimitive("trianglestrip", false, unpack(strip))
+
+	-- round caps
+	for _, deg in ipairs({SPEEDO_ARC_START, SPEEDO_ARC_START + span}) do
+		local a = rad(deg)
+		local px, py = cx + cos(a) * rMid, cy + sin(a) * rMid
+		local fan = {{px, py, color}}
+		for k = 0, 16 do
+			local t = rad(k * 360 / 16)
+			fan[#fan + 1] = {px + cos(t) * half, py + sin(t) * half, color}
+		end
+		dxDrawPrimitive("trianglefan", false, unpack(fan))
+	end
 end
 
 local function getLandVehicle()
@@ -93,10 +108,7 @@ function renderSpeedo(mx, my, mw, mh)
 
 	if speedoBase then
 		dxDrawImage(x, y, size, size, speedoBase)
-		setFill(floor(min(1, shownSpeed / SPEEDO_MAX) * SPEEDO_STEPS + 0.5))
-		if speedoFill then
-			dxDrawImage(x, y, size, size, speedoFill)
-		end
+		drawFillArc(x + size / 2, y + size / 2, size, min(1, shownSpeed / SPEEDO_MAX))
 	end
 
 	local font = speedoFont or "default-bold"
