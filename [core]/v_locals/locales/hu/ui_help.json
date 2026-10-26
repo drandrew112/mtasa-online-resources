@@ -14,5 +14,16 @@
   "ui_help.block.tip": "TIPP",
   "ui_help.block.warning": "FIGYELEM",
   "ui_help.related": "Kapcsolódó témák",
-  "ui_help.missing_topic": "Ez a súgóoldal nem érhető el."
+  "ui_help.missing_topic": "Ez a súgóoldal nem érhető el.",
+  "ui_help.ai.title": "AI ASSZISZTENS",
+  "ui_help.ai.placeholder": "Tedd fel a kérdésed...",
+  "ui_help.ai.intro": "Kérdezz a szerverről. Az asszisztens a súgóoldalak alapján válaszol. Egy session egy kérdés, percenként egy session.",
+  "ui_help.ai.send": "Kérdez",
+  "ui_help.ai.new": "Új session",
+  "ui_help.ai.waiting": "Gondolkodom...",
+  "ui_help.ai.cooldown": "Következő kérdés: {sec} mp múlva",
+  "ui_help.ai.error": "Hiba: {msg}",
+  "ui_help.ai.timeout": "Az asszisztens nem válaszolt időben.",
+  "ui_help.ai.you": "TE",
+  "ui_help.ai.bot": "ASSZISZTENS"
 }

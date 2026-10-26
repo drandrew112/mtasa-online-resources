@@ -64,6 +64,7 @@ local P = {
     lastTick = 0,
     prevMode = "allow_binds",
     query    = "",
+    focus    = "search",  -- "search" | "ai": which field gets the typing
     results  = nil,       -- Search.run result while searching
     topic    = nil,       -- open topic id, nil = home
     history  = {},        -- previous topic ids (false = home)
@@ -73,6 +74,7 @@ local P = {
     hits     = {},        -- click areas of this frame
     side     = { scroll = 0, target = 0, rows = {}, h = 0, key = nil, sel = nil },
     page     = { scroll = 0, target = 0, layout = nil, key = nil },
+    ai       = { scroll = 0, target = 0, items = {}, h = 0, key = nil },
 }
 
 local A = 1 -- alpha multiplier of the current draw pass
@@ -126,9 +128,11 @@ end
 
 local function buildGeometry()
     G = {}
-    G.w = floor(min(S(1280), sw - 40))
+    local aiW, gap = floor(S(500)), floor(S(10))
+    G.w = floor(min(S(1080), sw - 40 - aiW - gap))
     G.h = floor(min(S(800), sh - 40))
-    G.x = floor((sw - G.w) / 2)
+    local left = floor((sw - (aiW + gap + G.w)) / 2)
+    G.x = left + aiW + gap
     G.y = floor((sh - G.h) / 2)
     G.headH = floor(S(60))
     G.sideW = floor(S(340))
@@ -138,6 +142,16 @@ local function buildGeometry()
     local listY = G.search.y + G.search.h + floor(S(10))
     G.list = { x = G.x, y = listY, w = G.sideW, h = G.y + G.h - listY - floor(S(6)),
                padX = 0, padY = floor(S(4)), bg = COL.side }
+
+    -- AI assistant panel, left of the help panel
+    local ai = { x = left, y = G.y, w = aiW, h = G.h }
+    G.ai = ai
+    local fieldH = floor(S(40))
+    G.aiIn = { x = ai.x + G.pad, y = ai.y + ai.h - G.pad - floor(S(22)) - fieldH, h = fieldH }
+    G.aiIn.w = ai.w - G.pad * 2
+    local chatY = ai.y + G.headH + G.pad
+    G.aiChat = { x = ai.x + G.pad, y = chatY, w = ai.w - G.pad * 2, h = G.aiIn.y - G.pad - chatY, padX = 0, padY = 0 }
+
     G.body = { x = G.x + G.sideW + 1, y = G.y + G.headH + 1, w = G.w - G.sideW - 1, h = G.h - G.headH - 1,
                padX = floor(S(40)), padY = floor(S(30)), bg = COL.page }
 end
@@ -553,7 +567,8 @@ end
 local function drawSearch()
     local b = G.search
     rect(b.x, b.y, b.w, b.h, COL.field)
-    rect(b.x, b.y + b.h - floor(S(2)), b.w, floor(S(2)), P.query ~= "" and COL.accent or COL.line)
+    rect(b.x, b.y + b.h - floor(S(2)), b.w, floor(S(2)), (P.query ~= "" or P.focus == "search") and COL.accent or COL.line)
+    hit(b.x, b.y, b.w, b.h, function() P.focus = "search" end)
 
     -- magnifier
     local ix, iy = b.x + S(18), b.y + b.h / 2 - S(2)
@@ -570,7 +585,7 @@ local function drawSearch()
         local qw = L.width(P.query, F.body.s, F.body.f)
         text(P.query, tx, b.y, tw, b.h, COL.h, F.body, qw > tw and "right" or "left", "center", true)
         local caretX = tx + min(qw, tw) + S(1)
-        if floor(getTickCount() / 530) % 2 == 0 then
+        if P.focus == "search" and floor(getTickCount() / 530) % 2 == 0 then
             rect(caretX, b.y + b.h / 2 - F.body.h / 2, max(1, floor(S(1.5))), F.body.h, COL.accent)
         end
         local cx = b.x + b.w - clearW
@@ -581,6 +596,124 @@ local function drawSearch()
         dxDrawLine(cx + m, cy - S(5), cx + clearW - m, cy + S(5), col(c), S(1.5))
         dxDrawLine(cx + clearW - m, cy - S(5), cx + m, cy + S(5), col(c), S(1.5))
         hit(cx, b.y, clearW, b.h, function() P.query = "" queryChanged() end)
+    end
+end
+
+--------------------------------------------------------------------------------
+-- AI assistant panel (logic: client/ai.lua)
+--------------------------------------------------------------------------------
+
+local function wrapText(str, maxW, font)
+    local out = {}
+    for para in (str .. "\n"):gmatch("(.-)\n") do
+        local line = ""
+        for word in para:gmatch("%S+") do
+            local try = line == "" and word or (line .. " " .. word)
+            if line ~= "" and L.width(try, font.s, font.f) > maxW then
+                out[#out + 1] = line
+                line = word
+            else
+                line = try
+            end
+        end
+        out[#out + 1] = line
+    end
+    return out
+end
+
+local function buildAI()
+    local v, a = G.aiChat, P.ai
+    local key = AI.state .. "|" .. AI.question .. "|" .. AI.answer .. "|" .. tostring(AI.err) .. "|" .. L.lang()
+    if a.key == key then return end
+    a.key = key
+    a.scroll, a.target = 0, 0
+
+    local items, y = {}, 0
+    local function line(t, font, c)
+        local lh = floor(font.h + S(4))
+        items[#items + 1] = { y = y, t = t, f = font, c = c, h = lh }
+        y = y + lh
+    end
+    local function block(t, font, c)
+        for _, ln in ipairs(wrapText(t, v.w - S(16), font)) do line(ln, font, c) end
+    end
+
+    if AI.state == "idle" then
+        block(L("ui_help.ai.intro"), F.body, COL.muted)
+    else
+        line(L("ui_help.ai.you"), F.smallB, COL.accent)
+        block(AI.question, F.body, COL.h)
+        y = y + floor(S(14))
+        line(L("ui_help.ai.bot"), F.smallB, COL.accent)
+        if AI.state == "waiting" then
+            line(L("ui_help.ai.waiting"), F.body, COL.muted)
+        elseif AI.state == "error" then
+            block(L("ui_help.ai.error", { msg = AI.err or "?" }), F.body, COL.warn)
+        else
+            block(AI.answer, F.body, COL.text)
+        end
+    end
+    a.items, a.h = items, y
+end
+
+local function drawAI()
+    local b, v, a = G.ai, G.aiChat, P.ai
+    rect(b.x, b.y, b.w, b.h, COL.side)
+    rect(b.x, b.y, b.w, G.headH, COL.head)
+    rect(b.x, b.y + G.headH, b.w, 1, COL.line)
+    rect(b.x + b.w - 1, b.y, 1, b.h, COL.line)
+
+    local tx = b.x + G.pad + S(6)
+    rect(tx, b.y + G.headH / 2 - S(11), S(3), S(22), COL.accent)
+    text(L("ui_help.ai.title"), tx + S(14), b.y, b.w, G.headH, COL.h, F.head)
+
+    if AI.state == "done" or AI.state == "error" then
+        local label = L("ui_help.ai.new")
+        local bw = L.width(label, F.small.s, F.small.f) + S(26)
+        button(label, b.x + b.w - G.pad - bw, b.y + (G.headH - S(32)) / 2, S(32), F.small, AI.new)
+    end
+
+    -- conversation (only whole lines are drawn)
+    for _, it in ipairs(a.items) do
+        local sy = v.y + it.y - a.scroll
+        if sy >= v.y and sy + it.h <= v.y + v.h then
+            text(it.t, v.x, sy, v.w, it.h, it.c, it.f)
+        end
+    end
+    drawScrollbar(v, a, a.h, "ai")
+
+    -- input + Ask button
+    local f = G.aiIn
+    local idle = AI.state == "idle"
+    local bw = L.width(L("ui_help.ai.send"), F.bodyB.s, F.bodyB.f) + S(30)
+    local fw = f.w - bw - S(8)
+    local focused = P.focus == "ai" and idle
+    rect(f.x, f.y, fw, f.h, COL.field, idle and 1 or 0.5)
+    rect(f.x, f.y + f.h - floor(S(2)), fw, floor(S(2)), focused and COL.accent or COL.line)
+    hit(f.x, f.y, fw, f.h, function() P.focus = "ai" end)
+
+    local pad = S(12)
+    local iw = fw - pad * 2
+    local qw = L.width(AI.input, F.body.s, F.body.f)
+    if AI.input == "" then
+        text(L("ui_help.ai.placeholder"), f.x + pad, f.y, iw, f.h, COL.muted, F.body, "left", "center", true)
+    else
+        text(AI.input, f.x + pad, f.y, iw, f.h, COL.h, F.body, qw > iw and "right" or "left", "center", true)
+    end
+    if focused and floor(getTickCount() / 530) % 2 == 0 then
+        rect(f.x + pad + min(qw, iw) + S(1), f.y + f.h / 2 - F.body.h / 2, max(1, floor(S(1.5))), F.body.h, COL.accent)
+    end
+
+    local can = AI.canAsk()
+    local bx = f.x + fw + S(8)
+    local hov = can and within(bx, f.y, bw, f.h)
+    rect(bx, f.y, bw, f.h, can and (hov and COL.accent or COL.sel) or COL.btn, can and 1 or 0.6)
+    text(L("ui_help.ai.send"), bx, f.y, bw, f.h, can and COL.h or COL.muted, F.bodyB, "center")
+    hit(bx, f.y, bw, f.h, function() AI.ask() end)
+
+    local wait = AI.cooldownLeft()
+    if wait > 0 then
+        text(L("ui_help.ai.cooldown", { sec = wait }), f.x, f.y + f.h + S(4), f.w, S(18), COL.muted, F.small)
     end
 end
 
@@ -604,19 +737,23 @@ local function onRender()
         end
     end
 
+    AI.tick()
     buildRows()
     buildPage()
+    buildAI()
     updateDrag()
     updateScroll(P.side, G.list, P.side.h, dt)
     updateScroll(P.page, G.body, P.page.layout.h, dt)
+    updateScroll(P.ai, G.aiChat, P.ai.h, dt)
 
     P.hits = {}
     rect(0, 0, sw, sh, COL.dim)
-    rect(G.x - S(6), G.y - S(6), G.w + S(12), G.h + S(12), COL.shadow)
+    rect(G.ai.x - S(6), G.y - S(6), G.x + G.w - G.ai.x + S(12), G.h + S(12), COL.shadow)
     rect(G.x, G.y, G.sideW, G.h, COL.side)
     rect(G.body.x, G.body.y, G.body.w, G.body.h, COL.page)
     rect(G.x + G.sideW, G.y + G.headH, 1, G.h - G.headH, COL.line)
 
+    drawAI()
     drawHeader()
     drawSearch()
     drawRows()
@@ -632,6 +769,15 @@ local function ctrl()
 end
 
 local function backspace()
+    if P.focus == "ai" then
+        if AI.state ~= "idle" or AI.input == "" then return end
+        if ctrl() then
+            AI.input = AI.input:gsub("%s*%S+%s*$", "")
+        else
+            AI.input = L.sub(AI.input, 1, L.len(AI.input) - 1)
+        end
+        return
+    end
     if P.query == "" then return end
     if ctrl() then
         P.query = P.query:gsub("%s*%S+%s*$", "")
@@ -658,13 +804,18 @@ end
 local PRESS = {
     F1          = function() close() end,
     escape      = function()
-        if P.query ~= "" then P.query = "" queryChanged() else close() end
+        if P.focus == "ai" and AI.input ~= "" and AI.state == "idle" then AI.input = ""
+        elseif P.query ~= "" then P.query = "" queryChanged() else close() end
     end,
     backspace   = backspace,
     arrow_u     = function() moveSel(-1) end,
     arrow_d     = function() moveSel(1) end,
-    enter       = function() activateRow(P.side.rows[P.side.sel]) end,
-    num_enter   = function() activateRow(P.side.rows[P.side.sel]) end,
+    enter       = function()
+        if P.focus == "ai" then AI.ask() else activateRow(P.side.rows[P.side.sel]) end
+    end,
+    num_enter   = function()
+        if P.focus == "ai" then AI.ask() else activateRow(P.side.rows[P.side.sel]) end
+    end,
     pgup        = function() scrollBy(P.page, G.body, P.page.layout.h, -G.body.h * 0.85) end,
     pgdn        = function() scrollBy(P.page, G.body, P.page.layout.h, G.body.h * 0.85) end,
     home        = function() P.page.target = 0 end,
@@ -681,7 +832,9 @@ local function onKey(button, press)
 
     if button == "mouse_wheel_up" or button == "mouse_wheel_down" then
         local dir = button == "mouse_wheel_up" and -1 or 1
-        if overList() then
+        if within(G.aiChat.x, G.aiChat.y, G.aiChat.w, G.aiChat.h) then
+            scrollBy(P.ai, G.aiChat, P.ai.h, dir * S(WHEEL_STEP) * 0.6)
+        elseif overList() then
             scrollBy(P.side, G.list, P.side.h, dir * S(WHEEL_STEP) * 0.6)
         else
             scrollBy(P.page, G.body, P.page.layout.h, dir * S(WHEEL_STEP))
@@ -705,6 +858,12 @@ end
 
 local function addText(s)
     s = tostring(s or ""):gsub("[%c]", " ")
+    if P.focus == "ai" then
+        if AI.state ~= "idle" then return end
+        local r = AI.MAX_INPUT - L.len(AI.input)
+        if r > 0 and s ~= "" then AI.input = AI.input .. L.sub(s, 1, r) end
+        return
+    end
     local room = MAX_QUERY - L.len(P.query)
     if room <= 0 or s == "" then return end
     P.query = P.query .. L.sub(s, 1, room)
@@ -746,8 +905,9 @@ function HelpPanel_open(topicId)
 
     P.open = true
     P.openTick, P.lastTick = getTickCount(), getTickCount()
-    P.page.key, P.side.key = nil, nil
+    P.page.key, P.side.key, P.ai.key = nil, nil, nil
     P.rep, P.drag = nil, nil
+    P.focus = "search"
     if topicId then openTopic(topicId) end
 
     P.prevMode = guiGetInputMode()

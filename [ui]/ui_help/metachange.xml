@@ -1,0 +1,136 @@
+<meta>
+    <info author="DrAndrew112" name="Help" type="script" version="1.0.0" />
+    <min_mta_version server="1.5.4-9.11342" />
+    <!-- Help panel (F1 or /help): searchable help pages. README.md describes the content format. -->
+
+    <include resource="v_locals" />
+    <script src="locals.lua" type="client" />
+
+    <!-- CLIENT -->
+    <script src="content/index.lua" type="client" />
+    <script src="client/ai.lua" type="client" />
+    <script src="client/markup.lua" type="client" />
+    <script src="client/content.lua" type="client" />
+    <script src="client/search.lua" type="client" />
+    <script src="client/panel.lua" type="client" />
+    <script src="client/exports.lua" type="client" />
+
+    <!-- SERVER -->
+    <script src="server/ai.lua" type="server" />
+    <script src="server/exports.lua" type="server" />
+
+    <!-- FILES -->
+    <file src="files/Roboto.ttf" type="client" />
+    <file src="files/RobotoB.ttf" type="client" />
+
+    <!-- Settings - Set Gemini API Key here -->
+    <settings>
+        <setting name="#gemini_api_key" 
+                 value="PASTE_YOUR_API_KEY_HERE" 
+                 friendlyname="Gemini API Key" 
+                 accept="*" 
+                 desc="A Gemini AI eléréséhez szükséges API kulcs." />
+    </settings>
+
+    <!-- HELP CONTENT: every page (content/en/..., content/hu/...) and image
+         (content/images/...) used by content/index.lua must be listed here -->
+    <file src="content/images/medical/exam_panel.jpg" type="client" />
+    <file src="content/images/medical/lifepak.jpg" type="client" />
+    <file src="content/images/medical/glucometer.jpg" type="client" />
+    <file src="content/en/medical/overview.txt" type="client" />
+    <file src="content/en/medical/exam.txt" type="client" />
+    <file src="content/en/medical/diagnosis.txt" type="client" />
+    <file src="content/en/medical/monitor.txt" type="client" />
+    <file src="content/en/medical/injuries.txt" type="client" />
+    <file src="content/en/medical/drugs.txt" type="client" />
+    <file src="content/en/medical/procedures.txt" type="client" />
+    <file src="content/en/medical/minigames.txt" type="client" />
+    <file src="content/en/medical/equipment.txt" type="client" />
+    <file src="content/en/medical/cases.txt" type="client" />
+    <file src="content/hu/medical/overview.txt" type="client" />
+    <file src="content/hu/medical/exam.txt" type="client" />
+    <file src="content/hu/medical/diagnosis.txt" type="client" />
+    <file src="content/hu/medical/monitor.txt" type="client" />
+    <file src="content/hu/medical/injuries.txt" type="client" />
+    <file src="content/hu/medical/drugs.txt" type="client" />
+    <file src="content/hu/medical/procedures.txt" type="client" />
+    <file src="content/hu/medical/minigames.txt" type="client" />
+    <file src="content/hu/medical/equipment.txt" type="client" />
+    <file src="content/hu/medical/cases.txt" type="client" />
+    <file src="content/images/features/browser_home.jpg" type="client" />
+    <file src="content/images/features/browser_lvcars.jpg" type="client" />
+    <file src="content/images/features/browser_bank.jpg" type="client" />
+    <file src="content/images/features/pause_map.jpg" type="client" />
+    <file src="content/images/features/pause_online.jpg" type="client" />
+    <file src="content/images/features/pause_settings.jpg" type="client" />
+    <file src="content/images/features/interaction_main.jpg" type="client" />
+    <file src="content/images/features/social_friends.jpg" type="client" />
+    <file src="content/en/features/pause.txt" type="client" />
+    <file src="content/en/features/interaction.txt" type="client" />
+    <file src="content/en/features/social.txt" type="client" />
+    <file src="content/en/features/phone.txt" type="client" />
+    <file src="content/en/features/browser.txt" type="client" />
+    <file src="content/hu/features/pause.txt" type="client" />
+    <file src="content/hu/features/interaction.txt" type="client" />
+    <file src="content/hu/features/social.txt" type="client" />
+    <file src="content/hu/features/phone.txt" type="client" />
+    <file src="content/hu/features/browser.txt" type="client" />
+    <file src="content/en/binds/overview.txt" type="client" />
+    <file src="content/en/binds/chat.txt" type="client" />
+    <file src="content/en/binds/pause.txt" type="client" />
+    <file src="content/en/binds/interaction.txt" type="client" />
+    <file src="content/en/binds/social.txt" type="client" />
+    <file src="content/en/binds/phone.txt" type="client" />
+    <file src="content/en/binds/inventory.txt" type="client" />
+    <file src="content/en/binds/weapons.txt" type="client" />
+    <file src="content/en/binds/vehicle.txt" type="client" />
+    <file src="content/en/binds/world.txt" type="client" />
+    <file src="content/en/binds/work.txt" type="client" />
+    <file src="content/en/binds/creator.txt" type="client" />
+    <file src="content/en/binds/admin.txt" type="client" />
+    <file src="content/hu/binds/overview.txt" type="client" />
+    <file src="content/hu/binds/chat.txt" type="client" />
+    <file src="content/hu/binds/pause.txt" type="client" />
+    <file src="content/hu/binds/interaction.txt" type="client" />
+    <file src="content/hu/binds/social.txt" type="client" />
+    <file src="content/hu/binds/phone.txt" type="client" />
+    <file src="content/hu/binds/inventory.txt" type="client" />
+    <file src="content/hu/binds/weapons.txt" type="client" />
+    <file src="content/hu/binds/vehicle.txt" type="client" />
+    <file src="content/hu/binds/world.txt" type="client" />
+    <file src="content/hu/binds/work.txt" type="client" />
+    <file src="content/hu/binds/creator.txt" type="client" />
+    <file src="content/hu/binds/admin.txt" type="client" />
+    <file src="content/en/websites/overview.txt" type="client" />
+    <file src="content/en/websites/vehicles.txt" type="client" />
+    <file src="content/en/websites/bank.txt" type="client" />
+    <file src="content/en/websites/registry.txt" type="client" />
+    <file src="content/en/websites/gov.txt" type="client" />
+    <file src="content/en/websites/ems.txt" type="client" />
+    <file src="content/en/websites/bloodtransport.txt" type="client" />
+    <file src="content/en/websites/transit.txt" type="client" />
+    <file src="content/en/websites/atc.txt" type="client" />
+    <file src="content/hu/websites/overview.txt" type="client" />
+    <file src="content/hu/websites/vehicles.txt" type="client" />
+    <file src="content/hu/websites/bank.txt" type="client" />
+    <file src="content/hu/websites/registry.txt" type="client" />
+    <file src="content/hu/websites/gov.txt" type="client" />
+    <file src="content/hu/websites/ems.txt" type="client" />
+    <file src="content/hu/websites/bloodtransport.txt" type="client" />
+    <file src="content/hu/websites/transit.txt" type="client" />
+    <file src="content/hu/websites/atc.txt" type="client" />
+
+    <!-- EXPORTS: CLIENT -->
+    <export function="openHelp" type="client" />
+    <export function="closeHelp" type="client" />
+    <export function="toggleHelp" type="client" />
+    <export function="isHelpOpen" type="client" />
+    <export function="addHelpCategory" type="client" />
+    <export function="removeHelpCategory" type="client" />
+    <export function="addHelpTopic" type="client" />
+    <export function="removeHelpTopic" type="client" />
+    <export function="getHelpTopics" type="client" />
+
+    <!-- EXPORTS: SERVER -->
+    <export function="openHelp" type="server" />
+</meta>

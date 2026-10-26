@@ -14,5 +14,16 @@
   "ui_help.block.tip": "TIP",
   "ui_help.block.warning": "WARNING",
   "ui_help.related": "Related topics",
-  "ui_help.missing_topic": "This help page is not available."
+  "ui_help.missing_topic": "This help page is not available.",
+  "ui_help.ai.title": "AI ASSISTANT",
+  "ui_help.ai.placeholder": "Ask a question...",
+  "ui_help.ai.intro": "Ask a question about the server. The assistant answers from the help pages. One question per session, one session per minute.",
+  "ui_help.ai.send": "Ask",
+  "ui_help.ai.new": "New session",
+  "ui_help.ai.waiting": "Thinking...",
+  "ui_help.ai.cooldown": "Next question in {sec} s",
+  "ui_help.ai.error": "Error: {msg}",
+  "ui_help.ai.timeout": "The assistant did not answer in time.",
+  "ui_help.ai.you": "YOU",
+  "ui_help.ai.bot": "ASSISTANT"
 }
