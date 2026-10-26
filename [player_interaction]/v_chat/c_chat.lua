@@ -153,6 +153,11 @@ function renderChat()
             dxDrawLine(left, input_y+INPUT_H-1, right, input_y+INPUT_H-1, tocolor(r,g,b, 255), 2)
             -- channel label under the box (Tab switches)
             dxDrawText(L(ch.label), left+5, input_y+INPUT_H+4, _,_, tocolor(r,g,b, 255), 1.2, "default-bold", "left", "top")
+            -- command list under the channel label
+            if input_text:sub(1,1) == "/" then
+                local listY = input_y + INPUT_H + 26
+                drawCommandSuggestions(input_text, left, listY, CHAT_W, sh - listY - 10)
+            end
             -- character counter
             local counter = L.len(input_text).."/"..max_char
             local counter_w = dxGetTextWidth(counter, 1, "default") + 10
@@ -220,17 +225,21 @@ addEventHandler("onClientKey", getRootElement(), function (btn, isPress)
 
         -- Switch channel
         elseif btn=="tab" then
-            channel = CHANNELS[channel].next
+            -- "/..." : Tab completes the command name instead
+            local completed = input_text:sub(1,1) == "/" and completeCommand(input_text)
+            if completed then
+                input_text = completed
+            else
+                channel = CHANNELS[channel].next
+            end
 
         -- Send message
         elseif btn=="enter" then
             setInputOpen(false)
             uicore:toggleMoveControls(true)
             if (input_text ~= "") then
-                if (input_text[1] == "/") then
-                    args = input_text:gmatch("%S+")
-                    cmd = string.sub(args[1], 2, -1)
-                    outputDebugString("cmd="..cmd)
+                if (input_text:sub(1,1) == "/") then
+                    runChatCommand(input_text)
                 else
                     triggerServerEvent("sendMessageToAll", localPlayer, localPlayer, input_text, channel)
                 end
@@ -260,6 +269,8 @@ bindKey("t", "down", function()
     end
     uicore:toggleMoveControls(false)
     input_text = ""
+    refreshCommands()
+    resetCommandSuggestions()
     setTimer(function() setInputOpen(true) end, 10, 1)
 end)
 

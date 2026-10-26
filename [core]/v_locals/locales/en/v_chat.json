@@ -1,8 +1,10 @@
 {
   "v_chat.chat.channel_global": "[TAB] Global",
   "v_chat.chat.channel_local": "[TAB] Local",
+  "v_chat.chat.no_permission": "You are not allowed to use this command.",
   "v_chat.chat.slow_down": "You are sending messages too fast. Wait a few seconds.",
   "v_chat.chat.text": "{sender}: {text}",
+  "v_chat.chat.unknown_command": "Unknown command: /{cmd}",
   "v_chat.mute.invalid_duration": "Invalid duration",
   "v_chat.mute.invalid_player": "Invalid player",
   "v_chat.mute.is_not_muted": "{player} is not muted",

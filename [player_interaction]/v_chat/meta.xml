@@ -6,11 +6,13 @@
   <include resource="v_mysql"/>
 
   <script src="locals.lua" type="shared" />
+  <script src="c_commands.lua" type="client"/>
   <script src="c_chat.lua" type="client"/>
   <script src="c_mute.lua" type="client"/>
 
   <script src="mute.lua" type="server"/>
   <script src="s_chat.lua" type="server"/>
+  <script src="s_commands.lua" type="server"/>
 
   <script src="shared.lua" type="shared"/>
 
@@ -21,6 +23,17 @@
   <export function="mutePlayer" type="server"/>
   <!-- server unmutePlayer(player, admin_name) -->
   <export function="unmutePlayer" type="server"/>
+  <!-- Chat command database (COMMANDS.md). Resources normally use the helper:
+       loadstring(exports.v_chat:importCommands())()  ->  CMD.register(name, params, level, description) -->
+  <!-- server+client registerCommand(name, params, level, description) -> true|false -->
+  <export function="registerCommand" type="server"/>
+  <export function="registerCommand" type="client"/>
+  <export function="unregisterCommand" type="server"/>
+  <export function="unregisterCommand" type="client"/>
+  <!-- server getCommandInfo(name) -> { name, params, level, desc, resource } | false -->
+  <export function="getCommandInfo" type="server"/>
+  <!-- server importCommands() -> Lua source of the CMD helper -->
+  <export function="importCommands" type="server"/>
   <!-- client isPlayerTyping(player) -> true while the player's chat input is open (element data "chatTyping") -->
   <export function="isPlayerTyping" type="client"/>
 </meta>

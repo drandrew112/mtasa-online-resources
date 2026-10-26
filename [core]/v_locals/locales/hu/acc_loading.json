@@ -6,5 +6,14 @@
   "acc_loading.screen.streaming": "betöltés",
   "acc_loading.screen.waiting": "várakozás",
   "acc_loading.screen.world": "Világ",
-  "acc_loading.screen.custom_models": "Egyedi modellek"
+  "acc_loading.screen.custom_models": "Egyedi modellek",
+  "acc_loading.fail.title": "A betöltés túl sokáig tart",
+  "acc_loading.fail.subtitle": "Valamit nem sikerült betölteni. Az újracsatlakozás általában megoldja.",
+  "acc_loading.fail.missing": "Nem töltődött be:",
+  "acc_loading.fail.world": "A spawn környéki világ",
+  "acc_loading.fail.game_resources": "Játék erőforrások (a letöltés vagy indítás nem fejeződött be)",
+  "acc_loading.fail.custom_models": "Egyedi modellek ({done} / {total})",
+  "acc_loading.fail.reconnect": "Újracsatlakozás [ENTER]",
+  "acc_loading.fail.wait": "Várakozás [ESC]",
+  "acc_loading.fail.hint": "Ha ismétlődik, jelezd a fenti listát egy adminnak."
 }

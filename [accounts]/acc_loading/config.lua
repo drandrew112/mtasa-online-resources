@@ -16,5 +16,8 @@ LOADING_REQUIRED = {
     "work_atc", "work_traindriver", "world_elevators", "map_int_sacontrol",
 }
 
+-- no loading progress for this long (ms) -> the loading screen lists what failed and offers a reconnect
+LOADING_FAIL_TIMEOUT = 60000
+
 -- log the still missing reports this often while waiting (ms)
 LOADING_WARN_INTERVAL = 10000
