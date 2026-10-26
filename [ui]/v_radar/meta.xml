@@ -94,6 +94,7 @@
     <include resource="v_locals" />
     <script src="locals.lua" type="client" />
     <script src="radar/sourceC.lua" type="client" />
+    <script src="radar/speedo.lua" type="client" />
 
     <file src="radar/gps/images/dot.png" type="client" />
 

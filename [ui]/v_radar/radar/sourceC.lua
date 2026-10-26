@@ -788,6 +788,8 @@ function renderMinimap(x, y, w, h)
 			--dxDrawText("NO SIGNAL", minimapPosX + minimapRenderSize / 2, minimapPosY + minimapRenderSize + 160, _,_, tocolor(255,255,255,255), 1	, "arial", "center", "center")
 		end
 
+		renderSpeedo(minimapPosX, minimapPosY, minimapWidth, minimapHeight)
+
 		if damageEffectStart then
 			if tonumber(damageEffectStart) then
 				if getTickCount() - damageEffectStart >= 1000 then
