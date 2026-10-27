@@ -15,6 +15,7 @@ Config.TABLET_VEHICLES = {
     [487] = true,
     [563] = true,
     [598] = true,
+    [582] = true,
     [600] = true,
 }
 
