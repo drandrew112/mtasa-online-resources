@@ -18,12 +18,24 @@
     <script src="server/editor.lua"   type="server" />
     <script src="server/interact.lua" type="server" />
     <script src="server/exports.lua"  type="server" />
+    <script src="server/web.lua"      type="server" />
 
     <!-- ================= CLIENT (editor) ================= -->
     <script src="client/editor.lua" type="client" />
     <script src="client/summon.lua" type="client" />
 
     <!-- scenes/*.json are read and written by the server only (not downloaded) -->
+
+    <!-- ================= WEB CONSOLE =================
+         http://server:httpport/med_scenemanager/ - web/index.html with css / js inlined (web_api) -->
+    <html src="index.html" default="true" />
+    <export function="msmWebLogin"  type="server" http="true" />
+    <export function="msmWebLogout" type="server" http="true" />
+    <export function="msmWebScenes" type="server" http="true" />
+    <export function="msmWebState"  type="server" http="true" />
+    <export function="msmWebSpawn"  type="server" http="true" />
+    <export function="msmWebRemove" type="server" http="true" />
+    <export function="msmWebAuto"   type="server" http="true" />
 
     <!-- ================= SETTINGS ================= -->
     <settings>
@@ -49,4 +61,4 @@
     <include resource="ui_inac" />
     <include resource="ui_core" />
     <include resource="ui_interactobject" />
-</meta>
+    <include resource="web_api" /></meta>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene Manager</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/scenes.css">
+</head>
+<body class="locked">
+    <div class="osa-login" id="login">
+        <form class="osa-login-box" id="loginForm" autocomplete="off">
+            <h1>Scene Manager</h1>
+            <p>Sign in with your game account (admin)</p>
+            <input id="user" class="plain" type="text" placeholder="Username" maxlength="64" autocomplete="username">
+            <input id="pass" class="plain" type="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+            <div class="osa-login-error" id="loginError"></div>
+            <button class="osa-btn primary" type="submit" id="loginBtn">Sign in</button>
+        </form>
+    </div>
+
+    <header class="osa-topbar">
+        <div class="osa-brand"><div><strong>Scene Manager</strong><small>Medical scenes</small></div></div>
+        <div class="osa-top-right">
+            <span class="osa-muted" id="stats"></span>
+            <button class="osa-btn small" id="autoBtn">Auto generator: ...</button>
+            <span class="who" id="who"></span>
+            <button class="osa-btn small" id="logout">Sign out</button>
+            <span class="osa-conn" id="conn" title="Connection"></span>
+        </div>
+    </header>
+
+    <main class="sm-main">
+        <section class="osa-panel sm-catalog">
+            <div class="sm-toolbar">
+                <input class="osa-input" id="search" placeholder="Search name, title, place..." maxlength="60">
+                <select class="osa-select" id="location"></select>
+                <select class="osa-select" id="category"></select>
+            </div>
+            <div class="sm-count osa-muted" id="count"></div>
+            <div class="sm-list" id="catalog"></div>
+        </section>
+
+        <section class="osa-panel sm-live">
+            <div class="osa-panel-head">
+                <strong>Active scenes</strong>
+                <button class="osa-btn small danger" id="clearAll" disabled>Remove all</button>
+            </div>
+            <div class="sm-list" id="live"><div class="osa-empty">No active scene.</div></div>
+        </section>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/scenes.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<*
+-- HTTP entry of web/index.html. <html> pages do not see the globals of the server scripts, so
+-- the page reads its files here and web_api inlines the css / js.
+local PAGE = "web/index.html"
+
+local function read(path)
+    local f = fileExists(path) and fileOpen(path, true)
+    if not f then return nil end
+    local content = fileRead(f, fileGetSize(f))
+    fileClose(f)
+    return content
+end
+
+local html = read(PAGE)
+local files = {}
+for _, path in ipairs(exports.web_api:getAssetRefs(html, PAGE)) do files[path] = read(path) end
+httpWrite(exports.web_api:renderPage(html, files, PAGE))
+*>
