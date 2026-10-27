@@ -14,6 +14,7 @@
     "466": "Subaru Impreza RC Sport",
     "487": "Air Ambulance (GTA5)",
     "490": "Mercedes V Class",
+    "483": "2018 Mercedes Sprinter",
     "492": "BMW X5",
     "497": "Police Maverick (GTA5)",
     "506": "Bugatti Veyron",
@@ -35,12 +36,11 @@
     "596": "Ford Crown Vic Police",
     "597": "Vapid Police Cruiser (GTA5)",
     "598": "Skoda Octavia MK3 Facelift",
-    "599": "Police Ranger (NYPD)",
-    "600": "picador"
+    "599": "Police Ranger (NYPD)"
   },
   "skins": {
-    "272": "",
-    "273": "",
+    "272": "OMSZ Coat",
+    "273": "OMSZ #2",
     "275": "Paramedic Female",
     "276": "Paramedic OMSZ",
     "280": "lapd1",

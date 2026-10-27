@@ -17,7 +17,7 @@ sirenVehicles = {
     [407] = "premier_hazard_6009",   -- Fire Truck
     [415] = "soundoff",   -- Skoda Octavia Blood Transporter
     [582] = "dal",        -- Toyota Hiace
-    [600] = "fsvas320"    -- Mercedes Sprinter 2018
+    [483] = "fsvas320"    -- Mercedes Sprinter 2018
 }
 
 -- Kapcsolható extrás modellek: a fényhíd a modell egyik extra komponense, amit

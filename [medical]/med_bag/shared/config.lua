@@ -8,7 +8,7 @@ BAG = {
     -- Ambulances that carry a kit (one medical bag + one Lifepak 15 each)
     VEHICLE_MODELS = {
         [416] = true,              -- Mercedes Sprinter (HU)
-        [600] = true,              -- Mercedes Sprinter 2018
+        [483] = true,              -- Mercedes Sprinter 2018
         [582] = true,              -- Toyota Hiace
         [456] = true,              -- Mission Row Ambulance
         [598] = true,              -- Skoda Octavia (doctor car): no stretcher, kit in the boot
@@ -19,7 +19,7 @@ BAG = {
     -- player's offset relative to the nearest ambulance.
     SIDE_POINT = {
         [416] = { 0.9, 0.3, -0.2 },
-        [600] = { 0.9, 0.3, -0.2 },
+        [483] = { 0.9, 0.3, -0.2 },
         [582] = { 0.9, 0.15, 0.05 },
         [456] = { 1.40, -0.9, 0.0 },
         [598] = { 0.0, -2.75, 0.0 },   -- behind the boot (guess, tune with /bagpos)
