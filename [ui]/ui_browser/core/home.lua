@@ -132,7 +132,7 @@ local COLORS = {
 function BR.buildProduct(pageAttrs, site, product, selColor)
     local pa = pageAttrs or {}
     local name = product.attrs.name or "Product"
-    local price = BR.productPrice(product.attrs)""
+    local price = BR.productPrice(product.attrs)
     local img = BR.productImage(product.attrs) or ""
     local desc = BR.nodeText(product)
     local colours = product.attrs.colors

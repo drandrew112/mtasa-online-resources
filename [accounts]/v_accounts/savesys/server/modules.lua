@@ -192,7 +192,11 @@ end
 MODULES[#MODULES + 1] = {
     id = "weapons",
     apply = function(player, ctx)
-        if ctx.mode == "fresh" then return end
+        if ctx.mode == "fresh" then
+            -- a new account owns nothing, but wp_manager must still count it as loaded (shops, saving)
+            if weaponManagerRunning() then exports.wp_manager:setPlayerWeapons(player, {}) end
+            return
+        end
         loadWeapons(player)
     end,
     save = function(player, d)

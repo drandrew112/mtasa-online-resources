@@ -55,9 +55,9 @@ EMS = {
         { model = 456, name = L.text("work_ems.config.mission_row_ambulance"),
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
         { model = 598, name = L.text("work_ems.config.skoda_octavia_omsz"), paintjob = "hu_omsz", elsExtra = 1, sirenType = "soundoff",
-          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60, driveType = "awd" } },
         { model = 598, name = L.text("work_ems.config.skoda_octavia_omsz_white"), paintjob = "hu_omsz_white", elsExtra = 1, sirenType = "soundoff",
-          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
+          tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60, driveType = "awd" } },
         { model = 487, name = L.text("work_ems.config.air_ambulance"), level = 3 },
     },
 
