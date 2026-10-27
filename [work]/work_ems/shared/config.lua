@@ -49,7 +49,7 @@ EMS = {
         { model = 416, name = L.text("work_ems.config.mercedes_sprinter_omsz_old"), paintjob = "hu_omsz_old", sirenType = "premier_hazard_7109",
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
         { model = 600, name = L.text("work_ems.config.mercedes_sprinter_2018_omsz"),
-          tuning = { engine = 3, turbo = 3, brakes = 3, wheels = "verywide", steeringLock = 60 } },
+          tuning = { engine = 3, turbo = 3, brakes = 3, wheels = "verywide", steeringLock = 60, driveType = "awd" } },
         { model = 582, name = L.text("work_ems.config.toyota_hiace_omsz"),
           tuning = { engine = 2, turbo = 2, brakes = 2, wheels = "verywide", steeringLock = 60 } },
         { model = 456, name = L.text("work_ems.config.mission_row_ambulance"),

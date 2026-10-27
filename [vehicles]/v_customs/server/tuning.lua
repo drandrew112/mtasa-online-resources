@@ -147,7 +147,8 @@ local PACKS = { engine = 1, turbo = 2, brakes = 3, tires = 4, weight = 5 }
 --   spec: engine / turbo / brakes / tires / weight = 0..4 (upgrade level, 0 = stock),
 --         wheels = "verynarrow" | "narrow" | "default" | "wide" | "verywide" (both axles),
 --         frontWheels / rearWheels = the same per axle,
---         steeringLock = degrees (like the Steering lock extra, e.g. 60)
+--         steeringLock = degrees (like the Steering lock extra, e.g. 60),
+--         driveType = "awd" | "fwd" | "rwd"
 --   Parts the vehicle type can't take are skipped.
 function applyVehicleTuning(veh, spec)
     if not isElement(veh) or getElementType(veh) ~= "vehicle" or type(spec) ~= "table" then return false end
@@ -167,6 +168,9 @@ function applyVehicleTuning(veh, spec)
     if lock then
         setVehicleHandling(veh, "steeringLock", lock, false)
         reapplySlotUpgrades(veh)
+    end
+    if spec.driveType == "awd" or spec.driveType == "fwd" or spec.driveType == "rwd" then
+        setVehicleHandling(veh, "driveType", spec.driveType, false)
     end
     return true
 end
