@@ -22,6 +22,7 @@
     <file src="web/map.html"     type="client" />
     <file src="web/css/pt.css"   type="client" />
     <file src="web/css/map.css"  type="client" />
+    <file src="web/css/home.css" type="client" />
     <file src="web/js/common.js" type="client" />
     <file src="web/js/home.js"   type="client" />
     <file src="web/js/map.js"    type="client" />
