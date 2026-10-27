@@ -1,0 +1,92 @@
+# Légtér és navigáció
+@keywords: légtér, navigáció, fix, útvonalpont, NDB, FIR határ, TMA határ, final fix, SID, STAR, go-around, GA, eljárás pontok, fly-by, fly-over, direct, irányszög, használt futópálya, tengeri mérföld, csomó
+@related: atc, atc_approach, atc_tower, atc_area, atc_loa
+
+Hogyan épül fel a San Andreas FIR légtere, hogyan hívják a navigációs pontokat és az eljárásokat, és hogyan repülik azokat a gépek. Az alakzatok és az összes eljárás a [[web_atc|San Andreas Control weboldal]] Airspace map és Procedures oldalán van. (SACC-NAV-1, 1.0 verzió, hatályos: 2026. október 12.)
+
+## 1. Mértékegységek és méretarány
+
+- Magasság, szintek: láb (labeleken száz láb, `045` = 4500 ft)
+- Sebesség: csomó (knots)
+- Függőleges sebesség: láb / perc
+- Távolság: tengeri mérföld (1 nm = 1852 m a scope-on)
+
+San Andreas kicsi, ezért a gépek lassabban haladnak át a térképen, mint amit a sebességük a valóságban jelentene, és minden közelebb van egymáshoz. A labelek mindig a valódi csomót és lábat mutatják.
+
+## 2. Légtér
+
+- **San Andreas FIR** – földfelszín – FL660, az egész térkép plusz 3000 m minden oldalon.
+- **CTA** – földfelszín – FL660, a FIR a TMA-kon kívül.
+- **TMA** – földfelszín – 5500 ft, minden repülőtér körül, hosszan a végső egyenesek mentén. A TMA-k nem fedik át egymást.
+- **CTR** – földfelszín – 2000 ft, minden repülőtér futópályái körül.
+
+![380](content/images/atc/centre-sectors.png)
+
+A CTA központi szektorai a TMA-kkal (kék) és a CTR-ekkel (piros).
+
+## 3. Navigációs pontok
+
+- **FIR határ fixek** (BOREA, ZEPHR, SHARK, SUNRS ...) – a FIR határán. A kívülről érkező járatok itt lépnek be.
+- **TMA határ fixek** (VINEW, GROVE, GARCI ...) – a TMA-k határán. A STAR-ok itt kezdődnek, a SID-ek itt végződnek.
+- **Útvonal fixek** (MOJAV, TIERR, BLUFF ...) – a CTA-ban, a többi között.
+- **Final fixek** (LS27L, SF04, LV18) – a meghosszabbított pályatengelyen, a küszöb előtt 1200 m-re.
+- **Eljárás pontok** (LS271, LS27LH, LS27P1) – a SID-ek, STAR-ok és go-aroundok pontjai (következő fejezet).
+- **NDB** (LSI, EBA, LVA) – a repülőterek rádiófényei.
+
+A final fix neve a repülőtér rövid kódja + a futópálya: a **LS27L** a Los Santos 27L pálya final fixe.
+
+## 4. Egy futópálya eljárás pontjai
+
+Minden pályavég körül ugyanaz a pontkészlet van. A nevük `<repülőtér><pálya><szerep>`:
+
+- **Final fix** `LS27L` – a küszöb előtt 1200 m-re, a végső egyenes kezdete.
+- **Half final** `LS27LH` – a küszöb előtt 600 m-re.
+- **Parallel fixek** `LS27P1`, `LS27P2` – a küszöb mellett, mindkét oldalon.
+- **Base** `LS271`, `LS272` – a final fix mellett, mindkét oldalon.
+- **Downwind** `LS273`, `LS274` – az ellenkező vég túloldalán, mindkét oldalon.
+- **Climb-out** `LS275` – egyenesen előre felszállás után.
+- **Turn** `LS276`, `LS277` – a climb-out után, mindkét oldalon.
+- **Transition** `LS098` – olyan SID pont, amely a kiinduló gépet a kilépő fix felé fordítja.
+
+![430](content/images/atc/ls27l-points.png)
+
+A Los Santos 27L futópálya eljárás pontjai.
+
+## 5. Eljárások
+
+### STAR (érkezés)
+
+- A **belépő fixről** + `1A`-ról kapja a nevét: a **VINEW1A** a VINEW-nél kezdődik. Egy STAR-nak a repülőtér minden pályavégére van útvonala.
+- Belépő fix → (downwind, ha a belépő fix a pálya túloldalán van) → base → final fix. Ha a belépő fix a pálya előtt van, a STAR egyenesen a final fixre megy.
+- Kivétel: Las Venturas a **GARCI2A**-t használja, mert San Fierróban már van GARCI1A.
+
+### SID (indulás)
+
+- A **kilépő fixről** + `1D`-ről kapja a nevét: a **VINEW1D** a VINEW-nél végződik.
+- Pályairány a repülőtér feletti 800 ft-ig, majd (climb-out) → (turn) → kilépő fix. Egyes SID-ekben csak a kilépő fix van: a gép 800 ft után rögtön arra fordul.
+- Az a SID pont a meghosszabbított pályatengelyen, amelyet a gép már elhagyott emelkedés közben, teljesítettnek számít. Nem fordul vissza érte.
+
+### Go-around (GA)
+
+- Repülőterenként egy: **SALSGA**, **SASFGA**, **SALVGA**, minden pályavégre külön útvonallal. A labelen `GA 27L`-ként látszik.
+- Egyenesen előre az ellenkező pályavég half finaljáig → köráthajtás sarka → parallel fix a küszöb mellett → base → final fix. Emelkedés **3000 ft**-ig. Minden kanyar 90°.
+- A kör a másik pályától távolabbi oldalon van: Los Santos 09L/27R északon, 09R/27L délen; San Fierro északnyugaton; Las Venturas keleten.
+
+![300](content/images/atc/ls27l-goaround.png)
+
+A Los Santos 27L futópálya go-aroundja.
+
+### Kanyarkorlátok
+
+Egy eljáráson belül egyetlen kanyar sem nagyobb kb. 100°-nál. A repülési terv és egy eljárás között a kanyar legfeljebb 120°. A gépek **6° / másodperc** sebességgel fordulnak.
+
+## 6. Hogyan repülik a gépek a pontokat
+
+- **Fly-by** (alapértelmezett): a gép a pont előtt kezd fordulni, hogy túllövés nélkül a következő szakaszra álljon.
+- **Fly-over**: a gép pontosan a pont felett repül át, és csak utána fordul. A fly-over pontok körül kör van a scope-on.
+- A **direct** az útvonalat a pontig lecseréli. Utána a gép folytatja a repülési tervét.
+- Az **irányszög** lecseréli az útvonalat egy új direct-ig, STAR-ig, *Resume own navigation*-ig vagy egy elfogott final-ig.
+
+## 7. Használt futópálya
+
+A használt futópálya a szelet követi: az a pályavég, ahol a legnagyobb a szembeszél. Minden repülőtéren ugyanaz a szél. Los Santosban a déli pálya (09R/27L) az érkezőké, az északi (09L/27R) az induló gépeké.

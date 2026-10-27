@@ -1,0 +1,50 @@
+# Targets and labels
+@keywords: target, label, history dots, speed vector, callsign, wake category, cleared level, squawk, heading, vertical speed, controller code, ground label, yellow frame, red frame, alert, CFL, DCT, AHDG
+@related: atc_scope, atc_commands, atc, atc_tower
+
+How to read what the scope shows about an aircraft.
+
+## 1. Airborne
+
+![320](content/images/atc/label-air.png)
+
+The airborne label, hovered so every line shows.
+
+The **target** is a small square. Behind it the **history dots** show its last positions (one every 3 s), and in front of it the **speed vector** shows where it will be (length set with `0`-`5` / V-, V+).
+
+The **label** has up to five lines:
+
+1. `NRA9521 CS B763/H` – callsign, **controller** (white), aircraft type / wake category (L, M, H, J).
+2. `330 340 CAYO` – altitude in hundreds of feet, ground speed in knots, destination.
+3. `330` – cleared level. Hidden when none is set.
+4. `VINEW1A 27L 270` – the direct-to fix or the procedure flown, and the assigned heading (`L270` / `R270` while a forced turn lasts). Hidden when empty.
+5. `3422 181 -1800` – squawk, heading, vertical speed (ft/min). Only while hovered.
+
+Hovering a label gives it a grey background and shows every line, the empty ones as `CFL`, `DCT`, `AHDG`.
+
+### Controller codes
+
+The code on line 1 tells who controls the aircraft:
+
+- `T` / `A` – the Tower / Approach of your own airport.
+- `SF_T`, `LS_A` ... – the Tower / Approach of another airport.
+- `CM` – SACC_CTR (master sector).
+- `CN`, `CS`, `CU`, `CNU`, `CSU` – the other centre positions.
+- `--` – nobody (uncontrolled).
+
+### Colours
+
+A label is **blue** when the aircraft is yours, **grey** when it is not. You can see the information of any aircraft, but only its controller can give it commands.
+
+## 2. Ground
+
+![200](content/images/atc/label-ground.png)
+
+Ground labels: blue = departure, green = arrival. The yellow frame means the aircraft waits for a clearance.
+
+Ground labels always have a background: **blue** for departures, **green** for arrivals, grey when not known. Lines: callsign, speed and squawk, type / wake. Ground traffic is hidden when you zoom out far.
+
+## 3. Frames and alerts
+
+- **Yellow frame** – one of your aircraft is waiting for a clearance (the request is also shown in the list, for example `REQ IFR`).
+- **Red frame + red text above** – an alert: EMRG, COMS, DUPE, STCA, RAM (see [[atc|General rules]], section 6).

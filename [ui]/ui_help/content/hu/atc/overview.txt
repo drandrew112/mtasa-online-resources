@@ -1,0 +1,110 @@
+# Általános szabályok
+@keywords: légiforgalmi irányítás, légiirányítás, ATC, irányító, pozíció, egységek, jogosultság, TWR, APP, RADAR, légtér, FIR, CTA, TMA, CTR, elkülönítés, STCA, szintek, vészhelyzet, EMRG, COMS, DUPE, RAM, fizetés, elszámolás, SACC, San Andreas Control, torony, approach
+@related: atc_nav, atc_tower, atc_approach, atc_area, atc_loa, atc_scope, web_atc
+
+Amit minden irányítónak tudnia kell a San Andreas FIR-ben, bármelyik pozíciót is dolgozza: az egységek, a légtér, ki irányít egy légijárművet, az elkülönítés, a szintek és a vészhelyzetek. (SACC-OPS-1, 1.0 verzió, hatályos: 2026. október 12.)
+
+## Mit hol olvashatsz
+
+[[atc_nav|Légtér és navigáció]]
+[[atc_tower|Repülőtéri irányítás (Tower)]]
+[[atc_approach|Approach irányítás]]
+[[atc_star_levels|STAR belépési szintek]]
+[[atc_area|Területi irányítás (San Andreas Control)]]
+[[atc_loa|Letter of Agreement]]
+[[atc_scope|A konzol és a scope]]
+[[atc_labels|Targetek és labelek]]
+[[atc_commands|A parancsmenü]]
+
+> Toronyirányítónak indulva elég a Tower oldal és a Letter of Agreement néhány fejezete.
+
+## 1. Egységek és pozíciók
+
+A San Andreas FIR-ben háromféle egység van:
+
+- **San Andreas Control** (területi irányítás) – pozíciók: SACC_CTR, SACC_N_CTR, SACC_S_CTR, SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR. A CTA-t dolgozza, radarral. Szükséges jog: **RADAR**.
+- **Approach** – pozíciók: SALS_APP, SASF_APP, SALV_APP. A repülőtér TMA-ját dolgozza. Szükséges jog: **APP**.
+- **Tower** – pozíciók: SALS_TWR, SASF_TWR, SALV_TWR. A CTR-t, a futópályákat és a földi forgalmat dolgozza. Szükséges jog: **TWR**.
+
+A repülőterek:
+
+- **Los Santos International** – SALS, rövidítve LS, magasság 41 ft
+- **Easter Bay International** (San Fierro) – SASF, rövidítve SF, magasság 43 ft
+- **Las Venturas Airport** – SALV, rövidítve LV, magasság 32 ft
+
+### Jogosultságok
+
+Minden irányítónak megvan a **TWR** joga. Az **APP** és a **RADAR** jog az ATC munkában való előléptetéssel jár. Egy pozíciót csak az nyithat meg, akinek megvan a joga, és minden pozíciónak csak egy irányítója lehet.
+
+### Hol nyílnak a pozíciók
+
+Minden pozíciót a San Fierro-i **San Andreas Control** épületben, az **ATC konzoloknál** kell megnyitni (markerek, `E` billentyű). A repülőtéri irányítótornyokban nincs konzol. Minden konzol csak néhány pozíciót kínál: egy repülőtér konzolja a saját Tower és Approach pozícióját, az ACC konzol a San Andreas Control pozíciókat. Lásd: [[atc_scope|A konzol és a scope]].
+
+## 2. Légtér
+
+- **San Andreas FIR** – a teljes San Andreas-i légtér.
+- **CTA** – földfelszín – FL660, a FIR a TMA-kon kívül. Egység: San Andreas Control.
+- **TMA** (repülőterenként egy) – földfelszín – 5500 ft, a CTR-en kívül. Egység: Approach.
+- **CTR** (repülőterenként egy) – földfelszín – 2000 ft. Egység: Tower.
+
+A CTA négy **központi szektorra** oszlik: észak / dél (a ZEPHR - PALIS - VINEW - keleti szél vonal mentén) és alsó / felső (FL205-nél). Lásd: [[atc_area|Területi irányítás]]. A TMA és a CTR alakja a [[web_atc|San Andreas Control weboldal]] légtérképén látható.
+
+## 3. Ki irányít egy légijárművet
+
+**A légijármű annak az egységnek a dolga, amelynek a légterében van.** A szoftver a határon automatikusan átadja a gépeket. A **Transfer to** paranccsal korábban is átadhatod, ahogy azt a [[atc_loa|Letter of Agreement]] előírja.
+
+- **Föld és CTR** – az adott repülőtér Towere.
+- **Végső egyenesen** – a célrepülőtér Towere, még a CTR 2000 ft-os plafonja felett is.
+- **TMA** – az adott repülőtér Approachja.
+- **CTA** – az a központi szektor, amelyben van. A szektort a láncának első nyitott pozíciója kapja, lásd: [[atc_area|Területi irányítás]].
+
+Egy korai átadás csak addig érvényes, amíg a gép még a te légteredben van. Utána újra a normál szabály él.
+
+### Nincs fentről lefelé fedezés
+
+**A zárt egységet nem fedezi a felette lévő egység.** Ha egy repülőtér Towere zárva van, az Approach nem dolgozza a CTR-t és a földet. Ha egy Approach zárva van, a San Andreas Control nem dolgozza a TMA-t. A zárt egység légterében lévő gépek **irányítatlanok**:
+
+- a pilóták maguktól repülik a repülési tervet és a közzétett eljárásokat (SID / STAR);
+- maguktól ereszkednek le és szállnak le, engedély nélkül;
+- a földön minden futópályánál várnak pár másodpercet, majd átkelnek rajta vagy ráhajtanak, ha szabad.
+
+>! Mielőtt egy gép zárt egység felé elhagyja a légtered, állítsd vissza az eljárására vagy a repülési tervére, olyan szinten, amivel a pilóták folytatni tudják.
+
+## 4. Elkülönítés
+
+- **TMA és CTA (levegőben):** legalább **0,1 nm vízszintesen vagy 1000 ft függőlegesen**.
+- **Föld:** két gép nem lehet szemben egymással **60 m**-en belül.
+
+Ha két légi jármű 0,1 nm-nél közelebb kerül vízszintesen **és** 1000 ft-nál közelebb függőlegesen, mindkét label **STCA**-t mutat. Ez elkülönítés-sérülés.
+
+- Az elkülönítés-sérülést annak az egységnek számítjuk fel, amelynek a légterében a gépek vannak. Levonják az irányító fizetéséből: földön 500 €, TMA-ban 700 €, CTA-ban 1000 €. Ugyanazt a párt csak a konfliktus vége után 10 másodperccel számítják fel újra.
+- A földön a gépek egymást követve maguktól tartják a távolságot. A **szembe** találkozás a gurulóúton a Tower felelőssége.
+
+## 5. Szintek és sebesség
+
+- A magasságok **lábban** vannak. A labeleken száz lábban: `045` = 4500 ft.
+- Az engedélyezett szintek **500 ft-os lépésekben 20000 ft-ig**, felette 1000 ft-os lépésekben mennek. A legmagasabb szint **FL390**. A legalacsonyabb, amit engedélyezhetsz: 1000 ft.
+- A repülési terv kért utazószintje (**RFL**) a listákban látszik, és ki van emelve a szintmenüben.
+- Utazószintek a CTA-ban: **keletre** (irány 000-179°) páratlan ezrek, **nyugatra** (irány 180-359°) páros ezrek.
+- A gépek 10000 ft alatt legfeljebb **250 kts**-szel repülnek. A megközelítéshez maguktól lassítanak. Sebességirányításra nincs szükség.
+- A távolságok **tengeri mérföldben** vannak. A scope-on van méretarány-sáv.
+
+## 6. Vészhelyzetek és riasztások
+
+A label feletti piros szöveg riasztás:
+
+- **EMRG** – 7700-as squawk, vészhelyzet. Elsőbbsége van minden más gép előtt. Szabadítsd fel az utat, add meg a legrövidebb utat a leszálláshoz, értesítsd a következő egységeket.
+- **COMS** – 7600-as squawk, rádióhiba. A gép tartja a repülési tervet és az eljárásokat, és nem válaszol. Tartsd távol tőle a többieket.
+- **DUPE** – két gépnek ugyanaz a squawkja. Adj az egyiknek új kódot.
+- **STCA** – elkülönítés elveszett. Azonnal válaszd szét őket: szinttel vagy irányszöggel.
+- **RAM** – 40 másodperce több mint 90°-kal eltér az útvonalától. Nézd meg, hogy az általad adott irányszögen repül-e. Ha nem, adj neki direct-et vagy irányszöget.
+
+## 7. Fizetés
+
+Amikor kilépsz egy pozícióból, részletes elszámolást kapsz:
+
+- **Actions** – 700 € minden elfogadott parancsért, szorozva 1 + 5%-kal a pozícióban töltött percenként (legfeljebb ×3).
+- **Controlled traffic** – 500 € minden különböző gépért, amelynek parancsot adtál.
+- **Mistakes** – mínusz az elkülönítés-sérülések (4. fejezet).
+
+A negatív végösszeget levonják a bankszámládról. Minden elfogadott parancs ATC munka XP-t is ad.

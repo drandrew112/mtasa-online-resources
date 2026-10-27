@@ -1,0 +1,92 @@
+# Airspace and navigation
+@keywords: airspace, navigation, fix, waypoint, NDB, FIR boundary, TMA boundary, final fix, SID, STAR, go-around, GA, procedure points, fly-by, fly-over, direct, heading, runway in use, nautical mile, knots
+@related: atc, atc_approach, atc_tower, atc_area, atc_loa
+
+How the airspace of the San Andreas FIR is built, how the navigation points and procedures are named, and how aircraft fly them. The shapes and every procedure are on the Airspace map and Procedures pages of the [[web_atc|San Andreas Control website]]. (SACC-NAV-1, version 1.0, effective 12 October 2026.)
+
+## 1. Units and scale
+
+- Altitude, levels: feet (labels: hundreds of feet, `045` = 4500 ft)
+- Speed: knots
+- Vertical speed: feet per minute
+- Distance: nautical miles (1 nm = 1852 m on the scope)
+
+San Andreas is small, so aircraft move across the map more slowly than their speed would mean in the real world, and everything is closer together. The labels always show the real knots and feet.
+
+## 2. Airspace
+
+- **San Andreas FIR** – SFC to FL660, the whole map plus 3000 m on every side.
+- **CTA** – SFC to FL660, the FIR outside the TMAs.
+- **TMA** – SFC to 5500 ft, around each airport, long along the finals. The TMAs do not overlap.
+- **CTR** – SFC to 2000 ft, around the runways of each airport.
+
+![380](content/images/atc/centre-sectors.png)
+
+The centre sectors of the CTA with the TMAs (blue) and CTRs (red).
+
+## 3. Navigation points
+
+- **FIR boundary fixes** (BOREA, ZEPHR, SHARK, SUNRS ...) – on the FIR boundary. Flights from outside enter here.
+- **TMA boundary fixes** (VINEW, GROVE, GARCI ...) – on the TMA boundaries. STARs start and SIDs end here.
+- **En-route fixes** (MOJAV, TIERR, BLUFF ...) – in the CTA, between the others.
+- **Final fixes** (LS27L, SF04, LV18) – on the extended centre line, 1200 m before the threshold.
+- **Procedure points** (LS271, LS27LH, LS27P1) – the points of the SIDs, STARs and go-arounds (next section).
+- **NDB** (LSI, EBA, LVA) – radio beacons at the airports.
+
+The name of a final fix is the short airport code + the runway: **LS27L** is the final fix of Los Santos runway 27L.
+
+## 4. Procedure points of a runway
+
+Every runway end has the same set of points around it. Their names are `<airport><runway><role>`:
+
+- **Final fix** `LS27L` – 1200 m before the threshold, start of the final.
+- **Half final** `LS27LH` – 600 m before the threshold.
+- **Parallel fixes** `LS27P1`, `LS27P2` – abeam the threshold, on both sides.
+- **Base** `LS271`, `LS272` – abeam the final fix, on both sides.
+- **Downwind** `LS273`, `LS274` – beyond the opposite end, on both sides.
+- **Climb-out** `LS275` – straight ahead after take-off.
+- **Turn** `LS276`, `LS277` – after the climb-out, on both sides.
+- **Transition** `LS098` – a SID point that turns the departure towards its exit fix.
+
+![430](content/images/atc/ls27l-points.png)
+
+The procedure points of Los Santos runway 27L.
+
+## 5. Procedures
+
+### STAR (arrival)
+
+- Named after its **entry fix** + `1A`: **VINEW1A** starts at VINEW. One STAR has a route for every runway end of the airport.
+- Entry fix → (downwind, when the entry fix is beyond the runway) → base → final fix. When the entry fix is in front of the runway, the STAR goes straight to the final fix.
+- Exception: Las Venturas uses **GARCI2A**, because San Fierro already has GARCI1A.
+
+### SID (departure)
+
+- Named after its **exit fix** + `1D`: **VINEW1D** ends at VINEW.
+- Runway heading up to 800 ft above the field, then (climb-out) → (turn) → exit fix. Some SIDs have only the exit fix: the aircraft turns to it right after 800 ft.
+- A SID point on the extended centre line that the aircraft already passed during the climb counts as passed. It does not turn back for it.
+
+### Go-around (GA)
+
+- One per airport: **SALSGA**, **SASFGA**, **SALVGA**, with a route for every runway end. Shown on the label as `GA 27L`.
+- Straight ahead to the half final of the opposite end → circuit corner → parallel fix abeam the threshold → base → final fix. Climb to **3000 ft**. Every turn is 90°.
+- The circuit is on the side away from the other runway: Los Santos 09L/27R north, 09R/27L south; San Fierro north-west; Las Venturas east.
+
+![300](content/images/atc/ls27l-goaround.png)
+
+The go-around of Los Santos runway 27L.
+
+### Turn limits
+
+No turn inside a procedure is more than about 100°. Between the flight plan and a procedure the turn is at most 120°. Aircraft turn at **6° per second**.
+
+## 6. How aircraft fly the points
+
+- **Fly-by** (the default): the aircraft starts its turn before the point, so that it rolls out on the next leg without overshooting it.
+- **Fly-over**: the aircraft flies right over the point, then turns. Fly-over points have a circle around them on the scope.
+- A **direct** replaces the route up to that point. After it the aircraft continues its flight plan.
+- A **heading** replaces the route until a new direct, a STAR, *Resume own navigation*, or an intercepted final.
+
+## 7. Runway in use
+
+The runway in use follows the wind: the runway end with the most headwind. All airports have the same wind. At Los Santos the southern runway (09R/27L) is for arrivals and the northern one (09L/27R) for departures.

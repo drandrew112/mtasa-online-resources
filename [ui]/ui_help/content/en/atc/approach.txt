@@ -1,0 +1,91 @@
+# Approach
+@keywords: approach, TMA, STAR, descent, final, final fix, glide path, cleared approach, vectoring, heading, intercept, departures, SID, go-around, arrival procedure
+@related: atc, atc_star_levels, atc_loa, atc_nav, atc_commands, atc_tower
+
+Approach works the **TMA** of its airport (SFC to 5500 ft, outside the CTR). It brings arrivals from the TMA entry fix to the final, and climbs departures from the CTR to the TMA boundary. General rules: [[atc|General rules]]. Transfer points and levels: [[atc_loa|Letter of Agreement]]. (SACC-OPS-3, version 1.0.)
+
+## 1. What Approach sees
+
+- the arrivals and departures of its airport, and every aircraft it controls;
+- every aircraft inside or crossing its TMA or CTR;
+- airborne traffic only up to **7500 ft** (the 5500 ft TMA ceiling + 2000 ft). Overflights above that are not shown.
+
+The radar picture is refreshed every **2 seconds**. The targets jump between refreshes.
+
+## 2. Arrivals
+
+### Arrival procedure (STAR)
+
+Every STAR is named after its entry fix on the TMA boundary: `VINEW1A` starts at VINEW. One STAR serves every runway end of the airport. The runway is given with it: **Arrival procedure → VINEW1A 27L**.
+
+- Control normally gives the STAR before the transfer ([[atc_loa|LOA]] section 2). Approach can give or change it too.
+- The list shows the STARs of the airport. The **suggested** one (yellow) is the STAR whose entry fix is the last one in the flight plan.
+- An arrival without a STAR asks for one 2500 m before its entry fix (**STAR**, yellow frame).
+- A new STAR replaces the flight plan, the heading and any direct. The aircraft joins the STAR at the first fix still ahead of it.
+
+### Descent
+
+The aircraft enters the TMA at **4000 ft or below** (3000 ft on the short STARs, see [[atc_star_levels|STAR entry levels]]). Clear it to **1500 ft** as soon as it is yours and the traffic allows it.
+
+Aircraft descend at their own rate. At 250 kts this is per nautical mile:
+
+- **Jets** (A320, B738, E190 ...) – about 2400 ft
+- **ATR 72, Dash 8** – about 1800 ft
+- **PC-12, King Air** – about 1400 ft
+
+Many STARs are short. The [[atc_star_levels|STAR entry levels]] page shows from what level each one still works without extra track miles. When the aircraft is too high, make its track longer with **headings**.
+
+### The final
+
+![320](content/images/atc/final-profile.png)
+
+The final: the final fix is 1200 m before the threshold. The glide path is 1 ft per metre. Above 1700 ft at the final fix the aircraft goes around.
+
+- **Final fix** (`LS27L`, `SF04` ...) – 1200 m before the threshold, on the extended centre line.
+- **Ideal level at the final fix** – **1200 ft above the field** (about 1250 ft).
+- **Cleared level for the approach** – **1500 ft**.
+- **Too high: go-around** – more than **1700 ft above the field** at the final fix.
+- **Glide path** – 1 ft per metre from the threshold (1200 ft at the final fix, 600 ft at the half final).
+
+On the glide path the aircraft can descend faster than the slope, so a little height above it is lost again. Below the glide path it flies level until it meets the slope.
+
+### Cleared approach
+
+>! **A controlled arrival never starts its final without "Cleared approach".** Without it, the aircraft flies straight on through the final fix or the centre line, on its heading, and you have to vector it back.
+
+The pilots ask for it (**APP**, yellow frame) 3500 m before the final fix, or when your heading will intercept the final. What the aircraft does after **Cleared approach** depends on where it is:
+
+- **On a STAR or a go-around procedure** – flies it to the final fix, then the final.
+- **On a heading that intercepts the extended centre line at 30° or less**, ahead of the threshold and close enough – keeps the heading and intercepts the final (any runway end of its destination).
+- **Anywhere else** (flight plan, direct, a heading that does not intercept) – flies **directly to the nearest final fix** of its destination. If it is on the airport side of that fix, it goes round a base point first.
+
+A new direct, a new STAR or a go-around cancels the approach clearance.
+
+![380](content/images/atc/approach-geometry.png)
+
+Three ways to the final: on the STAR, intercepting on a heading (30° at most), or direct to the nearest final fix with a base point.
+
+### Vectoring
+
+- **Fly heading**, **Turn left heading**, **Turn right heading**: the heading picker of the scope shows the turn and the predicted path (see [[atc_commands|The command menu]]).
+- A heading replaces the route. The aircraft keeps it until you give a direct, a STAR, **Resume own navigation**, or it intercepts the final with an approach clearance.
+- The intercept heading must be **30° or less** off the runway heading. Give it so that the aircraft meets the centre line **before the final fix**, at 1500 ft.
+- The aircraft turns at 6° per second. At 250 kts this is a turn of about 0.2 nm radius. Turn it early enough.
+
+### Transfer to Tower
+
+Transfer the arrival to the Tower **no later than the final fix** ([[atc_loa|LOA]] section 5). On final it is the Tower's aircraft anyway.
+
+## 3. Departures
+
+- The departure comes from the Tower once airborne. Its SID and initial level (3000 ft) come with the IFR clearance.
+- Climb it to **5000 ft** by the SID exit fix, and transfer it to Control before the exit fix ([[atc_loa|LOA]] section 3).
+- A SID is named after its exit fix: `VINEW1D` ends at VINEW. You can take the aircraft off the SID with a heading or a direct. It then continues its flight plan after the direct.
+
+## 4. Go-arounds
+
+A go-around climbs to **3000 ft** on the go-around procedure (`GA 27L`, see [[atc_nav|Airspace and navigation]]). The Tower transfers it to you as soon as it is out of the CTR.
+
+- Keep **3000 ft** free near the airport.
+- The aircraft stays at 3000 ft until you clear it lower. On the procedure, it accepts a new **Cleared approach** and flies the rest of it to the final fix.
+- You may take it off the procedure with a heading or a direct at any time.

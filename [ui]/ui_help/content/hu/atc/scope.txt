@@ -1,0 +1,85 @@
+# A konzol és a scope
+@keywords: ATC konzol, belépés, bejelentkezés, pozíciólista, scope, radar, felső sáv, térkép, repülési lista, nagyítás, speed vector, megjelenítő gombok, AT, FIXL, frissítés, Hide, Logout, reset view
+@related: atc, atc_labels, atc_commands, web_atc
+
+A San Andreas Control irányítói szoftvere: hogyan lépj be, és mit mutat a radar scope. (SACC-SW-1, 1.0 verzió.)
+
+## 1. Belépés
+
+1. Menj egy **ATC konzolhoz**: a San Fierro-i San Andreas Control épületben lévő marker. Minden pozíciót innen dolgoznak; a repülőtéri irányítótornyokban nincs konzol.
+2. Nyomd meg az `E`-t. Megnyílik a pozíciólista.
+3. Válassz pozíciót és nyomd meg a **Log in**-t.
+
+![340](content/images/atc/login.jpg)
+
+A pozíciólista. Minden konzol csak a saját pozícióit kínálja. Az a pozíció, amelyet már más dolgoz, "Staffed" felirattal és a nevével látszik.
+
+- Csak azokat a pozíciókat látod, amelyekhez van jogod (TWR, APP, RADAR).
+- Minden konzol csak a saját pozícióit kínálja:
+  - **ACC** – SACC_CTR, SACC_N_CTR, SACC_S_CTR, SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR
+  - **Los Santos** – SALS_TWR, SALS_APP
+  - **San Fierro** – SASF_TWR, SASF_APP
+  - **Las Venturas** – SALV_TWR, SALV_APP
+- Ha másik pozícióba lépsz be, kilépsz a réginél.
+
+A scope azonnal megnyílik. A felső sáv **Hide** gombja (vagy az `E` újra a konzolnál) elrejti, de bent maradsz. A **Logout** véget vet a műszaknak és kifizet.
+
+## 2. A scope
+
+![380](content/images/atc/scope-centre.jpg)
+
+San Andreas Control (SACC_CTR) az egész FIR-rel: a CTA, a három TMA (folytonos) és CTR (szaggatott), a fixek, a forgalom és a repülési listák jobbra.
+
+A scope négy részből áll:
+
+- **Felső sáv** – a pozíciód és a neve, a szektoraid (csak Control, `SECT NL SL`), a használt futópályák (`SALS ARR 27L DEP 27R`), a szél, a megjelenítő gombok, az UTC idő, valamint a List / Reset view / Hide / Logout gombok.
+- **Térkép** – légterek, repülőterek, fixek, a forgalom labelekkel.
+- **Repülési listák** – jobbra (List: be / ki).
+- **Bal alul** – a méretarány-sáv (nm-ben) és a kurzor alatti világpozíció.
+
+### Az egyes pozíciók alapnézete
+
+- **Control** – az egész FIR.
+- **Approach** – a TMA-ja.
+- **Tower** – a repülőtér: futópályák, gurulóutak, állóhelyek.
+
+Ez a nézet belépés után és a **Reset view** után.
+
+![380](content/images/atc/scope-approach.jpg)
+
+Los Santos Approach: a TMA, a CTR (szaggatott), az eljárás pontok és egy érkező a SANTA1A 27L-en.
+
+![380](content/images/atc/scope-tower.jpg)
+
+Los Santos Tower: futópályák, gurulóutak, állóhelyek és a földi labelek. Az LCX6979 és a VCA502 az IFR clearance-re vár (sárga keret, "REQ IFR" a listában).
+
+### Egér és billentyűk
+
+- **Egérgörgő** – nagyítás a kurzornál.
+- **Jobb gombos húzás** – a térkép mozgatása.
+- **Bal kattintás** egy labelre vagy targetre – megnyitja a parancsmenüt.
+- **Bal gombos húzás** egy labelen – a label mozgatása (a vezetővonal követi).
+- **Jobb kattintás** egy labelre – a gép útvonalának mutatása / elrejtése.
+- **Jobb kattintás** üres helyen – minden mutatott útvonal elrejtése.
+- **Kattintás** egy repülési lista sorára – a térkép a gépre középre áll.
+- `0` - `5` (numpad is) – speed vector hossza: 0 = ki, 1-5 = 0,1-0,5 nm.
+
+### Megjelenítő gombok
+
+A felső sáv közepén lévő gombok (súgóért vidd rájuk az egeret):
+
+- **AT** – légtérnevek és határok be / ki.
+- **FIXL** – fixnevek be / ki (a mutatott útvonal fixei megtartják a nevüket).
+- **V-** / **V+** – rövidebb / hosszabb speed vector.
+
+### Radar frissítés
+
+A targetek csak a radarkép frissítésekor mozdulnak: a Tower **1 mp-enként**, az Approach **2 mp-enként**, a Control **3 mp-enként**. A frissítések között állnak.
+
+### Mit lát az egyes pozíció
+
+- **Tower, Approach** – a repülőterük érkező és induló gépeit, minden gépet, amelyet irányítanak, és (Approach) mindent, ami a TMA-ban van vagy keresztezi. A levegőben lévő forgalmat csak **7500 ft**-ig.
+- **Control, alsó vagy master** – mindent.
+- **Control, csak felső** (U, NU, SU) – a forgalmat **FL185** felett, plusz a saját gépeit.
+
+A repülési listák és az átadások a [[atc_commands|A parancsmenü]] oldalon vannak.

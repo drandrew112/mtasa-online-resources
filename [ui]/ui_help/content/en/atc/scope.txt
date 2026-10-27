@@ -1,0 +1,85 @@
+# The console and the scope
+@keywords: ATC console, login, log in, position list, scope, radar, top bar, map, flight list, zoom, speed vector, display buttons, AT, FIXL, refresh, Hide, Logout, reset view
+@related: atc, atc_labels, atc_commands, web_atc
+
+The controller software of San Andreas Control: how to log in and what the radar scope shows. (SACC-SW-1, version 1.0.)
+
+## 1. Logging in
+
+1. Go to an **ATC console**: a marker in the San Andreas Control building in San Fierro. Every position is worked from there; the airport control towers have no consoles.
+2. Press `E`. The position list opens.
+3. Pick a position and press **Log in**.
+
+![340](content/images/atc/login.jpg)
+
+The position list. Each console offers only its own positions. A position that someone else already works shows "Staffed" and their name.
+
+- You only see the positions you have the right for (TWR, APP, RADAR).
+- Each console offers only its own positions:
+  - **ACC** – SACC_CTR, SACC_N_CTR, SACC_S_CTR, SACC_U_CTR, SACC_NU_CTR, SACC_SU_CTR
+  - **Los Santos** – SALS_TWR, SALS_APP
+  - **San Fierro** – SASF_TWR, SASF_APP
+  - **Las Venturas** – SALV_TWR, SALV_APP
+- Logging in to another position logs you out of the old one.
+
+The scope opens straight away. **Hide** in the top bar (or `E` at the console again) hides it, but you stay logged in. **Logout** ends your shift and pays you.
+
+## 2. The scope
+
+![380](content/images/atc/scope-centre.jpg)
+
+San Andreas Control (SACC_CTR) with the whole FIR: the CTA, the three TMAs (solid) and CTRs (dashed), the fixes, the traffic and the flight lists on the right.
+
+The scope has four parts:
+
+- **Top bar** – your position and its name, your sectors (Control only, `SECT NL SL`), the runways in use (`SALS ARR 27L DEP 27R`), the wind, the display buttons, the UTC time, and the List / Reset view / Hide / Logout buttons.
+- **Map** – airspaces, airports, fixes, the traffic with labels.
+- **Flight lists** – on the right (List: on / off).
+- **Bottom left** – the scale bar (in nm) and the world position under the cursor.
+
+### Default view of each position
+
+- **Control** – the whole FIR.
+- **Approach** – its TMA.
+- **Tower** – the airfield: runways, taxiways, stands.
+
+This is the view after login and after **Reset view**.
+
+![380](content/images/atc/scope-approach.jpg)
+
+Los Santos Approach: the TMA, the CTR (dashed), the procedure points and an arrival on SANTA1A 27L.
+
+![380](content/images/atc/scope-tower.jpg)
+
+Los Santos Tower: runways, taxiways, stands and the ground labels. LCX6979 and VCA502 wait for their IFR clearance (yellow frame, "REQ IFR" in the list).
+
+### Mouse and keys
+
+- **Mouse wheel** – zoom at the cursor.
+- **Right drag** – move the map.
+- **Left click** on a label or a target – open the command menu.
+- **Left drag** on a label – move the label (the leader line follows).
+- **Right click** on a label – show / hide the route of the aircraft.
+- **Right click** on an empty spot – hide every shown route.
+- **Click** a row of a flight list – centre the map on that aircraft.
+- `0` - `5` (also numpad) – speed vector length: 0 = off, 1-5 = 0.1-0.5 nm.
+
+### Display buttons
+
+The buttons in the middle of the top bar (hover over them for help):
+
+- **AT** – airspace names and limits on / off.
+- **FIXL** – fix names on / off (the fixes of a shown route stay named).
+- **V-** / **V+** – shorter / longer speed vector.
+
+### Radar refresh
+
+The targets move only when the radar picture is refreshed: Tower every **1 s**, Approach every **2 s**, Control every **3 s**. Between refreshes they stand still.
+
+### What each position sees
+
+- **Tower, Approach** – the arrivals and departures of their airport, every aircraft they control, and (Approach) everything inside or crossing its TMA. Airborne traffic only up to **7500 ft**.
+- **Control, lower or master** – everything.
+- **Control, upper only** (U, NU, SU) – traffic from **FL185** up, plus their own aircraft.
+
+The flight lists and transfers are on [[atc_commands|The command menu]].

@@ -1,0 +1,50 @@
+# Targetek és labelek
+@keywords: target, label, history dots, speed vector, hívójel, turbulencia kategória, engedélyezett szint, squawk, irányszög, függőleges sebesség, irányítói kód, földi label, sárga keret, piros keret, riasztás, CFL, DCT, AHDG
+@related: atc_scope, atc_commands, atc, atc_tower
+
+Hogyan olvasd le, mit mutat a scope egy gépről.
+
+## 1. Levegőben
+
+![320](content/images/atc/label-air.png)
+
+A levegőben lévő gép labelje, fölé víve az egeret, hogy minden sor látszik.
+
+A **target** egy kis négyzet. Mögötte a **history dots** az utolsó pozíciókat mutatja (3 mp-enként egyet), előtte a **speed vector** azt, hová jut (hossza `0`-`5` / V-, V+ gombokkal állítható).
+
+A **label**-nek legfeljebb öt sora van:
+
+1. `NRA9521 CS B763/H` – hívójel, **irányító** (fehér), géptípus / turbulencia kategória (L, M, H, J).
+2. `330 340 CAYO` – magasság száz lábban, földsebesség csomóban, célállomás.
+3. `330` – engedélyezett szint. Rejtett, ha nincs beállítva.
+4. `VINEW1A 27L 270` – a direct-to fix vagy a repült eljárás, és a megadott irányszög (`L270` / `R270`, amíg kényszerített kanyar tart). Rejtett, ha üres.
+5. `3422 181 -1800` – squawk, irányszög, függőleges sebesség (ft/perc). Csak fölé víve az egeret.
+
+A label fölé víve szürke hátteret kap és minden sort mutat, az üreseket `CFL`, `DCT`, `AHDG` felirattal.
+
+### Irányítói kódok
+
+Az 1. sor kódja megmutatja, ki irányítja a gépet:
+
+- `T` / `A` – a saját repülőtered Towere / Approachja.
+- `SF_T`, `LS_A` ... – másik repülőtér Towere / Approachja.
+- `CM` – SACC_CTR (master szektor).
+- `CN`, `CS`, `CU`, `CNU`, `CSU` – a többi centre pozíció.
+- `--` – senki (irányítatlan).
+
+### Színek
+
+A label **kék**, ha a gép a tiéd, **szürke**, ha nem. Bármelyik gép adatait láthatod, de parancsot csak az irányítója adhat neki.
+
+## 2. Földön
+
+![200](content/images/atc/label-ground.png)
+
+Földi labelek: kék = induló, zöld = érkező. A sárga keret azt jelenti, hogy a gép engedélyre vár.
+
+A földi labelnek mindig van háttere: **kék** az indulóknak, **zöld** az érkezőknek, szürke, ha nem ismert. Sorok: hívójel, sebesség és squawk, típus / turbulencia. A földi forgalom el van rejtve, ha messze kicsinyítesz.
+
+## 3. Keretek és riasztások
+
+- **Sárga keret** – az egyik géped engedélyre vár (a kérés a listában is látszik, például `REQ IFR`).
+- **Piros keret + piros szöveg fölötte** – riasztás: EMRG, COMS, DUPE, STCA, RAM (lásd: [[atc|Általános szabályok]], 6. fejezet).

@@ -1,0 +1,80 @@
+# STAR entry levels
+@keywords: STAR, entry level, entry fix, track, short STAR, highest entry, LOA entry, descent, VINEW1A, GROVE1A, PLAYA1A, OCEAN1A, MARLN1A, REEFS1A, SANTA1A, MISTY1A, ANGPI1A, DOHER1A, FLINT1A, GARCI1A, BAYSD1A, GANTN1A, JUNIP1A, PALIS1A, SHADY1A, MONTG1A, SPRNG1A, KACCY1A, DESRT1A, PRCKL1A, BONEC1A, GARCI2A
+@related: atc_approach, atc_loa, atc_area, atc_nav
+
+Annex A of the Approach manual. *Track* is the length of the STAR from the entry fix to the final fix. *Highest entry* is the highest level at the entry fix from which **every aircraft type** still reaches 1500 ft by the final fix on the STAR alone, cleared to 1500 ft at the entry fix (measured in the traffic simulation; the PC-12 is usually the slowest). *LOA entry* is the agreed level ([[atc_loa|Letter of Agreement]] section 2).
+
+>! Where the LOA entry is above the highest entry, make the track longer with headings.
+
+**(short)** marks the STARs where the LOA entry is 3000 ft.
+
+## Los Santos (SALS)
+
+- VINEW1A runway 09L: track 0.73 nm, highest entry 2500 ft, LOA entry 4000 ft
+- VINEW1A runway 09R: track 0.79 nm, highest entry 2500 ft, LOA entry 4000 ft
+- VINEW1A runway 27R: track 1.93 nm, highest entry 4000 ft, LOA entry 4000 ft
+- VINEW1A runway 27L: track 1.99 nm, highest entry 4250 ft, LOA entry 4000 ft
+- GROVE1A runway 09L: track 1.57 nm, highest entry 3500 ft, LOA entry 4000 ft
+- GROVE1A runway 09R: track 1.63 nm, highest entry 3750 ft, LOA entry 4000 ft
+- GROVE1A runway 27R: track 1.01 nm, highest entry 2750 ft, LOA entry 4000 ft
+- GROVE1A runway 27L: track 1.07 nm, highest entry 3000 ft, LOA entry 4000 ft
+- PLAYA1A runway 09L: track 2.52 nm, highest entry 5000 ft, LOA entry 4000 ft
+- PLAYA1A runway 09R: track 2.57 nm, highest entry 5000 ft, LOA entry 4000 ft
+- PLAYA1A runway 27R: track 0.66 nm, highest entry 2500 ft, LOA entry 4000 ft
+- PLAYA1A runway 27L: track 0.70 nm, highest entry 2500 ft, LOA entry 4000 ft
+- OCEAN1A runway 09L: track 2.81 nm, highest entry 5500 ft, LOA entry 4000 ft
+- OCEAN1A runway 09R: track 2.75 nm, highest entry 5250 ft, LOA entry 4000 ft
+- OCEAN1A (short) runway 27R: track 0.59 nm, highest entry 2250 ft, LOA entry 3000 ft
+- OCEAN1A (short) runway 27L: track 0.57 nm, highest entry 2250 ft, LOA entry 3000 ft
+- MARLN1A runway 09L: track 1.87 nm, highest entry 4000 ft, LOA entry 4000 ft
+- MARLN1A runway 09R: track 1.80 nm, highest entry 4000 ft, LOA entry 4000 ft
+- MARLN1A runway 27R: track 0.93 nm, highest entry 2750 ft, LOA entry 4000 ft
+- MARLN1A runway 27L: track 0.87 nm, highest entry 2500 ft, LOA entry 4000 ft
+- REEFS1A runway 09L: track 0.89 nm, highest entry 2750 ft, LOA entry 4000 ft
+- REEFS1A runway 09R: track 0.83 nm, highest entry 2500 ft, LOA entry 4000 ft
+- REEFS1A runway 27R: track 2.04 nm, highest entry 4250 ft, LOA entry 4000 ft
+- REEFS1A runway 27L: track 1.98 nm, highest entry 4250 ft, LOA entry 4000 ft
+- SANTA1A (short) runway 09L: track 0.46 nm, highest entry 1750 ft, LOA entry 3000 ft
+- SANTA1A (short) runway 09R: track 0.46 nm, highest entry 1750 ft, LOA entry 3000 ft
+- SANTA1A runway 27R: track 2.73 nm, highest entry 5250 ft, LOA entry 4000 ft
+- SANTA1A runway 27L: track 2.77 nm, highest entry 5250 ft, LOA entry 4000 ft
+
+## San Fierro (SASF)
+
+- MISTY1A (short) runway 04: track 0.57 nm, highest entry 2250 ft, LOA entry 3000 ft
+- MISTY1A runway 22: track 2.61 nm, highest entry 5000 ft, LOA entry 4000 ft
+- ANGPI1A (short) runway 04: track 0.61 nm, highest entry 2250 ft, LOA entry 3000 ft
+- ANGPI1A runway 22: track 2.26 nm, highest entry 4500 ft, LOA entry 4000 ft
+- DOHER1A (short) runway 04: track 0.78 nm, highest entry 2250 ft, LOA entry 3000 ft
+- DOHER1A runway 22: track 1.79 nm, highest entry 3750 ft, LOA entry 4000 ft
+- FLINT1A runway 04: track 1.26 nm, highest entry 3000 ft, LOA entry 4000 ft
+- FLINT1A runway 22: track 1.06 nm, highest entry 2750 ft, LOA entry 4000 ft
+- GARCI1A runway 04: track 1.91 nm, highest entry 4000 ft, LOA entry 4000 ft
+- GARCI1A (short) runway 22: track 0.41 nm, highest entry 1750 ft, LOA entry 3000 ft
+- BAYSD1A runway 04: track 2.50 nm, highest entry 4750 ft, LOA entry 4000 ft
+- BAYSD1A (short) runway 22: track 0.58 nm, highest entry 2250 ft, LOA entry 3000 ft
+- GANTN1A runway 04: track 2.20 nm, highest entry 4500 ft, LOA entry 4000 ft
+- GANTN1A runway 22: track 0.81 nm, highest entry 2750 ft, LOA entry 4000 ft
+- JUNIP1A runway 04: track 1.51 nm, highest entry 3500 ft, LOA entry 4000 ft
+- JUNIP1A runway 22: track 1.41 nm, highest entry 3250 ft, LOA entry 4000 ft
+- PALIS1A runway 04: track 0.87 nm, highest entry 3000 ft, LOA entry 4000 ft
+- PALIS1A runway 22: track 2.16 nm, highest entry 4250 ft, LOA entry 4000 ft
+
+## Las Venturas (SALV)
+
+- SHADY1A runway 18: track 2.29 nm, highest entry 4500 ft, LOA entry 4000 ft
+- SHADY1A (short) runway 36: track 0.73 nm, highest entry 2250 ft, LOA entry 3000 ft
+- MONTG1A runway 18: track 2.50 nm, highest entry 4750 ft, LOA entry 4000 ft
+- MONTG1A (short) runway 36: track 0.46 nm, highest entry 2000 ft, LOA entry 3000 ft
+- SPRNG1A runway 18: track 2.33 nm, highest entry 4500 ft, LOA entry 4000 ft
+- SPRNG1A runway 36: track 0.83 nm, highest entry 2750 ft, LOA entry 4000 ft
+- KACCY1A runway 18: track 1.22 nm, highest entry 3000 ft, LOA entry 4000 ft
+- KACCY1A runway 36: track 1.39 nm, highest entry 3250 ft, LOA entry 4000 ft
+- DESRT1A runway 18: track 0.83 nm, highest entry 2750 ft, LOA entry 4000 ft
+- DESRT1A runway 36: track 2.33 nm, highest entry 4500 ft, LOA entry 4000 ft
+- PRCKL1A (short) runway 18: track 0.47 nm, highest entry 2000 ft, LOA entry 3000 ft
+- PRCKL1A runway 36: track 2.50 nm, highest entry 4750 ft, LOA entry 4000 ft
+- BONEC1A (short) runway 18: track 0.46 nm, highest entry 2000 ft, LOA entry 3000 ft
+- BONEC1A runway 36: track 1.88 nm, highest entry 4000 ft, LOA entry 4000 ft
+- GARCI2A runway 18: track 1.61 nm, highest entry 3500 ft, LOA entry 3000 ft (LOA §8)
+- GARCI2A (short) runway 36: track 0.66 nm, highest entry 2250 ft, LOA entry 3000 ft

@@ -1,0 +1,90 @@
+# A parancsmenü
+@keywords: parancsmenü, engedély, cleared altitude, fly heading, turn left, turn right, irányválasztó, direct to, arrival procedure, cleared approach, cleared to land, vacate, go around, transfer to, show route, IFR clearance, pushback, taxi, cross runway, backtrack, line up, felszállás, repülési lista, departures, arrivals, sector, logout
+@related: atc_scope, atc_labels, atc_tower, atc_approach, atc_loa, atc
+
+Kattints egy labelre vagy targetre. A menü teteje a járatot mutatja: hívójel, típus, squawk, indulás → célállomás, az állapota és amire most szüksége van, az útvonala, az eljárása (a javasolttal) és az irányítója.
+
+A parancsok csoportokba vannak rendezve. Az a parancs, amely most nem adható, **szürke**. Az a parancs, amit a gép kér, **sárga**. A földön a teljes folyamat sorrendben fel van sorolva.
+
+![350](content/images/atc/menu.jpg)
+
+Egy levegőben lévő gép menüje a SACC_CTR alatt.
+
+## 1. Parancsok levegőben
+
+**LEVEL & ROUTE**
+
+- **Cleared altitude** › szintek listája (a jelenlegi sárga, a kért szint zöld) – az irányítója.
+- **Fly heading** / **Turn left heading** / **Turn right heading** › irányválasztó – az irányítója.
+- **Direct to** › az útvonala fixei, a használt pálya final fixe, a legközelebbi további fixek – az irányítója.
+- **Arrival procedure** › STAR + pálya (a javasolt sárga) – Approach, Control.
+- **Resume own navigation** (irányszögön), **Cancel direct** – az irányítója.
+
+**APPROACH & LANDING**
+
+- **Cleared approach** – az irányítója.
+- **Cleared to land**, **Vacate via** › kijáratok – Tower.
+- **Go around** – az irányítója.
+
+**COORDINATION**
+
+- **Transfer to** › nyitott pozíciók – az irányítója.
+
+**DISPLAY**
+
+- **Show route** / **Hide route**, **Reset label position**, **Close** – bárki.
+
+## 2. Földi parancsok
+
+![400](content/images/atc/menu-ground.jpg)
+
+Egy induló gép menüje az állóhelyén: most csak az IFR clearance aktív.
+
+- **DELIVERY** – **IFR clearance** › SID (a javasolt sárga, a nem használt futópályák megjelölve) › kezdő szint.
+- **GROUND** – **Pushback approved**, **Taxi** › pályavég (indulók), **Taxi to stand** › állóhely (érkezők).
+- **RUNWAY** – **Cross runway**, **Backtrack runway**, **Line up and wait**, **Cleared for take-off** (indulók), **Vacate via** (érkezők).
+
+![260](content/images/atc/menu-sid.jpg)
+
+Az IFR clearance: először a SID. A javasolt legfelül van, sárgával, a nem használt futópályák SID-jei megjelölve.
+
+A hosszú listák az **egérgörgővel** görgethetők. A **< Back** visszavisz a főmenübe. Hogy mit jelent az egyes lépés: [[atc_tower|Tower]].
+
+## 3. Az irányválasztó
+
+A **Fly heading**, **Turn left heading** és **Turn right heading** lista helyett iránytűgyűrűt nyit a gép körül:
+
+![380](content/images/atc/hdgpicker.jpg)
+
+Az irányválasztó: a ciánkék vonal a kanyar várható útvonala, 30 másodpercenként egy ponttal.
+
+- **Egér iránya** – 5°-os lépésekben választja az irányszöget.
+- **Egérgörgő** – ±5°.
+- **Bal kattintás** – megadja az irányszöget.
+- **Jobb kattintás** / `Esc` – vissza a menübe.
+
+A doboz mutatja az új irányszöget, a kanyart (`LEFT 110°`) és hogy mennyi ideig tart. A *Fly heading* a rövidebb irányba fordul. A *Turn left / right* abba az irányba fordul akkor is, ha az a hosszabb út.
+
+## 4. Repülési listák
+
+- **Tower, Approach** – a repülőtér **DEPARTURES** és **ARRIVALS** listája.
+- **Control** – **DEPARTURES** (a földön vagy az induló TMA-ban), **ARRIVALS** (az érkező TMA-ban vagy leszállt), **SECTOR** (minden más levegőben lévő gép).
+
+Oszlopok:
+
+- **CS, TYPE** – hívójel, típus / turbulencia.
+- **ADEP, ADES** – indulási, célrepülőtér.
+- **FIRST WP / LAST WP / ENTRY / EXIT** – a repülési terv első / utolsó fixe.
+- **ALT** – magasság (×100 ft). A földön az állapot (GATE, PUSHBAC, TAXI_OU ...) vagy sárgával **REQ ...**, ha rád vár.
+- **CFL, RFL** – engedélyezett szint, kért utazószint.
+- **CTRL** – az irányítója.
+
+A saját gépeid legfelül vannak, kékkel. Kattints egy sorra, hogy a térkép a gépre középre álljon.
+
+## 5. Átadások
+
+A **Transfer to** átadja a gépet egy másik nyitott pozíciónak, mielőtt elhagyná a légtered. Az új irányító akkor is megkapja, amikor még a te légteredben van. Ha átlépi a határt, a normál szabály él: annak az egységnek a dolga, amelynek a légterében van. Lásd: [[atc_loa|Letter of Agreement]].
+
+## 6. Kilépés és fizetés
+
+A **Logout** (vagy a szerver elhagyása) véget vet a műszaknak. Részletes elszámolást kapsz: parancsok, irányított forgalom és hibák. Lásd: [[atc|Általános szabályok]], 7. fejezet.

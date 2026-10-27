@@ -57,10 +57,9 @@ function createTrunkFor(vehicle, opts, owner)
     opts = type(opts) == "table" and opts or {}
     local o = type(opts.offset) == "table" and opts.offset or INV.TRUNK_OFFSET
     local x, y, z = getElementPosition(vehicle)
-    local anchor = createObject(INV.TRUNK_ANCHOR_MODEL, x, y, z)
+    -- a marker, not an object: an alpha-0 object still casts a shadow blob behind the car
+    local anchor = createMarker(x, y, z, "corona", 0.1, 0, 0, 0, 0)
     if not anchor then return false, "cannot create the anchor" end
-    setElementAlpha(anchor, 0)
-    setElementCollisionsEnabled(anchor, false)
     setElementDimension(anchor, getElementDimension(vehicle))
     setElementInterior(anchor, getElementInterior(vehicle))
     attachElements(anchor, vehicle, tonumber(o[1]) or 0, tonumber(o[2]) or 0, tonumber(o[3]) or 0)

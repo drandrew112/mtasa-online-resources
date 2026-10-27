@@ -1,0 +1,91 @@
+# Tower (repülőtéri irányítás)
+@keywords: torony, tower, repülőtér, futópálya, IFR clearance, SID, pushback, taxi, gurulás, line up, felszállás, leszállás, cleared to land, vacate, taxi to stand, go-around, backtrack, cross, holding short, pályazóna, föld
+@related: atc, atc_commands, atc_nav, atc_loa, atc_approach
+
+A Tower a repülőtér **CTR**-ét (földfelszín – 2000 ft), a **futópályáit** és a **földi forgalmat** dolgozza, valamint a végső egyenesen lévő érkezőket. Minden földi engedély és minden leszállási engedély a Towertől jön. Általános szabályok: [[atc|Általános szabályok]]. (SACC-OPS-2, 1.0 verzió.)
+
+## 1. Futópályák
+
+- **Los Santos (SALS)** – 09L/27R és 09R/27L. **09R/27L érkezők**, **09L/27R induló gépek**.
+- **San Fierro (SASF)** – 04/22, érkezők és indulók.
+- **Las Venturas (SALV)** – 18/36, érkezők és indulók.
+
+A **használt futópálya** a szelet követi: az a vég, ahol a legnagyobb a szembeszél. A scope felső sávjában látszik (`SALS ARR 27L DEP 27R`) és a weboldal főoldalán. Ha a használt pálya változik, szólj az Approachnak. Az már engedélyezett gépek megtartják a pályájukat.
+
+>! A **San Fierro 22**-es pályájának küszöbéhez nincs gurulóút. Az onnan induló gépeknek **backtrack** kell.
+
+### A pályazóna
+
+A futópálya, plusz 5 m mindkét oldalon és 30 m mindkét vég után a **pályazóna**. **Egy gép sem lép be engedély nélkül.** A gépek a zóna szélén megállnak (holding short), és kérnek:
+
+- **CROSS** – a guruló útvonal csak keresztezi ezt a pályát. Válasz: *Cross runway*.
+- **T/O** – ez az indulópálya, a küszöbtől 80 m-en belül lépnek rá. Válasz: *Line up and wait*, *Cleared for take-off*.
+- **BKTRK** – ez az indulópálya, a küszöbtől több mint 80 m-re lépnek rá. Válasz: *Backtrack runway*, majd *Cleared for take-off*.
+
+Egy engedély csak egy pályára érvényes. A pályán a gépek 50 kts-szel, a gurulóutakon 25 kts-szel gurulnak.
+
+## 2. Indulás lépésről lépésre
+
+A földi gép parancsmenüje a teljes folyamatot sorrendben mutatja. Az aktuális lépés aktív, a többi szürke. A label körüli **sárga keret** azt jelenti, hogy a gép a következő engedélyre vár.
+
+### IFR clearance (az állóhelyen)
+
+Az **IFR clearance** megadja az induló gépnek:
+
+- a **SID**-jét: a lista a repülőtér SID-jeit mutatja, a javasoltat (amelynek kilépő fixe a repülési terv első fixe) sárgával. *No SID* is lehet: ilyenkor a gép a climb-out után az első fixe felé fordul;
+- a **kezdő szintjét**: alapértelmezetten **3000 ft** ([[atc_loa|LOA]] 6. fejezet). A lista 10000 ft-ig megy.
+
+Az IFR clearance elfogadja az útvonalat. Nélküle a gép nem kér pushbacket.
+
+### Pushback
+
+**Pushback approved**: a gépet farral előre betolják a legközelebbi gurulóútra, orral az indulópálya felé. Győződj meg róla, hogy mögötte szabad a gurulóút.
+
+### Taxi
+
+A **Taxi** megadja, melyik pályavéghez guruljon. A gép a legrövidebb úton megy a gurulóutakon. Útközben megáll:
+
+- **más guruló gépek mögött**: az előtte lévő mögött 60 m-re az útvonalán. A sorok maguktól kialakulnak;
+- **minden pályánál, amit keresztez**: holding short, és **CROSS**-t kér;
+- **az indulópályánál**: holding short, és **T/O**-t vagy **BKTRK**-t kér.
+
+>! Két, a gurulóúton **szembe** találkozó gép megállítja egymást. Kerüld el a taxi engedélyek sorrendjével. Földi elkülönítés-sérülésnek számít.
+
+### Line up és felszállás
+
+- **Line up and wait**: ráhajt a pályára, a küszöbnél beáll és vár.
+- **Backtrack runway**: ráhajt, visszagurul a küszöbhöz, megfordul és beáll.
+- **Cleared for take-off**: holding short állapotban (ha nem kell backtrack) vagy beállva adható. A felszállási engedélyt a gép **csak a pályánál** fogadja el.
+
+Felszállás után a gép **pályairányban repül a repülőtér feletti 800 ft-ig**, majd követi a SID-jét és a kezdő szintre emelkedik. Add át az Approachnak, **amint a levegőben van**, legkésőbb amikor elhagyja a CTR-t ([[atc_loa|LOA]] 6. fejezet).
+
+## 3. Érkezés lépésről lépésre
+
+### Végső egyenes és leszállási engedély
+
+- Az érkező az Approachtól jön **Cleared approach**-csal, a **final fixnél** (a küszöb előtt 1200 m) vagy előtte. A végső egyenesen a tiéd, még 2000 ft felett is.
+- A pilóták a leszállási engedélyt (**LAND**, sárga keret) a final fix előtt 1500 m-nél és a végső egyenesen kérik.
+- A **Cleared to land**-et **legkésőbb a küszöb előtt 400 m-rel** meg kell adni. Nélküle a gép **go-aroundot** hajt végre.
+- Ellenőrizd, hogy a pálya szabad: nincs ott beállt, átkelő vagy lehajtó gép.
+
+### Lehajtás (vacating)
+
+A **Vacate via** (opcionális, leszállás előtt is) megnevezi a gurulóutat, ahol a gép elhagyja a pályát. A lista a kijáratokat a küszöbtől mért távolságukkal mutatja. Nélküle a gép az első, terminál felé vezető kijáratot veszi.
+
+### Taxi to stand
+
+Lehajtás után a gép a **Taxi to stand**-re vár. Válassz állóhelyet, vagy hagyd, hogy a pilóták az első szabadot vegyék. Pályát csak **Cross runway** engedéllyel keresztez, mint az induló gépek.
+
+## 4. Go-around
+
+Az érkező go-aroundot hajt végre, ha:
+
+- a final fixnél több mint 1700 ft-tal van a repülőtér felett (túl magas);
+- a küszöb előtt 400 m-rel nincs leszállási engedélye;
+- te adsz **Go around**-ot (például nem szabad a pálya).
+
+Ilyenkor a pálya **go-around eljárását** repüli (`<ICAO>GA`, label `GA 27L`) és **3000 ft**-ig emelkedik. Az eljárás egyenesen az ellenkező half finalig megy, körbe a köráthajtáson és vissza a final fixre. Minden kanyarja 90°. Add át az Approachnak, **amint kiemelkedett a CTR-ből** ([[atc_loa|LOA]] 7. fejezet). Ábra: [[atc_nav|Légtér és navigáció]].
+
+## 5. Irányítatlan földi forgalom
+
+Ha a Tower zárva van, a gépek maguktól gurulnak, kelnek át és szállnak fel: minden pályánál várnak pár másodpercet, majd mennek, ha szabad. Amikor megnyitod a Towert, a földön lévő összes gép attól a pillanattól a tiéd, abban az állapotban, ahogy éppen van.

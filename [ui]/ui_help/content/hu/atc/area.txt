@@ -1,0 +1,51 @@
+# San Andreas Control (területi irányítás)
+@keywords: területi irányítás, centre, ACC, SACC_CTR, szektorok, észak, dél, felső, alsó, FL205, átrepülő, érkezők, indulók, CTA, utazószint, keletre, nyugatra, irányítatlan
+@related: atc, atc_loa, atc_approach, atc_star_levels, atc_nav
+
+A San Andreas Control a **CTA**-t dolgozza: a San Andreas FIR-t a TMA-kon kívül, a földfelszíntől FL660-ig. Övé az átrepülő forgalom, valamint az érkezők és indulók a TMA határa és a FIR határa között. Általános szabályok: [[atc|Általános szabályok]]. Átadási pontok: [[atc_loa|Letter of Agreement]]. (SACC-OPS-4, 1.0 verzió.)
+
+## 1. Szektorok és pozíciók
+
+![420](content/images/atc/centre-sectors.png)
+
+A CTA a ZEPHR - PALIS - VINEW - keleti szél vonal mentén északra és délre, FL205-nél alsóra és felsőre oszlik.
+
+Minden szektort a láncának első nyitott pozíciója kap:
+
+- **NL** északi alsó (a vonaltól északra, FL205-ig): SACC_N_CTR > SACC_CTR
+- **SL** déli alsó (a vonaltól délre, FL205-ig): SACC_S_CTR > SACC_CTR
+- **NU** északi felső (a vonaltól északra, FL205 felett): SACC_NU_CTR > SACC_U_CTR > SACC_N_CTR > SACC_CTR
+- **SU** déli felső (a vonaltól délre, FL205 felett): SACC_SU_CTR > SACC_U_CTR > SACC_S_CTR > SACC_CTR
+
+- A **SACC_CTR** (master szektor) egyedül az egész CTA-t kapja.
+- Bármelyik másik pozíció önmagában is megnyitható. A szektorait a láncában lejjebb lévő pozícióktól veszi el. Példa: ha a SACC_CTR és a SACC_U_CTR nyitva van → a SACC_U_CTR-é az NU + SU, a SACC_CTR-é az NL + SL.
+- A scope felső sávja mutatja az aktuális szektoraidat: `SECT NL SL`.
+- A csak felső pozíciók (U, NU, SU) csak **FL185** (FL205 - 2000 ft) felett látják a forgalmat, plusz a saját gépeiket.
+
+A radarkép **3 másodpercenként** frissül.
+
+## 2. Forgalom
+
+- **Átrepülők** – a FIR határán lépnek be, a repülési tervük szerint átszelik a CTA-t, és egy másik határponton lépnek ki. Tartsd őket elkülönítve, lehetőleg a kért szintjükön, és **TMA felett legalább 6000 ft-on** ([[atc_loa|LOA]] 4. fejezet).
+- **Érkezők** – a FIR határáról vagy másik repülőtérről a TMA belépő fixig. Add meg a STAR-jukat és ereszd le őket a LOA szintre ([[atc_loa|LOA]] 2. fejezet).
+- **Indulók** – a SID kilépő fixtől (5000 ft) a FIR határig vagy egy másik TMA-ig. Emelkedtesd őket a kért szintjükre ([[atc_loa|LOA]] 3. fejezet).
+
+A kívülről érkező gépek a **FIR határ előtt 5,5 nm**-rel jelennek meg a radaron, a belépési pontjuk felé repülve. A FIR-t elhagyó gépek kicsivel a határ után eltűnnek a radarról.
+
+## 3. Érkezők
+
+1. **Add meg korán a STAR-t.** Arrival procedure → a belépő fix STAR-ja + a használt pálya. A javasolt STAR sárga a listában. STAR nélkül a pilóták a belépő fix előtt 2500 m-rel kérnek egyet (**STAR**, sárga keret).
+2. **Ereszkedj időben.** Az érkezőnek a belépő fixet 4000 ft-on vagy alatta kell átrepülnie (3000 ft a rövid STAR-oknál, lásd: [[atc_star_levels|STAR belépési szintek]]). Az utazószintről ez távolságot igényel: egy sugárhajtású gép kb. 2400 ft-ot ereszkedik nm-enként, a PC-12 csak kb. 1400 ft-ot.
+3. **Add át a belépő fix előtt.**
+
+A FIR két repülőtere közötti érkezők (például Los Santos → Las Venturas) csak keveset emelkednek: a kért szintjük alacsony, és a STAR hamar kezdődik.
+
+## 4. Szintek
+
+- Utazószintek: **keletre** (irány 000-179°) páratlan ezrek, **nyugatra** (irány 180-359°) páros ezrek. A repülési terv kért szintje (RFL) már követi ezt a szabályt.
+- Az **FL205** az alsó és felső szektorok határa. Add át a gépeket, mielőtt átlépik ([[atc_loa|LOA]] 9. fejezet).
+- 10000 ft alatt a gépek legfeljebb 250 kts-szel repülnek.
+
+## 5. Irányítatlan járatok
+
+Ha egy szektornak nincs nyitott pozíciója, a benne lévő gépek maguktól repülnek: az átrepülők tartják a szintjüket és az útvonalukat, az érkezők a saját tervük szerint ereszkednek és a belépő fixük STAR-ját repülik. Amikor megnyitsz egy pozíciót, a szektorai összes gépe attól a pillanattól a tiéd, abban az állapotban, ahogy éppen van.

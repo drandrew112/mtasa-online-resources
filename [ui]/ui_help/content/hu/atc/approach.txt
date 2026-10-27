@@ -1,0 +1,91 @@
+# Approach irányítás
+@keywords: approach, TMA, STAR, ereszkedés, végső egyenes, final, final fix, siklópálya, cleared approach, vektorálás, irányszög, elfogás, indulók, SID, go-around, arrival procedure
+@related: atc, atc_star_levels, atc_loa, atc_nav, atc_commands, atc_tower
+
+Az Approach a repülőtér **TMA**-ját dolgozza (földfelszín – 5500 ft, a CTR-en kívül). Az érkezőket a TMA belépő fixtől a végső egyenesig vezeti, az induló gépeket a CTR-ből a TMA határáig emelkedteti. Általános szabályok: [[atc|Általános szabályok]]. Átadási pontok és szintek: [[atc_loa|Letter of Agreement]]. (SACC-OPS-3, 1.0 verzió.)
+
+## 1. Mit lát az Approach
+
+- a repülőtér érkező és induló gépeit, és minden gépet, amelyet irányít;
+- minden gépet, amely a TMA-ban vagy a CTR-ben van, vagy keresztezi őket;
+- a levegőben lévő forgalmat csak **7500 ft**-ig (a TMA 5500 ft-os plafonja + 2000 ft). Az efölötti átrepülők nem látszanak.
+
+A radarkép **2 másodpercenként** frissül. A targetek a frissítések között ugrálnak.
+
+## 2. Érkezők
+
+### Érkezési eljárás (STAR)
+
+Minden STAR a TMA határán lévő belépő fixről kapja a nevét: a `VINEW1A` a VINEW-nél kezdődik. Egy STAR a repülőtér minden pályavégét kiszolgálja. A pályát vele együtt kell megadni: **Arrival procedure → VINEW1A 27L**.
+
+- A STAR-t általában a Control adja az átadás előtt ([[atc_loa|LOA]] 2. fejezet). Az Approach is adhat vagy módosíthat.
+- A lista a repülőtér STAR-jait mutatja. A **javasolt** (sárga) az a STAR, amelynek belépő fixe a repülési terv utolsó fixe.
+- A STAR nélküli érkező a belépő fix előtt 2500 m-rel kér egyet (**STAR**, sárga keret).
+- Az új STAR lecseréli a repülési tervet, az irányszöget és minden direct-et. A gép az első olyan fixnél csatlakozik a STAR-hoz, amely még előtte van.
+
+### Ereszkedés
+
+A gép **4000 ft vagy az alatt** lép a TMA-ba (3000 ft a rövid STAR-oknál, lásd: [[atc_star_levels|STAR belépési szintek]]). Engedd le **1500 ft**-ra, amint a tiéd és a forgalom engedi.
+
+A gépek a saját ütemükben ereszkednek. 250 kts-nél ez tengeri mérföldenként:
+
+- **Sugárhajtású gépek** (A320, B738, E190 ...) – kb. 2400 ft
+- **ATR 72, Dash 8** – kb. 1800 ft
+- **PC-12, King Air** – kb. 1400 ft
+
+Sok STAR rövid. A [[atc_star_levels|STAR belépési szintek]] oldal megmutatja, hogy melyik STAR milyen szintről működik még plusz útvonalmérföld nélkül. Ha a gép túl magas, hosszabbítsd meg az útját **irányszögekkel**.
+
+### A végső egyenes
+
+![320](content/images/atc/final-profile.png)
+
+A végső egyenes: a final fix a küszöb előtt 1200 m-re van. A siklópálya 1 ft / méter. A final fixnél 1700 ft felett a gép go-aroundot hajt végre.
+
+- **Final fix** (`LS27L`, `SF04` ...) – a küszöb előtt 1200 m-re, a meghosszabbított pályatengelyen.
+- **Ideális szint a final fixnél** – **1200 ft a repülőtér felett** (kb. 1250 ft).
+- **Engedélyezett szint a megközelítéshez** – **1500 ft**.
+- **Túl magas: go-around** – a final fixnél több mint **1700 ft a repülőtér felett**.
+- **Siklópálya** – 1 ft méterenként a küszöbtől (1200 ft a final fixnél, 600 ft a half finalnál).
+
+A siklópályán a gép a lejtőnél gyorsabban is tud ereszkedni, így a fölötte lévő kis magasságot újra elveszti. A siklópálya alatt vízszintesen repül, amíg el nem éri a lejtőt.
+
+### Cleared approach
+
+>! **Az irányított érkező nem kezdi el a végső egyenest "Cleared approach" nélkül.** Nélküle a gép az irányszögén egyenesen átrepül a final fixen vagy a pályatengelyen, és vissza kell vektorálnod.
+
+A pilóták a final fix előtt 3500 m-rel kérik (**APP**, sárga keret), vagy amikor az irányszögöd elfogja a végső egyenest. Hogy mit tesz a gép a **Cleared approach** után, attól függ, hol van:
+
+- **STAR-on vagy go-around eljáráson** – a final fixig repüli, majd a végső egyenest.
+- **Olyan irányszögön, amely 30° vagy kisebb szögben fogja el a meghosszabbított pályatengelyt**, a küszöb előtt és elég közel – tartja az irányszöget és elfogja a végső egyenest (a célrepülőtér bármelyik pályavégén).
+- **Bárhol máshol** (repülési terv, direct, olyan irányszög, amely nem fog el) – **egyenesen a célrepülőtér legközelebbi final fixére** repül. Ha a fix repülőtér felőli oldalán van, előbb megkerül egy base pontot.
+
+Az új direct, az új STAR vagy a go-around törli a megközelítési engedélyt.
+
+![380](content/images/atc/approach-geometry.png)
+
+Három út a végső egyenesre: a STAR-on, irányszögön elfogva (legfeljebb 30°), vagy direct a legközelebbi final fixre base ponttal.
+
+### Vektorálás
+
+- **Fly heading**, **Turn left heading**, **Turn right heading**: a scope irányválasztója mutatja a kanyart és a várható útvonalat (lásd: [[atc_commands|A parancsmenü]]).
+- Az irányszög lecseréli az útvonalat. A gép addig tartja, amíg direct-et, STAR-t, **Resume own navigation**-t nem adsz, vagy amíg megközelítési engedéllyel el nem fogja a végső egyenest.
+- Az elfogó irányszög legfeljebb **30°**-kal térhet el a pályairánytól. Úgy add, hogy a gép a pályatengelyt **a final fix előtt**, 1500 ft-on érje el.
+- A gép 6° / másodperc sebességgel fordul. 250 kts-nél ez kb. 0,2 nm sugarú kanyar. Fordítsd elég korán.
+
+### Átadás a Towernek
+
+Add át az érkezőt a Towernek **legkésőbb a final fixnél** ([[atc_loa|LOA]] 5. fejezet). A végső egyenesen amúgy is a Tower gépe.
+
+## 3. Induló gépek
+
+- Az induló gép a Towertől jön, amint a levegőben van. A SID-je és a kezdő szintje (3000 ft) az IFR clearance-szel jön.
+- Emelkedtesd **5000 ft**-ra a SID kilépő fixig, és add át a Controlnak a kilépő fix előtt ([[atc_loa|LOA]] 3. fejezet).
+- A SID a kilépő fixéről kapja a nevét: a `VINEW1D` a VINEW-nél végződik. A gépet irányszöggel vagy direct-tel leveheted a SID-ről. A direct után a repülési tervét folytatja.
+
+## 4. Go-aroundok
+
+A go-around **3000 ft**-ig emelkedik a go-around eljáráson (`GA 27L`, lásd: [[atc_nav|Légtér és navigáció]]). A Tower átadja neked, amint kiemelkedett a CTR-ből.
+
+- Tartsd **3000 ft**-ot szabadon a repülőtér közelében.
+- A gép 3000 ft-on marad, amíg lejjebb nem engeded. Az eljáráson új **Cleared approach**-ot fogad el, és a maradékot a final fixig repüli.
+- Irányszöggel vagy direct-tel bármikor leveheted az eljárásról.

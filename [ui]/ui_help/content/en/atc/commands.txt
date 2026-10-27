@@ -1,0 +1,90 @@
+# The command menu
+@keywords: command menu, clearance, cleared altitude, fly heading, turn left, turn right, heading picker, direct to, arrival procedure, cleared approach, cleared to land, vacate, go around, transfer to, show route, IFR clearance, pushback, taxi, cross runway, backtrack, line up, take-off, flight list, departures, arrivals, sector, logout
+@related: atc_scope, atc_labels, atc_tower, atc_approach, atc_loa, atc
+
+Click a label or a target. The top of the menu shows the flight: callsign, type, squawk, departure → destination, its state and what it needs now, its route, procedure (with the suggested one) and its controller.
+
+The commands are grouped. A command that cannot be given now is **grey**. A command the aircraft is asking for is **yellow**. On the ground the whole flow is listed in order.
+
+![350](content/images/atc/menu.jpg)
+
+The menu of an airborne aircraft under SACC_CTR.
+
+## 1. Airborne commands
+
+**LEVEL & ROUTE**
+
+- **Cleared altitude** › list of levels (current yellow, requested level green) – its controller.
+- **Fly heading** / **Turn left heading** / **Turn right heading** › heading picker – its controller.
+- **Direct to** › the fixes of its route, the final fix of the runway in use, the nearest other fixes – its controller.
+- **Arrival procedure** › STAR + runway (suggested yellow) – Approach, Control.
+- **Resume own navigation** (when on a heading), **Cancel direct** – its controller.
+
+**APPROACH & LANDING**
+
+- **Cleared approach** – its controller.
+- **Cleared to land**, **Vacate via** › exits – Tower.
+- **Go around** – its controller.
+
+**COORDINATION**
+
+- **Transfer to** › open positions – its controller.
+
+**DISPLAY**
+
+- **Show route** / **Hide route**, **Reset label position**, **Close** – anyone.
+
+## 2. Ground commands
+
+![400](content/images/atc/menu-ground.jpg)
+
+The menu of a departure at its stand: only the IFR clearance is active now.
+
+- **DELIVERY** – **IFR clearance** › SID (suggested yellow, the runways not in use marked) › initial level.
+- **GROUND** – **Pushback approved**, **Taxi** › runway end (departures), **Taxi to stand** › stand (arrivals).
+- **RUNWAY** – **Cross runway**, **Backtrack runway**, **Line up and wait**, **Cleared for take-off** (departures), **Vacate via** (arrivals).
+
+![260](content/images/atc/menu-sid.jpg)
+
+The IFR clearance: first the SID. The suggested one is at the top in yellow, the SIDs of runways not in use are marked.
+
+Long lists scroll with the **mouse wheel**. **< Back** returns to the main menu. What each step means: [[atc_tower|Tower]].
+
+## 3. The heading picker
+
+**Fly heading**, **Turn left heading** and **Turn right heading** open a compass ring around the aircraft instead of a list:
+
+![380](content/images/atc/hdgpicker.jpg)
+
+The heading picker: the cyan line is the predicted path of the turn, with a dot every 30 s.
+
+- **Mouse direction** – picks the heading in 5° steps.
+- **Mouse wheel** – ±5°.
+- **Left click** – gives the heading.
+- **Right click** / `Esc` – back to the menu.
+
+The box shows the new heading, the turn (`LEFT 110°`) and how long it takes. *Fly heading* turns the shorter way. *Turn left / right* turn that way even when it is the longer way round.
+
+## 4. Flight lists
+
+- **Tower, Approach** – **DEPARTURES** and **ARRIVALS** of the airport.
+- **Control** – **DEPARTURES** (on the ground or in the departure TMA), **ARRIVALS** (in the arrival TMA or landed), **SECTOR** (every other airborne aircraft).
+
+Columns:
+
+- **CS, TYPE** – callsign, type / wake.
+- **ADEP, ADES** – departure, destination.
+- **FIRST WP / LAST WP / ENTRY / EXIT** – first / last fix of the flight plan.
+- **ALT** – altitude (×100 ft). On the ground the state (GATE, PUSHBAC, TAXI_OU ...) or **REQ ...** in yellow when it waits for you.
+- **CFL, RFL** – cleared level, requested cruise level.
+- **CTRL** – its controller.
+
+Your own aircraft are at the top, in blue. Click a row to centre the map on the aircraft.
+
+## 5. Transfers
+
+**Transfer to** hands the aircraft to another open position before it leaves your airspace. The new controller has it while it is still in your airspace. Once it crosses the boundary, the normal rule applies: the unit of the airspace it is in. See the [[atc_loa|Letter of Agreement]].
+
+## 6. Logging out and pay
+
+**Logout** (or leaving the server) ends the shift. You get an itemised receipt: actions, controlled traffic and mistakes. See [[atc|General rules]], section 7.

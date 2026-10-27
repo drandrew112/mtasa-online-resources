@@ -1,0 +1,67 @@
+# Letter of Agreement
+@keywords: letter of agreement, LOA, átadás, koordináció, átadási pont, belépő fix, kilépő fix, final fix, GARCI, FL205, átrepülő, go-around, SACC-LOA-01
+@related: atc, atc_area, atc_approach, atc_tower, atc_star_levels, atc_commands
+
+Ez a megállapodás meghatározza, hol, mikor és milyen állapotban adják át egymásnak a gépeket a San Andreas FIR egységei. Felek: a San Andreas Control (SACC), a Los Santos-i, San Fierro-i és Las Venturas-i Approach, valamint a három Tower. (SACC-LOA-01, 1.1 verzió, hatályos: 2026. október 12.)
+
+Minden más (légtér, elkülönítés, egy pozíció kezelése) az [[atc|Általános szabályok]] oldalon van. Ha két egység helyben másban állapodik meg, az csak arra az egy gépre vonatkozik.
+
+## 1. Általános
+
+1. Minden gépet a **Transfer to**-val add át, *mielőtt* eléri a légtered határát.
+2. Az átadás pillanatában a gépnek meg kell felelnie a megállapodás feltételeinek: a megállapodás szerinti szintnek és eljárásnak.
+3. A fogadó egység az átadás után rögtön változtathat a szinten a saját légterében. Az útvonalról való eltérés csak akkor megengedett, ha a gép már a fogadó egység légterében van, kivéve ha az egységek egyeztették.
+4. Ha a fogadó egység zárva van, a gép irányítatlanul folytatja. Mielőtt elhagyja a légtered, hagyd az eljárásán vagy a repülési tervén, a megállapodás szerinti szinten.
+
+## 2. San Andreas Control → Approach (érkezők)
+
+- **Eljárás:** az érkezőnek meg van az **érkezési eljárása** (STAR + használt pálya).
+- **Átadási pont:** a **TMA belépő fix** (a STAR első fixe) előtt.
+- **Szint a belépő fixnél:** **4000 ft vagy alatta**. **3000 ft vagy alatta** a *rövid STAR-okon* ([[atc_star_levels|STAR belépési szintek]]).
+- **Átadás után:** az Approach rögtön ereszkedtetheti.
+
+## 3. Approach → San Andreas Control (indulók)
+
+- **Eljárás:** a SID-jén.
+- **Átadási pont:** a **SID kilépő fix** (a SID utolsó fixe, a TMA határán) előtt.
+- **Szint a kilépő fixnél:** **5000 ft**, emelkedés csak az átadás után.
+- **Átadás után:** a Control a kért szintjére emelkedteti.
+
+A SID kilépő fixek és a STAR belépő fixek neve gyakran azonos (például a VINEW1D és a VINEW1A is a VINEW-et használja). Az 5000 ft-os indulók és a 4000 ft vagy alatti érkezők ott 1000 ft-re vannak egymástól.
+
+## 4. San Andreas Control ↔ Approach (átrepülők)
+
+- Az átrepülők a TMA-t **6000 ft-on vagy felette** szelik át. A Controlnál maradnak, nem adják át őket.
+- Az az átrepülő, amelynek 6000 ft alatt kell átszelnie egy TMA-t, egyeztetve van az Approachcsal, és a TMA határa előtt átadják neki. Az Approach a TMA elhagyása előtt visszaadja.
+
+## 5. Approach → Tower (érkezők)
+
+- **Engedély:** az Approach megadta a **Cleared approach**-ot.
+- **Átadási pont:** legkésőbb a **final fixnél**.
+- **Szint a final fixnél:** **1500 ft** engedélyezve (legfeljebb 1700 ft a repülőtér felett).
+
+## 6. Tower → Approach (indulók)
+
+- **Engedély:** IFR clearance SID-del és **3000 ft** kezdő szinttel. Más kezdő szint, 5000 ft-ig, csak az Approachcsal való egyeztetés után.
+- **Átadási pont:** **amint a levegőben van**, legkésőbb amikor elhagyja a CTR-t (2000 ft).
+
+## 7. Tower → Approach (go-aroundok)
+
+- **Eljárás:** a pálya go-around eljárása (`<ICAO>GA`), **3000 ft**-ig emelkedve.
+- **Átadási pont:** **amint kiemelkedik a CTR-ből**.
+- **Approach:** 3000 ft-ot szabadon tart a repülőtér közelében. Alacsonyabb szintet és új **Cleared approach**-ot ad.
+
+## 8. San Fierro Approach ↔ Las Venturas Approach
+
+A két TMA közös fixe a **GARCI**. A két repülőtér közötti járatok közvetlenül az egyik Approachtól a másikhoz kerülnek.
+
+- **San Fierro → Las Venturas:** szint a GARCI-nál **3000 ft** vagy alatta, eljárás a GARCI után: GARCI2A, átadás a GARCI előtt.
+- **Las Venturas → San Fierro:** szint a GARCI-nál **4000 ft**, eljárás a GARCI után: GARCI1A, átadás a GARCI előtt.
+
+## 9. A San Andreas Controlon belül
+
+- **Észak / dél vonal** (ZEPHR - PALIS - VINEW - keleti szél): átadás a vonal előtt.
+- **Alsó → felső (FL205):** az FL205 fölé engedélyezett gépet az FL205 elérése előtt át kell adni.
+- **Felső → alsó (FL205):** az ereszkedő gépet az FL205 elhagyása előtt át kell adni.
+
+Ha csak a SACC_CTR van nyitva, övé az egész CTA, és egyik átadásra sincs szükség.

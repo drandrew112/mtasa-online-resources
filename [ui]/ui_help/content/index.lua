@@ -27,6 +27,7 @@ HELP_INDEX = {
         { id = "features", order = 10, title = { en = "Menus and apps", hu = "Menük és alkalmazások" } },
         { id = "binds", order = 20, title = { en = "Key binds", hu = "Billentyűk" } },
         { id = "websites", order = 30, title = { en = "In-game websites", hu = "Játékbeli weboldalak" } },
+        { id = "atc", order = 35, title = { en = "Air traffic control", hu = "Légiforgalmi irányítás" } },
         { id = "medical", order = 40, title = { en = "Medical system", hu = "Orvosi rendszer" } },
     },
     topics = {
@@ -62,6 +63,18 @@ HELP_INDEX = {
         { id = "web_bloodtransport", category = "websites", order = 70, file = "websites/bloodtransport.txt" },
         { id = "web_transit",        category = "websites", order = 80, file = "websites/transit.txt" },
         { id = "web_atc",            category = "websites", order = 90, file = "websites/atc.txt" },
+
+        -- atc: air traffic control documents of sanandreascontrol.eu (avi_web/docs), overview links every page
+        { id = "atc",              category = "atc", order = 10, file = "atc/overview.txt" },
+        { id = "atc_nav",          category = "atc", order = 20, file = "atc/nav.txt" },
+        { id = "atc_tower",        category = "atc", order = 30, file = "atc/tower.txt" },
+        { id = "atc_approach",     category = "atc", order = 40, file = "atc/approach.txt" },
+        { id = "atc_star_levels",  category = "atc", order = 50, file = "atc/star_levels.txt" },
+        { id = "atc_area",         category = "atc", order = 60, file = "atc/area.txt" },
+        { id = "atc_loa",          category = "atc", order = 70, file = "atc/loa.txt" },
+        { id = "atc_scope",        category = "atc", order = 80, file = "atc/scope.txt" },
+        { id = "atc_labels",       category = "atc", order = 90, file = "atc/labels.txt" },
+        { id = "atc_commands",     category = "atc", order = 100, file = "atc/commands.txt" },
 
         -- medical: medsys / med_bag / mg_* minigames (overview links every page)
         { id = "medical",            category = "medical", order = 10, file = "medical/overview.txt" },

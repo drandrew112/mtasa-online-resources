@@ -1,0 +1,80 @@
+# STAR belépési szintek
+@keywords: STAR, belépési szint, belépő fix, útvonal, rövid STAR, legmagasabb belépés, LOA belépés, ereszkedés, VINEW1A, GROVE1A, PLAYA1A, OCEAN1A, MARLN1A, REEFS1A, SANTA1A, MISTY1A, ANGPI1A, DOHER1A, FLINT1A, GARCI1A, BAYSD1A, GANTN1A, JUNIP1A, PALIS1A, SHADY1A, MONTG1A, SPRNG1A, KACCY1A, DESRT1A, PRCKL1A, BONEC1A, GARCI2A
+@related: atc_approach, atc_loa, atc_area, atc_nav
+
+Az Approach kézikönyv A melléklete. Az *útvonal* a STAR hossza a belépő fixtől a final fixig. A *legmagasabb belépés* az a legmagasabb szint a belépő fixnél, amelyről **minden géptípus** még eléri az 1500 ft-ot a final fixig pusztán a STAR-on, a belépő fixnél 1500 ft-ra engedélyezve (a forgalmi szimulációban mérve; a PC-12 általában a leglassabb). A *LOA belépés* a megállapodás szerinti szint ([[atc_loa|Letter of Agreement]] 2. fejezet).
+
+>! Ahol a LOA belépés a legmagasabb belépés felett van, hosszabbítsd meg az útvonalat irányszögekkel.
+
+A **(rövid)** jelöli azokat a STAR-okat, ahol a LOA belépés 3000 ft.
+
+## Los Santos (SALS)
+
+- VINEW1A pálya 09L: útvonal 0,73 nm, legmagasabb belépés 2500 ft, LOA belépés 4000 ft
+- VINEW1A pálya 09R: útvonal 0,79 nm, legmagasabb belépés 2500 ft, LOA belépés 4000 ft
+- VINEW1A pálya 27R: útvonal 1,93 nm, legmagasabb belépés 4000 ft, LOA belépés 4000 ft
+- VINEW1A pálya 27L: útvonal 1,99 nm, legmagasabb belépés 4250 ft, LOA belépés 4000 ft
+- GROVE1A pálya 09L: útvonal 1,57 nm, legmagasabb belépés 3500 ft, LOA belépés 4000 ft
+- GROVE1A pálya 09R: útvonal 1,63 nm, legmagasabb belépés 3750 ft, LOA belépés 4000 ft
+- GROVE1A pálya 27R: útvonal 1,01 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- GROVE1A pálya 27L: útvonal 1,07 nm, legmagasabb belépés 3000 ft, LOA belépés 4000 ft
+- PLAYA1A pálya 09L: útvonal 2,52 nm, legmagasabb belépés 5000 ft, LOA belépés 4000 ft
+- PLAYA1A pálya 09R: útvonal 2,57 nm, legmagasabb belépés 5000 ft, LOA belépés 4000 ft
+- PLAYA1A pálya 27R: útvonal 0,66 nm, legmagasabb belépés 2500 ft, LOA belépés 4000 ft
+- PLAYA1A pálya 27L: útvonal 0,70 nm, legmagasabb belépés 2500 ft, LOA belépés 4000 ft
+- OCEAN1A pálya 09L: útvonal 2,81 nm, legmagasabb belépés 5500 ft, LOA belépés 4000 ft
+- OCEAN1A pálya 09R: útvonal 2,75 nm, legmagasabb belépés 5250 ft, LOA belépés 4000 ft
+- OCEAN1A (rövid) pálya 27R: útvonal 0,59 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- OCEAN1A (rövid) pálya 27L: útvonal 0,57 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- MARLN1A pálya 09L: útvonal 1,87 nm, legmagasabb belépés 4000 ft, LOA belépés 4000 ft
+- MARLN1A pálya 09R: útvonal 1,80 nm, legmagasabb belépés 4000 ft, LOA belépés 4000 ft
+- MARLN1A pálya 27R: útvonal 0,93 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- MARLN1A pálya 27L: útvonal 0,87 nm, legmagasabb belépés 2500 ft, LOA belépés 4000 ft
+- REEFS1A pálya 09L: útvonal 0,89 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- REEFS1A pálya 09R: útvonal 0,83 nm, legmagasabb belépés 2500 ft, LOA belépés 4000 ft
+- REEFS1A pálya 27R: útvonal 2,04 nm, legmagasabb belépés 4250 ft, LOA belépés 4000 ft
+- REEFS1A pálya 27L: útvonal 1,98 nm, legmagasabb belépés 4250 ft, LOA belépés 4000 ft
+- SANTA1A (rövid) pálya 09L: útvonal 0,46 nm, legmagasabb belépés 1750 ft, LOA belépés 3000 ft
+- SANTA1A (rövid) pálya 09R: útvonal 0,46 nm, legmagasabb belépés 1750 ft, LOA belépés 3000 ft
+- SANTA1A pálya 27R: útvonal 2,73 nm, legmagasabb belépés 5250 ft, LOA belépés 4000 ft
+- SANTA1A pálya 27L: útvonal 2,77 nm, legmagasabb belépés 5250 ft, LOA belépés 4000 ft
+
+## San Fierro (SASF)
+
+- MISTY1A (rövid) pálya 04: útvonal 0,57 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- MISTY1A pálya 22: útvonal 2,61 nm, legmagasabb belépés 5000 ft, LOA belépés 4000 ft
+- ANGPI1A (rövid) pálya 04: útvonal 0,61 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- ANGPI1A pálya 22: útvonal 2,26 nm, legmagasabb belépés 4500 ft, LOA belépés 4000 ft
+- DOHER1A (rövid) pálya 04: útvonal 0,78 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- DOHER1A pálya 22: útvonal 1,79 nm, legmagasabb belépés 3750 ft, LOA belépés 4000 ft
+- FLINT1A pálya 04: útvonal 1,26 nm, legmagasabb belépés 3000 ft, LOA belépés 4000 ft
+- FLINT1A pálya 22: útvonal 1,06 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- GARCI1A pálya 04: útvonal 1,91 nm, legmagasabb belépés 4000 ft, LOA belépés 4000 ft
+- GARCI1A (rövid) pálya 22: útvonal 0,41 nm, legmagasabb belépés 1750 ft, LOA belépés 3000 ft
+- BAYSD1A pálya 04: útvonal 2,50 nm, legmagasabb belépés 4750 ft, LOA belépés 4000 ft
+- BAYSD1A (rövid) pálya 22: útvonal 0,58 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- GANTN1A pálya 04: útvonal 2,20 nm, legmagasabb belépés 4500 ft, LOA belépés 4000 ft
+- GANTN1A pálya 22: útvonal 0,81 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- JUNIP1A pálya 04: útvonal 1,51 nm, legmagasabb belépés 3500 ft, LOA belépés 4000 ft
+- JUNIP1A pálya 22: útvonal 1,41 nm, legmagasabb belépés 3250 ft, LOA belépés 4000 ft
+- PALIS1A pálya 04: útvonal 0,87 nm, legmagasabb belépés 3000 ft, LOA belépés 4000 ft
+- PALIS1A pálya 22: útvonal 2,16 nm, legmagasabb belépés 4250 ft, LOA belépés 4000 ft
+
+## Las Venturas (SALV)
+
+- SHADY1A pálya 18: útvonal 2,29 nm, legmagasabb belépés 4500 ft, LOA belépés 4000 ft
+- SHADY1A (rövid) pálya 36: útvonal 0,73 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
+- MONTG1A pálya 18: útvonal 2,50 nm, legmagasabb belépés 4750 ft, LOA belépés 4000 ft
+- MONTG1A (rövid) pálya 36: útvonal 0,46 nm, legmagasabb belépés 2000 ft, LOA belépés 3000 ft
+- SPRNG1A pálya 18: útvonal 2,33 nm, legmagasabb belépés 4500 ft, LOA belépés 4000 ft
+- SPRNG1A pálya 36: útvonal 0,83 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- KACCY1A pálya 18: útvonal 1,22 nm, legmagasabb belépés 3000 ft, LOA belépés 4000 ft
+- KACCY1A pálya 36: útvonal 1,39 nm, legmagasabb belépés 3250 ft, LOA belépés 4000 ft
+- DESRT1A pálya 18: útvonal 0,83 nm, legmagasabb belépés 2750 ft, LOA belépés 4000 ft
+- DESRT1A pálya 36: útvonal 2,33 nm, legmagasabb belépés 4500 ft, LOA belépés 4000 ft
+- PRCKL1A (rövid) pálya 18: útvonal 0,47 nm, legmagasabb belépés 2000 ft, LOA belépés 3000 ft
+- PRCKL1A pálya 36: útvonal 2,50 nm, legmagasabb belépés 4750 ft, LOA belépés 4000 ft
+- BONEC1A (rövid) pálya 18: útvonal 0,46 nm, legmagasabb belépés 2000 ft, LOA belépés 3000 ft
+- BONEC1A pálya 36: útvonal 1,88 nm, legmagasabb belépés 4000 ft, LOA belépés 4000 ft
+- GARCI2A pálya 18: útvonal 1,61 nm, legmagasabb belépés 3500 ft, LOA belépés 3000 ft (LOA §8)
+- GARCI2A (rövid) pálya 36: útvonal 0,66 nm, legmagasabb belépés 2250 ft, LOA belépés 3000 ft
