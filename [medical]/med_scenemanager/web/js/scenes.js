@@ -70,7 +70,7 @@
         const r = await act('msmWebScenes');
         if (!r) return;
         S.scenes = OSA.arr(r.scenes).map(a => ({
-            name: a[0], location: a[1], category: a[2], title: a[3], priority: a[4],
+            name: a[0], location: a[1], category: a[2] || 'uncategorized', title: a[3], priority: a[4],
             peds: a[5], vehicles: a[6], enabled: a[7], interior: a[8],
         }));
         const uniq = key => [...new Set(S.scenes.map(s => s[key]).filter(Boolean))].sort((a, b) => a.localeCompare(b));
