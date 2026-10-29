@@ -93,8 +93,9 @@ shifts from before it existed fall back to their `closed_tasks` list.
 Opens only inside an ambulance (`Config.TABLET_VEHICLES`: 416, 456, 487, 563) while not
 signed in; after sign-in every crew member can open it anywhere.
 
-- **Sign-in**: plate filled automatically, unit type (SOLO, DOC, BLS, ALS,
-  HELI), crew list with Add (players within 10 m) / Remove. The opener is
+- **Sign-in**: plate filled automatically, unit type bound to the vehicle
+  (`Config.UNIT_VEHICLE_TYPES`: Skoda 598 = SOLO/DOC, helicopter 487/563 = HELI,
+  any other ambulance = BLS/ALS; checked on the server too), crew list with Add (players within 10 m) / Remove. The opener is
   always in the crew. Optional **unit number** (1-999) gives the callsign
   `<TYPE>-<NN>` (e.g. 7 + ALS -> `ALS-07`); left empty, the server assigns the
   lowest free number.

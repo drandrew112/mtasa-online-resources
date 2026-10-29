@@ -86,6 +86,24 @@ end
 -- buildings (entrances)
 --------------------------------------------------------------------------------
 
+-- 3D cards above the markers: ui_core marker UIs (sent again when ui_core restarts)
+local uiDefs, uiNext = {}, 0
+
+local function markerUI(def)
+    uiNext = uiNext + 1
+    local uid = "b" .. uiNext
+    uiDefs[uid] = def
+    local res = getResourceFromName("ui_core")
+    if res and getResourceState(res) == "running" then exports.ui_core:createMarkerUI(uid, def) end
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, function()
+    for uid, def in pairs(uiDefs) do
+        if isElement(def.element) then exports.ui_core:createMarkerUI(uid, def) else uiDefs[uid] = nil end
+    end
+end)
+
 local function makeMarker(x, y, z, int, dim, color, kind, name, extra)
     local m = createMarker(x, y, z, BINT.markerType, BINT.markerSize, color[1], color[2], color[3], color[4])
     setElementInterior(m, int)
@@ -94,6 +112,19 @@ local function makeMarker(x, y, z, int, dim, color, kind, name, extra)
     setElementData(m, "bizint:name", name)
     setElementData(m, "bizint:color", { color[1], color[2], color[3] })   -- shader_markers hides the real colour
     for k, v in pairs(extra or {}) do setElementData(m, k, v) end
+    local entering = kind == "enter"
+    local verb = L.msg(entering and "biz_int.markers.enter" or "biz_int.markers.exit")
+    markerUI({
+        element = m,
+        type = entering and "biz_enter" or "biz_exit",
+        color = { color[1], color[2], color[3] },
+        name = name or "",
+        title = verb,
+        hint = L.msg("biz_int.markers.step_into_marker"),
+        hintActive = L.msg("biz_int.markers.press", { key = BINT.key:upper(), action = verb }),
+        radius = BINT.labelDistance, fullRadius = BINT.labelFullDistance, minScale = BINT.labelMinScale,
+        height = BINT.labelHeight,
+    })
     return m
 end
 

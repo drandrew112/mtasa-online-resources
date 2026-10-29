@@ -1,91 +1,10 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Depot menu (ui_inac temp menu). The server sends the options when the player presses the
--- depot key inside a depot marker, and re-checks every pick.
+-- depot key inside a depot marker, and re-checks every pick. The 3D card above the marker is a
+-- ui_core marker UI (server/depot.lua), hidden while the menu is open.
 
 local inMarker = nil
 local menuId = nil
-local sw, sh = guiGetScreenSize()
-
-local fonts = {}
-local function font(size, bold)
-    local key = size .. (bold and "b" or "")
-    if fonts[key] == nil then
-        fonts[key] = dxCreateFont(bold and "fonts/RobotoB.ttf" or "fonts/Roboto.ttf", size * sh / 1080, false, "antialiased")
-            or (bold and "default-bold" or "default")
-    end
-    return fonts[key]
-end
-
-local COLOR = { 80, 160, 255 }
-local function rgb(c, a) return tocolor(c[1], c[2], c[3], a or 255) end
-
-local function round(x, y, w, h, r, color)
-    r = math.min(r, w / 2, h / 2)
-    if r < 1 then return dxDrawRectangle(x, y, w, h, color) end
-    dxDrawRectangle(x + r, y, w - 2 * r, h, color)
-    dxDrawRectangle(x, y + r, r, h - 2 * r, color)
-    dxDrawRectangle(x + w - r, y + r, r, h - 2 * r, color)
-    dxDrawCircle(x + r, y + r, r, 180, 270, color, color, 12)
-    dxDrawCircle(x + w - r, y + r, r, 270, 360, color, color, 12)
-    dxDrawCircle(x + r, y + h - r, r, 90, 180, color, color, 12)
-    dxDrawCircle(x + w - r, y + h - r, r, 0, 90, color, color, 12)
-end
-
--- 3D label above the depot marker (same look as the work_core markers). It is drawn whenever
--- the marker is near, so it also says what the depot is for while the player stands outside.
-local function drawLabel(sx, sy, k, alpha, title, hint)
-    local function s(v) return v * sh / 1080 end
-    local fName, fTitle, fHint = font(9, true), font(13, true), font(9)
-    local a = alpha / 255
-    local nameStr = RW.COMPANY:upper()
-    local pad, iconSize, gap = s(10) * k, s(34) * k, s(10) * k
-    local textW = math.max(L.width(title, k, fTitle), L.width(nameStr, k, fName), L.width(hint, k, fHint))
-    local w = pad + iconSize + gap + textW + pad * 1.4
-    local headH, hintH = s(46) * k, s(22) * k
-    local h = headH + hintH
-    local x, y = sx - w / 2, sy - h
-
-    round(x, y, w, h, s(7) * k, tocolor(14, 17, 21, 220 * a))
-    round(x, y + h - s(3) * k, w, s(3) * k, s(1.5) * k, rgb(COLOR, 235 * a))
-
-    local ix, iy = x + pad, y + (headH - iconSize) / 2 + s(2) * k
-    round(ix, iy, iconSize, iconSize, s(5) * k, rgb(COLOR, 240 * a))
-    dxDrawText(L("rw_core.depot.d"), ix, iy, ix + iconSize, iy + iconSize, tocolor(255, 255, 255, 255 * a), k, font(16, true), "center", "center")
-
-    local tx = ix + iconSize + gap
-    dxDrawText(nameStr, tx, y + s(6) * k, tx + textW, y + headH * 0.45, rgb(COLOR, 255 * a), k, fName, "left", "center")
-    dxDrawText(title, tx, y + headH * 0.42, tx + textW, y + headH, tocolor(255, 255, 255, 255 * a), k, fTitle, "left", "center")
-    dxDrawText(hint, x + pad, y + headH, x + w - pad, y + headH + hintH, tocolor(200, 205, 212, 220 * a), k, fHint, "left", "center")
-    dxDrawRectangle(sx - s(1) * k, y + h, s(2) * k, s(10) * k, tocolor(14, 17, 21, 220 * a))
-end
-
-local MAX_DIST, FULL_DIST, MIN_SCALE, HEIGHT = 25, 8, 0.55, 1.25
-
-addEventHandler("onClientRender", root, function()
-    if menuId or isPlayerMapVisible() then return end
-    local cx, cy, cz = getCameraMatrix()
-    local px, py, pz = getElementPosition(localPlayer)
-    local dim, int = getElementDimension(localPlayer), getElementInterior(localPlayer)
-    for _, m in ipairs(getElementsByType("marker", resourceRoot, true)) do
-        local idx = getElementData(m, "rw.depot")
-        local def = idx and RW.DEPOTS[idx]
-        if def and getElementDimension(m) == dim and getElementInterior(m) == int then
-            local x, y, z = getElementPosition(m)
-            local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
-            local lz = z + HEIGHT
-            if dist <= MAX_DIST and isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
-                local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)
-                if sx then
-                    local k = 1
-                    if dist > FULL_DIST then k = 1 - (dist - FULL_DIST) / (MAX_DIST - FULL_DIST) * (1 - MIN_SCALE) end
-                    local alpha = dist > MAX_DIST * 0.8 and 255 * (MAX_DIST - dist) / (MAX_DIST * 0.2) or 255
-                    local hint = L("rw_core.depot.press_services_train_assembly", { depot_key = RW.DEPOT_KEY:upper() })
-                    drawLabel(sx, sy, k, alpha, def.name, hint)
-                end
-            end
-        end
-    end
-end)
 
 addEventHandler("onClientMarkerHit", root, function(el, dim)
     if el ~= localPlayer or not dim or not getElementData(source, "rw.depot") then return end
@@ -96,7 +15,11 @@ end)
 addEventHandler("onClientMarkerLeave", root, function(el)
     if el ~= localPlayer or source ~= inMarker then return end
     inMarker = nil
-    if menuId then exports.ui_inac:closeTempMenu() menuId = nil end
+    if menuId then
+        exports.ui_inac:closeTempMenu()
+        menuId = nil
+        exports.ui_core:setMarkerUIsHidden(false)
+    end
 end)
 
 bindKey(RW.DEPOT_KEY, "down", function()
@@ -154,6 +77,7 @@ addEventHandler("rw:depot:menu", resourceRoot, function(data)
         items[#items + 1] = { label = L("rw_core.depot.new_train_admin"), title = L("rw_core.depot.spawn_point"), desc = L("rw_core.depot.assemble_free_train_on_free_track"), items = spawnItems }
     end
     menuId = exports.ui_inac:createTempMenu({ title = data.depot, items = items })
+    if menuId then exports.ui_core:setMarkerUIsHidden(true) end
 end)
 
 addEvent("ui_inac:tempMenuSelect", false)
@@ -166,5 +90,8 @@ end)
 
 addEvent("ui_inac:tempMenuClose", false)
 addEventHandler("ui_inac:tempMenuClose", root, function(id)
-    if id == menuId then menuId = nil end
+    if id == menuId then
+        menuId = nil
+        exports.ui_core:setMarkerUIsHidden(false)
+    end
 end)

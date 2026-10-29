@@ -3,9 +3,12 @@ local lobbies, matches, playerState = {}, {}, {}
 local nextLobbyId, nextMatchId = 1, 1
 local jobMarkers = {}
 
-local function message(player, text, r, g, b)
-    outputChatBox("[Jobs] " .. text, player, r or 255, g or 255, b or 255)
+-- Player-facing messages are ui_core notifications (v_chat hides outputChatBox). The colour
+-- arguments of the old call sites are ignored.
+local function message(player, text)
+    if isElement(player) then triggerClientEvent(player, "jobmanager:notify", resourceRoot, text) end
 end
+jobMessage = message
 
 local function snapshotPlayer(player)
     local x, y, z = getElementPosition(player)
@@ -19,14 +22,19 @@ function weaponManagerRunning()
     return res and getResourceState(res) == "running"
 end
 
-local function restorePlayer(player, state)
+-- keepSave: creator test runs, where v_jobcreator owns "save.position"
+local function restorePlayer(player, state, keepSave)
     if not isElement(player) then return end
+    if not keepSave then removeElementData(player, "save.position") end
     if weaponManagerRunning() then
         exports.wp_manager:clearPlayerTempLoadout(player)
     else
         takeAllWeapons(player)
     end
+    detachElements(player)
     setElementFrozen(player, false)
+    setElementAlpha(player, 255)
+    setElementCollisionsEnabled(player, true)
     removePedFromVehicle(player)
     setElementInterior(player, state.interior)
     setElementDimension(player, state.dimension)
@@ -35,6 +43,7 @@ local function restorePlayer(player, state)
     else
         setElementPosition(player, state.x, state.y, state.z)
     end
+    setCameraTarget(player, player)
 end
 
 local function removeFromList(list, player)
@@ -83,6 +92,7 @@ end
 local function displayNameOf(player)
     return getElementData(player, "displayName") or getPlayerName(player)
 end
+jobDisplayName = displayNameOf
 
 local function syncLobby(lobby)
     if not lobby then return end
@@ -140,7 +150,7 @@ local function inCreator(player)
 end
 
 local function joinJob(player, job)
-    if inCreator(player) then return false end
+    if inCreator(player) or job.scriptOnly then return false end
     if playerState[player] then
         message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
@@ -201,7 +211,7 @@ local function quickJob(player)
     return joinJob(player, jobs[math.random(#jobs)])
 end
 
--- Stats shown on the end-of-match scoreboard.
+-- Stats shown on the end-of-match scoreboard. `left` = the player left the match.
 local function buildStats(match)
     local rows = {}
     local function crew(player)
@@ -215,7 +225,7 @@ local function buildStats(match)
         for _, player in ipairs(match.players) do
             if not match.finishTime[player] then
                 local tag, colour = crew(player)
-                table.insert(rows, { name = match.playerNames[player] or "?", place = false, timeMs = false, crewTag = tag, crewColor = colour })
+                table.insert(rows, { name = match.playerNames[player] or "?", place = false, timeMs = false, crewTag = tag, crewColor = colour, left = match.left[player] or nil })
             end
         end
     else
@@ -227,9 +237,11 @@ local function buildStats(match)
                 deaths = match.deaths[player] or 0,
                 crewTag = tag,
                 crewColor = colour,
+                left = match.left[player] or nil,
             })
         end
         table.sort(rows, function(a, b)
+            if (a.left or false) ~= (b.left or false) then return not a.left end
             if a.kills ~= b.kills then return a.kills > b.kills end
             return a.deaths < b.deaths
         end)
@@ -249,76 +261,115 @@ end
 -- Fixed, generic scoreboard camera: reuse the authored race finish camera when
 -- there is one, otherwise auto-compute a top-down shot from known job points.
 -- Same mechanism for every match; never a specific player's own viewpoint.
-local function computeCamera(match)
-    if match.job.type == JOB_TYPE_RACE then
-        local route = match.job.race
+-- Also the spectator camera when nobody is left to watch.
+function jobCamera(match)
+    local job = match.job
+    local spawns
+    if job.type == JOB_TYPE_RACE then
+        local route = job.race
         if route and route.finishCamera then return route.finishCamera end
-        if route and route.spawnpoints and #route.spawnpoints > 0 then
-            local cx, cy, cz = averagePoint(route.spawnpoints)
-            return { pos = { cx, cy, cz + 60 }, lookAt = { cx, cy, cz }, roll = 0, fov = 90 }
-        end
-    elseif match.job.deathmatch and #match.job.deathmatch.spawnpoints > 0 then
-        local cx, cy, cz = averagePoint(match.job.deathmatch.spawnpoints)
+        spawns = route and route.spawnpoints
+    elseif job.type == JOB_TYPE_DM then
+        spawns = job.deathmatch and job.deathmatch.spawnpoints
+    elseif job.type == JOB_TYPE_MISSION then
+        spawns = job.mission and job.mission.spawnpoints
+    end
+    if spawns and #spawns > 0 then
+        local cx, cy, cz = averagePoint(spawns)
         return { pos = { cx, cy, cz + 60 }, lookAt = { cx, cy, cz }, roll = 0, fov = 90 }
     end
     return { pos = { 0, 0, 100 }, lookAt = { 0, 0, 0 }, roll = 0, fov = 90 }
 end
 
--- `aborted` (resource stop, broken job) skips the payouts (core/rewards.lua).
+-- the running match of a player (modes use it from their own event handlers)
+function jobPlayerMatch(player)
+    local state = playerState[player]
+    return state and state.kind == "match" and matches[state.matchId] or nil
+end
+
+function jobMatchById(id)
+    return matches[id]
+end
+
+-- `aborted` (resource stop, broken job, script abort) skips the payouts (core/rewards.lua).
 local function endMatch(match, reason, aborted)
     if not match or match.ended then return end
     match.ended = true
+    for _, timer in ipairs(match.timers) do
+        if isTimer(timer) then killTimer(timer) end
+    end
+    Spectate.stopAll(match)
     local mode = JobModes[match.job.type]
-    if mode and mode.onEnd then mode.onEnd(match) end
+    if mode and mode.onEnd then mode.onEnd(match, aborted) end
     local stats = buildStats(match)
-    local camera = computeCamera(match)
-    local rewards = not aborted and buildRewards(match) or {}
+    local camera = jobCamera(match)
+    local opts = match.opts
+    local rewards = (not aborted and not opts.test) and buildRewards(match) or {}
     for _, player in ipairs(match.players) do
         local state = playerState[player]
         if state and state.matchId == match.id then
-            restorePlayer(player, state.returnState)
+            restorePlayer(player, state.returnState, opts.test)
             playerState[player] = nil
             local reward = rewards[player]
             if reward then payReward(player, reward) end
-            triggerClientEvent(player, "jobmanager:matchEnded", resourceRoot, {
-                reason = reason, jobId = match.job.id, jobName = match.job.name,
-                type = match.job.type, stats = stats, camera = camera, reward = reward,
-            })
+            if opts.test or opts.quiet then
+                triggerClientEvent(player, "jobmanager:matchQuietEnd", resourceRoot, reason, opts.test or false)
+            else
+                triggerClientEvent(player, "jobmanager:matchEnded", resourceRoot, {
+                    reason = reason, jobId = match.job.id, jobName = match.job.name,
+                    type = match.job.type, stats = stats, camera = camera, reward = reward,
+                    replay = not match.job.scriptOnly and not opts.test,
+                })
+            end
         end
     end
     destroyElements(match.vehicles)
     destroyElements(match.markers)
     destroyElements(match.objects)
     matches[match.id] = nil
+    if mode and mode.afterEnd then mode.afterEnd(match, reason, aborted) end
 end
+jobEndMatch = endMatch
 
-local function startMatch(lobby)
-    if lobby.locked or #lobby.players < lobby.job.minPlayers then return false, L.msg("v_jobmanager.core.not_enough_players") end
-    lobby.locked = true
+-- Starts a match without a lobby (lobby start, script missions, creator test runs).
+-- opts: { test, dimension, reward = false | {money, xp}, tag, returnTo = {x, y, z, interior, dimension},
+--         startStage, quiet, script }
+local function createMatch(job, players, opts)
+    opts = opts or {}
+    local mode = JobModes[job.type]
+    if not mode then return false, L.msg("v_jobmanager.core.unsupported_job_type") end
+    local id = nextMatchId
+    nextMatchId = nextMatchId + 1
     local match = {
-        id = nextMatchId, job = lobby.job, players = lobby.players, dimension = 50000 + nextMatchId,
+        id = id, job = job, players = players, dimension = opts.dimension or (50000 + id), opts = opts,
         vehicles = {}, markers = {}, objects = {}, progress = {}, finished = {}, eliminated = {},
         playerNames = {}, kills = {}, deaths = {}, finishOrder = {}, finishTime = {},
-        crewTags = {}, crewColors = {},
-        startPlayers = #lobby.players, startTick = getTickCount(),
+        crewTags = {}, crewColors = {}, left = {}, spectators = {}, timers = {},
+        startPlayers = #players, startTick = getTickCount(),
         ended = false,
     }
-    nextMatchId = nextMatchId + 1
-    matches[match.id] = match
-    clearLobbyInvites(lobby)
-    lobbies[lobby.id] = nil
-    for _, player in ipairs(match.players) do
+    matches[id] = match
+    for _, player in ipairs(players) do
         match.playerNames[player] = displayNameOf(player)
         match.crewTags[player] = getElementData(player, "crewTag") or ""
         match.crewColors[player] = getElementData(player, "crewColor")
         local state = playerState[player]
-        if state then state.kind, state.matchId, state.lobbyId = "match", match.id, nil end
+        if not state then
+            state = { returnState = snapshotPlayer(player) }
+            playerState[player] = state
+        end
+        state.kind, state.matchId, state.lobbyId = "match", id, nil
+        if type(opts.returnTo) == "table" then state.returnState = opts.returnTo end
+        -- while the job runs the account keeps the place the player came from (v_accounts savesys)
+        if not opts.test then
+            local r = state.returnState
+            setElementData(player, "save.position", { r.x, r.y, r.z, r.interior, r.dimension }, false)
+        end
         if weaponManagerRunning() then exports.wp_manager:setPlayerTempLoadout(player, {}) end
-        triggerClientEvent(player, "jobmanager:matchStarted", resourceRoot, match.job.name)
+        triggerClientEvent(player, "jobmanager:matchStarted", resourceRoot, job.name,
+            { id = id, type = job.type, name = job.name, test = opts.test or false })
     end
-    local mode = JobModes[match.job.type]
-    if not mode then endMatch(match, L.msg("v_jobmanager.core.unsupported_job_type"), true) return false, L.msg("v_jobmanager.core.unsupported_job_type") end
-    for index, def in ipairs(match.job.objects or {}) do
+    for index, def in ipairs(job.objects or {}) do
         local object = createObject(def.model, def.x, def.y, def.z, def.rx or 0, def.ry or 0, def.rz or 0)
         if object then
             setElementDimension(object, match.dimension)
@@ -328,10 +379,49 @@ local function startMatch(lobby)
             if def.doublesided then setElementDoubleSided(object, true) end
             table.insert(match.objects, object)
         else
-            outputDebugString("[v_jobmanager] " .. match.job.id .. ": objects[" .. index .. "] model " .. tostring(def.model) .. " could not be created", 2)
+            outputDebugString("[v_jobmanager] " .. job.id .. ": objects[" .. index .. "] model " .. tostring(def.model) .. " could not be created", 2)
         end
     end
+    -- spectator lists (places, checkpoints, health change)
+    table.insert(match.timers, setTimer(function()
+        if not match.ended and next(match.spectators) then Spectate.refresh(match) end
+    end, 2000, 0))
     mode.start(match, endMatch)
+    return match
+end
+
+local function startMatch(lobby)
+    if lobby.locked or #lobby.players < lobby.job.minPlayers then return false, L.msg("v_jobmanager.core.not_enough_players") end
+    if not JobModes[lobby.job.type] then return false, L.msg("v_jobmanager.core.unsupported_job_type") end
+    lobby.locked = true
+    clearLobbyInvites(lobby)
+    lobbies[lobby.id] = nil
+    local match, err = createMatch(lobby.job, lobby.players, {})
+    return match and true or false, err
+end
+
+-- A player drops out of a running match: left it (command / menu) or quit. The mode decides
+-- whether that ends the match.
+local function dropFromMatch(player, match, quit)
+    if match.ended then return end
+    match.left[player] = true
+    Spectate.forget(match, player)
+    local mode = JobModes[match.job.type]
+    if mode and mode.onPlayerGone then mode.onPlayerGone(match, player, endMatch, quit) end
+    if not match.ended and next(match.spectators) then Spectate.refresh(match) end
+end
+
+-- Leaving a running match: no reward and no penalty, back to where the player came from.
+local function leaveMatch(player)
+    local state = playerState[player]
+    if not state or state.kind ~= "match" then return false end
+    local match = matches[state.matchId]
+    playerState[player] = nil
+    local test = match and match.opts.test
+    if match then dropFromMatch(player, match, false) end
+    restorePlayer(player, state.returnState, test)
+    triggerClientEvent(player, "jobmanager:matchLeft", resourceRoot, test or false)
+    if not test then message(player, L.msg("v_jobmanager.core.you_left_job")) end
     return true
 end
 
@@ -357,16 +447,26 @@ addCommandHandler("startjob", function(player)
     requestStart(player)
 end)
 
-local function requestLeave(player)
+-- A lobby is left at once; a running match only once confirmed (the client asks first).
+local function requestLeave(player, confirmed)
     if leaveLobby(player) then return end
-    message(player, L.msg("v_jobmanager.core.you_can_only_leave_before_job"), 255, 200, 100)
+    local state = playerState[player]
+    if state and state.kind == "match" then
+        if confirmed then
+            leaveMatch(player)
+        else
+            triggerClientEvent(player, "jobmanager:confirmLeave", resourceRoot)
+        end
+        return
+    end
+    message(player, L.msg("v_jobmanager.core.you_are_not_in_job"), 255, 200, 100)
 end
 
-addCommandHandler("leavejob", function(player)
-    requestLeave(player)
+addCommandHandler("leavejob", function(player, _, arg)
+    requestLeave(player, arg == "confirm")
 end)
 
--- Future UI entry points. They deliberately use `client`, never a player value
+-- UI entry points. They deliberately use `client`, never a player value
 -- supplied by the caller, and all identifiers are checked against server config.
 addEvent("jobmanager:joinJob", true)
 addEventHandler("jobmanager:joinJob", resourceRoot, function(jobId)
@@ -426,9 +526,10 @@ addEventHandler("jobmanager:startJob", resourceRoot, function()
     requestStart(client)
 end)
 
+-- confirmed = true: the job menu's "Yes, leave" (a running match is left without asking again)
 addEvent("jobmanager:leaveJob", true)
-addEventHandler("jobmanager:leaveJob", resourceRoot, function()
-    requestLeave(client)
+addEventHandler("jobmanager:leaveJob", resourceRoot, function(confirmed)
+    requestLeave(client, confirmed == true)
 end)
 
 --------------------------------------------------------------------------------
@@ -492,49 +593,17 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
     message(target, L.msg("v_jobmanager.core.invited_you_to_lobby_open_your", { player = displayNameOf(client), name = lobby.job.name }), 120, 200, 255)
 end)
 
-addEventHandler("onPlayerWasted", root, function(totalAmmo, killer)
-    local state = playerState[source]
-    local match = state and state.kind == "match" and matches[state.matchId]
-    if not match or match.job.type ~= JOB_TYPE_DM or match.eliminated[source] then return end
-
-    match.deaths[source] = (match.deaths[source] or 0) + 1
-    if isElement(killer) and getElementType(killer) == "player" and killer ~= source then
-        local killerState = playerState[killer]
-        if killerState and killerState.kind == "match" and killerState.matchId == match.id then
-            match.kills[killer] = (match.kills[killer] or 0) + 1
-        end
-    end
-
-    match.eliminated[source] = true
-    local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
-    if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = displayNameOf(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
-end)
-
 addEventHandler("onPlayerQuit", root, function()
     local state = playerState[source]
     if not state then return end
     if state.kind == "lobby" then
         leaveLobby(source, true)
-    else
-        local match = matches[state.matchId]
-        if match then
-            if match.job.type == JOB_TYPE_DM then
-                match.eliminated[source] = true
-                local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
-                if count <= 1 then endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = displayNameOf(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended")) end
-            elseif match.job.type == JOB_TYPE_RACE then
-                -- A player who disconnects mid-race must still count as "finished"
-                -- (with no time), otherwise the race waits forever for them.
-                match.finished[source] = true
-                local allDone = true
-                for _, participant in ipairs(match.players) do
-                    if not match.finished[participant] then allDone = false break end
-                end
-                if allDone then endMatch(match, L.msg("v_jobmanager.core.everyone_finished_race")) end
-            end
-        end
-        playerState[source] = nil
+        return
     end
+    -- "save.position" stays on the player: v_accounts' quit save writes the place before the job
+    local match = matches[state.matchId]
+    playerState[source] = nil
+    if match then dropFromMatch(source, match, true) end
 end)
 
 -- jobId -> { marker, blip }
@@ -551,7 +620,7 @@ end
 
 local function createJobMarker(job)
     removeJobMarker(job.id)
-    if not job.marker then return end
+    if not job.marker or job.scriptOnly then return end
     local marker = createMarker(job.marker[1], job.marker[2], job.marker[3] - 1, "cylinder", 2, 50, 160, 255, 120)
     jobMarkers[marker] = job
     local blip = createBlipAttachedTo(marker, 9, 2, 50, 160, 255, 255)
@@ -629,8 +698,10 @@ function jobmanagerJoin(player, jobId)
     return job and joinJob(player, job) or false
 end
 
+-- leaves a lobby or a running match (no reward, no penalty)
 function jobmanagerLeave(player)
-    return leaveLobby(player, true)
+    if not isElement(player) then return false end
+    return leaveLobby(player, true) or leaveMatch(player)
 end
 
 function jobmanagerGetState(player)
@@ -648,4 +719,104 @@ function jobmanagerAcceptInvite(player, id)
     local lobby = lobbies[lobbyId]
     if lobby and lobby.invited then lobby.invited[player] = nil end
     return joinLobbyById(player, lobbyId)
+end
+
+--------------------------------------------------------------------------------
+-- missions started by scripts (business setups, heists) and creator test runs
+--------------------------------------------------------------------------------
+
+local function freePlayer(player)
+    return isElement(player) and getElementType(player) == "player" and not playerState[player]
+        and not inCreator(player) and not isPedDead(player) and getElementData(player, "isLogged") == true
+end
+
+local function cleanPoint(p)
+    if type(p) ~= "table" then return nil end
+    local x, y, z = tonumber(p.x or p[1]), tonumber(p.y or p[2]), tonumber(p.z or p[3])
+    if not (x and y and z) then return nil end
+    return { x = x, y = y, z = z, interior = tonumber(p.interior or p[4]) or 0, dimension = tonumber(p.dimension or p[5]) or 0 }
+end
+
+-- missionId: a mission game (public or scriptOnly). players: list of free players.
+-- opts: { reward = false | {money = n, xp = n}, tag = string, returnTo = {x, y, z, interior, dimension},
+--         startStage = stage id, quiet = bool (no scoreboard) }
+-- -> matchId | false, reason. The mission always runs in its own dimension.
+function jobmanagerStartMission(missionId, players, opts)
+    local job = jobsById[missionId]
+    if not job or job.type ~= JOB_TYPE_MISSION then return false, "unknown mission" end
+    if type(players) ~= "table" or #players == 0 then return false, "no players" end
+    local seen = {}
+    for _, player in ipairs(players) do
+        if seen[player] or not freePlayer(player) then return false, "player not available" end
+        seen[player] = true
+    end
+    if #players > job.maxPlayers then return false, "too many players" end
+    opts = type(opts) == "table" and opts or {}
+    local reward = opts.reward
+    if reward ~= false then
+        reward = type(reward) == "table" and { money = math.max(0, tonumber(reward.money) or 0), xp = math.max(0, tonumber(reward.xp) or 0) } or nil
+    end
+    local list = {}
+    for i, player in ipairs(players) do list[i] = player end
+    local match, err = createMatch(job, list, {
+        script = true, reward = reward, tag = type(opts.tag) == "string" and opts.tag or nil,
+        returnTo = cleanPoint(opts.returnTo), quiet = opts.quiet == true,
+        startStage = type(opts.startStage) == "string" and opts.startStage or nil,
+    })
+    if not match then return false, err end
+    return match.id
+end
+
+function jobmanagerAbortMission(matchId, reason)
+    local match = matches[tonumber(matchId) or -1]
+    if not match or match.job.type ~= JOB_TYPE_MISSION then return false end
+    endMatch(match, type(reason) == "string" and reason or L.msg("v_jobmanager.mission.aborted"), true)
+    return true
+end
+
+-- completes the `scriptEvent` objectives named `name` in the current stage
+function jobmanagerMissionSignal(matchId, name)
+    local match = matches[tonumber(matchId) or -1]
+    if not match or match.ended or match.job.type ~= JOB_TYPE_MISSION or type(name) ~= "string" then return false end
+    return Mission.signal(match, name)
+end
+
+function jobmanagerGetMatch(matchId)
+    local match = matches[tonumber(matchId) or -1]
+    if not match then return false end
+    local players = {}
+    for _, player in ipairs(match.players) do
+        if not match.left[player] and isElement(player) then players[#players + 1] = player end
+    end
+    return {
+        jobId = match.job.id, type = match.job.type, players = players, dimension = match.dimension,
+        stage = match.mission and match.mission.stageId or nil, startedAt = match.startTick,
+        test = match.opts.test or false, tag = match.opts.tag,
+    }
+end
+
+-- v_jobcreator: runs an unsaved mission alone in the editor dimension, without rewards.
+-- game = the sanitized creator document. -> matchId | false, reason
+function jobmanagerTestMission(player, game, startStage)
+    if not isElement(player) or getElementType(player) ~= "player" or playerState[player] then return false, "busy" end
+    if type(game) ~= "table" or game.type ~= JOB_TYPE_MISSION then return false, "not a mission" end
+    local copy = {}
+    for k, v in pairs(game) do copy[k] = v end
+    copy.id, copy.createdBy, copy.marker, copy.scriptOnly = "__creator_test", copy.createdBy or "creator", nil, true
+    local ok, err = validateGame(copy)
+    if not ok then return false, err end
+    local match, cerr = createMatch(copy, { player }, {
+        test = true, dimension = getElementDimension(player), tag = "__creator_test",
+        startStage = type(startStage) == "string" and startStage or nil,
+    })
+    if not match then return false, cerr end
+    return match.id
+end
+
+-- ends a creator test run (F6)
+function jobmanagerStopTest(player)
+    local match = jobPlayerMatch(player)
+    if not match or not match.opts.test then return false end
+    endMatch(match, L.msg("v_jobmanager.mission.test_stopped"), true)
+    return true
 end

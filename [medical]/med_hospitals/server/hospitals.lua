@@ -23,14 +23,7 @@ function isResourceRunning(name)
     return res and getResourceState(res) == "running"
 end
 
--- Progress bar under a marker's 3D label, for one player (client/labels.lua)
-function startProgress(player, marker, duration, text)
-    triggerClientEvent(player, "hosp:progress", resourceRoot, marker, duration, text)
-end
-
-function stopProgress(player)
-    if isElement(player) then triggerClientEvent(player, "hosp:progressStop", resourceRoot) end
-end
+-- startProgress / stopProgress (progress bar in a marker's card): server/markerui.lua
 
 function notify(player, text)
     if isElement(player) and getElementType(player) == "player" then
@@ -166,6 +159,7 @@ local function buildPoint(h, point, kind, index, color)
     setElementData(marker, HOSP_DATA.KIND, kind)
     setElementData(marker, HOSP_DATA.NAME, h.name)
     setElementData(marker, HOSP_DATA.HELI, point.heli and true or false)
+    hospMarkerUI(marker)
     point.marker, point.col = marker, col
     return true
 end
@@ -193,7 +187,10 @@ end
 -- marker data hosp.paid of every treatment marker: the label says free / paid by the patient
 function refreshHealPayment()
     for point, h in eachPoint("heal") do
-        if isElement(point.marker) then setElementData(point.marker, HOSP_DATA.PAID, isPaidHospital(h)) end
+        if isElement(point.marker) then
+            setElementData(point.marker, HOSP_DATA.PAID, isPaidHospital(h))
+            hospMarkerUI(point.marker)
+        end
     end
 end
 
@@ -205,6 +202,7 @@ local function refreshBayMarker(bay)
     setMarkerColor(bay.marker, c[1], c[2], c[3], (bay.occupied and not bay.restricted) and 0 or c[4])
     setElementData(bay.marker, HOSP_DATA.OCCUPIED, bay.occupied and true or false)
     setElementData(bay.marker, HOSP_DATA.RESTRICTED, bay.restricted and true or false)
+    hospMarkerUI(bay.marker)
 end
 
 function setBayOccupied(bay, occupied)
@@ -294,7 +292,10 @@ end)
 addEventHandler("onResourceStop", root, function(res)
     if getResourceName(res) == "gov_health" then
         for point in eachPoint("heal") do
-            if isElement(point.marker) then setElementData(point.marker, HOSP_DATA.PAID, false) end
+            if isElement(point.marker) then
+                setElementData(point.marker, HOSP_DATA.PAID, false)
+                hospMarkerUI(point.marker)
+            end
         end
     end
 end)

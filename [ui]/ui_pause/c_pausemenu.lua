@@ -84,6 +84,7 @@ JOBS_SUB = {
 JOBS_CATS = {
     { id = "race",       label = L("common.race"),       desc = L("ui_pause.pausemenu.browse_available_race_jobs") },
     { id = "deathmatch", label = L("common.deathmatch"), desc = L("ui_pause.pausemenu.browse_available_deathmatch_jobs") },
+    { id = "mission",    label = L("ui_pause.pausemenu.missions"), desc = L("ui_pause.pausemenu.browse_available_missions") },
 }
 end
 --   view = "root" | "joinlobby" | "cat" | "race" | "deathmatch"; src = "official" | "community"
@@ -237,6 +238,18 @@ end
 
 local function inJobLobby()
     return jobsAvailable() and exports.v_jobmanager:jobmanagerInLobby()
+end
+
+local function inJobMatch()
+    return jobsAvailable() and exports.v_jobmanager:jobmanagerInMatch() == true
+end
+
+-- ONLINE root rows; during a running job "Leave current job" comes first
+local function jobsRoot()
+    if not inJobMatch() then return JOBS_ROOT end
+    local items = { { id = "leavejob", label = L("ui_pause.pausemenu.leave_current_job"), desc = L("ui_pause.pausemenu.leave_current_job_desc") } }
+    for _, item in ipairs(JOBS_ROOT) do items[#items + 1] = item end
+    return items
 end
 
 --------------------------------------------------------------------------------
@@ -559,7 +572,7 @@ local function contentBack()
         return
     end
     if TABS[selectedTab] == "ONLINE" and jobsMenu.view ~= "root" then
-        if jobsMenu.view == "race" or jobsMenu.view == "deathmatch" then
+        if jobsMenu.view == "race" or jobsMenu.view == "deathmatch" or jobsMenu.view == "mission" then
             jobsMenu.view = "cat"
         elseif jobsMenu.view == "cat" or jobsMenu.view == "joinlobby" then
             jobsMenu.view = "jobs"
@@ -574,7 +587,7 @@ end
 local function handleJobsKey(key)
     if jobsMenu.view == "root" or jobsMenu.view == "jobs" then
         local isRoot = jobsMenu.view == "root"
-        local items = isRoot and JOBS_ROOT or JOBS_SUB
+        local items = isRoot and jobsRoot() or JOBS_SUB
         local selKey = isRoot and "rootSel" or "subSel"
         if key == "arrow_u" then
             jobsMenu[selKey] = moveSel(jobsMenu[selKey], -1, #items)
@@ -585,6 +598,12 @@ local function handleJobsKey(key)
             if not item then return end
             if item.id == "jobs" then
                 jobsMenu.view, jobsMenu.subSel = "jobs", 1
+                return
+            end
+            if item.id == "leavejob" then
+                -- v_jobmanager asks for confirmation in its own menu
+                setPauseMenuOpen(false)
+                if jobsAvailable() then exports.v_jobmanager:jobmanagerLeaveJob(false) end
                 return
             end
             if item.id == "leave" then
@@ -644,7 +663,7 @@ local function handleJobsKey(key)
         return
     end
 
-    local list = filteredJobs(jobsMenu.view == "race" and "race" or "deathmatch")
+    local list = filteredJobs(jobsMenu.view)
     if key == "arrow_u" then
         jobsMenu.listSel = moveSel(jobsMenu.listSel, -1, #list)
     elseif key == "arrow_d" then
@@ -1057,6 +1076,7 @@ end
 local function jobViewLabel(view)
     if view == "race" then return L("common.race") end
     if view == "deathmatch" then return L("common.deathmatch") end
+    if view == "mission" then return L("ui_pause.pausemenu.missions") end
     return view
 end
 
@@ -1122,7 +1142,7 @@ local function drawJobsTab(x, y, w, h)
     end
 
     if jobsMenu.view == "root" then
-        drawJobsRoot(x, y, w, h, JOBS_ROOT, jobsMenu.rootSel, L("ui_pause.pausemenu.online"))
+        drawJobsRoot(x, y, w, h, jobsRoot(), jobsMenu.rootSel, L("ui_pause.pausemenu.online"))
     elseif jobsMenu.view == "jobs" then
         drawJobsRoot(x, y, w, h, JOBS_SUB, jobsMenu.subSel, L("ui_pause.pausemenu.jobs_title"))
     elseif jobsMenu.view == "cat" then
@@ -1130,7 +1150,7 @@ local function drawJobsTab(x, y, w, h)
     elseif jobsMenu.view == "joinlobby" then
         drawJobsList(x, y, w, h, getLobbyList())
     else
-        drawJobsList(x, y, w, h, filteredJobs(jobsMenu.view == "race" and "race" or "deathmatch"))
+        drawJobsList(x, y, w, h, filteredJobs(jobsMenu.view))
     end
 end
 
@@ -1226,7 +1246,7 @@ local function contextHelp()
     local tab = TABS[selectedTab]
     if tab == "ONLINE" then
         if jobsMenu.view == "root" then
-            local item = JOBS_ROOT[jobsMenu.rootSel]
+            local item = jobsRoot()[jobsMenu.rootSel]
             return item and item.desc or ""
         elseif jobsMenu.view == "jobs" then
             local item = JOBS_SUB[jobsMenu.subSel]
@@ -1238,7 +1258,7 @@ local function contextHelp()
             local entry = getLobbyList()[jobsMenu.listSel]
             return entry and (entry.description or L("ui_pause.pausemenu.join_this_lobby")) or L("ui_pause.pausemenu.no_open_lobbies_right_now")
         else
-            local list = filteredJobs(jobsMenu.view == "race" and "race" or "deathmatch")
+            local list = filteredJobs(jobsMenu.view)
             local job = list[jobsMenu.listSel]
             return job and (job.description or L("ui_pause.pausemenu.join_this_job")) or ""
         end

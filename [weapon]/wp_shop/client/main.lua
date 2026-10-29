@@ -97,6 +97,7 @@ function closeShop()
     if not Browse then return end
     local b = Browse
     Browse = nil
+    exports.ui_core:setMarkerUIsHidden(false)   -- marker cards back (hidden while browsing)
     if isTimer(openTimer) then killTimer(openTimer) end
     openTimer = nil
     bindBrowseKeys(false)
@@ -131,6 +132,7 @@ local function openShop()
     Browse = { shop = shop, int = int, list = list, index = 1, obj = obj, state = "browse",
         alpha = getElementAlpha(localPlayer) }
     setElementAlpha(localPlayer, 0)   -- local only: the player is not in the way of the camera
+    exports.ui_core:setMarkerUIsHidden(true)    -- the camera looks at the counter
     lockControls()
     bindBrowseKeys(true)
     addEventHandler("onClientPreRender", root, camLoop)

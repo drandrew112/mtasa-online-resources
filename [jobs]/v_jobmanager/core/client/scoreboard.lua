@@ -170,7 +170,7 @@ addEventHandler("onClientKey", root, function(key, down)
                 closeScoreboard()
             end
         else
-            if bottomIndex == 1 and payload and payload.jobId then
+            if bottomIndex == 1 and payload and payload.jobId and payload.replay ~= false then
                 jobmanagerJoinJob(payload.jobId)
             end
             closeScoreboard()
@@ -216,12 +216,15 @@ local function drawStats()
         dxDrawRectangle(fx, ry, fw, rowH, i % 2 == 0 and C.rowAlt or C.row)
         local nameX = isRace and (fx + fw * 0.2) or (fx + S(12))
         if isRace then
-            local placeText = row.place and ("#" .. row.place) or L("v_jobmanager.results.dnf")
+            local placeText = row.place and ("#" .. row.place) or (row.left and L("v_jobmanager.scoreboard.left") or L("v_jobmanager.results.dnf"))
             dxDrawText(placeText, fx + S(12), ry, fx + fw * 0.2, ry + rowH, C.accent, S(1.0), FONT.rowB, "left", "center")
             dxDrawText(row.name, nameX, ry, fx + fw * 0.7, ry + rowH, C.txt, S(1.0), FONT.row, "left", "center")
             dxDrawText(fmtTime(row.timeMs), fx + fw * 0.7, ry, fx + fw - S(12), ry + rowH, C.txt, S(1.0), FONT.rowB, "right", "center")
         else
-            dxDrawText(row.name, nameX, ry, fx + fw * 0.6, ry + rowH, C.txt, S(1.0), FONT.row, "left", "center")
+            dxDrawText(row.name, nameX, ry, fx + fw * 0.6, ry + rowH, row.left and C.txtDim or C.txt, S(1.0), FONT.row, "left", "center")
+            if row.left then
+                dxDrawText(L("v_jobmanager.scoreboard.left"), nameX, ry, fx + fw * 0.6 - S(8), ry + rowH, C.txtDim, S(0.9), FONT.rowB, "right", "center")
+            end
             dxDrawText(tostring(row.kills), fx + fw * 0.6, ry, fx + fw * 0.8, ry + rowH, C.txt, S(1.0), FONT.rowB, "right", "center")
             dxDrawText(tostring(row.deaths), fx + fw * 0.8, ry, fx + fw - S(12), ry + rowH, C.txt, S(1.0), FONT.rowB, "right", "center")
         end

@@ -15,8 +15,6 @@
     <script src="client/fade.lua"    type="client" />
     <script src="client/markers.lua" type="client" />
     <script src="client/admin.lua"   type="client" />
-    <file src="client/fonts/Roboto.ttf"  type="client" />
-    <file src="client/fonts/RobotoB.ttf" type="client" />
 
     <!-- ================= DATA ================= -->
     <!-- data/stock_interiors.json: read server-side by server/admin.lua (/intwatch), not downloaded -->

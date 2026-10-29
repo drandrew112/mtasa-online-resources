@@ -47,6 +47,23 @@ local function destroyRecord(rec)
     if isElement(rec.exitMarker) then destroyElement(rec.exitMarker) end
 end
 
+---------------------------------------------------------------- marker cards (ui_core)
+
+local uiDefs = {}   -- ui id -> def (sent again when ui_core restarts)
+
+local function markerUI(uid, def)
+    uiDefs[uid] = def
+    local res = getResourceFromName("ui_core")
+    if res and getResourceState(res) == "running" then exports.ui_core:createMarkerUI(uid, def) end
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, function()
+    for uid, def in pairs(uiDefs) do
+        if isElement(def.element) then exports.ui_core:createMarkerUI(uid, def) else uiDefs[uid] = nil end
+    end
+end)
+
 local function makeMarker(p, dim, color, id, kind, name)
     local m = createMarker(p.x, p.y, p.z - 1, INT.markerType, INT.markerSize, color[1], color[2], color[3], color[4])
     setElementInterior(m, p.interior)
@@ -56,6 +73,19 @@ local function makeMarker(p, dim, color, id, kind, name)
     setElementData(m, "interior:kind", kind)
     setElementData(m, "interior:name", name)
     setElementData(m, "interior:color", { color[1], color[2], color[3] })   -- shader_markers hides the real marker colour
+    local entering = kind == "enter"
+    local verb = L.msg(entering and "world_interiors.markers.enter" or "world_interiors.markers.exit")
+    markerUI(id .. ":" .. kind, {
+        element = m,
+        type = entering and "int_enter" or "int_exit",
+        color = { color[1], color[2], color[3] },
+        name = name or "",
+        title = verb,
+        hint = L.msg("world_interiors.markers.step_into_marker"),
+        hintActive = L.msg("world_interiors.markers.press", { key = INT.key:upper(), entering = verb }),
+        radius = INT.labelDistance, fullRadius = INT.labelFullDistance, minScale = INT.labelMinScale,
+        height = 1 + INT.labelHeight,   -- markers sit 1 unit below the given point
+    })
     return m
 end
 

@@ -4,7 +4,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- While the list is open the camera looks at the player from the front and the controls are
 -- off. Hovering an outfit previews it on the local player only; it is always reverted when the
 -- menu closes, a bought outfit then arrives from the server.
--- Feedback goes to the marker label (client/label.lua), not to notifications.
+-- Feedback goes to the marker card (client/label.lua), not to notifications.
 
 ChangerMarker = nil  -- changer marker the local player stands in
 Status        = nil  -- { text, ok, untilTick } shown on the marker label
@@ -17,8 +17,12 @@ addEvent("ui_inac:tempMenuClose")
 addEvent("clothes:status", true)
 addEvent("clothes:bought", true)
 
+local function labels() if refreshClothesLabels then refreshClothesLabels() end end
+
 local function setStatus(text, ok)
     Status = { text = text, ok = ok, untilTick = getTickCount() + CLOTHES.statusMs }
+    labels()
+    setTimer(labels, CLOTHES.statusMs + 50, 1)
 end
 
 ---------------------------------------------------------------- camera
@@ -75,6 +79,7 @@ local function closeMenu()
     if exports.ui_inac:isTempMenuOpen() then exports.ui_inac:closeTempMenu() end
     menu = nil
     stopCamera()
+    labels()
 end
 
 function isClothesMenuOpen() return menu ~= nil end
@@ -123,6 +128,7 @@ local function openMenu()
     menu = { id = id, previewFrom = current, wornPath = wornPath }
     Status = nil
     startCamera()
+    labels()
 end
 
 local function onKey()
@@ -139,6 +145,7 @@ addEventHandler("onClientMarkerHit", resourceRoot, function(hit, matchingDim)
     ChangerMarker = source
     Status = nil
     bindKey(CLOTHES.key, "down", onKey)
+    labels()
 end)
 
 addEventHandler("onClientMarkerLeave", resourceRoot, function(left)
@@ -146,6 +153,7 @@ addEventHandler("onClientMarkerLeave", resourceRoot, function(left)
     ChangerMarker = nil
     unbindKey(CLOTHES.key, "down", onKey)
     closeMenu()
+    labels()
 end)
 
 ---------------------------------------------------------------- ui_inac events
@@ -166,6 +174,7 @@ addEventHandler("ui_inac:tempMenuClose", root, function(id)
     preview(nil)
     menu = nil
     stopCamera()
+    labels()
 end)
 
 ---------------------------------------------------------------- server replies

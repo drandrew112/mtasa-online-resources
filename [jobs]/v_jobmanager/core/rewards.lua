@@ -16,6 +16,9 @@ REWARDS = {
     place = { 1.5, 1.25, 1.1 },     -- money multiplier by place, others x1.0
     dnf = 0.25,                     -- race not finished
     xp = { participation = 100, finished = 80, perKill = 25, place = { 160, 100, 50 } },
+    -- missions: the mission's own `reward` (or the starting script's opts.reward) on success,
+    -- otherwise perStage per stage; a failed mission (Team lives, time, target lost) pays failMin only
+    mission = { perStage = { money = 400, xp = 150 }, perKill = 20, failMin = { money = 500, xp = 100 } },
 }
 
 --------------------------------------------------------------------------------
@@ -136,8 +139,47 @@ end
 -- computing
 --------------------------------------------------------------------------------
 
+local function missionReward(match, player)
+    local job, cfg, state = match.job, REWARDS.mission, match.mission or {}
+    local success = state.result == "success"
+    local players = match.startPlayers or #match.players
+    local stagesTotal = #(job.mission and job.mission.stages or {})
+    local stagesDone = state.stagesDone or 0
+    local kills = match.kills[player] or 0
+    local moneyLines, xpLines = {}, {}
+    local money, xp
+    if success then
+        local fixed = type(match.opts.reward) == "table" and match.opts.reward or (job.mission and job.mission.reward)
+        if type(fixed) == "table" then
+            money, xp = tonumber(fixed.money) or 0, tonumber(fixed.xp) or 0
+        else
+            money, xp = stagesTotal * cfg.perStage.money, stagesTotal * cfg.perStage.xp
+        end
+        table.insert(moneyLines, { L.msg("v_jobmanager.rewards.mission_passed"), euro(money) })
+        table.insert(xpLines, { L.msg("v_jobmanager.rewards.mission_passed"), "+" .. round(xp) })
+        if kills > 0 then
+            money = money + kills * cfg.perKill
+            table.insert(moneyLines, { kills .. (kills == 1 and " kill" or " kills"), "+" .. euro(kills * cfg.perKill) })
+        end
+    else
+        money, xp = cfg.failMin.money, cfg.failMin.xp
+        table.insert(moneyLines, { L.msg("v_jobmanager.rewards.mission_failed"), euro(money) })
+        table.insert(xpLines, { L.msg("v_jobmanager.rewards.mission_failed"), "+" .. xp })
+    end
+    local mMoney, mXp, mLabel = jobmanagerGetMultiplier(job.id)
+    if mMoney ~= 1 then table.insert(moneyLines, { mLabel, mult(mMoney) }) end
+    if mXp ~= 1 then table.insert(xpLines, { mLabel, mult(mXp) }) end
+    return {
+        place = false, players = players, solo = players <= 1, finished = success, success = success,
+        stagesDone = stagesDone, stagesTotal = stagesTotal, kills = kills, deaths = match.deaths[player] or 0,
+        money = { total = round(money * mMoney), lines = moneyLines },
+        xp = { total = round(xp * mXp), lines = xpLines },
+    }
+end
+
 local function computeOne(match, player, ctx)
     local job = match.job
+    if job.type == JOB_TYPE_MISSION then return missionReward(match, player) end
     local isRace = job.type == JOB_TYPE_RACE
     local players = match.startPlayers or #match.players
     local solo = players <= 1
@@ -211,8 +253,12 @@ end
 
 -- -> { [player] = reward }
 function buildRewards(match)
+    -- a script that starts a mission with reward = false pays the players itself
+    if match.opts and match.opts.reward == false then return {} end
     local ctx = { racePlace = {} }
-    if match.job.type == JOB_TYPE_RACE then
+    if match.job.type == JOB_TYPE_MISSION then
+        -- nothing to prepare
+    elseif match.job.type == JOB_TYPE_RACE then
         for place, player in ipairs(match.finishOrder) do ctx.racePlace[player] = place end
         ctx.km = routeKm(match.job.race or {})
     else

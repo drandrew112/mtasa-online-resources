@@ -230,7 +230,11 @@ end
 local function drawPlace(x, y, w, a)
     local placeH = fh("RobotoB", F.place)
     local nx = x
-    if reward.place then
+    if info.type == "mission" then
+        local head = reward.success and L("v_jobmanager.results.mission_passed") or L("v_jobmanager.results.mission_failed")
+        text(head, nx, y + placeH - fh("RobotoB", F.big), P(1200), reward.success and C.gold or C.dnf, a, "RobotoB", F.big)
+        nx = nx + fw(head, "RobotoB", F.big) + P(44)
+    elseif reward.place then
         local num, suf = ordinal(reward.place)
         local numW = fw(num, "RobotoB", F.place)
         text(num, nx, y, numW + P(6), C.gold, a, "RobotoB", F.place)
@@ -242,12 +246,14 @@ local function drawPlace(x, y, w, a)
     end
 
     local sub
-    if info.type == "race" then
+    if info.type == "mission" then
+        sub = L("v_jobmanager.results.mission_line", { stages = reward.stagesDone or 0, total = reward.stagesTotal or 0, deaths = reward.deaths or 0 })
+    elseif info.type == "race" then
         sub = L("v_jobmanager.results.race", { time_ms = (reward.place and (L("v_jobmanager.results.place_of", { place = reward.place, players = reward.players, time_ms = fmtTime(reward.timeMs) })) or L("v_jobmanager.results.not_finished")) })
     else
         sub = L("v_jobmanager.results.place_of_kills_deaths_deathmatch", { place = reward.place, players = reward.players, kills = reward.kills, deaths = reward.deaths })
     end
-    if reward.solo then sub = L("v_jobmanager.results.solo", { sub = sub }) end
+    if reward.solo and info.type ~= "mission" then sub = L("v_jobmanager.results.solo", { sub = sub }) end
 
     local nameH, capH = fh("RobotoB", F.name), fh("RobotoB", F.cap)
     local ny = y + placeH - nameH - capH - P(24)

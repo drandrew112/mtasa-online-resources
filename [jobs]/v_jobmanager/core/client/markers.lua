@@ -1,9 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- 3D DX labels above every job marker (same card style as the medical / work markers)
--- and the E key inside a marker, which joins a waiting lobby of that job or opens a new one.
-
-local sw, sh = guiGetScreenSize()
-local function s(v) return v * sh / 1080 end
+-- The cards above the job markers (ui_core marker UIs) and the E key inside a marker, which
+-- joins a waiting lobby of that job or opens a new one.
 
 local LABEL_HEIGHT = 1.6        -- above the marker position (ground level)
 local LABEL_DISTANCE = 40       -- fully hidden beyond this
@@ -11,109 +8,46 @@ local LABEL_FULL_DISTANCE = 12  -- full size up to this
 local LABEL_MIN_SCALE = 0.55
 local KEY = "e"
 
-local TYPE_STYLE = {}
-local function build_TYPE_STYLE()
-TYPE_STYLE = {
-    race       = { color = { 56, 132, 244 }, icon = "R", title = L("common.race") },
-    deathmatch = { color = { 218, 54, 51 },  icon = "DM", title = L("common.deathmatch") },
-}
-end
-local DEFAULT_STYLE = {}
-local function build_DEFAULT_STYLE()
-DEFAULT_STYLE = { color = { 230, 190, 40 }, icon = "J", title = L("common.job") }
-end
-
-local fonts = {}
-local function font(size, bold)
-    local key = size .. (bold and "b" or "")
-    if fonts[key] == nil then
-        fonts[key] = dxCreateFont(bold and "assets/fonts/RobotoB.ttf" or "assets/fonts/Roboto.ttf", s(size), false, "antialiased")
-            or (bold and "default-bold" or "default")
-    end
-    return fonts[key]
-end
+local TYPE_UI = { race = { "job_race", "common.race" }, deathmatch = { "job_dm", "common.deathmatch" } }
 
 local nearbyJobId = nil -- job id of the marker the local player stands in
+local cards = {}        -- ui ids of the registered cards
 
-local function rgb(c, a) return tocolor(c[1], c[2], c[3], a or 255) end
-
-local function round(x, y, w, h, r, color)
-    r = math.min(r, w / 2, h / 2)
-    if r < 1 then return dxDrawRectangle(x, y, w, h, color) end
-    dxDrawRectangle(x + r, y, w - 2 * r, h, color)
-    dxDrawRectangle(x, y + r, r, h - 2 * r, color)
-    dxDrawRectangle(x + w - r, y + r, r, h - 2 * r, color)
-    dxDrawCircle(x + r, y + r, r, 180, 270, color, color, 12)
-    dxDrawCircle(x + w - r, y + r, r, 270, 360, color, color, 12)
-    dxDrawCircle(x + r, y + h - r, r, 90, 180, color, color, 12)
-    dxDrawCircle(x + w - r, y + h - r, r, 0, 90, color, color, 12)
+local function registerCard(job)
+    local t = TYPE_UI[job.type] or { "job", "common.job" }
+    local id = "job:" .. tostring(job.id)
+    local ok = exports.ui_core:createMarkerUI(id, {
+        type = t[1], x = job.marker[1], y = job.marker[2], z = job.marker[3], interior = 0, dimension = 0,
+        size = 2, title = job.name,
+        name = L.msg("v_jobmanager.markers.players", { title = L.msg(t[2]), min_players = job.minPlayers, max_players = job.maxPlayers }),
+        hint = L.msg("v_jobmanager.markers.step_into_marker_to_start_lobby"),
+        hintActive = L.msg("v_jobmanager.markers.press_e_to_start_lobby"),
+        radius = LABEL_DISTANCE, fullRadius = LABEL_FULL_DISTANCE, minScale = LABEL_MIN_SCALE, height = LABEL_HEIGHT,
+    })
+    if ok then cards[id] = true end
 end
 
-local function drawLabel(sx, sy, k, alpha, job, inside)
-    local st = TYPE_STYLE[job.type] or DEFAULT_STYLE
-    local fTitle, fSub, fHint = font(13, true), font(9, true), font(9)
-    local a = alpha / 255
-
-    local subStr = (L("v_jobmanager.markers.players", { title = st.title, min_players = job.minPlayers, max_players = job.maxPlayers })):upper()
-    local hint = inside and L("v_jobmanager.markers.press_e_to_start_lobby") or L("v_jobmanager.markers.step_into_marker_to_start_lobby")
-    local pad, icon, gap = s(10) * k, s(34) * k, s(10) * k
-    local textW = math.max(L.width(job.name, k, fTitle), L.width(subStr, k, fSub),
-        L.width(hint, k, fHint))
-    local w = pad + icon + gap + textW + pad * 1.4
-    local headH = s(46) * k
-    local hintH = s(22) * k
-    local h = headH + hintH
-    local x, y = sx - w / 2, sy - h
-
-    round(x, y, w, h, s(7) * k, tocolor(14, 17, 21, 220 * a))
-    round(x, y + h - s(3) * k, w, s(3) * k, s(1.5) * k, rgb(st.color, 235 * a))
-
-    -- icon tile
-    local ix, iy = x + pad, y + (headH - icon) / 2 + s(2) * k
-    round(ix, iy, icon, icon, s(5) * k, rgb(st.color, 240 * a))
-    dxDrawText(st.icon, ix, iy, ix + icon, iy + icon, tocolor(255, 255, 255, 255 * a), k,
-        font(#st.icon > 1 and 12 or 16, true), "center", "center")
-
-    -- type line / job name
-    local tx = ix + icon + gap
-    dxDrawText(subStr, tx, y + s(6) * k, tx + textW, y + headH * 0.45, rgb(st.color, 255 * a), k, fSub, "left", "center")
-    dxDrawText(job.name, tx, y + headH * 0.42, tx + textW, y + headH, tocolor(255, 255, 255, 255 * a), k, fTitle, "left", "center")
-
-    -- hint (key highlighted while standing in the marker)
-    local hy = y + headH
-    dxDrawText(hint, x + pad, hy, x + w - pad, hy + hintH,
-        inside and rgb(st.color, 255 * a) or tocolor(200, 205, 212, 220 * a), k, inside and font(9, true) or fHint, "left", "center")
-
-    -- pointer
-    dxDrawRectangle(sx - s(1) * k, y + h, s(2) * k, s(10) * k, tocolor(14, 17, 21, 220 * a))
-end
-
-addEventHandler("onClientRender", root, function()
-    if isPlayerMapVisible() or getElementData(localPlayer, "paused") or jobmanagerInLobby() then return end
-    if getElementDimension(localPlayer) ~= 0 or getElementInterior(localPlayer) ~= 0 then return end
-    local cx, cy, cz = getCameraMatrix()
-    local px, py, pz = getElementPosition(localPlayer)
-
-    for _, job in ipairs(jobs) do
-        local x, y, z = job.marker[1], job.marker[2], job.marker[3]
-        local dist = getDistanceBetweenPoints3D(px, py, pz, x, y, z)
-        if dist <= LABEL_DISTANCE then
-            local lz = z + LABEL_HEIGHT
-            if isLineOfSightClear(cx, cy, cz, x, y, lz, true, false, false, true, false, false, false) then
-                local sx, sy = getScreenFromWorldPosition(x, y, lz, 0.1)
-                if sx then
-                    local k = 1
-                    if dist > LABEL_FULL_DISTANCE then
-                        k = 1 - (dist - LABEL_FULL_DISTANCE) / (LABEL_DISTANCE - LABEL_FULL_DISTANCE) * (1 - LABEL_MIN_SCALE)
-                    end
-                    local alpha = 255
-                    if dist > LABEL_DISTANCE * 0.8 then alpha = 255 * (LABEL_DISTANCE - dist) / (LABEL_DISTANCE * 0.2) end
-                    drawLabel(sx, sy, k, alpha, job, nearbyJobId == job.id)
-                end
-            end
-        end
+-- one ui_core marker UI per job marker
+local function registerCards()
+    for id in pairs(cards) do exports.ui_core:removeMarkerUI(id) end
+    cards = {}
+    for _, job in ipairs(jobs or {}) do
+        if type(job.marker) == "table" then registerCard(job) end
     end
-end)
+end
+
+addEvent("onClientMarkerUISystemStart")
+addEventHandler("onClientMarkerUISystemStart", root, registerCards)
+
+-- no cards while paused or in a lobby (checked a few times a second, not every frame)
+local cardsHidden = false
+setTimer(function()
+    local hide = (getElementData(localPlayer, "paused") or jobmanagerInLobby()) and true or false
+    if hide ~= cardsHidden then
+        cardsHidden = hide
+        exports.ui_core:setMarkerUIsHidden(hide)
+    end
+end, 300, 0)
 
 ---------------------------------------------------------------- E in the marker
 
@@ -134,6 +68,7 @@ addEventHandler("jobmanager:markers", resourceRoot, function(list)
         table.insert(jobs, job)
         jobsById[job.id] = job
     end
+    registerCards()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
@@ -158,8 +93,6 @@ local textsLoaded = false
 local function loadTexts()
     if textsLoaded then return end
     textsLoaded = true
-    build_TYPE_STYLE()
-    build_DEFAULT_STYLE()
     exports.v_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)

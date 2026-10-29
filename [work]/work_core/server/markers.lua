@@ -1,5 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Duty markers and duty vehicle markers, created by the work resources through exports.
+-- Their 3D cards are ui_core marker UIs (server/markerui.lua).
 -- The markers belong to work_core (the client finds them under its resourceRoot) but are
 -- destroyed when the work is unregistered or the resource that created them stops.
 
@@ -43,6 +44,7 @@ local function baseMarker(kind, workId, x, y, z, opts, defaultSize, alpha)
         if m.blip then placeInWorld(m.blip, int, dim) end
     end
     Markers[marker] = m
+    registerMarkerUI(marker, m)
 
     addEventHandler("onElementDestroy", marker, function()
         local data = Markers[source]

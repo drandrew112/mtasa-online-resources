@@ -134,6 +134,9 @@ local function signInCheck(player, unitType, candidates, unitNumber)
         return false, L.msg("med_erm.units.you_must_be_inside_ambulance_to")
     end
     if not hasValue(Config.UNIT_TYPES, unitType) then return false, L.msg("med_erm.units.select_unit_type") end
+    if not hasValue(Config.unitTypesFor(getElementModel(veh)), unitType) then
+        return false, L.msg("med_erm.units.unit_type_not_allowed_in_vehicle", { type = unitType })
+    end
     unitNumber = tostring(unitNumber or ""):gsub("%s", "")
     if unitNumber ~= "" then
         local n = tonumber(unitNumber:match("^%d%d?%d?$"))

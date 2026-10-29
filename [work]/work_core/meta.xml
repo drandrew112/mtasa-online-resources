@@ -13,6 +13,7 @@
     <script src="server/levels.lua"   type="server" />
     <script src="server/duty.lua"     type="server" />
     <script src="server/markers.lua"  type="server" />
+    <script src="server/markerui.lua" type="server" />
     <script src="server/vehicles.lua" type="server" />
     <script src="server/requests.lua" type="server" />
     <script src="server/multipliers.lua" type="server" />
@@ -21,7 +22,6 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/state.lua"   type="client" />
     <script src="client/menus.lua"   type="client" />
-    <script src="client/labels.lua"  type="client" />
     <script src="client/payment.lua" type="client" />
     <file src="client/fonts/Roboto.ttf"  type="client" />
     <file src="client/fonts/RobotoB.ttf" type="client" />

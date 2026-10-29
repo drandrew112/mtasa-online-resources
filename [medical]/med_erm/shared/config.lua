@@ -22,6 +22,21 @@ Config.TABLET_VEHICLES = {
 -- Unit types selectable on the sign-in screen.
 Config.UNIT_TYPES = { "SOLO", "DOC", "BLS", "ALS", "HELI" }
 
+-- Unit types allowed per vehicle model (sign-in screen + server check).
+-- 598 = Skoda Octavia (SOLO/DOC), 487/563 = helicopters (HELI); any other
+-- tablet vehicle (ambulance) gets UNIT_TYPES_DEFAULT.
+Config.UNIT_VEHICLE_TYPES = {
+    [598] = { "SOLO", "DOC" },
+    [487] = { "HELI" },
+    [563] = { "HELI" },
+}
+Config.UNIT_TYPES_DEFAULT = { "BLS", "ALS" }
+
+-- Unit types selectable in a vehicle of the given model.
+function Config.unitTypesFor(model)
+    return Config.UNIT_VEHICLE_TYPES[model] or Config.UNIT_TYPES_DEFAULT
+end
+
 -- Radius (metres) in which other players can be added to a crew.
 Config.ADD_MEMBER_RADIUS = 10
 

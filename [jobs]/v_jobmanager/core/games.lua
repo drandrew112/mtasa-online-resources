@@ -9,6 +9,9 @@
 --                                              spawned in the match dimension for every match
 --   race       = {vehicles, spawnpoints, checkpoints, finish, finishCamera?}   (type "race")
 --   deathmatch = {weapon, ammo, armour?, spawnpoints}                          (type "deathmatch")
+--   mission    = {spawnpoints, stages, ...} (type "mission", mode_mission/README.md)
+--   scriptOnly = true                          missions only: never listed, started by
+--                                              other resources (jobmanagerStartMission)
 --
 -- Each mode validates its own block through JobModes[type].validate(game).
 
@@ -57,6 +60,9 @@ local function validateCommon(game, replacing)
         return false, "invalid minPlayers/maxPlayers"
     end
     if game.marker ~= nil and not isPoint(game.marker, 3) then return false, "invalid marker" end
+    if game.scriptOnly ~= nil and type(game.scriptOnly) ~= "boolean" then return false, "scriptOnly must be a boolean" end
+    if game.scriptOnly and game.type ~= JOB_TYPE_MISSION then return false, "only missions can be scriptOnly" end
+    if game.scriptOnly and game.community then return false, "scriptOnly missions are official games" end
     local okObjects, objErr = validateObjects(game.objects, game.community and COMMUNITY_MAX_OBJECTS or MAX_OBJECTS)
     if not okObjects then return false, objErr end
     local mode = JobModes and JobModes[game.type]
@@ -81,13 +87,19 @@ function registerJob(game, replace)
     if not ok then return false, err end
     local old = jobsById[game.id]
     jobsById[game.id] = game
+    -- scriptOnly missions are only started by other resources: never listed
+    local listed = not game.scriptOnly
     local replaced = false
     if old then
         for index, job in ipairs(jobs) do
-            if job == old then jobs[index], replaced = game, true break end
+            if job == old then
+                if listed then jobs[index] = game else table.remove(jobs, index) end
+                replaced = true
+                break
+            end
         end
     end
-    if not replaced then table.insert(jobs, game) end
+    if listed and not replaced then table.insert(jobs, game) end
     if onJobRegistered then onJobRegistered(game, old) end
     return true
 end

@@ -20,7 +20,8 @@ local function overview()
     local res = getResourceFromName("v_jobmanager")
     if res and getResourceState(res) == "running" then
         for _, g in ipairs(exports.v_jobmanager:jobmanagerOfficialList() or {}) do
-            if g.published then jobs[#jobs + 1] = { id = g.id, name = g.name, type = g.type } end
+            -- scriptOnly missions (business setups, heists) never get a weekly bonus
+            if g.published and not g.scriptOnly then jobs[#jobs + 1] = { id = g.id, name = g.name, type = g.type } end
         end
         for _, g in ipairs(exports.v_jobmanager:jobmanagerCommunityList() or {}) do
             if g.published then

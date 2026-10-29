@@ -226,6 +226,7 @@
   "med_erm.units.reach_scene_first": "Előbb érj a helyszínre.",
   "med_erm.units.response_not_started": "A kivonulás nem indult el.",
   "med_erm.units.select_unit_type": "Válassz egységtípust.",
+  "med_erm.units.unit_type_not_allowed_in_vehicle": "A(z) {type} egységtípus ezzel a járművel nem használható.",
   "med_erm.units.shift_ended": "A műszak véget ért.",
   "med_erm.units.start_response_first": "Előbb indítsd el a kivonulást.",
   "med_erm.units.unit_disbanded": "Az egység feloszlatva.",

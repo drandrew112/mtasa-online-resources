@@ -38,6 +38,7 @@ end
 local function setActive(on)
     if on == active then return end
     active = on
+    exports.ui_core:setMarkerUIsHidden(on)   -- no start card during a run
     if on then
         addEventHandler("onClientRender", root, drawCountdown)
     else
@@ -71,6 +72,7 @@ addEventHandler("tt:test", resourceRoot, function(index, startM, finishM)
     else
         test = nil
     end
+    refreshTrialCard()
 end)
 
 -- the server switches the active trial (weekly schedule)
@@ -79,91 +81,48 @@ addEventHandler("tt:setActive", resourceRoot, function(index)
     if not Timetrials[index] then return end
     resetRun()
     trial = Timetrials[index]
+    refreshTrialCard()
 end)
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
     triggerServerEvent("tt:requestActive", localPlayer)
 end)
 
--- === 3D LABEL (same card style as the job / medical markers) ===
-local sh = select(2, guiGetScreenSize())
-local function sc(v) return v * sh / 1080 end
-
+-- === 3D LABEL: a ui_core marker UI above the start of the current trial ===
 local LABEL_HEIGHT, LABEL_DISTANCE, LABEL_FULL, LABEL_MIN_SCALE = 1.8, 40, 12, 0.55
 local ACCENT = { 170, 70, 255 }
 
-local function round(x, y, w, h, r, color)
-    r = math.min(r, w / 2, h / 2)
-    if r < 1 then return dxDrawRectangle(x, y, w, h, color) end
-    dxDrawRectangle(x + r, y, w - 2 * r, h, color)
-    dxDrawRectangle(x, y + r, r, h - 2 * r, color)
-    dxDrawRectangle(x + w - r, y + r, r, h - 2 * r, color)
-    dxDrawCircle(x + r, y + r, r, 180, 270, color, color, 12)
-    dxDrawCircle(x + w - r, y + r, r, 270, 360, color, color, 12)
-    dxDrawCircle(x + r, y + h - r, r, 90, 180, color, color, 12)
-    dxDrawCircle(x + w - r, y + h - r, r, 0, 90, color, color, 12)
+-- the hint inside the start marker depends on the vehicle
+local function cardMeta()
+    return { hintActive = isLandDriver(localPlayer) and L.msg("v_timetrial.timetrial.press_e_to_start")
+        or L.msg("v_timetrial.timetrial.land_vehicle_required") }
 end
 
-local function drawLabel(sx, sy, k, alpha, tr, inside, isTest)
-    local a = alpha / 255
-    local fTitle, fSub, fHint = "default-bold", "default-bold", "default"
-    local ts, ss = 1.25 * k * sh / 1080 * 1.2, 0.95 * k * sh / 1080 * 1.2
-
-    local sub = (isTest and L("v_timetrial.timetrial.time_trial_test_2") or L("v_timetrial.timetrial.time_trial"))
-    local stats = L("v_timetrial.timetrial.sec", { time = tr.time, reward = (isTest and L("v_timetrial.timetrial.no_reward") or ("EUR " .. tr.reward)) })
-    local hint = not inside and L("v_timetrial.timetrial.step_into_marker_to_start")
-        or (isLandDriver(localPlayer) and L("v_timetrial.timetrial.press_e_to_start") or L("v_timetrial.timetrial.land_vehicle_required"))
-    local pad, icon, gap = sc(10) * k, sc(34) * k, sc(10) * k
-    local textW = math.max(L.width(tr.name, ts, fTitle), L.width(sub, ss, fSub),
-        L.width(stats, ss, fSub), L.width(hint, ss, fHint))
-    local w = pad + icon + gap + textW + pad * 1.4
-    local headH, hintH = sc(66) * k, sc(22) * k
-    local h = headH + hintH
-    local x, y = sx - w / 2, sy - h
-
-    round(x, y, w, h, sc(7) * k, tocolor(14, 17, 21, 220 * a))
-    round(x, y + h - sc(3) * k, w, sc(3) * k, sc(1.5) * k, tocolor(ACCENT[1], ACCENT[2], ACCENT[3], 235 * a))
-
-    local ix, iy = x + pad, y + (headH - icon) / 2 + sc(2) * k
-    round(ix, iy, icon, icon, sc(5) * k, tocolor(ACCENT[1], ACCENT[2], ACCENT[3], 240 * a))
-    dxDrawText(L("v_timetrial.timetrial.tt"), ix, iy, ix + icon, iy + icon, tocolor(255, 255, 255, 255 * a), ss * 1.2, fTitle, "center", "center")
-
-    local tx = ix + icon + gap
-    dxDrawText(sub, tx, y + sc(6) * k, tx + textW, y + headH * 0.3, tocolor(ACCENT[1], ACCENT[2], ACCENT[3], 255 * a), ss, fSub, "left", "center")
-    dxDrawText(tr.name, tx, y + headH * 0.28, tx + textW, y + headH * 0.62, tocolor(255, 255, 255, 255 * a), ts, fTitle, "left", "center")
-    dxDrawText(stats, tx, y + headH * 0.6, tx + textW, y + headH, tocolor(200, 205, 212, 230 * a), ss, fSub, "left", "center")
-
-    dxDrawText(hint, x + pad, y + headH, x + w - pad, y + h,
-        inside and tocolor(ACCENT[1], ACCENT[2], ACCENT[3], 255 * a) or tocolor(200, 205, 212, 220 * a),
-        ss, inside and fSub or fHint, "left", "center")
-
-    dxDrawRectangle(sx - sc(1) * k, y + h, sc(2) * k, sc(10) * k, tocolor(14, 17, 21, 220 * a))
+-- (re)defines the card of the current trial; hidden while a run is active
+function refreshTrialCard()
+    local tr = currentTrial()
+    if not tr or not tr.start then return exports.ui_core:removeMarkerUI("trial") end
+    local isTest = test ~= nil
+    exports.ui_core:createMarkerUI("trial", {
+        type = "timetrial", color = ACCENT, icon = L.msg("v_timetrial.timetrial.tt"),
+        x = tr.start.x, y = tr.start.y, z = tr.start.z, dimension = -1, size = 4,
+        name = isTest and L.msg("v_timetrial.timetrial.time_trial_test_2") or L.msg("v_timetrial.timetrial.time_trial"),
+        title = tr.name,
+        hint = L.msg("v_timetrial.timetrial.sec", { time = tr.time,
+            reward = isTest and L.msg("v_timetrial.timetrial.no_reward") or ("EUR " .. tr.reward) }),
+        radius = LABEL_DISTANCE, fullRadius = LABEL_FULL, minScale = LABEL_MIN_SCALE, height = LABEL_HEIGHT,
+    })
+    exports.ui_core:setMarkerUIMeta("trial", cardMeta())
 end
 
-local function labelAt(tr, isTest)
-    if active then return end
-    local p = tr.start
-    local px, py, pz = getElementPosition(localPlayer)
-    local dist = getDistanceBetweenPoints3D(px, py, pz, p.x, p.y, p.z)
-    if dist > LABEL_DISTANCE then return end
-    local sx, sy = getScreenFromWorldPosition(p.x, p.y, p.z + LABEL_HEIGHT, 0.1)
-    if not sx then return end
-    local k = 1
-    if dist > LABEL_FULL then
-        k = 1 - (dist - LABEL_FULL) / (LABEL_DISTANCE - LABEL_FULL) * (1 - LABEL_MIN_SCALE)
-    end
-    local alpha = dist > LABEL_DISTANCE * 0.8 and 255 * (LABEL_DISTANCE - dist) / (LABEL_DISTANCE * 0.2) or 255
-    drawLabel(sx, sy, k, alpha, tr, getElementData(localPlayer, "tt:canStart") == true, isTest)
-end
-
-addEventHandler("onClientRender", root, function()
-    if isPlayerMapVisible() or getElementData(localPlayer, "paused") then return end
-    if test then
-        labelAt(test.trial, true)
-    else
-        labelAt(trial, false)
-    end
-end)
+local function refreshCardMeta() exports.ui_core:setMarkerUIMeta("trial", cardMeta()) end
+addEvent("onClientMarkerUIHit")
+addEventHandler("onClientMarkerUIHit", resourceRoot, refreshCardMeta)
+addEventHandler("onClientPlayerVehicleEnter", localPlayer, refreshCardMeta)
+addEventHandler("onClientPlayerVehicleExit", localPlayer, refreshCardMeta)
+addEvent("onClientMarkerUISystemStart")
+addEventHandler("onClientMarkerUISystemStart", root, refreshTrialCard)
+addEventHandler("onClientResourceStart", resourceRoot, refreshTrialCard)
 
 -- === INDÍTÁS ===
 -- E only asks the server; the run starts when the server answers with tt:started.

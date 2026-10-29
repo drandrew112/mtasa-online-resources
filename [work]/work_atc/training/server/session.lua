@@ -439,6 +439,22 @@ local function applyMarkerVisibility()
     if isRunning("work_core") then exports.work_core:setElementVisibleToWork(marker, ATC.WORK_ID) end
 end
 
+-- 3D card above the training marker: a ui_core marker UI, only for the ATC players on duty
+local function markerUI()
+    local res = getResourceFromName("ui_core")
+    if not isElement(marker) or not res or getResourceState(res) ~= "running" then return end
+    local m = TRAINING.MARKER
+    exports.ui_core:createMarkerUI("training", {
+        element = marker, type = "atc", color = { m.color[1], m.color[2], m.color[3] },
+        name = L.msg("avi_core.marker.atc"), title = L.msg("work_atc.trn.menu.marker"),
+        hint = L.msg("work_atc.trn.menu.marker_press", { key = m.key:upper() }),
+        work = ATC.WORK_ID, radius = m.labelDistance, fullRadius = 6, minScale = 0.6, height = 1.5,
+    })
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, markerUI)
+
 addEventHandler("onResourceStart", resourceRoot, function()
     local m = TRAINING.MARKER
     local c = m.color
@@ -448,6 +464,7 @@ addEventHandler("onResourceStart", resourceRoot, function()
     setElementDimension(marker, m.dimension or 0)
     setElementData(marker, "atc.training", true)
     applyMarkerVisibility()
+    markerUI()
 end)
 
 addEvent("onWorkCoreStart")

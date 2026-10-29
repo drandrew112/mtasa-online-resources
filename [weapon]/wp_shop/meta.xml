@@ -13,9 +13,6 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/main.lua"  type="client" />
     <script src="client/panel.lua" type="client" />
-    <script src="client/label.lua" type="client" />
-    <file src="client/fonts/Roboto.ttf"  type="client" />
-    <file src="client/fonts/RobotoB.ttf" type="client" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="world_interiors" />

@@ -226,6 +226,7 @@
   "med_erm.units.reach_scene_first": "Reach the scene first.",
   "med_erm.units.response_not_started": "Response not started.",
   "med_erm.units.select_unit_type": "Select a unit type.",
+  "med_erm.units.unit_type_not_allowed_in_vehicle": "The {type} unit type cannot be used with this vehicle.",
   "med_erm.units.shift_ended": "Shift ended.",
   "med_erm.units.start_response_first": "Start the response first.",
   "med_erm.units.unit_disbanded": "Unit disbanded.",

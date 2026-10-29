@@ -1,4 +1,9 @@
 {
+  "ui_core.markers.level": "{level|int}. SZINT",
+  "ui_core.markers.level_named": "{level|int}. SZINT · {name}",
+  "ui_core.markers.max_xp": "MAX · {xp|int} XP",
+  "ui_core.markers.seconds": "{left} mp",
+  "ui_core.markers.xp": "{xp|int} / {to|int} XP",
   "ui_core.textinput.enter": "ENTER",
   "ui_core.textinput.esc": "ESC",
   "ui_core.timer.time_left": "Hátralévő idő: {time_left}",

@@ -196,6 +196,24 @@ end
 addEvent("onWorkCoreStart")
 addEventHandler("onWorkCoreStart", root, applyDepotVisibility)
 
+-- 3D card above a depot marker: a ui_core marker UI, only for the RW.DEPOT_WORK players on duty
+local function depotUI(i, d)
+    local res = getResourceFromName("ui_core")
+    if not res or getResourceState(res) ~= "running" or not isElement(d.marker) then return end
+    exports.ui_core:createMarkerUI("depot" .. i, {
+        element = d.marker, type = "rw_depot", icon = L.msg("rw_core.depot.d"),
+        name = RW.COMPANY, title = d.def.name,
+        hint = L.msg("rw_core.depot.press_services_train_assembly", { depot_key = RW.DEPOT_KEY:upper() }),
+        work = RW.DEPOT_WORK or nil,
+        radius = 25, fullRadius = 8, minScale = 0.55, height = 1.25,
+    })
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, function()
+    for i, d in ipairs(depots) do depotUI(i, d) end
+end)
+
 addEventHandler("onResourceStart", resourceRoot, function()
     for i, def in ipairs(RW.DEPOTS) do
         local m = createMarker(def.x, def.y, def.z - 1, "cylinder", 1.4, 80, 160, 255, 120)
@@ -203,6 +221,7 @@ addEventHandler("onResourceStart", resourceRoot, function()
         local blip = createBlipAttachedTo(m, 11, 2, 80, 160, 255, 255, 0, 250)
         setElementData(blip, "tooltipText", RW.COMPANY .. " - " .. def.name)
         depots[#depots + 1] = { def = def, marker = m, blip = blip }
+        depotUI(#depots, depots[#depots])
     end
     applyDepotVisibility()
 end)

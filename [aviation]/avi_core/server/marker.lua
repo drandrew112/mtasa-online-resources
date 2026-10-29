@@ -27,6 +27,29 @@ local function applyVisibility()
     end
 end
 
+-- 3D card above an ATC marker: a ui_core marker UI. The live consoles only for the players on
+-- duty in AVI.MARKER_WORK (checked by the client), a tutorial console only exists in its
+-- player's tutorial dimension.
+local uiDefs, uiNext = {}, 0
+
+local function markerUI(marker, name, work)
+    uiNext = uiNext + 1
+    local uid = "atc" .. uiNext
+    uiDefs[uid] = {
+        element = marker, type = "atc", name = L.msg("avi_core.marker.atc"), title = name,
+        hint = L.msg("avi_core.marker.press_atc_position", { marker_key = AVI.MARKER_KEY:upper() }),
+        work = work or nil, radius = AVI.MARKER_LABEL_DISTANCE, fullRadius = 6, minScale = 0.6, height = 1.5,
+    }
+    if isRunning("ui_core") then exports.ui_core:createMarkerUI(uid, uiDefs[uid]) end
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, function()
+    for uid, def in pairs(uiDefs) do
+        if isElement(def.element) then exports.ui_core:createMarkerUI(uid, def) else uiDefs[uid] = nil end
+    end
+end)
+
 addEventHandler("onResourceStart", resourceRoot, function()
     for _, def in ipairs(AVI.MARKERS) do
         local c = AVI.MARKER_COLOR
@@ -36,6 +59,7 @@ addEventHandler("onResourceStart", resourceRoot, function()
             setElementDimension(m, def.dimension or 0)
             setElementData(m, "avi.marker", def.name or "ATC")
             markers[m] = def
+            markerUI(m, def.name or "ATC", AVI.MARKER_WORK)
         end
     end
     applyVisibility()
@@ -120,6 +144,7 @@ function createTutorialMarker(player, dimension, position, x, y, z, interior)
     setElementVisibleTo(m, root, false)
     setElementVisibleTo(m, player, true)
     tutorialMarkers[m] = { player = player, position = position }
+    markerUI(m, def.name or "ATC", nil)
     return m
 end
 

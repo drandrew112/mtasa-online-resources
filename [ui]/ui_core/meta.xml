@@ -18,17 +18,21 @@
     <script src="client/yoverlay.lua" type="client" />
     <script src="client/crewTagBox.lua" type="client" />
     <script src="client/textInput.lua" type="client" />
+    <script src="client/markers.lua" type="client" />
 
     <script src="client/main.lua" type="client" />
 
     <!-- SHARED / EXPORTS -->
     <script src="exports.lua" type="client" />
     <script src="exports_s.lua" type="server" />
+    <script src="server/markers.lua" type="server" />
 
     <!-- FILES -->
     <file src="client/images/loading.png" type="client" />
     <file src="client/sounds/notify.wav" type="client" />
     <file src="client/sounds/infobox.wav" type="client" />
+    <file src="client/fonts/Roboto.ttf" type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
 
     <!-- EXPORTS -->
     <export function="setBanner" type="client" />
@@ -59,5 +63,18 @@
     <export function="openTextInput" type="client" />
     <export function="closeTextInput" type="client" />
     <export function="isTextInputOpen" type="client" />
+
+    <!-- Marker UI (client/markers.lua, server/markers.lua) -->
+    <export function="createMarkerUI" type="client" />
+    <export function="updateMarkerUI" type="client" />
+    <export function="removeMarkerUI" type="client" />
+    <export function="setMarkerUIMeta" type="client" />
+    <export function="setMarkerUIsHidden" type="client" />
+    <export function="isMarkerUIInside" type="client" />
+    <export function="createMarkerUI" type="server" />
+    <export function="updateMarkerUI" type="server" />
+    <export function="removeMarkerUI" type="server" />
+    <export function="setMarkerUIMeta" type="server" />
+    <export function="getMarkerUIPlayers" type="server" />
 
 </meta>

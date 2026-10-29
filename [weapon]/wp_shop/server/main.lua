@@ -14,6 +14,25 @@ local function result(player, ok, msg, id, reason)
     triggerClientEvent(player, "wp_shop:result", resourceRoot, ok, msg, id, reason)
 end
 
+---------------------------------------------------------------- marker cards (ui_core)
+
+-- The cards above the shop markers are ui_core marker UIs (hidden by the client while the weapon
+-- browser is open).
+local uiDefs = {}   -- ui id -> def (sent again when ui_core restarts)
+
+local function markerUI(uid, def)
+    uiDefs[uid] = def
+    local res = getResourceFromName("ui_core")
+    if res and getResourceState(res) == "running" then exports.ui_core:createMarkerUI(uid, def) end
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, function()
+    for uid, def in pairs(uiDefs) do
+        if isElement(def.element) then exports.ui_core:createMarkerUI(uid, def) else uiDefs[uid] = nil end
+    end
+end)
+
 ---------------------------------------------------------------- interiors
 
 local function registerShops()
@@ -62,6 +81,13 @@ local function createWorld()
             setElementDimension(m, shop.dimension)
             setElementData(m, "wp_shop:shop", shop.id)
             markers[m] = shop.id
+            local LBL = WS.label
+            markerUI("s" .. shop.id, {
+                element = m, type = "shop_weapon", color = LBL.color,
+                name = int.name or L.msg("wp_shop.title"), title = L.msg("wp_shop.label.title"),
+                hint = L.msg("wp_shop.label.hint"), hintActive = L.msg("wp_shop.label.press", { key = WS.key:upper() }),
+                radius = LBL.distance, fullRadius = LBL.fullDistance, minScale = LBL.minScale, height = LBL.height,
+            })
         end
     end
 end

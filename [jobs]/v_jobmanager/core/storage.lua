@@ -128,6 +128,7 @@ local function entryOf(id)
         official = (kind or draft.target) == "official",
         published = live ~= nil, pending = live ~= nil and draft ~= nil,
         imageVersion = base.imageVersion, updated = base.updated,
+        scriptOnly = type(base.data) == "table" and base.data.scriptOnly == true or false,
     }
 end
 

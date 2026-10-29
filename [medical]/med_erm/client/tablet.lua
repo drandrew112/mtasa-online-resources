@@ -298,11 +298,9 @@ end
 function Tablet.toggle()
     if Tablet.open then Tablet.close() return end
     if not canUseKeys() then return end
-    if not TabletTutorial.active and not Tablet.hasMedicRole() then
-        -- only a hint inside an ambulance, J stays silent for everyone else
-        if inTabletVehicle() then State.notify(L("med_erm.case.ems_tablet"), L("med_erm.tablet.only_on_duty_medics_can_use")) end
-        return
-    end
+    -- J stays silent for anyone who is not an on-duty medic: blood transport
+    -- uses the same vehicles and the same key
+    if not TabletTutorial.active and not Tablet.hasMedicRole() then return end
 
     if State.unit then
         Tablet.show()

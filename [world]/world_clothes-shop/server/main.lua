@@ -34,6 +34,25 @@ local function registerShops()
     end
 end
 
+---------------------------------------------------------------- marker cards (ui_core)
+
+-- The cards above the changer markers are ui_core marker UIs; client/label.lua sets their
+-- client-side state (price, open menu, purchase result) as local meta.
+local uiDefs = {}   -- ui id -> def (sent again when ui_core restarts)
+
+local function markerUI(uid, def)
+    uiDefs[uid] = def
+    local res = getResourceFromName("ui_core")
+    if res and getResourceState(res) == "running" then exports.ui_core:createMarkerUI(uid, def) end
+end
+
+addEvent("onMarkerUISystemStart")
+addEventHandler("onMarkerUISystemStart", root, function()
+    for uid, def in pairs(uiDefs) do
+        if isElement(def.element) then exports.ui_core:createMarkerUI(uid, def) else uiDefs[uid] = nil end
+    end
+end)
+
 local function createWorld()
     for _, shop in ipairs(CLOTHES.shops) do
         local int = CLOTHES.interiors[shop.interior]
@@ -50,6 +69,12 @@ local function createWorld()
                 setElementData(m, "clothes:shop", shop.id)
                 setElementData(m, "clothes:changer", i)
                 changers[m] = shop.id
+                local LBL = CLOTHES.label
+                markerUI("c" .. shop.id .. ":" .. i, {   -- same id as client/label.lua uiId
+                    element = m, type = "shop_clothes", color = LBL.color,
+                    name = int.name, title = L.msg("world_clothes_shop.label.changing_room"),
+                    radius = LBL.distance, fullRadius = LBL.fullDistance, minScale = LBL.minScale, height = LBL.height,
+                })
             end
         end
     end

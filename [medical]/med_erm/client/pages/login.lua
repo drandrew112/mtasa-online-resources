@@ -111,10 +111,15 @@ function Login.draw(x, y, w, h)
 
     local ty = colY + s(124)
     Gfx.label(L("med_erm.login.unit_type"), ix, ty, lw)
-    local n = #Config.UNIT_TYPES
+    -- only the types bound to this vehicle model (Config.UNIT_VEHICLE_TYPES)
+    local types = Config.unitTypesFor(isElement(veh) and getElementModel(veh) or 0)
+    local allowed = false
+    for _, t in ipairs(types) do if t == Login.unitType then allowed = true end end
+    if not allowed then Login.unitType = #types == 1 and types[1] or nil end
+    local n = #types
     local gap = s(6)
     local bw = (lw - gap * (n - 1)) / n
-    for i, t in ipairs(Config.UNIT_TYPES) do
+    for i, t in ipairs(types) do
         local selected = Login.unitType == t
         Gfx.button(ix + (i - 1) * (bw + gap), ty + s(18), bw, s(36), t, {
             color = selected and { 224, 60, 49 } or { 39, 46, 55 },

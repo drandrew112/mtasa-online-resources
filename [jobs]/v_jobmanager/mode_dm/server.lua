@@ -1,4 +1,14 @@
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 JobModes = JobModes or {}
+
+local function checkWinner(match, endMatch)
+    local count, winner = JobModes[JOB_TYPE_DM].remaining(match)
+    if count <= 1 then
+        endMatch(match, winner and (L.msg("v_jobmanager.core.won_deathmatch", { player = jobDisplayName(winner) })) or L.msg("v_jobmanager.core.deathmatch_ended"))
+        return true
+    end
+    return false
+end
 
 JobModes[JOB_TYPE_DM] = {
     validate = function(game)
@@ -30,7 +40,39 @@ JobModes[JOB_TYPE_DM] = {
     end,
     remaining = function(match)
         local count, last = 0, nil
-        for _, player in ipairs(match.players) do if not match.eliminated[player] then count, last = count + 1, player end end
+        for _, player in ipairs(match.players) do
+            if not match.eliminated[player] and not match.left[player] then count, last = count + 1, player end
+        end
         return count, last
     end,
+    -- left the match or quit
+    onPlayerGone = function(match, player, endMatch)
+        match.eliminated[player] = true
+        checkWinner(match, endMatch)
+    end,
+    canBeSpectated = function(match, player)
+        return not match.eliminated[player]
+    end,
+    spectateInfo = function(match, player)
+        return L.msg("v_jobmanager.spectate.dm_info", {
+            health = math.floor(getElementHealth(player)), kills = match.kills[player] or 0,
+        })
+    end,
 }
+
+-- An eliminated player watches the others until the match ends.
+addEventHandler("onPlayerWasted", root, function(totalAmmo, killer)
+    local match = jobPlayerMatch(source)
+    if not match or match.job.type ~= JOB_TYPE_DM or match.eliminated[source] or match.ended then return end
+
+    match.deaths[source] = (match.deaths[source] or 0) + 1
+    if isElement(killer) and getElementType(killer) == "player" and killer ~= source and jobPlayerMatch(killer) == match then
+        match.kills[killer] = (match.kills[killer] or 0) + 1
+    end
+
+    match.eliminated[source] = true
+    if not checkWinner(match, jobEndMatch) then
+        Spectate.start(match, source, JOBS_CONFIG.SPECTATE_DELAY)
+        Spectate.refresh(match)
+    end
+end)

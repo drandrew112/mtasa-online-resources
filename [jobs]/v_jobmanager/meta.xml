@@ -1,5 +1,5 @@
 <meta>
-    <info author="DrAndrew112, rewritten by Codex" name="v_jobmanager" type="script" version="2.0.0" />
+    <info author="DrAndrew112, rewritten by Codex" name="v_jobmanager" type="script" version="3.0.0" />
 
     <include resource="v_locals" />
     <include resource="v_mysql" />
@@ -8,16 +8,40 @@
 
     <script src="mode_race/server.lua" type="server" />
     <script src="mode_dm/server.lua" type="server" />
+    <script src="mode_mission/server/objectives.lua" type="server" />
+    <script src="mode_mission/server/entities.lua" type="server" />
+    <script src="mode_mission/server/runner.lua" type="server" />
     <script src="core/games.lua" type="server" />
     <script src="core/storage.lua" type="server" />
     <script src="core/rewards.lua" type="server" />
+    <script src="core/spectate.lua" type="server" />
     <script src="core/server.lua" type="server" />
 
+    <script src="core/client/jobmenu.lua" type="client" />
+    <script src="core/client/spectate.lua" type="client" />
     <script src="core/client/ui.lua" type="client" />
     <script src="core/client/results.lua" type="client" />
     <script src="core/client/scoreboard.lua" type="client" />
     <script src="core/client/markers.lua" type="client" />
     <script src="core/client/images.lua" type="client" />
+    <script src="mode_race/client/checkpoints.lua" type="client" />
+    <script src="mode_race/client/recover.lua" type="client" />
+    <script src="mode_mission/client/hud.lua" type="client" />
+    <file src="mode_race/fx/cp_wall.fx" type="client" />
+    <file src="mode_race/fx/cp_ground.fx" type="client" />
+    <!-- missions started by other resources (business setups, heists) and creator tests;
+         see mode_mission/README.md -->
+    <export function="jobmanagerStartMission" type="server" />
+    <export function="jobmanagerAbortMission" type="server" />
+    <export function="jobmanagerMissionSignal" type="server" />
+    <export function="jobmanagerGetMatch" type="server" />
+    <export function="jobmanagerTestMission" type="server" />
+    <export function="jobmanagerStopTest" type="server" />
+    <export function="jobmanagerInMatch" type="client" />
+    <export function="jobmanagerLeaveJob" type="client" />
+    <!-- race checkpoint visuals, also for v_jobcreator test runs -->
+    <export function="raceCheckpointsShow" type="client" />
+    <export function="raceCheckpointsClear" type="client" />
     <export function="jobmanagerJoin" type="server" />
     <export function="jobmanagerLeave" type="server" />
     <export function="jobmanagerGetState" type="server" />

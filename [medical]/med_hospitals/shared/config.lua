@@ -57,7 +57,7 @@ HOSP = {
     LABEL_HEIGHT = 1.25,           -- metres above the marker position
 }
 
--- Element data on the markers (read by client/labels.lua)
+-- Element data on the markers (read by server/markerui.lua)
 HOSP_DATA = {
     KIND = "hosp.kind",            -- "bay" | "handover" | "heal"
     NAME = "hosp.name",            -- hospital name

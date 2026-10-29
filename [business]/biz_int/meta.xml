@@ -18,8 +18,6 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/fade.lua"    type="client" />
     <script src="client/markers.lua" type="client" />
-    <file src="client/fonts/Roboto.ttf"  type="client" />
-    <file src="client/fonts/RobotoB.ttf" type="client" />
 
     <!-- data/positions.json: written by /bizpos, read server-side only -->
 
