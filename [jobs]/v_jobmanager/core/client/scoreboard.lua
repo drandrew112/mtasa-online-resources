@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- End-of-match scoreboard: cinematic camera + stats, then a "pick next game"
--- tile grid (6 wide x 2 tall) plus a shorter Replay / Free Mode row below it.
+-- tile grid (3 wide x 2 tall) plus a shorter Replay / Free Mode row below it.
 -- Opens on jobmanager:matchEnded, entirely separate from the pause menu. When
 -- the payload carries a reward, the results screen (results.lua) plays first.
 
@@ -28,7 +28,7 @@ local C = {
     free     = tocolor(120, 120, 120, 170),
 }
 
-local COLS, MAIN_ROWS = 6, 2
+local COLS, MAIN_ROWS = 3, 2
 
 local view = nil       -- nil | "results" | "stats" | "picker"
 local payload = nil     -- last jobmanager:matchEnded payload
@@ -58,7 +58,22 @@ local function setScoreboardRendering(on)
     end
 end
 
+-- Random selection of at most COLS * MAIN_ROWS jobs, drawn once per scoreboard.
+local pickedJobs = {}
+local function pickRandomJobs()
+    local pool = {}
+    for _, job in ipairs(jobmanagerGetJobs()) do pool[#pool + 1] = job end
+    for i = #pool, 2, -1 do
+        local j = math.random(i)
+        pool[i], pool[j] = pool[j], pool[i]
+    end
+    local out = {}
+    for i = 1, math.min(#pool, COLS * MAIN_ROWS) do out[i] = pool[i] end
+    return out
+end
+
 local function openScoreboard(data)
+    pickedJobs = pickRandomJobs()
     setScoreboardRendering(true)
     payload = data
     view = "stats"
@@ -135,18 +150,28 @@ addEventHandler("onClientKey", root, function(key, down)
     end
 
     -- picker view
-    local jobsList = jobmanagerGetJobs()
-    local mainCount = math.min(#jobsList, COLS * MAIN_ROWS)
+    local jobsList = pickedJobs
+    local mainCount = #jobsList
 
     if key == "backspace" then
         cancelEvent()
         view = "stats"
     elseif key == "arrow_u" then
         cancelEvent()
-        if activeRow == 2 then activeRow = 1 end
+        if activeRow == 2 then
+            activeRow = 1
+        elseif mainIndex > COLS then
+            mainIndex = mainIndex - COLS
+        end
     elseif key == "arrow_d" then
         cancelEvent()
-        if activeRow == 1 and mainCount > 0 then activeRow = 2 end
+        if activeRow == 1 then
+            if mainIndex + COLS <= mainCount then
+                mainIndex = mainIndex + COLS
+            elseif mainCount > 0 then
+                activeRow = 2
+            end
+        end
     elseif key == "arrow_l" then
         cancelEvent()
         if activeRow == 1 then
@@ -245,14 +270,17 @@ end
 local function drawPicker()
     dxDrawRectangle(0, 0, screenW, screenH, C.wash)
 
-    local jobsList = jobmanagerGetJobs()
+    local jobsList = pickedJobs
 
-    local gw = screenW * 0.7
+    local gap = S(10)
+    -- tiles as large as the screen height allows (grid + half-height bottom row + title + info bar)
+    local tileH = (screenH * 0.76 - gap * (MAIN_ROWS + 1) - S(70)) / (MAIN_ROWS + 0.5)
+    tileH = math.min(tileH, (screenW * 0.8 - gap * (COLS - 1)) / COLS * 0.62)
+    local tileW = tileH / 0.62
+    local gw = tileW * COLS + gap * (COLS - 1)
     local gx = math.floor((screenW - gw) / 2)
-    local gap = S(8)
-    local tileW = (gw - gap * (COLS - 1)) / COLS
-    local tileH = tileW * 0.65
-    local gy = math.floor(screenH * 0.5 - (tileH * MAIN_ROWS + gap) / 2)
+    local totalH = tileH * (MAIN_ROWS + 0.5) + gap * MAIN_ROWS + S(70)
+    local gy = math.floor((screenH - totalH) / 2 + S(34))
 
     dxDrawText(L("v_jobmanager.scoreboard.pick_next_game"), gx, gy - S(34), gx + gw, gy - S(6),
         tocolor(255, 255, 255), S(1.3), FONT.title, "left", "bottom")
@@ -270,9 +298,9 @@ local function drawPicker()
             local imgPath = job.image or "assets/jobs/default.jpg"
             if not fileExists(imgPath) then imgPath = "assets/jobs/default.jpg" end
             dxDrawImage(tx, ty, tileW, tileH, imgPath)
-            dxDrawRectangle(tx, ty + tileH - S(20), tileW, S(20), tocolor(0, 0, 0, 190))
-            dxDrawText(job.name or "", tx + S(4), ty + tileH - S(20), tx + tileW - S(4), ty + tileH,
-                tocolor(255, 255, 255), S(0.8), FONT.rowB, "left", "center", true)
+            dxDrawRectangle(tx, ty + tileH - S(30), tileW, S(30), tocolor(0, 0, 0, 190))
+            dxDrawText(job.name or "", tx + S(8), ty + tileH - S(30), tx + tileW - S(8), ty + tileH,
+                tocolor(255, 255, 255), S(1.1), FONT.rowB, "left", "center", true)
         end
         if isSel then
             dxDrawRectangle(tx, ty, tileW, S(3), C.accent)
