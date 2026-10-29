@@ -52,6 +52,16 @@ addEventHandler("work:dutyOff", resourceRoot, function(marker)
     notifyPlayer(client, workName(m.work), L.msg("work_core.requests.you_are_now_off_duty"))
 end)
 
+addCommandHandler("leavework", function(player)
+    local workId = getPlayerWork(player)
+    if not workId then
+        notifyPlayer(player, L.msg("work_core.menus.work"), L.msg("work_core.requests.you_are_not_working"))
+        return
+    end
+    endDuty(player, "player")
+    notifyPlayer(player, workName(workId), L.msg("work_core.requests.you_are_now_off_duty"))
+end)
+
 addEvent("work:outfit", true)
 addEventHandler("work:outfit", resourceRoot, function(marker, skin)
     local m = check(client, marker, "duty")
