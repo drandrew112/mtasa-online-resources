@@ -85,6 +85,11 @@ end
 
 -- Crew name / tag validation. Returns true, cleanValue  OR  false, errorMessage.
 -- Accented letters are allowed: Latin-1 letters (U+00C0-U+00FF without x and /) plus the Hungarian o/u double acute.
+-- MTA's utf8 library has byte() instead of the standard codepoint()
+local function codepoints(s)
+    return { (utf8.codepoint or utf8.byte)(s, 1, -1) }
+end
+
 local function isAccentLetter(cp)
     return (cp >= 0xC0 and cp <= 0xFF and cp ~= 0xD7 and cp ~= 0xF7)
         or cp == 0x150 or cp == 0x151 or cp == 0x170 or cp == 0x171
@@ -94,7 +99,7 @@ end
 local function countCrewChars(s, asciiPattern)
     local len = utf8.len(s)
     if not len or #s > 96 then return nil end
-    for _, cp in ipairs({ utf8.codepoint(s, 1, -1) }) do
+    for _, cp in ipairs(codepoints(s)) do
         if cp < 0x80 then
             if not utf8.char(cp):find(asciiPattern) then return nil end
         elseif not isAccentLetter(cp) then
@@ -106,7 +111,7 @@ end
 
 local function upperAccented(s)
     local out = {}
-    for _, cp in ipairs({ utf8.codepoint(s, 1, -1) }) do
+    for _, cp in ipairs(codepoints(s)) do
         if cp < 0x80 then out[#out + 1] = utf8.char(cp):upper()
         elseif cp >= 0xE0 and cp <= 0xFE and cp ~= 0xF7 then out[#out + 1] = utf8.char(cp - 32)
         elseif cp == 0x151 or cp == 0x171 then out[#out + 1] = utf8.char(cp - 1)
