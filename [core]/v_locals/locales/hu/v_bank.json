@@ -64,6 +64,8 @@
   "v_bank.tx.phone.service": "Telefonos szolgáltatás: {contact}",
   "v_bank.tx.shop.vehicle": "Járművásárlás: {item}",
   "v_bank.tx.shop.vehicle_refund": "Járművásárlás visszatérítés: {item}",
+  "v_bank.tx.shop.tuning": "Tuning: {item}",
+  "v_bank.tx.shop.repair": "Szerelés: {item}",
   "v_bank.tx.shop.weapon": "Fegyverbolt: {item}",
   "v_bank.tx.shop.weapon_refund": "Fegyverbolt visszatérítés: {item}",
   "v_bank.tx.tax.company_income.in": "Társasági adó ({hour})",

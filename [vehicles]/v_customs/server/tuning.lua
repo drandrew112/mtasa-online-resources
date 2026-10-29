@@ -14,6 +14,27 @@ local function notify(player, title, text)
     triggerClientEvent(player, "v_customs:notify", player, title, text)
 end
 
+-- Cash first, then the bank account (v_bank payMoney; the money disappears).
+local function bankRunning()
+    local bank = getResourceFromName("v_bank")
+    return bank and getResourceState(bank) == "running"
+end
+
+local function canAfford(player, price)
+    if getPlayerMoney(player) >= price then return true end
+    return bankRunning() and (tonumber(exports.v_bank:getPlayerBalance(player)) or 0) >= price
+end
+
+local function pay(player, price, key, item)
+    if bankRunning() then
+        return exports.v_bank:payMoney(player, price, key, { item = item }) == true
+    end
+    if getPlayerMoney(player) < price then return false end
+    takePlayerMoney(player, price)
+    exports.ui_core:showMoney(player, "take", price, "cash")
+    return true
+end
+
 local function generatePlate()
     local out = {}
     for i = 1, 8 do
@@ -196,7 +217,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
     local net = freeReset and 0 or Customs.netPrice(node.price or 0)
     local price, vat = VAT.split("tuning", net)
 
-    if price > 0 and getPlayerMoney(player) < price then
+    if price > 0 and not canAfford(player, price) then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         triggerClientEvent(player, "v_customs:buyResult", player, false)
         return
@@ -209,9 +230,7 @@ addEventHandler("v_customs:buy", root, function(veh, path)
 
     local custom  = (node.kind == "plate" and node.data == "custom")
     local charged = 0
-    if not custom and price > 0 then
-        takePlayerMoney(player, price)
-        exports.ui_core:showMoney(player, "take", price, "cash")
+    if not custom and price > 0 and pay(player, price, "shop.tuning", node.name or "Part") then
         VAT.book("tuning", net, vat, node.name)
         charged = price
     end
@@ -232,14 +251,13 @@ addEventHandler("v_customs:setCustomPlate", root, function(text)
 
     local net = Customs.netPrice(Customs.CUSTOM_PLATE_PRICE)
     local price, vat = VAT.split("tuning", net)
-    if getPlayerMoney(player) < price then
+    if not canAfford(player, price) then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         return
     end
 
+    if not pay(player, price, "shop.tuning", "Custom plate") then return end
     setVehiclePlateText(veh, text)
-    takePlayerMoney(player, price)
-    exports.ui_core:showMoney(player, "take", price, "cash")
     VAT.book("tuning", net, vat, "Custom plate")
     triggerClientEvent(player, "v_customs:buyResult", player, true, nil, price)
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.custom_plate_installed"))
@@ -256,18 +274,20 @@ addEventHandler("v_customs:repair", root, function()
 
     local net = Customs.repairNet(veh)
     local price, vat = VAT.split("repair", net)
-    if price > 0 and getPlayerMoney(player) < price then
+    if price > 0 and not canAfford(player, price) then
         notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.you_don_t_have_enough_money"))
         triggerClientEvent(player, "v_customs:repairResult", player, false)
         return
     end
 
-    fixVehicle(veh)
     if price > 0 then
-        takePlayerMoney(player, price)
-        exports.ui_core:showMoney(player, "take", price, "cash")
+        if not pay(player, price, "shop.repair", "Repair") then
+            triggerClientEvent(player, "v_customs:repairResult", player, false)
+            return
+        end
         VAT.book("repair", net, vat, "Repair")
     end
+    fixVehicle(veh)
     notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.vehicle_repaired"))
     triggerClientEvent(player, "v_customs:repairResult", player, true, price)
 end)

@@ -46,6 +46,8 @@ TX_KEYS = {
     ["shop.weapon_refund"]  = { from = "system", to = P, params = { "item" } },
     ["shop.vehicle"]        = { from = P, to = "system", params = { "item" } },
     ["shop.vehicle_refund"] = { from = "system", to = P, params = { "item" } },
+    ["shop.tuning"]         = { from = P, to = "system", params = { "item" } },
+    ["shop.repair"]         = { from = P, to = "system", params = { "item" } },
     ["phone.service"]       = { from = P, to = "system", params = { "contact", "action" } },
 
     -- organizations (biz_core)

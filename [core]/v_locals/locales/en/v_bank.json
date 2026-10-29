@@ -64,6 +64,8 @@
   "v_bank.tx.phone.service": "Phone service: {contact}",
   "v_bank.tx.shop.vehicle": "Vehicle purchase: {item}",
   "v_bank.tx.shop.vehicle_refund": "Vehicle purchase refund: {item}",
+  "v_bank.tx.shop.tuning": "Customs: {item}",
+  "v_bank.tx.shop.repair": "Customs repair: {item}",
   "v_bank.tx.shop.weapon": "Weapon shop: {item}",
   "v_bank.tx.shop.weapon_refund": "Weapon shop refund: {item}",
   "v_bank.tx.tax.company_income.in": "Company income tax ({hour})",
