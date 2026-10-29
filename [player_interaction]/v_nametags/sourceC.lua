@@ -4,11 +4,12 @@ ui = function(z) return uicore:ui(z) end
 
 -- Nametag design (2026-10-25):
 --   [crew tag] [munka kártya]
---   (mic) [RANG] Név [lvl] (...)
+--   (mic) [RANG] (zászló) Név [lvl] (...)
 --   ----- páncél (ha van)
 --   ===== health (a név színében, 25% alatt piros)
 -- Név színe csak az admin szinttől függ: admin = rang színe, egyébként fehér.
 -- Munka (work_core duty): mini kártya a crew tag mellett, a munka színével és nevével.
+-- Zászló: a játékos országa (ui_core, IP alapú), nem a nyelve.
 
 local adminTitles_forNametag = {}
 local function build_adminTitles_forNametag()
@@ -84,8 +85,27 @@ addEventHandler("onClientPlayerVoiceStop", root, function() speaking[source] = n
 -- element data keys that affect what is displayed
 local watchedKeys = {
 	admin_level = true, accName = true, displayName = true, adminDuty = true, admin_name = true,
-	level = true, chatTyping = true, ["work.id"] = true, crewTag = true,
+	level = true, chatTyping = true, ["work.id"] = true, crewTag = true, country = true,
 }
+
+-- zászló: játékosonként egyszer kérdezzük le az országot + a textúrát (ui_core), utána a cache-ből rajzolunk
+local flagCache = {} -- player -> { code, tex, ratio }; tex nil, amíg a ui_core le nem tölti
+local function setFlag(entry, p)
+	local code = getElementData(p, "country") or false
+	local c = flagCache[p]
+	if not c or c.code ~= code then
+		c = { code = code }
+		flagCache[p] = c
+	end
+	if code and not c.tex then
+		c.tex = uicore:getFlagTexture(code) or nil -- az első hívás indítja a letöltést
+		c.ratio = c.tex and uicore:getFlagRatio(code) or nil
+	end
+	entry.flag = c.tex and c or nil
+	entry.flagPending = code and not c.tex and uicore:hasFlag(code)
+	entry.flagH = entry.smallH - 4
+	entry.flagW = entry.flag and math.min(entry.flagH * c.ratio, entry.flagH * 2) or 0
+end
 
 -- munka színe + neve a work_core listából (nil, ha még nem szinkronizált)
 local function getWorkInfo(workId)
@@ -128,6 +148,7 @@ local function buildEntry(p, entry)
 	entry.level_text = tostring(getElementData(p, "level") or "")
 	entry.lvlW = (entry.level_text ~= "") and (L.width(entry.level_text, SMALL_S, FONT) + 8) or 0
 	entry.smallH = dxGetFontHeight(SMALL_S, FONT)
+	setFlag(entry, p)
 	entry.typing = getElementData(p, "chatTyping") == true
 	return entry
 end
@@ -147,6 +168,7 @@ end)
 addEventHandler("onClientPlayerQuit", root, function()
 	nearby[source] = nil
 	speaking[source] = nil
+	flagCache[source] = nil
 end)
 
 -- 500 ms: ki van a közelben (streamelt, azonos int/dim, látható, <= 50 egység, LOS)
@@ -174,6 +196,8 @@ local function refreshNearby()
 						-- a work_core lista később szinkronizálódhat
 						setWork(nearby[p], nearby[p].workId)
 					end
+					-- a zászló textúra letöltése után
+					if nearby[p].flagPending then setFlag(nearby[p], p) end
 				end
 			end
 		end
@@ -207,9 +231,10 @@ local function renderNametags()
 				local col = nameColor(e)
 				local cr, cg, cb = col[1], col[2], col[3]
 
-				-- fő sor: [RANG] Név [lvl], sX-re centrálva; a mic balra, a buborék jobbra lóg ki
+				-- fő sor: [RANG] (zászló) Név [lvl], sX-re centrálva; a mic balra, a buborék jobbra lóg ki
 				local totalW = e.nameW
 					+ ((e.adminW > 0) and (e.adminW + GAP) or 0)
+					+ ((e.flagW > 0) and (e.flagW + GAP) or 0)
 					+ ((e.lvlW > 0) and (e.lvlW + GAP) or 0)
 				local left = sX - totalW / 2
 				local curX = left
@@ -229,6 +254,11 @@ local function renderNametags()
 							tocolor(a.r, a.g, a.b, 255), SMALL_S, FONT, "center", "center")
 					end
 					curX = curX + e.adminW + GAP
+				end
+
+				if e.flagW > 0 then
+					dxDrawImage(curX, sY - e.nameH / 2 - e.flagH / 2, e.flagW, e.flagH, e.flag.tex)
+					curX = curX + e.flagW + GAP
 				end
 
 				-- név: 1px árnyék + szín kódolt szöveg

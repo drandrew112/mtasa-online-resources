@@ -69,24 +69,17 @@ local function wrapText(text, width)
     return lines
 end
 
--- flag left of the sender name: flags/<language code>.png (languages without a file get none)
+-- flag left of the sender name: the sender's country (ui_core flags, IP based, not the language)
 local FLAG_W, FLAG_H, FLAG_GAP = 24, 16, 6
-local flagPaths = {}
-local function getFlag(lang)
-    if type(lang) ~= "string" or not lang:match("^[%w_%-]+$") then return nil end
-    if flagPaths[lang] == nil then
-        local path = "flags/"..lang..".png"
-        flagPaths[lang] = fileExists(path) and path or false
-    end
-    return flagPaths[lang] or nil
-end
 
-function addMessage(sender, text, msg_channel, lang)
+function addMessage(sender, text, msg_channel)
     local name = getElementData(sender, "displayName") or getPlayerName(sender)
     local ch = CHANNELS[msg_channel] or CHANNELS.global
-    local lines = wrapText(ch.colour..L("v_chat.chat.text", { sender = name, text = text }):gsub("#%x%x%x%x%x%x", ""), CHAT_W - PAD*2 - (getFlag(lang) and FLAG_W + FLAG_GAP or 0))
+    local country = uicore:getPlayerCountry(sender)
+    if country then uicore:preloadFlag(country) end
+    local lines = wrapText(ch.colour..L("v_chat.chat.text", { sender = name, text = text }):gsub("#%x%x%x%x%x%x", ""), CHAT_W - PAD*2 - (country and FLAG_W + FLAG_GAP or 0))
     messages[#messages+1] = {
-        flag = getFlag(lang),
+        flag = country,
         -- colour codes of the catalog text are dropped: the whole line is the channel colour
         lines = lines,
         time = getTickCount(),
@@ -141,7 +134,7 @@ function renderChat()
             if line.flag then
                 local lineY = messages_bottom-((i-1)*LINE_H)
                 local fx = right - PAD - textWidth(line.text) - FLAG_GAP - FLAG_W
-                dxDrawImage(fx, lineY - LINE_H/2 - FLAG_H/2 + 2, FLAG_W, FLAG_H, line.flag, 0, 0, 0, tocolor(255,255,255,line.alpha))
+                uicore:drawFlag(line.flag, fx, lineY - LINE_H/2 - FLAG_H/2 + 2, FLAG_W, FLAG_H, line.alpha)
             end
         end
 

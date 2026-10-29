@@ -147,6 +147,55 @@ local function drawMoneyRow(text, ty, color, alpha, scale)
     return lh
 end
 
+-- =========================
+-- PLAYER LIST – admin kartya (mint a v_nametags-ben)
+-- =========================
+-- a rang feliratok es szinek a v_nametags locale kulcsaibol, pl. "#000000[#BAFFBAADMIN#000000] #FF0000":
+-- a szin a "[" utani kod, a felirat a sima szoveg. Elso rajzolaskor epul (a szovegek akkor mar betoltve).
+local adminTitles
+local function getAdminTitle(level)
+    if not adminTitles then
+        adminTitles = {}
+        local keys = { "trial_mod", "mod", "admin", "superadmin", "dev", "owner" }
+        for lvl, key in ipairs(keys) do
+            local raw = L("v_nametags.sourcec." .. key)
+            local hex = raw:match("%[#(%x%x%x%x%x%x)") or "FFFFFF"
+            local text = raw:gsub("#%x%x%x%x%x%x", ""):gsub("[%[%]]", ""):gsub("^%s+", ""):gsub("%s+$", "")
+            adminTitles[lvl] = {
+                text = text,
+                r = tonumber(hex:sub(1, 2), 16), g = tonumber(hex:sub(3, 4), 16), b = tonumber(hex:sub(5, 6), 16),
+            }
+        end
+    end
+    return adminTitles[level]
+end
+
+local CARD_S, CARD_FONT = 1.0, "default-bold"
+
+local function drawOutline(x, y, w, h, color)
+    dxDrawRectangle(x, y, w, 1, color)
+    dxDrawRectangle(x, y + h - 1, w, 1, color)
+    dxDrawRectangle(x, y, 1, h, color)
+    dxDrawRectangle(x + w - 1, y, 1, h, color)
+end
+
+-- szolgalatban teli (rang szinu) kartya, egyebkent sotet kartya rang szinu kerettel
+local function drawAdminCard(title, duty, x, cy, w, alpha)
+    local s = ui(CARD_S)
+    local h = dxGetFontHeight(s, CARD_FONT) + ui(2)
+    local y = cy - h / 2
+    if duty then
+        dxDrawRectangle(x, y, w, h, tocolor(title.r, title.g, title.b, alpha))
+        dxDrawText(title.text, x, y, x + w, y + h,
+            tocolor(title.r * 0.15, title.g * 0.15, title.b * 0.15, alpha), s, CARD_FONT, "center", "center")
+    else
+        dxDrawRectangle(x, y, w, h, tocolor(0, 0, 0, alpha / 255 * 120))
+        drawOutline(x, y, w, h, tocolor(title.r, title.g, title.b, alpha))
+        dxDrawText(title.text, x, y, x + w, y + h,
+            tocolor(title.r, title.g, title.b, alpha), s, CARD_FONT, "center", "center")
+    end
+end
+
 function setBindForYOverlay()
     bindKey("y", "down", function()
         if UI.yOverlay.active then return end
@@ -326,10 +375,22 @@ function UI.yOverlay:draw()
     -- =========================
     local listX = UI.safe.x
     local listY = UI.safe.y
-    local listW = ui(300)
+    local listW = ui(380)
     local rowH  = ui(30)
 
     local players = getElementsByType("player")
+
+    -- oszlopok: [admin kartya] [zaszlo] nev - a kartya oszlop a leghosszabb latszo rang szelessege,
+    -- igy a zaszlok es nevek egy vonalban vannak; ha nincs admin a listan, nincs kartya oszlop
+    local cardW = 0
+    for _, player in ipairs(players) do
+        local title = getAdminTitle(tonumber(getElementData(player, "admin_level")) or 0)
+        if title then
+            cardW = math.max(cardW, L.width(title.text, ui(CARD_S), CARD_FONT) + ui(8))
+        end
+    end
+    local flagW, flagH = ui(20), ui(14)
+    local nameX = listX + ui(8) + ((cardW > 0) and (cardW + ui(6)) or 0) + flagW + ui(6)
 
     dxDrawRectangle(listX, listY, listW, rowH, tocolor(0,0,0,alpha))
     dxDrawText(
@@ -357,10 +418,18 @@ function UI.yOverlay:draw()
 
         dxDrawRectangle(listX, y, listW, rowH, tocolor(r,g,b,a))
 
+        local title = getAdminTitle(tonumber(getElementData(player, "admin_level")) or 0)
+        if title then
+            drawAdminCard(title, getElementData(player, "adminDuty") == true, listX + ui(8), y + rowH / 2, cardW, alpha)
+        end
+
+        -- zaszlo a kartya es a nev kozott (amig nincs letoltve / ismeretlen orszag, ures hely)
+        drawPlayerFlag(player, nameX - ui(6) - flagW, y + (rowH - flagH) / 2, flagW, flagH, alpha)
+
         local pName = getPlayerName(player)
         dxDrawText(
             pName,
-            listX + ui(8), y+(rowH/2),
+            nameX, y+(rowH/2),
             _,_, tocolor(255,255,255,alpha),
             ui(1.2), "default", "left", "center"
         )
@@ -369,7 +438,7 @@ function UI.yOverlay:draw()
         local nameW = L.width(pName, ui(1.2), "default")
         drawCrewTagBoxForPlayer(
             player,
-            listX + ui(8) + nameW + ui(6),
+            nameX + nameW + ui(6),
             y + rowH / 2,
             ui(1.2),
             alpha,

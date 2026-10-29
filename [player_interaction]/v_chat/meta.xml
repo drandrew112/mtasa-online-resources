@@ -16,9 +16,6 @@
 
   <script src="shared.lua" type="shared"/>
 
-  <file src="flags/hu.png"/>
-  <file src="flags/en.png"/>
-
   <!-- server mutePlayer(player, minutes, reason, admin_name) -->
   <export function="mutePlayer" type="server"/>
   <!-- server unmutePlayer(player, admin_name) -->

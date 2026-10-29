@@ -64,8 +64,6 @@ function sendMessageToAll(sender, text, channel)
         x, y, z = getElementPosition(sender)
         dim, int = getElementDimension(sender), getElementInterior(sender)
     end
-    local ok, lang = pcall(function() return exports.v_locals:getPlayerLanguage(sender) end)
-    if not ok then lang = nil end
     for i,player in ipairs( getElementsByType("player") ) do
         local reach = true
         if channel == "local" and player ~= sender then
@@ -74,7 +72,7 @@ function sendMessageToAll(sender, text, channel)
                 and getDistanceBetweenPoints3D(x, y, z, px, py, pz) <= LOCAL_RANGE
         end
         if reach then
-            triggerClientEvent(player, "addMessage", sender, sender, text, channel, lang)
+            triggerClientEvent(player, "addMessage", sender, sender, text, channel)
         end
     end
 end

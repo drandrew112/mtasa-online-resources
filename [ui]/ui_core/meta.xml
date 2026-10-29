@@ -19,6 +19,7 @@
     <script src="client/crewTagBox.lua" type="client" />
     <script src="client/textInput.lua" type="client" />
     <script src="client/markers.lua" type="client" />
+    <script src="client/flags.lua" type="client" />
 
     <script src="client/main.lua" type="client" />
 
@@ -26,6 +27,7 @@
     <script src="exports.lua" type="client" />
     <script src="exports_s.lua" type="server" />
     <script src="server/markers.lua" type="server" />
+    <script src="server/flags.lua" type="server" />
 
     <!-- FILES -->
     <file src="client/images/loading.png" type="client" />
@@ -33,6 +35,262 @@
     <file src="client/sounds/infobox.wav" type="client" />
     <file src="client/fonts/Roboto.ttf" type="client" />
     <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- Country flags: downloaded on demand by client/flags.lua -->
+    <file src="flags/ad.png" type="client" download="false" />
+    <file src="flags/ae.png" type="client" download="false" />
+    <file src="flags/af.png" type="client" download="false" />
+    <file src="flags/ag.png" type="client" download="false" />
+    <file src="flags/ai.png" type="client" download="false" />
+    <file src="flags/al.png" type="client" download="false" />
+    <file src="flags/am.png" type="client" download="false" />
+    <file src="flags/ao.png" type="client" download="false" />
+    <file src="flags/aq.png" type="client" download="false" />
+    <file src="flags/ar.png" type="client" download="false" />
+    <file src="flags/as.png" type="client" download="false" />
+    <file src="flags/at.png" type="client" download="false" />
+    <file src="flags/au.png" type="client" download="false" />
+    <file src="flags/aw.png" type="client" download="false" />
+    <file src="flags/ax.png" type="client" download="false" />
+    <file src="flags/az.png" type="client" download="false" />
+    <file src="flags/ba.png" type="client" download="false" />
+    <file src="flags/bb.png" type="client" download="false" />
+    <file src="flags/bd.png" type="client" download="false" />
+    <file src="flags/be.png" type="client" download="false" />
+    <file src="flags/bf.png" type="client" download="false" />
+    <file src="flags/bg.png" type="client" download="false" />
+    <file src="flags/bh.png" type="client" download="false" />
+    <file src="flags/bi.png" type="client" download="false" />
+    <file src="flags/bj.png" type="client" download="false" />
+    <file src="flags/bl.png" type="client" download="false" />
+    <file src="flags/bm.png" type="client" download="false" />
+    <file src="flags/bn.png" type="client" download="false" />
+    <file src="flags/bo.png" type="client" download="false" />
+    <file src="flags/bq.png" type="client" download="false" />
+    <file src="flags/br.png" type="client" download="false" />
+    <file src="flags/bs.png" type="client" download="false" />
+    <file src="flags/bt.png" type="client" download="false" />
+    <file src="flags/bv.png" type="client" download="false" />
+    <file src="flags/bw.png" type="client" download="false" />
+    <file src="flags/by.png" type="client" download="false" />
+    <file src="flags/bz.png" type="client" download="false" />
+    <file src="flags/ca.png" type="client" download="false" />
+    <file src="flags/cc.png" type="client" download="false" />
+    <file src="flags/cd.png" type="client" download="false" />
+    <file src="flags/cf.png" type="client" download="false" />
+    <file src="flags/cg.png" type="client" download="false" />
+    <file src="flags/ch.png" type="client" download="false" />
+    <file src="flags/ci.png" type="client" download="false" />
+    <file src="flags/ck.png" type="client" download="false" />
+    <file src="flags/cl.png" type="client" download="false" />
+    <file src="flags/cm.png" type="client" download="false" />
+    <file src="flags/cn.png" type="client" download="false" />
+    <file src="flags/co.png" type="client" download="false" />
+    <file src="flags/cr.png" type="client" download="false" />
+    <file src="flags/cu.png" type="client" download="false" />
+    <file src="flags/cv.png" type="client" download="false" />
+    <file src="flags/cw.png" type="client" download="false" />
+    <file src="flags/cx.png" type="client" download="false" />
+    <file src="flags/cy.png" type="client" download="false" />
+    <file src="flags/cz.png" type="client" download="false" />
+    <file src="flags/de.png" type="client" download="false" />
+    <file src="flags/dj.png" type="client" download="false" />
+    <file src="flags/dk.png" type="client" download="false" />
+    <file src="flags/dm.png" type="client" download="false" />
+    <file src="flags/do.png" type="client" download="false" />
+    <file src="flags/dz.png" type="client" download="false" />
+    <file src="flags/ec.png" type="client" download="false" />
+    <file src="flags/ee.png" type="client" download="false" />
+    <file src="flags/eg.png" type="client" download="false" />
+    <file src="flags/eh.png" type="client" download="false" />
+    <file src="flags/er.png" type="client" download="false" />
+    <file src="flags/es.png" type="client" download="false" />
+    <file src="flags/et.png" type="client" download="false" />
+    <file src="flags/fi.png" type="client" download="false" />
+    <file src="flags/fj.png" type="client" download="false" />
+    <file src="flags/fk.png" type="client" download="false" />
+    <file src="flags/fm.png" type="client" download="false" />
+    <file src="flags/fo.png" type="client" download="false" />
+    <file src="flags/fr.png" type="client" download="false" />
+    <file src="flags/ga.png" type="client" download="false" />
+    <file src="flags/gb-eng.png" type="client" download="false" />
+    <file src="flags/gb-nir.png" type="client" download="false" />
+    <file src="flags/gb-sct.png" type="client" download="false" />
+    <file src="flags/gb-wls.png" type="client" download="false" />
+    <file src="flags/gb.png" type="client" download="false" />
+    <file src="flags/gd.png" type="client" download="false" />
+    <file src="flags/ge.png" type="client" download="false" />
+    <file src="flags/gf.png" type="client" download="false" />
+    <file src="flags/gg.png" type="client" download="false" />
+    <file src="flags/gh.png" type="client" download="false" />
+    <file src="flags/gi.png" type="client" download="false" />
+    <file src="flags/gl.png" type="client" download="false" />
+    <file src="flags/gm.png" type="client" download="false" />
+    <file src="flags/gn.png" type="client" download="false" />
+    <file src="flags/gp.png" type="client" download="false" />
+    <file src="flags/gq.png" type="client" download="false" />
+    <file src="flags/gr.png" type="client" download="false" />
+    <file src="flags/gs.png" type="client" download="false" />
+    <file src="flags/gt.png" type="client" download="false" />
+    <file src="flags/gu.png" type="client" download="false" />
+    <file src="flags/gw.png" type="client" download="false" />
+    <file src="flags/gy.png" type="client" download="false" />
+    <file src="flags/hk.png" type="client" download="false" />
+    <file src="flags/hm.png" type="client" download="false" />
+    <file src="flags/hn.png" type="client" download="false" />
+    <file src="flags/hr.png" type="client" download="false" />
+    <file src="flags/ht.png" type="client" download="false" />
+    <file src="flags/hu.png" type="client" download="false" />
+    <file src="flags/id.png" type="client" download="false" />
+    <file src="flags/ie.png" type="client" download="false" />
+    <file src="flags/il.png" type="client" download="false" />
+    <file src="flags/im.png" type="client" download="false" />
+    <file src="flags/in.png" type="client" download="false" />
+    <file src="flags/io.png" type="client" download="false" />
+    <file src="flags/iq.png" type="client" download="false" />
+    <file src="flags/ir.png" type="client" download="false" />
+    <file src="flags/is.png" type="client" download="false" />
+    <file src="flags/it.png" type="client" download="false" />
+    <file src="flags/je.png" type="client" download="false" />
+    <file src="flags/jm.png" type="client" download="false" />
+    <file src="flags/jo.png" type="client" download="false" />
+    <file src="flags/jp.png" type="client" download="false" />
+    <file src="flags/ke.png" type="client" download="false" />
+    <file src="flags/kg.png" type="client" download="false" />
+    <file src="flags/kh.png" type="client" download="false" />
+    <file src="flags/ki.png" type="client" download="false" />
+    <file src="flags/km.png" type="client" download="false" />
+    <file src="flags/kn.png" type="client" download="false" />
+    <file src="flags/kp.png" type="client" download="false" />
+    <file src="flags/kr.png" type="client" download="false" />
+    <file src="flags/kw.png" type="client" download="false" />
+    <file src="flags/ky.png" type="client" download="false" />
+    <file src="flags/kz.png" type="client" download="false" />
+    <file src="flags/la.png" type="client" download="false" />
+    <file src="flags/lb.png" type="client" download="false" />
+    <file src="flags/lc.png" type="client" download="false" />
+    <file src="flags/li.png" type="client" download="false" />
+    <file src="flags/lk.png" type="client" download="false" />
+    <file src="flags/lr.png" type="client" download="false" />
+    <file src="flags/ls.png" type="client" download="false" />
+    <file src="flags/lt.png" type="client" download="false" />
+    <file src="flags/lu.png" type="client" download="false" />
+    <file src="flags/lv.png" type="client" download="false" />
+    <file src="flags/ly.png" type="client" download="false" />
+    <file src="flags/ma.png" type="client" download="false" />
+    <file src="flags/mc.png" type="client" download="false" />
+    <file src="flags/md.png" type="client" download="false" />
+    <file src="flags/me.png" type="client" download="false" />
+    <file src="flags/mf.png" type="client" download="false" />
+    <file src="flags/mg.png" type="client" download="false" />
+    <file src="flags/mh.png" type="client" download="false" />
+    <file src="flags/mk.png" type="client" download="false" />
+    <file src="flags/ml.png" type="client" download="false" />
+    <file src="flags/mm.png" type="client" download="false" />
+    <file src="flags/mn.png" type="client" download="false" />
+    <file src="flags/mo.png" type="client" download="false" />
+    <file src="flags/mp.png" type="client" download="false" />
+    <file src="flags/mq.png" type="client" download="false" />
+    <file src="flags/mr.png" type="client" download="false" />
+    <file src="flags/ms.png" type="client" download="false" />
+    <file src="flags/mt.png" type="client" download="false" />
+    <file src="flags/mu.png" type="client" download="false" />
+    <file src="flags/mv.png" type="client" download="false" />
+    <file src="flags/mw.png" type="client" download="false" />
+    <file src="flags/mx.png" type="client" download="false" />
+    <file src="flags/my.png" type="client" download="false" />
+    <file src="flags/mz.png" type="client" download="false" />
+    <file src="flags/na.png" type="client" download="false" />
+    <file src="flags/nc.png" type="client" download="false" />
+    <file src="flags/ne.png" type="client" download="false" />
+    <file src="flags/nf.png" type="client" download="false" />
+    <file src="flags/ng.png" type="client" download="false" />
+    <file src="flags/ni.png" type="client" download="false" />
+    <file src="flags/nl.png" type="client" download="false" />
+    <file src="flags/no.png" type="client" download="false" />
+    <file src="flags/np.png" type="client" download="false" />
+    <file src="flags/nr.png" type="client" download="false" />
+    <file src="flags/nu.png" type="client" download="false" />
+    <file src="flags/nz.png" type="client" download="false" />
+    <file src="flags/om.png" type="client" download="false" />
+    <file src="flags/pa.png" type="client" download="false" />
+    <file src="flags/pe.png" type="client" download="false" />
+    <file src="flags/pf.png" type="client" download="false" />
+    <file src="flags/pg.png" type="client" download="false" />
+    <file src="flags/ph.png" type="client" download="false" />
+    <file src="flags/pk.png" type="client" download="false" />
+    <file src="flags/pl.png" type="client" download="false" />
+    <file src="flags/pm.png" type="client" download="false" />
+    <file src="flags/pn.png" type="client" download="false" />
+    <file src="flags/pr.png" type="client" download="false" />
+    <file src="flags/ps.png" type="client" download="false" />
+    <file src="flags/pt.png" type="client" download="false" />
+    <file src="flags/pw.png" type="client" download="false" />
+    <file src="flags/py.png" type="client" download="false" />
+    <file src="flags/qa.png" type="client" download="false" />
+    <file src="flags/re.png" type="client" download="false" />
+    <file src="flags/ro.png" type="client" download="false" />
+    <file src="flags/rs.png" type="client" download="false" />
+    <file src="flags/ru.png" type="client" download="false" />
+    <file src="flags/rw.png" type="client" download="false" />
+    <file src="flags/sa.png" type="client" download="false" />
+    <file src="flags/sb.png" type="client" download="false" />
+    <file src="flags/sc.png" type="client" download="false" />
+    <file src="flags/sd.png" type="client" download="false" />
+    <file src="flags/se.png" type="client" download="false" />
+    <file src="flags/sg.png" type="client" download="false" />
+    <file src="flags/sh.png" type="client" download="false" />
+    <file src="flags/si.png" type="client" download="false" />
+    <file src="flags/sj.png" type="client" download="false" />
+    <file src="flags/sk.png" type="client" download="false" />
+    <file src="flags/sl.png" type="client" download="false" />
+    <file src="flags/sm.png" type="client" download="false" />
+    <file src="flags/sn.png" type="client" download="false" />
+    <file src="flags/so.png" type="client" download="false" />
+    <file src="flags/sr.png" type="client" download="false" />
+    <file src="flags/ss.png" type="client" download="false" />
+    <file src="flags/st.png" type="client" download="false" />
+    <file src="flags/sv.png" type="client" download="false" />
+    <file src="flags/sx.png" type="client" download="false" />
+    <file src="flags/sy.png" type="client" download="false" />
+    <file src="flags/sz.png" type="client" download="false" />
+    <file src="flags/tc.png" type="client" download="false" />
+    <file src="flags/td.png" type="client" download="false" />
+    <file src="flags/tf.png" type="client" download="false" />
+    <file src="flags/tg.png" type="client" download="false" />
+    <file src="flags/th.png" type="client" download="false" />
+    <file src="flags/tj.png" type="client" download="false" />
+    <file src="flags/tk.png" type="client" download="false" />
+    <file src="flags/tl.png" type="client" download="false" />
+    <file src="flags/tm.png" type="client" download="false" />
+    <file src="flags/tn.png" type="client" download="false" />
+    <file src="flags/to.png" type="client" download="false" />
+    <file src="flags/tr.png" type="client" download="false" />
+    <file src="flags/tt.png" type="client" download="false" />
+    <file src="flags/tv.png" type="client" download="false" />
+    <file src="flags/tw.png" type="client" download="false" />
+    <file src="flags/tz.png" type="client" download="false" />
+    <file src="flags/ua.png" type="client" download="false" />
+    <file src="flags/ug.png" type="client" download="false" />
+    <file src="flags/um.png" type="client" download="false" />
+    <file src="flags/us.png" type="client" download="false" />
+    <file src="flags/uy.png" type="client" download="false" />
+    <file src="flags/uz.png" type="client" download="false" />
+    <file src="flags/va.png" type="client" download="false" />
+    <file src="flags/vc.png" type="client" download="false" />
+    <file src="flags/ve.png" type="client" download="false" />
+    <file src="flags/vg.png" type="client" download="false" />
+    <file src="flags/vi.png" type="client" download="false" />
+    <file src="flags/vn.png" type="client" download="false" />
+    <file src="flags/vu.png" type="client" download="false" />
+    <file src="flags/wf.png" type="client" download="false" />
+    <file src="flags/ws.png" type="client" download="false" />
+    <file src="flags/xk.png" type="client" download="false" />
+    <file src="flags/ye.png" type="client" download="false" />
+    <file src="flags/yt.png" type="client" download="false" />
+    <file src="flags/za.png" type="client" download="false" />
+    <file src="flags/zm.png" type="client" download="false" />
+    <file src="flags/zw.png" type="client" download="false" />
 
     <!-- EXPORTS -->
     <export function="setBanner" type="client" />
@@ -76,5 +334,16 @@
     <export function="removeMarkerUI" type="server" />
     <export function="setMarkerUIMeta" type="server" />
     <export function="getMarkerUIPlayers" type="server" />
+
+    <!-- Country flags (client/flags.lua, server/flags.lua); country = IP based element data "country" -->
+    <export function="getPlayerCountry" type="client" />
+    <export function="hasFlag" type="client" />
+    <export function="preloadFlag" type="client" />
+    <export function="getFlagTexture" type="client" />
+    <export function="getFlagRatio" type="client" />
+    <export function="drawFlag" type="client" />
+    <export function="drawPlayerFlag" type="client" />
+    <export function="getPlayerCountry" type="server" />
+    <export function="setPlayerCountry" type="server" />
 
 </meta>
