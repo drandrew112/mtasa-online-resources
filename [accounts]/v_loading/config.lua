@@ -10,7 +10,7 @@ LOADING_REQUIRED = {
     "world_clothes-shop", "world_ferriswheel",
     -- resources whose shared configs / tables hold texts (v_locals L.config or own gate)
     "v_stats", "v_radar", "v_nametags", "v_customs", "v_els",
-    "medsys", "medsys_effects", "medsys_events", "med_bag", "med_hospitals",
+    "medsys", "med_equipments", "med_hospitals",
     "mg_airway", "mg_cpr", "mg_intravenous",
     "rw_core", "rw_customtracks", "rw_signals", "rw_timetable",
     "work_atc", "work_traindriver", "world_elevators", "map_int_sacontrol",

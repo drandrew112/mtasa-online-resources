@@ -288,8 +288,7 @@ addEventHandler("erm:admin:autoSet", resourceRoot, function(on)
     sendAutoState(player)
 end)
 
--- Keep every open admin panel in sync (switched by another admin / resource,
--- or med_erm_auto started / stopped).
+-- Keep every open admin panel in sync (switched by another admin / resource).
 local function broadcastAutoState()
     local state = AutoDispatch.state()
     for _, p in ipairs(getElementsByType("player")) do
@@ -299,9 +298,3 @@ end
 
 addEvent("onErmAutoDispatchChange", false)
 addEventHandler("onErmAutoDispatchChange", root, broadcastAutoState)
-addEventHandler("onResourceStart", root, function(res)
-    if getResourceName(res) == "med_erm_auto" then broadcastAutoState() end
-end)
-addEventHandler("onResourceStop", root, function(res)
-    if getResourceName(res) == "med_erm_auto" then setTimer(broadcastAutoState, 50, 1) end
-end)

@@ -1,7 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Equipment adapter (med_bag). Interventions need the medical bag / the monitor near the patient
+-- Equipment adapter (med_equipments). Interventions need the medical bag / the monitor near the patient
 -- (MEDIC_EQUIPMENT); the bag's consumables (medicines, IV kits, oxygen) run out. Everything goes
--- through this file, so medsys works unchanged when MEDIC.REQUIRE_EQUIPMENT is false or med_bag is
+-- through this file, so medsys works unchanged when MEDIC.REQUIRE_EQUIPMENT is false or med_equipments is
 -- not running (then no equipment is asked for at all).
 -- Tutorial patients (setTutorialPatient) need no equipment either, unless they were marked with
 -- useEquipment (the EMS tutorial teaches the bag and the monitor on its patient).
@@ -31,7 +31,7 @@ local STOCK_EMPTY = {
     glucometers = L.msg("medsys.equipment.no_glucometer"), airwayKits = L.msg("medsys.equipment.no_airway_kit"),
 }
 
--- What reaches the patient (med_bag getEquipmentNear) or nil when the equipment is not checked.
+-- What reaches the patient (med_equipments getEquipmentNear) or nil when the equipment is not checked.
 -- One call per panel snapshot / treatment start.
 function getPatientEquipment(target, medic)
     if not isEquipmentActive() or isExempt(target) then return nil end
@@ -90,7 +90,7 @@ local function call(fn, ...)
         local res = bagResource()
         return res[fn](res, unpack(args))
     end)
-    if not ok then outputDebugString("[medsys] med_bag:" .. fn .. " failed: " .. tostring(result), 2) end
+    if not ok then outputDebugString("[medsys] med_equipments:" .. fn .. " failed: " .. tostring(result), 2) end
     return ok and result or nil
 end
 
@@ -139,10 +139,10 @@ function checkGlucometerEquipment(medic, target)
 end
 
 -- ---------------------------------------------------------------------------------------------
--- Called by med_bag
+-- Called by med_equipments
 -- ---------------------------------------------------------------------------------------------
 
--- med_bag takes the oxygen mask ("oxygen") or the monitor ("monitor") off the patient: the bag went
+-- med_equipments takes the oxygen mask ("oxygen") or the monitor ("monitor") off the patient: the bag went
 -- away / the cylinder is empty / the monitor was carried away. message is shown on the panels.
 function removePatientEquipment(target, kind, message)
     local state = isElement(target) and Patients[target]
@@ -170,7 +170,7 @@ function removePatientEquipment(target, kind, message)
     return true
 end
 
--- med_bag found oxygen again for an intubated patient (a bag came back / another bag): the tube works
+-- med_equipments found oxygen again for an intubated patient (a bag came back / another bag): the tube works
 function restorePatientEquipment(target, kind, message)
     local state = isElement(target) and Patients[target]
     if not state or state.dead or kind ~= "oxygen" or not state.noOxygen then return false end
@@ -180,13 +180,13 @@ function restorePatientEquipment(target, kind, message)
     return true
 end
 
--- med_bag (re)started: it forgot its oxygen sessions, so nobody may stay without oxygen
+-- med_equipments (re)started: it forgot its oxygen sessions, so nobody may stay without oxygen
 addEventHandler("onResourceStart", root, function(resource)
     if getResourceName(resource) ~= MEDIC.EQUIPMENT_RESOURCE then return end
     for _, state in pairs(Patients) do state.noOxygen = nil end
 end)
 
--- { [drugId] = display name } for med_bag's messages
+-- { [drugId] = display name } for med_equipments's messages
 function getDrugNames()
     local names = {}
     for id, drug in pairs(MEDIC_DRUGS) do names[id] = drug.name end

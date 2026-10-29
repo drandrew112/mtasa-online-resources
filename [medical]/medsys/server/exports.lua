@@ -67,6 +67,7 @@ local SETTERS = {
     pain = setNumber("extraPain", 0, 100),
     -- mmHg added to the target systolic pressure until set back to 0 (lasting high blood pressure)
     hypertension = setNumber("hypertension", 0, 120),
+    weight = setNumber("weight", 3, 250), -- kg, for the mg/kg doses
 
     -- lasting values the patient holds (see setResting); set systolic before diastolic / heartRate
     restingSystolic = setResting("systolic", 1, 40, 260),

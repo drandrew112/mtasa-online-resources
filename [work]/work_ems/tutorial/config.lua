@@ -17,7 +17,7 @@ TUTORIAL = {
 
     -- The scene: the tutorial starts in this ambulance (driver seat). The patient stands at a
     -- vehicle-local offset { x (right), y (forward) } from it, at the vehicle's height: next to the
-    -- right side, a few metres from the side door (med_bag) - the equipment must reach them (4 m).
+    -- right side, a few metres from the side door (med_equipments) - the equipment must reach them (4 m).
     SCENE = {
         vehicle = { 1703.37, -1052.38, 23.96, 110 },
         patientOffset = { 3.2, 0.5 },

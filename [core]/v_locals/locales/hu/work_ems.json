@@ -98,7 +98,7 @@
   "work_ems.steps.monitor": "a monitor",
   "work_ems.steps.next": "Tovább",
   "work_ems.steps.not_this_time_try_again": "{label}: most nem sikerült - próbáld újra.",
-  "work_ems.steps.now_press_medication_and_choose_fentanyl": "Most nyomd meg a Gyógyszerek gombot, és válaszd a Fentanyl-t (erős fájdalomcsillapító).\n\nMinden gyógyszerkártyán a szám a táskában maradt adagokat jelenti (x3 = három). A 0 adagú gyógyszert nem adhatod be, amíg nem töltöd fel a készletet.",
+  "work_ems.steps.now_press_medication_and_choose_fentanyl": "Most nyomd meg a Gyógyszerek gombot, válaszd a Fentanyl-t (erős fájdalomcsillapító), majd az adagot: az 1 mcg/kg a szokásos, a teljes mennyiséget a panel a beteg testsúlyából számolja.\n\nMinden gyógyszerkártyán a szám a táskában maradt adagokat jelenti (x3 = három). A 0 adagú gyógyszert nem adhatod be, amíg nem töltöd fel a készletet.",
   "work_ems.steps.now_take_equipment_in_same_menu": "Most vedd fel a felszerelést: ugyanabban a menüben válaszd a Mindkettő felvétele pontot. Az orvosi táska a bal kezedbe kerül, a monitor / defibrillátor a jobb kezedbe.",
   "work_ems.steps.off_to_hospital": "Irány a kórház",
   "work_ems.steps.on_ground": "a földön",

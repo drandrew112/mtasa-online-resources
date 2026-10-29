@@ -50,7 +50,7 @@ local function nearestSceneDistance(c)
     return best
 end
 
--- 2D distance to the nearest free unit and that unit (the probable recipient: med_erm_auto
+-- 2D distance to the nearest free unit and that unit (the probable recipient: med_erm's auto dispatch
 -- sends the nearest one). Interior scenes have no world position to compare with, they
 -- always count as in range.
 local function nearestUnit(c, interior, units)

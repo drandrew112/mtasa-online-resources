@@ -2,7 +2,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Patient registry and the medical state data structure.
 --
 -- Only elements that are not perfectly healthy are kept in the registry (Patients), except the
--- persistent ones (setPatientPersistent, e.g. every player via medsys_events): they always stay in
+-- persistent ones (setPatientPersistent, e.g. every player via the medsys events module): they always stay in
 -- it, so they always carry the status element data and can always be examined.
 -- The state is server-only: clients receive the status string as element data and full
 -- snapshots only while they examine the patient.
@@ -20,13 +20,15 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --     ivAccess      = false, ivQuality = 0, -- cannula in place, quality 0-100 (fluid rate)
 --     intubated     = false,                -- airway secured
 --     oxygenMask    = false,                -- oxygen mask on
---     noOxygen      = nil,                  -- intubated but the bag's oxygen ran out / is too far (med_bag):
+--     noOxygen      = nil,                  -- intubated but the bag's oxygen ran out / is too far (med_equipments):
 --                                           -- the tube has no effect until oxygen is back (isVentilated)
 --     hypertension  = 0,                    -- mmHg added to the target systolic pressure (setMedicalState)
 --     restShift     = { systolic, diastolic, heartRate }, -- lasting target shifts (setMedicalState resting*)
 --     spo2Limit     = nil,                  -- lasting SpO2 target cap (setMedicalState restingSpo2)
 --     jitter        = { systolic, heartRate }, -- current random target offsets (natural variation)
---     drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses (MEDIC_DRUGS)
+--     drugs         = { { id, tick, untilTick, scale, dose }, ... }, -- active medicine doses (MEDIC_DRUGS):
+--                                           -- scale = effect multiplier of the dose, dose = "117 mg"
+--     weight        = 75,                   -- kg, the mg/kg doses are counted with it
 --     aware         = true,                 -- awake apart from the medicines (their sedation / paralysis)
 --     panic         = false,                -- awake under the muscle relaxant
 --     apneaRate     = nil,                  -- %/s SpO2 fall while an intubation attempt runs
@@ -84,6 +86,7 @@ local function newState(element)
         spo2Limit = nil,
         jitter = { systolic = 0, heartRate = 0 },
         drugs = {},
+        weight = math.random(MEDIC.WEIGHT_MIN, MEDIC.WEIGHT_MAX),
         consciousness = "stable",
         rhythm = "SINUS",
         rhythmTick = getTickCount(),
@@ -175,7 +178,7 @@ function writeVitalsData(state)
         state.sent.heartRate = heartRate
         setElementData(state.element, MEDIC.DATA_HEART_RATE, heartRate, "subscribe")
     end
-    -- the breathing is broadcast (it rarely changes): medsys_effects animates the struggle for air
+    -- the breathing is broadcast (it rarely changes): the medsys effects module animates the struggle for air
     local breathing = getBreathing(state)
     if state.breathing ~= breathing then
         state.breathing = breathing
@@ -239,7 +242,7 @@ local BREATH_RANK = { normal = 0, rapid = 1, kussmaul = 2, wheeze = 3, laboured 
 
 -- Intubated AND getting oxygen: only then does the tube work (SpO2, breathing, ROSC bonus)
 function isVentilated(state)
-    -- noOxygen only counts while med_bag runs (it is the one that lifts it again)
+    -- noOxygen only counts while med_equipments runs (it is the one that lifts it again)
     return state.intubated == true and not (state.noOxygen and isEquipmentActive())
 end
 
@@ -341,11 +344,11 @@ function getPatientPain(state)
     return math.min(100, pain) * (1 - math.min(1, getDrugEffect(state, "analgesia")))
 end
 
--- Sum of an effect field (e.g. "systolic") over the active medicine doses
+-- Sum of an effect field (e.g. "systolic") over the active medicine doses, scaled by each dose
 function getDrugEffect(state, field)
     local total = 0
     for _, dose in ipairs(state.drugs) do
-        total = total + (MEDIC_DRUGS[dose.id][field] or 0)
+        total = total + (MEDIC_DRUGS[dose.id][field] or 0) * (dose.scale or 1)
     end
     return total
 end
@@ -355,17 +358,40 @@ function getDrugMax(state, field)
     local best = 0
     for _, dose in ipairs(state.drugs) do
         local value = MEDIC_DRUGS[dose.id][field]
+        value = value and value * (dose.scale or 1)
         if value and value > best then best = value end
     end
     return best
 end
 
+-- Does this dose give the flag effect (e.g. "sedation"): a small dose may not (dosing.minScale)
+local function doseHasFlag(dose, field)
+    local drug = MEDIC_DRUGS[dose.id]
+    if not drug[field] then return false end
+    local minScale = drug.dosing and drug.dosing.minScale and drug.dosing.minScale[field]
+    return not minScale or (dose.scale or 1) >= minScale
+end
+
 -- Is any active dose of a medicine with this flag (e.g. "paralysis") in the body
 function hasDrugEffect(state, field)
     for _, dose in ipairs(state.drugs) do
-        if MEDIC_DRUGS[dose.id][field] then return true end
+        if doseHasFlag(dose, field) then return true end
     end
     return false
+end
+
+-- Sum of the dose scales of one medicine in the body (overdose check)
+function getDrugLoad(state, drugId)
+    local total = 0
+    for _, dose in ipairs(state.drugs) do
+        if dose.id == drugId then total = total + (dose.scale or 1) end
+    end
+    return total
+end
+
+-- Duration / onset multiplier of a dose (a bigger dose works longer and starts faster)
+function getDoseTimeFactor(scale)
+    return math.max(MEDIC.DOSE_DURATION_MIN, math.min(MEDIC.DOSE_DURATION_MAX, scale or 1))
 end
 
 -- The anaesthetic keeps the patient asleep
@@ -377,7 +403,8 @@ end
 function isParalyzed(state, now)
     now = now or getTickCount()
     for _, dose in ipairs(state.drugs) do
-        if MEDIC_DRUGS[dose.id].paralysis and now - dose.tick >= MEDIC.PARALYSIS_ONSET * 1000 then
+        if doseHasFlag(dose, "paralysis")
+            and now - dose.tick >= MEDIC.PARALYSIS_ONSET * 1000 / getDoseTimeFactor(dose.scale) then
             return true
         end
     end
@@ -418,7 +445,7 @@ function buildSnapshot(state)
     local now = getTickCount()
     local drugs = {}
     for i, dose in ipairs(state.drugs) do
-        drugs[i] = { id = dose.id, name = MEDIC_DRUGS[dose.id].name,
+        drugs[i] = { id = dose.id, name = MEDIC_DRUGS[dose.id].name, dose = dose.dose,
             timeLeft = math.max(0, math.ceil((dose.untilTick - now) / 1000)) }
     end
 
@@ -466,6 +493,7 @@ function buildSnapshot(state)
         sedated = isSedated(state),
         paralyzed = isParalyzed(state, now),
         drugs = drugs,
+        weight = state.weight,          -- kg
         rhythm = state.rhythm,
         rhythmLabel = rhythm.label,
         ecgRate = ecgRate,              -- rate of the ECG complexes (the pulse is heartRate)
@@ -495,7 +523,7 @@ end
 ---------------------------------------------------------------------------
 
 -- The animations (down / get up) and what a player patient experiences (screen, control lock)
--- belong to medsys_effects, which follows the status element data and these events.
+-- belong to the medsys effects module, which follows the status element data and these events.
 function setConsciousness(state, status)
     local old = state.consciousness
     if old == status then return end

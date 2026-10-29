@@ -22,9 +22,11 @@ erm/
 │  ├─ webtablet.lua        web tablet functions
 │  ├─ webadmin.lua         web ERM admin functions
 │  ├─ admin.lua            /ermadmin permission + history queries
+│  ├─ autodispatch.lua     bridge to the auto dispatch module (state / switch)
 │  ├─ events.lua           server events for other resources (onErm...)
 │  ├─ exports.lua          automation API (exports for other resources)
 │  └─ main.lua             start / stop
+├─ auto/                  module: automatic dispatcher (see auto/README.md; was med_erm_auto)
 ├─ client/
 │  ├─ gfx.lua              dx helpers (rounded rects, buttons, hit/scroll areas)
 │  ├─ state.lua            unit state from the server, task objective (v_radar), notifications

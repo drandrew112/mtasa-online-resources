@@ -77,7 +77,7 @@ HELP_INDEX = {
         { id = "atc_labels",       category = "atc", order = 90, file = "atc/labels.txt" },
         { id = "atc_commands",     category = "atc", order = 100, file = "atc/commands.txt" },
 
-        -- medical: medsys / med_bag / mg_* minigames (overview links every page)
+        -- medical: medsys / med_equipments / mg_* minigames (overview links every page)
         { id = "medical",            category = "medical", order = 10, file = "medical/overview.txt" },
         { id = "medical_exam",       category = "medical", order = 20, file = "medical/exam.txt" },
         { id = "medical_diagnosis",  category = "medical", order = 30, file = "medical/diagnosis.txt" },

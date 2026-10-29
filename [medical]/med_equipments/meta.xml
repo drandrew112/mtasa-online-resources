@@ -1,0 +1,72 @@
+<meta>
+    <info author="DrAndrew112" name="med_equipments" version="3.0" type="script" description="EMS equipment in modules: bag (medical bag + Lifepak 15 per ambulance on v_inventory) and stretcher (take out, push, carry a patient, load into the ambulance)" />
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <!-- items (v_inventory), side-door + stretcher menus (ui_interactobject), medic role (medsys) -->
+    <include resource="v_locals" />
+    <include resource="v_inventory" />
+    <include resource="ui_interactobject" />
+    <include resource="medsys" />
+
+    <!-- v_locals import: must stay the first script -->
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SHARED ================= -->
+    <script src="stretcher/shared/config.lua" type="shared" />
+    <script src="stretcher/shared/util.lua" type="shared" />
+    <script src="bag/shared/config.lua" type="shared" />
+    <script src="bag/shared/util.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <!-- stretcher -->
+    <script src="stretcher/server/stretcher.lua" type="server" />
+    <script src="stretcher/server/interaction.lua" type="server" />
+
+    <!-- bag -->
+    <script src="bag/server/kits.lua" type="server" />
+    <script src="bag/server/stock.lua" type="server" />
+    <script src="bag/server/interaction.lua" type="server" />
+    <script src="bag/server/watch.lua" type="server" />
+    <script src="bag/server/stretcher.lua" type="server" /> <!-- the bag / Lifepak on the stretcher -->
+    <script src="bag/server/exports.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <!-- stretcher -->
+    <script src="stretcher/client/stretcher.lua" type="client" />
+    <script src="stretcher/client/push.lua" type="client" />
+    <script src="stretcher/client/select.lua" type="client" />
+    <script src="stretcher/client/zone.lua" type="client" />
+
+    <!-- bag -->
+    <script src="bag/client/hud.lua" type="client" />
+    <!-- static monitor screen: remove these two lines when the custom monitor model arrives -->
+    <script src="bag/client/screen.lua" type="client" />
+    <file src="bag/fx/screen.fx" type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- bag: medsys (server/equipment.lua there) -->
+    <export function="getEquipmentNear" type="server" />
+    <export function="findStockItem" type="server" />
+    <export function="consumeStock" type="server" />
+    <export function="startPatientOxygen" type="server" />
+    <export function="stopPatientOxygen" type="server" />
+    <export function="linkPatientMonitor" type="server" />
+    <export function="unlinkPatientMonitor" type="server" />
+    <export function="onTreatmentStart" type="server" />
+
+    <!-- bag: other scripts / admins -->
+    <export function="getVehicleKit" type="server" />
+    <export function="getItemInfo" type="server" />
+    <export function="getPlayerItems" type="server" />
+    <export function="getItemStock" type="server" />
+    <export function="restockItem" type="server" />
+    <export function="returnItem" type="server" />
+
+    <!-- stretcher: EMS job script, med_hospitals -->
+    <export function="getVehicleStretcher" type="server" />
+    <export function="getStretcherVehicle" type="server" />
+    <export function="getStretcherState" type="server" />
+    <export function="getStretcherPatient" type="server" />
+    <export function="getPatientStretcher" type="server" />
+    <export function="takePatientOff" type="server" />
+</meta>

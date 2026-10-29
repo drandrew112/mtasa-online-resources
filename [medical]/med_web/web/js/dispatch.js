@@ -208,7 +208,7 @@
             stat('Assigned', tcount('assigned'), '#57d172');
     }
 
-    // med_erm_auto on: badge in the top bar
+    // med_erm's auto dispatch on: badge in the top bar
     function renderAuto(auto) {
         const on = !!(auto && auto.available && auto.enabled);
         $('autoBadge').hidden = !on;

@@ -62,13 +62,13 @@ MEDIC = {
     INTERACT_RANGE = 2.5,       -- metres: menu range and the range to start a procedure
     PANEL_RANGE = 4.0,          -- the panel closes beyond this
     REQUIRE_MEDIC_ROLE = true,  -- true: only players flagged with setPlayerMedic can examine / treat,
-                                -- see the stretcher menus (med_stretcher) and the EMS tablet hint (med_erm)
+                                -- see the stretcher menus (med_equipments) and the EMS tablet hint (med_erm)
                                 -- (and use the stretcher; the EMS tablet hint shows to them only)
 
-    -- Equipment (med_bag): interventions need the medical bag / the monitor near the patient
-    -- (MEDIC_EQUIPMENT). While med_bag is not running no equipment is asked for at all.
+    -- Equipment (med_equipments, bag module): interventions need the medical bag / the monitor near the patient
+    -- (MEDIC_EQUIPMENT). While med_equipments is not running no equipment is asked for at all.
     REQUIRE_EQUIPMENT = true,
-    EQUIPMENT_RESOURCE = "med_bag",
+    EQUIPMENT_RESOURCE = "med_equipments",
 
     -- Treatments
     IV_FLUID_RATE = 4,          -- ml/s restored with IV access (scaled by the cannulation quality)
@@ -96,8 +96,18 @@ MEDIC = {
     OXYGEN_RECOVERY = 2,        -- the SpO2 recovers this many times faster
     OXYGEN_APNEA_FACTOR = 0.5,  -- a paralysed patient desaturates this much slower on the mask
     -- Rapid sequence intubation (RSI): the induction (sedation) first, then the muscle relaxant.
-    PARALYSIS_ONSET = 15,       -- seconds until the muscle relaxant stops the breathing
+    PARALYSIS_ONSET = 15,       -- seconds until the muscle relaxant stops the breathing (standard dose)
     PARALYSIS_SPO2_RATE = 0.25, -- %/s the SpO2 falls without own breathing (until intubated)
+    -- Body weight of a new patient (kg, random in this range; setMedicalState "weight"):
+    -- the mg/kg doses are counted with it
+    WEIGHT_MIN = 55,
+    WEIGHT_MAX = 110,
+    WEIGHT = 75,                -- when the patient is unknown
+    -- Dose -> effect: the effects of MEDIC_DRUGS are for the standard dose and scale with the
+    -- dose (scale = dose / standard, or the option's own scale); the duration and the muscle
+    -- relaxant's onset follow it within these limits
+    DOSE_DURATION_MIN = 0.5,
+    DOSE_DURATION_MAX = 1.5,
     PANIC_HEART_RATE = 50,      -- an awake patient under the muscle relaxant panics: BPM...
     PANIC_SYSTOLIC = 35,        -- ...and mmHg added to the targets
 
@@ -153,7 +163,7 @@ MEDIC = {
 
     -- Blood glucose (mg/dL; the glucometer also shows mmol/L). setMedicalState "glucose" sets the
     -- current and the resting value, the current one drifts back to the resting one.
-    DATA_BREATH = "medic.breath", -- breathing key (MEDIC_BREATHING), broadcast for medsys_effects
+    DATA_BREATH = "medic.breath", -- breathing key (MEDIC_BREATHING), broadcast for the medsys effects module
     GLUCOSE = 95,               -- healthy resting value
     GLUCOSE_DRIFT = 0.08,       -- mg/dL per second towards the resting value
     GLUCOSE_MIN = 10, GLUCOSE_MAX = 900,
@@ -184,7 +194,7 @@ MEDIC = {
     STROKE_SAFE_SYSTOLIC = { 130, 220 },
     STROKE_BAD_BP_FACTOR = 2.5,
 
-    -- The patient animations and the player's own screen effects live in medsys_effects.
+    -- The patient animations and the player's own screen effects live in the effects module (effects/).
 }
 
 -- Heart rhythms (ECG). label = shown under the ECG curve (most players cannot read an ECG),
@@ -457,7 +467,7 @@ MEDIC_INJURIES = {
 }
 
 -- What the breathing looks like. level: 0 normal - 3 critical (panel colour),
--- dyspnea = the patient visibly struggles for air (medsys_effects animation)
+-- dyspnea = the patient visibly struggles for air (the medsys effects module animation)
 MEDIC_BREATHING = {
     normal = { label = L.text("medsys.config.normal"), level = 0 },
     rapid = { label = L.text("medsys.config.rapid"), level = 1 },
@@ -540,6 +550,17 @@ MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
 --   treats                conditions (MEDIC_INJURIES ids) it treats when given
 --   awake = true          only for a patient who can swallow (stable / confused)
 -- route: nil = through the IV line; "oral" / "inhaled" / "nasal" = no IV access needed
+-- dosing: the doses the medic can choose from (usual adult prehospital doses)
+--   unit       "mg" | "mcg" | "g" | "ml" | "IU"
+--   perKg      true: the options are per kg of body weight (the total is counted from the weight)
+--   standard   the dose the effects above are written for (per kg when perKg)
+--   options    { dose, scale = effect multiplier (default dose / standard), note = text, high = above
+--              the usual dose (shown in orange) }
+--   default    option index for scripts that give the medicine without a dose
+--   minScale   { [flag effect] = scale }: sedation / paralysis only from this dose on
+--   treatMin   scale from which `treats` works (default 0.5)
+--   overdose   { scale, condition, severity }: the doses in the body add up to this scale -> the
+--              condition (MEDIC_INJURIES, e.g. "opioid") is added
 MEDIC_DRUGS = {
     ketamine = {
         name = "Ketamine (Calypsol)",
@@ -549,6 +570,10 @@ MEDIC_DRUGS = {
         analgesia = 1,
         systolic = 15,
         heartRate = 8,
+        dosing = { unit = "mg", perKg = true, standard = 1.5, default = 3,
+            options = { { dose = 0.3, scale = 0.5, note = L.text("medsys.config.dose_analgesia") }, { dose = 1, scale = 0.7, note = L.text("medsys.config.dose_shock") },
+                { dose = 1.5, note = L.text("medsys.config.dose_rsi") }, { dose = 2, scale = 1.3, high = true } },
+            minScale = { sedation = 0.6 } },
         duration = 600,
     },
     rocuronium = {
@@ -556,6 +581,9 @@ MEDIC_DRUGS = {
         class = L.text("medsys.config.muscle_relaxant_rsi_step_2"),
         desc = L.text("medsys.config.paralyses_muscles_and_stops_breathing_spo2"),
         paralysis = true,
+        dosing = { unit = "mg", perKg = true, standard = 1, default = 3,
+            options = { { dose = 0.6, note = L.text("medsys.config.dose_slow_onset") }, { dose = 1 }, { dose = 1.2, note = L.text("medsys.config.dose_rsi") } },
+            minScale = { paralysis = 0.5 } },
         duration = 2400,
     },
     fentanyl = {
@@ -564,6 +592,9 @@ MEDIC_DRUGS = {
         desc = L.text("medsys.config.strong_painkiller_for_patient_who_is"),
         analgesia = 0.7,
         systolic = -10,
+        dosing = { unit = "mcg", perKg = true, standard = 1, default = 2,
+            options = { { dose = 0.5 }, { dose = 1 }, { dose = 1.5 }, { dose = 3, high = true, note = L.text("medsys.config.dose_rsi") } },
+            overdose = { scale = 3.5, condition = "opioid", severity = 2 } },
         duration = 1800,
     },
     epinephrine = {
@@ -573,6 +604,9 @@ MEDIC_DRUGS = {
         heartRate = 30,
         systolic = 30,
         roscBonus = 0.15,
+        dosing = { unit = "mg", standard = 1, default = 3,
+            options = { { dose = 0.02, scale = 0.3, note = L.text("medsys.config.dose_push_dose") }, { dose = 0.1, scale = 0.5, note = L.text("medsys.config.dose_peri_arrest") },
+                { dose = 1, note = L.text("medsys.config.dose_cardiac_arrest") } } },
         duration = 300,
     },
     captopril = {
@@ -581,6 +615,8 @@ MEDIC_DRUGS = {
         desc = L.text("medsys.config.tablet_under_tongue_no_iv_needed"),
         route = "oral", -- no IV access needed
         systolic = -40,
+        dosing = { unit = "mg", standard = 25, default = 2,
+            options = { { dose = 12.5 }, { dose = 25 } } },
         duration = 600,
     },
     nitroglycerin = {
@@ -590,6 +626,8 @@ MEDIC_DRUGS = {
         route = "oral",
         systolic = -30,
         treats = { "pulmonary_edema" },
+        dosing = { unit = "mg", standard = 0.4, default = 1,
+            options = { { dose = 0.4, note = L.text("medsys.config.dose_one_puff") }, { dose = 0.8, scale = 1.6, high = true, note = L.text("medsys.config.dose_two_puffs") } } },
         duration = 600,
     },
     glucose = {
@@ -597,6 +635,8 @@ MEDIC_DRUGS = {
         class = L.text("medsys.config.blood_sugar_raising"),
         desc = L.text("medsys.config.raises_low_blood_sugar_within_seconds"),
         glucose = 100,
+        dosing = { unit = "ml", standard = 40, default = 2,
+            options = { { dose = 20, note = "8 g" }, { dose = 40, note = "16 g" }, { dose = 60, note = "24 g" } } },
         duration = 60,
     },
     glucose_gel = {
@@ -606,6 +646,8 @@ MEDIC_DRUGS = {
         route = "oral",
         awake = true,
         glucose = 40,
+        dosing = { unit = "g", standard = 15, default = 1,
+            options = { { dose = 15, note = L.text("medsys.config.dose_one_tube") }, { dose = 30, note = L.text("medsys.config.dose_two_tubes") } } },
         duration = 60,
     },
     insulin = {
@@ -613,6 +655,8 @@ MEDIC_DRUGS = {
         class = L.text("medsys.config.blood_sugar_lowering"),
         desc = L.text("medsys.config.slowly_lowers_very_high_blood_sugar"),
         glucoseRate = -0.35,
+        dosing = { unit = "IU", perKg = true, standard = 0.1, default = 2,
+            options = { { dose = 0.05 }, { dose = 0.1 }, { dose = 0.15, high = true } } },
         duration = 900,
     },
     naloxone = {
@@ -621,6 +665,8 @@ MEDIC_DRUGS = {
         desc = L.text("medsys.config.nasal_spray_reverses_opioid_heroin_fentanyl"),
         route = "nasal",
         treats = { "opioid" },
+        dosing = { unit = "mg", standard = 4, default = 2,
+            options = { { dose = 2, scale = 0.6 }, { dose = 4 } } },
         duration = 1800,
     },
     salbutamol = {
@@ -630,6 +676,8 @@ MEDIC_DRUGS = {
         route = "inhaled",
         heartRate = 12,
         treats = { "asthma", "copd" },
+        dosing = { unit = "mg", standard = 5, default = 2,
+            options = { { dose = 2.5 }, { dose = 5 } } },
         duration = 900,
     },
     midazolam = {
@@ -639,11 +687,49 @@ MEDIC_DRUGS = {
         systolic = -15,
         heartRate = -15,
         treats = { "stimulant" },
+        dosing = { unit = "mg", perKg = true, standard = 0.05, default = 2,
+            options = { { dose = 0.03 }, { dose = 0.05 }, { dose = 0.1, high = true } },
+            overdose = { scale = 4, condition = "sedative", severity = 2 } },
         duration = 1200,
     },
 }
 MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril", "nitroglycerin",
     "glucose", "glucose_gel", "insulin", "naloxone", "salbutamol", "midazolam" }
+
+-- Dose option of a medicine (index into dosing.options; nil / invalid = the default one) -> option, index
+function medicDrugDose(drug, index)
+    local dosing = drug and drug.dosing
+    if not dosing then return nil end
+    index = math.floor(tonumber(index) or 0)
+    if not dosing.options[index] then index = dosing.default or 1 end
+    return dosing.options[index], index
+end
+
+-- Effect multiplier of a dose option (1 without dosing)
+function medicDoseScale(drug, option)
+    if not option then return 1 end
+    return option.scale or option.dose / drug.dosing.standard
+end
+
+local function formatAmount(value)
+    if value >= 100 then return tostring(math.floor(value + 0.5)) end
+    local text = (value >= 10 and "%.1f" or "%.2f"):format(value)
+    return (text:gsub("0+$", ""):gsub("%.$", ""))
+end
+
+-- "1.5 mg/kg", "117 mg" (total for the weight, nil for a fixed dose)
+function medicFormatDose(drug, option, weight)
+    local dosing = drug.dosing
+    if not dosing.perKg then return formatAmount(option.dose) .. " " .. dosing.unit, nil end
+    local total = option.dose * (weight or MEDIC.WEIGHT)
+    return formatAmount(option.dose) .. " " .. dosing.unit .. "/kg", formatAmount(total) .. " " .. dosing.unit
+end
+
+-- The amount that goes in: "117 mg" / "1 mg"
+function medicDoseText(drug, option, weight)
+    local label, total = medicFormatDose(drug, option, weight)
+    return total or label
+end
 
 -- a route ("oral", "inhaled", "nasal") needs no IV access; every other medicine goes through the IV line
 function medicDrugNeedsIV(drug)

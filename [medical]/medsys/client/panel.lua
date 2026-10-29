@@ -2,7 +2,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Patient examination panel (DX). The server opens it (medic:panelOpen), pushes a snapshot
 -- every simulation step while it is open (medic:panelUpdate) and closes it when a procedure
 -- starts. The buttons only send requests, the server validates and runs everything.
--- "Medication" opens a medicine grid inside the panel (the hovered one is described under it).
+-- "Medication" opens a medicine grid inside the panel (the hovered one is described under it);
+-- a medicine card opens its dose row (MEDIC_DRUGS dosing: mg/kg doses show the total for the
+-- patient's weight), a dose button gives it.
 -- "O2 mask" puts the oxygen mask on / takes it off. "Transport" (a stable or intubated patient,
 -- or the only button of a dead one) calls a vehicle; the client picks a free spot for it.
 -- The panel shows the pulse (palpated) and the bleeding / skin only. Until the monitor is attached
@@ -58,7 +60,7 @@ local BLEEDING_COLOR = { [0] = C.good, C.warn, C.orange, C.bad }
 local LEVEL_COLOR = { [0] = C.good, C.warn, C.orange, C.bad } -- breathing / neuro finding levels
 
 local keptGlucometer -- { target, tick }: the meter was out when the panel closed
-local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu, glucometer }
+local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu, drugPick, glucometer }
 local fonts
 
 local function ensureFonts()
@@ -285,8 +287,58 @@ local function getDrugCards()
     return list
 end
 
+-- Dose buttons of the picked medicine, under the grid: { index, option, x, y, w, h }
+local DOSE_LABEL_W = s(96)
+local DOSE_H = s(40)
+
+local function getDoseButtons()
+    local drug = panel and panel.drugPick and MEDIC_DRUGS[panel.drugPick]
+    if not drug or not drug.dosing then return {} end
+    local cards = getDrugCards()
+    local top = cards[#cards].y + DRUG_CARD_H + s(8)
+    local options = drug.dosing.options
+    local left = X + PAD + DOSE_LABEL_W
+    local bw = (W - PAD * 2 - DOSE_LABEL_W - DRUG_GAP * (#options - 1)) / #options
+    local list = {}
+    for i, option in ipairs(options) do
+        list[i] = { index = i, option = option, x = left + (i - 1) * (bw + DRUG_GAP), y = top, w = bw, h = DOSE_H }
+    end
+    return list
+end
+
+local function patientWeight()
+    return panel and panel.data and panel.data.weight or MEDIC.WEIGHT
+end
+
+local function drawDoseRow(cx, cy)
+    local drug = MEDIC_DRUGS[panel.drugPick]
+    local buttons = getDoseButtons()
+    if #buttons == 0 then return end
+    local x, y = X + PAD, buttons[1].y
+    dxDrawRectangle(x, y, DOSE_LABEL_W - DRUG_GAP, DOSE_H, C.tile)
+    dxDrawRectangle(x, y, s(4), DOSE_H, C.accent)
+    dxDrawText(L("medsys.panel.dose"), x + s(12), y + s(3), x + DOSE_LABEL_W, y + s(21), C.text, 1, fonts.bold, "left", "top")
+    dxDrawText(L("medsys.panel.patient_weight", { weight = patientWeight() }), x + s(12), y + s(21),
+        x + DOSE_LABEL_W - DRUG_GAP, y + DOSE_H, C.muted, 1, fonts.small, "left", "top", true)
+    for _, b in ipairs(buttons) do
+        local hovered = not panel.pending and isInside(b.x, b.y, b.w, b.h, cx, cy)
+        dxDrawRectangle(b.x, b.y, b.w, b.h, hovered and C.buttonHover or C.button)
+        dxDrawRectangle(b.x, b.y + b.h - s(3), b.w, s(3), b.option.high and C.orange or C.line)
+        local label, total = medicFormatDose(drug, b.option, patientWeight())
+        local sub = total and ("= " .. total) or nil
+        if b.option.note then sub = sub and (sub .. "  ·  " .. b.option.note) or b.option.note end
+        dxDrawText(label, b.x, b.y + s(3), b.x + b.w, b.y + s(22), b.option.high and C.orange or C.text, 1,
+            fonts.bold, "center", "top", true)
+        if sub then
+            dxDrawText(sub, b.x + s(4), b.y + s(21), b.x + b.w - s(4), b.y + b.h - s(3), hovered and C.text or C.spo2, 1,
+                fonts.small, "center", "top", true)
+        end
+    end
+end
+
 -- Draws the grid and, under it (over the message line), the description of the hovered medicine
--- Doses left in the reachable bags (med_bag), nil = not counted / no equipment check
+-- (or the dose row of the picked one)
+-- Doses left in the reachable bags (med_equipments), nil = not counted / no equipment check
 local function drugStock(id)
     local equipment = panel and panel.data and panel.data.equipment
     return equipment and equipment.stock and equipment.stock.drugs[id]
@@ -307,6 +359,8 @@ local function drawDrugMenu(cx, cy, hoverReason)
     dxDrawRectangle(X, y - s(6), W, bottom - y + s(6), C.bg)
     dxDrawText(L("medsys.panel.medication_through_iv_line_unless_marked"), x, y, X + W - PAD, y + s(20), C.muted, 1,
         fonts.small, "left", "top")
+    dxDrawText(L("medsys.panel.patient_weight", { weight = patientWeight() }), x, y, X + W - PAD, y + s(20), C.muted, 1,
+        fonts.small, "right", "top")
     local hoveredDrug, hoveredOff, cardsBottom = nil, false, y
     for _, card in ipairs(getDrugCards()) do
         local drug = MEDIC_DRUGS[card.id]
@@ -314,8 +368,9 @@ local function drawDrugMenu(cx, cy, hoverReason)
         local left = drugStock(card.id)
         local hovered = not panel.pending and isInside(card.x, card.y, card.w, card.h, cx, cy)
         if hovered then hoveredDrug, hoveredOff = drug, not usable and (left ~= nil and left <= 0 and "stock" or "iv") end
-        dxDrawRectangle(card.x, card.y, card.w, card.h, not usable and C.buttonOff or hovered and C.button or C.tile)
-        dxDrawRectangle(card.x, card.y, s(4), card.h, usable and C.accent or C.line)
+        local picked = panel.drugPick == card.id
+        dxDrawRectangle(card.x, card.y, card.w, card.h, not usable and C.buttonOff or (hovered or picked) and C.button or C.tile)
+        dxDrawRectangle(card.x, card.y, picked and s(8) or s(4), card.h, usable and C.accent or C.line)
         local tx = card.x + s(12)
         local stockW = left ~= nil and s(26) or 0
         if left ~= nil then
@@ -330,6 +385,14 @@ local function drawDrugMenu(cx, cy, hoverReason)
         dxDrawText(class, tx, card.y + s(23), card.x + card.w - s(6), card.y + card.h, usable and C.spo2 or C.muted,
             1, fonts.small, "left", "top", true)
         cardsBottom = card.y + card.h
+    end
+    if panel.drugPick then
+        if not isDrugUsable(MEDIC_DRUGS[panel.drugPick], panel.drugPick) then
+            panel.drugPick = nil -- the IV line / the stock went in the meantime
+        else
+            drawDoseRow(cx, cy)
+            return
+        end
     end
     if not hoveredDrug and hoverReason then return end
     local text = hoveredDrug and hoveredDrug.desc or L("medsys.panel.point_at_medicine_to_see_what")
@@ -467,7 +530,7 @@ local function render()
     local bx, by, bs = getCloseButton()
     local equipmentRect
     if data.equipment then
-        -- what is within reach of the patient (med_bag)
+        -- what is within reach of the patient (med_equipments)
         local ex = bx - s(12)
         local stock = data.equipment.stock
         local oxygen = stock and stock.oxygen
@@ -557,7 +620,8 @@ local function render()
             local dx, dy = x + col * colW, y + row * rowH
             dxDrawText(formatTime(math.max(0, dose.timeLeft - elapsed)), dx, dy, dx + colW - s(12), dy + rowH,
                 C.muted, 1, fonts.body, "right", "center")
-            dxDrawText(dose.name, dx, dy, dx + colW - s(62), dy + rowH, C.spo2, 1, fonts.body, "left", "center", true)
+            local name = dose.dose and (dose.name .. "  " .. dose.dose) or dose.name
+            dxDrawText(name, dx, dy, dx + colW - s(62), dy + rowH, C.spo2, 1, fonts.body, "left", "center", true)
         end
         y = y + math.ceil(#data.drugs / 2) * rowH + s(10)
     end
@@ -581,6 +645,7 @@ local function render()
         else
             drawDrugMenu(cx, cy, hoverReason)
             layout.drugCards = getDrugCards()
+            layout.doseButtons = panel.drugPick and getDoseButtons() or nil
         end
     end
     local _, buttonsTop = getButtonRows()
@@ -635,11 +700,28 @@ local function onClick(button, state)
         return
     end
     if panel.drugMenu then
+        if panel.drugPick then
+            for _, b in ipairs(getDoseButtons()) do
+                if isInside(b.x, b.y, b.w, b.h, cx, cy) then
+                    local drugId = panel.drugPick
+                    panel.pending = true
+                    panel.drugMenu, panel.drugPick = false, nil
+                    triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "medication", drugId, b.index)
+                    return
+                end
+            end
+        end
         for _, card in ipairs(getDrugCards()) do
             if isInside(card.x, card.y, card.w, card.h, cx, cy) then
-                if not isDrugUsable(MEDIC_DRUGS[card.id], card.id) then return end
+                local drug = MEDIC_DRUGS[card.id]
+                if not isDrugUsable(drug, card.id) then return end
+                if drug.dosing then
+                    -- the dose row opens (a second click closes it)
+                    panel.drugPick = panel.drugPick ~= card.id and card.id or nil
+                    return
+                end
                 panel.pending = true
-                panel.drugMenu = false
+                panel.drugMenu, panel.drugPick = false, nil
                 triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "medication", card.id)
                 return
             end
@@ -650,6 +732,7 @@ local function onClick(button, state)
             and panel.data.actions[btn.action] == true then
             if btn.action == "medication" then
                 panel.drugMenu = not panel.drugMenu
+                panel.drugPick = nil
             elseif btn.action == "glucometer" then
                 panel.glucometer = not panel.glucometer
                 resetGlucometer(panel.target)
@@ -670,7 +753,9 @@ local function onKey(key, press)
     if not panel or not press then return end
     if key == "backspace" then
         cancelEvent()
-        if panel.drugMenu then
+        if panel.drugPick then
+            panel.drugPick = nil -- back to the medicine grid first
+        elseif panel.drugMenu then
             panel.drugMenu = false -- back to the injury list first
         else
             closePanel(true)
@@ -700,8 +785,9 @@ function isExaminationOpen()
 end
 
 -- Screen rectangles { x, y, w, h } of the open panel: panel, consciousness, vitals, status,
--- equipment (the BAG / MONITOR / O2 chips, while med_bag checks the equipment),
--- drugCards = { { id, x, y, w, h } } (while the medication grid is open),
+-- equipment (the BAG / MONITOR / O2 chips, while med_equipments checks the equipment),
+-- drugCards = { { id, x, y, w, h } } (while the medication grid is open), doseButtons =
+-- { { index, option, x, y, w, h } } (while a medicine's dose row is open),
 -- injuries, neuro (after the neuro exam), glucometer (while held out), buttons, monitorButton
 -- (until the monitor is attached), lifepak / lifepakScreen /
 -- lifepakKeypad (the monitor window and its parts, while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.

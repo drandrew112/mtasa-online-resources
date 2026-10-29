@@ -84,8 +84,7 @@
     </group>
     <group name="DebugHook">
         <acl name="DebugHook"></acl>
-        <object name="resource.med_bag"></object>
-        <object name="resource.med_stretcher"></object>
+        <object name="resource.med_equipments"></object>
         <object name="resource.shader_markers"></object>
     </group>
     <acl name="Default">

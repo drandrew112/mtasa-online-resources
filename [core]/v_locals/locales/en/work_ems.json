@@ -98,7 +98,7 @@
   "work_ems.steps.monitor": "the monitor",
   "work_ems.steps.next": "Next",
   "work_ems.steps.not_this_time_try_again": "{label}: not this time - try again.",
-  "work_ems.steps.now_press_medication_and_choose_fentanyl": "Now press Medication and choose Fentanyl (a strong painkiller).\n\nThe number on each medicine card is the doses left in the bag (x3 = three). A medicine at 0 cannot be given until you restock.",
+  "work_ems.steps.now_press_medication_and_choose_fentanyl": "Now press Medication, choose Fentanyl (a strong painkiller), then a dose: 1 mcg/kg is the usual one, the panel counts the total from the patient weight.\n\nThe number on each medicine card is the doses left in the bag (x3 = three). A medicine at 0 cannot be given until you restock.",
   "work_ems.steps.now_take_equipment_in_same_menu": "Now take the equipment: in the same menu choose Take both. The medical bag goes into your left hand, the monitor / defibrillator into your right.",
   "work_ems.steps.off_to_hospital": "Off to the hospital",
   "work_ems.steps.on_ground": "on the ground",

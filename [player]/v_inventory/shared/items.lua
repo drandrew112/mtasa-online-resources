@@ -31,7 +31,7 @@ ITEM_CATEGORIES = {
 }
 
 ITEMS = {
-    -- ----------------------------------------------------------------------- medical (med_bag)
+    -- ----------------------------------------------------------------------- medical (med_equipments)
     medical_bag = {
         category = "container", weight = 2.0, holdable = true, hand = "left", storable = false,
         container = { capacity = 10, accepts = { drug = true, iv = true, o2 = true, tool = true } },

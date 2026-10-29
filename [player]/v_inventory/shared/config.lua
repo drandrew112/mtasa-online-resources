@@ -46,7 +46,7 @@ INV_DATA = {
     OPEN = "inventoryOpen",        -- local on the player while the window is open (other UIs check it)
 }
 
--- UI colours (the med_bag / ui_interactobject palette)
+-- UI colours (the med_equipments / ui_interactobject palette)
 INV_COLORS = {
     bg = { 16, 18, 24, 232 },
     head = { 22, 26, 34, 255 },

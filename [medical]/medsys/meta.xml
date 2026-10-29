@@ -1,5 +1,5 @@
 <meta>
-    <info author="DrAndrew112" name="medical_system" version="1.0" type="script" description="Medical state simulation and patient examination for players and peds, driven through exports" />
+    <info author="DrAndrew112" name="medical_system" version="1.0" type="script" description="Medical state simulation and patient examination for players and peds, driven through exports; modules: effects (what a player feels, forced patient animations), events (in-game events that injure)" />
     <min_mta_version server="1.5.8" client="1.5.8" />
 
     <!-- treatment minigames -->
@@ -20,7 +20,7 @@
     <script src="server/simulation.lua" type="server" />
     <script src="server/treatment.lua" type="server" />
     <script src="server/transport.lua" type="server" />
-    <script src="server/equipment.lua" type="server" /> <!-- med_bag: bag / monitor near the patient -->
+    <script src="server/equipment.lua" type="server" /> <!-- med_equipments: bag / monitor near the patient -->
     <script src="server/exports.lua" type="server" />
     <script src="server/interaction.lua" type="server" />
     <script src="server/test.lua" type="server" /> <!-- only runs when MEDIC_TEST.ENABLED -->
@@ -33,6 +33,23 @@
     <script src="client/progress.lua" type="client" />
     <script src="client/role.lua" type="client" />
     <script src="client/test.lua" type="client" /> <!-- only runs when MEDIC_TEST.ENABLED -->
+
+    <!-- module: effects (screen, controls, walking, forced patient animations) -->
+    <script src="effects/shared/config.lua" type="shared" />
+    <script src="effects/server/state.lua" type="server" />
+    <script src="effects/server/exports.lua" type="server" />
+    <script src="effects/server/test.lua" type="server" /> <!-- only runs when MEDFX_TEST.ENABLED -->
+    <script src="effects/client/anim.lua" type="client" />
+    <script src="effects/client/effects.lua" type="client" />
+    <script src="effects/client/test.lua" type="client" /> <!-- only runs when MEDFX_TEST.ENABLED -->
+
+    <!-- module: events (falls, gunshots, melee, crashes, fire, drowning ... -> injuries) -->
+    <script src="events/shared/config.lua" type="shared" />
+    <script src="events/server/medsys.lua" type="server" />
+    <script src="events/server/rules.lua" type="server" />
+    <script src="events/server/damage.lua" type="server" />
+    <script src="events/server/vehicle.lua" type="server" />
+    <script src="events/client/detect.lua" type="client" />
 
     <file src="assets/fonts/Roboto.ttf" type="client" />
     <file src="assets/fonts/RobotoB.ttf" type="client" />
@@ -50,7 +67,7 @@
     <export function="setPatientPersistent" type="server" />
     <export function="isPatientPersistent" type="server" />
 
-    <!-- medic role (work_ems gives / takes it; med_stretcher and med_erm check it) -->
+    <!-- medic role (work_ems gives / takes it; med_equipments and med_erm check it) -->
     <export function="setPlayerMedic" type="server" />
     <export function="isPlayerMedic" type="server" />
     <export function="hasMedicAccess" type="server" />
@@ -70,8 +87,16 @@
     <export function="setTutorialPatient" type="server" />
     <export function="isTutorialPatient" type="server" />
 
-    <!-- equipment (med_bag) -->
+    <!-- equipment (med_equipments) -->
     <export function="removePatientEquipment" type="server" />
     <export function="restorePatientEquipment" type="server" />
     <export function="getDrugNames" type="server" />
+
+    <!-- effects module: forced animations, another script can take a patient over (carry, seat ...) -->
+    <export function="setAnimationBlocked" type="server" />
+    <export function="isAnimationBlocked" type="server" />
+    <export function="getForcedAnimation" type="server" />
+
+    <!-- events module: body part / cause of the injuries it made (the core does not store them) -->
+    <export function="getInjuryDetails" type="server" />
 </meta>

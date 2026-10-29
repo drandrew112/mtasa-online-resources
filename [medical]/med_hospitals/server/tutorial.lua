@@ -84,7 +84,7 @@ function createTutorialHandover(player, hospitalId, dimension, vehicle)
 end
 
 -- The tutorial bay the vehicle stands in -> hospitalId, bayIndex | false (getVehicleHospitalBay, so
--- med_bag's "Restock bag" works in the tutorial too)
+-- med_equipments's "Restock bag" works in the tutorial too)
 function getTutorialVehicleBay(vehicle)
     for _, t in pairs(sessions) do
         if t.vehicle == vehicle then
@@ -100,10 +100,10 @@ end
 local function checkTutorialHandover(t)
     local player = t.player
     local obj = getElementData(player, "stretcher.pushing")
-    if not isElement(obj) or not isResourceRunning("med_stretcher") then
+    if not isElement(obj) or not isResourceRunning("med_equipments") then
         return false, L.msg("med_hospitals.tutorial.bring_patient_here_on_stretcher")
     end
-    local ms = exports.med_stretcher
+    local ms = exports.med_equipments
     if ms:getStretcherState(obj) ~= "pushing" then return false, L.msg("med_hospitals.tutorial.bring_patient_here_on_stretcher") end
     local patient = ms:getStretcherPatient(obj)
     if not isElement(patient) or ms:getPatientStretcher(patient) ~= obj then
@@ -120,7 +120,7 @@ local function complete(t)
     t.proc = nil
     stopProgress(t.player)
     triggerEvent("onHospitalTutorialHandover", t.player, t.id, p.patient, t.hospital.id)
-    if isElement(p.obj) then exports.med_stretcher:takePatientOff(p.obj) end
+    if isElement(p.obj) then exports.med_equipments:takePatientOff(p.obj) end
     if isElement(p.patient) and getElementType(p.patient) == "ped" then destroyElement(p.patient) end
 end
 

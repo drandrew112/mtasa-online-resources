@@ -11,7 +11,7 @@ Admin = {
     },
     detail  = nil,     -- { kind = "shift"|"task", id, data, loading }
     history = {},      -- previous details for "Back"
-    auto    = nil,     -- { available, enabled } of med_erm_auto, nil = not received yet
+    auto    = nil,     -- { available, enabled } of med_erm's auto dispatch, nil = not received yet
 }
 
 local s = Gfx.s
@@ -325,7 +325,7 @@ local function render()
         end)
     end
 
-    -- auto dispatch switch (med_erm_auto)
+    -- auto dispatch switch (med_erm's auto dispatch)
     local a = Admin.auto
     local aw = s(210)
     local ax = x + w - s(52) - s(10) - aw

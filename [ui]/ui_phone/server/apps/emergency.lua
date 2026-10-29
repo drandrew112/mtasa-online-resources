@@ -4,7 +4,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
     "Emergency Services" contact. Only EMS works for now: the caller types a
     title and a description (ui_core text input, see "contacts:prompt" in
     client/apps/contacts.lua) and a med_erm task is created with the caller's
-    name and position. med_erm_auto (if running) prioritizes and dispatches it
+    name and position. med_erm's auto dispatch (if running) prioritizes and dispatches it
     as soon as a unit is free.
 
     Refused when:

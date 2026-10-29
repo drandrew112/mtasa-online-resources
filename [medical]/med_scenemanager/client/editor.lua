@@ -75,7 +75,7 @@ local function sceneMenu(scene)
           desc = "Title / description per language. English is required, missing languages fall back to it." },
         item("Caller: " .. short(erm.caller, 24), "caller", nil, erm.caller),
         { label = "Priority: P" .. erm.priority, title = "Priority", items = priorities,
-          desc = "Sent as meta.priority (med_erm_auto uses it)" },
+          desc = "Sent as meta.priority (med_erm's auto dispatch uses it)" },
         item("Set centre to my position", "center", nil,
             ("Current: %.1f, %.1f, %.1f"):format(scene.center[1], scene.center[2], scene.center[3])),
     }

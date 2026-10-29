@@ -5,8 +5,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 -- Steps: tablet -> equipment -> examine -> treat -> stretcher -> transfer -> handover -> restock -> done
 -- One patient goes through the whole tutorial: examined and treated at the scene, loaded with the
--- equipment riding on the stretcher, handed over at the hospital. The equipment (med_bag) steps are
--- skipped while med_bag is not running (medsys then asks for no equipment either).
+-- equipment riding on the stretcher, handed over at the hospital. The equipment (med_equipments) steps are
+-- skipped while med_equipments is not running (medsys then asks for no equipment either).
 --
 -- The tutorial is never required. It is offered the first time a player goes on duty as EMS
 -- (or every time with TUTORIAL.DEBUG), and /tutorial_ems starts it any time.
@@ -101,13 +101,13 @@ local function destroySessionElements(s)
 end
 
 local function stretcherOf(s)
-    if not isElement(s.vehicle) or not isRunning("med_stretcher") then return false end
-    return exports.med_stretcher:getVehicleStretcher(s.vehicle)
+    if not isElement(s.vehicle) or not isRunning("med_equipments") then return false end
+    return exports.med_equipments:getVehicleStretcher(s.vehicle)
 end
 
--- The equipment is taught while med_bag runs (medsys checks it only then)
+-- The equipment is taught while med_equipments runs (medsys checks it only then)
 local function equipmentOn()
-    return isRunning("med_bag")
+    return isRunning("med_equipments")
 end
 
 ---------------------------------------------------------------- steps
@@ -124,7 +124,7 @@ end
 local function nextStep(s)
     for i, step in ipairs(STEPS) do
         if step == s.step then
-            -- without med_bag the equipment steps are left out
+            -- without med_equipments the equipment steps are left out
             local n = i + 1
             while STEPS[n] and EQUIPMENT_STEPS[STEPS[n]] and not equipmentOn() do n = n + 1 end
             if STEPS[n] then setStep(s, STEPS[n]) end
@@ -135,13 +135,13 @@ end
 
 -- World progress, polled from the equipment step on:
 --   stretcher = { state = stowed | moving | ground | pushing | none, patient, loaded }
---   items     = { bag = { state, mine }, monitor = ... }  (med_bag item states; nil without med_bag)
+--   items     = { bag = { state, mine }, monitor = ... }  (med_equipments item states; nil without it)
 --   restocked = the bag is full again (after something was used)
 local function worldInfo(s)
     local info = { stretcher = { state = "none" } }
     local obj = stretcherOf(s)
     if obj then
-        local ms = exports.med_stretcher
+        local ms = exports.med_equipments
         local patient = s.patient
         info.stretcher = {
             state = ms:getStretcherState(obj) or "none",
@@ -150,7 +150,7 @@ local function worldInfo(s)
         }
     end
     if equipmentOn() and isElement(s.vehicle) then
-        local mb = exports.med_bag
+        local mb = exports.med_equipments
         local kit = mb:getVehicleKit(s.vehicle)
         if kit then
             info.items = {}
@@ -216,7 +216,7 @@ local function spawnPatient(s)
     for _, injury in ipairs(TUTORIAL.SCENE.injuries) do
         exports.medsys:applyInjury(ped, injury[1], injury[2])
     end
-    -- no transport for it; the equipment rules apply when med_bag runs
+    -- no transport for it; the equipment rules apply when med_equipments runs
     exports.medsys:setTutorialPatient(ped, true, true)
     return ped
 end
@@ -282,7 +282,7 @@ function Tutorial.start(player)
     if sessions[player] then return false, L.msg("work_ems.session.tutorial_is_already_running") end
     if isPedDead(player) then return false, L.msg("work_ems.session.you_cannot_start_tutorial_now") end
     if getElementData(player, "isLogged") ~= true then return false, L.msg("work_ems.session.log_in_first") end
-    if not isRunning("medsys") or not isRunning("med_stretcher") then
+    if not isRunning("medsys") or not isRunning("med_equipments") then
         return false, L.msg("work_ems.session.medical_system_is_not_running")
     end
 
@@ -549,8 +549,8 @@ addEventHandler("onPedWasted", root, function()
                 if isRunning("medsys") then exports.medsys:closeExamination(player) end
                 if isElement(ped) then
                     local obj = stretcherOf(s)
-                    if obj and exports.med_stretcher:getPatientStretcher(ped) == obj then
-                        exports.med_stretcher:takePatientOff(obj)
+                    if obj and exports.med_equipments:getPatientStretcher(ped) == obj then
+                        exports.med_equipments:takePatientOff(obj)
                     end
                     destroyElement(ped)
                 end

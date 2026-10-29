@@ -35,6 +35,6 @@
     <include resource="ui_core" />
     <!-- tutorial: tablet demo mode, stretcher, hospital handover copy -->
     <include resource="med_erm" />
-    <include resource="med_stretcher" />
+    <include resource="med_equipments" />
     <include resource="med_hospitals" />
 </meta>

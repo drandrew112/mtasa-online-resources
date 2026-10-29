@@ -21,7 +21,16 @@ client/ecg.lua         ECG / pleth signal of the monitor (ring buffers) + the be
 client/lifepak.lua     "Lifepak 15" monitor / defibrillator window left of the panel
 client/interaction.lua turns the world menus off during procedures / while the player is down
 client/progress.lua    progress bar of a timed procedure (medication)
+
+effects/               module: what a player feels (screen, controls, walking) + forced patient
+                       animations (was the medsys_effects resource until 2026-10-29), effects/README.md
+events/                module: in-game events (falls, gunshots, melee, crashes ...) -> injuries
+                       (was the medsys_events resource until 2026-10-29), events/README.md
 ```
+
+The modules call the core directly (same resource, no exports). Their exports
+(`setAnimationBlocked`, `isAnimationBlocked`, `getForcedAnimation`, `getInjuryDetails`) are now
+`exports.medsys:...`.
 
 **Where the data lives**
 
@@ -35,12 +44,12 @@ client/progress.lua    progress bar of a timed procedure (medication)
 Only elements that are not perfectly healthy are in the registry. The simulation timer runs only
 while there is at least one patient. A patient with nothing left to simulate (no injuries, full
 vitals, nobody examining it) is dropped automatically. Persistent elements
-(`setPatientPersistent`, medsys_events makes every player persistent) are never dropped: they
+(`setPatientPersistent`, the events module makes every player persistent) are never dropped: they
 always carry the status data (so they can always be examined) and get a fresh state after a reset
 or a respawn. `isPatient` in the snapshot is false for a healthy persistent element (= needs care).
 
 The down / get-up animations of the patients and everything a player patient experiences
-(blackout, control lock, pain / bleeding screen effects) are in **medsys_effects**, which follows
+(blackout, control lock, pain / bleeding screen effects) are in the **effects module**, which follows
 the `medic.status` element data and the medsys events.
 
 ## Data structure (server)
@@ -59,7 +68,8 @@ Patients[element] = {
     intubated     = false,
     oxygenMask    = false,
     hypertension  = 0,                    -- mmHg on the target systolic pressure
-    drugs         = { { id, tick, untilTick }, ... }, -- active medicine doses
+    drugs         = { { id, tick, untilTick, scale, dose }, ... }, -- active medicine doses (scale = dose effect multiplier)
+    weight        = 75,                   -- kg (random MEDIC.WEIGHT_MIN-MAX), the mg/kg doses use it
     aware, panic  = true, false,          -- awake apart from the medicines / awake under the muscle relaxant
     consciousness = "stable",             -- stable | dazed | unconscious | clinical_death | dead
     rhythm        = "SINUS",              -- MEDIC_RHYTHMS key, rhythmTick = since when
@@ -192,7 +202,7 @@ are listed one per line (two columns) with their remaining time.
 | IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
 | Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
 | O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
-| Medication | – (3 s, `DRUG_TIME`) | always opens; IV medicines need IV access, oral ones (`route = "oral"`, e.g. Captopril) do not | opens the medicine grid (name, group, "oral" mark; IV ones are greyed out without IV access, the hovered one is described under it); the picked one is given after 3 s |
+| Medication | – (3 s, `DRUG_TIME`) | always opens; IV medicines need IV access, oral ones (`route = "oral"`, e.g. Captopril) do not | opens the medicine grid (name, group, "oral" mark; IV ones are greyed out without IV access, the hovered one is described under it); a card opens its **dose row** (see Dosing below), the picked dose is given after 3 s |
 | Neuro exam | – (4 s, `NEURO_TIME`) | once per patient | its findings stay under the injuries (updated live): responsiveness (AVPU), pupils, FAST (face, arm, speech) and the clues of the hidden conditions (needle marks, alcohol smell, bitten tongue, acetone breath...) |
 | Glucometer | – (client device) | living patient | holds out the meter right of the panel. MEASURE pricks the finger: the reading comes after `GLUCOMETER_TIME` (5 s), in mg/dL and mmol/L (`LO` < 20, `HI` > 600). Not continuous: measure again to see a change. The meter remembers the last reading of every patient (MEM) |
 | Attach monitor / defibrillator (heart rate tile) | – (4 s, `MONITOR_TIME`) | once per patient | ECG electrodes + pads: BP / SpO2 / ECG visible, Lifepak window, defibrillation |
@@ -252,6 +262,34 @@ the patient is simply taken away when the time is up. Players cannot be transpor
 The server checks every request (distance, role, patient state, one medic per procedure per
 patient). When the minigame ends, the panel reopens with the result.
 
+### Dosing
+
+Every medicine in `MEDIC_DRUGS` has a `dosing` table: the usual adult prehospital doses, fixed (mg,
+ml, g ...) or per kg of body weight (`perKg`, e.g. ketamine mg/kg, fentanyl mcg/kg, insulin IU/kg).
+The effects written on the medicine are for its `standard` dose; the chosen dose scales them
+(`scale = dose / standard`, or the option's own `scale`), and the duration / the muscle relaxant's
+onset follow it (`MEDIC.DOSE_DURATION_MIN-MAX`). On the panel a medicine card opens the dose row:
+`1.5 mg/kg  = 117 mg  ·  RSI`, orange = above the usual dose. The panel shows the patient weight.
+
+| medicine | doses | notes |
+|---|---|---|
+| Ketamine | 0.3 / 1 / 1.5 / 2 mg/kg IV | 0.3 = analgesia only (no sedation, `minScale`), 1 = shock, 1.5 = RSI |
+| Rocuronium | 0.6 / 1 / 1.2 mg/kg IV | 0.6 = slower onset, shorter; 1.2 = RSI (fast onset) |
+| Fentanyl | 0.5 / 1 / 1.5 / 3 mcg/kg IV | doses in the body adding up to 3.5 mcg/kg -> opioid overdose condition |
+| Adrenaline | 0.02 (push-dose) / 0.1 (peri-arrest) / 1 mg (cardiac arrest) IV | the ROSC bonus scales too |
+| Captopril | 12.5 / 25 mg oral | |
+| Nitroglycerin | 0.4 mg (1 puff) / 0.8 mg (2 puffs) | |
+| Glucose 40% | 20 / 40 / 60 ml (8 / 16 / 24 g) IV | the glucose jump scales |
+| Glucose gel | 15 / 30 g | |
+| Insulin | 0.05 / 0.1 / 0.15 IU/kg IV | |
+| Naloxone | 2 / 4 mg nasal | |
+| Salbutamol | 2.5 / 5 mg nebulised | |
+| Midazolam | 0.03 / 0.05 / 0.1 mg/kg IV | doses adding up to 0.2 mg/kg -> sedative overdose condition |
+
+`treats` works from scale 0.5 (`dosing.treatMin`). One administration uses one dose from the bag
+whatever the amount. Scripts: `medic:requestTreatment (target, "medication", drugId, doseIndex)`,
+`startTreatment(medic, target, "medication", drugId, doseIndex)`; no index = `dosing.default`.
+
 ## Server exports
 
 ```lua
@@ -259,7 +297,7 @@ local data = exports.medical_system:getMedicalState(element)
 -- { consciousness, consciousnessLabel, heartRate, systolic, diastolic, bloodPressure = "120/80",
 --   spo2, bleeding (0-3), bleedingLabel, bloodVolume, bloodPercent, pain,
 --   injuries = { { id, type, label, severity, severityLabel, bleeding, treated, treatedLabel } },
---   ivAccess, intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, timeLeft } }, clinicalDeath, deathTimeLeft, dead, isPatient,
+--   ivAccess, intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, dose, timeLeft } }, weight, clinicalDeath, deathTimeLeft, dead, isPatient,
 --   rhythm, rhythmLabel, ecgRate (ECG complexes / min), monitor = nil | { energy, sync, shocks, chargeLeft, charged,
 --   analyzeLeft, advice, adviceAge, message, messageAge } }
 
@@ -267,6 +305,7 @@ exports.medical_system:setMedicalState(element, key, value) -- true / false
 --   heartRate     0 = cardiac arrest, > 0 during clinical death = return of circulation
 --   systolic, diastolic, spo2, bloodVolume, pain (0-100, fades)
 --   hypertension  mmHg added to the target systolic pressure until set back to 0 (lasting high BP)
+--   weight        body weight in kg (3-250), the mg/kg doses are counted with it
 --   restingSystolic, restingDiastolic, restingHeartRate
 --                 lasting values: the target is shifted so the patient settles at (and holds) this
 --                 value with its current injuries / pain / medicines; set systolic first
@@ -327,7 +366,7 @@ addEventHandler("onMedicalStateChange", root, function(newState, oldState) end) 
 addEventHandler("onMedicalCardiacArrest", root, function() end)                            -- clinical death started
 addEventHandler("onMedicalRevived", root, function() end)                                  -- ROSC
 addEventHandler("onMedicalDeath", root, function() end)                                    -- biological death
-addEventHandler("onMedicalTreatment", root, function(medic, action, success, option) end)  -- source = patient, option = medicine id
+addEventHandler("onMedicalTreatment", root, function(medic, action, success, option, dose) end)  -- source = patient, option = medicine id, dose = dose option index (nil = default)
 addEventHandler("onMedicalDefibrillation", root, function(medic, joules, rhythmBefore, rhythmAfter) end) -- source = patient
 addEventHandler("onMedicalTransportRequested", root, function(medic, kind) end)            -- source = ped, kind = "alive" | "dead"
 addEventHandler("onMedicalPatientTransported", root, function(medic, kind) end)            -- source = ped, right before it is destroyed

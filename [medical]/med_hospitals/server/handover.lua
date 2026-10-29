@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Hospital handover together with med_erm and med_stretcher.
+-- Hospital handover together with med_erm and med_equipments (stretcher).
 --
 -- 1. An ERM unit with an active case parks its vehicle in an ambulance bay with a patient aboard
 --    (on its stretcher) -> the unit's status becomes Handover (no ERM timer: the hospital ends it).
@@ -44,9 +44,9 @@ end
 
 -- Is there a patient on the ambulance's stretcher (seated in the back, or still lying on it)?
 local function hasPatientAboard(vehicle)
-    if not isResourceRunning("med_stretcher") then return false end
-    local obj = exports.med_stretcher:getVehicleStretcher(vehicle)
-    return obj and isElement(exports.med_stretcher:getStretcherPatient(obj)) or false
+    if not isResourceRunning("med_equipments") then return false end
+    local obj = exports.med_equipments:getVehicleStretcher(vehicle)
+    return obj and isElement(exports.med_equipments:getStretcherPatient(obj)) or false
 end
 
 local function onVehicleParked(bay, vehicle)
@@ -138,10 +138,10 @@ end)
 -- -> true, { obj, patient, unitId }  |  false, reason
 local function checkHandover(player, point)
     local obj = getElementData(player, "stretcher.pushing")
-    if not isElement(obj) or not isResourceRunning("med_stretcher") then
+    if not isElement(obj) or not isResourceRunning("med_equipments") then
         return false, L.msg("med_hospitals.handover.bring_patient_here_on_stretcher")
     end
-    local ms = exports.med_stretcher
+    local ms = exports.med_equipments
     if ms:getStretcherState(obj) ~= "pushing" then return false, L.msg("med_hospitals.handover.bring_patient_here_on_stretcher") end
 
     local patient = ms:getStretcherPatient(obj)
@@ -205,7 +205,7 @@ local function completeProc(player)
 
     if isElement(patient) then
         if getElementType(patient) == "player" then
-            exports.med_stretcher:takePatientOff(p.obj)
+            exports.med_equipments:takePatientOff(p.obj)
             if isResourceRunning("medsys") then exports.medsys:healCompletely(patient) end
             if not isPedDead(patient) then setElementHealth(patient, 100) end
             local x, y, z, rot = releasePosition(h)
@@ -216,7 +216,7 @@ local function completeProc(player)
             setPedAnimation(patient)
             notify(patient, L.msg("med_hospitals.handover.you_were_handed_over_to_and", { name = h.name }))
         else
-            destroyElement(patient) -- med_stretcher clears the stretcher on destroy
+            destroyElement(patient) -- med_equipments clears the stretcher on destroy
         end
     end
 

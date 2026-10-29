@@ -40,7 +40,7 @@
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="med_erm" />
-    <include resource="med_stretcher" />
+    <include resource="med_equipments" />
     <include resource="medsys" />
     <include resource="v_radar" />
 </meta>

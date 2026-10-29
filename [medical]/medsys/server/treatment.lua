@@ -3,7 +3,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 -- Examining[medic] = target                      -- open examination panels
 -- Watchers[target] = { [medic] = true }          -- reverse index for the per-tick panel updates
--- Treatments[medic] = { target, action, option, sessionId, timer, aborted }
+-- Treatments[medic] = { target, action, option, dose, sessionId, timer, aborted }
 -- Locks[target] = { [key] = medic }              -- one medic per procedure per patient; the key is
 --                                                   the action, or "action:injuryId" / "action:base"
 --                                                   for a procedure on one wound (procedure.pick)
@@ -230,10 +230,11 @@ end
 -- can(state, claims) -> true | false, reason (claims: getClaims of the patient)
 -- pick(state, claims) optional: the wound it goes on (injury | "base"), locked per wound, so
 --              other medics can work on the other wounds at the same time; nil = none free
--- validate(state, option) optional, checks the option sent by the panel (e.g. the medicine)
+-- validate(state, option, dose) optional, checks the option sent by the panel (e.g. the medicine,
+--   dose = index of its dose option)
 -- start(medic, target, state, picked) -> session id or false
 -- duration     timed procedure without a minigame: it succeeds after this many seconds
--- progress(option, state) text of the progress bar of a timed procedure
+-- progress(option, state, dose) text of the progress bar of a timed procedure
 -- stop(medic)  aborts the minigame (it fires its finish event)
 -- cleanup(state) optional, runs when the procedure ends in any way
 -- finishEvent  the minigame's result event, sessionArg = position of the session id in it
@@ -448,33 +449,55 @@ PROCEDURES.medication = {
     animated = true,
     -- the menu always opens (oral medicines), IV medicines are checked one by one
     can = function() return true end,
-    validate = function(state, drugId)
+    validate = function(state, drugId, dose)
         local drug = MEDIC_DRUGS[drugId]
         if not drug then return false, L.msg("medsys.treatment.unknown_medicine") end
+        if dose ~= nil and drug.dosing and not drug.dosing.options[tonumber(dose) or 0] then
+            return false, L.msg("medsys.treatment.unknown_dose")
+        end
         if medicDrugNeedsIV(drug) and not state.ivAccess then return false, L.msg("medsys.treatment.needs_iv_access") end
         if drug.awake and state.consciousness ~= "stable" and state.consciousness ~= "confused" then
             return false, L.msg("medsys.treatment.patient_cannot_swallow")
         end
         return true
     end,
-    progress = function(drugId)
-        return L.msg("medsys.treatment.giving", { name = MEDIC_DRUGS[drugId].name })
+    progress = function(drugId, state, dose)
+        local drug = MEDIC_DRUGS[drugId]
+        local option = medicDrugDose(drug, dose)
+        local name = option and (drug.name .. " " .. medicDoseText(drug, option, state.weight)) or drug.name
+        return L.msg("medsys.treatment.giving", { name = name })
     end,
     stop = function() end, -- releaseTreatment kills the timer
-    apply = function(state, success, drugId)
+    apply = function(state, success, drugId, dose)
         local drug = MEDIC_DRUGS[drugId]
         if not success or not drug then return L.msg("medsys.treatment.medicine_was_not_given") end
         local now = getTickCount()
-        state.drugs[#state.drugs + 1] = { id = drugId, tick = now, untilTick = now + drug.duration * 1000 }
+        -- the effects in MEDIC_DRUGS are for the standard dose: the chosen dose scales them
+        local option = medicDrugDose(drug, dose)
+        local scale = medicDoseScale(drug, option)
+        local amount = option and medicDoseText(drug, option, state.weight) or nil
+        state.drugs[#state.drugs + 1] = { id = drugId, tick = now, scale = scale, dose = amount,
+            untilTick = now + drug.duration * 1000 * getDoseTimeFactor(scale) }
         if drug.glucose then
-            state.glucose = math.min(MEDIC.GLUCOSE_MAX, state.glucose + drug.glucose)
+            state.glucose = math.min(MEDIC.GLUCOSE_MAX, state.glucose + drug.glucose * scale)
         end
-        for _, condition in ipairs(drug.treats or {}) do
-            for _, injury in ipairs(state.injuries) do
-                if injury.type == condition then injury.treated = true end
+        if scale >= (drug.dosing and drug.dosing.treatMin or 0.5) then
+            for _, condition in ipairs(drug.treats or {}) do
+                for _, injury in ipairs(state.injuries) do
+                    if injury.type == condition then injury.treated = true end
+                end
             end
         end
-        return drug.name .. " given"
+        -- too much of it in the body (e.g. fentanyl -> opioid overdose): a new hidden condition
+        local overdose = drug.dosing and drug.dosing.overdose
+        if overdose and getDrugLoad(state, drugId) >= overdose.scale then
+            local present = false
+            for _, injury in ipairs(state.injuries) do
+                if injury.type == overdose.condition and not injury.treated then present = true end
+            end
+            if not present then applyInjury(state.element, overdose.condition, overdose.severity or 2) end
+        end
+        return (amount and (drug.name .. " " .. amount) or drug.name) .. " given"
     end,
 }
 
@@ -741,7 +764,7 @@ local function finishTreatment(medic, success, ...)
         isError = not success
         if success == true then onEquipmentTreatmentDone(medic, target, treatment.action, treatment.option, state) end
     end
-    triggerEvent("onMedicalTreatment", target, medic, treatment.action, success == true, treatment.option)
+    triggerEvent("onMedicalTreatment", target, medic, treatment.action, success == true, treatment.option, treatment.dose)
     if isElement(medic) then
         openExamination(medic, target, message, isError)
     end
@@ -794,8 +817,9 @@ for action, procedure in pairs(PROCEDURES) do
     end
 end
 
--- Starts a procedure. option: e.g. the medicine id. Returns true, or false + reason.
-function startTreatment(medic, target, action, option)
+-- Starts a procedure. option: e.g. the medicine id, dose: index of its dose option (MEDIC_DRUGS
+-- dosing.options, nil = the default dose). Returns true, or false + reason.
+function startTreatment(medic, target, action, option, dose)
     local procedure = PROCEDURES[action]
     if not procedure then return false, L.msg("medsys.treatment.unknown_procedure") end
     if Treatments[medic] then return false, L.msg("medsys.treatment.you_are_busy") end
@@ -811,7 +835,7 @@ function startTreatment(medic, target, action, option)
     local ok, reason = procedure.can(state, claims)
     if not ok then return false, reason end
     if procedure.validate then
-        ok, reason = procedure.validate(state, option)
+        ok, reason = procedure.validate(state, option, dose)
         if not ok then return false, reason end
     end
     ok, reason = onEquipmentTreatmentCheck(medic, target, action, option, state)
@@ -825,7 +849,7 @@ function startTreatment(medic, target, action, option)
     closeExamination(medic)
     Locks[target] = Locks[target] or {}
     Locks[target][lockKey] = medic
-    Treatments[medic] = { target = target, action = action, option = option, picked = picked, lockKey = lockKey }
+    Treatments[medic] = { target = target, action = action, option = option, dose = dose, picked = picked, lockKey = lockKey }
     sendPanelUpdates(state) -- the others see at once who took it
     refreshSubscription(medic, target)
     triggerClientEvent(medic, "medic:busy", resourceRoot, true)
@@ -835,9 +859,9 @@ function startTreatment(medic, target, action, option)
         local treatment = Treatments[medic]
         treatment.timer = setTimer(function()
             treatment.timer = nil
-            finishTreatment(medic, true, option)
+            finishTreatment(medic, true, option, dose)
         end, procedure.duration * 1000, 1)
-        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option, state), procedure.duration * 1000)
+        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option, state, dose), procedure.duration * 1000)
         onEquipmentTreatmentStart(medic, target, action)
         return true
     end
@@ -870,10 +894,10 @@ function stopTreatmentsOn(target, reopen)
     Locks[target] = nil
 end
 
-addEventHandler("medic:requestTreatment", resourceRoot, function(target, action, option)
+addEventHandler("medic:requestTreatment", resourceRoot, function(target, action, option, dose)
     local medic = client
     if Examining[medic] ~= target then return end
-    local ok, reason = startTreatment(medic, target, action, option)
+    local ok, reason = startTreatment(medic, target, action, option, dose)
     if not ok then
         triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
     end

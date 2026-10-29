@@ -28,8 +28,8 @@
       "v_mysql/config.lua": "credentials (never scanned)",
       "medsys/client/test.lua": "test command (D14)",
       "medsys/server/test.lua": "test command (D14)",
-      "medsys_effects/client/test.lua": "test command (D14)",
-      "medsys_effects/server/test.lua": "test command (D14)"
+      "medsys/effects/client/test.lua": "test command (D14)",
+      "medsys/effects/server/test.lua": "test command (D14)"
     },
     "paths": {
       "(^|/)old/": "old code, not loaded",

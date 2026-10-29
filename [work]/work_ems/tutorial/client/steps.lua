@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Client side of the EMS tutorial: the texts of every step and the sub-steps the client drives
--- itself (tablet explanation through med_erm's tutorial mode, the equipment through med_bag's
+-- itself (tablet explanation through med_erm's tutorial mode, the equipment through med_equipments's
 -- hand data and contents window, examination panel highlights through medsys' panel layout).
 -- The server owns the session (server/session.lua).
 
@@ -9,7 +9,7 @@ local T = {
     step = nil,          -- server step
     sub = 1,             -- sub-step of the tablet / equipment / examine / treat steps
     vehicle = nil,
-    equipment = false,   -- med_bag runs: the equipment is taught and checked
+    equipment = false,   -- med_equipments runs: the equipment is taught and checked
     world = { stretcher = { state = "none" } },   -- polled by the server (worldInfo)
     done = {},           -- treatments done on the patient (server)
     games = {}, running = false, practice = false,
@@ -69,16 +69,22 @@ local function actionRect(action)
     end
 end
 
--- The medicine card while the medication grid is open, otherwise the Medication button
+-- The dose row once the medicine is picked, the medicine card while the medication grid is open,
+-- otherwise the Medication button
 local function drugRect(id)
     local layout = panelLayout()
+    local doses = layout and layout.doseButtons
+    if doses and #doses > 0 then
+        local first, last = doses[1], doses[#doses]
+        return { first.x, first.y, last.x + last.w - first.x, first.h }
+    end
     for _, card in ipairs(layout and layout.drugCards or {}) do
         if card.id == id then return { card.x, card.y, card.w, card.h } end
     end
     return actionRect("medication")
 end
 
--- med_bag: does the player hold the item (v_inventory slots: { left = { d = itemId }, ... })
+-- med_equipments: does the player hold the item (v_inventory slots: { left = { d = itemId }, ... })
 local KIT_ITEMS = { bag = "medical_bag", monitor = "lifepak15" }
 local function carrying(kind)
     local slots = getElementData(localPlayer, "inv.slots")
@@ -162,7 +168,7 @@ TABLET = {
       leave = function() serverNext() end },
 }
 
----------------------------------------------------------------- step 2: equipment (med_bag)
+---------------------------------------------------------------- step 2: equipment (med_equipments)
 
 EQUIPMENT = {
     { text = L("work_ems.steps.your_patient_is_standing_next_to"),
@@ -551,7 +557,7 @@ addEventHandler("onClientMedicPanel", localPlayer, function(open)
     if open then signal("panel:open") else refresh() end
 end)
 
--- med_bag opened its contents window (Check contents in the side-door menu)
+-- med_equipments opened its contents window (Check contents in the side-door menu)
 addEvent("bag:contents", true)
 addEventHandler("bag:contents", root, function()
     signal("bag:contents")

@@ -272,7 +272,7 @@ end
 
 addEventHandler("onResourceStart", resourceRoot, function()
     -- elements created during the start reach the clients later than handlers expect;
-    -- build once the start has finished (same as med_stretcher)
+    -- build once the start has finished (same as med_equipments)
     setTimer(function()
         local count, err = loadHospitals()
         if count then
