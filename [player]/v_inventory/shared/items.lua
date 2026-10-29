@@ -77,6 +77,39 @@ ITEMS = {
     bt_lab_sample = { category = "sample", weight = 0.05, stackable = true, glyph = "LB" },
     bt_urgent_medicine = { category = "sample", weight = 0.3, stackable = true, icon = "icons/drug.png", glyph = "MD" },
 
+    -- ----------------------------------------------------------------------- job missions (v_jobmanager mode_mission)
+    -- picked up in a mission and carried to the drop-off; meta = { mission = matchId, label }
+    mission_package = {
+        category = "cargo", weight = 3, holdable = true, hand = "right", storable = false,
+        model = 1271, scale = 0.6,                          -- gunbox scaled down (untested)
+        offsets = { right = { 0.12, 0.2, -0.12, 0, 0, 0 }, ground = { 0, 0, 0, 0, 0, 0 } },
+        glyph = "PK",
+    },
+    mission_briefcase = {
+        category = "cargo", weight = 2, holdable = true, hand = "left", storable = false,
+        model = 1210, scale = 1.0,                          -- briefcase
+        offsets = { left = { 0.02, 0.0, -0.35, 0, 0, -90 }, ground = { 0, 0, 0, 0, 0, -90 } },
+        glyph = "BC",
+    },
+    mission_money_bag = {
+        category = "cargo", weight = 8, holdable = true, hand = "right", storable = false,
+        model = 1550, scale = 0.8,                          -- CJ_MONEY_BAG (untested)
+        offsets = { right = { 0.1, 0.05, -0.3, 0, 0, 0 }, ground = { 0, 0, 0.25, 0, 0, 0 } },
+        glyph = "$",
+    },
+    mission_documents = {
+        category = "cargo", weight = 0.5, holdable = true, hand = "left", storable = false,
+        model = 2894, scale = 1.0,                          -- kmb_rhymesbook (untested)
+        offsets = { left = { 0.05, 0.05, -0.05, 0, 0, 0 }, ground = { 0, 0, 0, 0, 0, 0 } },
+        glyph = "DC",
+    },
+    mission_crate = {
+        category = "cargo", weight = 25, holdable = true, hand = "right", storable = false,
+        model = 2912, fallback = 1271, scale = 0.6,         -- temp_crate1 scaled down (untested)
+        offsets = { right = { 0.15, 0.25, -0.15, 0, 0, 0 }, ground = { 0, 0, 0, 0, 0, 0 } },
+        glyph = "CR",
+    },
+
     -- ----------------------------------------------------------------------- organizations (biz_missions)
     -- stolen supply of a supply mission: carried to the property's entrance in the hands
     biz_supply_crate = {

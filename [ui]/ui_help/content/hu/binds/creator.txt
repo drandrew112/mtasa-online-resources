@@ -1,8 +1,10 @@
 # Job Creator
-@keywords: job creator, szerkesztő, pálya, verseny, deathmatch, freecam, F5, visszavonás
-@related: binds, binds_pause
+@keywords: job creator, szerkesztő, pálya, verseny, deathmatch, küldetés, szakasz, feladat, freecam, F5, visszavonás
+@related: binds, binds_pause, binds_jobs
 
-A Job Creatort a szünet menü **Online > Jobs > Creator** pontjából indíthatod. Itt saját verseny- és deathmatch pályákat építhetsz.
+A Job Creatort a szünet menü **Online > Jobs > Creator** pontjából indíthatod. Itt saját versenyeket, deathmatcheket és küldetéseket építhetsz.
+
+Küldetésben zónákat, ellenséges pedeket, járműveket, tárgyakat és interakciós pontokat raksz le (**R > Place**), majd az **R > Stages** menüben felépíted a szakaszokat: minden szakasznak vannak feladatai (zónába érés, tárgy megszerzése, ellenségek kiiktatása ...), és lehetnek bukási feltételei. A **Mission Settings** állítja a csapatéleteket, az időkorlátot, a játékosok fegyvereit és a jutalmat. A **Test** egyedül futtatja a küldetést bármelyik szakasztól, jutalom nélkül.
 
 ## Gombok
 

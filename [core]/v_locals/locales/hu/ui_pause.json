@@ -113,5 +113,9 @@
   "ui_pause.settings.models_more": "+{count} további",
   "ui_pause.settings.models_new": "Letöltendő: {names}",
   "ui_pause.pausemenu.head_look_sync": "Fejmozgás szinkron",
-  "ui_pause.pausemenu.head_look_sync_desc": "A játékosok arra fordítják a fejüket, amerre néznek. Kikapcsolva minden fej egyenesen előre néz."
+  "ui_pause.pausemenu.head_look_sync_desc": "A játékosok arra fordítják a fejüket, amerre néznek. Kikapcsolva minden fej egyenesen előre néz.",
+  "ui_pause.pausemenu.missions": "Küldetések",
+  "ui_pause.pausemenu.browse_available_missions": "Elérhető küldetések böngészése",
+  "ui_pause.pausemenu.leave_current_job": "Kilépés a jobból",
+  "ui_pause.pausemenu.leave_current_job_desc": "Kilépsz a jelenlegi jobból. Nem kapsz jutalmat, és nem is veszítesz semmit."
 }

@@ -103,11 +103,45 @@ Kinds.camera = {
     fixed = true,   -- not movable, "Set to current view" instead
 }
 
+-- mission elements: doc entries with named fields { id, x, y, z, rot? ... }
+local function namedKind(create, modelOf, rotates)
+    return {
+        label = "",   -- set in loadTexts
+        helper = true,
+        create = create,
+        apply = function(el, ref)
+            setElementPosition(el, ref.x, ref.y, ref.z)
+            setElementRotation(el, 0, 0, ref.rot or 0)
+            if getElementType(el) == "ped" then setPedRotation(el, ref.rot or 0) end
+        end,
+        model = modelOf,
+        get = function(ref) return ref.x, ref.y, ref.z, 0, 0, ref.rot or 0 end,
+        set = function(ref, x, y, z, _, _, rz)
+            ref.x, ref.y, ref.z = x, y, z
+            if rotates then ref.rot = rz % 360 end
+        end,
+        rotate = rotates and "z" or nil,
+    }
+end
+
+local function itemModel(ref)
+    local def = CATALOG.missionItem[ref.item]
+    return def and def.model or 1271
+end
+
+Kinds.zone = namedKind(function(ref) return createObject(H.zone, ref.x, ref.y, ref.z) end, function() return H.zone end, false)
+Kinds.point = namedKind(function(ref) return createObject(H.point, ref.x, ref.y, ref.z) end, function() return H.point end, false)
+Kinds.ped = namedKind(function(ref) return createPed(ref.skin or 0, ref.x, ref.y, ref.z, ref.rot or 0) end, function(ref) return ref.skin or 0 end, true)
+Kinds.mvehicle = namedKind(function(ref) return createVehicle(ref.model, ref.x, ref.y, ref.z, 0, 0, ref.rot or 0) end, function(ref) return ref.model end, true)
+Kinds.item = namedKind(function(ref) return createObject(itemModel(ref), ref.x, ref.y, ref.z) end, itemModel, true)
+
 -- Height of the element's origin above the surface it is placed on.
 function Kinds.surfaceOffset(kind, el)
-    if kind == "object" then
+    if kind == "object" or kind == "item" then
         local _, _, minZ = getElementBoundingBox(el)
         return minZ and -minZ or 0
+    elseif kind == "mvehicle" then
+        return getElementDistanceFromCentreOfMassToBaseOfModel(el) or 1
     elseif kind == "spawn" then
         if getElementType(el) == "vehicle" then
             return getElementDistanceFromCentreOfMassToBaseOfModel(el) or 1
@@ -187,6 +221,10 @@ function View.sync()
     syncGroup("finish", "finish", doc.race and doc.race.finish and { doc.race.finish } or {})
     syncGroup("camera", "camera", doc.race and doc.race.finishCamera and { doc.race.finishCamera } or {})
     syncGroup("marker", "marker", doc.marker and { doc.marker } or {})
+    local m = doc.mission
+    for kind, list in pairs(MissionEdit.LISTS) do
+        syncGroup("m_" .. list, kind, m and m[list] or {})
+    end
     if Editor.selected and not isElement(Editor.selected.element) then Editor.selected = nil end
 end
 
@@ -308,6 +346,61 @@ local C = {
 
 View.hovered = nil
 
+local MC = {
+    zone = tocolor(255, 200, 0, 220), ped = tocolor(235, 80, 70), civ = tocolor(120, 220, 120),
+    vehicle = tocolor(255, 150, 60), item = tocolor(90, 200, 255), point = tocolor(90, 200, 255),
+    patrol = tocolor(235, 80, 70, 170), respawn = tocolor(170, 120, 255),
+}
+
+local function circle(x, y, z, r, color)
+    local seg = 32
+    local px, py = x + r, y
+    for i = 1, seg do
+        local a = i / seg * math.pi * 2
+        local nx, ny = x + math.cos(a) * r, y + math.sin(a) * r
+        dxDrawLine3D(px, py, z, nx, ny, z, color, 2)
+        px, py = nx, ny
+    end
+end
+
+-- mission overlay: zone rings, names, patrol routes, stage respawn points
+function View.drawMission(m)
+    local cx, cy, cz = getCameraMatrix()
+    local function near(x, y, z, d) return (x - cx) ^ 2 + (y - cy) ^ 2 < d * d end
+    for _, zn in ipairs(m.zones) do
+        if near(zn.x, zn.y, zn.z, 300) then
+            circle(zn.x, zn.y, zn.z - 0.9, zn.radius, MC.zone)
+            circle(zn.x, zn.y, zn.z - 0.9 + (zn.height or 8), zn.radius, MC.zone)
+            label(zn.x, zn.y, zn.z + 1.2, MissionEdit.entityName(zn, "zone"), MC.zone)
+        end
+    end
+    for _, p in ipairs(m.peds) do
+        if near(p.x, p.y, p.z, 200) then
+            label(p.x, p.y, p.z + 1.4, MissionEdit.entityName(p, "ped"), p.behaviour == "civilian" and MC.civ or MC.ped)
+            local prev
+            for _, q in ipairs(p.patrol or {}) do
+                if prev then dxDrawLine3D(prev[1], prev[2], prev[3], q[1], q[2], q[3], MC.patrol, 2) end
+                prev = q
+            end
+        end
+    end
+    for _, v in ipairs(m.vehicles) do
+        if near(v.x, v.y, v.z, 200) then label(v.x, v.y, v.z + 2, MissionEdit.entityName(v, "mvehicle"), MC.vehicle) end
+    end
+    for _, it in ipairs(m.items) do
+        if near(it.x, it.y, it.z, 150) then label(it.x, it.y, it.z + 0.8, MissionEdit.entityName(it, "item"), MC.item) end
+    end
+    for _, pt in ipairs(m.points) do
+        if near(pt.x, pt.y, pt.z, 150) then label(pt.x, pt.y, pt.z + 1, MissionEdit.entityName(pt, "point"), MC.point) end
+    end
+    for i, s in ipairs(m.stages) do
+        local r = s.respawnPoint
+        if r and near(r[1], r[2], r[3], 150) then
+            label(r[1], r[2], r[3] + 1, L("v_jobcreator.mission.respawn_label", { stage = i }), MC.respawn)
+        end
+    end
+end
+
 Editor.onFrame("onClientRender", function()
     if not Editor.active or not Editor.doc or Editor.photo then return end
     local doc = Editor.doc
@@ -343,6 +436,7 @@ Editor.onFrame("onClientRender", function()
             local m = doc.marker
             label(m[1], m[2], m[3] + 1.2, L("v_jobcreator.view.job_marker_2"), C.marker)
         end
+        if doc.mission then View.drawMission(doc.mission) end
     end
 
     if View.hovered and View.hovered ~= Editor.selected then View.drawBox(View.hovered.element, C.hover) end
@@ -380,6 +474,11 @@ local function loadTexts()
     Kinds.finish.label     = L("v_jobcreator.menus.finish")
     Kinds.marker.label     = L("v_jobcreator.view.job_marker")
     Kinds.camera.label     = L("v_jobcreator.view.finish_camera")
+    Kinds.zone.label       = L("v_jobcreator.mission.zone")
+    Kinds.point.label      = L("v_jobcreator.mission.point")
+    Kinds.ped.label        = L("v_jobcreator.mission.ped")
+    Kinds.mvehicle.label   = L("v_jobcreator.mission.vehicle")
+    Kinds.item.label       = L("v_jobcreator.mission.item")
     exports.v_loading:resourceReady()
 end
 addEvent("onClientLoadingStarted", true)

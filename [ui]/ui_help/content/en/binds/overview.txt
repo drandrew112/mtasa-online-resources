@@ -31,6 +31,7 @@ These are the server's own keys. The standard GTA controls (walking, driving, sh
 [[binds_vehicle|Vehicles]]
 [[binds_world|World: markers and 3D menus]]
 [[binds_work|Work jobs]]
+[[binds_jobs|Jobs: races, deathmatches, missions]]
 [[binds_creator|Job Creator]]
 [[binds_admin|Admin keys]]
 

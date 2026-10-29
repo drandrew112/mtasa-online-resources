@@ -20,7 +20,11 @@ CREATOR = {
         maxPlayers = 16,
         name = 40,
         description = 300,
+        -- missions (official missions: OFFICIAL_MISSION below)
+        mission = { stages = 20, objectives = 6, fails = 4, zones = 30, peds = 40, vehicles = 15, items = 10, points = 10, patrol = 12 },
     },
+    -- = MISSION_LIMITS in v_jobmanager mode_mission/server/runner.lua
+    OFFICIAL_MISSION = { stages = 60, objectives = 8, fails = 6, zones = 100, peds = 120, vehicles = 40, items = 30, points = 30, patrol = 24 },
 
     KEYS = {
         menu = "r",             -- editor hub (ui_inac temp menu)
@@ -41,5 +45,5 @@ CREATOR = {
     THUMB = { width = 640, height = 360, quality = 85 },
 
     -- helper models for elements that have no world model of their own
-    HELPER = { checkpoint = 1318, finish = 1318, marker = 1239, camera = 1886 },
+    HELPER = { checkpoint = 1318, finish = 1318, marker = 1239, camera = 1886, zone = 1318, point = 1239 },
 }

@@ -9,6 +9,7 @@ voting, checkpoint, UI, or synchronization code is executed.
 - `shared/config/` — generic job registry only
 - `mode_race/` — race jobs, routes, spawnpoints and race implementation
 - `mode_dm/` — DM job, random-arena spawnpoints and DM implementation
+- `mode_mission/` — co-op missions (stages, objectives, AI enemies), script-started missions
 - `core/` — generic lobby, UI, commands, authorization and lifecycle API
 - `assets/sounds/` — restored UI sounds
 - `old/` — untouched archive of the original resource
@@ -28,6 +29,32 @@ voting, checkpoint, UI, or synchronization code is executed.
   the phone calls the exported `jobmanagerAcceptInvite` and drops the player
   straight into the lobby. `ui_phone` is a soft dependency — if it is not running
   the invite action just reports that the phone service is unavailable.
+
+## During a match (3.0)
+
+- **Leaving:** `/leavejob` works in a running match too: it opens a confirmation menu
+  (`/leavejob confirm` leaves at once). `F2` opens the job menu (leave, race: Reset to
+  checkpoint every 10 s, spectator list), ui_pause has **Leave current job** in Online. Leaving
+  pays nothing and costs nothing; the scoreboard shows **Left**. Server export
+  `jobmanagerLeave(player)` leaves a lobby or a match; client exports `jobmanagerInMatch()`,
+  `jobmanagerLeaveJob(confirmed)`.
+- **No saving in the job:** at match start the player gets the server-only element data
+  `save.position` = the place before the job, so v_accounts' savesys saves that instead of the
+  match dimension (autosave and quit). It is removed when the player is put back.
+- **Spectating** (`core/spectate.lua`, `core/client/spectate.lua`): a dead DM player (after 3 s)
+  and a finished racer watch the players still playing. The ped stays hidden, attached above
+  the target; the camera is the target's GTA follow camera. Scrolling the ui_inac list switches at
+  once; `Space` reopens it. The others' mouse-look is not synced in MTA, so it is not their exact view.
+- **Race:** the client draws the checkpoints (`mode_race/client/checkpoints.lua`, shaders in
+  `mode_race/fx/`): a ring wall + ground disc and a 3D arrow pointing at the next checkpoint
+  (a flag at the finish), the following checkpoint faded. The GTA marker is invisible and only
+  counts the hit. A racer is put back at the last checkpoint, facing the next one, when the
+  vehicle blows up (new vehicle), falls into the water, goes more than `race.offRoute` m
+  (default 150, 0 = off) from the route for 5 s, or falls 40 m below the route; then 3 s ghost
+  (no collisions with other racers). After the first finisher the others get 60 s, then DNF.
+  Tuning: `JOBS_CONFIG` in `shared/config/jobs.lua`.
+- **Missions:** `mode_mission/README.md` (stages, objectives, Team lives, script-only missions
+  and their exports).
 
 Race checkpoints, vehicles, lobby membership, deathmatch elimination, and
 match cleanup are all controlled on the server. `jobmanager:joinJob`,
@@ -75,8 +102,10 @@ marker:     [x, y, z]  optional - without it (community games) the game has no w
 objects:    optional [{model,x,y,z,rx?,ry?,rz?,scale?,alpha?,collisions?,doublesided?}] -
             created in the match dimension at match start, destroyed at the end (max 1000)
 race:       { vehicles:[model], spawnpoints:[[x,y,z,rot]], checkpoints:[[x,y,z,size]],
-              finish:[x,y,z,size], finishCamera?:{pos,lookAt,roll,fov} }
+              finish:[x,y,z,size], finishCamera?:{pos,lookAt,roll,fov}, offRoute?: m (0 = off) }
 deathmatch: { weapon, ammo, armour?, spawnpoints:[[x,y,z,rot]] }
+mission:    see mode_mission/README.md
+scriptOnly: true (missions only, official games): never listed, started by other resources
 ```
 
 `createdBy` is required (official games: `DrAndrew112`) and is shown in the lobby.
@@ -110,6 +139,7 @@ Aborted matches (resource stop) pay nothing; players who quit get nothing.
 
 - Race: route km (spawn -> checkpoints -> finish) x `perKm`, clamped; DNF x0.25.
 - Deathmatch: match minutes x `perMinute` (clamped) + kills x `perKill`.
+- Mission: the mission's reward (or `perStage` x stages) + kills when passed; `failMin` when failed.
 - Both: x(1 + 0.05 x (players-1)) max x1.5, then place multiplier (1st x1.5, 2nd x1.25, 3rd x1.1).
 - Solo (match started with 1 player): fixed €500, no placement XP.
 - Tuning lives in the `REWARDS` table.

@@ -33,12 +33,14 @@ local function indexLeaves(items, prefix, out)
 end
 
 local function open(kind, title, items)
+    if Menus.rootId then inac:closeTempMenu() end
     Menus.kind = kind
     Menus.leaves = indexLeaves(items, "", {})
     Menus.rootId = inac:createTempMenu({ title = title, items = items })
     if not Menus.rootId then Menus.kind = nil end
     return Menus.rootId
 end
+Menus.openCustom = open
 
 function Menus.close()
     if Menus.rootId then inac:closeTempMenu() end
@@ -48,14 +50,17 @@ function Menus.isOpen()
     return Menus.rootId ~= nil and inac:isTempMenuOpen()
 end
 
--- Moves the tick inside one exclusive group (vehicle, weapon, scale ...).
-local function retick(group, selected)
+-- Moves the tick inside one exclusive group (vehicle, weapon, scale ...). `index` = where the
+-- value sits in the item value (default 2: { group, value }).
+local function retick(group, selected, index)
+    index = index or 2
     for _, entry in ipairs(Menus.leaves) do
         if entry.value[1] == group then
-            inac:updateTempMenuItem(entry.path, { checked = entry.value[2] == selected })
+            inac:updateTempMenuItem(entry.path, { checked = entry.value[index] == selected })
         end
     end
 end
+Menus.retick = retick
 
 --------------------------------------------------------------------------------
 -- start menu + game lists
@@ -65,6 +70,7 @@ function Menus.openStart()
     local items = {
         leaf(L("v_jobcreator.menus.new_race"), { "new", "race" }, L("v_jobcreator.menus.checkpoint_race_with_one_vehicle_model")),
         leaf(L("v_jobcreator.menus.new_deathmatch"), { "new", "deathmatch" }, L("v_jobcreator.menus.last_player_standing")),
+        leaf(L("v_jobcreator.menus.new_mission"), { "new", "mission" }, L("v_jobcreator.menus.new_mission_desc")),
         leaf(L("v_jobcreator.menus.my_games"), { "list", "mine" }, L("v_jobcreator.menus.open_delete_or_check_status_of")),
     }
     if Editor.info.admin then
@@ -76,6 +82,9 @@ function Menus.openStart()
 end
 
 local function statusText(entry)
+    if entry.scriptOnly then
+        return entry.published and L("v_jobcreator.menus.script_only_live") or L("v_jobcreator.menus.script_only_draft")
+    end
     if entry.official and not entry.published then return L("v_jobcreator.menus.official_not_published") end
     if entry.official then return entry.pending and L("v_jobcreator.menus.official_draft_not_published_yet") or L("v_jobcreator.menus.official") end
     if entry.published and entry.pending then return L("v_jobcreator.menus.published_newer_changes_saved") end
@@ -122,7 +131,7 @@ addEventHandler("jobcreator:list", resourceRoot, function(scope, list)
         if canDelete then
             actions[#actions + 1] = sub("Delete", { leaf(L("v_jobcreator.menus.yes_delete", { name = tostring(entry.name) }), { "manage", entry.id, "delete" }) })
         end
-        local typeName = entry.type == "race" and L("common.race") or L("common.deathmatch")
+        local typeName = entry.type == "race" and L("common.race") or entry.type == "mission" and L("v_jobcreator.menus.mission") or L("common.deathmatch")
         items[#items + 1] = sub(tostring(entry.name or entry.id), actions,
             L("v_jobcreator.menus.entry_line", { type = typeName, status = statusText(entry), owner = tostring(entry.owner) }), L.upper(tostring(entry.name or entry.id)))
     end
@@ -202,9 +211,10 @@ function Menus.openHub()
     Tools.cancel()
     local admin = Editor.info.admin
     local isRace = doc.type == "race"
+    local isMission = doc.type == "mission"
     local problems = Editor.problems()
 
-    local status = (isRace and L("common.race") or L("common.deathmatch")) .. "  ·  " .. (Editor.dirty and L("v_jobcreator.menus.unsaved_changes") or L("v_jobcreator.menus.saved"))
+    local status = (isRace and L("common.race") or isMission and L("v_jobcreator.menus.mission") or L("common.deathmatch")) .. "  ·  " .. (Editor.dirty and L("v_jobcreator.menus.unsaved_changes") or L("v_jobcreator.menus.saved"))
     local official = Editor.meta and Editor.meta.official
     if official then
         status = L("v_jobcreator.menus.official", { status = status, pending = (Editor.meta.pending and L("v_jobcreator.menus.draft") or "") })
@@ -219,14 +229,58 @@ function Menus.openHub()
         place[#place + 1] = leaf(L("v_jobcreator.menus.finish"), { "place", "finish" }, doc.race.finish and L("v_jobcreator.menus.placed_placing_again_moves_it") or L("v_jobcreator.menus.not_placed_yet"))
         place[#place + 1] = leaf(L("v_jobcreator.menus.finish_camera_current_view"), { "finishcam" }, L("v_jobcreator.menus.scoreboard_camera_after_race"))
     end
-    if admin then
+    if isMission then
+        local m = doc.mission
+        local LM = MissionEdit.limits()
+        local skins = {}
+        for _, cat in ipairs(CATALOG.skins) do
+            local list = {}
+            for _, id in ipairs(cat.items) do list[#list + 1] = leaf(L("v_jobcreator.mission.skin", { id = id }), { "place", "ped", id }) end
+            skins[#skins + 1] = sub(cat.name, list)
+        end
+        local names = Editor.info.vehicleNames or {}
+        local function vehicles(role)
+            local cats = {}
+            for _, cat in ipairs(CATALOG.vehicles) do
+                local list = {}
+                for _, model in ipairs(cat.items) do list[#list + 1] = leaf(names[model] or tostring(model), { "place", "mvehicle", model, role }) end
+                cats[#cats + 1] = sub(cat.name, list)
+            end
+            return cats
+        end
+        local roles = {}
+        for _, role in ipairs(CATALOG.vehicleRoles) do
+            roles[#roles + 1] = sub(L("v_jobcreator.mission.role." .. role), vehicles(role), L("v_jobcreator.mission.roledesc." .. role))
+        end
+        local itemTypes = {}
+        for _, entry in ipairs(CATALOG.missionItems) do itemTypes[#itemTypes + 1] = leaf(entry[3], { "place", "item", entry[1] }) end
+        place[#place + 1] = leaf(L("v_jobcreator.mission.zone"), { "place", "zone" }, L("v_jobcreator.mission.placed_of", { n = #m.zones, max = LM.zones }))
+        place[#place + 1] = sub(L("v_jobcreator.mission.ped"), skins, L("v_jobcreator.mission.placed_of", { n = #m.peds, max = LM.peds }))
+        place[#place + 1] = sub(L("v_jobcreator.mission.vehicle"), roles, L("v_jobcreator.mission.placed_of", { n = #m.vehicles, max = LM.vehicles }))
+        place[#place + 1] = sub(L("v_jobcreator.mission.item"), itemTypes, L("v_jobcreator.mission.placed_of", { n = #m.items, max = LM.items }))
+        place[#place + 1] = leaf(L("v_jobcreator.mission.point"), { "place", "point" }, L("v_jobcreator.mission.placed_of", { n = #m.points, max = LM.points }))
+    end
+    if admin and not (isMission and doc.scriptOnly) then
         place[#place + 1] = leaf(L("v_jobcreator.menus.job_marker_admin"), { "place", "marker" }, L("v_jobcreator.menus.world_marker_blip_for_joining_game"))
     end
     items[#items + 1] = sub("Place", place)
     items[#items + 1] = objectMenu()
 
     if isRace then
-        items[#items + 1] = sub("Race Settings", { vehicleMenu() })
+        local offRoute = doc.race.offRoute
+        items[#items + 1] = sub("Race Settings", {
+            vehicleMenu(),
+            sub(L("v_jobcreator.menus.off_route_limit"), (function()
+                local list = { leaf(L("v_jobcreator.menus.off_route_default"), { "offRoute", false }, nil, { checked = offRoute == nil, closeOnSelect = false }) }
+                for _, v in ipairs(CATALOG.offRoute) do
+                    list[#list + 1] = leaf(v == 0 and L("v_jobcreator.menus.off_route_off") or (v .. " m"), { "offRoute", v }, nil, { checked = offRoute == v, closeOnSelect = false })
+                end
+                return list
+            end)(), L("v_jobcreator.menus.off_route_desc")),
+        })
+    elseif isMission then
+        items[#items + 1] = MissionEdit.settingsMenu()
+        items[#items + 1] = MissionEdit.stagesMenu()
     else
         local dm = doc.deathmatch
         items[#items + 1] = sub("Deathmatch Settings", {
@@ -248,6 +302,12 @@ function Menus.openHub()
             leaf(L("v_jobcreator.menus.from_start"), { "test", "start" }, L("v_jobcreator.menus.spawnpoint_1_every_checkpoint")),
             leaf(L("v_jobcreator.menus.from_here"), { "test", "here" }, L("v_jobcreator.menus.your_position_from_nearest_checkpoint")),
         }, "F6 ends the test")
+    elseif isMission then
+        local stages = {}
+        for i, s in ipairs(doc.mission.stages) do
+            stages[#stages + 1] = leaf(i .. ". " .. s.title, { "test", "mission", s.id }, L("v_jobcreator.mission.test_desc"))
+        end
+        items[#items + 1] = sub(L("v_jobcreator.menus.test"), stages, L("v_jobcreator.mission.test_desc"))
     else
         items[#items + 1] = leaf(L("v_jobcreator.menus.test"), { "test", "here" }, L("v_jobcreator.menus.spawn_here_with_weapon_f6_ends"))
     end
@@ -302,8 +362,10 @@ function Menus.openItem(item)
     local K, ref = Kinds[item.kind], item.ref
     local items = {}
     if not K.fixed then items[#items + 1] = leaf(L("v_jobcreator.interact.move"), { "move" }, L("v_jobcreator.menus.follows_cursor_arrows_pgup_pgdn_fine")) end
-    if item.kind == "object" or item.kind == "spawn" then items[#items + 1] = leaf(L("v_jobcreator.interact.duplicate"), { "dup" }) end
-    if item.kind == "object" then
+    if Ops.canDuplicate(item) then items[#items + 1] = leaf(L("v_jobcreator.interact.duplicate"), { "dup" }) end
+    if MissionEdit.LISTS[item.kind] then
+        MissionEdit.itemRows(item, items)
+    elseif item.kind == "object" then
         items[#items + 1] = sub("Scale", numberList("scale", SCALES, ref.scale or 1, "x"), "now: " .. (ref.scale or 1) .. "x")
         items[#items + 1] = sub("Transparency", numberList("alpha", ALPHAS, ref.alpha or 255), "255 = solid")
         items[#items + 1] = leaf(L("v_jobcreator.menus.collisions"), { "toggle", "collisions" }, L("v_jobcreator.menus.off_vehicles_and_players_pass_through"), { checked = ref.collisions ~= false, closeOnSelect = false })
@@ -319,7 +381,8 @@ function Menus.openItem(item)
 
     local title = K.label
     if item.kind == "object" then title = CATALOG.objectName[ref.model] or title
-    elseif item.kind == "spawn" or item.kind == "checkpoint" then title = title .. " #" .. item.index end
+    elseif item.kind == "spawn" or item.kind == "checkpoint" then title = title .. " #" .. item.index
+    elseif MissionEdit.LISTS[item.kind] then title = title .. " " .. ref.id end
     open("item", title:upper(), items)
     Menus.item = item
 end
@@ -352,10 +415,16 @@ end)
 -- text input
 --------------------------------------------------------------------------------
 
-local textToken, textField
+local textToken, textField, textCallback
 
 local function askText(field, title, max, default)
-    textField = field
+    textField, textCallback = field, nil
+    textToken = uicore:openTextInput(title, max, default)
+end
+
+-- callback(text) runs when the player confirms (text trimmed; nothing on cancel)
+function Menus.askText(title, max, default, callback)
+    textField, textCallback = nil, callback
     textToken = uicore:openTextInput(title, max, default)
 end
 
@@ -363,6 +432,12 @@ addEvent("ui_core:textInputResult")
 addEventHandler("ui_core:textInputResult", root, function(token, text)
     if token ~= textToken then return end
     textToken = nil
+    if textCallback then
+        local fn = textCallback
+        textCallback = nil
+        if text and Editor.doc then fn((text:gsub("^%s+", ""):gsub("%s+$", ""))) elseif Editor.doc then Menus.openHub() end
+        return
+    end
     if text and Editor.doc then
         text = text:gsub("^%s+", ""):gsub("%s+$", "")
         if textField == "name" and text ~= "" then
@@ -417,7 +492,12 @@ actions.validate = function() triggerServerEvent("jobcreator:validate", resource
 
 actions.place = function(v)
     if Editor.testing then return end
-    Tools.place(v[2], { model = v[3] })
+    -- ped: v[3] = skin; mvehicle: v[3] = model, v[4] = role; item: v[3] = item id
+    if v[2] == "item" then
+        Tools.place("item", { item = v[3], model = CATALOG.missionItem[v[3]] and CATALOG.missionItem[v[3]].model })
+    else
+        Tools.place(v[2], { model = v[3], role = v[4] })
+    end
     notify(L("v_jobcreator.menus.click_or_lmb_at_crosshair_to"))
 end
 actions.finishcam = function() Ops.setFinishCamera() end
@@ -447,7 +527,16 @@ end
 actions.name = function() askText("name", L("v_jobcreator.menus.game_name"), LIM.name, Editor.doc.name) end
 actions.desc = function() askText("desc", L("v_jobcreator.menus.description"), LIM.description, Editor.doc.description) end
 
+actions.offRoute = function(v)
+    Editor.change(function(doc) doc.race.offRoute = v[2] or nil end)
+    retick("offRoute", v[2])
+end
+
 actions.test = function(v)
+    if v[2] == "mission" then
+        Test.startMission(v[3])
+        return
+    end
     if v[2] == "start" then
         local spawn = Editor.spawnList()[1]
         if not spawn then notify(L("v_jobcreator.menus.place_spawnpoint_1_first")) return end
@@ -498,6 +587,10 @@ actions.insertAfter = function()
     if item then Tools.place("checkpoint", { insertAt = item.index + 1 }) end
 end
 actions.camPreview = function() Ops.previewCamera(Editor.doc.race.finishCamera) end
+
+-- the mission editor's actions (client/mission.lua)
+for name, fn in pairs(MissionEdit.actions) do actions[name] = fn end
+Menus.actions = actions
 
 addEventHandler("ui_inac:tempMenuSelect", root, function(rootId, value, path)
     if rootId ~= Menus.rootId or type(value) ~= "table" then return end

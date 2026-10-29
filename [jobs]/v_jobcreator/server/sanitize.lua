@@ -83,10 +83,188 @@ local function objects(list, official)
     return out
 end
 
+--------------------------------------------------------------------------------
+-- missions (v_jobmanager mode_mission; the references are checked by its validator)
+--------------------------------------------------------------------------------
+
+local function ident(v)
+    if type(v) ~= "string" then return nil end
+    v = v:gsub("[^%w_]", "")
+    if v == "" then return nil end
+    return v:sub(1, 24)
+end
+
+local function oneOf(v, list, default)
+    for _, x in ipairs(list) do if x == v then return v end end
+    return default
+end
+
+local function vehicleOk(model, official)
+    return model and (CATALOG.vehicleAllowed[model] or (official and model >= 400 and model <= 611))
+end
+
+local function weaponOk(id, official)
+    return id and (CATALOG.weaponAllowed[id] or (official and id >= 1 and id <= 46))
+end
+
+-- list of entities with a unique id each; fn(entry, clean) fills the rest, returns false to drop it
+local function entities(list, max, fn)
+    local out, seen = {}, {}
+    if type(list) ~= "table" then return out end
+    for _, e in ipairs(list) do
+        if #out >= max then break end
+        local id = type(e) == "table" and ident(e.id)
+        local pos = id and not seen[id] and point({ e.x, e.y, e.z })
+        if pos then
+            local clean = { id = id, x = pos[1], y = pos[2], z = pos[3] }
+            local stage = ident(e.stage)
+            if stage then clean.stage = stage end
+            if fn(e, clean) ~= false then
+                seen[id] = true
+                out[#out + 1] = clean
+            end
+        end
+    end
+    return out
+end
+
+local function objective(o, fail, official)
+    if type(o) ~= "table" then return nil end
+    local types = fail and CATALOG.failTypes or CATALOG.objectiveTypes
+    local t = oneOf(o.type, types, nil)
+    if not t then return nil end
+    local clean = { type = t }
+    for _, key in ipairs({ "zone", "vehicle", "item", "point", "ped" }) do
+        local v = ident(o[key])
+        if v then clean[key] = v end
+    end
+    if o.who == "all" then clean.who = "all" end
+    if t == "stayInZone" or t == "survive" then clean.seconds = math.floor(num(o.seconds, 5, 3600) or 30) end
+    if t == "killPeds" then
+        if o.all == true then
+            clean.all = true
+        else
+            clean.peds = {}
+            for _, id in ipairs(type(o.peds) == "table" and o.peds or {}) do
+                local v = ident(id)
+                if v and #clean.peds < 40 then clean.peds[#clean.peds + 1] = v end
+            end
+        end
+    end
+    if t == "scriptEvent" then clean.name = ident(o.name) or "signal" end
+    local label = text(o.label, 60, nil)
+    if label then clean.label = label end
+    return clean
+end
+
+local function missionBlock(doc, official)
+    local m = type(doc.mission) == "table" and doc.mission or {}
+    local LM = official and CREATOR.OFFICIAL_MISSION or LIM.mission
+    local out = {
+        spawnpoints = points(m.spawnpoints, LIM.spawnpoints, true, -360, 360, 0),
+        teamLives = math.floor(num(m.teamLives, 0, 20) or 3),
+        armour = math.floor(num(m.armour, 0, 100) or 0),
+        loadout = {},
+    }
+    local timeLimit = num(m.timeLimit, 0, 7200)
+    if timeLimit and timeLimit >= 10 then out.timeLimit = math.floor(timeLimit) end
+    if type(m.reward) == "table" then
+        local money, xp = num(m.reward.money, 0, official and 1000000 or 100000), num(m.reward.xp, 0, official and 50000 or 8000)
+        if money and xp and (money > 0 or xp > 0) then out.reward = { money = math.floor(money), xp = math.floor(xp) } end
+    end
+    for _, w in ipairs(type(m.loadout) == "table" and m.loadout or {}) do
+        local id = type(w) == "table" and tonumber(w.id)
+        if #out.loadout < 4 and weaponOk(id, official) then
+            out.loadout[#out.loadout + 1] = { id = id, ammo = math.floor(num(w.ammo, 1, 9999) or 300) }
+        end
+    end
+
+    out.zones = entities(m.zones, LM.zones, function(e, c)
+        c.radius = round(num(e.radius, 1, 200) or 8, 1)
+        c.height = round(num(e.height, 1, 100) or 8, 1)
+    end)
+    out.peds = entities(m.peds, LM.peds, function(e, c)
+        c.skin = math.floor(num(e.skin, 0, 312) or 0)
+        c.rot = round(num(e.rot, -360, 360) or 0, 1) % 360
+        local weapon = tonumber(e.weapon)
+        if weaponOk(weapon, official) then c.weapon, c.ammo = weapon, math.floor(num(e.ammo, 1, 9999) or 300) end
+        c.health = math.floor(num(e.health, 1, 1000) or 100)
+        c.armor = math.floor(num(e.armor, 0, 100) or 0)
+        c.accuracy = round(num(e.accuracy, 0, 1) or 0.4, 2)
+        c.aggroRadius = math.floor(num(e.aggroRadius, 5, 150) or 35)
+        c.behaviour = oneOf(e.behaviour, CATALOG.pedBehaviours, "guard")
+        if c.behaviour == "patrol" then
+            c.patrol = points(e.patrol, LM.patrol, false)
+            if #c.patrol < 2 then c.behaviour, c.patrol = "guard", nil end
+        end
+    end)
+    out.vehicles = entities(m.vehicles, LM.vehicles, function(e, c)
+        local model = tonumber(e.model)
+        if not vehicleOk(model, official) then return false end
+        c.model = model
+        c.rot = round(num(e.rot, -360, 360) or 0, 1) % 360
+        c.role = oneOf(e.role, CATALOG.vehicleRoles, "loot")
+        if e.locked == true then c.locked = true end
+        if c.role == "enemy" then
+            c.behaviour = e.behaviour == "pursue" and "pursue" or "park"
+            local d = type(e.driver) == "table" and e.driver or {}
+            local weapon = tonumber(d.weapon)
+            c.driver = { skin = math.floor(num(d.skin, 0, 312) or 0), weapon = weaponOk(weapon, official) and weapon or 28 }
+            c.crew = math.floor(num(e.crew, 0, 3) or 1)
+        end
+    end)
+    out.items = entities(m.items, LM.items, function(e, c)
+        if not CATALOG.missionItem[e.item] then return false end
+        c.item = e.item
+        c.label = text(e.label, 40, nil)
+    end)
+    out.points = entities(m.points, LM.points, function(e, c)
+        c.label = text(e.label, 40, nil)
+        c.holdMs = math.floor((num(e.holdMs, 500, 20000) or 3000) / 100) * 100
+    end)
+
+    out.stages = {}
+    local seen = {}
+    for _, s in ipairs(type(m.stages) == "table" and m.stages or {}) do
+        if #out.stages >= LM.stages then break end
+        local id = type(s) == "table" and ident(s.id)
+        if id and not seen[id] then
+            seen[id] = true
+            local stage = { id = id, title = text(s.title, 80, "Stage"), objectives = {} }
+            for _, o in ipairs(type(s.objectives) == "table" and s.objectives or {}) do
+                local clean = #stage.objectives < LM.objectives and objective(o, false, official)
+                if clean then stage.objectives[#stage.objectives + 1] = clean end
+            end
+            local fails = {}
+            for _, f in ipairs(type(s.fail) == "table" and s.fail or {}) do
+                local clean = #fails < LM.fails and objective(f, true, official)
+                if clean then fails[#fails + 1] = clean end
+            end
+            if #fails > 0 then stage.fail = fails end
+            if s.complete == "any" then stage.complete = "any" end
+            local limit = num(s.timeLimit, 0, 3600)
+            if limit and limit >= 5 then stage.timeLimit = math.floor(limit) end
+            local respawn = point(s.respawnPoint, true, -360, 360, 0)
+            if respawn then stage.respawnPoint = respawn end
+            local despawn = {}
+            for _, eid in ipairs(type(s.despawn) == "table" and s.despawn or {}) do
+                local v = ident(eid)
+                if v and #despawn < 40 then despawn[#despawn + 1] = v end
+            end
+            if #despawn > 0 then stage.despawn = despawn end
+            local nextId = ident(s.next)
+            if nextId then stage.next = nextId end
+            out.stages[#out.stages + 1] = stage
+        end
+    end
+    return out
+end
+
 -- marker: "keep" = take the client's value (admins), otherwise the given stored
 -- marker (or nil) replaces whatever the client sent.
 -- official: an official game edited by an admin (any model, bigger limits)
-function sanitizeGame(doc, gameType, marker, official)
+-- scriptOk: the player may make scriptOnly missions (CREATOR.OFFICIAL_LEVEL)
+function sanitizeGame(doc, gameType, marker, official, scriptOk)
     if type(doc) ~= "table" then return nil end
     local maxPlayers = math.floor(num(doc.maxPlayers, 1, LIM.maxPlayers) or 8)
     local game = {
@@ -116,6 +294,11 @@ function sanitizeGame(doc, gameType, marker, official)
         if type(cam) == "table" and point(cam.pos) and point(cam.lookAt) then
             game.race.finishCamera = { pos = point(cam.pos), lookAt = point(cam.lookAt), roll = 0, fov = round(num(cam.fov, 40, 120) or 70, 1) }
         end
+        if race.offRoute ~= nil then game.race.offRoute = oneOf(tonumber(race.offRoute), CATALOG.offRoute, nil) end
+    elseif gameType == "mission" then
+        game.mission = missionBlock(doc, official or scriptOk)
+        -- scriptOnly missions are official games that only other resources start
+        if doc.scriptOnly == true and scriptOk then game.scriptOnly = true end
     else
         local dm = type(doc.deathmatch) == "table" and doc.deathmatch or {}
         local weapon = tonumber(dm.weapon)

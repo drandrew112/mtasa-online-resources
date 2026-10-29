@@ -1,6 +1,6 @@
 <meta>
-    <info author="DrAndrew112" name="v_jobcreator" type="script" version="1.0.0"
-          description="In-game creator for v_jobmanager race / deathmatch games (community games)" />
+    <info author="DrAndrew112" name="v_jobcreator" type="script" version="1.1.0"
+          description="In-game creator for v_jobmanager race / deathmatch / mission games (community games)" />
 
     <!-- v_jobmanager is a soft dependency (exports only): an include would restart
          the creator, and kick every editor out, whenever v_jobmanager restarts -->
@@ -19,6 +19,7 @@
     <script src="server/main.lua" type="server" />
 
     <script src="client/core.lua" type="client" />
+    <script src="client/mission.lua" type="client" />
     <script src="client/view.lua" type="client" />
     <script src="client/freecam.lua" type="client" />
     <script src="client/tools.lua" type="client" />

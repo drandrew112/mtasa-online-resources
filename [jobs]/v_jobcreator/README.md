@@ -1,6 +1,6 @@
 # v_jobcreator
 
-In-game creator for v_jobmanager games (race and deathmatch). It produces the
+In-game creator for v_jobmanager games (race, deathmatch and mission). It produces the
 v_jobmanager game data. Every game is stored by v_jobmanager in MySQL
 (`core/storage.lua`: `jobs_draft`, `jobs_community`, `jobs_official`).
 
@@ -24,7 +24,30 @@ export on every call. Keep it that way; a top-level `exports.v_jobmanager` throw
 and leaves the whole server script unloaded.
 
 Every session gets its own dimension (`45000 + slot`). Position, dimension,
-health, armour and weapons are saved on entry and restored on exit.
+health, armour and weapons are saved on entry and restored on exit. While the creator is open the
+player carries `save.position` (the place before the creator), so v_accounts never saves the
+editor dimension.
+
+## Missions
+
+**New Mission** builds a v_jobmanager mission (`v_jobmanager/mode_mission/README.md`).
+
+- **Place:** spawnpoints, zones (radius / height in the element menu), peds (skin, weapon,
+  behaviour guard / patrol / attack / civilian, patrol points from your position), vehicles
+  (role: to take / crew vehicle / prop / enemy; enemies park as an ambush or chase, with a
+  crew), items (v_inventory mission items), interaction points (hold E). Every ped / vehicle /
+  item can appear at a stage and be removed by stages.
+- **Stages:** each stage opens its own menu: title (the objective text), objectives, all/any,
+  fail conditions, time limit, respawn point (your position), removed elements, order, delete.
+  Deleting an element also removes the objectives that point at it.
+- **Mission Settings:** Team lives, time limit, the players' weapons (up to 4) / ammo / armour,
+  reward money / XP (0 = automatic), and for admin level >= `OFFICIAL_LEVEL` **Script-only**:
+  the mission is saved and published as an official game that only other resources start
+  (no world marker).
+- **Test:** a real mission match alone in the editor dimension from any stage, no rewards;
+  F6 (or F2 > Stop test) ends it. Race tests use v_jobmanager's checkpoint visuals.
+- Race Settings has the **Off-route limit** (default 150 m, 100 / 250, off for stunt races).
+- Limits: `CREATOR.LIMITS.mission`, official / script-only: `CREATOR.OFFICIAL_MISSION`.
 
 ## Rights
 
@@ -97,6 +120,7 @@ client/view.lua      doc -> client elements, overlay, picking
 client/freecam.lua   free camera
 client/tools.lua     place / move tools, item operations
 client/menus.lua     every ui_inac menu
+client/mission.lua   mission doc helpers, Mission Settings / Stages / element menus
 client/interact.lua  ui_interactobject menus (on foot)
 client/keys.lua      key dispatch
 client/test.lua      test runs (race checkpoints run locally)

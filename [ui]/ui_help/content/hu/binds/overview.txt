@@ -31,6 +31,7 @@ Itt a szerver saját gombjai vannak összegyűjtve. A GTA alap irányítása (s�
 [[binds_vehicle|Járművek]]
 [[binds_world|Világ: markerek és 3D menük]]
 [[binds_work|Munkák]]
+[[binds_jobs|Jobs: versenyek, deathmatchek, küldetések]]
 [[binds_creator|Job Creator]]
 [[binds_admin|Admin gombok]]
 

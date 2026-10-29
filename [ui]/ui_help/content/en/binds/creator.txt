@@ -1,8 +1,10 @@
 # Job Creator
-@keywords: job creator, editor, map, race, deathmatch, freecam, F5, undo
-@related: binds, binds_pause
+@keywords: job creator, editor, map, race, deathmatch, mission, stage, objective, freecam, F5, undo
+@related: binds, binds_pause, binds_jobs
 
-Start the Job Creator from the pause menu: **Online > Jobs > Creator**. Here you can build your own race and deathmatch maps.
+Start the Job Creator from the pause menu: **Online > Jobs > Creator**. Here you can build your own races, deathmatches and missions.
+
+In a mission you place zones, enemy peds, vehicles, items and interaction points (**R > Place**), then build the stages in **R > Stages**: every stage has objectives (get to a zone, take an item, kill enemies ...) and may have fail conditions. **Mission Settings** sets the Team lives, the time limit, the players' weapons and the reward. **Test** runs the mission alone from any stage, without rewards.
 
 ## Keys
 

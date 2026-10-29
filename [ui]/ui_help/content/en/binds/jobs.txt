@@ -1,0 +1,34 @@
+# Jobs: races, deathmatches, missions
+@keywords: jobs, race, deathmatch, mission, F2, leave, leavejob, spectate, checkpoint, team lives, quickjob
+@related: binds, binds_pause, binds_creator
+
+Jobs are started from the pause menu (**Online > Jobs**) or with `E` in a job marker. In the waiting lobby the host starts the job.
+
+## Keys and commands
+
+- `F2` – job menu during a job: leave the job, reset to the last checkpoint (race), watch the other players
+- `/leavejob` – leave the lobby, or leave the running job (it asks first; `/leavejob confirm` leaves at once)
+- `/quickjob` – join a random open lobby
+- `/startjob` – start the job (lobby host)
+- `Space` – reopen the spectator list while you watch others
+- `E` (hold) – interaction points in a mission
+
+Leaving a running job gives no reward and takes nothing away. You go back where you were before the job.
+
+## Race
+
+- The arrow above the checkpoint points to the next one. The faded ring behind it is the checkpoint after it.
+- If your vehicle blows up, falls into the water or you go far off the route, you are put back at your last checkpoint, facing the next one. A blown up vehicle is replaced.
+- For 3 seconds after that your vehicle does not collide with the other racers.
+- When the first racer finishes, the others have 1 minute left. Who does not finish in time is DNF.
+- After the finish you watch the racers still on the track.
+
+## Deathmatch
+
+When you die you are out, and you watch the players still fighting until the match ends.
+
+## Missions
+
+- The players work together and cannot hurt each other.
+- The objective is at the top of the screen; the target is on the radar.
+- The team shares its **Team lives**: every death takes one, and the player comes back after 10 seconds. A death when no life is left ends the mission, with a small reward only.

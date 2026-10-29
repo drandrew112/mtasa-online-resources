@@ -41,12 +41,17 @@ local function listFor(kind)
     if kind == "object" then return doc.objects, LIM.objects end
     if kind == "spawn" then return Editor.spawnList(), LIM.spawnpoints end
     if kind == "checkpoint" then return doc.race.checkpoints, LIM.checkpoints end
+    if MissionEdit.LISTS[kind] then return MissionEdit.list(kind), MissionEdit.limit(kind) end
 end
 
 local function createGhost(kind, model)
     local el
-    if kind == "object" then
+    if kind == "object" or kind == "item" then
         el = createObject(model, 0, 0, -50)
+    elseif kind == "ped" then
+        el = createPed(model or 102, 0, 0, -50)
+    elseif kind == "mvehicle" then
+        el = createVehicle(model or 482, 0, 0, -50)
     elseif kind == "spawn" then
         if Editor.doc.type == "race" then
             el = createVehicle(Editor.doc.race.vehicles[1] or 411, 0, 0, -50)
@@ -72,7 +77,8 @@ function Tools.place(kind, opts)
     if list and #list >= max then notify(L("v_jobcreator.tools.limit_reached", { max = max })) return end
     local ghost = createGhost(kind, opts.model)
     if not ghost then notify(L("v_jobcreator.tools.this_model_cannot_be_created")) return end
-    Tools.current = { type = "place", kind = kind, model = opts.model, insertAt = opts.insertAt, ghost = ghost, rz = 0 }
+    Tools.current = { type = "place", kind = kind, model = opts.model, insertAt = opts.insertAt, ghost = ghost, rz = 0,
+        role = opts.role, item = opts.item }
     Editor.selected = nil
 end
 
@@ -119,6 +125,23 @@ local function commitPlace(tool)
         elseif kind == "marker" then
             doc.marker = { x, y, z }
             done = true
+        elseif MissionEdit.LISTS[kind] then
+            local id = MissionEdit.newId(kind)
+            local e = { id = id, x = x, y = y, z = z }
+            if kind == "zone" then
+                e.radius, e.height = 8, 8
+            elseif kind == "point" then
+                e.holdMs = 3000
+            elseif kind == "ped" then
+                e.skin, e.rot, e.weapon, e.ammo, e.health, e.armor = tool.model or 102, rz, 30, 300, 100, 0
+                e.accuracy, e.aggroRadius, e.behaviour = 0.4, 35, "guard"
+            elseif kind == "mvehicle" then
+                e.model, e.rot, e.role = tool.model or 482, rz, tool.role or "loot"
+                if e.role == "enemy" then e.behaviour, e.crew, e.driver = "park", 1, { skin = 102, weapon = 28 } end
+            elseif kind == "item" then
+                e.item, e.rot = tool.item, rz
+            end
+            table.insert(MissionEdit.list(kind), e)
         end
     end)
     playSoundFrontEnd(41)
@@ -294,20 +317,37 @@ function Ops.delete(item)
         elseif kind == "finish" then doc.race.finish = nil
         elseif kind == "camera" then doc.race.finishCamera = nil
         elseif kind == "marker" then doc.marker = nil
+        elseif MissionEdit.LISTS[kind] then
+            local id = item.ref.id
+            table.remove(MissionEdit.list(kind), index)
+            local removed = MissionEdit.removeRefs(doc, id)
+            if removed > 0 then notify(L("v_jobcreator.mission.refs_removed", { count = removed })) end
         end
     end)
     Editor.selected = nil
 end
 
--- Copy next to the original, picked up straight away.
+local function groupOf(kind)
+    if kind == "object" then return "objects" end
+    if kind == "spawn" then return "spawns" end
+    return "m_" .. MissionEdit.LISTS[kind]
+end
+
+function Ops.canDuplicate(item)
+    return item ~= nil and (item.kind == "object" or item.kind == "spawn" or MissionEdit.LISTS[item.kind] ~= nil)
+end
+
+-- Copy next to the original, picked up straight away (mission elements get a new id).
 function Ops.duplicate(item)
-    if not item or (item.kind ~= "object" and item.kind ~= "spawn") then return end
+    if not Ops.canDuplicate(item) then return end
     local list, max = listFor(item.kind)
     if #list >= max then notify(L("v_jobcreator.tools.limit_reached", { max = max })) return end
     Editor.change(function()
-        table.insert(list, item.index + 1, deepCopy(item.ref))
+        local copy = deepCopy(item.ref)
+        if MissionEdit.LISTS[item.kind] then copy.id = MissionEdit.newId(item.kind) end
+        table.insert(list, item.index + 1, copy)
     end)
-    local newItem = View.groups[item.kind == "object" and "objects" or "spawns"][item.index + 1]
+    local newItem = View.groups[groupOf(item.kind)][item.index + 1]
     Tools.move(newItem)
 end
 

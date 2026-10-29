@@ -41,7 +41,7 @@ addEventHandler("onClientInteractMenuSelect", root, function(menuId, value, targ
         if Kinds[item.kind].fixed then return Menus.openItem(item) end
         Tools.move(item)
     elseif value == "dup" then
-        if item.kind == "object" or item.kind == "spawn" then Ops.duplicate(item) else notify(L("v_jobcreator.interact.this_cannot_be_duplicated")) end
+        if Ops.canDuplicate(item) then Ops.duplicate(item) else notify(L("v_jobcreator.interact.this_cannot_be_duplicated")) end
     elseif value == "options" then
         Menus.openItem(item)
     elseif value == "delete" then

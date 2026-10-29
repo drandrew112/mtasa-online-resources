@@ -113,5 +113,9 @@
   "ui_pause.settings.models_more": "+{count} more",
   "ui_pause.settings.models_new": "To download: {names}",
   "ui_pause.pausemenu.head_look_sync": "Head Look Sync",
-  "ui_pause.pausemenu.head_look_sync_desc": "Players turn their heads where they are looking. Off: every head stays fixed straight ahead."
+  "ui_pause.pausemenu.head_look_sync_desc": "Players turn their heads where they are looking. Off: every head stays fixed straight ahead.",
+  "ui_pause.pausemenu.missions": "Missions",
+  "ui_pause.pausemenu.browse_available_missions": "Browse the available missions",
+  "ui_pause.pausemenu.leave_current_job": "Leave current job",
+  "ui_pause.pausemenu.leave_current_job_desc": "Leave the job you are playing. You get no reward and lose nothing."
 }

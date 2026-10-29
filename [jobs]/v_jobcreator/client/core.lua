@@ -112,6 +112,7 @@ function Editor.spawnList()
     local doc = Editor.doc
     if not doc then return {} end
     if doc.type == "race" then return doc.race.spawnpoints end
+    if doc.type == "mission" then return doc.mission.spawnpoints end
     return doc.deathmatch.spawnpoints
 end
 
@@ -129,6 +130,7 @@ function Editor.problems()
         if not doc.race.finish then list[#list + 1] = L("v_jobcreator.core.place_finish") end
         if #doc.race.checkpoints == 0 then list[#list + 1] = L("v_jobcreator.core.no_checkpoints_yet_optional") end
     end
+    if doc.type == "mission" then MissionEdit.problems(list) end
     if not Editor.hasThumb then list[#list + 1] = L("v_jobcreator.core.no_thumbnail_yet_optional") end
     return list
 end
@@ -168,6 +170,14 @@ addEventHandler("jobcreator:loaded", resourceRoot, function(game, meta)
         game.race.vehicles = game.race.vehicles or { 411 }
         game.race.spawnpoints = game.race.spawnpoints or {}
         game.race.checkpoints = game.race.checkpoints or {}
+    elseif game.type == "mission" then
+        local m = game.mission or {}
+        game.mission = m
+        for _, key in ipairs({ "spawnpoints", "loadout", "zones", "peds", "vehicles", "items", "points", "stages" }) do
+            m[key] = m[key] or {}
+        end
+        for _, s in ipairs(m.stages) do s.objectives = s.objectives or {} end
+        m.teamLives = m.teamLives or 3
     else
         game.deathmatch = game.deathmatch or {}
         game.deathmatch.spawnpoints = game.deathmatch.spawnpoints or {}
@@ -180,7 +190,7 @@ addEventHandler("jobcreator:loaded", resourceRoot, function(game, meta)
     if x then
         if Editor.camMode == "free" then Freecam.setPosition(x, y, z + 15) else setElementPosition(localPlayer, x, y, z + 1) end
     end
-    notify(L("v_jobcreator.core.press_for_menu", { id = (meta.id and L("v_jobcreator.core.opened") or L("v_jobcreator.core.new")), type = (game.type == "race" and "race" or "deathmatch"), name = game.name, menu = CREATOR.KEYS.menu:upper() }))
+    notify(L("v_jobcreator.core.press_for_menu", { id = (meta.id and L("v_jobcreator.core.opened") or L("v_jobcreator.core.new")), type = game.type, name = game.name, menu = CREATOR.KEYS.menu:upper() }))
 end)
 
 addEvent("jobcreator:saved", true)

@@ -50,6 +50,7 @@ HELP_INDEX = {
         { id = "binds_vehicle",     category = "binds", order = 90,  file = "binds/vehicle.txt" },
         { id = "binds_world",       category = "binds", order = 100, file = "binds/world.txt" },
         { id = "binds_work",        category = "binds", order = 110, file = "binds/work.txt" },
+        { id = "binds_jobs",        category = "binds", order = 115, file = "binds/jobs.txt" },
         { id = "binds_creator",     category = "binds", order = 120, file = "binds/creator.txt" },
         { id = "binds_admin",       category = "binds", order = 130, file = "binds/admin.txt" },
 

@@ -121,6 +121,15 @@ end
 local function stopTest(player, session, silent)
     local test = session.test
     if not test then return end
+    if test.mission then
+        -- v_jobmanager ends the test match and puts the player back (onJobMissionFinished below)
+        if not jm:jobmanagerStopTest(player) then
+            session.test = nil
+            setLoadout(player)
+            if not silent then triggerClientEvent(player, "jobcreator:testStopped", resourceRoot) end
+        end
+        return
+    end
     session.test = nil
     if isElement(test.vehicle) then destroyElement(test.vehicle) end
     setLoadout(player)
@@ -152,6 +161,8 @@ local function closeCreator(player, quiet, immediate)
     slots[session.slot] = nil
     sessions[player] = nil
     setElementData(player, "jobCreator", false)
+    -- quit: "save.position" stays for v_accounts' quit save (the place before the creator)
+    if not quiet then removeElementData(player, "save.position") end
     if not quiet then
         -- the client stops its freecam first, otherwise it would move the player back
         triggerClientEvent(player, "jobcreator:closed", resourceRoot)
@@ -192,6 +203,9 @@ local function openCreator(player, gameId)
     slots[slot] = player
     sessions[player] = session
     setElementData(player, "jobCreator", true)
+    -- the account keeps the place before the creator, never the editor dimension (v_accounts savesys)
+    local b = session.back
+    setElementData(player, "save.position", { b.x, b.y, b.z, b.interior, b.dimension }, false)
 
     removePedFromVehicle(player)
     setLoadout(player)
@@ -217,9 +231,17 @@ local function defaultGame(gameType)
         return { name = L.msg("v_jobcreator.main.untitled_race"), type = "race", description = "", minPlayers = 1, maxPlayers = 8, objects = {},
             race = { vehicles = { 411 }, spawnpoints = {}, checkpoints = {} } }
     end
+    if gameType == "mission" then
+        return { name = L.msg("v_jobcreator.main.untitled_mission"), type = "mission", description = "", minPlayers = 1, maxPlayers = 4, objects = {},
+            mission = { spawnpoints = {}, teamLives = 3, armour = 50, loadout = { { id = 24, ammo = 200 } },
+                zones = {}, peds = {}, vehicles = {}, items = {}, points = {},
+                stages = { { id = "s1", title = "Stage 1", objectives = {} } } } }
+    end
     return { name = L.msg("v_jobcreator.main.untitled_deathmatch"), type = "deathmatch", description = "", minPlayers = 2, maxPlayers = 8, objects = {},
         deathmatch = { weapon = 24, ammo = 120, armour = 100, spawnpoints = {} } }
 end
+
+local GAME_TYPES = { race = true, deathmatch = true, mission = true }
 
 local function sendGame(player, session, game, entry)
     triggerClientEvent(player, "jobcreator:loaded", resourceRoot, game, {
@@ -253,7 +275,7 @@ end
 addEvent("jobcreator:new", true)
 addEventHandler("jobcreator:new", resourceRoot, function(gameType)
     local session = sessions[client]
-    if not session or (gameType ~= "race" and gameType ~= "deathmatch") then return end
+    if not session or not GAME_TYPES[gameType] then return end
     unlock(client, session)
     session.gameId, session.type, session.image, session.storedMarker, session.official = nil, gameType, nil, nil, nil
     sendGame(client, session, defaultGame(gameType), nil)
@@ -326,10 +348,18 @@ addEventHandler("jobcreator:save", resourceRoot, function(doc, publish)
         publish = false
     end
 
-    local game = sanitizeGame(doc, session.type, admin and "keep" or session.storedMarker, session.official)
+    local game = sanitizeGame(doc, session.type, admin and "keep" or session.storedMarker, session.official, isOfficialAdmin(player))
     if not game then return notify(player, title, L.msg("v_jobcreator.main.game_data_is_invalid")) end
+    -- scriptOnly missions are official games without a world marker; publishing makes them official
+    if game.scriptOnly then
+        game.marker = nil
+        if publish then publish = "official" end
+    elseif session.official and entry and entry.scriptOnly and not isOfficialAdmin(player) then
+        -- below OFFICIAL_LEVEL the flag cannot be cleared either
+        game.scriptOnly = true
+    end
     game.id = session.gameId
-    local id, saved = jm:jobmanagerGameSave(game, entry and entry.owner or owner, session.image)
+    local id, saved = jm:jobmanagerGameSave(game, entry and entry.owner or owner, session.image, game.scriptOnly and "official" or nil)
     if not id then return notify(player, title, L.msg("v_jobcreator.main.saving_failed", { err = tostring(saved) })) end
     if not session.gameId then locks[id] = player end
     session.gameId, session.image, session.storedMarker = id, nil, game.marker
@@ -352,7 +382,7 @@ addEvent("jobcreator:validate", true)
 addEventHandler("jobcreator:validate", resourceRoot, function(doc)
     local session = sessions[client]
     if not session or not session.type then return end
-    local game = sanitizeGame(doc, session.type, "keep", session.official)
+    local game = sanitizeGame(doc, session.type, "keep", session.official, isOfficialAdmin(client))
     local ok, err = false, L.msg("v_jobcreator.main.invalid_game_data")
     if game then ok, err = jm:jobmanagerValidateGame(game) end
     triggerClientEvent(client, "jobcreator:validated", resourceRoot, ok, err)
@@ -424,6 +454,28 @@ addEvent("jobcreator:testStart", true)
 addEventHandler("jobcreator:testStart", resourceRoot, function(data)
     local player, session = client, sessions[client]
     if not session or session.test or type(data) ~= "table" then return end
+    if session.type == "mission" then
+        -- a real mission match, alone in the editor dimension, without rewards (v_jobmanager)
+        local game = sanitizeGame(data.doc, "mission", nil, session.official, isOfficialAdmin(player))
+        if not game then return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.game_data_is_invalid")) end
+        game.objects = {}       -- the editor already shows them (client-side objects)
+        game.createdBy = accountName(player)
+        game.minPlayers, game.maxPlayers = 1, 1
+        removePedFromVehicle(player)
+        setElementFrozen(player, false)
+        setElementAlpha(player, 255)
+        setElementCollisionsEnabled(player, true)
+        session.test = { mission = true }
+        local matchId, err = jm:jobmanagerTestMission(player, game, type(data.stage) == "string" and data.stage or nil)
+        if not matchId then
+            session.test = nil
+            triggerClientEvent(player, "jobcreator:testStopped", resourceRoot)
+            return notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.test_failed", { err = tostring(err) }))
+        end
+        session.test.matchId = matchId
+        triggerClientEvent(player, "jobcreator:testStarted", resourceRoot)
+        return
+    end
     local x, y, z, rot = tonumber(data.x), tonumber(data.y), tonumber(data.z), tonumber(data.rot) or 0
     if not (x and y and z) then return end
     local px, py, pz = getElementPosition(player)
@@ -462,9 +514,27 @@ addEventHandler("jobcreator:testStop", resourceRoot, function()
     end
 end)
 
+-- the end of a mission test (F6, passed, failed): v_jobmanager has put the player back already
+addEvent("onJobMissionFinished")
+addEventHandler("onJobMissionFinished", root, function(matchId, missionId, result, info, tag)
+    if tag ~= "__creator_test" or type(info) ~= "table" then return end
+    for _, player in ipairs(info.players or {}) do
+        local session = sessions[player]
+        if session and session.test and session.test.mission and session.test.matchId == matchId then
+            session.test = nil
+            setLoadout(player)
+            setPedArmor(player, 0)
+            setElementHealth(player, 100)
+            triggerClientEvent(player, "jobcreator:testStopped", resourceRoot, result)
+        end
+    end
+end)
+
 addEventHandler("onPlayerWasted", root, function()
     local session = sessions[source]
     if not session then return end
+    -- mission tests: deaths and Team lives are v_jobmanager's
+    if session.test and session.test.mission then return end
     local player = source
     setTimer(function()
         if sessions[player] ~= session then return end

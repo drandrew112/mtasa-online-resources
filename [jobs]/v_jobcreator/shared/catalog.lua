@@ -178,9 +178,48 @@ CATALOG.weapons = {
     { name = L.text("v_jobcreator.catalog.heavy"), items = { 35, 37, 38 } },
 }
 
+-- missions: ped skins by group (any skin 0..312 is accepted by the server)
+CATALOG.skins = {
+    { name = L.text("v_jobcreator.catalog.skins_gangs"), items = { 102, 103, 104, 105, 106, 107, 108, 109, 110, 114, 115, 116, 117, 118, 120, 173, 174, 175 } },
+    { name = L.text("v_jobcreator.catalog.skins_mafia"), items = { 111, 112, 113, 124, 125, 126, 127 } },
+    { name = L.text("v_jobcreator.catalog.skins_bikers"), items = { 100, 247, 248, 254 } },
+    { name = L.text("v_jobcreator.catalog.skins_security"), items = { 71, 163, 164, 165, 166, 286 } },
+    { name = L.text("v_jobcreator.catalog.skins_police"), items = { 280, 281, 282, 283, 284, 285, 287 } },
+    { name = L.text("v_jobcreator.catalog.skins_civilians"), items = { 7, 15, 17, 22, 29, 40, 46, 56, 59, 93, 98, 141, 147, 150, 187, 240 } },
+}
+
+-- missions: pick-up items (v_inventory item ids; the model is the editor's preview)
+CATALOG.missionItems = {
+    { "mission_package", 1271, L.text("v_jobcreator.catalog.item_package") },
+    { "mission_briefcase", 1210, L.text("v_jobcreator.catalog.item_briefcase") },
+    { "mission_money_bag", 1550, L.text("v_jobcreator.catalog.item_money_bag") },
+    { "mission_documents", 2894, L.text("v_jobcreator.catalog.item_documents") },
+    { "mission_crate", 2912, L.text("v_jobcreator.catalog.item_crate") },
+}
+
+CATALOG.pedBehaviours = { "guard", "patrol", "attack", "civilian" }
+CATALOG.vehicleRoles = { "loot", "crew", "prop", "enemy" }
+CATALOG.objectiveTypes = { "enterZone", "stayInZone", "enterVehicle", "deliverVehicle", "collectItem", "deliverItem",
+    "killPeds", "destroyVehicle", "interact", "survive", "scriptEvent" }
+CATALOG.failTypes = { "vehicleDestroyed", "pedDied", "leaveZone" }
+CATALOG.teamLives = { 0, 1, 2, 3, 4, 5, 6, 8, 10 }
+CATALOG.missionMinutes = { 0, 5, 10, 15, 20, 30, 45, 60 }           -- 0 = no time limit
+CATALOG.stageSeconds = { 0, 30, 60, 90, 120, 180, 300, 600 }         -- 0 = no time limit
+CATALOG.holdSeconds = { 10, 15, 20, 30, 45, 60, 90, 120, 180, 300 }  -- stay in zone / survive
+CATALOG.rewardMoney = { 0, 1000, 2500, 5000, 10000, 15000, 25000, 50000, 100000 }  -- 0 = automatic
+CATALOG.rewardXp = { 0, 250, 500, 1000, 2000, 4000, 8000 }
+CATALOG.zoneRadii = { 3, 5, 8, 12, 16, 20, 30, 45, 60 }
+CATALOG.zoneHeights = { 3, 5, 8, 12, 20, 40 }
+CATALOG.aggroRadii = { 15, 25, 35, 50, 75 }
+CATALOG.accuracies = { 0.2, 0.3, 0.4, 0.55, 0.7, 0.85 }
+CATALOG.pedHealth = { 50, 100, 150, 200 }
+CATALOG.crewSizes = { 0, 1, 2, 3 }
+CATALOG.interactSeconds = { 1, 2, 3, 5, 8 }
+
 CATALOG.ammo = { 30, 60, 120, 250, 500, 1000, 9999 }
 CATALOG.armour = { 0, 25, 50, 75, 100 }
 CATALOG.checkpointSizes = { 3, 4, 5, 6, 7, 8, 10, 12, 15 }
+CATALOG.offRoute = { 0, 100, 150, 250 }     -- m off the route before a racer is put back; 0 = off
 
 -- lookups
 CATALOG.objectName, CATALOG.vehicleAllowed, CATALOG.weaponAllowed = {}, {}, {}
@@ -193,4 +232,6 @@ end
 for _, cat in ipairs(CATALOG.weapons) do
     for _, id in ipairs(cat.items) do CATALOG.weaponAllowed[id] = true end
 end
+CATALOG.missionItem = {}
+for _, entry in ipairs(CATALOG.missionItems) do CATALOG.missionItem[entry[1]] = { model = entry[2], name = entry[3] } end
 end)

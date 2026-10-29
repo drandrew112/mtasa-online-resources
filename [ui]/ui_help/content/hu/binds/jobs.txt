@@ -1,0 +1,34 @@
+# Jobs: versenyek, deathmatchek, küldetések
+@keywords: jobs, verseny, race, deathmatch, küldetés, mission, F2, kilépés, leavejob, néző, checkpoint, csapatéletek, quickjob
+@related: binds, binds_pause, binds_creator
+
+A jobokat a szünet menüből (**Online > Jobs**) vagy egy job markerben az `E` gombbal indíthatod. A váró lobbiban a házigazda indítja a jobot.
+
+## Gombok és parancsok
+
+- `F2` – job menü job közben: kilépés, vissza az utolsó checkpointra (verseny), a többi játékos nézése
+- `/leavejob` – kilépés a lobbiból vagy a futó jobból (előbb rákérdez; a `/leavejob confirm` azonnal kiléptet)
+- `/quickjob` – belépés egy véletlen nyitott lobbiba
+- `/startjob` – a job indítása (a lobbi házigazdája)
+- `Space` – a nézői lista újranyitása, amíg másokat nézel
+- `E` (nyomva tartva) – interakciós pontok küldetésben
+
+A futó jobból kilépve nem kapsz jutalmat, és nem is veszítesz semmit. Oda kerülsz vissza, ahol a job előtt voltál.
+
+## Verseny
+
+- A checkpoint fölötti nyíl a következő checkpoint felé mutat. A mögötte látszó halvány gyűrű az azutáni checkpoint.
+- Ha felrobban a járműved, vízbe esik, vagy nagyon letérsz az útvonalról, a rendszer visszarak az utolsó checkpointra, a következő felé fordítva. A felrobbant jármű helyett újat kapsz.
+- Ezután 3 másodpercig a járműved nem ütközik a többi versenyzővel.
+- Amikor az első versenyző célba ér, a többieknek 1 percük marad. Aki addig nem ér be, DNF.
+- Célba érés után a még pályán lévő versenyzőket nézheted.
+
+## Deathmatch
+
+Ha meghalsz, kiestél, és a meccs végéig a még harcoló játékosokat nézheted.
+
+## Küldetések
+
+- A játékosok együtt dolgoznak, és nem sebezhetik egymást.
+- A feladat a képernyő tetején látszik, a célpont a radaron.
+- A csapatnak közös **csapatéletei** vannak: minden halál levon egyet, és a játékos 10 másodperc múlva visszatér. Ha már nincs élet, a következő halállal véget ér a küldetés, és csak kis jutalom jár.
