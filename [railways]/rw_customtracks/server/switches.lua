@@ -101,10 +101,10 @@ end
 function Switches.reserve(owner, settings)
     for g, st in pairs(settings) do
         local i = inf(g)
-        if not Net.group(g) then return false, L.msg("rw_customtracks.switches.no_such_switch", { g = g }) end
-        if i.reserved and i.reserved ~= owner then return false, L.msg("rw_customtracks.switches.reserved_by", { g = g, reserved = tostring(i.reserved) }) end
-        if i.damaged then return false, L.msg("rw_customtracks.switches.damaged", { g = g }) end
-        if Net.getState(g) ~= st and Switches.isLocked(g) then return false, L.msg("rw_customtracks.switches.train_is_on_it", { g = g }) end
+        if not Net.group(g) then return false, g .. ": no such switch" end
+        if i.reserved and i.reserved ~= owner then return false, g .. ": reserved by " .. tostring(i.reserved) end
+        if i.damaged then return false, g .. ": damaged" end
+        if Net.getState(g) ~= st and Switches.isLocked(g) then return false, g .. ": a train is on it" end
     end
     owned[owner] = owned[owner] or {}
     for g, st in pairs(settings) do
@@ -223,7 +223,7 @@ local function route(t)
     local want = {}
     local limit, reason = r.length - SW.DEST_GAP, "destination"
     if not d then
-        if r.deadEnd then limit, reason = r.length - 2, L.msg("rw_customtracks.switches.end_of_track")
+        if r.deadEnd then limit, reason = r.length - 2, "end of track"
         else limit, reason = r.length, "line" end
     end
     -- red signals and the moving block (never closer than TRAIN_GAP to another train) come
@@ -238,7 +238,7 @@ local function route(t)
             local dd
             if p.dir == sdir and sdir > 0 and p.s >= entry then dd = base + p.s - entry
             elseif p.dir == sdir and sdir < 0 and p.s <= entry then dd = base + entry - p.s end
-            if dd and dd >= SW.STOP_PASSING and dd - SW.STOP_GAP < limit then limit, reason = dd - SW.STOP_GAP, L.msg("rw_customtracks.switches.signal", { id = tostring(p.id) }) end
+            if dd and dd >= SW.STOP_PASSING and dd - SW.STOP_GAP < limit then limit, reason = dd - SW.STOP_GAP, "signal " .. tostring(p.id) end
         end
         for _, o in pairs(Trains.all()) do
             if o ~= t and o.dim == t.dim then
@@ -247,7 +247,7 @@ local function route(t)
                         local d
                         if sdir > 0 and sp[3] >= entry then d = base + math.max(0, sp[2] - entry)
                         elseif sdir < 0 and sp[2] <= entry then d = base + math.max(0, entry - sp[3]) end
-                        if d and d - SW.TRAIN_GAP < limit then limit, reason = d - SW.TRAIN_GAP, L.msg("rw_customtracks.switches.train", { id = o.id }) end
+                        if d and d - SW.TRAIN_GAP < limit then limit, reason = d - SW.TRAIN_GAP, "train " .. o.id end
                     end
                 end
             end
@@ -255,10 +255,16 @@ local function route(t)
         base = base + (sdir > 0 and Net.length(sid) - entry or entry)
     end
 
-    -- the switches up to the horizon, but only those the train can reach before stopping
+    -- gradient profile of the way ahead for the ATP braking curve (server/braking.lua)
+    local profile = Braking.profile(t, r.steps, s, uLead, sgn, math.min(r.length, math.max(0, limit) + 20))
+
+    -- the switches up to the horizon, but only those the train can reach before stopping. The
+    -- horizon is the ATP's own braking distance (gradient included) + HORIZON_EXTRA: shorter, and
+    -- on a downhill the ATP braked for an authority end that was only "route not set yet"
     local g0 = Net.segment(seg)
     local dist = dir > 0 and g0.len - s or s
-    local horizon = math.max(SW.HORIZON_MIN, t.v * t.v / (2 * NET.SIM.BRAKE) + SW.HORIZON_EXTRA)
+    local stopDist = Braking.distance(profile, t, uLead, math.abs(t.v), NET.SIM.BRAKE * 0.9 + NET.SIM.R0)
+    local horizon = math.max(SW.HORIZON_MIN, stopDist + SW.HORIZON_EXTRA)
     for i, nodeId in ipairs(r.nodes) do
         if i > 1 then dist = dist + Net.length(r.steps[i][1]) end
         local node = Net.node(nodeId)
@@ -282,7 +288,8 @@ local function route(t)
         end
     end
 
-    t.authority = { u = uLead + sgn * math.max(0, limit), sign = sgn, reason = reason, remaining = limit, routeLength = r.length }
+    t.authority = { u = uLead + sgn * math.max(0, limit), sign = sgn, reason = reason, remaining = limit, routeLength = r.length,
+        profile = profile }
 
     -- release what is neither ahead on the route nor under the train
     local under = groupsUnder(t)

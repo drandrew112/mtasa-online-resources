@@ -401,7 +401,9 @@ local function step(t, dt)
     local grade = t.path:grade(mid) * SIM.GRADE_FACTOR
     grade = math.max(-SIM.GRADE_CAP, math.min(SIM.GRADE_CAP, grade))
 
-    -- ATP: brake in time for the end of the authority (first switch not reserved / destination)
+    -- ATP: brake in time for the end of the authority (first switch not reserved / destination).
+    -- The gradient counts over the whole way to the end (Braking profile from the router), not
+    -- just under the train: by energy, v^2/2 = (brake + R0) * d + g * rise.
     local A = t.authority
     t.atp = false
     if A then
@@ -410,18 +412,25 @@ local function step(t, dt)
         local toward = t.v * A.sign
         local starting = t.ctrl > 0 and t.rev == A.sign
         if toward > 0.05 or starting then
-            -- what the slope and the running resistance do on their own (+ = helps braking)
-            local natural = SIM.R0 + 9.81 * grade * A.sign
-            local decel = math.max(0.2, (SIM.BRAKE + natural) * 0.9)
             local v2 = math.max(0, toward) ^ 2
+            local P = A.profile
+            local function riseTo(d)
+                if P and P.sign == A.sign then return Braking.rise(P, t, lead, d) end
+                return grade * A.sign * d
+            end
+            -- brake deceleration needed to stop d metres ahead (running resistance helps)
+            local function need(d)
+                d = math.max(0.5, d)
+                return (v2 / 2 - 9.81 * riseTo(d)) / d - SIM.R0
+            end
             if remaining <= 2 then
                 -- at the end of the authority: no traction towards it, hold the brakes
                 t.atp = true
                 t.ctrl = math.min(t.ctrl, toward > 0.05 and -1 or -0.5)
-            elseif remaining <= v2 / (2 * decel) + 3 then
-                -- on the braking curve: just the deceleration needed to stop at the end
-                local need = v2 / (2 * math.max(0.5, remaining - 1))
-                local frac = math.max(0.15, math.min(1, (need - natural) / SIM.BRAKE))
+            elseif need(remaining - 3) >= SIM.BRAKE * 0.9 then
+                -- on the braking curve (90 % of the service brake): just the deceleration
+                -- needed to stop at the end
+                local frac = math.max(0.15, math.min(1, need(remaining - 1) / SIM.BRAKE))
                 t.atp = true
                 t.ctrl = math.min(t.ctrl, -frac)
             end

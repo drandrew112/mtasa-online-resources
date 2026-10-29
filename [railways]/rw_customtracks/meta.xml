@@ -19,6 +19,7 @@
     <!-- ================= SERVER ================= -->
     <script src="server/network.lua"  type="server" />
     <script src="server/validate.lua" type="server" />
+    <script src="server/braking.lua"  type="server" />
     <script src="server/trains.lua"   type="server" />
     <script src="server/switches.lua" type="server" />
     <script src="server/integration.lua" type="server" />

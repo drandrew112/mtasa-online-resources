@@ -153,7 +153,12 @@ local function routeTarget(s, c)
     local stop = s.trip.stops[k]
     if not stop then return nil end
     local st = Stations[stop.station]
-    for _, track in ipairs({ stop.track, s.trip.line.track, c.track }) do
+    -- the stop's own track, else the line's, else the current one. Not ipairs over a list with
+    -- nil holes: most stops have no track, so it stopped at once and the fallback below took any
+    -- zone - player SL2 trains were routed to the main line platform at Market (crossed at W13)
+    local candidates = { stop.track or false, s.trip.line.track or false, c.track or false }
+    for i = 1, 3 do
+        local track = candidates[i]
         local z = track and st.zones[track]
         if z then
             local tp = z.center + c.dir * ROUTE_STOP_AHEAD
