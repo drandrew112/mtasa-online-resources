@@ -19,6 +19,7 @@
 
     <script src="core/client/jobmenu.lua" type="client" />
     <script src="core/client/spectate.lua" type="client" />
+    <script src="core/client/objects.lua" type="client" />
     <script src="core/client/ui.lua" type="client" />
     <script src="core/client/results.lua" type="client" />
     <script src="core/client/scoreboard.lua" type="client" />
@@ -46,6 +47,7 @@
     <export function="jobmanagerLeave" type="server" />
     <export function="jobmanagerGetState" type="server" />
     <export function="jobmanagerAcceptInvite" type="server" />
+    <export function="jobmanagerDeclineInvite" type="server" />
     <!-- game storage in MySQL (jobs_official / jobs_community / jobs_draft), used by
          v_jobcreator and v_weekly; see core/storage.lua -->
     <export function="jobmanagerStorageReady" type="server" />

@@ -41,8 +41,14 @@ local function showCheckpoint()
         cp = cp, isFinish = isFinish, next = nextCp or false, nextFinish = nextFinish or false, after = after or false,
     })
     run.visuals = visuals and true or nil
-    run.marker = createMarker(cp[1], cp[2], cp[3], "checkpoint", cp[4] or 5,
-        255, isFinish and 70 or 200, isFinish and 70 or 0, visuals and 0 or 160)
+    -- with the shader visuals only an invisible colshape counts the hit: a GTA "checkpoint"
+    -- marker still draws at alpha 0
+    if visuals then
+        run.marker = createColTube(cp[1], cp[2], cp[3] - 6, cp[4] or 5, 18)
+    else
+        run.marker = createMarker(cp[1], cp[2], cp[3], "checkpoint", cp[4] or 5,
+            255, isFinish and 70 or 200, isFinish and 70 or 0, 160)
+    end
     setElementDimension(run.marker, Editor.info.dimension)
     if not visuals then
         if nextCp then setMarkerTarget(run.marker, nextCp[1], nextCp[2], nextCp[3]) end
@@ -56,7 +62,7 @@ local function formatTime(ms)
     return string.format("%d:%02d.%03d", math.floor(ms / 60000), math.floor(ms / 1000) % 60, ms % 1000)
 end
 
-addEventHandler("onClientMarkerHit", root, function(hitElement, matchingDimension)
+local function onCheckpointHit(hitElement, matchingDimension)
     if not run or source ~= run.marker or not matchingDimension then return end
     if hitElement ~= localPlayer and hitElement ~= getPedOccupiedVehicle(localPlayer) then return end
     local _, isFinish = point(run.index)
@@ -69,7 +75,9 @@ addEventHandler("onClientMarkerHit", root, function(hitElement, matchingDimensio
     end
     run.index = run.index + 1
     showCheckpoint()
-end)
+end
+addEventHandler("onClientMarkerHit", root, onCheckpointHit)
+addEventHandler("onClientColShapeHit", root, onCheckpointHit)
 
 local function begin()
     Tools.cancel()

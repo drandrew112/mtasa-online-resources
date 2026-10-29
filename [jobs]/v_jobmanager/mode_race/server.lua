@@ -160,6 +160,7 @@ local function allFinished(match)
 end
 
 local createCheckpoint
+local CP_HIT_BELOW, CP_HIT_HEIGHT = 6, 18      -- hit tube around a checkpoint point (m)
 
 local function finishRace(match, player, endMatch)
     match.finished[player] = true
@@ -187,13 +188,17 @@ function createCheckpoint(match, player, endMatch)
     local point, isFinish = routePoint(route, index)
     if not point then endMatch(match, L.msg("v_jobmanager.mode_race.invalid_race_configuration")) return end
 
-    -- invisible: only the hit counts, the player's client draws the checkpoint (mode_race/client)
-    local marker = createMarker(point[1], point[2], point[3], "checkpoint", point[4] or 5, 255, 255, 0, 0, player)
+    -- only the hit counts, the player's client draws the checkpoint (mode_race/client). A colshape,
+    -- not a GTA "checkpoint" marker: those still draw their arrow and ring at alpha 0.
+    local size = point[4] or 5
+    local marker = createColTube(point[1], point[2], point[3] - CP_HIT_BELOW, size, CP_HIT_HEIGHT)
     setElementDimension(marker, match.dimension)
     table.insert(match.markers, marker)
     sendCheckpoint(player, route, index)
-    addEventHandler("onMarkerHit", marker, function(hitElement, matchingDimension)
-        if hitElement ~= player or not matchingDimension or match.ended then return end
+    addEventHandler("onColShapeHit", marker, function(hitElement, matchingDimension)
+        if not matchingDimension or match.ended then return end
+        if hitElement ~= player and (getElementType(hitElement) ~= "vehicle" or getVehicleController(hitElement) ~= player) then return end
+        if not isElement(marker) then return end
         if isElement(marker) then destroyElement(marker) end
         triggerClientEvent(player, "jobmanager:raceCpHit", resourceRoot, isFinish)
         if isFinish then

@@ -83,7 +83,7 @@ end
 
 -- an objective in one line ("Enter zone: zone2 (8 m) · all players")
 function MissionEdit.objectiveText(o)
-    local t = L("v_jobcreator.mission.obj." .. o.type)
+    local t = L("v_jobcreator.mission.obj." .. tostring(o.type):lower())
     local parts = {}
     for _, key in ipairs({ "vehicle", "item", "zone", "point", "ped" }) do
         if o[key] then parts[#parts + 1] = nameOf(o[key]) end
@@ -231,7 +231,7 @@ local function addObjectiveMenu(si)
     local types = {}
     local function zones(base) return entityPicks({ "zone" }, base) end
     for _, t in ipairs(CATALOG.objectiveTypes) do
-        local label = L("v_jobcreator.mission.obj." .. t)
+        local label = L("v_jobcreator.mission.obj." .. t:lower())
         local items
         if t == "enterZone" or t == "stayInZone" then
             items = zones({ "objAdd", si, t })
@@ -263,9 +263,9 @@ local function addObjectiveMenu(si)
         end
         if items then
             if #items == 0 then items[1] = leaf(L("v_jobcreator.mission.none_placed"), { "none" }, nil, { closeOnSelect = false }) end
-            types[#types + 1] = sub(label, items, L("v_jobcreator.mission.objdesc." .. t))
+            types[#types + 1] = sub(label, items, L("v_jobcreator.mission.objdesc." .. t:lower()))
         else
-            types[#types + 1] = leaf(label, { "objAddEvent", si }, L("v_jobcreator.mission.objdesc." .. t))
+            types[#types + 1] = leaf(label, { "objAddEvent", si }, L("v_jobcreator.mission.objdesc." .. t:lower()))
         end
     end
     return sub(L("v_jobcreator.mission.add_objective"), types)
@@ -316,9 +316,9 @@ local function failMenu(si, s)
         items[#items + 1] = sub(MissionEdit.objectiveText(f), { leaf(L("v_jobcreator.mission.yes_remove"), { "failDel", si, fi }) })
     end
     items[#items + 1] = sub(L("v_jobcreator.mission.add_fail"), {
-        sub(L("v_jobcreator.mission.obj.vehicleDestroyed"), entityPicks({ "mvehicle" }, { "failAdd", si, "vehicleDestroyed", "vehicle" })),
-        sub(L("v_jobcreator.mission.obj.pedDied"), entityPicks({ "ped" }, { "failAdd", si, "pedDied", "ped" })),
-        sub(L("v_jobcreator.mission.obj.leaveZone"), entityPicks({ "zone" }, { "failAdd", si, "leaveZone", "zone" })),
+        sub(L("v_jobcreator.mission.obj.vehicledestroyed"), entityPicks({ "mvehicle" }, { "failAdd", si, "vehicleDestroyed", "vehicle" })),
+        sub(L("v_jobcreator.mission.obj.peddied"), entityPicks({ "ped" }, { "failAdd", si, "pedDied", "ped" })),
+        sub(L("v_jobcreator.mission.obj.leavezone"), entityPicks({ "zone" }, { "failAdd", si, "leaveZone", "zone" })),
     })
     return sub(L("v_jobcreator.mission.fail_conditions"), items, L("v_jobcreator.mission.count", { count = #(s.fail or {}) }))
 end

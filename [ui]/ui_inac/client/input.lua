@@ -98,7 +98,7 @@ function bindAllKeys()
         elseif item.type == "action" and item.action then
             item.action()
             playClick()
-            if item.closeOnSelect and isTempMenuOpen() then closeTempMenu() end
+            if item.closeOnSelect and isTempMenuOpen() and tempMenuMayClose() then closeTempMenu() end
 
         elseif item.type == "spawnvehicle" then
             triggerServerEvent("ui_inac:spawnVehicle", localPlayer, item.model)
@@ -116,7 +116,7 @@ function bindAllKeys()
             if menu.back then
                 MenuState.current = menu.back
                 MenuState:resetSelection()
-            else
+            elseif tempMenuMayClose() then
                 closeTempMenu()
             end
             playSelect()

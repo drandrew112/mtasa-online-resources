@@ -1,17 +1,27 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Spectator menu + label (server: core/spectate.lua). Scrolling the list switches the camera at
--- once (ui_inac:tempMenuHover). Backspace closes the menu, Space opens it again.
+-- Spectator menu + label + camera (server: core/spectate.lua). Scrolling the list switches the
+-- camera at once (ui_inac:tempMenuHover). The menu is locked: the player cannot close it and the
+-- job menu (F2) never replaces it; it goes away when spectating ends.
+--
+-- The camera and the hidden ped are driven here, not by the server: the camera is the GTA follow
+-- camera of the target (setCameraTarget) and the frozen, invisible ped is moved FOLLOW_OFFSET m
+-- above the target every FOLLOW_MS, so the target stays streamed in and the server keeps sending
+-- its near (full rate) sync. A server-side attach made the watched players jump.
 
 local uicore = exports.ui_core
 local screenW, screenH = guiGetScreenSize()
 local SCALE = (uicore:ui(1000) or 1000) / 1000
 local function S(v) return v * SCALE end
 
-JobSpectate = { active = false, targets = {}, current = false, jobName = nil }
+JobSpectate = { active = false, targets = {}, current = false, jobName = nil, camera = nil }
+
+local FOLLOW_OFFSET, FOLLOW_MS = 25, 200
 
 local rendering = false
 local renderLabel
 local lastSwitch = 0
+local followTimer = nil
+local ignoreHoverUntil = 0     -- the hover ui_inac fires for row 1 when the menu (re)opens
 
 local function setRendering(on)
     if on == rendering then return end
@@ -24,6 +34,40 @@ local function currentEntry()
         if t.player == JobSpectate.current then return t end
     end
 end
+
+--------------------------------------------------------------------------------
+-- camera
+--------------------------------------------------------------------------------
+
+local function follow()
+    local target = JobSpectate.current
+    if not JobSpectate.active or not isElement(target) then return end
+    local carrier = getPedOccupiedVehicle(target) or target
+    local x, y, z = getElementPosition(carrier)
+    setElementPosition(localPlayer, x, y, z + FOLLOW_OFFSET, false)
+    -- (re)aim once the target is streamed in; also after a recovery put it into a new vehicle
+    local camTarget = getCameraTarget()
+    if camTarget ~= target and camTarget ~= carrier and isElementStreamedIn(carrier) then
+        setCameraTarget(target)
+    end
+end
+
+local function applyCamera()
+    if isTimer(followTimer) then killTimer(followTimer) end
+    followTimer = nil
+    if not JobSpectate.active then return end
+    if isElement(JobSpectate.current) then
+        follow()
+        followTimer = setTimer(follow, FOLLOW_MS, 0)
+    elseif JobSpectate.camera then
+        local cam = JobSpectate.camera
+        setCameraMatrix(cam.pos[1], cam.pos[2], cam.pos[3], cam.lookAt[1], cam.lookAt[2], cam.lookAt[3], cam.roll or 0, cam.fov or 90)
+    end
+end
+
+--------------------------------------------------------------------------------
+-- menu
+--------------------------------------------------------------------------------
 
 local function menuItems()
     local items = {}
@@ -43,27 +87,36 @@ end
 
 function JobSpectate.openMenu()
     if not JobSpectate.active then return end
-    JobUi.openMenu("spectate", L("v_jobmanager.spectate.title"), menuItems())
+    ignoreHoverUntil = getTickCount() + 200
+    JobUi.openMenu("spectate", L("v_jobmanager.spectate.title"), menuItems(), true)
 end
 
 local function pick(index)
     local t = JobSpectate.targets[index]
     if not t or t.player == JobSpectate.current or not isElement(t.player) then return end
-    -- the server switches the camera; a short gap keeps fast scrolling from flooding it
+    -- a short gap keeps fast scrolling from flooding the server
     local now = getTickCount()
     if now - lastSwitch < 120 then return end
     lastSwitch = now
     JobSpectate.current = t.player
+    applyCamera()
     triggerServerEvent("jobmanager:spectateSet", resourceRoot, t.player)
 end
 
 JobUi.on("spectate", {
     hover = function(value)
+        if getTickCount() < ignoreHoverUntil then return end
         if type(value) == "table" and value[1] == "spec" then pick(value[2]) end
     end,
     select = function(value)
         if value[1] == "spec" then pick(value[2])
         elseif value[1] == "leave" then JobUi.leave() end
+    end,
+    -- closed by another resource (closeTempMenu): back at once while still spectating
+    close = function()
+        setTimer(function()
+            if JobSpectate.active and not JobUi.isMenuOpen() then JobSpectate.openMenu() end
+        end, 50, 1)
     end,
 })
 
@@ -78,6 +131,7 @@ addEventHandler("jobmanager:spectate", resourceRoot, function(data)
     if type(data) ~= "table" or not data.active then
         if JobSpectate.active then
             JobSpectate.active, JobSpectate.targets, JobSpectate.current = false, {}, false
+            applyCamera()
             JobUi.closeMenu("spectate")
             setRendering(false)
         end
@@ -85,14 +139,15 @@ addEventHandler("jobmanager:spectate", resourceRoot, function(data)
     end
     local wasActive = JobSpectate.active
     local changed = not samePlayers(JobSpectate.targets, data.targets or {})
+    local retarget = not wasActive or JobSpectate.current ~= (data.current or false)
     JobSpectate.active = true
     JobSpectate.targets = data.targets or {}
     JobSpectate.current = data.current or false
     JobSpectate.jobName = data.jobName
+    JobSpectate.camera = data.camera
+    if retarget then applyCamera() end
     setRendering(true)
-    if not wasActive then
-        JobSpectate.openMenu()
-    elseif changed and JobUi.isMenuOpen("spectate") then
+    if not wasActive or not JobUi.isMenuOpen("spectate") or changed then
         JobSpectate.openMenu()
     end
 end)

@@ -46,6 +46,7 @@ local C = {
     txt     = tocolor(235, 235, 235, 255),
     txtDim  = tocolor(152, 156, 161, 255),
     accent  = tocolor(0, 130, 205, 255),
+    invited = tocolor(200, 40, 40, 255),
     infobar = tocolor(0, 0, 0, 200),
     startBg = tocolor(70, 150, 220, 170),
 }
@@ -271,7 +272,7 @@ local function drawColHeader(x, y, w, text, right)
     end
 end
 
--- rows: { {label=, value=, badge=, bg=, crewTag=, crewColor=} }. `bg` overrides
+-- rows: { {label=, value=, badge=, badgeColor=, bg=, crewTag=, crewColor=} }. `bg` overrides
 -- the resting-state (not selected) background, e.g. the light-blue "Start Game"
 -- row. `crewTag`/`crewColor` (when the tag is a non-empty string) draw a crew
 -- tag box right after the label.
@@ -292,7 +293,7 @@ local function drawRows(x, y, w, rowH, rows, sel, active)
         end
         if r.badge then
             local bw = L.width(r.badge, S(0.8), FONT.rowB) + S(14)
-            dxDrawRectangle(x + w - S(12) - bw, ry + rowH / 2 - S(9), bw, S(18), C.accent)
+            dxDrawRectangle(x + w - S(12) - bw, ry + rowH / 2 - S(9), bw, S(18), r.badgeColor or C.accent)
             dxDrawText(r.badge, x + w - S(12) - bw, ry + rowH / 2 - S(9), x + w - S(12), ry + rowH / 2 + S(9),
                 tocolor(255, 255, 255), S(0.8), FONT.rowB, "center", "center")
         elseif r.value then
@@ -349,6 +350,11 @@ renderUi = function()
     local playerRows = {}
     for i, p in ipairs(lobby.players) do
         playerRows[i] = { label = p.name, badge = p.host and L("v_jobmanager.ui.host") or nil, crewTag = p.crewTag, crewColor = p.crewColor }
+    end
+    -- invited, not joined yet: at the bottom with a red badge
+    for _, p in ipairs(lobby.invited or {}) do
+        playerRows[#playerRows + 1] = { label = p.name, dim = true, badge = L("v_jobmanager.ui.invited"), badgeColor = C.invited,
+            crewTag = p.crewTag, crewColor = p.crewColor }
     end
     drawRows(c2, colY + HEAD_H, colW, rowH, playerRows, 0, false)
 

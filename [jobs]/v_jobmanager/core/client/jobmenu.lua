@@ -18,10 +18,15 @@ function JobUi.inputBlocked()
         or getElementData(localPlayer, "phoneOpen")
 end
 
-function JobUi.openMenu(kind, title, items)
-    if JobUi.menuId then exports.ui_inac:closeTempMenu() end
+-- locked: the player cannot close it (ui_inac config.locked), only the script
+function JobUi.openMenu(kind, title, items, locked)
+    if JobUi.menuId then
+        -- replaced, not closed: the old kind's close handler must not run (the spectator list reopens itself)
+        JobUi.menuId, JobUi.menuKind = nil, nil
+        exports.ui_inac:closeTempMenu()
+    end
     JobUi.menuKind = kind
-    JobUi.menuId = exports.ui_inac:createTempMenu({ title = title, items = items })
+    JobUi.menuId = exports.ui_inac:createTempMenu({ title = title, items = items, locked = locked or nil })
     if not JobUi.menuId then JobUi.menuKind = nil end
     return JobUi.menuId
 end
@@ -84,6 +89,8 @@ end
 
 local function openConfirm()
     if not JobUi.match then return end
+    -- a spectator's menu stays: it has its own "Leave job" row
+    if JobSpectate and JobSpectate.active then return JobSpectate.openMenu() end
     JobUi.openMenu("confirm", L("v_jobmanager.jobmenu.leave_job_question"), JobUi.leaveItems())
 end
 
@@ -113,9 +120,6 @@ local function openJobMenu()
         items[#items + 1] = { label = L("v_jobmanager.jobmenu.reset_to_checkpoint"), value = { "reset" },
             desc = L("v_jobmanager.jobmenu.reset_desc") }
     end
-    if JobSpectate and JobSpectate.active then
-        items[#items + 1] = { label = L("v_jobmanager.jobmenu.spectate_players"), value = { "spectate" } }
-    end
     if JobMission and JobMission.active then
         items[#items + 1] = { label = L("v_jobmanager.jobmenu.objective"), value = { "none" }, closeOnSelect = false,
             desc = JobMission.objectiveText() }
@@ -130,8 +134,6 @@ JobUi.on("job", {
         local action = value[1]
         if action == "reset" then
             triggerServerEvent("jobmanager:raceRecover", resourceRoot, "manual")
-        elseif action == "spectate" then
-            if JobSpectate then JobSpectate.openMenu() end
         elseif action == "leave" then
             JobUi.leave()
         end
@@ -141,6 +143,11 @@ JobUi.on("job", {
 local function jobMenuKey()
     if not JobUi.match or JobUi.inputBlocked() then return end
     if getElementData(localPlayer, "scoreboardOpen") then return end
+    -- spectating: the spectator list is the job menu and F2 never replaces or closes it
+    if JobSpectate and JobSpectate.active then
+        if not JobUi.isMenuOpen("spectate") then JobSpectate.openMenu() end
+        return
+    end
     if JobUi.isMenuOpen("job") then JobUi.closeMenu("job") return end
     openJobMenu()
 end

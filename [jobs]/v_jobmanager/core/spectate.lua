@@ -2,18 +2,17 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Spectating: a player who is out of a running match (DM: eliminated, race: finished, mission:
 -- waiting for the respawn) watches the players still playing until the match ends.
 --
--- The spectator's own ped stays in the match dimension, hidden (alpha 0, frozen, no collisions)
--- and attached 25 m above the watched player, so streaming and sounds follow the target. The
--- camera is the GTA follow camera of the target (setCameraTarget). The client picks the target
--- from a ui_inac temp menu (core/client/spectate.lua).
+-- The spectator's own ped stays in the match dimension, hidden (alpha 0, frozen, no collisions).
+-- The spectator's client moves it above the watched player and runs the camera (GTA follow camera
+-- of the target); the server only keeps the target list. A server-side attach made the watched
+-- players jump. The client picks the target from a locked ui_inac temp menu
+-- (core/client/spectate.lua).
 --
 -- match.spectators[player] = { target = player | false }
 -- A mode may define mode.canBeSpectated(match, player) and mode.spectateInfo(match, player)
 -- (the short status line next to the name: place, checkpoint, health ...).
 
 Spectate = {}
-
-local FOLLOW_OFFSET = 25
 
 local function targetsOf(match)
     local mode = JobModes[match.job.type]
@@ -28,15 +27,6 @@ local function targetsOf(match)
     return list
 end
 
-local function follow(player, target)
-    detachElements(player)
-    if not isElement(target) then return end
-    local carrier = getPedOccupiedVehicle(target) or target
-    local x, y, z = getElementPosition(carrier)
-    setElementPosition(player, x, y, z + FOLLOW_OFFSET)
-    attachElements(player, carrier, 0, 0, FOLLOW_OFFSET)
-end
-
 local function sendState(match, player, entry, targets)
     local mode = JobModes[match.job.type]
     local list = {}
@@ -48,19 +38,13 @@ local function sendState(match, player, entry, targets)
     end
     triggerClientEvent(player, "jobmanager:spectate", resourceRoot, {
         active = true, targets = list, current = entry.target or false, jobName = match.job.name,
+        camera = not entry.target and jobCamera(match) or nil,
     })
 end
 
+-- the camera itself is the client's (sendState / jobmanager:spectateSet)
 local function setTarget(match, player, entry, target)
     entry.target = target or false
-    if target then
-        follow(player, target)
-        setCameraTarget(player, target)
-    else
-        detachElements(player)
-        local cam = jobCamera(match)
-        setCameraMatrix(player, cam.pos[1], cam.pos[2], cam.pos[3], cam.lookAt[1], cam.lookAt[2], cam.lookAt[3], cam.roll or 0, cam.fov or 90)
-    end
 end
 
 -- Makes `player` a spectator (after `delay` ms, e.g. the DM death camera).
@@ -100,7 +84,6 @@ function Spectate.stop(match, player)
     match.spectators[player] = nil
     if not isElement(player) then return end
     if not entry.pending then
-        detachElements(player)
         setElementFrozen(player, false)
         setElementAlpha(player, 255)
         setElementCollisionsEnabled(player, true)
@@ -136,10 +119,6 @@ function Spectate.refresh(match)
         if not entry.pending and isElement(player) then
             if not entry.target or not valid[entry.target] then
                 setTarget(match, player, entry, targets[1])
-            elseif isElement(entry.target) then
-                -- the watched racer got a new vehicle (recovery): follow the new carrier
-                local carrier = getPedOccupiedVehicle(entry.target) or entry.target
-                if getElementAttachedTo(player) ~= carrier then follow(player, entry.target) end
             end
             sendState(match, player, entry, targets)
         end
@@ -153,8 +132,10 @@ addEventHandler("jobmanager:spectateSet", resourceRoot, function(target)
     if not entry or entry.pending or not isElement(target) then return end
     for _, candidate in ipairs(targetsOf(match)) do
         if candidate == target then
-            if entry.target ~= target then setTarget(match, client, entry, target) end
+            setTarget(match, client, entry, target)
             return
         end
     end
+    -- not watchable any more: the client gets the real list and target back
+    sendState(match, client, entry, targetsOf(match))
 end)

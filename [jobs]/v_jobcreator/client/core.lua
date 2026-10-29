@@ -148,11 +148,27 @@ end
 -- session lifecycle
 --------------------------------------------------------------------------------
 
+-- Some catalog models only draw from 30 m (props): while the editor is open their LOD distance is
+-- raised like in a match (v_jobmanager core/client/objects.lua).
+local MIN_LOD = 170
+local raisedLod = {}    -- model -> original
+
+local function setLongLod(on)
+    for model, original in pairs(raisedLod) do engineSetModelLODDistance(model, original) end
+    raisedLod = {}
+    if not on then return end
+    for model in pairs(CATALOG and CATALOG.objectName or {}) do
+        local current = engineGetModelLODDistance(model)
+        if current and current < MIN_LOD and engineSetModelLODDistance(model, MIN_LOD) then raisedLod[model] = current end
+    end
+end
+
 addEvent("jobcreator:opened", true)
 addEventHandler("jobcreator:opened", resourceRoot, function(info)
     Editor.active, Editor.info = true, info
     Editor.doc, Editor.meta, Editor.dirty = nil, nil, false
     setFrames(true)
+    setLongLod(true)
     setElementData(localPlayer, "jobCreator", true, false)
     Keys.bind()
     Interact.register()
@@ -242,11 +258,13 @@ addEventHandler("jobcreator:closed", resourceRoot, function()
     Keys.unbind()
     Editor.active, Editor.doc, Editor.meta, Editor.info = false, nil, nil, nil
     setFrames(false)
+    setLongLod(false)
     setElementData(localPlayer, "jobCreator", false, false)
 end)
 
 addEventHandler("onClientResourceStop", resourceRoot, function()
     if not Editor.active then return end
+    setLongLod(false)
     if Editor.camMode == "free" then Freecam.stop(true) end
     Photo.stop(true)
     setElementData(localPlayer, "jobCreator", false, false)

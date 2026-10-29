@@ -105,10 +105,27 @@ local function syncLobby(lobby)
             crewColor = getElementData(player, "crewColor"),
         })
     end
+    -- invited players who have not answered yet: listed under the players ("INVITED" card);
+    -- hidden while they are busy in another lobby or match
+    local invited = {}
+    if lobby.invited then
+        for player in pairs(lobby.invited) do
+            local state = isElement(player) and playerState[player]
+            if not isElement(player) or (state and state.lobbyId == lobby.id) then
+                lobby.invited[player] = nil
+            elseif not state then
+                table.insert(invited, {
+                    name = displayNameOf(player),
+                    crewTag = getElementData(player, "crewTag") or "",
+                    crewColor = getElementData(player, "crewColor"),
+                })
+            end
+        end
+    end
     for _, player in ipairs(lobby.players) do
         triggerClientEvent(player, "jobmanager:lobby", resourceRoot, {
             id = lobby.id, name = lobby.job.name, type = lobby.job.type,
-            players = names, min = lobby.job.minPlayers, max = lobby.job.maxPlayers,
+            players = names, invited = invited, min = lobby.job.minPlayers, max = lobby.job.maxPlayers,
             isHost = player == lobby.host,
             image = lobby.job.image, description = lobby.job.description, createdBy = lobby.job.createdBy,
         })
@@ -323,6 +340,16 @@ local function endMatch(match, reason, aborted)
             end
         end
     end
+    -- spectators who left (finished race, eliminated DM): the same reward as if they had stayed
+    for player in pairs(match.rewardOnEnd) do
+        local reward = rewards[player]
+        if reward and isElement(player) then
+            payReward(player, reward)
+            message(player, L.msg("v_jobmanager.core.reward_paid_after_leave", {
+                name = match.job.name, money = reward.money.total, xp = reward.xp.total,
+            }))
+        end
+    end
     destroyElements(match.vehicles)
     destroyElements(match.markers)
     destroyElements(match.objects)
@@ -344,11 +371,16 @@ local function createMatch(job, players, opts)
         id = id, job = job, players = players, dimension = opts.dimension or (50000 + id), opts = opts,
         vehicles = {}, markers = {}, objects = {}, progress = {}, finished = {}, eliminated = {},
         playerNames = {}, kills = {}, deaths = {}, finishOrder = {}, finishTime = {},
-        crewTags = {}, crewColors = {}, left = {}, spectators = {}, timers = {},
+        crewTags = {}, crewColors = {}, left = {}, spectators = {}, timers = {}, rewardOnEnd = {},
         startPlayers = #players, startTick = getTickCount(),
         ended = false,
     }
     matches[id] = match
+    -- the clients raise the LOD distance of these models for the match (core/client/objects.lua)
+    local objectModels, seenModel = {}, {}
+    for _, def in ipairs(job.objects or {}) do
+        if not seenModel[def.model] then seenModel[def.model] = true objectModels[#objectModels + 1] = def.model end
+    end
     for _, player in ipairs(players) do
         match.playerNames[player] = displayNameOf(player)
         match.crewTags[player] = getElementData(player, "crewTag") or ""
@@ -367,12 +399,16 @@ local function createMatch(job, players, opts)
         end
         if weaponManagerRunning() then exports.wp_manager:setPlayerTempLoadout(player, {}) end
         triggerClientEvent(player, "jobmanager:matchStarted", resourceRoot, job.name,
-            { id = id, type = job.type, name = job.name, test = opts.test or false })
+            { id = id, type = job.type, name = job.name, test = opts.test or false,
+              dimension = match.dimension, objectModels = objectModels })
     end
     for index, def in ipairs(job.objects or {}) do
         local object = createObject(def.model, def.x, def.y, def.z, def.rx or 0, def.ry or 0, def.rz or 0)
         if object then
             setElementDimension(object, match.dimension)
+            -- many catalog models are dynamic in GTA: a knocked over cone would only move on one
+            -- client. Frozen here, unbreakable + longer LOD on the clients (core/client/objects.lua)
+            setElementFrozen(object, true)
             if def.scale then setObjectScale(object, def.scale) end
             if def.alpha then setElementAlpha(object, def.alpha) end
             if def.collisions == false then setElementCollisionsEnabled(object, false) end
@@ -412,16 +448,25 @@ local function dropFromMatch(player, match, quit)
 end
 
 -- Leaving a running match: no reward and no penalty, back to where the player came from.
+-- A spectator who is already out of the race / DM (finished, eliminated) keeps the reward: it is
+-- paid when the match ends, computed the same way as for the others (endMatch).
 local function leaveMatch(player)
     local state = playerState[player]
     if not state or state.kind ~= "match" then return false end
     local match = matches[state.matchId]
     playerState[player] = nil
     local test = match and match.opts.test
+    local keepsReward = match and not test and not match.ended and match.spectators[player] ~= nil
+        and match.job.type ~= JOB_TYPE_MISSION
+    if keepsReward then match.rewardOnEnd[player] = true end
     if match then dropFromMatch(player, match, false) end
     restorePlayer(player, state.returnState, test)
     triggerClientEvent(player, "jobmanager:matchLeft", resourceRoot, test or false)
-    if not test then message(player, L.msg("v_jobmanager.core.you_left_job")) end
+    if keepsReward then
+        if matches[match.id] then message(player, L.msg("v_jobmanager.core.reward_after_match_end")) end
+    elseif not test then
+        message(player, L.msg("v_jobmanager.core.you_left_job"))
+    end
     return true
 end
 
@@ -580,7 +625,8 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
         lobby.job.name .. " lobby",
         L.msg("v_jobmanager.core.invited_you_players", { player = displayNameOf(client), players = #lobby.players, max_players = lobby.job.maxPlayers }),
         "v_jobmanager",
-        "jobmanagerAcceptInvite"
+        "jobmanagerAcceptInvite",
+        "jobmanagerDeclineInvite"
     )
     if not ok then
         message(client, L.msg("v_jobmanager.core.could_not_send_invite"), 255, 120, 120)
@@ -589,11 +635,18 @@ addEventHandler("jobmanager:invitePlayer", resourceRoot, function(target)
 
     lobby.invited = lobby.invited or {}
     lobby.invited[target] = true
+    syncLobby(lobby)
     message(client, L.msg("v_jobmanager.core.invited", { player = displayNameOf(target) }))
     message(target, L.msg("v_jobmanager.core.invited_you_to_lobby_open_your", { player = displayNameOf(client), name = lobby.job.name }), 120, 200, 255)
 end)
 
 addEventHandler("onPlayerQuit", root, function()
+    for _, lobby in pairs(lobbies) do
+        if lobby.invited and lobby.invited[source] then
+            lobby.invited[source] = nil
+            syncLobby(lobby)
+        end
+    end
     local state = playerState[source]
     if not state then return end
     if state.kind == "lobby" then
@@ -719,6 +772,15 @@ function jobmanagerAcceptInvite(player, id)
     local lobby = lobbies[lobbyId]
     if lobby and lobby.invited then lobby.invited[player] = nil end
     return joinLobbyById(player, lobbyId)
+end
+
+-- Called by ui_phone when a player declines a lobby invite: off the lobby's invited list.
+function jobmanagerDeclineInvite(player, id)
+    local lobby = lobbies[tonumber(id) or -1]
+    if not lobby or not lobby.invited or not lobby.invited[player] then return false end
+    lobby.invited[player] = nil
+    syncLobby(lobby)
+    return true
 end
 
 --------------------------------------------------------------------------------

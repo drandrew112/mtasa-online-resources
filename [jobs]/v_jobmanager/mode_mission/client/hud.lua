@@ -35,7 +35,7 @@ end
 
 local function objectiveLabel(o)
     if o.label then return o.label end
-    return L("v_jobmanager.mission.obj." .. o.type)
+    return L("v_jobmanager.mission.obj." .. tostring(o.type):lower())
 end
 
 function JobMission.objectiveText()

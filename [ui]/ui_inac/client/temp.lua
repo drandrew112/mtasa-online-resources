@@ -23,6 +23,18 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 local tempIds   = {}    -- set: every menu id that belongs to the live temp menu
 local rootId    = nil   -- id of the live temp menu's root (nil = none)
 local idCounter = 0
+local tempLocked = false    -- config.locked of the live temp menu
+
+-- Called by input.lua instead of closing a temp menu: false when the menu is locked
+-- (the player is put back on its root instead).
+function tempMenuMayClose()
+    if not tempLocked or not rootId then return true end
+    if MenuState.current ~= rootId then
+        MenuState.current = rootId
+        MenuState:resetSelection()
+    end
+    return false
+end
 
 addEvent("ui_inac:tempMenuHover")
 addEvent("ui_inac:tempMenuSelect")
@@ -44,6 +56,7 @@ local function teardown(fireOnClose)
         tempIds[id] = nil
     end
     rootId = nil
+    tempLocked = false
 
     if wasCurrent then
         MenuState.open = false
@@ -130,6 +143,9 @@ end
 -- exports.ui_inac:createTempMenu(config)
 --
 --   config.title  - title bar text of the root menu (default "MENU")
+--   config.locked - true: the player cannot close it (Backspace stops at the root, a
+--                   closeOnSelect leaf goes back to the root); only closeTempMenu() or
+--                   another createTempMenu closes it (e.g. the v_jobmanager spectator list)
 --   config.items  - ordered array of item tables. Each item is either:
 --       leaf     { label, desc, value, closeOnSelect }
 --                  value        - serialisable payload handed back with the
@@ -160,6 +176,7 @@ function createTempMenu(config)
     rootId = "__temp_" .. idCounter
 
     registerNode({ title = config.title, items = config.items }, rootId, nil, "")
+    tempLocked = config.locked == true
 
     MenuState.open = true
     MenuState.current = rootId

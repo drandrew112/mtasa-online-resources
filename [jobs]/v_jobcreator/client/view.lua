@@ -154,6 +154,11 @@ end
 -- Common look of every editor element (also the placement ghost).
 function View.prepare(el, kind)
     setElementDimension(el, View.helpersVisible and Editor.info.dimension or HIDDEN_DIMENSION)
+    if kind == "object" then
+        -- placed objects stay put like in the match (frozen there by v_jobmanager)
+        setElementFrozen(el, true)
+        setObjectBreakable(el, false)
+    end
     if Kinds[kind].helper then
         setElementCollisionsEnabled(el, false)
         setElementFrozen(el, true)
