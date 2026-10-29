@@ -13,6 +13,16 @@ local FINISH_GRACE = 1500 -- ms of network / timer slack after the trial time
 local MAX_SPEED = 85      -- m/s; a run faster than the straight line at this speed is rejected
 local runs = {} -- [player] = { trial, test, startTick, deadline, timer }
 
+-- After a rewarded run the player can start no trial (of any route) for 24 h.
+-- The time of the last success is kept in accData, so it survives reconnects.
+local COOLDOWN = 24 * 60 * 60 -- seconds
+local COOLDOWN_KEY = "tt_last_success"
+
+local function cooldownLeft(player)
+    local last = tonumber(exports.v_mysql:getAccData(player, COOLDOWN_KEY)) or 0
+    return math.max(0, last + COOLDOWN - getRealTime().timestamp)
+end
+
 local function endRun(player, success)
     local run = runs[player]
     if not run then return end
@@ -180,6 +190,10 @@ addEventHandler("tt:start", resourceRoot, function()
     local tr = t and Timetrials[t.index] or trial
     local start = t and t.start or startMarker
     if not isElement(start) or not isElementWithinMarker(player, start) then return end
+    if not t then
+        local left = cooldownLeft(player)
+        if left > 0 then return triggerClientEvent(player, "tt:cooldown", resourceRoot, left, true) end
+    end
 
     local now = getTickCount()
     local run = { trial = tr, test = t ~= nil, startTick = now, deadline = now + tr.time * 1000 + FINISH_GRACE }
@@ -208,6 +222,8 @@ local function tryFinish(player, marker)
     if not run.test then
         givePlayerMoney(player, run.trial.reward)
         exports.ui_core:showMoney(player, "add", run.trial.reward, "cash")
+        exports.v_mysql:setAccData(player, COOLDOWN_KEY, getRealTime().timestamp)
+        triggerClientEvent(player, "tt:cooldown", resourceRoot, COOLDOWN)
     end
     endRun(player, true)
 end
@@ -215,7 +231,10 @@ end
 addEventHandler("onPlayerMarkerHit", root, function(marker)
     local t = tests[source]
     if t and marker == t.start or (not t and marker == startMarker) then
-        if not runs[source] then setElementData(source, "tt:canStart", true) end
+        if runs[source] then return end
+        local left = t and 0 or cooldownLeft(source)
+        setElementData(source, "tt:canStart", left == 0)
+        if left > 0 then triggerClientEvent(source, "tt:cooldown", resourceRoot, left) end
         return
     end
     tryFinish(source, marker)

@@ -92,10 +92,21 @@ end)
 local LABEL_HEIGHT, LABEL_DISTANCE, LABEL_FULL, LABEL_MIN_SCALE = 1.8, 40, 12, 0.55
 local ACCENT = { 170, 70, 255 }
 
--- the hint inside the start marker depends on the vehicle
+-- 24 h cooldown after a rewarded run (server decides; this only shows it). Not in test mode.
+local cooldownUntil = 0 -- getTickCount() when it ends
+
+local function cooldownText()
+    local left = math.ceil((cooldownUntil - getTickCount()) / 1000)
+    if test or left <= 0 then return nil end
+    local h, m = math.floor(left / 3600), math.ceil(left % 3600 / 60)
+    if m == 60 then h, m = h + 1, 0 end
+    return L.msg("v_timetrial.timetrial.cooldown", { time = ("%d h %02d min"):format(h, m) })
+end
+
+-- the hint inside the start marker depends on the cooldown and the vehicle
 local function cardMeta()
-    return { hintActive = isLandDriver(localPlayer) and L.msg("v_timetrial.timetrial.press_e_to_start")
-        or L.msg("v_timetrial.timetrial.land_vehicle_required") }
+    return { hintActive = cooldownText() or (isLandDriver(localPlayer) and L.msg("v_timetrial.timetrial.press_e_to_start")
+        or L.msg("v_timetrial.timetrial.land_vehicle_required")) }
 end
 
 -- (re)defines the card of the current trial; hidden while a run is active
@@ -120,6 +131,13 @@ addEvent("onClientMarkerUIHit")
 addEventHandler("onClientMarkerUIHit", resourceRoot, refreshCardMeta)
 addEventHandler("onClientPlayerVehicleEnter", localPlayer, refreshCardMeta)
 addEventHandler("onClientPlayerVehicleExit", localPlayer, refreshCardMeta)
+
+addEvent("tt:cooldown", true)
+addEventHandler("tt:cooldown", resourceRoot, function(left, refused)
+    cooldownUntil = getTickCount() + (tonumber(left) or 0) * 1000
+    refreshCardMeta()
+    if refused then uicore:setBanner(L("v_timetrial.timetrial.time_trial"), cooldownText() or "") end
+end)
 addEvent("onClientMarkerUISystemStart")
 addEventHandler("onClientMarkerUISystemStart", root, refreshTrialCard)
 addEventHandler("onClientResourceStart", resourceRoot, refreshTrialCard)

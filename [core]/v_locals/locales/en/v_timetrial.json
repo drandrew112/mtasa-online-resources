@@ -1,4 +1,5 @@
 {
+  "v_timetrial.timetrial.cooldown": "Available again in {time}",
   "v_timetrial.timetrial.good_luck": "Good luck!",
   "v_timetrial.timetrial.land_vehicle_required": "Land vehicle required",
   "v_timetrial.timetrial.no_reward": "no reward",
