@@ -84,14 +84,46 @@ function SP.pairKey(a, b)
 end
 
 -- Crew name / tag validation. Returns true, cleanValue  OR  false, errorMessage.
+-- Accented letters are allowed: Latin-1 letters (U+00C0-U+00FF without x and /) plus the Hungarian o/u double acute.
+local function isAccentLetter(cp)
+    return (cp >= 0xC0 and cp <= 0xFF and cp ~= 0xD7 and cp ~= 0xF7)
+        or cp == 0x150 or cp == 0x151 or cp == 0x170 or cp == 0x171
+end
+
+-- Every character must be ASCII (matching asciiPattern) or an accented letter. Returns the character count or nil.
+local function countCrewChars(s, asciiPattern)
+    local len = utf8.len(s)
+    if not len or #s > 96 then return nil end
+    for _, cp in ipairs({ utf8.codepoint(s, 1, -1) }) do
+        if cp < 0x80 then
+            if not utf8.char(cp):find(asciiPattern) then return nil end
+        elseif not isAccentLetter(cp) then
+            return nil
+        end
+    end
+    return len
+end
+
+local function upperAccented(s)
+    local out = {}
+    for _, cp in ipairs({ utf8.codepoint(s, 1, -1) }) do
+        if cp < 0x80 then out[#out + 1] = utf8.char(cp):upper()
+        elseif cp >= 0xE0 and cp <= 0xFE and cp ~= 0xF7 then out[#out + 1] = utf8.char(cp - 32)
+        elseif cp == 0x151 or cp == 0x171 then out[#out + 1] = utf8.char(cp - 1)
+        else out[#out + 1] = utf8.char(cp) end
+    end
+    return table.concat(out)
+end
+
 function SP.validateCrewName(name)
     if type(name) ~= "string" then return false, L.text("v_socialpanel.shared.invalid_name") end
     name = name:gsub("^%s+", ""):gsub("%s+$", "")
-    if #name < SP.CREW_NAME_MIN or #name > SP.CREW_NAME_MAX then
-        return false, L.text("v_socialpanel.shared.crew_name_must_be_characters", { crew_name_min = SP.CREW_NAME_MIN, crew_name_max = SP.CREW_NAME_MAX })
-    end
-    if not name:find("^[%w _%-%.]+$") then
+    local len = countCrewChars(name, "^[%w _%-%.]$")
+    if not len and utf8.len(name) and #name <= 96 then
         return false, L.text("v_socialpanel.shared.crew_name_may_only_contain_letters")
+    end
+    if not len or len < SP.CREW_NAME_MIN or len > SP.CREW_NAME_MAX then
+        return false, L.text("v_socialpanel.shared.crew_name_must_be_characters", { crew_name_min = SP.CREW_NAME_MIN, crew_name_max = SP.CREW_NAME_MAX })
     end
     return true, name
 end
@@ -99,13 +131,14 @@ end
 function SP.validateCrewTag(tag)
     if type(tag) ~= "string" then return false, L.text("v_socialpanel.shared.invalid_tag") end
     tag = tag:gsub("^%s+", ""):gsub("%s+$", "")
-    if #tag < SP.CREW_TAG_MIN or #tag > SP.CREW_TAG_MAX then
-        return false, L.text("v_socialpanel.shared.tag_must_be_characters", { crew_tag_min = SP.CREW_TAG_MIN, crew_tag_max = SP.CREW_TAG_MAX })
-    end
-    if not tag:find("^[%w]+$") then
+    local len = countCrewChars(tag, "^%w$")
+    if not len and utf8.len(tag) and #tag <= 96 then
         return false, L.text("v_socialpanel.shared.tag_may_only_contain_letters_and")
     end
-    return true, tag:upper()
+    if not len or len < SP.CREW_TAG_MIN or len > SP.CREW_TAG_MAX then
+        return false, L.text("v_socialpanel.shared.tag_must_be_characters", { crew_tag_min = SP.CREW_TAG_MIN, crew_tag_max = SP.CREW_TAG_MAX })
+    end
+    return true, upperAccented(tag)
 end
 
 -- Display name validation. Returns true, cleanValue  OR  false, errorMessage.
