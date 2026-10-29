@@ -89,8 +89,10 @@
     let busy = false;
 
     // ------------------------------------------------------------ frame
+    // in game the client closes the PC and tells the server itself: no pcClose call into a
+    // browser that is being destroyed (its answer also closed a PC reopened meanwhile)
     function close() {
-        if (window.mta && mta.triggerEvent) mta.triggerEvent('bizpc:pageClose');
+        if (window.mta && mta.triggerEvent) { mta.triggerEvent('bizpc:pageClose'); return; }
         api.call('pcClose').catch(() => {});
     }
     $('closeBtn').insertAdjacentHTML('afterbegin', icon('power'));

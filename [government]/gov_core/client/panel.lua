@@ -12,7 +12,7 @@
 -- /gov again, Esc or the page's close button closes it. Other gov_* pages (gov_votes /vote) are
 -- opened with the client export openGovPage(resource, page) and use the same relay.
 
-local gui, browser
+local browser
 -- access = { super, title, grants = { {perm, branch} }, branchOf } (server GOV.accessOf)
 local access, pages, categories, sectors = {}, {}, {}, {}
 
@@ -91,25 +91,11 @@ end)
 -- open / close
 --------------------------------------------------------------------------------
 
--- Destroying a CEF browser synchronously crashes the client (CTD) when it still has input focus
--- or when it happens inside one of its own events (the page's close button / Esc arrive as
--- mta.triggerEvent from the page). So: drop focus, hide and detach now, destroy a bit later.
-local function disposeBrowser(g, b)
-    if isElement(b) then
-        focusBrowser(nil)
-        setBrowserRenderingPaused(b, true)
-    end
-    if isElement(g) then
-        guiSetVisible(g, false)
-        guiSetEnabled(g, false)
-        setTimer(function() if isElement(g) then destroyElement(g) end end, 100, 1)
-    end
-end
-
+-- the browser itself lives in client/cefview.lua (dx drawn, delayed destroy)
 local function close()
-    if not gui then return end
-    disposeBrowser(gui, browser)
-    gui, browser, reqs = nil, nil, {}
+    if not browser then return end
+    CEF.close()
+    browser, reqs = nil, {}
     showCursor(false)
     guiSetInputMode("allow_binds")
     setElementData(localPlayer, "browserOpen", false, false)
@@ -118,29 +104,23 @@ end
 --- app = the resource that holds the page, page = its path in that resource (web/....html)
 local function open(app, page)
     close()
-    local sw, sh = guiGetScreenSize()
-    gui = guiCreateBrowser(0, 0, sw, sh, true, false, false)
-    if not gui then return end
-    browser = guiGetBrowser(gui)
+    browser = CEF.open(("http://mta/web_api/loader.html?app=%s&page=%s&v=%d"):format(app, page, getTickCount()))
+    if not browser then return end
     showCursor(true)
     guiSetInputMode("no_binds")
     setElementData(localPlayer, "browserOpen", true, false)
-    addEventHandler("onClientBrowserCreated", browser, function()
-        if source ~= browser then return end   -- closed before CEF was ready
-        loadBrowserURL(source, ("http://mta/web_api/loader.html?app=%s&page=%s&v=%d"):format(app, page, getTickCount()))
-        focusBrowser(source)
-    end)
 end
 
 addEventHandler("gov_core:pageClose", root, function()
     if source == browser then close() end
 end)
 
--- Esc: the page closes its dialog first, the panel only when none is open
+-- Esc: the page closes its dialog first, the panel only when none is open (a page that has not
+-- loaded yet cannot answer, then Esc closes it here)
 addEventHandler("onClientKey", root, function(key, press)
-    if not gui or not press or key ~= "escape" then return end
+    if not browser or not press or key ~= "escape" then return end
     cancelEvent()
-    js("_escape")
+    if CEF.ready then js("_escape") else close() end
 end)
 
 addEvent("gov_core:open", true)
@@ -149,7 +129,7 @@ addEventHandler("gov_core:open", resourceRoot, function(a, p, c, sc)
     sectors = type(sc) == "table" and sc or {}
     pages = type(p) == "table" and p or {}
     categories = type(c) == "table" and c or {}
-    if gui then close() else open("gov_core", "web/index.html") end
+    if browser then close() else open("gov_core", "web/index.html") end
 end)
 
 -- positions / rights changed while the panel is open: new rights + menu (gov_perms)
@@ -158,14 +138,14 @@ addEventHandler("gov_core:access", resourceRoot, function(a, p, c)
     access = type(a) == "table" and a or {}
     pages = type(p) == "table" and p or {}
     categories = type(c) == "table" and c or {}
-    if gui then js("_access", { access = access, pages = pages, categories = categories }) end
+    if browser then js("_access", { access = access, pages = pages, categories = categories }) end
 end)
 
 --- export: opens (or, when a gov page is open, closes) a page of another gov_* resource on the
 --- same relay, e.g. openGovPage("gov_votes", "web/vote.html")
 function openGovPage(app, page)
     if type(app) ~= "string" or not app:match("^[%w_]+$") or type(page) ~= "string" or page:find("..", 1, true) then return false end
-    if gui then close() else open(app, page) end
+    if browser then close() else open(app, page) end
     return true
 end
 

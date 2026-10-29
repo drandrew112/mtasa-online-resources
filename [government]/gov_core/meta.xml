@@ -20,6 +20,7 @@
     <script src="server/main.lua" type="server" />
 
     <!-- ================= CLIENT ================= -->
+    <script src="client/cefview.lua" type="client" />
     <script src="client/panel.lua" type="client" />
 
     <!-- the /gov page: in game only, opened through web_api's loader (no <html> entry); the
