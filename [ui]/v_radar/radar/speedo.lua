@@ -53,10 +53,10 @@ local function buildSpeedo(size)
 end
 
 -- Fill arc drawn as geometry every frame: no texture is rebuilt, so it cannot flicker.
-local function drawFillArc(cx, cy, size, fraction)
+local function drawFillArc(cx, cy, size, fraction, r, g, b)
 	if fraction <= 0 then return end
 	local rMid, half = size * 50 / 120, size * 3.5 / 120
-	local color = tocolor(255, 255, 255, 255)
+	local color = tocolor(r, g, b, 255)
 	local span = SPEEDO_ARC_SPAN * fraction
 	local segs = max(1, ceil(span / SPEEDO_SEG_DEG))
 	local strip = {}
@@ -108,9 +108,17 @@ function renderSpeedo(mx, my, mw, mh)
 	local x = mx + mw
 	local y = my + mh - size
 
+	-- ELS lights on: white parts flash red / blue, same cycle as the minimap wanted flash
+	local cr, cg, cb, sr, sg, sb = 255, 255, 255, 184, 188, 194
+	if getElementData(veh, "mkjState") == true then
+		local t = (sin(getTickCount() / 1000 * math.pi * 2 / WANTED_FLASH_PERIOD) + 1) / 2
+		cr, cg, cb = floor(255 * (1 - t) + 40 * t), floor(40 * (1 - t) + 90 * t), floor(40 * (1 - t) + 255 * t)
+		sr, sg, sb = cr, cg, cb
+	end
+
 	if speedoBase then
 		dxDrawImage(x, y, size, size, speedoBase)
-		drawFillArc(x + size / 2, y + size / 2, size, min(1, shownSpeed / SPEEDO_MAX))
+		drawFillArc(x + size / 2, y + size / 2, size, min(1, shownSpeed / SPEEDO_MAX), cr, cg, cb)
 	end
 
 	local font = speedoFont or "default-bold"
@@ -118,8 +126,8 @@ function renderSpeedo(mx, my, mw, mh)
 	local numberBottom = y + size * 0.65
 	local text = tostring(floor(shownSpeed + 0.5))
 	dxDrawText(text, x + 1, numberTop + 1, x + size + 1, numberBottom + 1, tocolor(0, 0, 0, 200), 1, font, "center", "center")
-	dxDrawText(text, x, numberTop, x + size, numberBottom, tocolor(255, 255, 255, 255), 1, font, "center", "center")
-	dxDrawText("km/h", x, y + size * 0.62, x + size, y + size * 0.78, tocolor(184, 188, 194, 255), 0.9, "default", "center", "center")
+	dxDrawText(text, x, numberTop, x + size, numberBottom, tocolor(cr, cg, cb, 255), 1, font, "center", "center")
+	dxDrawText("km/h", x, y + size * 0.62, x + size, y + size * 0.78, tocolor(sr, sg, sb, 255), 0.9, "default", "center", "center")
 end
 
 addEventHandler("onClientResourceStop", resourceRoot, destroySpeedo)
