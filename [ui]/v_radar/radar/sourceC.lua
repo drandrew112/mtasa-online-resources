@@ -8,6 +8,11 @@ gsub = string.gsub
 
 screenW, screenH = guiGetScreenSize()
 
+MINIMAP_FRAME = 2          -- border width around the minimap
+MINIMAP_FRAME_BOTTOM = 12  -- bottom strip (10) + border (2)
+WANTED_FLASH_PERIOD = 1.2  -- seconds for one red -> blue -> red cycle
+WANTED_FLASH_ALPHA = 55    -- faint overlay
+
 reMap = function(value, low1, high1, low2, high2)
 	return low2 + (value - low1) * (high2 - low2) / (high1 - low1)
 end
@@ -533,8 +538,10 @@ addEventHandler("onClientRender", getRootElement(),
 		--if (exports["r8_radar"]:getNode(7, "showing") or getElementData(localPlayer, "valaszto")) then
 		mapWidth = uicore:ui(300)
 		mapHeight = uicore:ui(200)
-		mapX = safe_x
-		mapY = screenH-safe_y-mapHeight
+		-- the black frame (2 px sides, 10 + 2 px bottom strip) has to stay inside the safe zone too
+		safe_x, safe_y = uicore:getSafeZone()
+		mapX = safe_x + MINIMAP_FRAME
+		mapY = screenH - safe_y - mapHeight - MINIMAP_FRAME_BOTTOM
 
 		local hideHUD = getElementData(localPlayer, "hideHUD")
 		if not hideHUD then
@@ -666,6 +673,12 @@ function renderMinimap(x, y, w, h)
 
 			drawCircleAreas(minimapRenderHalfSize, minimapRenderHalfSize, remapPlayerPosX, remapPlayerPosY, minimapZoom, 0, 0, minimapRenderSize, minimapRenderSize)
 
+			-- Wanted: faint red / blue police flash over the map, below routes and blips.
+			if getPlayerWantedLevel() > 0 then
+				local t = (sin(getTickCount() / 1000 * math.pi * 2 / WANTED_FLASH_PERIOD) + 1) / 2
+				dxDrawRectangle(0, 0, minimapRenderSize, minimapRenderSize, tocolor(floor(255 * (1 - t) + 40 * t), floor(40 * (1 - t) + 90 * t), floor(40 * (1 - t) + 255 * t), WANTED_FLASH_ALPHA))
+			end
+
 			if objectiveRouteImage then
 				local d = objectiveRouteImageData
 				dxDrawImage(minimapRenderSize / 2 + (remapTheFirstWay(playerPosX) - (d[1] + d[3] / 2)) * minimapZoom - d[3] * minimapZoom / 2, minimapRenderSize / 2 - (remapTheFirstWay(playerPosY) - (d[2] + d[4] / 2)) * minimapZoom + d[4] * minimapZoom / 2, d[3] * minimapZoom, -(d[4] * minimapZoom), objectiveRouteImage, 180, 0, 0, objective_color)
@@ -696,7 +709,7 @@ function renderMinimap(x, y, w, h)
 
 					--local px,py = getElementPosition(localPlayer)
 					--if getDistanceBetweenPoints2D(px,py, blipPosX,blipPosY) <= blipDist then
-						renderBlip("blips/"..blipIco..".png", blipPosX, blipPosY, remapPlayerPosX, remapPlayerPosY, blipSize, blipSize, 0xFFFFFFFF, cameraRotation, getElementData(defaultBlips[i], "isFarVisibility") and true or false, tableId)
+						renderBlip("blips/"..blipIco..".png", blipPosX, blipPosY, remapPlayerPosX, remapPlayerPosY, blipSize, blipSize, blipTint(defaultBlips[i]), cameraRotation, getElementData(defaultBlips[i], "isFarVisibility") and true or false, tableId)
 					--end
 
 					defaultBlipsCount = defaultBlipsCount + 1
@@ -1000,7 +1013,7 @@ function renderTheBigmap()
 				local blipPosX, blipPosY = getElementPosition(v)
 				local blipSize = getBlipSize(v)*16
 
-				renderBigBlip("blips/"..getBlipIcon(v)..".png", blipPosX, blipPosY, mapPlayerPosX, mapPlayerPosY, 9999, blipSize, blipSize, 0xFFFFFFFF, v, k)
+				renderBigBlip("blips/"..getBlipIcon(v)..".png", blipPosX, blipPosY, mapPlayerPosX, mapPlayerPosY, 9999, blipSize, blipSize, blipTint(v), v, k)
 			end
 		end
 
@@ -1222,6 +1235,15 @@ addEventHandler("onClientRestore", getRootElement(),
 		rebuildObjectiveRouteImage()
 	end
 )
+
+-- icon 0 (the plain square) takes the blip's own colour (police units, race checkpoints...); the other icons stay white
+function blipTint(blip)
+	if getBlipIcon(blip) == 0 then
+		local r, g, b, a = getBlipColor(blip)
+		return tocolor(r, g, b, a)
+	end
+	return 0xFFFFFFFF
+end
 
 function renderBlip(icon, blipX, blipY, playerPosX, playerPosY, blipWidth, blipHeight, blipColor, cameraRotation, farShow, blipTableId)
 	local blipPosX = minimapRenderHalfSize + (playerPosX - remapTheFirstWay(blipX)) * minimapZoom
