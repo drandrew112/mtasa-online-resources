@@ -18,7 +18,7 @@
     <script src="server/main.lua" type="server" />
     <script src="client/hud.lua" type="client" />
 
-    <!-- used when running: ai_peds (guards, ambushers), ai_land_traffic (pursuit), v_inventory (crate) -->
+    <!-- used when running: ai_peds (guards, ambushers), ai_land_traffic (pursuit) -->
 
     <export function="startSupplyMission" type="server" />
     <export function="startSellMission"   type="server" />

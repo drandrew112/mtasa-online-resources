@@ -16,7 +16,6 @@ MIS = {
     GUARD_ACCURACY = 0.45,
     GUARD_GROUP = "biz_guards",
     SUPPLY_VAN = 440,              -- Rumpo
-    CRATE_ITEM = "biz_supply_crate",
     DELIVER_RADIUS = 10,           -- van / crate this close to the property entrance = delivered
     STEAL_AREA_RADIUS = 60,        -- radar circle around the target
 

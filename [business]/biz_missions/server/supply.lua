@@ -1,12 +1,17 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- biz_missions / server/supply.lua
 -- Supply steal: armed guards hold a shipment somewhere in the country. Kill
--- them (or slip past), take the van or carry the crate (v_inventory item) to
--- the property's entrance. Units: WEED.STEAL_UNITS (biz_weed decides the cap).
--- Fails when the van is destroyed, the crate is gone or the time is up;
--- nothing is lost from the stock.
+-- them (or slip past), take the van or the crate to the property's entrance.
+-- The crate is a world object, not an inventory item: walking into it picks it
+-- up (it disappears, the player is the carrier). When the carrier dies or
+-- leaves, the crate drops where they were and a radar objective marks it.
+-- Units: WEED.STEAL_UNITS (biz_weed decides the cap).
+-- Fails when the van is destroyed or the time is up; nothing is lost from the stock.
 
 SUPPLY = {}
+
+local CRATE_MODEL = 2912
+local PICKUP_RADIUS = 2.0
 
 local function entranceOf(unitId)
     local u = M.core():getUnit(unitId)
@@ -55,6 +60,10 @@ local function refreshTeam(m)
     for _, p in ipairs(M.team(m)) do
         if m.phase == "steal" then
             M.objective(m, p, "target", m.spot.x, m.spot.y, m.spot.z, L.forPlayer(p, "biz_missions.obj.steal", { place = m.spot.name }))
+        elseif m.dropped then
+            local d = m.dropped
+            M.objective(m, p, "target", d[1], d[2], d[3], L.forPlayer(p, "biz_missions.obj.crate_dropped"))
+            M.objective(m, p, "deliver", ex, ey, ez, L.forPlayer(p, "biz_missions.obj.bring_supply", { place = m.entranceName }))
         else
             M.clearObjective(m, p, "target")
             M.objective(m, p, "deliver", ex, ey, ez, L.forPlayer(p, "biz_missions.obj.bring_supply", { place = m.entranceName }))
@@ -72,6 +81,38 @@ local function goDeliver(m, who)
     refreshTeam(m)
 end
 
+-- the crate lies on the ground at x, y, z (pick-up sphere + object)
+local function placeCrate(m, x, y, z)
+    m.crateObj = M.track(m, createObject(CRATE_MODEL, x, y, z, 0, 0, math.random(0, 359)))
+    if m.crateObj then setObjectScale(m.crateObj, 0.6) end
+    m.crateCol = M.track(m, createColSphere(x, y, z, PICKUP_RADIUS))
+end
+
+local function removeCrate(m)
+    if isElement(m.crateObj) then destroyElement(m.crateObj) end
+    if isElement(m.crateCol) then destroyElement(m.crateCol) end
+    m.crateObj, m.crateCol = nil, nil
+end
+
+local function dropCrate(m, x, y, z)
+    m.carrier = nil
+    m.dropped = { x, y, z }
+    placeCrate(m, x, y, z - 0.7)
+    M.notifyTeam(m, "biz_missions.supply.dropped")
+    refreshTeam(m)
+end
+
+local function pickUpCrate(m, player)
+    removeCrate(m)
+    m.carrier, m.dropped = player, nil
+    if m.phase == "deliver" then
+        M.notifyTeam(m, "biz_missions.supply.taken", { player = M.name(player) })
+        refreshTeam(m)
+    else
+        goDeliver(m, player)
+    end
+end
+
 local function update(m)
     -- the shipment: where is it
     local x, y, z
@@ -81,15 +122,14 @@ local function update(m)
         local driver = getVehicleOccupant(m.van, 0)
         if m.phase == "steal" and driver then goDeliver(m, driver) end
     else
-        if not M.running("v_inventory") or not exports.v_inventory:isItem(m.crate) then return M.finish(m, "failed", "crate_lost") end
-        local cx, cy, cz, dim, _, locType = exports.v_inventory:getItemPosition(m.crate)
-        if not cx or dim ~= 0 then return end
-        x, y, z = cx, cy, cz
-        if m.phase == "steal" and locType ~= "ground" then
-            local item = exports.v_inventory:getItem(m.crate)
-            local holder = item and item.loc and item.loc.player
-            goDeliver(m, holder)
+        if not m.carrier then return end
+        if not isElement(m.carrier) or isPedDead(m.carrier) then
+            -- safety net: the quit / wasted handlers below normally drop it first
+            local lx, ly, lz = unpack(m.lastPos or m.spot and { m.spot.x, m.spot.y, m.spot.z })
+            return dropCrate(m, lx, ly, lz)
         end
+        x, y, z = getElementPosition(m.carrier)
+        m.lastPos = { x, y, z }
     end
     -- delivered?
     if m.phase == "deliver" and getDistanceBetweenPoints3D(x, y, z, m.entrance[1], m.entrance[2], m.entrance[3]) <= MIS.DELIVER_RADIUS then
@@ -111,10 +151,7 @@ local function onEnd(m, result, info)
     elseif result == "timeout" then
         M.notifyTeam(m, "biz_missions.supply.timeout")
     elseif result == "failed" then
-        M.notifyTeam(m, info == "crate_lost" and "biz_missions.supply.crate_lost" or "biz_missions.supply.van_destroyed")
-    end
-    if m.crate and M.running("v_inventory") and exports.v_inventory:isItem(m.crate) then
-        exports.v_inventory:destroyInventoryItem(m.crate)
+        M.notifyTeam(m, "biz_missions.supply.van_destroyed")
     end
 end
 
@@ -126,7 +163,7 @@ function SUPPLY.start(founder, unitId, state)
     m.spot, m.entrance, m.entranceName, m.phase = spot, { ex, ey, ez }, ename, "steal"
     m.units = M.rand({ 20, 30 })
     m.update, m.onEnd = update, onEnd
-    m.variant = (M.running("v_inventory") and math.random() < 0.5) and "crate" or "van"
+    m.variant = math.random() < 0.5 and "crate" or "van"
 
     if m.variant == "van" then
         m.van = M.track(m, createVehicle(MIS.SUPPLY_VAN, spot.x + 2, spot.y + 2, spot.z + 1, 0, 0, math.random(0, 359)))
@@ -138,12 +175,11 @@ function SUPPLY.start(founder, unitId, state)
         end
     end
     if m.variant == "crate" then
-        local uid = exports.v_inventory:createItem(MIS.CRATE_ITEM, { display = { { label = "Units", value = tostring(m.units) } } }, { type = "none" })
-        if not uid or not exports.v_inventory:dropItem(uid, spot.x, spot.y, spot.z, 0, 0, 0) then
+        placeCrate(m, spot.x, spot.y, spot.z + 0.3)
+        if not m.crateObj then
             M.finish(m, "cancelled")
             return false, "failed"
         end
-        m.crate = uid
     end
 
     spawnGuards(m, spot)
@@ -156,6 +192,28 @@ function SUPPLY.start(founder, unitId, state)
     refreshTeam(m)
     return true
 end
+
+-- crate pick-up: walk into it on foot
+addEventHandler("onColShapeHit", root, function(el, matchingDim)
+    if not matchingDim or getElementType(el) ~= "player" or isPedDead(el) or isPedInVehicle(el) then return end
+    for _, m in pairs(M.list) do
+        if m.kind == "supply" and m.crateCol == source then
+            return pickUpCrate(m, el)
+        end
+    end
+end)
+
+-- the carrier dies or leaves: the crate drops there
+local function carrierGone()
+    for _, m in pairs(M.list) do
+        if m.kind == "supply" and m.carrier == source then
+            local x, y, z = getElementPosition(source)
+            return dropCrate(m, x, y, z)
+        end
+    end
+end
+addEventHandler("onPlayerWasted", root, carrierGone)
+addEventHandler("onPlayerQuit", root, carrierGone)
 
 -- guard kills (HUD counter)
 addEvent("onAIPedWasted", false)
