@@ -74,6 +74,7 @@ end
 
 local function openScoreboard(data)
     pickedJobs = pickRandomJobs()
+    jobmanagerRequestJobs() -- the cached list may be empty/stale this long after the menu was last open
     setScoreboardRendering(true)
     payload = data
     view = "stats"
@@ -106,6 +107,16 @@ local function closeScoreboard()
     setElementData(localPlayer, "scoreboardOpen", false)
     uicore:toggleMoveControls(true)
 end
+
+-- The job list arrives after the scoreboard opened: draw the random picks from it,
+-- unless the player is already choosing (tiles must not change under the cursor).
+addEvent("jobmanager:jobs", true)
+addEventHandler("jobmanager:jobs", resourceRoot, function()
+    if not view or (view == "picker" and #pickedJobs > 0) then return end
+    setTimer(function() -- after ui.lua has stored the new list
+        if view and (view ~= "picker" or #pickedJobs == 0) then pickedJobs = pickRandomJobs() end
+    end, 50, 1)
+end)
 
 addEvent("jobmanager:matchEnded", true)
 addEventHandler("jobmanager:matchEnded", resourceRoot, function(data)
