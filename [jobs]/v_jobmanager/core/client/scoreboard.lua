@@ -304,7 +304,7 @@ local function drawPicker()
         local job = jobsList[i]
         local isSel = activeRow == 1 and mainIndex == i
 
-        dxDrawRectangle(tx, ty, tileW, tileH, isSel and C.tileSel or C.tile)
+        dxDrawRectangle(tx, ty, tileW, tileH, C.tile)
         if job then
             local imgPath = job.image or "assets/jobs/default.jpg"
             if not fileExists(imgPath) then imgPath = "assets/jobs/default.jpg" end
@@ -314,7 +314,11 @@ local function drawPicker()
                 tocolor(255, 255, 255), S(1.1), FONT.rowB, "left", "center", true)
         end
         if isSel then
-            dxDrawRectangle(tx, ty, tileW, S(3), C.accent)
+            local b = S(4)
+            dxDrawRectangle(tx, ty, tileW, b, C.tileSel)
+            dxDrawRectangle(tx, ty + tileH - b, tileW, b, C.tileSel)
+            dxDrawRectangle(tx, ty + b, b, tileH - b * 2, C.tileSel)
+            dxDrawRectangle(tx + tileW - b, ty + b, b, tileH - b * 2, C.tileSel)
         end
     end
 
