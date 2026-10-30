@@ -4,7 +4,7 @@
 
     <!-- CLIENT FILES -->
     <include resource="v_locals" />
-    <script src="locals.lua" type="client" />
+    <script src="locals.lua" type="shared" />
     <script src="client/scale.lua" type="client" />
     <script src="client/layout.lua" type="client" />
 
