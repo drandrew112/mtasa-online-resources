@@ -1,6 +1,7 @@
 -- police_system / modules/mdc/client/pages/signin.lua
 -- The (smaller) unit sign-in window: type Adam (A-, 2-4 officers) / Lincoln (L-, alone), number (free / taken across
--- every server), officers (leader + invited with their answer), nearby officers to invite, Sign in.
+-- every server), officers (leader + invited with their answer), nearby officers to invite, Sign in. Reports (top
+-- right, with the number of own drafts): the drafts can be submitted without a unit.
 
 local MDC = POL.mdc
 local C = POL.colors
@@ -19,6 +20,11 @@ MDC.pages.signin = {
         dxDrawRectangle(0, POL.px(54), w, POL.px(2), C.accent)
         W.text(L("police_system.mdc.unit_signin"), POL.px(18), 0, w, POL.px(54), C.white, 14, true)
         W.button("close", w - POL.px(54), POL.px(11), POL.px(36), POL.px(32), "✕", function() MDC.close() end, "ghost")
+        -- the own drafts can be submitted off duty too
+        local drafts = f and f.drafts or 0
+        W.button("si:reports", w - POL.px(250), POL.px(11), POL.px(186), POL.px(32),
+            L("police_system.mdc.menu_reports") .. (drafts > 0 and ("  " .. drafts) or ""), function() MDC.go("reports") end,
+            drafts > 0 and "danger" or "ghost")
         if not f then W.text(L("police_system.mdc.loading"), POL.px(18), POL.px(70), w, POL.px(30), C.dim, 11) return end
         local px = POL.px(24)
         local cy = POL.px(72)

@@ -154,6 +154,15 @@ POLICE = {
     QUERY = { HIDE_AFTER = 30000 },
     PLATES = { RANGE = 25, MAX = 8, INTERVAL = 300 },
     MDC = { PAGE_SIZE = 25, FEED_INTERVAL = 2000, CACHE = 10000 },
+    -- MDC computers (/mdcpc): the full MDC without a unit, J on foot next to one
+    TERMINALS = {
+        FILE = "mdc_terminals.json",  -- in the resource folder
+        MODEL = 2190,             -- PC_1 (monitor + keyboard); /mdcpc add 0 = no object (a computer of the map)
+        RANGE = 1.8,              -- J works this close
+        CLOSE_DIST = 3.5,         -- the open MDC closes farther than this
+        Z_OFFSET = 0,             -- object height over the surface found in front of the admin
+        CHECK = 500,              -- ms: nearest computer check (the hint layer is on only near one)
+    },
 
     TOW = { MODEL = 525, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, SKIN = 50 },
     MEDICAL = { MODEL = 416, SPAWN_MIN = 150, SPAWN_MAX = 350, SKIN = 274, PAINTJOB = "hu_omsz" },

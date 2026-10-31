@@ -1,6 +1,6 @@
 -- police_system / modules/stop/server/menu.lua
 -- The temp menu (ui_inac) of a stopped person / vehicle or a wanted / cuffed suspect, built for the officer in its
--- language, and the actions it sends back (stop:action target, value):
+-- language (stays open after a pick, except arrest / escort), and the actions it sends back (stop:action target, value):
 --   details, vehicle (queries), bac, drug (tests), warn:<id>, fine:<id> (penal code), arrest, uncuff, escort, place,
 --   takeout, out (order out of the vehicle), return (back into the vehicle), release (Release / Code 4)
 -- Tests: an NPC's result comes from its History; a player is always negative for now (pol.bac / pol.drug element
@@ -132,6 +132,14 @@ function ST.openMenu(officer, target)
         end
         if s then add("police_system.stop.release", "release", { desc = "Code 4" }) end
     end
+    -- the menu stays open after an action, only arrest and escort close it
+    local function keepOpen(list)
+        for _, it in ipairs(list) do
+            if it.items then keepOpen(it.items)
+            elseif it.value ~= "arrest" and it.value ~= "escort" then it.closeOnSelect = false end
+        end
+    end
+    keepOpen(items)
     POL.send(officer, "stop:menu", target, title, items)
 end
 

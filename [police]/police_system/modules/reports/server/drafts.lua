@@ -2,7 +2,9 @@
 -- Reports. A closed incident makes a draft from its log (templates/<lang>.lua) in the language of the unit leader
 -- (any v_locals language can be picked in the editor; the language is always shown; no translation). The officer
 -- edits / completes it and submits it. A manual report (type Other) can be written too, it pays nothing. Any member
--- of the unit can submit; the leader sees what is left. Signing off needs every draft of the shift submitted.
+-- of the unit can submit; the leader sees what is left. Signing off needs every draft of the shift submitted (leaving
+-- the unit: the drafts the member is in). Drafts can be submitted off duty too (MDC sign-in screen, MDC computers):
+-- a report of an ended shift is paid when it is submitted (pay.lua PAY.report).
 
 local R = POL.module("reports", { pending = {} })   -- pending[shiftId] = number of drafts
 
@@ -93,6 +95,17 @@ function R.pendingCount(unit)
     return unit and unit.shiftId and (R.pending[unit.shiftId] or 0) or 0
 end
 
+-- drafts of an account (author or member), only of shift `shiftId` when given; cb(n)
+function R.draftCount(acc, shiftId, cb)
+    if not acc or not POL.db.ready then return cb(0) end
+    local sql = "SELECT COUNT(*) AS n FROM pol_reports WHERE is_pool = 0 AND status = 'draft' AND (author = ? OR members LIKE ?)"
+    local args = { acc, '%"' .. acc .. '"%' }
+    if shiftId then sql = sql .. " AND shift_id = ?"; args[3] = shiftId end
+    POL.db.query(function(rows)
+        cb(type(rows) == "table" and rows[1] and tonumber(rows[1].n) or 0)
+    end, sql, unpack(args))
+end
+
 local function canSee(player, r)
     local acc = POL.accountOf(player)
     if not acc then return false end
@@ -142,26 +155,19 @@ function R.save(player, id, title, body, lang, submit, cb)
         body = tostring(body or r.body):sub(1, 8000)
         lang = tostring(lang or r.lang):sub(1, 8)
         if submit then
-            POL.db.exec("UPDATE pol_reports SET title = ?, body = ?, lang = ?, status = 'submitted', submitted_at = ? WHERE id = ?",
-                title, body, lang, POL.now(), r.id)
-            POL.db.stat("reports", 1)
             local sid = tonumber(r.shift_id)
-            if sid then
-                R.pending[sid] = math.max(0, (R.pending[sid] or 1) - 1)
-                -- the shift may have ended already (pay pending): the last draft settles it
+            POL.db.query(function(ok)
+                if ok == false or not sid then return end
+                -- the shift may have ended already (forced end): this report is paid now (after the row is submitted)
                 local live = false
                 for _, u in pairs(POL.units.list) do if u.shiftId == sid then live = u end end
-                if live then
-                    POL.units.push(live)
-                elseif R.pending[sid] == 0 then
-                    POL.pay.shiftComplete(sid)
-                else
-                    -- pending count not known (restart): ask the database
-                    POL.db.query(function(left)
-                        local n = type(left) == "table" and left[1] and tonumber(left[1].n) or 1
-                        if n == 0 then POL.pay.shiftComplete(sid) end
-                    end, "SELECT COUNT(*) AS n FROM pol_reports WHERE shift_id = ? AND status = 'draft' AND is_pool = 0", sid)
-                end
+                if not live then POL.pay.report(sid, r.id) end
+            end, "UPDATE pol_reports SET title = ?, body = ?, lang = ?, status = 'submitted', submitted_at = ? WHERE id = ?",
+                title, body, lang, POL.now(), r.id)
+            POL.db.stat("reports", 1)
+            if sid then
+                R.pending[sid] = math.max(0, (R.pending[sid] or 1) - 1)
+                for _, u in pairs(POL.units.list) do if u.shiftId == sid then POL.units.push(u) end end
             end
             POL.events.logFor(player, "report_submitted", { report = r.id })
         else

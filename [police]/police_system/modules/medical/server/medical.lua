@@ -78,7 +78,8 @@ function MD.request(player)
     if not amb then POL.notify(player, "police_system.medical.unavailable") return false end
     if C.PAINTJOB and POL.running("v_paintjobs") then pcall(function() exports.v_paintjobs:setVehicleCustomPaintjob(amb, C.PAINTJOB) end) end
     if POL.running("v_els") then exports.v_els:setElsLights(amb, true); exports.v_els:setElsSiren(amb, true, 1) end
-    MD.jobs[amb] = { patient = patient, caller = player, state = "coming" }
+    MD.jobs[amb] = { patient = patient, caller = player, state = "coming",
+                     blip = createBlipAttachedTo(amb, 0, 2, 255, 220, 0, 255, 5, 99999, player) }
     holdPatient(patient)
     t:addScriptedStop(amb, px, py, pz, { tag = "amb_pickup", hold = true, radius = 40 })
     POL.events.logFor(player, "ambulance_requested", { ai = true })
@@ -86,7 +87,14 @@ function MD.request(player)
     return true
 end
 
+-- yellow blip for the caller only while the ambulance is on its way
+local function dropBlip(job)
+    if isElement(job.blip) then destroyElement(job.blip) end
+    job.blip = nil
+end
+
 local function fail(amb, job)
+    dropBlip(job)
     MD.jobs[amb] = nil
     if isElement(job.caller) then POL.notify(job.caller, "police_system.medical.failed") end
 end
@@ -97,6 +105,7 @@ addEventHandler("onTrafficVehicleTargetReached", root, function(amb, id, kind, t
     if not job or tag ~= "amb_pickup" or job.state ~= "coming" then return end
     local t = traffic()
     job.state = "loading"
+    dropBlip(job)
     setVehicleDoorOpenRatio(amb, 4, 1, 800)
     setVehicleDoorOpenRatio(amb, 5, 1, 800)
     setTimer(function()
@@ -125,7 +134,7 @@ addEvent("onTrafficVehicleRemoved")
 addEventHandler("onTrafficVehicleRemoved", root, function(amb, reason)
     local job = MD.jobs[amb]
     if not job then return end
-    if job.state == "coming" or job.state == "loading" then fail(amb, job) else MD.jobs[amb] = nil end
+    if job.state == "coming" or job.state == "loading" then fail(amb, job) else dropBlip(job); MD.jobs[amb] = nil end
 end)
 
 addEventHandler("onVehicleExplode", root, function()

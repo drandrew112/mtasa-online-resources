@@ -51,6 +51,7 @@
     <script src="modules/tow/server/tow.lua" type="server" />
     <script src="modules/medical/server/medical.lua" type="server" />
     <script src="modules/mdc/server/api.lua" type="server" />
+    <script src="modules/mdc/server/terminals.lua" type="server" />
     <script src="modules/web/server/stats.lua" type="server" />
     <script src="modules/gov/server/gov.lua" type="server" />
     <script src="modules/test/server/test.lua" type="server" />
@@ -72,6 +73,7 @@
     <script src="modules/mdc/client/field.lua" type="client" />
     <script src="modules/mdc/client/widgets.lua" type="client" />
     <script src="modules/mdc/client/mdc.lua" type="client" />
+    <script src="modules/mdc/client/terminals.lua" type="client" />
     <script src="modules/mdc/client/pages/overview.lua" type="client" />
     <script src="modules/mdc/client/pages/lists.lua" type="client" />
     <script src="modules/mdc/client/pages/warrants.lua" type="client" />

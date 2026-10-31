@@ -2,8 +2,8 @@
 -- Units: signing in only in a police vehicle, on the MDC. Adam (A-) = 2-4 officers (never alone), Lincoln (L-) =
 -- exactly 1. Number 1-999; the number is taken whatever the type (A-10 and L-10 never at once), across every server
 -- instance (open pol_shifts rows). One unit per player. Officers can be added on the way (invite + accept).
--- The leader quits: the unit ends. A member quits: the unit stays. Signing off only when every report of the closed
--- incidents is submitted; then the pay (pay.lua).
+-- The leader quits: the unit ends. A member quits: the unit stays. Signing off (and leaving the unit) only when every
+-- report of the closed incidents is submitted (a member: the ones they are in); the pay comes at once (pay.lua).
 --
 -- unit = { id, callsign, type, number, leader, members = { [player] = true }, order = { player, ... }, vehicle,
 --          status, sub, shiftId, startedAt, incidents = { [incident] = true }, incSeq, tail = { log lines },
@@ -106,8 +106,10 @@ function U.formState(player, cb)
         if not f.invited[p] then cand[#cand + 1] = { name = POL.nameOf(p), el = p } end
     end
     U.numberFree(f.number, function(free)
-        cb({ type = f.type, number = f.number, free = free, invited = inv, candidates = cand, leader = POL.nameOf(player),
-             inVehicle = isPoliceVehicle(getPedOccupiedVehicle(player)) })
+        POL.reports.draftCount(POL.accountOf(player), nil, function(drafts)
+            cb({ type = f.type, number = f.number, free = free, invited = inv, candidates = cand, leader = POL.nameOf(player),
+                 inVehicle = isPoliceVehicle(getPedOccupiedVehicle(player)), drafts = drafts })
+        end)
     end)
 end
 
@@ -191,9 +193,12 @@ function U.removeMember(unit, player, reason)
     unit.members[player] = nil
     for i, p in ipairs(unit.order) do if p == player then table.remove(unit.order, i) break end end
     U.byPlayer[player] = nil
+    local acc = POL.accountOf(player) or (isElement(player) and getPlayerName(player))
     if unit.shiftId then
-        POL.db.appendLine("pol_shifts", "members", unit.shiftId, { acc = POL.accountOf(player), at = POL.now(), left = reason or true })
+        POL.db.appendLine("pol_shifts", "members", unit.shiftId, { acc = acc, at = POL.now(), left = reason or true })
     end
+    -- the duty of this member ended: paid now (the unit end pays only what is new for them)
+    POL.pay.member(unit, player, acc, reason == "quit")
     POL.events.log(unit, player, "member_left", { reason = reason })
     if isElement(player) then POL.send(player, "unit:state", false) end
     U.push(unit)
@@ -259,12 +264,8 @@ function U.finish(unit, reason)
         for acc, name in pairs(unit.accounts) do accs[#accs + 1] = acc end
         POL.db.exec("UPDATE pol_shifts SET ended_at = ?, pay_pending = ? WHERE id = ?", POL.now(), pending > 0 and 1 or 0, unit.shiftId)
     end
-    if pending == 0 then
-        POL.pay.settle(unit)
-    else
-        POL.pay.keep(unit)
-        POL.notify(members, "police_system.units.pay_pending", { count = pending })
-    end
+    POL.pay.settle(unit)
+    if pending > 0 then POL.notify(members, "police_system.units.pay_pending", { count = pending }) end
     POL.emit("unit.signedOff", unit, reason)
     POL.emit("units.changed", unit)
 end
@@ -273,8 +274,13 @@ function U.signOff(player, cb)
     local unit = U.byPlayer[player]
     if not unit then return cb(false, "not_in_unit") end
     if unit.leader ~= player then
-        U.removeMember(unit, player, "left")
-        return cb(true)
+        -- the drafts this member is in must be submitted first
+        return POL.reports.draftCount(POL.accountOf(player), unit.shiftId, function(n)
+            if n > 0 then return cb(false, "reports", n) end
+            if U.byPlayer[player] ~= unit then return cb(false, "not_in_unit") end
+            U.removeMember(unit, player, "left")
+            cb(true)
+        end)
     end
     local pending = POL.reports.pendingCount(unit)
     if pending > 0 then return cb(false, "reports", pending) end

@@ -29,7 +29,14 @@ local function nearestEmpty(player)
     return best
 end
 
+-- yellow blip for the caller only while the truck is on its way
+local function dropBlip(job)
+    if isElement(job.blip) then destroyElement(job.blip) end
+    job.blip = nil
+end
+
 local function fail(job, key)
+    dropBlip(job)
     local veh = job.vehicle
     TW.jobs[veh] = nil
     if isElement(veh) then setVehicleLocked(veh, false) end
@@ -67,6 +74,7 @@ function TW.request(player, confirmed, veh)
     local job = { vehicle = veh, truck = truck, driver = driver, caller = player, unit = unit, state = "coming",
                   at = getTickCount() }
     TW.jobs[veh] = job
+    job.blip = createBlipAttachedTo(truck, 0, 2, 255, 220, 0, 255, 5, 99999, player)
     t:addScriptedStop(truck, x, y, z, { tag = "tow_pickup", hold = true, radius = 40 })
     POL.events.logFor(player, "tow_requested", { plate = getVehiclePlateText(veh) })
     POL.notify(player, "police_system.tow.coming")
@@ -92,6 +100,7 @@ addEventHandler("onTrafficVehicleTargetReached", root, function(truck, id, kind,
         local veh = job.vehicle
         if not isElement(veh) or isVehicleBlown(veh) then return fail(job) end
         job.state = "towing"
+        dropBlip(job)
         setElementCollisionsEnabled(veh, false)
         attachElements(veh, truck, 0, -6.2, -0.6, 8, 0, 0)
         local x, y = getElementPosition(truck)
@@ -109,6 +118,7 @@ end)
 
 -- the towed vehicle goes (an owned vehicle back into its owner's garage)
 function TW.finish(job)
+    dropBlip(job)
     local veh = job.vehicle
     TW.jobs[veh] = nil
     if isElement(veh) then

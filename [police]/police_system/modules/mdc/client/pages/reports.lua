@@ -36,15 +36,21 @@ MDC.pages.reports = {
     draw = function(x, y, w, h)
         if S.edit then return MDC.pages.reports.drawEditor(x, y, w, h) end
         W.text(L("police_system.mdc.menu_reports"), x, y, w, POL.px(30), C.white, 15, true)
+        -- without a unit only the own reports; the sign-in window (no MDC computer) only submits drafts
+        if not POL.onDuty() then S.scope = "mine" end
         W.button("rp:mine", x, y + POL.px(36), POL.px(130), POL.px(28), L("police_system.mdc.reports_mine"),
             function() S.scope = "mine"; MDC.load() end, S.scope == "mine" and "active" or nil)
-        W.button("rp:unit", x + POL.px(134), y + POL.px(36), POL.px(130), POL.px(28), L("police_system.mdc.reports_unit"),
-            function() S.scope = "unit"; MDC.load() end, S.scope == "unit" and "active" or nil)
-        W.button("rp:new", x + w - POL.px(170), y + POL.px(36), POL.px(170), POL.px(28), L("police_system.mdc.new_report"), function()
-            S.edit = { id = "new", lang = (MDC.data.warrantMeta or {}).lang or L.lang() }
-            W.fieldOf("rp:title", { max = 160 }):setText("")
-            W.fieldOf("rp:body", { max = 8000, multiline = true }):setText("")
-        end, "primary")
+        if POL.onDuty() then
+            W.button("rp:unit", x + POL.px(134), y + POL.px(36), POL.px(130), POL.px(28), L("police_system.mdc.reports_unit"),
+                function() S.scope = "unit"; MDC.load() end, S.scope == "unit" and "active" or nil)
+        end
+        if MDC.full() then
+            W.button("rp:new", x + w - POL.px(170), y + POL.px(36), POL.px(170), POL.px(28), L("police_system.mdc.new_report"), function()
+                S.edit = { id = "new", lang = (MDC.data.warrantMeta or {}).lang or L.lang() }
+                W.fieldOf("rp:title", { max = 160 }):setText("")
+                W.fieldOf("rp:body", { max = 8000, multiline = true }):setText("")
+            end, "primary")
+        end
         local rows = {}
         for _, r in ipairs(MDC.data.reports or {}) do
             rows[#rows + 1] = { cells = { r.status == "draft" and "DRAFT" or "", r.title, (r.unit or "") .. " " .. tostring(r.author or ""),

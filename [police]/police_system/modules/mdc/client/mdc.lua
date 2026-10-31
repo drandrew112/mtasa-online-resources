@@ -2,11 +2,12 @@
 -- The Mobile Data Computer: J in a police vehicle (driver or passenger), only with the police right; the Skoda 598
 -- only with the hu_pd paintjob (isPoliceModelVehicle). No warning for anyone else (the key just goes on to other
 -- resources). 80 % of the screen (width and height), menu in the top bar, navy theme, the status colours of F4-F7.
--- Without a unit only the smaller sign-in window shows. Drawn into a render target only when something changed
+-- Without a unit only the smaller sign-in window shows (its Reports button: the own drafts, submitted off duty too).
+-- MDC computers (terminals.lua, J on foot next to one): the full MDC without a unit. Drawn into a render target only when something changed
 -- (data, hover, typing); one dxDrawImage a frame. Data: request / reply (pol:mdc:call), the Overview feed only while
 -- open. Movement is locked while open (ui_core toggleMoveControls + the vehicle controls), the vehicle stands.
 
-local MDC = POL.module("mdc", { open = false, page = "overview", view = nil, data = {}, dirty = true })
+local MDC = POL.module("mdc", { open = false, page = "overview", view = nil, data = {}, dirty = true, terminal = false })
 local cv = POL.canvas()
 local seq, pending = 0, {}
 MDC.pages = {}
@@ -17,9 +18,15 @@ local VEH_CONTROLS = { "accelerate", "brake_reverse", "vehicle_left", "vehicle_r
 
 function MDC.isOpen() return MDC.open end
 
+-- the full MDC (menu, every page): on duty, or at an MDC computer
+function MDC.full() return POL.onDuty() or MDC.terminal ~= false end
+
+-- off duty in a vehicle: the sign-in window, or the own drafts (Reports from the sign-in window)
+local function offPage() return MDC.page == "reports" and "reports" or "signin" end
+
 function MDC.rect()
     local sw, sh = POL.sw, POL.sh
-    if not POL.onDuty() then
+    if not MDC.full() and offPage() == "signin" then
         local w, h = math.min(POL.px(640), sw - POL.px(40)), math.min(POL.px(470), sh - POL.px(40))
         return math.floor((sw - w) / 2), math.floor((sh - h) / 2), w, h
     end
@@ -54,7 +61,7 @@ POL.handle("mdc:feed", function(data)
 end)
 
 POL.handle("mdc:refresh", function(page)
-    if MDC.open and (MDC.page == page or (page == "signin" and not POL.onDuty())) then MDC.load() end
+    if MDC.open and (MDC.page == page or (page == "signin" and not MDC.full())) then MDC.load() end
 end)
 
 function MDC.error(err)
@@ -77,7 +84,7 @@ function MDC.go(page, view)
 end
 
 function MDC.load()
-    local name = POL.onDuty() and MDC.page or "signin"
+    local name = MDC.full() and MDC.page or offPage()
     local p = MDC.pages[name]
     if p and p.load then p.load() end
 end
@@ -104,6 +111,8 @@ local function drawTop(w, h)
         W.text(names, rx - POL.px(300), 0, POL.px(300), POL.px(54), c.dim, 10, false, "right")
         local nw = math.min(POL.px(300), dxGetTextWidth(names, 1, POL.font(10)))
         W.text(u.callsign, rx - nw - POL.px(80), 0, POL.px(70), POL.px(54), c.white, 14, true, "right")
+    elseif MDC.terminal then
+        W.text(L.upper(L("police_system.mdc.terminal")), rx - POL.px(300), 0, POL.px(300), POL.px(54), c.dim, 10, true, "right")
     end
 end
 
@@ -151,11 +160,19 @@ local function drawAll(w, h)
     W.reset()
     local c = POL.colors
     dxDrawRectangle(0, 0, w, h, c.bg)
-    if POL.onDuty() then
+    if MDC.full() then
         drawTop(w, h)
         drawMenu(w)
         local p = MDC.pages[MDC.page]
         if p and p.draw then p.draw(POL.px(16), POL.px(108), w - POL.px(32), h - POL.px(124)) end
+    elseif offPage() == "reports" then
+        -- off duty: the own drafts, back to the sign-in window
+        dxDrawRectangle(0, 0, w, POL.px(54), c.panel)
+        dxDrawRectangle(0, POL.px(54), w, POL.px(2), c.accent)
+        W.button("off:back", POL.px(14), POL.px(11), POL.px(220), POL.px(32), "‹ " .. L("police_system.mdc.unit_signin"),
+            function() MDC.go("signin") end, "ghost")
+        W.button("close", w - POL.px(54), POL.px(11), POL.px(36), POL.px(32), "✕", function() MDC.close() end, "ghost")
+        MDC.pages.reports.draw(POL.px(16), POL.px(72), w - POL.px(32), h - POL.px(88))
     else
         local p = MDC.pages.signin
         if p then p.draw(0, 0, w, h) end
@@ -175,6 +192,7 @@ local function frame()
     -- the caret blinks: a redraw twice a second while a field has the focus
     if W.focus and now - lastBlink > 500 then lastBlink = now; MDC.dirty = true end
     if MDC.lastError and now - (MDC.errorAt or 0) > 5000 and now - (MDC.errorAt or 0) < 5600 then MDC.dirty = true end
+    if MDC.terminal and not MDC.nearTerminal(MDC.terminal) then return MDC.close() end
     if MDC.dirty then
         MDC.dirty = false
         cv:paint(w, h, drawAll)
@@ -214,8 +232,12 @@ function POL.running(name)
     return r and getResourceState(r) == "running"
 end
 
-function MDC.openMdc()
+-- terminal: the id of the MDC computer (full MDC without a unit) or nil (the vehicle MDC)
+function MDC.openMdc(terminal)
     if MDC.open then return end
+    MDC.terminal = terminal or false
+    if MDC.full() and MDC.page == "signin" then MDC.page = "overview" end
+    if not MDC.full() then MDC.page = "signin" end
     MDC.open = true
     showCursor(true)
     setLock(true)
@@ -228,6 +250,7 @@ end
 function MDC.close()
     if not MDC.open then return end
     MDC.open = false
+    MDC.terminal = false
     W.focus, W.popup = nil, nil
     showCursor(false)
     setLock(false)
@@ -257,6 +280,14 @@ POL.key("mdc", function(button, press)
         if button == "j" and press and POL.hasRight() and POL.inPoliceVehicle() then
             MDC.openMdc()
             return true
+        end
+        -- on foot next to an MDC computer: the server checks and opens it (mdc:terminal)
+        if button == "j" and POL.hasRight() and not getPedOccupiedVehicle(localPlayer) then
+            local id = MDC.nearestTerminal()
+            if id then
+                if press then POL.send("mdc:terminal", id) end
+                return true
+            end
         end
         return false
     end
