@@ -60,6 +60,24 @@ local function addDirtyAcc(player, key, amount)
 end
 ACTION.addDirtyAcc = addDirtyAcc
 
+--- police_system wanted level for withdrawing dirty money. police_system only gives it in dimension 0 (the
+--- office computer is in an interior), so it waits until the player is back outside.
+local pendingWanted = {}
+
+local function giveDirtyWanted(player)
+    if not BIZ.running("police_system") then pendingWanted[player] = nil return end
+    local ok, why = exports.police_system:addWanted(player, BIZ.DIRTY_WANTED_REASON, BIZ.DIRTY_WANTED_LEVEL)
+    pendingWanted[player] = (not ok and (why == "dimension" or why == "bad_player")) or nil
+end
+
+addEventHandler("onElementDimensionChange", root, function(_, newDim)
+    if getElementType(source) == "player" and pendingWanted[source] and newDim == 0 then giveDirtyWanted(source) end
+end)
+addEventHandler("onPlayerSpawn", root, function()
+    if pendingWanted[source] and getElementDimension(source) == 0 then giveDirtyWanted(source) end
+end)
+addEventHandler("onPlayerQuit", root, function() pendingWanted[source] = nil end)
+
 --------------------------------------------------------------------------------
 -- register
 --------------------------------------------------------------------------------
@@ -239,6 +257,7 @@ function withdrawFromCompany(player, amount, part)
         givePlayerMoney(player, amount)
         if BIZ.running("ui_core") then exports.ui_core:showMoney(player, "add", amount, "cash") end
         addDirtyAcc(player, BIZ.ACC_DIRTY_WITHDRAWN, amount)
+        giveDirtyWanted(player)
     else
         local b = bank()
         local from, to = MONEY.accountId(c), b and b:getPlayerAccount(player)

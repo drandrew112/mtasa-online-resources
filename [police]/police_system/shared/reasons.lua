@@ -21,6 +21,7 @@ WANTED_REASONS = {
     reckless_driving  = { level = 1 },
     escape_custody    = { level = 3 },
     public_shooting   = { level = 2 },
+    dirty_money       = { level = 2 },   -- biz_core: dirty money withdrawn from a company
 }
 
 -- extra warrant reasons (not in the penal code)
@@ -37,6 +38,7 @@ POLICE_TEXT_KEYS = {
     "police_system.reason.police_vehicle_destroyed", "police_system.reason.shop_robbery", "police_system.reason.vehicle_theft",
     "police_system.reason.assault", "police_system.reason.robbery", "police_system.reason.homicide",
     "police_system.reason.reckless_driving", "police_system.reason.escape_custody", "police_system.reason.public_shooting",
+    "police_system.reason.dirty_money",
     "police_system.reason.unpaid_fines", "police_system.reason.evading_arrest",
     "police_system.btk_cat.traffic", "police_system.btk_cat.parking", "police_system.btk_cat.vehicle",
     "police_system.btk_cat.pedestrian", "police_system.btk_cat.public", "police_system.btk_cat.order",

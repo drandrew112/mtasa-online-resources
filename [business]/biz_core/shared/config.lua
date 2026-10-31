@@ -46,6 +46,10 @@ BIZ = {
     -- accData keys (consequences of dirty money come later)
     ACC_DIRTY_WITHDRAWN = "biz_dirty_withdrawn",
     ACC_DIRTY_RECEIVED  = "biz_dirty_received",
+
+    -- police_system wanted for withdrawing dirty money (reason id in police_system shared/reasons.lua)
+    DIRTY_WANTED_REASON = "dirty_money",
+    DIRTY_WANTED_LEVEL  = 2,
 }
 
 -- activity kinds: weekly sale multipliers only apply to supply_deliver businesses
