@@ -1,0 +1,21 @@
+<meta>
+    <info author="DrAndrew112" name="work_police" version="1.0.0" type="script"
+          description="Police work on work_core: LSPD duty and vehicle markers, ranks as work levels (rank badges), duty gives the police_system police right" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/modules.lua" type="server" />
+    <script src="server/main.lua"    type="server" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="isPlayerPolice"   type="server" />
+    <export function="getPolicePlayers" type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="work_core" />
+</meta>
