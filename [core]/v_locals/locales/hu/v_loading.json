@@ -12,6 +12,7 @@
   "v_loading.fail.missing": "Nem töltődött be:",
   "v_loading.fail.world": "A spawn környéki világ",
   "v_loading.fail.game_resources": "Játék erőforrások (a letöltés vagy indítás nem fejeződött be)",
+  "v_loading.fail.setup": "Beállítás (minden erőforrás kész, de a szerver nem kapta meg)",
   "v_loading.fail.custom_models": "Egyedi modellek ({done} / {total})",
   "v_loading.fail.reconnect": "Újracsatlakozás [ENTER]",
   "v_loading.fail.wait": "Várakozás [ESC]",

@@ -39,6 +39,7 @@ local function failedItems()
         items[1] = L("v_loading.fail.world")
     elseif checking then
         for _, name in ipairs(missingResources()) do items[#items + 1] = name end
+        if #items == 0 then items[1] = L("v_loading.fail.setup") end
     else
         for _, res in ipairs(getResources()) do
             local state = getResourceState(res)
@@ -61,7 +62,12 @@ local failList = {}
 local function setFailed(state)
     failed = state
     showCursor(state)
-    if state then failList = failedItems() end
+    if state then
+        failList = failedItems()
+        local done, total = readyCounts()
+        outputDebugString(("[v_loading] loading stalled: checking=%s ready=%d/%d world=%s missing=%s")
+            :format(tostring(isCheckingReady()), done, total, tostring(worldStage), table.concat(failList, ", ")), 2)
+    end
     lastProgress = getTickCount()
 end
 

@@ -12,6 +12,7 @@
   "v_loading.fail.missing": "Not loaded:",
   "v_loading.fail.world": "World around the spawn point",
   "v_loading.fail.game_resources": "Game resources (download or start did not finish)",
+  "v_loading.fail.setup": "Setting up (all resources ready, the server did not get it)",
   "v_loading.fail.custom_models": "Custom models ({done} / {total})",
   "v_loading.fail.reconnect": "Reconnect [ENTER]",
   "v_loading.fail.wait": "Keep waiting [ESC]",

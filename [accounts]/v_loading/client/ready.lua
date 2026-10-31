@@ -8,7 +8,7 @@
 
 READY = {}            -- [resource name] = true
 local checking = false
-local warnTimer
+local warnTimer, pollTimer
 
 addEvent("onClientReadyCheck") -- local; report ready now (loading screen active, or v_loading just started)
 
@@ -44,6 +44,7 @@ local function tryReport()
     if #missingResources() > 0 then return end
     checking = false
     if isTimer(warnTimer) then killTimer(warnTimer) end
+    if isTimer(pollTimer) then killTimer(pollTimer) end
     triggerServerEvent("v_loading:clientReady", localPlayer)
 end
 
@@ -67,6 +68,11 @@ addEventHandler("v_loading:checkReady", localPlayer, function()
             outputDebugString("[v_loading] still waiting for resourceReady from: " .. table.concat(missing, ", "), 2)
         end
     end, LOADING_WARN_INTERVAL, 0)
+    -- tryReport otherwise only runs on events (report / resource start / stop); a
+    -- required resource that stops counting (state change without an event) would
+    -- leave the check hanging with nothing missing, so re-check every second too
+    if isTimer(pollTimer) then killTimer(pollTimer) end
+    pollTimer = setTimer(function() tryReport() end, 1000, 0)
     tryReport()
 end)
 
