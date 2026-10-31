@@ -35,9 +35,9 @@ end
 ------------------------------------------------------------------------ interact menus (one per element type)
 
 -- Two separate menus for the officers on duty: persons on foot (ped + player: data, arrest, escort, uncuff, place)
--- and vehicles (vehicle data, driver data, tow truck, place, take out). Someone sitting in a vehicle has no menu of
--- its own (targetInVehicle = false on the menu): one interact object per vehicle, the vehicle's menu covers the
--- driver / the suspect in the back. Items are static (a type menu); ST.action checks the target. The stop tools
+-- and vehicles (vehicle data, driver data, tow truck, place, take out). Someone sitting in a vehicle has no person
+-- menu (targetInVehicle = false): the vehicle's menu covers the driver; only someone in a police vehicle
+-- (pol.custody) gets the small custody menu (take out). Items are static (a type menu); ST.action checks the target. The stop tools
 -- (fine, warning, tests...) stay in the stop menu (ST.openMenu: "Actions").
 local function item(key, value) return { label = L.msg(key), value = value } end
 local PERSON_ITEMS = {
@@ -52,8 +52,25 @@ local VEHICLE_ITEMS = {
     item("police_system.stop.tow", "tow"),
     item("police_system.stop.place", "place"), item("police_system.stop.take_out", "takeout"),
 }
-local TYPES = { ped = PERSON_ITEMS, player = PERSON_ITEMS, vehicle = VEHICLE_ITEMS }
-local typeMenus, typeViewers = {}, ""
+-- someone in a police vehicle (pol.custody, arrest.lua) has a menu of its own too: take out from the person
+local CUSTODY_ITEMS = {
+    item("police_system.stop.menu_actions", "open"),
+    item("police_system.stop.details", "details"), item("police_system.stop.take_out", "takeout"),
+}
+-- key -> element type, items, extra def fields
+local TYPES = {
+    ped = { "ped", PERSON_ITEMS, { targetInVehicle = false } },          -- persons on foot only
+    player = { "player", PERSON_ITEMS, { targetInVehicle = false } },
+    vehicle = { "vehicle", VEHICLE_ITEMS, { title = L.msg("police_system.stop.menu_vehicle") } },
+    ped_custody = { "ped", CUSTODY_ITEMS, { targetInVehicle = true, dataKey = "pol.custody" } },
+    player_custody = { "player", CUSTODY_ITEMS, { targetInVehicle = true, dataKey = "pol.custody" } },
+}
+local typeMenus, typeViewers = {}, ""   -- typeMenus[key] = menu id
+
+local function isTypeMenu(id)
+    for _, v in pairs(typeMenus) do if v == id then return true end end
+    return false
+end
 
 function ST.refreshMenu()
     local m = io()
@@ -70,17 +87,17 @@ function ST.refreshMenu()
     end
     if sig == typeViewers and next(typeMenus) then return end
     typeViewers = sig
-    for t, items in pairs(TYPES) do
-        local id = typeMenus[t]
+    for key, spec in pairs(TYPES) do
+        local id = typeMenus[key]
         if id and m:isInteractMenu(id) then
             m:setInteractMenuVisibleTo(id, viewers)
         else
             local def = {
-                title = L.msg(t == "vehicle" and "police_system.stop.menu_vehicle" or "police_system.stop.menu_title"), range = C.MENU_RANGE, priority = 50, lineOfSight = false, checkRange = false,
-                items = items,
+                title = L.msg("police_system.stop.menu_title"), range = C.MENU_RANGE, priority = 50, lineOfSight = false, checkRange = false,
+                items = spec[2],
             }
-            if t ~= "vehicle" then def.targetInVehicle = false end   -- persons on foot only
-            typeMenus[t] = m:addInteractTypeMenu(t, def, viewers)
+            for k, v in pairs(spec[3]) do def[k] = v end
+            typeMenus[key] = m:addInteractTypeMenu(spec[1], def, viewers)
         end
     end
 end
@@ -89,7 +106,7 @@ POL.on("units.changed", function() ST.refreshMenu() end)
 
 addEvent("onInteractMenuSelect")
 addEventHandler("onInteractMenuSelect", root, function(menuId, value, target)
-    if typeMenus[getElementType(target)] ~= menuId then return end
+    if not isTypeMenu(menuId) then return end
     -- the menus are checkRange = false: the server position of a traffic vehicle (and its driver) is seconds old,
     -- so the distance is checked here by the simulated pose (POL.dist)
     if POL.dist(source, target) > C.MENU_RANGE + 3 then return POL.notify(source, "police_system.stop.err_too_far") end

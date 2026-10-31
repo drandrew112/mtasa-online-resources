@@ -62,10 +62,14 @@ local function suspectToPlace(officer)
     return best
 end
 
-local function cuffedOccupant(veh)
+-- who comes out of a police vehicle: a cuffed suspect first, else anyone else who is not an officer
+local function occupantToTakeOut(veh)
+    local other
     for _, o in pairs(getVehicleOccupants(veh)) do
         if POL.arrest.isCuffed(o) then return o end
+        if not other and POL.arrest.canTakeOut(o) then other = o end
     end
+    return other
 end
 
 function ST.openMenu(officer, target)
@@ -96,7 +100,7 @@ function ST.openMenu(officer, target)
         add("police_system.stop.vehicle_details", "vehicle", { desc = getVehiclePlateText(target) })
         if isPoliceVehicle(target) then
             if suspectToPlace(officer) then add("police_system.stop.place", "place") end
-            if cuffedOccupant(target) then add("police_system.stop.take_out", "takeout") end
+            if occupantToTakeOut(target) then add("police_system.stop.take_out", "takeout") end
         end
     else
         local cuffed = POL.arrest.isCuffed(target)
@@ -108,13 +112,12 @@ function ST.openMenu(officer, target)
             items[#items + 1] = { label = T(officer, "police_system.stop.warning"), items = btkItems(officer, true) }
             items[#items + 1] = { label = T(officer, "police_system.stop.fine"), items = btkItems(officer, false) }
         end
+        local veh = getPedOccupiedVehicle(target)
+        if veh and POL.arrest.canTakeOut(target) then add("police_system.stop.take_out", "takeout") end
         if not cuffed then
-            add("police_system.stop.arrest", "arrest")
+            if not veh then add("police_system.stop.arrest", "arrest") end
         else
-            local veh = getPedOccupiedVehicle(target)
-            if veh then
-                if isPoliceVehicle(veh) then add("police_system.stop.take_out", "takeout") end
-            else
+            if not veh then
                 add(POL.arrest.escorts[target] == officer and "police_system.stop.stop_escort" or "police_system.stop.escort", "escort")
                 if nearestPoliceVehicle(officer) then add("police_system.stop.place", "place") end
             end
@@ -247,10 +250,10 @@ function ST.action(officer, target, value, inMenu)
         end
         if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
     elseif value == "takeout" then
-        -- a vehicle: its cuffed suspect, else the driver of a stopped vehicle is ordered out
+        -- a police vehicle: its cuffed suspect / other occupant, else the driver of a stopped vehicle is ordered out
         local suspect = target
         if getElementType(target) == "vehicle" then
-            suspect = cuffedOccupant(target)
+            suspect = isPoliceVehicle(target) and occupantToTakeOut(target) or nil
             if not suspect and s and s.kind == "vehicle" then return orderOut(officer, s) end
         end
         if not suspect then return POL.notify(officer, "police_system.arrest.err_bad") end

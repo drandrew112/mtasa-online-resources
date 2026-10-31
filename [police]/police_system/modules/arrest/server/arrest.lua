@@ -183,18 +183,41 @@ function AR.place(officer, target, veh)
         if getVehicleOccupant(veh, seat) then seat = freeSeat(veh) end
         if not seat then return POL.notify(officer, "police_system.arrest.err_full") end
         warpPedIntoVehicle(target, veh, seat)
+        setCustody(target, true)
         AR.refreshMenus(target)
     end, 100, 1)
     POL.events.logFor(officer, "placed", { name = POL.stop.nameOf(target) })
     return true
 end
 
--- only out of a police vehicle (a stopped driver is ordered out instead); the suspect stands at its own door:
+-- who may be taken out of a police vehicle: a cuffed suspect, or anyone else in it but an officer (on duty / AI)
+function AR.canTakeOut(target)
+    local veh = isElement(target) and getPedOccupiedVehicle(target)
+    if not veh or not isPoliceVehicle(veh) then return false end
+    if AR.cuffed[target] then return true end
+    if POL.ai.peds[target] then return false end
+    return not (getElementType(target) == "player" and POL.units.isOnDuty(target))
+end
+
+-- pol.custody (broadcast) on whoever can be taken out of a police vehicle: the custody interact menu shows on it
+local function setCustody(el, on)
+    if not isElement(el) then return end
+    if on then setElementData(el, "pol.custody", true)
+    elseif getElementData(el, "pol.custody") then removeElementData(el, "pol.custody") end
+end
+
+addEventHandler("onVehicleEnter", root, function(ped)
+    if isPoliceVehicle(source) then setCustody(ped, AR.canTakeOut(ped)) end
+end)
+addEventHandler("onVehicleExit", root, function(ped) setCustody(ped, false) end)
+
+-- only out of a police vehicle (a stopped driver is ordered out instead); the person stands at its own door:
 -- seats 0 / 2 on the left, 1 / 3 on the right, the rear seats farther back
 function AR.takeOut(officer, target)
     local veh = getPedOccupiedVehicle(target)
-    if not veh or not AR.cuffed[target] then return false, "bad" end
+    if not veh then return false, "bad" end
     if not isPoliceVehicle(veh) then return false, "not_police_vehicle" end
+    if not AR.canTakeOut(target) then return false, "bad" end
     local seat = getPedOccupiedVehicleSeat(target) or 0
     local minX, _, _, maxX = getElementBoundingBox(veh)
     local side = (seat == 1 or seat == 3) and (maxX or 1) + 0.6 or (minX or -1) - 0.6
@@ -204,7 +227,12 @@ function AR.takeOut(officer, target)
     local y = m[4][2] + m[1][2] * side + m[2][2] * back
     local z = m[4][3] + m[1][3] * side + m[2][3] * back
     removePedFromVehicle(target)
+    setCustody(target, false)
     setElementPosition(target, x, y, z + 0.2)
+    -- the exit may still be running on the client when the first position arrives: placed again a moment later
+    setTimer(function()
+        if isElement(target) and not getPedOccupiedVehicle(target) then setElementPosition(target, x, y, z + 0.2) end
+    end, 150, 1)
     POL.events.logFor(officer, "taken_out", { name = POL.stop.nameOf(target) })
     AR.refreshMenus(target)
     return true

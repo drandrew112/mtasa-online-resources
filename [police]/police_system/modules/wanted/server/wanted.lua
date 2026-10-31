@@ -177,6 +177,31 @@ addEventHandler("onPlayerQuit", root, function()
     if st then W.clear(source, "quit") end
 end)
 
+------------------------------------------------------------------------ resource restart
+
+-- GTA's wanted level outlives a police_system restart, the list does not: without this the stars stayed on the HUD
+-- while the MDC (Wanted, Pursuits) and the chase knew nothing of them. The level is taken over (reasons unknown);
+-- where the player could not get one now (other dimension, on duty, jailed) it is cleared. A tick later, so every
+-- module started already (chase, evasion react to wanted.changed).
+function W.start()
+    setTimer(function()
+        for _, p in ipairs(getElementsByType("player")) do
+            local lv = math.min(C.MAX, getPlayerWantedLevel(p))
+            if lv > 0 and not W.list[p] then
+                if isPedDead(p) or getElementDimension(p) ~= 0 or POL.units.isOnDuty(p)
+                    or (POL.jail and POL.jail.isJailed(p)) then
+                    setPlayerWantedLevel(p, 0)
+                else
+                    local st = newState(p)
+                    st.level = lv
+                    W.list[p] = st
+                    changed(p, st, 0)
+                end
+            end
+        end
+    end, 50, 1)
+end
+
 ------------------------------------------------------------------------ exports
 
 function addWanted(player, reasonId, level) return W.add(player, reasonId, level) end
