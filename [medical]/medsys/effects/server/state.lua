@@ -71,6 +71,15 @@ local function setWalk(player, style)
     end
 end
 
+-- v_accounts set the walkStyle preference: it becomes the style to restore, the injured one stays
+addEvent("onPlayerWalkStyleApplied")
+addEventHandler("onPlayerWalkStyleApplied", root, function(style)
+    local w = walking[source]
+    if not w then return end
+    w.original = style
+    setPedWalkingStyle(source, w.current)
+end)
+
 ---------------------------------------------------------------------------
 -- The player's own condition
 ---------------------------------------------------------------------------

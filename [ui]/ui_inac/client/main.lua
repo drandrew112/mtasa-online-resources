@@ -1,5 +1,29 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 
+-- walkStyle preference ids, in menu order (v_accounts WALK_STYLES; v_mainmenu lists the same)
+local WALK_STYLES = { "default", "man", "shuffle", "oldman", "gang1", "gang2", "oldfatman", "fatman",
+    "jogger", "drunkman", "blindman", "swat", "woman", "shopping", "busywoman", "sexywoman", "pro",
+    "oldwoman", "fatwoman", "jogwoman", "oldfatwoman" }
+
+function walkStyleIndex()
+    local current = getElementData(localPlayer, "pref.walkStyle")
+    for i, id in ipairs(WALK_STYLES) do
+        if id == current then return i end
+    end
+    return 1
+end
+
+function walkStyleOptions()
+    local options = {}
+    for i, id in ipairs(WALK_STYLES) do
+        options[i] = {
+            label = L("common.walk." .. id),
+            action = function() triggerServerEvent("ui_inac:setPreference", localPlayer, "walkStyle", id) end
+        }
+    end
+    return options
+end
+
 function registerMenus()
     -- MAIN MENU
     registerMenu({
@@ -57,10 +81,11 @@ function registerMenus()
                 -- the value may have changed in the account menu since the menus were built
                 onOpen = function()
                     local menu = MenuRegistry:get("preferences")
-                    local item = menu and menu.items[1]
-                    if item then
-                        item.value = getElementData(localPlayer, "pref.spawnLocation") == "random" and 2 or 1
+                    if not menu then return end
+                    if menu.items[1] then
+                        menu.items[1].value = getElementData(localPlayer, "pref.spawnLocation") == "random" and 2 or 1
                     end
+                    if menu.items[2] then menu.items[2].value = walkStyleIndex() end
                 end
             }
         }
@@ -87,6 +112,13 @@ function registerMenus()
                         action = function() triggerServerEvent("ui_inac:setPreference", localPlayer, "spawnLocation", "random") end
                     },
                 }
+            },
+            {
+                label = L("ui_inac.main.walk_style"),
+                type = "select",
+                desc = L("ui_inac.main.walk_style_desc"),
+                value = walkStyleIndex(),
+                options = walkStyleOptions()
             }
         }
     })

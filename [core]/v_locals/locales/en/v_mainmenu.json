@@ -152,5 +152,7 @@
   "v_mainmenu.account.new_password": "NEW PASSWORD",
   "v_mainmenu.account.new_password_again": "NEW PASSWORD AGAIN",
   "v_mainmenu.account.passwords_mismatch": "The two new passwords don't match.",
-  "v_mainmenu.account.save_password": "Change password"
+  "v_mainmenu.account.save_password": "Change password",
+  "v_mainmenu.prefs.walk_style": "Walking style",
+  "v_mainmenu.prefs.walk_desc": "How your character walks and runs. Kept on your account, applied when you spawn."
 }

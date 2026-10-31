@@ -37,6 +37,10 @@ local function ownCategories()
                   type = "choice", available = true,
                   valueText = prefs.spawnLocation == "random" and L("v_mainmenu.prefs.random") or L("v_mainmenu.prefs.last"),
                   step = function() togglePreference("spawnLocation") end },
+                { id = "walkStyle", label = L("v_mainmenu.prefs.walk_style"), desc = L("v_mainmenu.prefs.walk_desc"),
+                  type = "choice", available = true,
+                  valueText = L("common.walk." .. walkStyleId(prefs.walkStyle)),
+                  step = function(dir) togglePreference("walkStyle", dir) end },
             },
         },
     }
@@ -59,7 +63,7 @@ end
 local function stepItem(cat, item, dir)
     if not item.available then return end
     if cat.own then
-        item.step()
+        item.step(dir)
     else
         exports.ui_pause:stepSetting(item.id, dir)
         refresh()

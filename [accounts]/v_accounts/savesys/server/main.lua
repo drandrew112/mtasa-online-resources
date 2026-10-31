@@ -67,6 +67,18 @@ function setPreference(player, id, value)
     if not def or not def.values[value] or not isLogged(player) then return false end
     setElementData(player, "pref." .. id, value)
     exports.v_mysql:setAccData(player, "pref." .. id, value)
+    if id == "walkStyle" then applyWalkStyle(player) end
+    return true
+end
+
+-- the walkStyle preference on the ped; medsys effects keeps a forced (injured) style on top of it
+-- and restores this one afterwards (onPlayerWalkStyleApplied)
+addEvent("onPlayerWalkStyleApplied")
+function applyWalkStyle(player)
+    if not isElement(player) or isPedDead(player) then return false end
+    local style = WALK_STYLES[getPreference(player, "walkStyle")] or 0
+    setPedWalkingStyle(player, style)
+    triggerEvent("onPlayerWalkStyleApplied", player, style)
     return true
 end
 
@@ -133,12 +145,13 @@ addEventHandler("onResourceStart", root, function(res)
     end
 end)
 
--- weapon skill stats are always maxed on spawn
+-- weapon skill stats are always maxed on spawn; the walking style of the preference
 local WEAPON_STAT_IDS = { 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79 }
 addEventHandler("onPlayerSpawn", root, function()
     for _, statID in ipairs(WEAPON_STAT_IDS) do
         setPedStat(source, statID, 1000)
     end
+    if isLogged(source) then applyWalkStyle(source) end
 end)
 
 --------------------------------------------------------------------------------
@@ -175,6 +188,7 @@ addEventHandler("onResourceStart", resourceRoot, function()
         if isLogged(player) then
             loadCollectibles(player)
             loadPreferences(player)
+            if getElementData(player, "loaded") == true then applyWalkStyle(player) end
         end
     end
 end)

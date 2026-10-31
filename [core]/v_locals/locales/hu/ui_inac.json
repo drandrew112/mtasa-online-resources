@@ -68,6 +68,8 @@
   "ui_inac.main.ufo_spaceship_parts": "UFO űrhajó alkatrészek",
   "ui_inac.main.under_development": "Fejlesztés alatt :(",
   "ui_inac.main.vehicle": "Jármű",
+  "ui_inac.main.walk_style": "Járásstílus",
+  "ui_inac.main.walk_style_desc": "Hogyan jár és fut a karaktered. Választás balra / jobbra, mentés Enterrel. Azonnal érvényes, a fiókodon marad.",
   "ui_inac.main.you_can_t_use_fast_travel": "Járműben nem használhatod a gyorsutazást",
   "ui_inac.main.you_need_vehicle_for_this": "Ehhez jármű kell",
   "ui_inac.ownveh.could_not_request_vehicle": "A járművet nem sikerült lehívni.",

@@ -68,6 +68,8 @@
   "ui_inac.main.ufo_spaceship_parts": "UFO spaceship parts",
   "ui_inac.main.under_development": "Under development :(",
   "ui_inac.main.vehicle": "Vehicle",
+  "ui_inac.main.walk_style": "Walking style",
+  "ui_inac.main.walk_style_desc": "How your character walks and runs. Pick with left / right, save with Enter. Applies at once and is kept on your account.",
   "ui_inac.main.you_can_t_use_fast_travel": "You can't use fast travel in a vehicle",
   "ui_inac.main.you_need_vehicle_for_this": "You need a vehicle for this",
   "ui_inac.ownveh.could_not_request_vehicle": "Could not request vehicle.",

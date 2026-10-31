@@ -152,5 +152,7 @@
   "v_mainmenu.account.new_password": "ÚJ JELSZÓ",
   "v_mainmenu.account.new_password_again": "ÚJ JELSZÓ ÚJRA",
   "v_mainmenu.account.passwords_mismatch": "A két új jelszó nem egyezik.",
-  "v_mainmenu.account.save_password": "Jelszó módosítása"
+  "v_mainmenu.account.save_password": "Jelszó módosítása",
+  "v_mainmenu.prefs.walk_style": "Járásstílus",
+  "v_mainmenu.prefs.walk_desc": "Hogyan jár és fut a karaktered. A fiókodon marad, megjelenéskor érvényes."
 }

@@ -128,14 +128,35 @@ PAGES.defs.home = {
     end,
 }
 
--- last <-> random (v_accounts validates)
-function togglePreference(id)
-    local prefs = (Menu.data.profile or {}).preferences or {}
-    if id == "spawnLocation" then
-        local new = prefs.spawnLocation == "random" and "last" or "random"
-        prefs.spawnLocation = new -- shown at once, the server answers with the saved profile
-        triggerServerEvent("v_mainmenu:setPreference", localPlayer, id, new)
+-- walkStyle preference ids, in menu order (v_accounts WALK_STYLES; ui_inac lists the same)
+local WALK_STYLES = { "default", "man", "shuffle", "oldman", "gang1", "gang2", "oldfatman", "fatman",
+    "jogger", "drunkman", "blindman", "swat", "woman", "shopping", "busywoman", "sexywoman", "pro",
+    "oldwoman", "fatwoman", "jogwoman", "oldfatwoman" }
+
+local function walkStyleIndex(id)
+    for i, w in ipairs(WALK_STYLES) do
+        if w == id then return i end
     end
+    return 1
+end
+
+function walkStyleId(id)
+    return WALK_STYLES[walkStyleIndex(id)]
+end
+
+-- spawnLocation: last <-> random; walkStyle: the next / previous style by dir (v_accounts validates)
+function togglePreference(id, dir)
+    local prefs = (Menu.data.profile or {}).preferences or {}
+    local new
+    if id == "spawnLocation" then
+        new = prefs.spawnLocation == "random" and "last" or "random"
+    elseif id == "walkStyle" then
+        local i = walkStyleIndex(prefs.walkStyle) + ((dir or 1) < 0 and -1 or 1)
+        new = WALK_STYLES[(i - 1) % #WALK_STYLES + 1]
+    end
+    if not new then return end
+    prefs[id] = new -- shown at once, the server answers with the saved profile
+    triggerServerEvent("v_mainmenu:setPreference", localPlayer, id, new)
 end
 
 --------------------------------------------------------------------------------
