@@ -47,19 +47,28 @@ local function trainSpans(t, margin)
     return t.path:spans(t.u - t.length - margin, t.u + margin)
 end
 
--- the train (or nil) occupying a switch group
-function Switches.occupant(group)
+-- the owner's own train without the margin ahead of its leading end: a train held AUTHORITY_GAP
+-- before a switch it could not reserve is within LOCK_MARGIN of it, and it locked the switch
+-- against its own route once the other owner let it go (W19 deadlock, 2026-10-30)
+local function ownSpans(t)
+    if t.rev >= 0 then return t.path:spans(t.u - t.length - SW.LOCK_MARGIN, t.u) end
+    return t.path:spans(t.u - t.length, t.u + SW.LOCK_MARGIN)
+end
+
+-- the train (or nil) occupying a switch group; owner ("train:<id>") = that train only by ownSpans
+function Switches.occupant(group, owner)
     local grp = Net.group(group)
     if not grp then return nil end
+    local selfId = owner and tonumber(tostring(owner):match("^train:(%d+)$"))
     for _, t in pairs(Trains.all()) do
-        local spans = trainSpans(t, SW.LOCK_MARGIN)
+        local spans = t.id == selfId and ownSpans(t) or trainSpans(t, SW.LOCK_MARGIN)
         for _, nid in ipairs(grp.nodes or {}) do
             if nodeIn(Net.node(nid), spans) then return t end
         end
     end
 end
 
-function Switches.isLocked(group) return Switches.occupant(group) ~= nil end
+function Switches.isLocked(group, owner) return Switches.occupant(group, owner) ~= nil end
 
 -- groups a train is on (within the lock margin)
 local function groupsUnder(t)
@@ -86,7 +95,7 @@ function Switches.throw(group, state, opts)
     if not opts.force then
         if i.reserved and i.reserved ~= opts.owner then return false, "reserved by " .. tostring(i.reserved) end
         if i.damaged then return false, "damaged" end
-        if Switches.isLocked(group) then return false, "a train is on the switch" end
+        if Switches.isLocked(group, opts.owner) then return false, "a train is on the switch" end
     end
     Net.setState(group, state)
     syncDirty = true
@@ -104,7 +113,7 @@ function Switches.reserve(owner, settings)
         if not Net.group(g) then return false, g .. ": no such switch" end
         if i.reserved and i.reserved ~= owner then return false, g .. ": reserved by " .. tostring(i.reserved) end
         if i.damaged then return false, g .. ": damaged" end
-        if Net.getState(g) ~= st and Switches.isLocked(g) then return false, g .. ": a train is on it" end
+        if Net.getState(g) ~= st and Switches.isLocked(g, owner) then return false, g .. ": a train is on it" end
     end
     owned[owner] = owned[owner] or {}
     for g, st in pairs(settings) do

@@ -469,9 +469,11 @@ local function tick()
             if Services[id] then
                 routeService(s, c)
                 local d = delayOf(s)
-                if math.floor(d / 60) ~= math.floor(s.delay / 60) then
+                -- whole minutes late; early counts as on time (a few seconds early flipped -1 / 0
+                -- and logged "delay grew to on time" / "fell to on time" over and over)
+                local m, was = math.max(0, math.floor(d / 60)), math.max(0, math.floor(s.delay / 60))
+                if m ~= was then
                     changed = true
-                    local m, was = math.floor(d / 60), math.floor(s.delay / 60)
                     rlog("delay", m >= TT.LOG_DELAY_WARN and m > was and "warn" or "info", ("%s: delay %s %s"):format(
                         s.trip.number, m > was and "grew to" or "fell to", m > 0 and ("+" .. m .. " min") or "on time"), id)
                 end

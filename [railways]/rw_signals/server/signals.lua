@@ -442,9 +442,13 @@ local function checkPassing(consists)
         local mem = memory[c.id]
         if not mem then mem = {} memory[c.id] = mem end
         if c.moveDir ~= 0 then mem.lastDir = c.moveDir end
-        local head = (c.moveDir >= 0) and c.hi or c.lo
+        -- the head is the end it last ran towards, and only compared with a head of the same
+        -- direction: a stop or a reversal moved it to the other end of the train, over every
+        -- red signal under the train (SPAD after SPAD at 0 km/h, S4E 2026-10-29)
+        local dir = c.moveDir ~= 0 and c.moveDir or (mem.lastDir or 1)
+        local head = (dir >= 0) and c.hi or c.lo
         local r = routeOfTrack(c.track)
-        if r and mem.head and mem.track == c.track and c.moveDir ~= 0 and math.abs(rel(r, mem.head, head)) < 100 then
+        if r and mem.head and mem.track == c.track and mem.headDir == dir and c.moveDir ~= 0 and math.abs(rel(r, mem.head, head)) < 100 then
             for _, s in ipairs(byTrack[c.track] or {}) do
                 if s.dir == c.moveDir then
                     local before = rel(r, s.tp, mem.head) * s.dir < 0
@@ -455,7 +459,7 @@ local function checkPassing(consists)
                 end
             end
         end
-        mem.head, mem.track = head, c.track
+        mem.head, mem.track, mem.headDir = head, c.track, dir
     end
     for id in pairs(memory) do if not seen[id] then memory[id] = nil end end
 end

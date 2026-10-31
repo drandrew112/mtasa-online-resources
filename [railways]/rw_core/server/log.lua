@@ -29,6 +29,13 @@ local function call(res, fn, ...)
 end
 
 local function clean(name) return (tostring(name or "")):gsub("#%x%x%x%x%x%x", "") end
+
+-- message objects (L.msg) lose their metatable on the way through exports / events and were
+-- logged as "table: 0x..." - the log is English
+local function plain(x)
+    if type(x) == "table" then return L.resolveFor("en", x) end
+    return tostring(x)
+end
 local function playerName(p) return isElement(p) and clean(getPlayerName(p)) or nil end
 
 -- "BR 232 1112 / SL1 1015" (running number + the trip it runs)
@@ -63,6 +70,7 @@ function railLog(category, level, text, train, data)
     local day, time = stamp(ts)
     local e = { seq = seq, ts = ts, time = time, level = level, cat = category, text = tostring(text),
         train = train, tag = train and tagOf(train) or nil, data = data }
+    if type(text) == "table" then e.text = plain(text) end
     head = head % LOGC.KEEP + 1
     entries[head] = e
     size = math.min(size + 1, LOGC.KEEP)
@@ -146,7 +154,7 @@ end
 -- an authority end the train is held by, in words (nil = not a hold-up)
 local IGNORED = { destination = true, line = true, ["end of track"] = true }
 local function holdReason(reason)
-    reason = tostring(reason)
+    reason = plain(reason)
     local sig = reason:match("^signal (.+)$")
     if sig then return "red signal " .. signalName(sig), "signal" end
     local tr = reason:match("^train (%d+)$")
@@ -175,7 +183,7 @@ addEventHandler("onRailConsistSpawn", root, function(id)
 end)
 
 addEventHandler("onRailConsistDestroy", root, function(id, reason)
-    railLog("train", "info", "removed: " .. tostring(reason or "removed"), id)
+    railLog("train", "info", "removed: " .. plain(reason or "removed"), id)
 end)
 
 addEventHandler("onRailConsistChange", root, function(id)
@@ -227,6 +235,8 @@ addEventHandler("onNetTrainStates", root, function(list)
         local standing = math.abs(st.speed) < 0.1
         local A = st.authority
         local reason = standing and A and A.reason and (A.remaining or 0) <= LOGC.BLOCK_DIST and not IGNORED[A.reason] and A.reason or nil
+        -- compared by text: a table reason is a new copy every tick ("still standing" every tick)
+        if reason then reason = plain(reason) end
         local h = w.hold
         if reason then
             if not h then
@@ -353,7 +363,7 @@ end)
 
 addEvent("onRailServiceCancel")
 addEventHandler("onRailServiceCancel", root, function(id, tripId, reason)
-    railLog("service", "warn", ("service %s cancelled: %s"):format(tostring(tripId), tostring(reason)), Consists[id] and id or nil, { trip = tripId })
+    railLog("service", "warn", ("service %s cancelled: %s"):format(tostring(tripId), plain(reason)), Consists[id] and id or nil, { trip = tripId })
 end)
 
 ------------------------------------------------------------------ locomotives (rw_loco)
