@@ -112,6 +112,11 @@ AIPEDS = {
     BODY_LIFE = 30000,          -- dead traffic / driver peds are removed after this (when nobody is near)
     BODY_NEAR = 25,
 
+    -- medical status (medsys, server/medical.lua): every ped is a persistent medsys patient (examinable, gets
+    -- injuries, a lethal hit puts it down instead of killing it); a downed ped is never culled near a player
+    MEDICAL = true,
+    MEDICAL_CHECK = 1000,       -- downed / up re-check of every ped
+
     ADMIN_LEVEL = 4,            -- /aipeds (elementData admin_level)
     DEBUG = false,
 }
@@ -143,3 +148,5 @@ DATA_MOVE = "ai_peds.mv"
 -- the same for fighting: { t = target, me = melee, r = range, acc, burst, pause } while the syncer aims + fires / hits,
 -- else false. Each client's own shots only hurt its own player (the others are hit on their own clients)
 DATA_FIGHT = "ai_peds.fight"
+-- medsys consciousness element data (stable | confused | dazed | unconscious | clinical_death | dead)
+MEDICAL_STATUS = "medic.status"

@@ -25,6 +25,13 @@ Players have **no clinical death**: when medsys stops a player's heart, the play
 (`PLAYER_DEATH_IS_FINAL`), so CPR never applies to players. Peds are untouched by this rule and
 are only injured with `APPLY_TO_PEDS = true`.
 
+**Peds do not die from GTA damage** (`PED_SAVE_LETHAL`): a hit on a ped with a medical status
+(every ai_peds ped) that would leave it at `PED_DOWN_HEALTH` or less is cancelled on every client
+(`client/detect.lua`). The attacker's client (or the ped's syncer for falls / fire) reports it
+(`medev:pedLethal`, checked by the server), the hit still runs through the rules, and the ped goes
+down: cardiac arrest by `PED_LETHAL_ARREST` (head shot, gunshot, explosion, other), else
+unconscious. From then on medsys decides; its biological death kills the ped.
+
 Every player gets a **medical status** (`setPatientPersistent`) on join / resource start, so a
 medic can examine anyone, healthy or not. It is taken back when medsys_events stops.
 

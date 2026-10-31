@@ -191,11 +191,22 @@ POL.layers.add("mdc", frame, 100)
 
 ------------------------------------------------------------------------ open / close
 
+-- the forced handbrake is released whatever seat (or no vehicle) the player has by then: "handbrake" is the same pad
+-- button as the on-foot target / aim, a state left forced after getting out crashed GTA (CCam::Process_FollowPed_SA)
+local handbrakeForced = false
 local function setLock(on)
     if POL.running("ui_core") then exports.ui_core:toggleMoveControls(not on) end
     for _, c in ipairs(VEH_CONTROLS) do toggleControl(c, not on) end
-    local veh = getPedOccupiedVehicle(localPlayer)
-    if veh and getVehicleController(veh) == localPlayer then setPedControlState(localPlayer, "handbrake", on) end
+    if on then
+        local veh = getPedOccupiedVehicle(localPlayer)
+        if veh and getVehicleController(veh) == localPlayer then
+            setPedControlState(localPlayer, "handbrake", true)
+            handbrakeForced = true
+        end
+    elseif handbrakeForced then
+        setPedControlState(localPlayer, "handbrake", false)
+        handbrakeForced = false
+    end
 end
 
 function POL.running(name)
@@ -231,8 +242,11 @@ POL.on("unit", function(u, old)
     end
 end)
 POL.on("right", function(on) if not on then MDC.close() end end)
+-- closed as the exit starts (not only when it is done): the locks are off before the ped leaves the seat
+addEventHandler("onClientVehicleStartExit", root, function(player) if player == localPlayer then MDC.close() end end)
 addEventHandler("onClientPlayerVehicleExit", localPlayer, function() MDC.close() end)
 addEventHandler("onClientPlayerWasted", localPlayer, function() MDC.close() end)
+addEventHandler("onClientResourceStop", resourceRoot, function() MDC.close() end)
 addEventHandler("onClientRestore", root, function(cleared) if cleared then MDC.dirty = true end end)
 L.onChange(function() MDC.dirty = true end)
 

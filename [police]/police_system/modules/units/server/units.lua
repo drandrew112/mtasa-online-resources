@@ -1,6 +1,6 @@
 -- police_system / modules/units/server/units.lua
 -- Units: signing in only in a police vehicle, on the MDC. Adam (A-) = 2-4 officers (never alone), Lincoln (L-) =
--- exactly 1. Number 1-99; the number is taken whatever the type (A-10 and L-10 never at once), across every server
+-- exactly 1. Number 1-999; the number is taken whatever the type (A-10 and L-10 never at once), across every server
 -- instance (open pol_shifts rows). One unit per player. Officers can be added on the way (invite + accept).
 -- The leader quits: the unit ends. A member quits: the unit stays. Signing off only when every report of the closed
 -- incidents is submitted; then the pay (pay.lua).

@@ -11,7 +11,7 @@ end
 
 MDC.pages.signin = {
     load = function()
-        MDC.call("signin", {}, function(d) if d then MDC.data.signin = d; W.fieldOf("si:num", { max = 2 }):setText(tostring(d.number)) end end)
+        MDC.call("signin", {}, function(d) if d then MDC.data.signin = d; W.fieldOf("si:num", { max = 3 }):setText(tostring(d.number)) end end)
     end,
     draw = function(x, y, w, h)
         local f = MDC.data.signin
@@ -29,7 +29,7 @@ MDC.pages.signin = {
             f.type == "lincoln" and "active" or nil)
         cy = cy + POL.px(44)
         W.text(L("police_system.mdc.number"), px, cy, POL.px(160), POL.px(30), C.dim, 10, true)
-        W.field("si:num", px + POL.px(160), cy, POL.px(80), POL.px(30), "1-99", { max = 2, filter = function(ch) return ch:match("%d") ~= nil end })
+        W.field("si:num", px + POL.px(160), cy, POL.px(80), POL.px(30), "1-" .. POLICE.UNITS.NUMBER_MAX, { max = 3, filter = function(ch) return ch:match("%d") ~= nil end })
         W.button("si:check", px + POL.px(250), cy, POL.px(110), POL.px(30), L("police_system.mdc.check"), function()
             set(f.type, tonumber(W.fields["si:num"]:getText()) or f.number)
         end)

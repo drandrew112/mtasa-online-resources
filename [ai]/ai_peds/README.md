@@ -7,6 +7,10 @@ run, with straight-line moves and no ped traffic). Modules:
 - **Behaviours**: `civilian` (does its task, e.g. walks the sidewalks), `scared` (flees, anywhere), `enemy` (attacks with
   its weapon, with fists / a melee weapon when it has no gun; anywhere; a gun shoots a target sitting in a vehicle, an
   unarmed one pulls it out first with the GTA jack when the vehicle is slow, `JACK_*` in the config). Plus the internal `exiting`, `seated`, `dead`.
+- **Medical status** (`server/medical.lua`, medsys optional): every ped is a persistent medsys patient, so a medic
+  can always examine it and the medsys events module injures it. A hit that would kill is cancelled; the ped goes down
+  in medsys (unconscious / clinical death) with the `downed` behaviour and is not culled while a player is within
+  `DESPAWN_DIST`. Back up (stable / confused): its old behaviour again. `AIPEDS.MEDICAL` switches it off.
 - **ai_land_traffic drivers**: a driver of a released traffic vehicle gets out properly and flees or attacks.
 - **Scripted peds** via exports: goal, patrol area, guard point, group relations, weapons, target. First user: the
   gang war minigame (gang members defending their territory).

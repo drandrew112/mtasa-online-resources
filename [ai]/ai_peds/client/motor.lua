@@ -35,6 +35,8 @@ local function releaseAll(ped, st)
 end
 
 local function setMove(ped, st, on, speed)
+    -- never move while aiming a gun (see puppet())
+    if on and st.ctl.aim_weapon then ctl(ped, st, "fire", false); ctl(ped, st, "aim_weapon", false) end
     ctl(ped, st, "forwards", on)
     ctl(ped, st, "walk", on and speed == "walk")
     ctl(ped, st, "sprint", on and speed == "sprint")
@@ -367,6 +369,9 @@ local function puppet(ped, pst, now)
         mv = getElementData(ped, DATA_MOVE) or false
         f = type(pst.fight) == "table" and pst.fight or false
     end
+    -- DATA_MOVE ends 300 ms after DATA_FIGHT starts: a ped never runs / sprints while aiming a gun (GTA's gun move
+    -- animation of a ped reads an anim group that is not loaded: client crash in CAnimBlendAssocGroup::GetAnimation)
+    if f and not f.me then mv = false end
     setMove(ped, pst, mv and true or false, mv)
     if mv then
         local _, _, rz = getElementRotation(ped)

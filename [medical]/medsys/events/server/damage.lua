@@ -51,8 +51,8 @@ end
 
 local HIT_CAUSES = { gun = true, fist = true, blunt = true, sharp = true }
 
-local function onDamage(attacker, weapon, bodypart, loss)
-    local element = source
+-- One hit (onPlayerDamage / onPedDamage, or a lethal ped hit the clients cancelled) -> the rules
+function processDamage(element, weapon, bodypart, loss)
     if not isMedsysTarget(element) or not loss or loss <= 0 then return end
     local cause = MEDEV_WEAPONS[weapon]
     if not cause then return end
@@ -77,8 +77,57 @@ local function onDamage(attacker, weapon, bodypart, loss)
         end
     end, MEDEV.DEFER, 1)
 end
+
+local function onDamage(_, weapon, bodypart, loss)
+    processDamage(source, weapon, bodypart, loss)
+end
 addEventHandler("onPlayerDamage", root, onDamage)
 addEventHandler("onPedDamage", root, onDamage)
+
+---------------------------------------------------------------------------
+-- Peds do not die from GTA damage (MEDEV.PED_SAVE_LETHAL): the clients cancel the lethal hit
+-- (client/detect.lua) and one of them reports it here; the ped goes down in medsys instead
+---------------------------------------------------------------------------
+
+local function goDown(ped, cause, part)
+    if not isElement(ped) or isPedDead(ped) then return end
+    local chances = MEDEV.PED_LETHAL_ARREST
+    local key = (cause == "gun" and part == "head") and "gun_head" or cause
+    if math.random() < (chances[key] or chances.default or 0) then
+        medArrest(ped)
+    else
+        medKnockout(ped, "unconscious")
+    end
+end
+
+-- the reporter has to be the attacker's client (its player, vehicle or a ped it syncs), or the ped's syncer
+local function isReporter(player, ped, attacker)
+    if not isElement(attacker) then return getElementSyncer(ped) == player end
+    if attacker == player then return true end
+    local attackerType = getElementType(attacker)
+    if attackerType == "vehicle" then return getVehicleController(attacker) == player end
+    if attackerType == "ped" then return getElementSyncer(attacker) == player end
+    return false
+end
+
+addEvent("medev:pedLethal", true)
+addEventHandler("medev:pedLethal", resourceRoot, function(ped, attacker, weapon, bodypart, loss)
+    if not MEDEV.PED_SAVE_LETHAL or not isElement(ped) or getElementType(ped) ~= "ped" then return end
+    if not isMedsysTarget(ped) or isPedDead(ped) then return end
+    local state = medGetState(ped)
+    if not state or state.dead or not isReporter(client, ped, attacker) then return end
+    local px, py, pz = getElementPosition(ped)
+    local cx, cy, cz = getElementPosition(client)
+    if getDistanceBetweenPoints3D(px, py, pz, cx, cy, cz) > 150 then return end
+
+    weapon, bodypart = tonumber(weapon) or 0, tonumber(bodypart) or 3
+    loss = math.min(tonumber(loss) or 0, 200)
+    if getElementHealth(ped) > MEDEV.PED_DOWN_HEALTH then setElementHealth(ped, MEDEV.PED_DOWN_HEALTH) end
+    processDamage(ped, weapon, bodypart, loss)
+    local cause, part = MEDEV_WEAPONS[weapon], MEDEV_BODYPARTS[bodypart]
+    -- after the rules (they run MEDEV.DEFER later)
+    setTimer(function() goDown(ped, cause, part) end, MEDEV.DEFER + 20, 1)
+end)
 
 local function forget()
     local list = episodes[source]

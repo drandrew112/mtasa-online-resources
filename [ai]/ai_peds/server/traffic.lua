@@ -137,7 +137,8 @@ function PedTraffic.cull(players, now)
                     if Views.playerSees(pl.el, p.x, p.y, p.z + 1, now) then seen = true; break end
                 end
                 local fighting = p.behaviour == "enemy" and p.b.target
-                if seen or fighting or near <= T.CULL_MIN_DIST then
+                -- a downed patient stays until every player is DESPAWN_DIST away (a medic may be on the way)
+                if seen or fighting or near <= T.CULL_MIN_DIST or p.behaviour == "downed" then
                     p.seenAt = now
                 elseif now - p.seenAt > T.CULL_AFTER and not p.dead then
                     Peds.remove(p, "culled")

@@ -24,6 +24,7 @@
     <script src="server/behaviours/enemy.lua"    type="server" />
     <script src="server/behaviours/exiting.lua"  type="server" />
     <script src="server/behaviours/police.lua"   type="server" />
+    <script src="server/medical.lua"    type="server" /> <!-- medsys status, "downed" behaviour -->
     <script src="server/vehicles.lua"   type="server" />
     <script src="server/perception.lua" type="server" />
     <script src="server/traffic.lua"    type="server" />

@@ -96,6 +96,13 @@ function medKnockout(element, level)
     medsys():setMedicalState(element, "consciousness", level)
 end
 
+-- Cardiac arrest (clinical death, CPR can bring it back)
+function medArrest(element)
+    local state = medGetState(element)
+    if not canHurt(state) then return end
+    medsys():setMedicalState(element, "consciousness", "clinical_death")
+end
+
 -- Our injuries that still exist in medsys, with their current medsys data:
 -- { [injuryId] = { type, severity, treated, part, partLabel, cause, causeLabel } }
 -- Stale entries (healed, new medical state) are dropped on the way.

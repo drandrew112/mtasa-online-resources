@@ -45,6 +45,7 @@ local function register(el, kind, opts)
     P.byKind[kind] = P.byKind[kind] + 1
     setElementData(el, "ai_peds", kind)
     p.syncer = getElementSyncer(el) or nil
+    AIPedsMedical.register(el)
     return p
 end
 

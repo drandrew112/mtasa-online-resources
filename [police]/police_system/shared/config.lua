@@ -109,7 +109,7 @@ POLICE = {
     },
 
     UNITS = {
-        NUMBER_MIN = 1, NUMBER_MAX = 99,
+        NUMBER_MIN = 1, NUMBER_MAX = 999,
         ADAM_MIN = 2, ADAM_MAX = 4,   -- Adam: 2-4 officers (never alone); Lincoln: exactly 1
         INVITE_DIST = 15,
         INVITE_TIMEOUT = 60000,

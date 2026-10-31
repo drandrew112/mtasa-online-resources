@@ -1,6 +1,7 @@
 -- Events GTA has no damage event for, reported to the server (which checks them):
 --  * a bare-fisted punch into a vehicle (or a wall, with MEDEV.PUNCH_WORLD)
 --  * a vehicle crash: the speed change of the local player's vehicle in km/h
+--  * a hit that would kill a ped with a medical status (MEDEV.PED_SAVE_LETHAL): cancelled here
 
 local lastPunch = 0
 
@@ -91,4 +92,39 @@ addEventHandler("onClientVehicleCollision", root, function()
             triggerServerEvent("medev:crash", resourceRoot, vehicle, change)
         end
     end, MEDEV.CRASH_MEASURE_DELAY, 1)
+end)
+
+---------------------------------------------------------------------------
+-- Lethal hits on peds with a medical status: cancelled on every client (nobody sees the GTA
+-- death), reported once by the attacker's client (or the ped's syncer); the server puts the
+-- ped down in medsys instead
+---------------------------------------------------------------------------
+
+local lastLethal = {} -- [ped] = tick of the last report
+
+local function reportsLethal(ped, attacker)
+    if attacker == localPlayer then return true end
+    if not isElement(attacker) then return isElementSyncer(ped) end -- fall, fire, drowning
+    local attackerType = getElementType(attacker)
+    if attackerType == "vehicle" then return getVehicleController(attacker) == localPlayer end
+    if attackerType == "ped" then return isElementSyncer(attacker) end
+    return false -- another player: their client reports it
+end
+
+addEventHandler("onClientPedDamage", root, function(attacker, weapon, bodypart, loss)
+    if not MEDEV.PED_SAVE_LETHAL or not MEDEV.APPLY_TO_PEDS or isPedDead(source) then return end
+    local status = getElementData(source, MEDIC.DATA_STATUS)
+    if not status or status == "dead" then return end
+    if getElementHealth(source) - (loss or 0) > MEDEV.PED_DOWN_HEALTH then return end
+    cancelEvent()
+
+    if not reportsLethal(source, attacker) then return end
+    local now = getTickCount()
+    if lastLethal[source] and now - lastLethal[source] < MEDEV.PED_LETHAL_REPORT_GAP then return end
+    lastLethal[source] = now
+    triggerServerEvent("medev:pedLethal", resourceRoot, source, attacker or false, weapon or 0, bodypart or 3, loss or 0)
+end)
+
+addEventHandler("onClientElementDestroy", root, function()
+    lastLethal[source] = nil
 end)

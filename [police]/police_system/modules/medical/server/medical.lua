@@ -16,12 +16,29 @@ local function medicsOnDuty()
     return ok and type(units) == "table" and #units > 0
 end
 
+local function injured(p)
+    if isPedDead(p) or getElementHealth(p) < 60 then return true end
+    local status = getElementData(p, "medic.status")   -- medsys patient (every ai_peds ped has one)
+    return status and status ~= "stable" or POL.running("medsys") and exports.medsys:getMedicalState(p)
+        and #exports.medsys:getMedicalState(p).injuries > 0
+end
+
+-- the patient stays where it is until the ambulance / the medic arrives
+local function holdPatient(patient)
+    if not (POL.running("ai_peds") and exports.ai_peds:isAIPed(patient)) then return end
+    -- a downed one keeps its own behaviour (medsys plays the animation)
+    if not isPedDead(patient) and exports.ai_peds:getAIPedBehaviour(patient) ~= "downed" then
+        exports.ai_peds:setAIPedBehaviour(patient, "patient", {})
+    end
+    exports.ai_peds:setAIPedKeep(patient, true)
+end
+
 -- the patient: an injured / dead NPC near the caller (the stopped / arrested one first)
 local function patientNear(player)
     local x, y, z = getElementPosition(player)
     local best, bd
     for _, p in ipairs(getElementsWithinRange(x, y, z, 30, "ped")) do
-        if not POL.ai.peds[p] and (isPedDead(p) or getElementHealth(p) < 60) and not getPedOccupiedVehicle(p) then
+        if not POL.ai.peds[p] and injured(p) and not getPedOccupiedVehicle(p) then
             local d = POL.dist(player, p)
             if not bd or d < bd then best, bd = p, d end
         end
@@ -32,6 +49,7 @@ end
 function MD.request(player)
     local unit = POL.units.of(player)
     local x, y, z = getElementPosition(player)
+    local patient = patientNear(player)
     if medicsOnDuty() then
         local inc = unit and POL.events.incidentOf(unit)
         local desc = L.forLang("en", "police_system.medical.task_desc", { callsign = unit and unit.callsign or "?",
@@ -41,12 +59,12 @@ function MD.request(player)
                 "Police " .. (unit and unit.callsign or ""), nil, { source = "police" })
         end)
         if ok and id then
+            if patient then holdPatient(patient) end
             POL.events.logFor(player, "ambulance_requested", { erm = id })
             POL.notify(player, "police_system.medical.erm_task", { id = id })
             return true
         end
     end
-    local patient = patientNear(player)
     if not patient then POL.notify(player, "police_system.medical.no_patient") return false end
     local t = traffic()
     if not t then POL.notify(player, "police_system.medical.unavailable") return false end
@@ -58,10 +76,7 @@ function MD.request(player)
     if C.PAINTJOB and POL.running("v_paintjobs") then pcall(function() exports.v_paintjobs:setVehicleCustomPaintjob(amb, C.PAINTJOB) end) end
     if POL.running("v_els") then exports.v_els:setElsLights(amb, true); exports.v_els:setElsSiren(amb, true, 1) end
     MD.jobs[amb] = { patient = patient, caller = player, state = "coming" }
-    if POL.running("ai_peds") and exports.ai_peds:isAIPed(patient) then
-        if not isPedDead(patient) then exports.ai_peds:setAIPedBehaviour(patient, "patient", {}) end
-        exports.ai_peds:setAIPedKeep(patient, true)
-    end
+    holdPatient(patient)
     t:addScriptedStop(amb, px, py, pz, { tag = "amb_pickup", hold = true, radius = 40 })
     POL.events.logFor(player, "ambulance_requested", { ai = true })
     POL.notify(player, "police_system.medical.ai_coming")
