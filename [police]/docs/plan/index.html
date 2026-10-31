@@ -1,0 +1,1423 @@
+<title>Rendőrségi rendszer terv</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column + sticky section index on wide screens. Police navy neutrals, signal blue accent, siren red for danger. MDC mockups are fixed "screens" with their own palette. */
+:root {
+  --bg: #f1f3f8;
+  --surface: #ffffff;
+  --sunk: #e5e9f1;
+  --fg: #111a2c;
+  --muted: #55607a;
+  --line: #d2d8e4;
+  --accent: #1f4fd1;
+  --accent-bg: #e3ebff;
+  --siren: #cc2a37;
+  --siren-bg: #fde6e8;
+  --ok: #17804a;
+  --ok-bg: #dcf2e6;
+  --warn: #a8540a;
+  --warn-bg: #fcebd9;
+  --code-bg: #e9ecf3;
+  --font-display: "Saira Condensed", "Arial Narrow", sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, monospace;
+  /* MDC screen palette (the in-game look, same in both themes) */
+  --m-bg: #0b1730;
+  --m-panel: #12224a;
+  --m-panel2: #172b5c;
+  --m-line: #24396e;
+  --m-fg: #e6ecfa;
+  --m-mut: #8ea0c9;
+  --m-acc: #49b3ff;
+  --m-red: #ef4b55;
+  --m-green: #2fc276;
+  --m-amber: #f2b632;
+  --m-orange: #f47c2c;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c1120; --surface: #131a2c; --sunk: #1a2338; --fg: #e3e8f3; --muted: #97a2bb; --line: #27314a;
+    --accent: #7aa6ff; --accent-bg: #18264a; --siren: #ff6f79; --siren-bg: #3a1a20;
+    --ok: #5fd394; --ok-bg: #12301f; --warn: #f2a65e; --warn-bg: #36240f; --code-bg: #1c2438;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c1120; --surface: #131a2c; --sunk: #1a2338; --fg: #e3e8f3; --muted: #97a2bb; --line: #27314a;
+  --accent: #7aa6ff; --accent-bg: #18264a; --siren: #ff6f79; --siren-bg: #3a1a20;
+  --ok: #5fd394; --ok-bg: #12301f; --warn: #f2a65e; --warn-bg: #36240f; --code-bg: #1c2438;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 40px 90px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; padding-block: 24px 60px; } nav.toc { position: static !important; max-height: none !important; } }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; font-size: 14px; max-height: calc(100vh - 40px); overflow-y: auto; }
+nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+nav.toc a { color: var(--muted); text-decoration: none; display: block; padding: 3px 10px; border-radius: 6px; }
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--sunk); color: var(--fg); outline: none; }
+nav.toc .lbl { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .1em; font-size: 13px; color: var(--muted); padding: 0 10px 8px; }
+nav.toc .grp { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .08em; font-size: 12px; color: var(--accent); padding: 10px 10px 2px; }
+main { min-width: 0; display: grid; gap: 64px; }
+header.hero { display: grid; gap: 12px; }
+.eyebrow { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .14em; font-size: 14px; color: var(--accent); font-weight: 700; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; line-height: 1.1; margin: 0; font-weight: 700; }
+h1 { font-size: clamp(38px, 6vw, 60px); letter-spacing: .01em; }
+h2 { font-size: 34px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+h2 .n { font-size: 17px; color: var(--accent); font-variant-numeric: tabular-nums; font-family: var(--font-mono); }
+h3 { font-size: 22px; margin-top: 10px; }
+p { margin: 0; max-width: 70ch; }
+.lead { font-size: 18px; color: var(--muted); max-width: 66ch; }
+section { display: grid; gap: 16px; scroll-margin-top: 24px; }
+ul.b, ol.b { margin: 0; padding-left: 22px; display: grid; gap: 6px; max-width: 76ch; }
+ul.b li::marker { color: var(--accent); }
+ol.b li::marker { color: var(--accent); font-weight: 700; }
+code { font-family: var(--font-mono); font-size: .84em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre { font-family: var(--font-mono); font-size: 12.8px; line-height: 1.55; background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin: 0; overflow-x: auto; }
+pre code { background: none; padding: 0; font-size: inherit; }
+.c { color: var(--muted); }
+.k { color: var(--accent); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 12.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--sunk); color: var(--muted); font-family: var(--font-mono); }
+.chip.new { background: var(--ok-bg); color: var(--ok); }
+.chip.mod { background: var(--accent-bg); color: var(--accent); }
+.chip.red { background: var(--siren-bg); color: var(--siren); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+@media (max-width: 760px) { .grid2, .grid3 { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.panel h4 { margin: 0; font-family: var(--font-display); font-size: 17px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.note { border-left: 3px solid var(--warn); background: var(--warn-bg); padding: 10px 14px; border-radius: 0 8px 8px 0; max-width: 80ch; }
+.note b { color: var(--warn); }
+.info { border-left: 3px solid var(--accent); background: var(--accent-bg); padding: 10px 14px; border-radius: 0 8px 8px 0; max-width: 80ch; }
+.overview { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 900px) { .overview { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .overview { grid-template-columns: minmax(0, 1fr); } }
+.ov { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; text-decoration: none; color: inherit; display: grid; gap: 4px; }
+.ov:hover, .ov:focus-visible { border-color: var(--accent); outline: none; }
+.ov .t { font-family: var(--font-display); font-size: 21px; font-weight: 700; }
+.ov .d { font-size: 14.5px; color: var(--muted); line-height: 1.45; }
+.ov .s { font-size: 12px; font-family: var(--font-mono); color: var(--accent); }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 8px 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .06em; font-size: 14px; color: var(--muted); background: var(--sunk); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; font-family: var(--font-mono); font-size: 13.5px; }
+td code { white-space: nowrap; }
+.q { display: grid; gap: 4px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.q .h { font-weight: 700; }
+.q .rec { font-size: 14.5px; color: var(--muted); }
+.q .rec b { color: var(--ok); font-weight: 700; }
+.qs { display: grid; gap: 10px; }
+.gap { display: grid; gap: 4px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--siren); border-radius: 0 10px 10px 0; }
+.gap .h { font-weight: 700; }
+.gap .s { font-size: 14.5px; color: var(--muted); }
+.gap .s b { color: var(--ok); }
+svg text { font-family: var(--font-body); }
+a { color: var(--accent); }
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+figcaption { font-size: 13.5px; color: var(--muted); }
+.scroll { overflow-x: auto; }
+
+/* ---------- MDC mock (in-game screen) ---------- */
+.screen { background: radial-gradient(120% 90% at 30% 10%, #2a3b55 0%, #141c28 70%); border-radius: 10px; padding: 18px; overflow-x: auto; }
+.mdc { min-width: 860px; background: var(--m-bg); color: var(--m-fg); border: 1px solid var(--m-line); border-radius: 6px; font-family: var(--font-body); font-size: 13px; box-shadow: 0 10px 40px rgba(0,0,0,.45); overflow: hidden; }
+.mdc .top { display: flex; align-items: center; gap: 14px; padding: 9px 14px; background: linear-gradient(180deg, #13295a, #0f2049); border-bottom: 1px solid var(--m-line); }
+.mdc .logo { font-family: var(--font-display); font-weight: 700; letter-spacing: .12em; font-size: 15px; display: flex; gap: 8px; align-items: center; }
+.mdc .logo i { width: 18px; height: 20px; background: var(--m-acc); clip-path: polygon(50% 0, 100% 18%, 92% 70%, 50% 100%, 8% 70%, 0 18%); display: inline-block; }
+.mdc .unitchip { margin-left: auto; display: flex; gap: 8px; align-items: center; font-family: var(--font-mono); font-size: 12px; }
+.mdc .pill { padding: 2px 9px; border-radius: 3px; font-weight: 700; font-size: 11px; letter-spacing: .05em; color: #07111f; }
+.p-av { background: var(--m-green); } .p-rs { background: var(--m-amber); } .p-bz { background: var(--m-orange); } .p-pu { background: var(--m-red); color: #fff !important; }
+.mdc nav { display: flex; gap: 2px; padding: 0 10px; background: #0d1b3d; border-bottom: 1px solid var(--m-line); }
+.mdc nav span { padding: 8px 12px; color: var(--m-mut); font-family: var(--font-display); font-size: 14px; letter-spacing: .06em; text-transform: uppercase; border-bottom: 2px solid transparent; }
+.mdc nav span.on { color: var(--m-fg); border-bottom-color: var(--m-acc); }
+.mdc nav span b { background: var(--m-red); color: #fff; border-radius: 8px; padding: 0 5px; font-size: 10px; margin-left: 4px; font-family: var(--font-mono); }
+.mdc .body { padding: 12px; display: grid; gap: 10px; }
+.mdc .row4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.mdc .tile { background: var(--m-panel); border: 1px solid var(--m-line); border-radius: 4px; padding: 8px 10px; }
+.mdc .tile .l { color: var(--m-mut); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+.mdc .tile .v { font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1.1; }
+.mdc .cols { display: grid; grid-template-columns: 1.25fr 1fr; gap: 10px; }
+.mdc .box { background: var(--m-panel); border: 1px solid var(--m-line); border-radius: 4px; overflow: hidden; }
+.mdc .box h5 { margin: 0; padding: 6px 10px; font-family: var(--font-display); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--m-mut); background: var(--m-panel2); border-bottom: 1px solid var(--m-line); display: flex; justify-content: space-between; }
+.mdc table { font-size: 12.5px; }
+.mdc th { background: transparent; color: var(--m-mut); font-size: 11px; padding: 5px 10px; border-bottom: 1px solid var(--m-line); font-family: var(--font-body); }
+.mdc td { padding: 5px 10px; border-bottom: 1px solid #1c3063; color: var(--m-fg); }
+.mdc .stars { color: var(--m-amber); letter-spacing: 1px; font-size: 12px; }
+.mdc .stars s { color: #3a4a72; text-decoration: none; }
+.mdc .warn { background: rgba(239,75,85,.12); border: 1px solid rgba(239,75,85,.55); color: #ffc6ca; padding: 6px 10px; border-radius: 4px; display: flex; justify-content: space-between; }
+.mdc .mut { color: var(--m-mut); }
+.mdc .tag { display: inline-block; padding: 0 6px; border-radius: 3px; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; }
+.tag.npc { background: #2a3d6e; color: #b8c8f0; } .tag.pl { background: #1f5a8f; color: #d4ecff; } .tag.wr { background: var(--m-red); color: #fff; } .tag.wt { background: var(--m-amber); color: #1a1200; } .tag.lang { background: #233a70; color: #cfe0ff; font-family: var(--font-mono); }
+.mdc .prof { display: grid; grid-template-columns: 170px 1fr; gap: 12px; }
+.mdc .photo { height: 150px; border-radius: 4px; background: linear-gradient(180deg, #213a75, #142a57); display: grid; place-items: end center; overflow: hidden; border: 1px solid var(--m-line); }
+.mdc .kv { display: grid; grid-template-columns: 110px 1fr; gap: 3px 10px; font-size: 12.5px; }
+.mdc .kv span:nth-child(odd) { color: var(--m-mut); }
+.mdc .btn { display: inline-block; padding: 4px 10px; border-radius: 3px; background: #1d3a7c; border: 1px solid #2c4f9c; font-size: 12px; }
+.mdc .btn.pri { background: var(--m-acc); color: #04162c; border-color: var(--m-acc); font-weight: 700; }
+.mdc .btn.red { background: rgba(239,75,85,.2); border-color: var(--m-red); color: #ffd0d3; }
+.mdc .sub { display: flex; gap: 4px; padding: 6px 10px; border-bottom: 1px solid var(--m-line); }
+.mdc .sub span { padding: 2px 8px; border-radius: 3px; color: var(--m-mut); font-size: 12px; }
+.mdc .sub span.on { background: #1f3b7a; color: var(--m-fg); }
+
+/* small in-game widgets */
+.hudrow { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; justify-content: flex-end; }
+.mini { width: 210px; background: rgba(11,23,48,.94); border: 1px solid var(--m-line); border-radius: 5px; color: var(--m-fg); padding: 9px 11px; font-family: var(--font-body); display: grid; gap: 6px; }
+.mini .cs { font-family: var(--font-display); font-size: 26px; font-weight: 700; line-height: 1; display: flex; justify-content: space-between; align-items: baseline; }
+.mini .cs small { font-size: 11px; color: var(--m-mut); font-family: var(--font-body); font-weight: 600; letter-spacing: .08em; }
+.mini .st { font-weight: 700; letter-spacing: .06em; font-size: 13px; padding: 3px 8px; border-radius: 3px; color: #07111f; text-align: center; }
+.mini .fk { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+.mini .fk span { font-family: var(--font-mono); font-size: 10px; text-align: center; padding: 2px 0; border-radius: 2px; color: #07111f; font-weight: 700; opacity: .9; }
+.qwin { width: 250px; background: rgba(11,23,48,.94); border: 1px solid var(--m-line); border-top: 3px solid var(--m-acc); border-radius: 5px; color: var(--m-fg); padding: 9px 11px; font-size: 12.5px; display: grid; gap: 6px; }
+.qwin .t { font-family: var(--font-display); font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--m-mut); display: flex; justify-content: space-between; }
+.qwin .kv { display: grid; grid-template-columns: 82px 1fr; gap: 2px 8px; }
+.qwin .kv span:nth-child(odd) { color: var(--m-mut); }
+.qwin .foot { font-size: 11px; color: var(--m-mut); border-top: 1px solid var(--m-line); padding-top: 5px; }
+.radio { width: 250px; background: rgba(11,23,48,.94); border: 1px solid var(--m-line); border-radius: 5px; color: var(--m-fg); font-size: 13px; overflow: hidden; }
+.radio .cat { display: flex; justify-content: space-between; align-items: center; padding: 7px 10px; background: var(--m-panel2); font-family: var(--font-display); letter-spacing: .08em; text-transform: uppercase; }
+.radio .cat span { color: var(--m-mut); font-family: var(--font-mono); }
+.radio .it { padding: 6px 10px; border-top: 1px solid #1c3063; display: flex; justify-content: space-between; gap: 8px; }
+.radio .it code { background: none; color: var(--m-mut); font-size: 10.5px; padding: 0; }
+.radio .it.sel { background: var(--m-fg); color: #0b1730; }
+.radio .it.sel code { color: #34466e; }
+.radio .it.off { color: #5c6d94; }
+.menu { width: 290px; max-width: 100%; background: #0f1215; color: #e8eaed; border-radius: 4px; font-size: 14px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.25); }
+.menu .ttl { padding: 10px 14px; font-family: var(--font-display); font-size: 18px; letter-spacing: .04em; background: #1c2229; }
+.menu .row { display: flex; justify-content: space-between; gap: 8px; padding: 6px 14px; border-top: 1px solid #1f252c; }
+.menu .row.sel { background: #e8eaed; color: #0f1215; }
+.menu .row .r { color: #9aa3ad; font-family: var(--font-mono); font-size: 12px; }
+.menu .row.sel .r { color: #3a4048; }
+.menu .desc { padding: 8px 14px; font-size: 12.5px; color: #9aa3ad; background: #161a1f; }
+.mockrow { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.plate { display: inline-grid; gap: 2px; justify-items: center; background: rgba(11,23,48,.88); border: 1px solid var(--m-line); border-radius: 4px; padding: 4px 8px; color: var(--m-fg); }
+.plate b { font-family: var(--font-mono); background: #f4f6fb; color: #111; padding: 1px 8px; border-radius: 2px; border: 1px solid #9aa; letter-spacing: .08em; font-size: 14px; }
+.plate span { font-size: 10.5px; color: var(--m-mut); }
+.ntag { display: inline-grid; gap: 4px; justify-items: center; color: #fff; text-shadow: 0 1px 2px #000; }
+.ntag .line { display: flex; gap: 6px; align-items: center; }
+.ntag .crew { font-size: 11px; font-weight: 700; padding: 1px 6px; background: #222; border: 1px solid #555; border-radius: 3px; }
+.ntag .work { font-size: 11px; font-weight: 700; padding: 1px 7px; background: #111b; border-left: 3px solid #3b82f6; border-radius: 2px; }
+.ntag img { height: 18px; border-radius: 2px; display: block; }
+.ntag .name { font-weight: 700; font-size: 17px; }
+.ranks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.rank { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px; display: grid; gap: 4px; justify-items: center; text-align: center; }
+.rank img { width: 100%; max-width: 160px; border-radius: 3px; display: block; }
+.rank .n { font-weight: 700; font-size: 14px; }
+.rank .l { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Tartalom">
+  <div class="lbl">Tartalom</div>
+  <ol>
+    <li><a href="#attekintes">Áttekintés</a></li>
+    <li><a href="#bontas">Resource-bontás</a></li>
+    <li><a href="#optim">Optimalizáció, adatforgalom</a></li>
+    <li class="grp">Alapok</li>
+    <li><a href="#jog">Rendőr jog</a></li>
+    <li><a href="#jarmuvek">Járművek</a></li>
+    <li><a href="#workpolice">work_police + rangok</a></li>
+    <li><a href="#db">Adatbázis modul</a></li>
+    <li class="grp">Körözés, üldözés</li>
+    <li><a href="#wanted">Körözés (wanted)</a></li>
+    <li><a href="#warrants">Elfogató parancs</a></li>
+    <li><a href="#chase">Üldözés modul</a></li>
+    <li><a href="#ai">Rendőr AI</a></li>
+    <li><a href="#aiext">AI resource-ok bővítése</a></li>
+    <li class="grp">Szolgálat</li>
+    <li><a href="#units">Units manager</a></li>
+    <li><a href="#mdc">MDC</a></li>
+    <li><a href="#hud">Mini kijelző, F gombok</a></li>
+    <li><a href="#radio">Rádió</a></li>
+    <li><a href="#query">Lekérdezés</a></li>
+    <li><a href="#plates">Rendszám UI</a></li>
+    <li class="grp">Intézkedés</li>
+    <li><a href="#stop">Stop the ped</a></li>
+    <li><a href="#arrest">Arrest manager</a></li>
+    <li><a href="#events">Eseménykezelő, napló</a></li>
+    <li><a href="#reports">Jelentések, fizetés</a></li>
+    <li><a href="#records">Civilek, járművek</a></li>
+    <li><a href="#history">History modul</a></li>
+    <li><a href="#services">Tow és Medical</a></li>
+    <li><a href="#btk">BTK, bírságok</a></li>
+    <li><a href="#gov">Kormányzat</a></li>
+    <li class="grp">Egyéb</li>
+    <li><a href="#web">police_web</a></li>
+    <li><a href="#help">ui_help</a></li>
+    <li><a href="#sorrend">Sorrend, tesztelés</a></li>
+    <li><a href="#hianyok">Hiányosságok</a></li>
+    <li><a href="#kerdesek">Döntések</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">[police] · police_system · police_web · work_police · terv, még nincs kód</div>
+  <h1>Rendőrségi rendszer</h1>
+  <p class="lead">Egy fő resource modulokkal (körözés, üldözés, rendőr AI, egységek, MDC, intézkedések, jelentések, adatbázis), mellette egy nyilvános weboldal és a rendőr munka. A szerver számol, a kliens csak rajzol, és csak akkor, amikor kell.</p>
+</header>
+
+<!-- ============================================================ OVERVIEW -->
+<section id="attekintes">
+  <h2>Áttekintés</h2>
+  <div class="overview">
+    <a class="ov" href="#wanted"><span class="s">wanted + chase + ai</span><span class="t">Körözés és üldözés</span><span class="d">GTA 0–6 szint, eszkaláció lövöldözésre, lerázás villogó csillagokkal, szinthez kötött AI egységek, tank 5–6-on.</span></a>
+    <a class="ov" href="#mdc"><span class="s">mdc + units + hud</span><span class="t">MDC és egységek</span><span class="d">J-re nyíló navy MDC, A-/L- egységek, F4–F7 státusz, mini kijelző a jobb alsó sarokban.</span></a>
+    <a class="ov" href="#stop"><span class="s">stop + arrest + query</span><span class="t">Intézkedések</span><span class="d">E nyomva tartás gyalogosra, bal Shift járműre, temp menü, bilincs, kísérés, autóba ültetés, átadás.</span></a>
+    <a class="ov" href="#reports"><span class="s">events + reports</span><span class="t">Napló és jelentés</span><span class="d">Minden lépés időbélyeggel naplózva, ebből előre megírt jelentés, a fizetés a beadott jelentések alapján.</span></a>
+    <a class="ov" href="#history"><span class="s">history + records + db</span><span class="t">Rendőrségi adatbázis</span><span class="d">Játékosok és járműveik automatikusan, NPC-k az első intézkedéskor generált előélettel. pol_* táblák, id pool.</span></a>
+    <a class="ov" href="#services"><span class="s">tow + medical</span><span class="t">AI szolgáltatások</span><span class="d">Vontató és mentő AI-val, láthatatlan spawn és eltűnés, hiba esetén értesítés.</span></a>
+  </div>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 1000 470" width="100%" style="min-width:760px" role="img" aria-label="Architektúra: police_system modulok, police_web, work_police és a külső resource-ok">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker>
+      </defs>
+      <rect x="250" y="20" width="500" height="330" rx="12" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>
+      <text x="270" y="46" font-size="18" font-weight="700" fill="var(--accent)" style="font-family:var(--font-display)">police_system</text>
+      <text x="730" y="46" text-anchor="end" font-size="12" fill="var(--muted)">egy Lua VM / oldal: modulok közvetlen hívással, export nélkül</text>
+      <g font-size="12.5" fill="var(--fg)">
+        <g transform="translate(270 62)">
+          <rect width="148" height="84" rx="7" fill="var(--siren-bg)" stroke="var(--siren)"/>
+          <text x="10" y="20" font-weight="700" fill="var(--siren)">Körözés, üldözés</text>
+          <text x="10" y="40">wanted · warrants</text><text x="10" y="58">chase</text><text x="10" y="76">ai (rendőr AI agy)</text>
+        </g>
+        <g transform="translate(426 62)">
+          <rect width="148" height="84" rx="7" fill="var(--accent-bg)" stroke="var(--accent)"/>
+          <text x="10" y="20" font-weight="700" fill="var(--accent)">Szolgálat</text>
+          <text x="10" y="40">rights · units · hud</text><text x="10" y="58">mdc · radio</text><text x="10" y="76">query · plates</text>
+        </g>
+        <g transform="translate(582 62)">
+          <rect width="148" height="84" rx="7" fill="var(--ok-bg)" stroke="var(--ok)"/>
+          <text x="10" y="20" font-weight="700" fill="var(--ok)">Intézkedés</text>
+          <text x="10" y="40">stop · arrest</text><text x="10" y="58">tow · medical</text><text x="10" y="76">btk (bírságok)</text>
+        </g>
+        <g transform="translate(270 156)">
+          <rect width="226" height="84" rx="7" fill="var(--sunk)" stroke="var(--line)"/>
+          <text x="10" y="20" font-weight="700">Adat</text>
+          <text x="10" y="40">db (pol_* táblák, id pool)</text><text x="10" y="58">records (civilek, járművek)</text><text x="10" y="76">history (NPC előélet, regisztráció)</text>
+        </g>
+        <g transform="translate(504 156)">
+          <rect width="226" height="84" rx="7" fill="var(--sunk)" stroke="var(--line)"/>
+          <text x="10" y="20" font-weight="700">Napló, jelentés</text>
+          <text x="10" y="40">events (eseménykezelő + napló)</text><text x="10" y="58">reports (vázlat, beadás)</text><text x="10" y="76">gov (bírság oldal) · web (stat cache)</text>
+        </g>
+        <g transform="translate(270 250)">
+          <rect width="460" height="84" rx="7" fill="none" stroke="var(--line)" stroke-dasharray="5 4"/>
+          <text x="10" y="20" font-weight="700">core</text>
+          <text x="10" y="40">POL.module() regiszter · POL.on / POL.emit belső eseménybusz · config · v_locals</text>
+          <text x="10" y="58">kliens: egy render-ütemező, ami csak az éppen aktív rétegeket rajzolja</text>
+          <text x="10" y="76">kevés külső export: addWanted, getWanted, hasPoliceRight, getPublicStats, radioCommand …</text>
+        </g>
+      </g>
+      <!-- right side resources -->
+      <g font-size="12.5">
+        <rect x="800" y="30" width="180" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="812" y="52" font-weight="700" fill="var(--fg)">police_web</text><text x="812" y="72" fill="var(--muted)">web_api oldal, nincs térkép</text>
+        <rect x="800" y="100" width="180" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="812" y="122" font-weight="700" fill="var(--fg)">[work]/work_police</text><text x="812" y="142" fill="var(--muted)">duty, járművek, rangok</text>
+        <rect x="800" y="170" width="180" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="812" y="192" font-weight="700" fill="var(--fg)">gov_core / gov_works</text><text x="812" y="212" fill="var(--muted)">bírság, bér, kifizető</text>
+        <rect x="800" y="240" width="180" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="812" y="262" font-weight="700" fill="var(--fg)">v_mysql · v_bank</text><text x="812" y="282" fill="var(--muted)">pol_* táblák, bírság könyvelés</text>
+        <rect x="20" y="30" width="200" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="32" y="52" font-weight="700" fill="var(--fg)">ai_land_traffic</text><text x="32" y="72" fill="var(--muted)">járművek, chase motor, hold</text>
+        <rect x="20" y="100" width="200" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="32" y="122" font-weight="700" fill="var(--fg)">ai_peds</text><text x="32" y="142" fill="var(--muted)">rendőr, detained, cuffed</text>
+        <rect x="20" y="170" width="200" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="32" y="192" font-weight="700" fill="var(--fg)">v_els</text><text x="32" y="212" fill="var(--muted)">fény, sziréna, hangváltás</text>
+        <rect x="20" y="240" width="200" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="32" y="262" font-weight="700" fill="var(--fg)">ui_core · ui_inac · interact</text><text x="32" y="282" fill="var(--muted)">csillagok, temp menü, interact</text>
+        <rect x="20" y="310" width="200" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="32" y="332" font-weight="700" fill="var(--fg)">med_erm · v_nametags</text><text x="32" y="352" fill="var(--muted)">mentő feladat · rang, bilincs</text>
+        <rect x="800" y="310" width="180" height="56" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="812" y="332" font-weight="700" fill="var(--fg)">külső bűnügyi scriptek</text><text x="812" y="352" fill="var(--muted)">bolt rablás → addWanted</text>
+      </g>
+      <g stroke="var(--muted)" stroke-width="1.4" fill="none" marker-end="url(#ar)">
+        <path d="M250 104 L222 70"/><path d="M250 120 L222 128"/><path d="M250 150 L222 198"/><path d="M250 200 L222 268"/><path d="M250 300 L222 338"/>
+        <path d="M750 80 L798 58"/><path d="M800 128 L752 128"/><path d="M750 200 L798 198"/><path d="M750 240 L798 268"/><path d="M800 338 L752 300"/>
+      </g>
+      <text x="500" y="392" text-anchor="middle" font-size="13" fill="var(--muted)">nyíl = ki kit hív. A belső modulok közt nincs export, csak Lua függvényhívás; kifelé exportok és meglévő események.</text>
+      <g font-size="12.5" fill="var(--fg)">
+        <rect x="250" y="410" width="500" height="44" rx="8" fill="var(--accent-bg)" stroke="var(--accent)"/>
+        <text x="500" y="437" text-anchor="middle">Kliens oldal: MDC, mini kijelző, rádió, lekérdezés ablak, rendszám, bilincs ikon · mind ki/be kapcsolt rétegek</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>1. ábra · A police_system belső moduljai és a külső kapcsolatok.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================================ SPLIT -->
+<section id="bontas">
+  <h2>Resource-bontás</h2>
+  <p>Egyetértek a kevés resource-szal. Egy resource-on belül minden modul ugyanabban a Lua állapotban fut, így a modulok közti hívás sima függvényhívás: nincs szerializálás, nincs export overhead, és nem kell félni attól, hogy egy másik resource éppen újraindul. Három resource lesz.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Resource</th><th>Mit tartalmaz</th><th>Miért külön</th></tr></thead>
+    <tbody>
+      <tr><td><code>[police]/police_system</code></td><td>Minden modul: core, db, rights, wanted, warrants, chase, ai, units, mdc, hud, radio, query, plates, stop, arrest, events, reports, records, history, tow, medical, btk, gov, web (adat).</td><td>Fő resource.</td></tr>
+      <tr><td><code>[police]/police_web</code></td><td>Nyilvános oldal: hogyan lehet rendőr, rangok, statisztika, bírságtábla. web_api alapon, in-game ui_browser oldal és külső URL is.</td><td>A HTTP oldalak újraindítása ne állítsa le a szolgálatot. Egyetlen cache-elt exportot hív.</td></tr>
+      <tr><td><code>[work]/work_police</code></td><td>work_core regisztráció, duty markerek, járműmarkerek, rangok mint munkaszintek, rendőr jog adása.</td><td>A meglévő munka-mintát követi (work_ems, work_bloodtransport).</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Mappaszerkezet</h3>
+  <pre><code>police_system/
+  meta.xml  locals.lua  README.md
+  shared/   config.lua (POLICE.*), reasons.lua (körözési + elfogató okok), radio.lua (üzenet id-k),
+            btk.json (bírság alapértékek), names.lua (NPC nevek), skins.lua (skin → nem, offline generált)
+  core/     server/registry.lua, server/bus.lua, client/bus.lua, client/layers.lua (render ütemező)
+  modules/
+    db/        server: schema.lua, pool.lua, db.lua
+    rights/    server + client
+    wanted/    server: wanted.lua, heat.lua, evasion.lua · client: stars.lua (ui_core villogás, keresési kör)
+    warrants/  server
+    chase/     server: chase.lua, prediction.lua
+    ai/        server: units.lua, tactics.lua, sirens.lua, budget.lua
+    units/     server: units.lua, shifts.lua, pay.lua
+    mdc/       server: api.lua, feed.lua · client: mdc.lua, pages/*.lua, widgets.lua (dx, render target)
+    hud/       client: mini.lua, fkeys.lua
+    radio/     server + client
+    query/     server + client: window.lua
+    plates/    client
+    stop/      server + client
+    arrest/    server + client: cuffs.lua (csont-póz), escort.lua
+    events/    server: dispatch.lua, log.lua
+    reports/   server: drafts.lua, templates/&lt;lang&gt;.lua
+    records/   server
+    history/   server: npc.lua, register.lua
+    tow/       server
+    medical/   server
+    btk/       server: btk.lua (json + kormány felülírás)
+    gov/       server: GOV.module regisztráció · web/js/police.js (a /gov oldal scriptje)
+    web/       server: publicStats cache</code></pre>
+  <div class="info"><b>Belső kommunikáció.</b> <code>POL.module("wanted", {...})</code> regisztrál, a modulok egymás tábláját hívják (<code>POL.wanted.add(...)</code>), az eseményekre <code>POL.on("unit.signedOff", fn)</code> iratkoznak fel. MTA eseményt csak a kliens–szerver határon és a külső resource-ok felé használunk.</div>
+  <h3>Külső API</h3>
+  <pre><code><span class="c">-- szerver exportok (police_system)</span>
+addWanted(player, reasonId, level?)      <span class="c">-- level = minimum szint, nem +1; okot mindig hozzáad</span>
+getWanted(player)                        <span class="c">-- level, {reasons}, phase ("active"|"evading"|"paused")</span>
+clearWanted(player, why)                 <span class="c">-- teljes törlés (admin, script); nincs -1</span>
+hasPoliceRight(player) / setPoliceRight(player, bool)      <span class="c">-- work_police hívja</span>
+isPoliceVehicle(veh)                     <span class="c">-- modell + 598-nál hu_pd paintjob</span>
+isElementCuffed(el)
+radioCommand(player, messageId, args)    <span class="c">-- a későbbi hangalapú rádió belépési pontja</span>
+getPublicStats()                         <span class="c">-- police_web, 60 s cache</span>
+
+<span class="c">-- események (root, source = police_system resourceRoot, kivéve ha jelölve)</span>
+onPlayerWantedChange(player, new, old, reasons)
+onPlayerWantedEvaded(player, level)
+onPoliceArrest(suspect, officer|false, kind)              <span class="c">-- kind: "player"|"ai"</span>
+onPoliceFineIssued(subjectInfo, btkId, amount, officer)</code></pre>
+</section>
+
+<!-- ============================================================ OPTIM -->
+<section id="optim">
+  <h2>Optimalizáció és adatforgalom</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Render szabályok</h4>
+      <ul class="b">
+        <li>Egy kliens oldali réteg-ütemező (<code>core/client/layers.lua</code>): minden UI elem egy réteg, ami csak akkor kerül be az <code>onClientRender</code>-be, amikor aktív. Ha egy réteg sem aktív, maga a handler is lekapcsol.</li>
+        <li>MDC: render targetbe rajzol, csak változáskor (adat, hover, gépelés) rajzolja újra. Frame-enként egy <code>dxDrawImage</code>.</li>
+        <li>Mini kijelző, lekérdezés ablak, rádió: szintén render target, csak állapotváltáskor frissül.</li>
+        <li>Rendszám UI: 300 ms-os időzítő gyűjti a közeli járműveket (csak szolgálatban), a réteg csak akkor fut, ha van mit rajzolni.</li>
+        <li>Bilincs csont-póz: <code>onClientPedsProcessed</code> csak addig, amíg van bilincselt elem streamelve.</li>
+        <li>A ui_core csillag renderer ma állandóan fut. Átírom: csak körözés közben kapcsol be (lásd Hiányosságok).</li>
+        <li>Indításkor az aktuális állapotot olvassuk be (szolgálat, bilincs, megállítás), nem csak a változás-eseményekre várunk.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Szerver számol</h4>
+      <ul class="b">
+        <li>Körözés, eszkaláció, lerázás, AI döntések, útvonal-előrejelzés, fizetés, jelentés-vázlat: mind szerveren.</li>
+        <li>Ütemezés: a wanted/chase tick 1 Hz, csak körözött játékosokra. AI taktika 2 Hz, csak aktív üldözésre. Semmi nem fut, ha nincs körözés.</li>
+        <li>MDC adat: kérés–válasz, lapozva (25 sor), szerver oldali cache-sel. Az áttekintés csak a nyitott MDC-ket kapja, 2 s-onként, és csak ha változott (delta).</li>
+        <li>DB: aszinkron <code>MYSQL.query</code>, id pool, a napló JSON-sorokban CONCAT-tal (nincs read-modify-write).</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Element data terv</h3>
+  <p>MTA 1.6 <code>subscribe</code> sync módot használunk ott, ahol csak néhány játékosnak kell az adat (<code>addElementDataSubscriber</code>). Ami mindenkinek kell, az ritkán változik.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Kulcs</th><th>Elem</th><th>Sync</th><th>Ki kapja</th><th>Mikor változik</th></tr></thead>
+    <tbody>
+      <tr><td><code>pol.right</code></td><td>player</td><td>subscribe</td><td>csak a játékos maga</td><td>szolgálat eleje / vége</td></tr>
+      <tr><td><code>work.rank</code></td><td>player</td><td>broadcast</td><td>mindenki (nametag)</td><td>duty kezdés, szintlépés (work_core állítja)</td></tr>
+      <tr><td><code>pol.cuffed</code></td><td>player, ped</td><td>broadcast</td><td>mindenki (ikon, póz, séta)</td><td>bilincselés / levétel</td></tr>
+      <tr><td><code>pol.escort</code></td><td>player, ped</td><td>broadcast</td><td>mindenki (követés animációja)</td><td>kísérés kezdete / vége</td></tr>
+      <tr><td><code>pol.unit</code></td><td>vehicle</td><td>subscribe</td><td>szolgálatban lévő rendőrök</td><td>egység be/ki</td></tr>
+      <tr><td><code>pol.stop</code></td><td>ped, vehicle, player</td><td>subscribe</td><td>az intézkedő egység tagjai</td><td>megállítás eleje / vége</td></tr>
+      <tr><td>wanted szint</td><td>player</td><td>natív</td><td>csak a játékos maga (GTA)</td><td>szintváltás. Másoknak nem kell, az MDC a szervertől kéri.</td></tr>
+      <tr><td><code>ai_traffic.chase</code></td><td>AI vehicle</td><td>broadcast</td><td>a syncer kliens kormányoz</td><td>cél vagy mód váltás (ritka)</td></tr>
+    </tbody>
+  </table></div>
+  <p>Ami <b>nem</b> megy element datába: státuszok, MDC listák, üldözés pozíciók, lekérdezés eredmény. Ezek célzott <code>triggerClientEvent</code>-tel mennek csak az érintett egységnek.</p>
+</section>
+
+<!-- ============================================================ RIGHT -->
+<section id="jog">
+  <h2>Rendőr jog</h2>
+  <ul class="b">
+    <li><code>POLICE.REQUIRE_POLICE_RIGHT = false</code> a configban (tesztelés). Ilyenkor mindenki rendőrnek számít, ugyanúgy, mint a <code>bt_core</code> <code>REQUIRE_RIGHT</code> mintában.</li>
+    <li>A jog a <code>pol.right</code> elemadat (subscribe, csak a játékos kapja). A szerver az igazság: <code>Rights.has(player)</code>.</li>
+    <li>A <code>work_police</code> duty kezdéskor adja, végén veszi el (<code>setPoliceRight</code>), és police_system újraindulása után újra kiosztja (<code>onPoliceSystemStart</code>).</li>
+    <li>Jog nélkül semmi nem jelenik meg: nincs MDC, nincs J, F4–F7, C, E/Shift intézkedés, rendszám UI, és nincs figyelmeztető üzenet sem. A kliens a billentyűket csak joggal köti be.</li>
+    <li><code>isPoliceVehicle(veh)</code>: 596, 599, (597 kommentben), és 598 csak <code>paintjob:custom == "hu_pd"</code> esetén, mert a 598-at a mentős orvosi autó is használja más paintjobbal. A 432 tank csak AI.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ VEHICLES -->
+<section id="jarmuvek">
+  <h2>Rendőrségi járművek</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Modell</th><th>Név</th><th>Beállítás</th><th>Kinek</th><th>AI használat</th></tr></thead>
+    <tbody>
+      <tr><td class="num">596</td><td>Ford Crown Victoria</td><td>ELS <code>code3_z3</code></td><td>work_police, AI</td><td>alap járőr, városban</td></tr>
+      <tr><td class="num">598</td><td>Skoda Octavia MK3</td><td>paintjob <code>hu_pd</code>, ELS extra 1 (<code>elsExtra</code>)</td><td>work_police, AI</td><td>alap járőr, városban</td></tr>
+      <tr><td class="num">597</td><td>GTA5 rendőrautó</td><td>csak komment a configban</td><td>később</td><td>később</td></tr>
+      <tr><td class="num">599</td><td>Police Ranger (NYPD)</td><td>ELS <code>rumbler</code></td><td>work_police, AI</td><td>vidéken, terepen</td></tr>
+      <tr><td class="num">432</td><td>Rhino tank</td><td>nincs ELS</td><td>csak AI</td><td>csak 5–6. szint</td></tr>
+    </tbody>
+  </table></div>
+  <pre><code>POLICE.VEHICLES = {
+    [596] = { name = "Ford Crown Victoria", ai = { weight = 5, zones = { "city" } } },
+    [598] = { name = "Skoda Octavia MK3", paintjob = "hu_pd", elsExtra = 1, ai = { weight = 5, zones = { "city" } } },
+    <span class="c">-- [597] = { name = "GTA5 police car" },   -- később</span>
+    [599] = { name = "Police Ranger", ai = { weight = 6, zones = { "rural" } } },
+    [432] = { name = "Rhino", aiOnly = true, ai = { minLevel = 5 } },
+}</code></pre>
+</section>
+
+<!-- ============================================================ WORK + RANKS -->
+<section id="workpolice">
+  <h2>work_police és rangok</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>[work]/work_police</h4>
+      <ul class="b">
+        <li><code>registerWork("police", ...)</code> skinekkel, duty markerekkel (LSPD, SFPD, LVPD; pozíciók MCP-vel bemérve), járműmarkerekkel (garázsok).</li>
+        <li>Járművek a work_core <code>tuning</code>/<code>elsExtra</code>/<code>sirenType</code>/<code>paintjob</code> mezőivel; rendszám <code>platePrefix</code> nélkül, egyedi számmal.</li>
+        <li>Duty kezdés: <code>police_system:setPoliceRight(player, true)</code>, vége: false. Nincs más logikája.</li>
+        <li>Szintek = rangok: <code>levels = { maxLevel = 15, names = {...} }</code>. XP a fizetéssel együtt jár (<code>giveWorkXp</code>), a jelentések alapján.</li>
+        <li>Tutorial most nincs, a <code>WorkModules.register</code> hookot meghagyom rá.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>v_nametags: moduláris rangjelzés</h4>
+      <ul class="b">
+        <li>work_core új opciója: <code>registerWork(id, { rankBadges = true })</code>. Ilyenkor duty alatt beállítja a <code>work.rank</code> = szint elemadatot (broadcast, ritkán változik).</li>
+        <li>v_nametags: ha van <code>img/ranks/&lt;workId&gt;/&lt;szint&gt;.png</code>, a work kártyától jobbra kirajzolja. A mentősöknél csak egy mappa és a flag kell.</li>
+        <li>A képeket előre, offline forgatom el 90°-kal jobbra és kicsinyítem (128×58 PNG), így futás közben nincs forgatás és kisebb a letöltés. A 3 névtelen fájlt a csillagok alapján azonosítottam (Hadnagy, Főhadnagy, Százados).</li>
+      </ul>
+      <div style="display:flex;justify-content:center;padding:14px;background:#5d7a8c;border-radius:8px">
+        <div class="ntag" role="img" aria-label="Nametag minta: crew tag, munka kártya, rangjelzés, név">
+          <div class="line"><span class="crew">[SAPD]</span><span class="work">Police</span><img src="ranks/08.jpg" alt="Főhadnagy rangjelzés"></div>
+          <div class="name">DrAndrew</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ranks">
+    <div class="rank"><img src="ranks/01.jpg" alt=""><span class="n">Őrmester</span><span class="l">szint 1</span></div>
+    <div class="rank"><img src="ranks/02.jpg" alt=""><span class="n">Törzsőrmester</span><span class="l">szint 2</span></div>
+    <div class="rank"><img src="ranks/03.jpg" alt=""><span class="n">Főtörzsőrmester</span><span class="l">szint 3</span></div>
+    <div class="rank"><img src="ranks/04.jpg" alt=""><span class="n">Zászlós</span><span class="l">szint 4</span></div>
+    <div class="rank"><img src="ranks/05.jpg" alt=""><span class="n">Törzszászlós</span><span class="l">szint 5</span></div>
+    <div class="rank"><img src="ranks/06.jpg" alt=""><span class="n">Főtörzszászlós</span><span class="l">szint 6</span></div>
+    <div class="rank"><img src="ranks/07.jpg" alt=""><span class="n">Hadnagy</span><span class="l">szint 7 · fed6…jpg</span></div>
+    <div class="rank"><img src="ranks/08.jpg" alt=""><span class="n">Főhadnagy</span><span class="l">szint 8 · c270…jpg</span></div>
+    <div class="rank"><img src="ranks/09.jpg" alt=""><span class="n">Százados</span><span class="l">szint 9 · d3a3…jpg</span></div>
+    <div class="rank"><img src="ranks/10.jpg" alt=""><span class="n">Őrnagy</span><span class="l">szint 10</span></div>
+    <div class="rank"><img src="ranks/11.jpg" alt=""><span class="n">Alezredes</span><span class="l">szint 11</span></div>
+    <div class="rank"><img src="ranks/12.jpg" alt=""><span class="n">Ezredes</span><span class="l">szint 12</span></div>
+    <div class="rank"><img src="ranks/13.jpg" alt=""><span class="n">Dandártábornok</span><span class="l">szint 13</span></div>
+    <div class="rank"><img src="ranks/14.jpg" alt=""><span class="n">Vezérőrnagy</span><span class="l">szint 14</span></div>
+    <div class="rank"><img src="ranks/15.jpg" alt=""><span class="n">Altábornagy</span><span class="l">szint 15</span></div>
+  </div>
+  <p class="c" style="font-size:14px">A képek már 90°-kal jobbra forgatva, a v_nametags <code>img/police_ranks</code> mappájából.</p>
+</section>
+
+<!-- ============================================================ DB -->
+<section id="db">
+  <h2>Adatbázis modul</h2>
+  <p>Minden tábla <code>pol_</code> előtagú, a séma a <code>modules/db/schema.lua</code>-ban és a repo <code>main.sql</code>-ben. A modul indításkor <code>CREATE TABLE IF NOT EXISTS</code>, és megvárja a <code>mysql:connected</code>-et.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Tábla</th><th>Fő oszlopok</th><th>Megjegyzés</th></tr></thead>
+    <tbody>
+      <tr><td><code>pol_citizens</code></td><td>id, kind (player/npc), account_name, name, gender, birth_date, skin, flags JSON (jogosítvány, BAC/drog esély), generated, created_at, last_seen</td><td>Játékos: account_name egyedi. NPC: első intézkedéskor.</td></tr>
+      <tr><td><code>pol_vehicles</code></td><td>id, kind, owner_citizen_id, ownveh_id, plate (index), model, color, flags JSON (forgalmi, műszaki, lopott), created_at</td><td>Rendszám szerint keresünk.</td></tr>
+      <tr><td><code>pol_records</code></td><td>id, type (fine/warning), btk_id, amount, paid, citizen_id, vehicle_id, officer, unit, shift_id, report_id, created_at</td><td>Bírságok és figyelmeztetések.</td></tr>
+      <tr><td><code>pol_warrants</code></td><td>id, citizen_id, reasons JSON, description, lang, status (active/served/revoked), issued_by, updated_by, created_at, updated_at</td><td>Elfogató parancsok.</td></tr>
+      <tr><td><code>pol_reports</code></td><td>id, shift_id, incident_id, type, lang, author, unit, title, body, subjects JSON, status (draft/submitted), created_at, submitted_at</td><td>Jelentések.</td></tr>
+      <tr><td><code>pol_shifts</code></td><td>id, callsign, unit_type, leader, members (JSON sorok), server, started_at, ended_at, events (JSON sorok), pay JSON, pay_pending</td><td>Egységek szolgálatai, napló.</td></tr>
+      <tr><td><code>pol_stats</code></td><td>day, key, value</td><td>Napi aggregált számok a weboldalnak.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Id pool</h4>
+      <ul class="b">
+        <li>Minden táblában szerver instance-enként 2 placeholder sor (<code>status = 'pool'</code> vagy <code>generated = -1</code>, <code>server</code> = instance id), a med_erm mintája szerint.</li>
+        <li>Új sor = a legkisebb id-jű saját pool sor UPDATE-je, utána egy új pool sor aszinkron INSERT-je. Így az írás nem blokkol, és az id-k nem ugranak.</li>
+        <li>Minden olvasó kiszűri a pool sorokat (közös <code>DB.notPool</code> feltétel).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Írási minták</h4>
+      <ul class="b">
+        <li>Napló: <code>pol_shifts.events</code> JSON sorok, 30 s-onként kötegelve CONCAT-tal.</li>
+        <li>Indítási regisztráció: egy-egy <code>INSERT … SELECT … WHERE NOT EXISTS</code> az <code>accounts</code> és <code>vehicles</code> táblából, nem soronként. Ez kivétel a poolból (sorrendben írja az id-ket).</li>
+        <li>Két szerver közös DB-n: callsign ütközés és nyitott szolgálat a <code>server</code> oszloppal, mint a med_shifts-nél.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ WANTED -->
+<section id="wanted">
+  <h2>Körözés (wanted)</h2>
+  <p>A GTA beépített szintje (0–6) a forrás: <code>setPlayerWantedLevel</code> a szerveren. Mellette a modul tárolja az okokat, a „heat” pontot és a fázist. Semmi nem mentődik: lecsatlakozáskor törlődik.</p>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 980 330" width="100%" style="min-width:760px" role="img" aria-label="Körözés állapotgép">
+      <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+      <g font-size="13">
+        <rect x="10" y="120" width="96" height="60" rx="8" fill="var(--sunk)" stroke="var(--line)"/><text x="58" y="146" text-anchor="middle" font-weight="700" fill="var(--fg)">0</text><text x="58" y="166" text-anchor="middle" fill="var(--muted)">nincs körözés</text>
+        <rect x="150" y="120" width="110" height="60" rx="8" fill="var(--surface)" stroke="var(--accent)"/><text x="205" y="146" text-anchor="middle" font-weight="700" fill="var(--fg)">★ 1</text><text x="205" y="166" text-anchor="middle" fill="var(--muted)">követés, lövés nincs</text>
+        <rect x="310" y="120" width="110" height="60" rx="8" fill="var(--surface)" stroke="var(--accent)"/><text x="365" y="146" text-anchor="middle" font-weight="700" fill="var(--fg)">★★ 2</text><text x="365" y="166" text-anchor="middle" fill="var(--muted)">lőnek, elévágás</text>
+        <rect x="470" y="120" width="110" height="60" rx="8" fill="var(--surface)" stroke="var(--siren)"/><text x="525" y="146" text-anchor="middle" font-weight="700" fill="var(--fg)">★★★ 3–4</text><text x="525" y="166" text-anchor="middle" fill="var(--muted)">PIT, útzár (4)</text>
+        <rect x="630" y="120" width="110" height="60" rx="8" fill="var(--siren-bg)" stroke="var(--siren)"/><text x="685" y="146" text-anchor="middle" font-weight="700" fill="var(--siren)">5–6</text><text x="685" y="166" text-anchor="middle" fill="var(--muted)">tankok</text>
+        <rect x="790" y="40" width="180" height="70" rx="8" fill="var(--warn-bg)" stroke="var(--warn)"/><text x="880" y="66" text-anchor="middle" font-weight="700" fill="var(--warn)">Lerázás fázis</text><text x="880" y="86" text-anchor="middle" fill="var(--muted)">csillagok villognak,</text><text x="880" y="102" text-anchor="middle" fill="var(--muted)">szint szerinti idő fut</text>
+        <rect x="790" y="210" width="180" height="70" rx="8" fill="var(--ok-bg)" stroke="var(--ok)"/><text x="880" y="236" text-anchor="middle" font-weight="700" fill="var(--ok)">Lerázva</text><text x="880" y="256" text-anchor="middle" fill="var(--muted)">szint → 0, okok törlődnek</text><text x="880" y="272" text-anchor="middle" fill="var(--muted)">XP a v_levelsys-ben</text>
+        <rect x="380" y="250" width="200" height="60" rx="8" fill="var(--sunk)" stroke="var(--line)" stroke-dasharray="4 3"/><text x="480" y="275" text-anchor="middle" font-weight="700" fill="var(--fg)">Szünetel (interior)</text><text x="480" y="294" text-anchor="middle" fill="var(--muted)">nincs AI, nincs lerázás</text>
+      </g>
+      <g stroke="var(--muted)" stroke-width="1.4" fill="none" marker-end="url(#a2)">
+        <path d="M106 150 L148 150"/><path d="M260 150 L308 150"/><path d="M420 150 L468 150"/><path d="M580 150 L628 150"/>
+        <path d="M740 140 C770 120 775 100 788 85"/>
+        <path d="M790 98 C700 110 640 112 600 120" stroke-dasharray="5 4"/>
+        <path d="M880 110 L880 208"/>
+        <path d="M480 182 L480 248" stroke-dasharray="4 3"/>
+      </g>
+      <g font-size="12" fill="var(--muted)">
+        <text x="127" y="112" text-anchor="middle">bűncselekmény</text><text x="127" y="98" text-anchor="middle">(addWanted)</text>
+        <text x="284" y="112" text-anchor="middle">nem áll meg,</text><text x="284" y="98" text-anchor="middle">nem adja fel</text>
+        <text x="444" y="112" text-anchor="middle">rendőrre lő</text>
+        <text x="604" y="112" text-anchor="middle">heat pont</text>
+        <text x="690" y="98" text-anchor="middle">bármely szintről:</text><text x="690" y="84" text-anchor="middle">nincs egység a közelben</text>
+        <text x="660" y="132">újra észrevették</text>
+        <text x="890" y="160">idő letelt</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>2. ábra · Szintek és fázisok. A szint csak nőhet, csökkenni csak 0-ra tud (lerázás, letartóztatás, halál, kilépés).</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Hozzáadás külső scriptből</h4>
+      <pre><code>exports.police_system:addWanted(player, <span class="k">"shop_robbery"</span>)       <span class="c">-- az ok alap szintje</span>
+exports.police_system:addWanted(player, <span class="k">"vehicle_theft"</span>, 1)
+<span class="c">-- ha a szint már &gt;= a kért szint: csak az ok kerül fel, a szint nem nő</span></code></pre>
+      <ul class="b">
+        <li>Az okok előre definiáltak (<code>shared/reasons.lua</code>): id, alap szint, BTK kapcsolat, szöveg (v_locals).</li>
+        <li>Csak dimenzió 0-ban működik. Job meccsben, gang war editorban, tutorialban a hívás <code>false, "dimension"</code>.</li>
+        <li>Szolgálatban lévő rendőr nem kap körözést intézkedés közbeni cselekményre.</li>
+        <li>Az okok az MDC Civil oldalán és a Körözések listában látszanak, amíg a körözés tart.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Eszkaláció</h4>
+      <ul class="b">
+        <li><b>1 → 2:</b> egy egység (AI vagy játékos) villogóval követi 80 m-en belül, a gyanúsított 15 s-ig mozgásban marad (jármű &gt; 2 m/s vagy futás). Rendőrautó szándékos döngölése is 2.</li>
+        <li><b>2 → 3:</b> bármilyen sebzés rendőrön, rendőrautón (AI pedek, AI járművek, szolgálatos játékosok). Lövés rendőr közelébe (+heat, de még nem 3).</li>
+        <li><b>3 → 6:</b> heat pont küszöbök. Rendőr sebzése +25, megölése +100, rendőrautó megsemmisítése +60, lövés rendőr közelében +5. 4: 150, 5: 350, 6: 700 (configban).</li>
+        <li><b>Feladás:</b> ha egy egység 15 m-en belül van és a gyanúsított áll, „Hold E to surrender” felirat. Feladás után nincs további emelés, az egység letartóztat.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Lerázás</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Szint</th><th class="num">Tartási idő</th><th class="num">Keresési kör</th><th class="num">XP</th><th>Megjegyzés</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="num">20 s</td><td class="num">200 m</td><td class="num">100</td><td rowspan="6">Lerázás fázis: nincs AI jármű 180 m-en, nincs AI vagy játékos rendőr gyalog 80 m-en belül. A csillagok villognak (ui_core <code>setWantedBlinking</code>), a v_radar kört mutat az utolsó ismert helyen (<code>addCircleArea</code>, csak az egységeknek és a gyanúsítottnak). Ha valaki újra meglátja, a villogás leáll és az idő nulláról indul.</td></tr>
+      <tr><td>2</td><td class="num">30 s</td><td class="num">250 m</td><td class="num">250</td></tr>
+      <tr><td>3</td><td class="num">45 s</td><td class="num">300 m</td><td class="num">500</td></tr>
+      <tr><td>4</td><td class="num">60 s</td><td class="num">350 m</td><td class="num">900</td></tr>
+      <tr><td>5</td><td class="num">90 s</td><td class="num">400 m</td><td class="num">1500</td></tr>
+      <tr><td>6</td><td class="num">120 s</td><td class="num">450 m</td><td class="num">2500</td></tr>
+    </tbody>
+  </table></div>
+  <ul class="b">
+    <li>A „lát” itt távolságot jelent (a szerveren nincs ütközés-teszt), a GTA kereső-köréhez hasonlóan. Javaslat, configban állítható.</li>
+    <li>Lerázás fázisban az AI az utolsó ismert hely körül keres, nem vág elé és nem hív új egységet előre.</li>
+    <li>Interior vagy nem-0 dimenzió: a lerázás nem halad, az AI nem jön be; kijövetelkor folytatódik. Ha valaki interiorban kap körözést, AI csak kijövetel után indul.</li>
+    <li>Lerázás után <code>giveXp</code> a v_levelsys-ben. Farmolás ellen: csak akkor jár XP, ha az üldözés legalább 60 s-ig tartott, és 10 perces cooldown van rá.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ WARRANTS -->
+<section id="warrants">
+  <h2>Elfogató parancs</h2>
+  <ul class="b">
+    <li>Független a GTA körözéstől, tartós: <code>pol_warrants</code> tábla. Játékosra és NPC-re is szólhat.</li>
+    <li>Előre definiált okok: a BTK bűncselekményei és közrendi tételei, plusz <code>unpaid_fines</code>, <code>escape_custody</code>, <code>evading_arrest</code>. Több ok választható.</li>
+    <li>Rövid leírás, saját nyelvvel (alap: a kiadó játékos nyelve, a v_locals nyelvlistából átállítható). Fordítás nincs, később AI.</li>
+    <li>Kiadás, módosítás, visszavonás az MDC Warrants oldalán. Minden módosítás a kiadó nevével és időpontjával naplózva.</li>
+    <li>Igazoltatáskor és lekérdezéskor piros <b>WARRANT</b> jelzés a lekérdezés ablakban és a civil adatlapon.</li>
+    <li>Végrehajtás: letartóztatás és átadás után <code>served</code> státuszra vált.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ CHASE -->
+<section id="chase">
+  <h2>Üldözés modul</h2>
+  <p>Az üldözés modul az egyetlen, ami AI rendőrt kérhet. Másodpercenként végignézi a körözött játékosokat, és mindegyikhez egy <b>igényt</b> számol. Az AI modul az igényt teljesíti: ő dönti el, hol jelenik meg az egység és pontosan mit csinál.</p>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 980 250" width="100%" style="min-width:760px" role="img" aria-label="Üldözés modul és AI modul kapcsolata">
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+      <g font-size="13">
+        <rect x="10" y="20" width="220" height="200" rx="10" fill="var(--siren-bg)" stroke="var(--siren)"/>
+        <text x="24" y="46" font-weight="700" fill="var(--siren)">chase (1 Hz)</text>
+        <text x="24" y="72" fill="var(--fg)">• wanted szint, fázis</text><text x="24" y="94" fill="var(--fg)">• utolsó ismert hely</text><text x="24" y="116" fill="var(--fg)">• útvonal-előrejelzés</text><text x="24" y="138" fill="var(--fg)">• résztvevő egységek</text><text x="24" y="160" fill="var(--fg)">• játékos rendőrök</text><text x="24" y="182" fill="var(--fg)">• MDC feed</text>
+        <rect x="330" y="60" width="300" height="120" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="344" y="84" font-weight="700" fill="var(--fg)">Demand</text>
+        <text x="344" y="106" fill="var(--muted)" style="font-family:var(--font-mono)" font-size="12">{ cars=3, tanks=0, phase="active",</text>
+        <text x="344" y="124" fill="var(--muted)" style="font-family:var(--font-mono)" font-size="12">  shoot=true, pit=true, intercept=true,</text>
+        <text x="344" y="142" fill="var(--muted)" style="font-family:var(--font-mono)" font-size="12">  roadblock=false, last={x,y,z},</text>
+        <text x="344" y="160" fill="var(--muted)" style="font-family:var(--font-mono)" font-size="12">  path={…} }</text>
+        <rect x="730" y="20" width="240" height="200" rx="10" fill="var(--accent-bg)" stroke="var(--accent)"/>
+        <text x="744" y="46" font-weight="700" fill="var(--accent)">ai (2 Hz)</text>
+        <text x="744" y="72" fill="var(--fg)">• hol spawnol (nem látott út)</text><text x="744" y="94" fill="var(--fg)">• melyik modell, hány rendőr</text><text x="744" y="116" fill="var(--fg)">• taktika: követ, PIT, elévág</text><text x="744" y="138" fill="var(--fg)">• gyalogos rendőrök, lövés</text><text x="744" y="160" fill="var(--fg)">• sziréna hangváltás</text><text x="744" y="182" fill="var(--fg)">• eltávolítás, ha senki nem látja</text>
+      </g>
+      <g stroke="var(--muted)" stroke-width="1.4" fill="none" marker-end="url(#a3)"><path d="M232 110 L328 110"/><path d="M632 110 L728 110"/><path d="M728 150 C650 210 330 210 232 160"/></g>
+      <text x="480" y="232" text-anchor="middle" font-size="12" fill="var(--muted)">AI.report(chaseId, units, spotted) → a chase ebből tudja, ki látja a gyanúsítottat</text>
+    </svg>
+    </div>
+    <figcaption>3. ábra · Az AI magától soha nem kér egységet. Ha a chase nem kér, az AI meglévő egységei visszavonulnak és nem látott helyen eltűnnek.</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Üldözés objektum</h4>
+      <ul class="b">
+        <li>Egy körözött játékosra (vagy menekülő NPC-re) egy üldözés. Mezők: id, suspect, level, phase, startedAt, lastSeen, units (AI + játékos egységek), log.</li>
+        <li><b>Játékos indítja:</b> F4 (Pursuit) vagy rádió <code>STATUS_PURSUIT</code> egy kijelölt célpontra (a megállított vagy a rendőrautó előtti jármű). Ha a cél menekül, megkapja a „nem áll meg” eszkalációt.</li>
+        <li><b>Csatlakozás:</b> az MDC Pursuits oldalán <i>Join</i>. A csatlakozott egység státusza Pursuit, a gyanúsított blipje csak nekik látszik (<code>createBlipAttachedTo</code> + <code>setElementVisibleTo</code>), lerázás fázisban helyette a keresési kör.</li>
+        <li>Ha játékos rendőrök is üldöznek, az AI igény csökken (egy játékos egység = egy AI autó).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Útvonal-előrejelzés (2. szinttől)</h4>
+      <ul class="b">
+        <li>Ha a gyanúsítottnak van <code>gpsDestination</code> waypointja, a navmesh útvonala; különben a navmesh <code>getNearestLane</code> + előre-séta a sávgráfon a haladási irányba (300–500 m).</li>
+        <li>A sávok útvonala 2 s-onként frissül, és csak ha a gyanúsított 40 m-nél többet tért el.</li>
+        <li>Ebből választ az AI elévágó pontot. Lerázás fázisban nincs előrejelzés.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Szint</th><th class="num">Autók</th><th class="num">Tank</th><th>Taktika</th><th>Fegyver, pontosság</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="num">1</td><td class="num">0</td><td>követés, felszólítás, megállás után gyalogos letartóztatás</td><td>nincs lövés</td></tr>
+      <tr><td>2</td><td class="num">2</td><td class="num">0</td><td>követés, beszorítás, elévágás</td><td>pisztoly, 0,25</td></tr>
+      <tr><td>3</td><td class="num">3</td><td class="num">0</td><td>+ PIT manőver (helikopter később)</td><td>shotgun / SMG, 0,35</td></tr>
+      <tr><td>4</td><td class="num">4</td><td class="num">0</td><td>+ döngölés, útzár 2 autóval az előre jelzett úton</td><td>SMG, 0,45</td></tr>
+      <tr><td>5</td><td class="num">4</td><td class="num">1</td><td>+ tank</td><td>M4, 0,55</td></tr>
+      <tr><td>6</td><td class="num">5</td><td class="num">2</td><td>+ 2 tank</td><td>M4, 0,65</td></tr>
+    </tbody>
+  </table></div>
+  <p>Globális korlát: <code>POLICE.AI.MAX_VEHICLES = 14</code>, <code>MAX_TANKS = 3</code>. Egymáshoz 300 m-en belüli gyanúsítottak osztoznak az egységeken. Minden szám config.</p>
+</section>
+
+<!-- ============================================================ AI -->
+<section id="ai">
+  <h2>Rendőr AI (police_system / ai modul)</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Megjelenés és eltűnés</h4>
+      <ul class="b">
+        <li>Spawn csak úton, 180–400 m-re, olyan ponton, amit egy játékos kamerája sem lát (ai_land_traffic kamera-jelentések, új export).</li>
+        <li>Eltűnés csak akkor, ha egy kamera sem látja és 150 m-nél messzebb van minden játékostól. Addig visszavonul: kikapcsolja a szirénát és normál forgalomként hajt tovább.</li>
+        <li>Zóna szerinti modell: városban 596/598 (hu_pd, extra 1), vidéken 599. Tank csak 5–6.</li>
+        <li>Csak dimenzió 0, interior 0 (az ai_land_traffic scriptelt járművei csak ott szinkronizálnak).</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Vezetés</h4>
+      <ul class="b">
+        <li><b>Távol</b> (&gt; 150 m vagy nem látott): a forgalom szimulációban fut, scriptelt pursuit módban, sávokon. Olcsó, kevés csomag.</li>
+        <li><b>Közel</b>: átadás fizikára, a syncer kliens kormányozza (chase motor, a v_jobmanager küldetés-üldözés általánosítva). Itt van követés, beszorítás, PIT, döngölés.</li>
+        <li>Távolodáskor és ha senki nem látja, visszaveszi a szimuláció.</li>
+        <li>A villogó és sziréna végig megy (v_els). A forgalom már most kitér a <code>mkjState</code> autók elől.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Gyalogos rendőrök</h4>
+      <ul class="b">
+        <li>Ha a gyanúsított megáll vagy gyalog van 40 m-en belül, a rendőrök kiszállnak (ai_peds <code>police</code> viselkedés).</li>
+        <li>1. szint: fegyver nélkül odamennek, 2 m-en belül 3 s álldogálás után letartóztatás („Busted”).</li>
+        <li>2. szinttől: fegyvert fognak, a szint szerinti pontossággal lőnek.</li>
+        <li>Ha a gyanúsított elhajt, visszaszállnak és folytatják.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Sziréna</h4>
+      <ul class="b">
+        <li>Az AI 6–15 s véletlen időközönként vált a sziréna típus hangjai között (<code>setElsSiren(veh, true, index)</code>), kereszteződés előtt néha rövid kürt.</li>
+        <li>Lerázás fázisban: csak villogó, sziréna nincs. Visszavonuláskor minden ki.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info"><b>AI letartóztatás eredménye:</b> elsötétülés, „Busted”, a játékos a legközelebbi rendőrségre kerül, és a <a href="#kerdesek">döntés</a> szerinti büntetést kapja (börtönidő vagy bírság). Az AI-nak nem kell kísérnie és autóba tennie a játékost, ezt csak a játékos rendőrök csinálják.</div>
+</section>
+
+<!-- ============================================================ AI EXT -->
+<section id="aiext">
+  <h2>AI resource-ok bővítése</h2>
+  <p>A bővítések általánosak, nem rendőr-specifikusak: a többi rendszer (küldetések, biz, buszok) is használhatja őket.</p>
+  <h3>ai_land_traffic</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Új export / funkció</th><th>Mire kell</th><th>Megvalósítás</th></tr></thead>
+    <tbody>
+      <tr><td><code>findHiddenRoadSpawn(x, y, z, {minDist, maxDist, ahead, heading, profile})</code></td><td>AI rendőr, vontató, mentő spawn</td><td>Sávpontok a gyűrűben, <code>Views.anySees</code> szűrés (már létező kamera-jelentés), irány a megadott pont felé.</td></tr>
+      <tr><td><code>isElementSeenByPlayers(el)</code></td><td>eltüntetés ellenőrzése</td><td>Views.anySees a pozícióra.</td></tr>
+      <tr><td><code>setScriptedDespawnUnseen(veh, {minDist})</code></td><td>vontató, mentő, visszavonuló rendőr</td><td>Az utolsó cél után nem 3 perc, hanem az első pillanat, amikor senki nem látja.</td></tr>
+      <tr><td><code>setScriptedChase(veh, target, {mode, aggression, maxSpeed})</code></td><td>üldözés közelről</td><td>Új kliens <code>client/chase.lua</code> (a v_jobmanager <code>jobs.chase</code> kormányzásából): módok <i>follow, box, ram, pit, block</i>. Közel fizika + syncer, távol vissza a szimulációba.</td></tr>
+      <tr><td><code>pullOverTrafficVehicle(veh, byVeh)</code> / <code>releaseTrafficHold(veh)</code></td><td>közúti ellenőrzés</td><td>Az ágens a padkára húzódik (meglévő ELS-kitérés logika) és tartva marad: nincs culling, nincs release, a sofőr kiszállhat és visszaszállhat.</td></tr>
+      <tr><td><code>parkScriptedVehicle(veh, x, y, z, rot)</code></td><td>útzár</td><td>Kivétel a szimulációból, keresztbe állítva, fagyasztva.</td></tr>
+      <tr><td><code>setTrafficVehicleFlee(veh, from)</code></td><td>menekülő NPC (később)</td><td>Pursuit fordítva: a célponttól távolodó útvonal, gyorsabb profil.</td></tr>
+      <tr><td>profil <code>pursuit</code></td><td>AI rendőr</td><td>Piroson áthajt (lassítva), 1,4× sebesség, a forgalom kitér.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>ai_peds</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Új elem</th><th>Mire kell</th></tr></thead>
+    <tbody>
+      <tr><td>viselkedés <code>police</code> (args: suspect, level, armed, accuracy)</td><td>gyalogos rendőr: odamegy, letartóztat, vagy szint szerint lő; visszaszáll a kocsiba.</td></tr>
+      <tr><td>viselkedés <code>detained</code></td><td>megállított gyalogos: áll, a rendőr felé fordul.</td></tr>
+      <tr><td>viselkedés <code>cuffed</code> + task <code>follow(leader, dist)</code></td><td>bilincselt NPC, kísérés.</td></tr>
+      <tr><td>exportok <code>aiPedEnterVehicle(ped, veh, seat)</code>, <code>aiPedExitVehicle(ped)</code></td><td>kiszállítás, visszaszállás, rendőrautóba ültetés (a motor már tudja, csak nincs kivezetve).</td></tr>
+      <tr><td>esemény <code>onAIPedDamaged(ped, attacker, weapon, loss)</code></td><td>heat pont: a meglévő retaliate érzékelés eseményként.</td></tr>
+      <tr><td>viselkedés <code>patient</code></td><td>sérült NPC, amit az AI mentő elvisz.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="note"><b>Kockázat:</b> a PIT és a döngölés fizikai érintkezést igényel, ezért a közeli üldözés a syncer kliensen fut. Két játékosnál a syncer váltás rángatást okozhat; ezt élőben kell hangolni (MCP + 2 kliens).</div>
+</section>
+
+<!-- ============================================================ UNITS -->
+<section id="units">
+  <h2>Units manager</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Szabályok</h4>
+      <ul class="b">
+        <li>Bejelentkezés csak rendőrautóban, az MDC-n. Amíg az egység nincs bejelentkezve, az MDC csak a bejelentkezés ablakot mutatja.</li>
+        <li>Típusok: <b>Adam (A-)</b> kétszemélyes, <b>Lincoln (L-)</b> egyszemélyes. Szám 1–99.</li>
+        <li>Ütközés: a szám típustól függetlenül foglalt (A-10 és L-10 nem lehet egyszerre), az összes szerver instance nyitott szolgálatai között is.</li>
+        <li>Egy játékos egy egységben. Tag menet közben is felvehető (meghívó értesítés, elfogadás).</li>
+        <li>A vezető kilép a szerverről: az egység megszűnik. Tag lép ki: az egység marad.</li>
+        <li>Kijelentkezés csak akkor, ha minden lezárt intézkedés jelentése be van adva.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Fizetés zárásakor</h4>
+      <ul class="b">
+        <li>A beadott jelentések típusa szerint (táblázat a <a href="#reports">Jelentéseknél</a>). Minden tag kap, a saját részvétele szerint.</li>
+        <li>Kifizetés a work_core <code>payWork</code>-kel, így megy rá a jövedelemadó és a heti szorzó. A paramétereket a gov_works <code>registerWage</code>-dzsel regisztráljuk, a kifizető alapból az államkincstár.</li>
+        <li>Ha a vezető lecsatlakozik be nem adott jelentésekkel, a fizetés <code>pay_pending</code>-be kerül, és a következő bejelentkezésnél, a jelentések beadása után fizetünk.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ MDC -->
+<section id="mdc">
+  <h2>MDC, rendőrségi számítógép</h2>
+  <p>J gomb rendőrautóban, csak joggal. A képernyő közepén 80% (szélesség és magasság). Felső sávban a menü. Enyhe navy alap, élénk státuszszínek, modern rendőrségi CAD/MDC elrendezés. A felület angol, a szövegek v_locals kulcsokon.</p>
+  <figure>
+    <div class="screen">
+      <div class="mdc" role="img" aria-label="MDC áttekintés oldal minta">
+        <div class="top">
+          <div class="logo"><i></i>SAPD · MOBILE DATA COMPUTER</div>
+          <div class="unitchip"><span>A-12</span><span class="mut">DrAndrew · Kovi</span><span class="pill p-av">AVAILABLE</span><span class="mut">21:47</span></div>
+        </div>
+        <nav><span class="on">Overview</span><span>Calls</span><span>Pursuits <b>1</b></span><span>Wanted <b>3</b></span><span>Warrants</span><span>Citizens</span><span>Vehicles</span><span>Reports <b>2</b></span><span>Penal code</span></nav>
+        <div class="body">
+          <div class="warn"><span>2 reports are waiting for you. You cannot sign off until they are submitted.</span><span class="btn red">Open reports</span></div>
+          <div class="row4">
+            <div class="tile"><div class="l">Units on duty</div><div class="v">6</div></div>
+            <div class="tile"><div class="l">Active pursuits</div><div class="v" style="color:var(--m-red)">1</div></div>
+            <div class="tile"><div class="l">Wanted now</div><div class="v" style="color:var(--m-amber)">3</div></div>
+            <div class="tile"><div class="l">Arrests today</div><div class="v">14</div></div>
+          </div>
+          <div class="cols">
+            <div class="box"><h5><span>Units</span><span>6</span></h5>
+              <table><thead><tr><th>Unit</th><th>Officers</th><th>Status</th><th>Area</th></tr></thead><tbody>
+                <tr><td>A-12</td><td>DrAndrew, Kovi</td><td><span class="pill p-av">AVAILABLE</span></td><td>Pershing Sq.</td></tr>
+                <tr><td>L-4</td><td>Sanyi</td><td><span class="pill p-pu">PURSUIT</span></td><td>Idlewood</td></tr>
+                <tr><td>A-31</td><td>Peti, Bence</td><td><span class="pill p-rs">RESPONDING</span></td><td>Ganton</td></tr>
+                <tr><td>L-7</td><td>Zoli</td><td><span class="pill p-bz">BUSY · TRAFFIC STOP</span></td><td>Market</td></tr>
+                <tr><td>A-2</td><td>Gabi, Robi</td><td><span class="pill p-av">AVAILABLE</span></td><td>Downtown SF</td></tr>
+              </tbody></table>
+            </div>
+            <div style="display:grid;gap:10px">
+              <div class="box"><h5><span>Active pursuit</span><span>04:12</span></h5>
+                <table><tbody>
+                  <tr><td>Laptop112</td><td><span class="stars">★★★<s>★★★</s></span></td><td class="mut">Sultan · 61-AB-422</td></tr>
+                  <tr><td colspan="3" class="mut">L-4 + 2 AI units · Idlewood → East LS · <span class="btn pri">Join</span></td></tr>
+                </tbody></table>
+              </div>
+              <div class="box"><h5><span>Wanted</span><span>3</span></h5>
+                <table><tbody>
+                  <tr><td>Laptop112</td><td><span class="stars">★★★<s>★★★</s></span></td><td class="mut">shots at police</td></tr>
+                  <tr><td>Mike_V</td><td><span class="stars">★<s>★★★★★</s></span></td><td class="mut">shop robbery</td></tr>
+                  <tr><td>Kriszta</td><td><span class="stars">★★<s>★★★★</s></span></td><td class="mut">failure to stop</td></tr>
+                </tbody></table>
+              </div>
+              <div class="box"><h5><span>Calls</span><span>0</span></h5><div style="padding:10px" class="mut">Calls from citizens will appear here.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption>4. ábra · MDC áttekintés (minta adatokkal). Pursuit piros, Busy narancs, Responding sárga, Available zöld, ugyanaz a színkód, mint az F4–F7.</figcaption>
+  </figure>
+  <figure>
+    <div class="screen">
+      <div class="mdc" role="img" aria-label="MDC civil adatlap minta">
+        <div class="top"><div class="logo"><i></i>SAPD · MOBILE DATA COMPUTER</div><div class="unitchip"><span>A-12</span><span class="pill p-bz">BUSY</span></div></div>
+        <nav><span>Overview</span><span>Calls</span><span>Pursuits</span><span>Wanted</span><span>Warrants</span><span class="on">Citizens</span><span>Vehicles</span><span>Reports</span><span>Penal code</span></nav>
+        <div class="sub"><span class="on">All</span><span>Players</span><span>NPC</span><span style="margin-left:auto" class="btn">Search: name, plate, ID…</span></div>
+        <div class="body">
+          <div class="prof">
+            <div class="photo"><svg viewBox="0 0 100 110" width="110" aria-hidden="true"><circle cx="50" cy="34" r="20" fill="#6f86bd"/><path d="M12 110 C14 72 34 62 50 62 C66 62 86 72 88 110 Z" fill="#6f86bd"/></svg></div>
+            <div style="display:grid;gap:8px">
+              <div style="display:flex;gap:8px;align-items:center"><span style="font-family:var(--font-display);font-size:24px;font-weight:700">Marcus Delgado</span><span class="tag npc">NPC</span><span class="tag wr">WARRANT</span><span class="tag wt">WANTED ★★</span></div>
+              <div class="kv"><span>Citizen ID</span><span>#00412</span><span>Date of birth</span><span>1988-03-14 (38)</span><span>Gender</span><span>Male</span><span>Licence</span><span style="color:var(--m-red)">Suspended</span><span>Vehicles</span><span>Sabre · 54-KD-117</span></div>
+              <div style="display:flex;gap:6px"><span class="btn">Issue warning</span><span class="btn">Issue fine</span><span class="btn red">Edit warrant</span></div>
+            </div>
+          </div>
+          <div class="sub" style="border-top:1px solid var(--m-line)"><span class="on">Fines &amp; warnings</span><span>Reports</span><span>Warrants</span><span>Vehicles</span></div>
+          <table><thead><tr><th>Date</th><th>Type</th><th>Offence</th><th>Amount</th><th>Officer</th></tr></thead><tbody>
+            <tr><td>2026-10-28 19:12</td><td><span class="tag wt">FINE</span></td><td>Running a red light</td><td>€400</td><td>L-7 Zoli</td></tr>
+            <tr><td>2026-10-21 14:40</td><td><span class="tag npc">WARNING</span></td><td>Seat belt not worn</td><td>–</td><td>SAPD Records</td></tr>
+            <tr><td>2026-10-02 22:05</td><td><span class="tag wr">WARRANT</span></td><td>Robbery · "Armed hold-up at 24/7 Idlewood"</td><td><span class="tag lang">EN</span></td><td>A-3 Peti</td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+    <figcaption>5. ábra · Civil adatlap. Player/NPC szűrő, keresés név, rendszám, ID alapján. Az ideiglenes körözés és az elfogató parancs fent jelzésként.</figcaption>
+  </figure>
+  <div class="tbl"><table>
+    <thead><tr><th>Oldal</th><th>Tartalom</th></tr></thead>
+    <tbody>
+      <tr><td>Overview</td><td>Jelentés-figyelmeztetés, számok, egységek státusszal, aktív üldözések, körözések, bejelentések.</td></tr>
+      <tr><td>Calls</td><td>Bejelentések. Most üres állapot, később a ui_phone 112 „pd” vonala és az automatikus hívások ide jönnek.</td></tr>
+      <tr><td>Pursuits</td><td>Aktív üldözések: gyanúsított, szint, jármű, egységek, időtartam, irány. <i>Join</i> gomb.</td></tr>
+      <tr><td>Wanted</td><td>Ideiglenes körözések (játékosok), okokkal. Megszűnéskor eltűnnek.</td></tr>
+      <tr><td>Warrants</td><td>Elfogató parancsok listája, kiadás (okok jelölőnégyzettel, leírás, nyelv), módosítás, visszavonás.</td></tr>
+      <tr><td>Citizens / Vehicles</td><td>Lista, Player/NPC szűrő, keresés, adatlap korábbi jelentésekkel, bírságokkal, figyelmeztetésekkel (dátum + név).</td></tr>
+      <tr><td>Reports</td><td>Saját vázlatok (kötelezők felül), beadottak, egységé. Szerkesztő a nyelv választóval.</td></tr>
+      <tr><td>Penal code</td><td>A BTK tételei aktuális összeggel (gyors segítség intézkedés közben).</td></tr>
+    </tbody>
+  </table></div>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Bejelentkezés ablak (kisebb)</h4>
+      <div class="mdc" style="min-width:0;max-width:420px" role="img" aria-label="Egység bejelentkezés minta">
+        <div class="top"><div class="logo"><i></i>UNIT SIGN-IN</div></div>
+        <div class="body">
+          <div class="kv"><span>Unit type</span><span><span class="btn pri">Adam (A-) · 2 officers</span> <span class="btn">Lincoln (L-)</span></span><span>Number</span><span><span class="btn">12</span> <span class="mut">free</span></span><span>Officers</span><span>DrAndrew (leader)<br>Kovi <span class="mut">· invited, waiting</span></span></div>
+          <div style="display:flex;gap:6px"><span class="btn">Add officer</span><span class="btn pri" style="margin-left:auto">Sign in</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <h4>Technika</h4>
+      <ul class="b">
+        <li>Dx, saját widgetek (gomb, lista, tabok, szövegmező, többsoros szerkesztő a v_news mezőjéből), render targetben.</li>
+        <li>Adat lapozva kérésre (<code>pol:mdc:call</code> → válasz). Az Overview feed csak nyitott MDC-nek megy.</li>
+        <li>Skoda 598: csak <code>hu_pd</code> paintjobbal nyílik.</li>
+        <li>Az MDC nyitva tartása alatt a mozgás vezérlők zárva (ui_core <code>toggleMoveControls</code>), a jármű áll.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ HUD -->
+<section id="hud">
+  <h2>Mini kijelző és F gombok</h2>
+  <p>Szolgálat közben a jobb alsó sarokban: egységszám, státusz, alatta a színkódolt F gombok. Tőle balra jelenik meg a lekérdezés ablak.</p>
+  <div class="screen">
+    <div class="hudrow">
+      <div class="qwin" role="img" aria-label="Lekérdezés ablak minta">
+        <div class="t"><span>Vehicle check</span><span style="color:var(--m-red)">FLAGGED</span></div>
+        <div class="kv"><span>Plate</span><span style="font-family:var(--font-mono)">54-KD-117</span><span>Model</span><span>Sabre, red</span><span>Owner</span><span>Marcus Delgado <span class="tag npc">NPC</span></span><span>Registration</span><span style="color:var(--m-green)">Valid</span><span>Inspection</span><span style="color:var(--m-amber)">Expired 2026-08</span><span>Owner</span><span><span class="tag wr">WARRANT</span></span></div>
+        <div class="foot">Backspace: hide · details in MDC</div>
+      </div>
+      <div class="mini" role="img" aria-label="Mini kijelző minta">
+        <div class="cs">A-12 <small>DRANDREW · KOVI</small></div>
+        <div class="st p-av">AVAILABLE</div>
+        <div class="fk"><span style="background:var(--m-red)">F4 PUR</span><span style="background:var(--m-green)">F5 AVL</span><span style="background:var(--m-amber)">F6 RSP</span><span style="background:var(--m-orange)">F7 BSY</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Gomb</th><th>Státusz</th><th>Rádió id</th><th>Szín</th></tr></thead>
+    <tbody>
+      <tr><td>F4</td><td>Pursuit / Üldözésben</td><td><code>STATUS_PURSUIT</code></td><td>piros</td></tr>
+      <tr><td>F5</td><td>Available / Elérhető</td><td><code>STATUS_AVAILABLE</code></td><td>zöld</td></tr>
+      <tr><td>F6</td><td>Responding / Vonulás</td><td><code>STATUS_RESPONDING</code></td><td>sárga</td></tr>
+      <tr><td>F7</td><td>Busy / Elfoglalt (helyszínen, intézkedik, közúti ellenőrzés)</td><td><code>STATUS_BUSY</code></td><td>narancs</td></tr>
+    </tbody>
+  </table></div>
+  <p>A státusz egyelőre csak kézzel állítható (F gomb, rádió, MDC). Kivétel: a Busy alcímke (pl. <i>Traffic stop</i>) automatikusan kerül fel megállításkor, de a státuszt nem változtatja.</p>
+</section>
+
+<!-- ============================================================ RADIO -->
+<section id="radio">
+  <h2>Rádió</h2>
+  <div class="mockrow">
+    <div class="screen" style="padding:14px">
+      <div class="radio" role="img" aria-label="Rádió panel minta">
+        <div class="cat"><span>◀</span>Backup &amp; services<span>▶</span></div>
+        <div class="it sel"><span>Request backup</span><code>REQUEST_BACKUP</code></div>
+        <div class="it"><span>Request ambulance</span><code>REQUEST_AMBULANCE</code></div>
+        <div class="it"><span>Request tow truck</span><code>REQUEST_TOW</code></div>
+      </div>
+    </div>
+    <div style="display:grid;gap:10px;max-width:56ch;min-width:0">
+      <p>Szolgálatban <b>C</b> nyitja, a képernyő bal oldalán. Bal/jobb nyíl kategória, fel/le menüpont, Enter küld, C vagy Backspace zár. Nyitva a nyilak és a C nem mennek a GTA-nak (guggolás, kanyarodás).</p>
+      <p>Minden üzenetnek van név id-je. A szerver <code>Radio.handle(player, id, args)</code> függvénye az egyetlen belépési pont; a későbbi hang kliens ugyanezt hívja a <code>radioCommand</code> exporton.</p>
+    </div>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Kategória</th><th>Üzenet</th><th>Id</th><th>Feltétel, hatás</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="5">Status</td><td>Available</td><td><code>STATUS_AVAILABLE</code></td><td></td></tr>
+      <tr><td>Responding</td><td><code>STATUS_RESPONDING</code></td><td></td></tr>
+      <tr><td>Busy</td><td><code>STATUS_BUSY</code></td><td></td></tr>
+      <tr><td>Pursuit</td><td><code>STATUS_PURSUIT</code></td><td>kijelölt célponttal üldözést indít</td></tr>
+      <tr><td>Code 4</td><td><code>CODE_4</code></td><td>lezárja az aktuális intézkedést (jelentés vázlat készül), státusz automatikusan Available</td></tr>
+      <tr><td rowspan="3">Backup &amp; services</td><td>Police backup</td><td><code>REQUEST_BACKUP</code></td><td>csak ha van másik szolgálatos egység; a legközelebbi elérhető kapja (MDC értesítés, waypoint, Responding)</td></tr>
+      <tr><td>Ambulance</td><td><code>REQUEST_AMBULANCE</code></td><td>van szolgálatos mentős: med_erm feladat rövid leírással; nincs: AI mentő</td></tr>
+      <tr><td>Tow truck</td><td><code>REQUEST_TOW</code></td><td>legközelebbi üres jármű; rendőrautónál megerősítő temp menü; utána nem lehet beszállni</td></tr>
+      <tr><td rowspan="2">Lookup</td><td>Check person</td><td><code>QUERY_PERSON</code></td><td>legközelebbi ped/játékos</td></tr>
+      <tr><td>Check vehicle</td><td><code>QUERY_VEHICLE</code></td><td>legközelebbi jármű</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ QUERY -->
+<section id="query">
+  <h2>Lekérdezés modul</h2>
+  <ul class="b">
+    <li>Rádió (<code>QUERY_PERSON</code>, <code>QUERY_VEHICLE</code>) és a stop temp menü (Personal details, Vehicle details) hívja.</li>
+    <li>Szerveren: célpont kiválasztás és ellenőrzés (távolság), NPC-nél a History modul generál, ha még nincs adat, majd egy kompakt eredmény az egység tagjainak.</li>
+    <li>Kliensen a mini kijelzőtől balra (lásd fent). A jelzések (WARRANT, WANTED, Suspended, Stolen) színkódolva. Elrejtés: a spec szerint Space, de vezetés közben ez a kézifék; javaslatom Backspace (lásd Döntések).</li>
+    <li>Az ablak 30 s után magától eltűnik, a lekérdezés az MDC-ben visszanézhető (naplóban is).</li>
+  </ul>
+</section>
+
+<!-- ============================================================ PLATES -->
+<section id="plates">
+  <h2>Rendszám UI</h2>
+  <div class="mockrow">
+    <div class="screen" style="padding:22px 28px"><div class="plate" role="img" aria-label="Rendszám címke minta"><b>54-KD-117</b><span>Sabre</span></div></div>
+    <ul class="b" style="min-width:0">
+      <li>Joggal (szolgálatban) minden jármű felett kis dx címke 25 m-en belül, legfeljebb 8 legközelebbi, takarás ellenőrzéssel.</li>
+      <li>Csak kliens: <code>getVehiclePlateText</code>, nincs szerver adat. 300 ms-os gyűjtés, a réteg csak akkor rajzol, ha van jármű a listában.</li>
+      <li>A rendszám az MDC keresőben kereshető. Élő NPC járműnél a szerver a világban megkeresi a rendszámot, és a History modul ekkor regisztrálja.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================================================ STOP -->
+<section id="stop">
+  <h2>Stop the ped</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Gyalogos és játékos</h4>
+      <ul class="b">
+        <li><b>E nyomva tartása</b> (0,8 s) egy előtted lévő gyalogos vagy játékos felé, 4 m-en belül.</li>
+        <li>NPC: ai_peds <code>detained</code>, megáll és feléd fordul. History modul lefut.</li>
+        <li>Játékos: értesítést kap („You were stopped by the police”). Ha 15 m-nél messzebb megy, a megállítás interact objektje eltűnik (naplózva).</li>
+        <li>Egy ui_interactobject menü jelenik meg a megállított felett (csak az egység tagjainak), ami a ui_inac temp menüt nyitja.</li>
+        <li>Blip (<code>createBlipAttachedTo</code>), csak az egység tagjai látják.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Jármű</h4>
+      <ul class="b">
+        <li><b>Bal Shift</b> egyszer: a rendőrautó előtti jármű (25 m, ±12° kúp, a kliens választ, a szerver ellenőriz). Újra megnyomva törli a megállítást.</li>
+        <li>v_els: ha a sziréna nem szólt, villogó be, sziréna 0,5 s-ra be majd ki, a villogó marad. Ha a sziréna már szólt, ahhoz nem nyúlunk.</li>
+        <li>AI jármű: <code>pullOverTrafficVehicle</code>, félreáll és tartva marad. Játékos: értesítés „Pull over”, ha 20 s alatt nem áll meg és tovább halad, „nem áll meg” eszkaláció (0-ról 1, 1-ről 2).</li>
+        <li>A Busy alcímke „Traffic stop” lesz a mini kijelzőn és az MDC-n.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="mockrow">
+    <div class="menu" role="img" aria-label="Gyalogos megállítás menü minta">
+      <div class="ttl">Pedestrian · Marcus Delgado</div>
+      <div class="row sel"><span>Personal details</span><span class="r">›</span></div>
+      <div class="row"><span>Breathalyser test</span><span class="r"></span></div>
+      <div class="row"><span>Drug test</span><span class="r"></span></div>
+      <div class="row"><span>Issue warning</span><span class="r">›</span></div>
+      <div class="row"><span>Issue fine</span><span class="r">›</span></div>
+      <div class="row"><span>Arrest</span><span class="r"></span></div>
+      <div class="row"><span>Return to vehicle</span><span class="r">exited</span></div>
+      <div class="row"><span>Release</span><span class="r">Code 4</span></div>
+      <div class="desc">Return to vehicle csak járműből kiszállított NPC-nél.</div>
+    </div>
+    <div class="menu" role="img" aria-label="Jármű megállítás menü minta">
+      <div class="ttl">Traffic stop · Sabre</div>
+      <div class="row"><span>Personal details</span><span class="r">driver</span></div>
+      <div class="row sel"><span>Vehicle details</span><span class="r">54-KD-117</span></div>
+      <div class="row"><span>Breathalyser test</span><span class="r"></span></div>
+      <div class="row"><span>Drug test</span><span class="r"></span></div>
+      <div class="row"><span>Issue warning</span><span class="r">›</span></div>
+      <div class="row"><span>Issue fine</span><span class="r">›</span></div>
+      <div class="row"><span>Order out of vehicle</span><span class="r"></span></div>
+      <div class="row"><span>Release</span><span class="r">Code 4</span></div>
+      <div class="desc">Kiszállítás után a gyalogos menü érvényes, a jármű tartva marad.</div>
+    </div>
+    <div class="menu" role="img" aria-label="Bírság almenü minta">
+      <div class="ttl">Issue fine · Traffic</div>
+      <div class="row"><span>Speeding</span><span class="r">€500</span></div>
+      <div class="row sel"><span>Running a red light</span><span class="r">€400</span></div>
+      <div class="row"><span>Failure to yield</span><span class="r">€350</span></div>
+      <div class="row"><span>Illegal overtaking</span><span class="r">€300</span></div>
+      <div class="row"><span>Wrong-way driving</span><span class="r">€800</span></div>
+      <div class="desc">Az összeg a kormány által beállított aktuális érték.</div>
+    </div>
+  </div>
+  <ul class="b">
+    <li>Alkohol és drog teszt: NPC-nél a History által generált eredmény (pl. 0,62 ‰). Játékosnál most mindig negatív, amíg nincs ital/drog rendszer; egy <code>pol.bac</code>/<code>pol.drug</code> API-t hagyok rá.</li>
+    <li>Bírság és figyelmeztetés: <code>pol_records</code> sor, napló, NPC-nél csak nyilvántartás (lásd Döntések), játékosnál könyvelés.</li>
+    <li>Release: a jármű folytatja az útját (<code>releaseTrafficHold</code>), az NPC továbbmegy. Ez egyben Code 4 az intézkedésre.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ ARREST -->
+<section id="arrest">
+  <h2>Arrest manager</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Bilincs</h4>
+      <ul class="b">
+        <li>Letartóztatás menüpont (stop menü vagy interact). Játékos gyanúsítottnál: gyalog, 1,5 m-en belül, áll vagy feladta magát; 2 s bilincselés, ha közben 2 m-nél messzebb megy, sikertelen.</li>
+        <li><code>pol.cuffed</code> = true. Póz: kéz hátul, kliens oldali <code>setElementBoneRotation</code> csak a streamelt bilincseltekre.</li>
+        <li>Játékos: csak séta (sprint, ugrás, tűz, fegyverváltás kikapcsolva), v_nametags bilincs ikon a név felett. Ped: bilincs ikon a fej felett.</li>
+        <li>Levétel és elengedés: menüből, naplózva. Halál = automatikus levétel.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Kísérés, jármű, átadás</h4>
+      <ul class="b">
+        <li><b>Kísérés:</b> NPC <code>follow</code> task; játékosnál a saját kliense lépteti a rendőr után (<code>pol.escort</code>), nem attach (az rángat).</li>
+        <li><b>Járműbe:</b> rendőrautó hátsó ajtaja mellett „Place in vehicle”. Játékos maga is beszállhat G-vel (utasként), kiszállni nem tud (<code>enter_exit</code> tiltva, <code>onVehicleStartExit</code> cancel). „Take out” a rendőrnek.</li>
+        <li><b>Átadás:</b> rendőrségi átadó marker (LSPD, SFPD, LVPD + vidéki őrsök). NPC eltűnik, játékos a Döntések szerinti büntetést kapja. Elfogató parancs <code>served</code>.</li>
+        <li>Minden lépés naplózva: bilincs, levétel, elengedés, kísérés, beültetés, kivétel, átadás.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ EVENTS -->
+<section id="events">
+  <h2>Eseménykezelő és napló</h2>
+  <p>Egy modul fut minden olyan eseményen, amit nem akarunk modulonként külön kezelni: erősítés kérés, bejelentések kiosztása, megállítások, intézkedések nyitása és zárása.</p>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Intézkedés (incident)</h4>
+      <ul class="b">
+        <li>Megállítás, üldözés vagy letartóztatás nyit egy intézkedést. Code 4, Release vagy átadás zárja.</li>
+        <li>Az intézkedéshez tartoznak a napló sorai, az érintett civilek és járművek, a bírságok.</li>
+        <li>Lezáráskor jelentés vázlat készül, az egység értesítést kap (ui_core) „Report required: Traffic stop #18”.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Naplózott események</h4>
+      <ul class="b">
+        <li>Fegyver elővétel (wp_manager váltás), fegyverhasználat (10 s-os sorozatokba vonva: „fired 12 shots”).</li>
+        <li>Bilincselés, levétel, elengedés, kísérés, beültetés, átadás.</li>
+        <li>Üldözés: indulás, szintváltás, lerázás fázis, elfogás, elvesztés.</li>
+        <li>Megállítás, lekérdezés, teszt eredmény, bírság, figyelmeztetés, státuszváltás, erősítés, vontató, mentő.</li>
+        <li>Minden sor: időpont, egység, rendőr, alany, adatok.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ REPORTS -->
+<section id="reports">
+  <h2>Jelentések és fizetés</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Vázlat a naplóból</h4>
+      <pre><code><span class="k">TRAFFIC STOP</span> · A-12 · 2026-10-30 21:31–21:39 · <span class="k">EN</span>
+At 21:31 unit A-12 (DrAndrew, Kovi) stopped a red Sabre,
+plate 54-KD-117, on Grove Street. The driver, Marcus
+Delgado, was checked. Breathalyser: 0.00. The vehicle
+inspection had expired. A fine for an expired inspection
+(€300) was issued. The driver has an active warrant
+(robbery) and was arrested at 21:36, transported and
+handed over at LSPD at 21:39.</code></pre>
+    </div>
+    <div class="panel">
+      <h4>Szabályok</h4>
+      <ul class="b">
+        <li>Egy jelentés egy nyelvű. Alapból a szerző nyelve (v_locals), a szerkesztőben átállítható. A nyelv mindig látszik (címke).</li>
+        <li>A vázlatsablonok nyelvenként vannak (<code>reports/templates/en.lua</code>, <code>hu.lua</code>), a választott nyelven készül a szöveg.</li>
+        <li>A rendőr átírhatja, kiegészítheti, majd beadja. Fordítás nincs (később AI).</li>
+        <li>Kézi jelentés is írható (típus: Other), de azért nem jár fizetés.</li>
+        <li>Bármelyik tag beadhatja; a vezető látja, mi van még hátra.</li>
+      </ul>
+    </div>
+  </div>
+  <h3>Fizetés típusonként (javaslat, a /gov-ban módosítható)</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Jelentés típus</th><th class="num">Pénz / fő</th><th class="num">Munka XP</th><th>Megjegyzés</th></tr></thead>
+    <tbody>
+      <tr><td>Traffic stop (figyelmeztetéssel)</td><td class="num">€300</td><td class="num">40</td><td rowspan="2">ugyanarra az alanyra 10 percen belül csak egyszer</td></tr>
+      <tr><td>Traffic stop / ped stop (bírsággal)</td><td class="num">€500</td><td class="num">60</td></tr>
+      <tr><td>Letartóztatás, NPC</td><td class="num">€1 500</td><td class="num">150</td><td></td></tr>
+      <tr><td>Letartóztatás, játékos</td><td class="num">€3 000</td><td class="num">300</td><td>szint × szorzó (1. szint ×1 … 6. szint ×3)</td></tr>
+      <tr><td>Üldözés elfogással</td><td class="num">€2 000</td><td class="num">200</td><td></td></tr>
+      <tr><td>Erősítés, támogatás</td><td class="num">€200</td><td class="num">20</td><td></td></tr>
+      <tr><td>Szolgálati idő</td><td class="num">€150 / 10 perc</td><td class="num">10</td><td>csak bejelentkezett egységnek, AFK nélkül</td></tr>
+    </tbody>
+  </table></div>
+  <p>Óránkénti plafon (<code>POLICE.PAY.HOUR_CAP</code>) a farmolás ellen. Az összegeket a gov_works <code>registerWage</code>-en át regisztráljuk, így a kormány állítja, a kifizető alapból az államkincstár.</p>
+</section>
+
+<!-- ============================================================ RECORDS -->
+<section id="records">
+  <h2>Civilek és járművek</h2>
+  <ul class="b">
+    <li>Egy lista azokról, akik vagy akiknek a járműve a rendőrségi adatbázisban van. Player/NPC szűrő mindkét oldalon.</li>
+    <li>Keresés: név, rendszám, Citizen ID, modell, tulajdonos (LIKE, indexelt oszlopokon, 25-ös lapozás).</li>
+    <li>Adatlap: korábbi jelentések (megnyithatók, dátummal és szerzővel), bírságok és figyelmeztetések (dátum, rendőr), elfogató parancsok, ideiglenes körözés (csak játékosnál, élő adat).</li>
+    <li>Járműlap: tulajdonos, forgalmi, műszaki, lopott jelzés, korábbi intézkedések.</li>
+    <li>Játékos neve a megjelenítési név (<code>acc_auth:getDisplayName</code>), az adatbázisban csak az account név van, mert a display name-et nem tároljuk.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ HISTORY -->
+<section id="history">
+  <h2>History modul</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>NPC előélet</h4>
+      <ul class="b">
+        <li>Első érintéskor (megállítás, lekérdezés, rendszám keresés) generál, és felveszi a <code>pol_citizens</code>/<code>pol_vehicles</code> táblába. Utána ugyanaz az elem ugyanazt az adatot adja.</li>
+        <li>Név a skin neméből: a <code>shared/skins.lua</code> táblát offline generálom a GTA <code>peds.ide</code> pedType mezőjéből (CIVMALE / CIVFEMALE …). Férfi skin nem kap női nevet.</li>
+        <li>Esélyek (config): elfogató parancs 4%, korábbi bírság 30% (1–3 db), figyelmeztetés 25%, felfüggesztett jogosítvány 6%, alkohol 5% (éjjel 10%), drog 4%, lejárt műszaki 7%, lopott jármű 2%, menekülés 3% (parancs esetén 15%).</li>
+        <li>Generált korábbi tételek „SAPD Records” rendőr névvel, a múltba datálva.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Játékosok és járműveik</h4>
+      <ul class="b">
+        <li>Indításkor egy-egy tömeges SQL beszúrás a hiányzó játékosokra (<code>accounts</code>) és járműveikre (<code>vehicles</code>).</li>
+        <li>Regisztrációkor: a meglévő <code>onPlayerAccountLogin(accountName, isNewAccount)</code> eseményből.</li>
+        <li>Járművásárláskor: új esemény a v_ownveh-ben, <code>onOwnedVehicleCreated(id, accountName, model, plate)</code> a <code>giveVehicle</code>-ben.</li>
+        <li>Ha egy saját járműnek nincs tartós rendszáma, a regisztráció ad egyet és elmenti (v_ownveh <code>plate</code> oszlop), különben a rendszám szerinti keresés nem működne.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ SERVICES -->
+<section id="services">
+  <h2>Tow és Medical modul</h2>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Vontató (525 Towtruck)</h4>
+      <ol class="b">
+        <li>Kérés a legközelebbi üres járműre (15 m). Rendőrautónál temp menü: „Tow your police car?”. Ülő emberrel nem kérhető.</li>
+        <li>A jármű zárolva (<code>onVehicleStartEnter</code> cancel), MDC-n ETA.</li>
+        <li>Spawn az egység körüli úthálózaton 150–350 m-en belül, nem látott ponton; a jármű mellé hajt.</li>
+        <li>Felcsatolás: <code>attachElements</code> enyhe dőléssel, ütközés ki. Indul a legközelebbi rendőrség átadó pontjára.</li>
+        <li>Eltűnik, ha senki nem látja; az átadó ponton mindenképp eltűnik a járművel együtt (saját jármű: v_ownveh <code>storeVehicle</code>).</li>
+        <li>Ha felvétel előtt megsemmisül: sikertelen, minden visszaáll, a hívó értesítést kap.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h4>Mentő (416)</h4>
+      <ol class="b">
+        <li>Ha van szolgálatos mentős (med_erm egység): ERM feladat rövid leírással (<code>createTask</code>, source „police”). AI mentő ilyenkor nincs.</li>
+        <li>Ha nincs: AI mentő, ugyanazzal a spawn szabállyal, szirénával.</li>
+        <li>Megáll a beteg mellett, hátsó ajtók nyitva (<code>setVehicleDoorOpenRatio</code>), a beteg bekerül.</li>
+        <li>Elhajt a legközelebbi kórház felé (med_hospitals), eltűnik, ha senki nem látja.</li>
+        <li>Megsemmisül érkezés előtt: sikertelen, újat kell hívni, a hívó értesítést kap.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ BTK -->
+<section id="btk">
+  <h2>BTK: bírságok és figyelmeztetések</h2>
+  <p><code>shared/btk.json</code> tartja az alapértékeket. A kormány felülírása a gov beállításokban él; a json alapértéke mindig megmarad, a /gov oldalon „Reset to default”.</p>
+  <pre><code>{ "categories": [
+  { "id": "traffic", "items": [
+      { "id": "traffic.speeding", "amount": 500, "warning": "warning.minor_speeding" },
+      { "id": "traffic.red_light", "amount": 400 }, ... ] },
+  { "id": "crimes", "items": [
+      { "id": "crime.robbery", "amount": 6000, "arrestable": true, "warrant": true, "wanted": 2 }, ... ] },
+  { "id": "warnings", "warning": true, "items": [ { "id": "warning.no_seatbelt" }, ... ] } ] }</code></pre>
+  <div class="tbl"><table>
+    <thead><tr><th>Kategória</th><th>Tételek (id → alapérték javaslat)</th></tr></thead>
+    <tbody>
+      <tr><td>Közlekedés</td><td>speeding 500 · red_light 400 · failure_to_yield 350 · illegal_overtaking 300 · wrong_way 800 · reckless_driving 1200 · obstructing_emergency 1000 · street_racing 2500</td></tr>
+      <tr><td>Parkolás</td><td>no_parking 150 · sidewalk_parking 150 · crosswalk_parking 200 · blocking_access 300</td></tr>
+      <tr><td>Jármű</td><td>no_plate 600 · invalid_registration 500 · expired_inspection 300 · unsafe_vehicle 700 · illegal_modification 900</td></tr>
+      <tr><td>Gyalogos</td><td>jaywalking 100 · ped_red_light 100 · restricted_road 150 · trespassing 500 · obstructing_traffic 250</td></tr>
+      <tr><td>Közterület</td><td>littering 150 · noise 200 · drunk_disorder 400 · public_urination 200 · graffiti 600</td></tr>
+      <tr><td>Közrend</td><td>obstruction 1500 · ignoring_order 1000 · false_identity 1200 · false_report 1500 · brawling 800 · harassment 1000</td></tr>
+      <tr><td>Bűncselekmények</td><td>theft 2000 · vehicle_theft 4000 · robbery 6000 · burglary 5000 · assault 3000 · homicide 25000 (letartóztatható, elfogató ok)</td></tr>
+      <tr><td>Figyelmeztetések</td><td>minor_speeding · no_indicator · minor_parking · no_seatbelt · minor_defect · minor_disorder · minor_pedestrian (nincs fizetés)</td></tr>
+    </tbody>
+  </table></div>
+  <p>A bevétel alapból az államkincstárba megy (v_bank kulcs <code>police.fine</code>, cél a /gov-ban állítható). A szövegek v_locals kulcsok: <code>police_system.btk.&lt;id&gt;</code>, en + hu.</p>
+</section>
+
+<!-- ============================================================ GOV -->
+<section id="gov">
+  <h2>Kormányzati rendszer</h2>
+  <ul class="b">
+    <li>A police_system egy gov modult regisztrál (<code>GOV.module</code>, <code>GOV.onReady</code>), saját oldallal a Public services kategóriában: <b>Police · Fines</b>. Minden BTK tétel összege szerkeszthető, visszaállítható; a bevétel célszámlája választható (alap: államkincstár).</li>
+    <li>Jogok a gov_perms mintája szerint: <code>police.fines.view</code>, <code>police.fines.edit</code>, <code>police.fines.target</code>, ág: <i>interior</i> (rendőrség) és <i>justice</i>.</li>
+    <li>Fizetések: a gov_works meglévő Works oldala (registerWage paraméterek: típusonkénti összeg, XP, kifizető alapból kincstár, szorzó).</li>
+    <li>gov_web: <code>getPublicPolice()</code> összegzés (bírság bevétel 30 napra, a GOV.HISTORY_DAYS szabály szerint).</li>
+  </ul>
+</section>
+
+<!-- ============================================================ WEB -->
+<section id="web">
+  <h2>police_web</h2>
+  <ul class="b">
+    <li>web_api alapon, in-game a ui_browser oldalaként és külső böngészőből (<code>/police_web/</code>). Angol felület.</li>
+    <li>Oldalak: <b>Join the police</b> (work_police, duty helyek leírással, rangok képekkel, mire számíthat), <b>Statistics</b> (szolgálatban most, letartóztatások, üldözések, lerázási arány, bírságok napi/heti bontásban), <b>Penal code</b> (aktuális bírságok), <b>Most wanted</b> (döntés kérdése).</li>
+    <li>Térkép és pozíció nincs. Adat: egy <code>getPublicStats()</code> hívás, a police_system 60 s-ig cache-eli.</li>
+  </ul>
+</section>
+
+<!-- ============================================================ HELP -->
+<section id="help">
+  <h2>ui_help dokumentáció</h2>
+  <p>Új kategória <code>police</code> (order 45), en + hu oldalak a <code>content/&lt;lang&gt;/police/</code> mappában, kis Edit-ekkel az index.lua-ba és a meta.xml-be. Képek claude-mcp screenshotból.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Topic</th><th>Tartalom</th></tr></thead>
+    <tbody>
+      <tr><td><code>police</code></td><td>Áttekintés, hogyan leszel rendőr, gyors billentyűk.</td></tr>
+      <tr><td><code>police_duty</code></td><td>work_police, járművek, rangok.</td></tr>
+      <tr><td><code>police_units</code></td><td>Bejelentkezés, A-/L-, státuszok, F4–F7, kijelentkezés feltétele.</td></tr>
+      <tr><td><code>police_mdc</code></td><td>Az MDC oldalai.</td></tr>
+      <tr><td><code>police_radio</code></td><td>Rádió kategóriák, üzenetek.</td></tr>
+      <tr><td><code>police_stops</code></td><td>E nyomva tartás, bal Shift, menük, tesztek.</td></tr>
+      <tr><td><code>police_arrest</code></td><td>Bilincs, kísérés, autóba ültetés, átadás.</td></tr>
+      <tr><td><code>police_pursuits</code></td><td>Üldözés indítása, csatlakozás, AI egységek.</td></tr>
+      <tr><td><code>police_reports</code></td><td>Napló, vázlat, nyelv, fizetés.</td></tr>
+      <tr><td><code>police_fines</code></td><td>BTK, figyelmeztetések.</td></tr>
+      <tr><td><code>police_services</code></td><td>Erősítés, vontató, mentő.</td></tr>
+      <tr><td><code>wanted</code></td><td>Mindenkinek: körözési szintek, feladás, lerázás.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============================================================ ORDER -->
+<section id="sorrend">
+  <h2>Végrehajtási sorrend és tesztelés</h2>
+  <ol class="b">
+    <li><b>Alapok:</b> police_system váz (core, config, db + pool, rights), work_police, work_core <code>rankBadges</code> + v_nametags rangok, BTK json, History regisztráció (indítás, login, v_ownveh esemény), rendszám UI.</li>
+    <li><b>Szolgálat:</b> Units manager, MDC váz + bejelentkezés + Overview, mini kijelző, F gombok, rádió státuszok.</li>
+    <li><b>Adatok:</b> Records (civilek, járművek, keresés), Warrants, BTK bírság/figyelmeztetés, Lekérdezés modul + ablak.</li>
+    <li><b>Intézkedés:</b> Stop the ped gyalogos + jármű, ai_land_traffic pull-over/hold, ai_peds detained, interact + temp menük.</li>
+    <li><b>Arrest manager:</b> bilincs, csont-póz, kísérés, járműbe ültetés, átadás (+ börtön, ha kéred).</li>
+    <li><b>Napló és jelentés:</b> eseménykezelő, intézkedések, vázlat sablonok (en, hu), kijelentkezési zár, fizetés, gov modul, gov_works bérek.</li>
+    <li><b>Körözés:</b> wanted modul, okok, heat, feladás, lerázás, ui_core villogás + keresési kör, XP.</li>
+    <li><b>Üldözés + AI:</b> chase modul, előrejelzés, ai modul, ai_land_traffic bővítések (rejtett spawn, chase motor, útzár), ai_peds police viselkedés, tank, sziréna váltás.</li>
+    <li><b>Szolgáltatások:</b> erősítés kiosztás, med_erm feladat, AI mentő, AI vontató.</li>
+    <li><b>Kifelé:</b> police_web, ui_help oldalak, v_locals en + hu, README-k, main.sql.</li>
+  </ol>
+  <div class="grid2">
+    <div class="panel">
+      <h4>Offline</h4>
+      <ul class="b">
+        <li>Lua szintaxis minden fájlra, lupa egységtesztek: eszkaláció és heat, lerázás időzítő, callsign ütközés, egység szabályok, id pool választás, BTK felülírás, jelentés vázlat generátor, NPC generátor (nem/név egyezés), fizetés plafon.</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h4>Élő szerver, MCP</h4>
+      <ul class="b">
+        <li>claude-mcp: <code>execute_lua</code> / <code>call_export</code> a resource-ok indítása után (az újraindítást te csinálod, a bridge ACL miatt nem tudja).</li>
+        <li>Körözés adása a teszt játékosnak, AI spawn ellenőrzése a kamera-jelentésekkel, egységek, MDC adat, DB sorok, logok.</li>
+        <li>Képernyőkép csak az MDC, a mini kijelző és a rangjelzés elrendezésére.</li>
+        <li>A talált hibákat javítom, és a végén összefoglalom, mi maradt élőben teszteletlen (például két klienses syncer-váltás).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ GAPS -->
+<section id="hianyok">
+  <h2>Hiányosságok és javaslatok</h2>
+  <p>Ezeket a leírás nem rendezi, vagy ellentmondás van benne. Mindegyikhez van javaslat; a döntést kérő pontok a következő részben vannak.</p>
+  <div class="qs">
+    <div class="gap"><span class="h">1. Mi történik a letartóztatott játékossal?</span><span class="s">Nincs börtön vagy büntetés leírva, pedig az átadás és az AI „Busted” erre épül. <b>Javaslat:</b> online börtönidő az LSPD cellában (map_ls_int_pd), a körözési szint és a BTK tételek alapján, accData-ban tárolva, hogy újracsatlakozás után folytatódjon.</span></div>
+    <div class="gap"><span class="h">2. Hogyan fizet a játékos bírságot?</span><span class="s"><b>Javaslat:</b> kényszerített bank levonás (v_bank <code>forceTakeMoney</code>, mehet mínuszba), ahogy a kórházi beálló bírság. Alternatíva: 48 órás befizetési határidő, utána <code>unpaid_fines</code> elfogató parancs.</span></div>
+    <div class="gap"><span class="h">3. NPC bírság pénze</span><span class="s">Ha az NPC-k bírsága pénzt hoz a kincstárnak, az a semmiből pénzt termel, és a rendőrök farmolhatnak. <b>Javaslat:</b> NPC bírság csak nyilvántartás és statisztika, a rendőr fizetése a jelentésből jön.</span></div>
+    <div class="gap"><span class="h">4. Ellentmondás az adatbázisban</span><span class="s">„Csak az intézkedés alá vont civilek” vs. „minden játékos és jármű regisztrálva”. <b>Javaslat:</b> játékosok és saját járműveik mindig benne vannak (ők a „regisztrált” állampolgárok), NPC-k csak az első intézkedéskor. Az NPC sorok bírság és parancs nélkül 30 nap után törölhetők.</span></div>
+    <div class="gap"><span class="h">5. Játékosoknak nincs RP identitása</span><span class="s">Nincs születési dátum, jogosítvány, forgalmi, műszaki. <b>Javaslat:</b> az MDC-ben a megjelenítési név + regisztráció dátuma; a többi mező „n/a”, a játékos járművei érvényesnek számítanak, amíg ezekre nincs rendszer.</span></div>
+    <div class="gap"><span class="h">6. Saját járművek rendszáma</span><span class="s">Ha a v_ownveh rendszám nem tartós, a rendszám keresés nem talál. <b>Javaslat:</b> a History regisztráció ad és ment egyedi rendszámot, ha hiányzik.</span></div>
+    <div class="gap"><span class="h">7. Kilépés körözés vagy bilincs alatt</span><span class="s">A körözés nem mentődik, így a kilépés a legolcsóbb menekülés. <b>Javaslat:</b> 2+ szinten vagy bilincsben kilépés = automatikus elfogató parancs (<code>evading_arrest</code>).</span></div>
+    <div class="gap"><span class="h">8. Halál körözés alatt</span><span class="s">Nincs leírva. <b>Javaslat:</b> halálkor a körözés törlődik (GTA szokás), lerázási XP nem jár.</span></div>
+    <div class="gap"><span class="h">9. Space a lekérdezés ablakon</span><span class="s">Járműben a Space a kézifék. <b>Javaslat:</b> Backspace zár, vagy Space csak gyalog. A rádiónál a nyilak és a C is ütközhet (guggolás, egyéni kanyar-kiosztás): nyitott panel alatt ezeket a GTA vezérlőket letiltom.</span></div>
+    <div class="gap"><span class="h">10. Alkohol, drog, jogosítvány rendszer nincs</span><span class="s">A tesztek játékoson mindig negatívak. <b>Javaslat:</b> <code>pol.bac</code> / <code>pol.drug</code> elemadat API a jövőbeli ital/drog rendszernek; NPC-nél a History adja.</span></div>
+    <div class="gap"><span class="h">11. Gyorshajtás bizonyítéka</span><span class="s">Nincs traffipax. <b>Javaslat:</b> később egy kézi traffipax tárgy (v_inventory), ami a mért sebességet a naplóba írja.</span></div>
+    <div class="gap"><span class="h">12. Visszaélés játékos rendőrként</span><span class="s">Önkényes bírság játékosokra. <b>Javaslat:</b> játékosra kiszabott bírság csak jelentéssel együtt érvényes, és az MDC-ben Százados+ rang áttekintheti és törölheti (visszatérítéssel); minden a naplóban.</span></div>
+    <div class="gap"><span class="h">13. ui_core csillag renderer állandóan fut</span><span class="s">A most hozzáadott <code>client/wanted.lua</code> akkor is be van kötve, ha nincs körözés. <b>Javaslat:</b> <code>setWantedVisible(level)</code> exporttal a police_system kapcsolja be/ki (a kliensnek nincs eseménye a wanted változásra).</span></div>
+    <div class="gap"><span class="h">14. AI keret</span><span class="s">Az AI rendőrök az ai_land_traffic scriptelt keretéből élnek, és csak dimenzió 0-ban szinkronizálnak. <b>Javaslat:</b> külön rendőr keret a configban, és ha a forgalmi terhelés magas, a rendőr igény elsőbbséget kap a véletlen forgalommal szemben.</span></div>
+    <div class="gap"><span class="h">15. Rendőrségi pozíciók</span><span class="s">Duty, garázs, átadó és vontató leadó pontok nincsenek bemérve. <b>Javaslat:</b> LSPD, SFPD, LVPD + Dillimore, Angel Pine, El Quebrados, MCP-vel mérve, egy <code>stations.json</code>-ban.</span></div>
+    <div class="gap"><span class="h">16. Bejelentések forrása</span><span class="s">A ui_phone 112 „pd” vonala ma „not available”. <b>Javaslat:</b> később ez hoz létre bejelentést az eseménykezelőben; a Calls oldal addig üres állapotot mutat.</span></div>
+    <div class="gap"><span class="h">17. Rangok jogai</span><span class="s">Nincs leírva, ki mit tehet. <b>Javaslat:</b> elfogató parancs kiadása bárkinek, más parancsának módosítása vagy visszavonása Hadnagytól, bírság felülvizsgálat Századostól.</span></div>
+    <div class="gap"><span class="h">18. XP és fizetés farm</span><span class="s">Körözés szándékos gyűjtése és lerázása, NPC-k sorozatos megállítása. <b>Javaslat:</b> a lerázási és a fizetési szabályoknál leírt cooldownok és plafonok.</span></div>
+  </div>
+</section>
+
+<!-- ============================================================ DECISIONS -->
+<section id="kerdesek">
+  <h2>Döntések (elfogadva 2026-10-30)</h2>
+  <p>A válaszaid alapján. Ahol ez eltér a fenti szakaszoktól, ez az érvényes.</p>
+  <div class="qs">
+    <div class="q"><span class="h">1. Letartóztatott játékos</span><span class="rec">Teleport a legközelebbi rendőrség előre megadott cellapontjára. Börtön, mint az admin jail: nincs jármű, semmi; aki kiteleportál, visszakerül. Körözésnél annyi perc, ahányas a szint. Elfogató parancsnál minden okhoz perc tartozik, összegezve, felső határ 10 perc. Az idő valós időben telik, offline is; a játékos erről tájékoztatást kap.</span></div>
+    <div class="q"><span class="h">2. Bírság fizetése játékosnál</span><span class="rec">Kényszerített bank levonás, mehet mínuszba.</span></div>
+    <div class="q"><span class="h">3. NPC bírság pénze</span><span class="rec">Az államkincstár megkapja (ugyanúgy, mint a játékos bírságot).</span></div>
+    <div class="q"><span class="h">4. Adatbázis</span><span class="rec">Játékosok és járműveik mindig benne vannak; NPC háttér a History modulban.</span></div>
+    <div class="q"><span class="h">5. Játékos identitás</span><span class="rec">Születési dátum = regisztráció dátuma − 18 év (később account beállításban). Név = display name. A játékos járművek dokumentumai érvényesek.</span></div>
+    <div class="q"><span class="h">6. Rendszám</span><span class="rec">A v_ownveh mindig tárol rendszámot. Rendszám változás ellenőrzése indításkor és 12 óránként.</span></div>
+    <div class="q"><span class="h">7. Rendszám UI</span><span class="rec">A saját járművem rendszáma nem látszik, amikor benne ülök.</span></div>
+    <div class="q"><span class="h">8. Kilépés bilincsben (és 2+ szinten)</span><span class="rec">Automatikus elfogató parancs; az egység vezetője és tagjai értesítést kapnak. Később automatikus admin jail.</span></div>
+    <div class="q"><span class="h">9. Halál</span><span class="rec">Az ideiglenes körözés megszűnik.</span></div>
+    <div class="q"><span class="h">10. Lekérdezés ablak</span><span class="rec">Mindig Backspace zárja.</span></div>
+    <div class="q"><span class="h">11. Alkohol, drog, traffipax</span><span class="rec">Most nincs, az API helye megmarad; traffipax később.</span></div>
+    <div class="q"><span class="h">12. Visszaélés</span><span class="rec">A javaslat szerint; Százados visszatérítést is küldhet.</span></div>
+    <div class="q"><span class="h">13. ui_core csillagok</span><span class="rec">Maradnak, ahogy vannak (körözés nélkül nem látszanak).</span></div>
+    <div class="q"><span class="h">14. AI keret</span><span class="rec">A rendőr AI elsőbbséget élvez a civil forgalommal szemben.</span></div>
+    <div class="q"><span class="h">15. Pozíciók</span><span class="rec">Egyelőre csak LSPD a configban, blip sehol. Duty 1560.83, −1682.97, 15.20 · jármű 1560.49, −1694.36, 4.90 · átadás 1581.31, −1684.30, 14.00 · vontató cél 1550.83, −1626.90, 12.38.</span></div>
+    <div class="q"><span class="h">16. Bejelentések</span><span class="rec">Később egységes scenemanager (medical + police); most a telefon segélyhívó kontaktja.</span></div>
+    <div class="q"><span class="h">17. Lerázási XP</span><span class="rec">15 perces cooldown; 60 s minimum üldözés marad.</span></div>
+    <div class="q"><span class="h">18. Elfogató parancsok a weben</span><span class="rec">Nyilvánosak. A weboldalon figyelni kell a görgetésre.</span></div>
+    <div class="q"><span class="h">19. A többi</span><span class="rec">A javaslatok szerint (Adam 2–4 fő, Lincoln 1; E nyomva feladás; nemzetközi NPC nevek; táblázatok configban; Hadnagy / Százados jogok).</span></div>
+  </div>
+</section>
+</main>
+</div>

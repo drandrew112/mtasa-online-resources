@@ -1,0 +1,62 @@
+/* police_web: the page scrolls (osa.css locks html / body for full-screen apps) */
+html, body { height: auto; min-height: 100%; overflow: auto; }
+body { background: #0a1222; }
+.hidden { display: none !important; }
+
+.pw-top { position: sticky; top: 0; z-index: 10; background: #0b1530; border-bottom: 2px solid #1d4ed8; }
+.pw-brand { display: flex; align-items: center; gap: 10px; color: #fff; text-decoration: none; cursor: pointer; }
+.pw-brand small { display: block; color: #93a4c8; font-size: 11px; }
+.pw-logo { width: 34px; height: 34px; }
+.pw-nav { display: flex; gap: 4px; flex: 1; }
+.pw-nav a { padding: 8px 14px; border-radius: 6px; color: #b8c6e6; cursor: pointer; user-select: none; }
+.pw-nav a:hover { background: #142449; }
+.pw-nav a.on { background: #1d4ed8; color: #fff; }
+.pw-updated { color: #7b8db5; font-size: 12px; }
+
+.pw-main { max-width: 1180px; margin: 0 auto; padding: 22px 18px 60px; }
+.pw-hero { padding: 26px 4px 10px; }
+.pw-hero h1 { margin: 4px 0 8px; font-size: 32px; }
+.pw-kicker { color: #60a5fa; text-transform: uppercase; letter-spacing: .12em; font-size: 12px; font-weight: 700; }
+.pw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 900px) { .pw-grid { grid-template-columns: 1fr; } }
+.pw-card { background: #101c38; border: 1px solid #1c2c52; border-radius: 10px; padding: 18px 20px; margin-top: 16px; }
+.pw-card h2 { margin: 0 0 10px; font-size: 18px; }
+.pw-steps, .pw-list { margin: 0; padding-left: 20px; line-height: 1.7; color: #d6def0; }
+.pw-key { display: inline-block; padding: 0 6px; border: 1px solid #3b5bb0; border-radius: 4px; background: #0b1530; font-size: 12px; font-weight: 700; }
+
+.pw-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+@media (max-width: 800px) { .pw-kpis { grid-template-columns: repeat(2, 1fr); } }
+.pw-kpi { background: #101c38; border: 1px solid #1c2c52; border-left: 3px solid #1d4ed8; border-radius: 8px; padding: 12px 14px; }
+.pw-kpi .v { font-size: 26px; font-weight: 700; color: #fff; }
+.pw-kpi .k { font-size: 11px; color: #8ea0c8; text-transform: uppercase; letter-spacing: .08em; }
+
+.pw-ranks { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.pw-rank { background: #0b1530; border: 1px solid #1c2c52; border-radius: 8px; padding: 8px; text-align: center; }
+.pw-rank img { width: 112px; height: 51px; border-radius: 4px; display: block; margin: 0 auto 6px; }
+.pw-rank b { display: block; font-size: 13px; }
+.pw-rank small { color: #7b8db5; }
+
+.pw-chart { display: flex; align-items: flex-end; gap: 8px; height: 180px; padding: 8px 4px 0; border-bottom: 1px solid #1c2c52; }
+.pw-day { flex: 1; display: flex; align-items: flex-end; gap: 2px; height: 100%; position: relative; }
+.pw-day span { flex: 1; border-radius: 3px 3px 0 0; min-height: 2px; }
+.pw-day i { position: absolute; bottom: -20px; left: 0; right: 0; text-align: center; font-size: 10px; color: #7b8db5; font-style: normal; }
+.l-arrests, .b-arrests { background: #3b82f6; }
+.l-fines, .b-fines { background: #f59e0b; }
+.l-pursuits, .b-pursuits { background: #ef4444; }
+.l-evaded, .b-evaded { background: #a3a3a3; }
+.pw-legend { display: flex; gap: 14px; margin-top: 30px; font-size: 12px; }
+.pw-legend span { padding: 2px 8px; border-radius: 4px; color: #0a1222; font-weight: 700; }
+
+.pw-table { width: 100%; border-collapse: collapse; }
+.pw-table th, .pw-table td { padding: 7px 10px; border-bottom: 1px solid #1c2c52; text-align: left; }
+.pw-table th { color: #8ea0c8; font-size: 11px; text-transform: uppercase; letter-spacing: .08em; }
+.pw-table td.r, .pw-table th.r { text-align: right; }
+
+.pw-warrants { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.pw-warrant { background: #1a0f18; border: 1px solid #5b1d2a; border-top: 3px solid #ef4444; border-radius: 8px; padding: 12px 14px; }
+.pw-warrant b { font-size: 16px; }
+.pw-warrant .r { color: #fca5a5; margin: 6px 0; }
+.pw-warrant .d { color: #c8b5c0; font-style: italic; font-size: 13px; }
+.pw-warrant small { color: #8a7480; }
+.pw-cat { margin: 14px 0 6px; color: #60a5fa; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: .1em; }
+.pw-empty { color: #7b8db5; padding: 18px 0; }

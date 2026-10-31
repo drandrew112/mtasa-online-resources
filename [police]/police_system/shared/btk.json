@@ -1,0 +1,66 @@
+{
+  "categories": [
+    { "id": "traffic", "items": [
+      { "id": "traffic.speeding", "amount": 500, "warning": "warning.minor_speeding" },
+      { "id": "traffic.red_light", "amount": 400 },
+      { "id": "traffic.failure_to_yield", "amount": 350 },
+      { "id": "traffic.illegal_overtaking", "amount": 300 },
+      { "id": "traffic.wrong_way", "amount": 800 },
+      { "id": "traffic.reckless_driving", "amount": 1200, "wanted": 1 },
+      { "id": "traffic.obstructing_emergency", "amount": 1000 },
+      { "id": "traffic.street_racing", "amount": 2500, "wanted": 1 }
+    ] },
+    { "id": "parking", "items": [
+      { "id": "parking.no_parking", "amount": 150, "warning": "warning.minor_parking" },
+      { "id": "parking.sidewalk_parking", "amount": 150 },
+      { "id": "parking.crosswalk_parking", "amount": 200 },
+      { "id": "parking.blocking_access", "amount": 300 }
+    ] },
+    { "id": "vehicle", "items": [
+      { "id": "vehicle.no_plate", "amount": 600 },
+      { "id": "vehicle.invalid_registration", "amount": 500 },
+      { "id": "vehicle.expired_inspection", "amount": 300 },
+      { "id": "vehicle.unsafe_vehicle", "amount": 700, "warning": "warning.minor_defect" },
+      { "id": "vehicle.illegal_modification", "amount": 900 }
+    ] },
+    { "id": "pedestrian", "items": [
+      { "id": "pedestrian.jaywalking", "amount": 100, "warning": "warning.minor_pedestrian" },
+      { "id": "pedestrian.ped_red_light", "amount": 100 },
+      { "id": "pedestrian.restricted_road", "amount": 150 },
+      { "id": "pedestrian.trespassing", "amount": 500 },
+      { "id": "pedestrian.obstructing_traffic", "amount": 250 }
+    ] },
+    { "id": "public", "items": [
+      { "id": "public.littering", "amount": 150 },
+      { "id": "public.noise", "amount": 200, "warning": "warning.minor_disorder" },
+      { "id": "public.drunk_disorder", "amount": 400 },
+      { "id": "public.public_urination", "amount": 200 },
+      { "id": "public.graffiti", "amount": 600 }
+    ] },
+    { "id": "order", "items": [
+      { "id": "order.obstruction", "amount": 1500, "warrant": true, "minutes": 2 },
+      { "id": "order.ignoring_order", "amount": 1000, "warrant": true, "minutes": 1 },
+      { "id": "order.false_identity", "amount": 1200, "warrant": true, "minutes": 2 },
+      { "id": "order.false_report", "amount": 1500, "warrant": true, "minutes": 2 },
+      { "id": "order.brawling", "amount": 800, "warrant": true, "minutes": 1 },
+      { "id": "order.harassment", "amount": 1000, "warrant": true, "minutes": 1 }
+    ] },
+    { "id": "crimes", "items": [
+      { "id": "crime.theft", "amount": 2000, "arrestable": true, "warrant": true, "wanted": 1, "minutes": 2 },
+      { "id": "crime.vehicle_theft", "amount": 4000, "arrestable": true, "warrant": true, "wanted": 1, "minutes": 3 },
+      { "id": "crime.robbery", "amount": 6000, "arrestable": true, "warrant": true, "wanted": 2, "minutes": 4 },
+      { "id": "crime.burglary", "amount": 5000, "arrestable": true, "warrant": true, "wanted": 2, "minutes": 3 },
+      { "id": "crime.assault", "amount": 3000, "arrestable": true, "warrant": true, "wanted": 1, "minutes": 3 },
+      { "id": "crime.homicide", "amount": 25000, "arrestable": true, "warrant": true, "wanted": 3, "minutes": 8 }
+    ] },
+    { "id": "warnings", "warning": true, "items": [
+      { "id": "warning.minor_speeding" },
+      { "id": "warning.no_indicator" },
+      { "id": "warning.minor_parking" },
+      { "id": "warning.no_seatbelt" },
+      { "id": "warning.minor_defect" },
+      { "id": "warning.minor_disorder" },
+      { "id": "warning.minor_pedestrian" }
+    ] }
+  ]
+}

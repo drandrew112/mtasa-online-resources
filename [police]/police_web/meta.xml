@@ -1,0 +1,24 @@
+<meta>
+    <info author="DrAndrew112" name="police_web" version="1.0.0" type="script"
+          description="San Andreas Police website: how to join (ranks), statistics, public warrants, penal code. No map." />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/api.lua" type="server" />
+
+    <!-- ================= HTTP PAGE =================
+         http://<server>:<httpport>/police_web/ - web/index.html with the css / js inlined (web_api page builder) -->
+    <html src="index.html" default="true" />
+
+    <!-- the same page in game (ui_browser site sapd.sa, through web_api's loader) -->
+    <file src="web/index.html"     type="client" />
+    <file src="web/css/police.css" type="client" />
+    <file src="web/js/ranks.js"    type="client" />
+    <file src="web/js/police.js"   type="client" />
+
+    <!-- ================= EXPORTS (web API) ================= -->
+    <export function="policeWebStats" type="server" http="true" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="web_api" />
+</meta>

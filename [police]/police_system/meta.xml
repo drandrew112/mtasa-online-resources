@@ -1,0 +1,99 @@
+<meta>
+    <info author="DrAndrew112" name="police_system" version="1.0.0" type="script"
+          description="Police system: wanted levels, warrants, pursuits with AI police, units, MDC, stops, arrests, jail, reports, penal code (docs/plan/index.html)" />
+    <min_mta_version server="1.6.0" client="1.6.0" />
+    <!-- Modules call each other directly (POL.<module>, one Lua state per side); exports only for other resources. -->
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/reasons.lua" type="shared" />
+    <script src="shared/radio.lua" type="shared" />
+    <script src="shared/names.lua" type="shared" />
+    <script src="shared/skins.lua" type="shared" />
+    <script src="shared/keys.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="core/server/registry.lua" type="server" />
+    <script src="modules/db/server/schema.lua" type="server" />
+    <script src="modules/db/server/db.lua" type="server" />
+    <script src="modules/db/server/pool.lua" type="server" />
+    <script src="modules/rights/server/rights.lua" type="server" />
+    <script src="modules/rights/server/ranks.lua" type="server" />
+    <script src="modules/btk/server/btk.lua" type="server" />
+    <script src="modules/history/server/npc.lua" type="server" />
+    <script src="modules/history/server/register.lua" type="server" />
+    <script src="modules/records/server/records.lua" type="server" />
+    <script src="modules/warrants/server/warrants.lua" type="server" />
+    <script src="modules/events/server/log.lua" type="server" />
+    <script src="modules/events/server/dispatch.lua" type="server" />
+    <script src="modules/reports/server/templates/en.lua" type="server" />
+    <script src="modules/reports/server/templates/hu.lua" type="server" />
+    <script src="modules/reports/server/drafts.lua" type="server" />
+    <script src="modules/units/server/units.lua" type="server" />
+    <script src="modules/units/server/pay.lua" type="server" />
+    <script src="modules/wanted/server/wanted.lua" type="server" />
+    <script src="modules/wanted/server/evasion.lua" type="server" />
+    <script src="modules/wanted/server/heat.lua" type="server" />
+    <script src="modules/chase/server/chase.lua" type="server" />
+    <script src="modules/chase/server/prediction.lua" type="server" />
+    <script src="modules/ai/server/units.lua" type="server" />
+    <script src="modules/ai/server/sirens.lua" type="server" />
+    <script src="modules/ai/server/tactics.lua" type="server" />
+    <script src="modules/ai/server/budget.lua" type="server" />
+    <script src="modules/jail/server/jail.lua" type="server" />
+    <script src="modules/arrest/server/arrest.lua" type="server" />
+    <script src="modules/stop/server/stop.lua" type="server" />
+    <script src="modules/stop/server/menu.lua" type="server" />
+    <script src="modules/query/server/query.lua" type="server" />
+    <script src="modules/radio/server/radio.lua" type="server" />
+    <script src="modules/tow/server/tow.lua" type="server" />
+    <script src="modules/medical/server/medical.lua" type="server" />
+    <script src="modules/mdc/server/api.lua" type="server" />
+    <script src="modules/web/server/stats.lua" type="server" />
+    <script src="modules/gov/server/gov.lua" type="server" />
+    <script src="modules/test/server/test.lua" type="server" />
+    <script src="core/server/main.lua" type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="core/client/bus.lua" type="client" />
+    <script src="core/client/layers.lua" type="client" />
+    <script src="core/client/main.lua" type="client" />
+    <script src="modules/wanted/client/stars.lua" type="client" />
+    <script src="modules/hud/client/mini.lua" type="client" />
+    <script src="modules/query/client/window.lua" type="client" />
+    <script src="modules/radio/client/radio.lua" type="client" />
+    <script src="modules/plates/client/plates.lua" type="client" />
+    <script src="modules/stop/client/stop.lua" type="client" />
+    <script src="modules/arrest/client/cuffs.lua" type="client" />
+    <script src="modules/jail/client/jail.lua" type="client" />
+    <script src="modules/events/client/weapons.lua" type="client" />
+    <script src="modules/mdc/client/field.lua" type="client" />
+    <script src="modules/mdc/client/widgets.lua" type="client" />
+    <script src="modules/mdc/client/mdc.lua" type="client" />
+    <script src="modules/mdc/client/pages/overview.lua" type="client" />
+    <script src="modules/mdc/client/pages/lists.lua" type="client" />
+    <script src="modules/mdc/client/pages/warrants.lua" type="client" />
+    <script src="modules/mdc/client/pages/records.lua" type="client" />
+    <script src="modules/mdc/client/pages/reports.lua" type="client" />
+    <script src="modules/mdc/client/pages/signin.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf" />
+    <file src="client/fonts/RobotoB.ttf" />
+    <file src="client/img/cuffs.png" />
+    <!-- the "Police · Fines" page, loaded by the /gov shell of gov_core -->
+    <file src="modules/gov/web/js/police.js" type="client" />
+
+    <!-- ================= EXPORTS (server) ================= -->
+    <export function="addWanted" type="server" />
+    <export function="getWanted" type="server" />
+    <export function="clearWanted" type="server" />
+    <export function="hasPoliceRight" type="server" />
+    <export function="setPoliceRight" type="server" />
+    <export function="isPoliceVehicle" type="server" />
+    <export function="isElementCuffed" type="server" />
+    <export function="radioCommand" type="server" />
+    <export function="getPublicStats" type="server" />
+    <export function="getPublicPolice" type="server" />
+    <export function="createPoliceCall" type="server" />
+</meta>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>San Andreas Police Department</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/police.css">
+</head>
+<body>
+    <header class="osa-topbar pw-top">
+        <a class="pw-brand" href="#home" data-tab="home">
+            <svg class="pw-logo" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3l14 5v10c0 9-6 15-14 19C12 33 6 27 6 18V8z" fill="#1d4ed8" stroke="#93c5fd" stroke-width="2"/><path d="M20 12l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z" fill="#fde68a"/></svg>
+            <span><b>San Andreas Police</b><small>Protect and serve</small></span>
+        </a>
+        <nav class="pw-nav" id="nav">
+            <a data-tab="home" class="on">Join the police</a>
+            <a data-tab="stats">Statistics</a>
+            <a data-tab="warrants">Warrants</a>
+            <a data-tab="penal">Penal code</a>
+        </nav>
+        <div class="pw-updated" id="updated"></div>
+    </header>
+
+    <main class="pw-main">
+        <!-- ======================================================== join -->
+        <section class="pw-tab" id="tab-home">
+            <div class="pw-hero">
+                <div class="pw-kicker">Careers</div>
+                <h1>Become a police officer</h1>
+                <p class="osa-muted">Patrol the streets of Los Santos, stop vehicles, check papers, chase suspects and keep San Andreas safe.
+                    You are paid at the end of every shift for the reports you submitted.</p>
+                <div class="pw-kpis" id="liveKpis"></div>
+            </div>
+            <div class="pw-grid">
+                <div class="pw-card">
+                    <h2>How to join</h2>
+                    <ol class="pw-steps">
+                        <li><b>Go on duty</b> at the LSPD station (Pershing Square, Los Santos): the duty marker is inside the building. Pick an outfit.</li>
+                        <li><b>Take a car</b> in the underground garage of the station: Crown Victoria, Skoda Octavia or (from rank 2) a Police Ranger.</li>
+                        <li><b>Sign in to a unit</b> on the Mobile Data Computer (<span class="pw-key">J</span> in the car): Adam (A-) with 2-4 officers or Lincoln (L-) alone.</li>
+                        <li><b>Set your status</b> with <span class="pw-key">F5</span> available, <span class="pw-key">F6</span> responding, <span class="pw-key">F7</span> busy, <span class="pw-key">F4</span> pursuit.</li>
+                        <li><b>Work</b>: stops (<span class="pw-key">E</span> hold on a pedestrian, <span class="pw-key">Left Shift</span> on the vehicle in front), radio (<span class="pw-key">C</span>), calls, pursuits.</li>
+                        <li><b>Submit your reports</b> on the MDC and sign off: the pay comes for the submitted reports and the duty time.</li>
+                    </ol>
+                </div>
+                <div class="pw-card">
+                    <h2>What to expect</h2>
+                    <ul class="pw-list">
+                        <li><b>Traffic and pedestrian stops</b> - identity checks, breathalyser and drug tests, warnings and fines from the penal code.</li>
+                        <li><b>Pursuits</b> - wanted suspects with AI units, road blocks and tactical vehicles at the highest levels.</li>
+                        <li><b>Arrests</b> - handcuffs, escort, the back seat of your car and the handover at the station.</li>
+                        <li><b>Records</b> - every citizen and vehicle in the police database, warrants, reports.</li>
+                        <li><b>Services</b> - backup from other units, ambulance and tow truck over the radio.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pw-card">
+                <h2>Ranks</h2>
+                <p class="osa-muted">Your rank grows with your experience in the force. From Second Lieutenant you may edit and revoke the warrants of others, from Captain you review and refund fines.</p>
+                <div class="pw-ranks" id="ranks"></div>
+            </div>
+        </section>
+
+        <!-- ======================================================== stats -->
+        <section class="pw-tab hidden" id="tab-stats">
+            <div class="pw-kpis" id="statKpis"></div>
+            <div class="pw-card">
+                <h2>Last 14 days</h2>
+                <div class="pw-chart" id="chart"></div>
+                <div class="pw-legend"><span class="l-arrests">Arrests</span><span class="l-fines">Fines</span><span class="l-pursuits">Pursuits</span><span class="l-evaded">Evaded</span></div>
+            </div>
+            <div class="pw-card">
+                <h2>Daily figures</h2>
+                <table class="pw-table" id="daily"></table>
+            </div>
+        </section>
+
+        <!-- ======================================================== warrants -->
+        <section class="pw-tab hidden" id="tab-warrants">
+            <div class="pw-card">
+                <h2>Active warrants</h2>
+                <p class="osa-muted">Persons sought by the San Andreas Police Department. If you know where they are, call the police on your phone (Emergency services).</p>
+                <div class="pw-warrants" id="warrants"></div>
+            </div>
+        </section>
+
+        <!-- ======================================================== penal code -->
+        <section class="pw-tab hidden" id="tab-penal">
+            <div class="pw-card">
+                <h2>Penal code</h2>
+                <p class="osa-muted">The current fines, set by the government. Fines are taken from the bank account at once.</p>
+                <div id="penal"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/ranks.js"></script>
+    <script src="js/police.js"></script>
+</body>
+</html>
