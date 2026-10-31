@@ -113,6 +113,7 @@ end
 
 addEventHandler("onClientPedDamage", root, function(attacker, weapon, bodypart, loss)
     if not MEDEV.PED_SAVE_LETHAL or not MEDEV.APPLY_TO_PEDS or isPedDead(source) then return end
+    if not getElementData(source, MEDEV.DATA_SAVE_LETHAL) then return end
     local status = getElementData(source, MEDIC.DATA_STATUS)
     if not status or status == "dead" then return end
     if getElementHealth(source) - (loss or 0) > MEDEV.PED_DOWN_HEALTH then return end

@@ -79,6 +79,7 @@ addEventHandler("onResourceStop", resourceRoot, function()
             removeElementData(p.el, "ai_peds")
             removeElementData(p.el, DATA_MOVE)
             removeElementData(p.el, DATA_FIGHT)
+            removeElementData(p.el, DATA_SAVE_LETHAL)
             if p.behaviour == "scared" and p.b.cowering then setPedAnimation(p.el) end
         end
     end

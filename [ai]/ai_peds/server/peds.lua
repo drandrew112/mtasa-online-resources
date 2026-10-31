@@ -45,7 +45,7 @@ local function register(el, kind, opts)
     P.byKind[kind] = P.byKind[kind] + 1
     setElementData(el, "ai_peds", kind)
     p.syncer = getElementSyncer(el) or nil
-    AIPedsMedical.register(el)
+    AIPedsMedical.register(el, kind)
     return p
 end
 
@@ -85,6 +85,7 @@ function Peds.remove(p, reason, keepElement)
             removeElementData(p.el, "ai_peds")
             removeElementData(p.el, DATA_MOVE)
             removeElementData(p.el, DATA_FIGHT)
+            removeElementData(p.el, DATA_SAVE_LETHAL)
         else
             destroyElement(p.el)
         end

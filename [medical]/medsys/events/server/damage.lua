@@ -113,6 +113,7 @@ end
 addEvent("medev:pedLethal", true)
 addEventHandler("medev:pedLethal", resourceRoot, function(ped, attacker, weapon, bodypart, loss)
     if not MEDEV.PED_SAVE_LETHAL or not isElement(ped) or getElementType(ped) ~= "ped" then return end
+    if not getElementData(ped, MEDEV.DATA_SAVE_LETHAL) then return end
     if not isMedsysTarget(ped) or isPedDead(ped) then return end
     local state = medGetState(ped)
     if not state or state.dead or not isReporter(client, ped, attacker) then return end

@@ -247,11 +247,15 @@ function ST.action(officer, target, value, inMenu)
         end
         if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
     elseif value == "takeout" then
-        local suspect = getElementType(target) == "vehicle" and cuffedOccupant(target) or target
-        if suspect then
-            local ok, err = POL.arrest.takeOut(officer, suspect)
-            if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
+        -- a vehicle: its cuffed suspect, else the driver of a stopped vehicle is ordered out
+        local suspect = target
+        if getElementType(target) == "vehicle" then
+            suspect = cuffedOccupant(target)
+            if not suspect and s and s.kind == "vehicle" then return orderOut(officer, s) end
         end
+        if not suspect then return POL.notify(officer, "police_system.arrest.err_bad") end
+        local ok, err = POL.arrest.takeOut(officer, suspect)
+        if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
     elseif value == "tow" then
         if getElementType(target) == "vehicle" then POL.tow.request(officer, false, target) end
     end

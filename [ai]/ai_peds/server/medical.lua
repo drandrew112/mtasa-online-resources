@@ -19,8 +19,9 @@ local function medsys()
 end
 
 -- called for every new / adopted ped (Peds register)
-function AIPedsMedical.register(el)
-    if not T.MEDICAL then return end
+function AIPedsMedical.register(el, kind)
+    if not T.MEDICAL or not T.MEDICAL_KINDS[kind] then return end
+    if T.MEDICAL_SAVE_KINDS[kind] then setElementData(el, DATA_SAVE_LETHAL, true) end
     local ms = medsys()
     if ms then pcall(function() ms:setPatientPersistent(el, true) end) end
 end
@@ -69,7 +70,7 @@ addEventHandler("onResourceStart", root, function(res)
     if getResourceName(res) ~= "medsys" then return end
     setTimer(function()
         for el, p in pairs(Peds.list) do
-            if isElement(el) and not p.dead then AIPedsMedical.register(el) end
+            if isElement(el) and not p.dead then AIPedsMedical.register(el, p.kind) end
         end
     end, 500, 1)
 end)

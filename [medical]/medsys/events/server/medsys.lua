@@ -20,7 +20,8 @@ function isMedsysTarget(element)
     if not isElement(element) then return false end
     local elementType = getElementType(element)
     if elementType == "player" then return MEDEV.APPLY_TO_PLAYERS end
-    return elementType == "ped" and MEDEV.APPLY_TO_PEDS
+    if elementType ~= "ped" or not MEDEV.APPLY_TO_PEDS then return false end
+    return not MEDEV.PEDS_WITH_STATUS_ONLY or getElementData(element, MEDIC.DATA_STATUS) and true or false
 end
 
 function medGetState(element)

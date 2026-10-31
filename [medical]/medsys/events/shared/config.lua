@@ -17,13 +17,17 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 MEDEV = {
     APPLY_TO_PLAYERS = false,   -- false: players get no injuries / medical state at all
     APPLY_TO_PEDS = true,       -- true: peds get injured the same way
+    PEDS_WITH_STATUS_ONLY = true, -- only peds that already have a medical status (ai_peds peds, scene patients);
+                                -- mission / shop peds of other scripts stay plain GTA peds
     DEFER = 50,                 -- ms after the damage event before the rules run (the death check)
 
-    -- Peds with a medical status (every ai_peds ped) do not die from GTA damage: a hit that would kill is
+    -- Peds with a medical status and the DATA_SAVE_LETHAL element data (ai_peds walkers / drivers, not the
+    -- gang war / mission fighters, whose deaths count) do not die from GTA damage: a hit that would kill is
     -- cancelled on the clients, the ped keeps PED_DOWN_HEALTH and goes down in medsys instead (unconscious,
     -- or cardiac arrest by PED_LETHAL_ARREST), so an arriving medic has a patient to treat. medsys decides
     -- about the death from then on (biological death kills the ped).
     PED_SAVE_LETHAL = true,
+    DATA_SAVE_LETHAL = "medev.saveLethal",
     PED_DOWN_HEALTH = 10,       -- health a downed ped is kept at (police "injured" check: below 60)
     PED_LETHAL_ARREST = { gun_head = 0.6, gun = 0.25, explosion = 0.4, default = 0.1 }, -- chance of clinical death
     PED_LETHAL_REPORT_GAP = 200, -- ms, one client report per ped

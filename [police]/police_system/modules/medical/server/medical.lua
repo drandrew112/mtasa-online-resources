@@ -18,9 +18,12 @@ end
 
 local function injured(p)
     if isPedDead(p) or getElementHealth(p) < 60 then return true end
-    local status = getElementData(p, "medic.status")   -- medsys patient (every ai_peds ped has one)
-    return status and status ~= "stable" or POL.running("medsys") and exports.medsys:getMedicalState(p)
-        and #exports.medsys:getMedicalState(p).injuries > 0
+    -- medsys patient (every ai_peds ped has one): knocked down, or has an injury
+    local status = getElementData(p, "medic.status")
+    if not status then return false end
+    if status ~= "stable" then return true end
+    local state = POL.running("medsys") and exports.medsys:getMedicalState(p)
+    return type(state) == "table" and type(state.injuries) == "table" and #state.injuries > 0
 end
 
 -- the patient stays where it is until the ambulance / the medic arrives

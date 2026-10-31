@@ -115,6 +115,9 @@ AIPEDS = {
     -- medical status (medsys, server/medical.lua): every ped is a persistent medsys patient (examinable, gets
     -- injuries, a lethal hit puts it down instead of killing it); a downed ped is never culled near a player
     MEDICAL = true,
+    MEDICAL_KINDS = { traffic = true, driver = true, scripted = true },  -- which peds get a status
+    MEDICAL_SAVE_KINDS = { traffic = true, driver = true },  -- a lethal hit puts these down instead of killing them
+                                -- (scripted: gang war / mission fighters die, their deaths are counted)
     MEDICAL_CHECK = 1000,       -- downed / up re-check of every ped
 
     ADMIN_LEVEL = 4,            -- /aipeds (elementData admin_level)
@@ -150,3 +153,5 @@ DATA_MOVE = "ai_peds.mv"
 DATA_FIGHT = "ai_peds.fight"
 -- medsys consciousness element data (stable | confused | dazed | unconscious | clinical_death | dead)
 MEDICAL_STATUS = "medic.status"
+-- medsys events: a lethal hit puts the ped down instead of killing it (AIPEDS.MEDICAL_SAVE_KINDS)
+DATA_SAVE_LETHAL = "medev.saveLethal"
