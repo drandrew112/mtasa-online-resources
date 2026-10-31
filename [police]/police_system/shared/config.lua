@@ -157,11 +157,16 @@ POLICE = {
     -- MDC computers (/mdcpc): the full MDC without a unit, J on foot next to one
     TERMINALS = {
         FILE = "mdc_terminals.json",  -- in the resource folder
-        MODEL = 2190,             -- PC_1 (monitor + keyboard); /mdcpc add 0 = no object (a computer of the map)
+        MODEL = 2190,             -- PC_1 (monitor + keyboard; its visual base is its origin)
         RANGE = 1.8,              -- J works this close
         CLOSE_DIST = 3.5,         -- the open MDC closes farther than this
-        Z_OFFSET = 0,             -- object height over the surface found in front of the admin
         CHECK = 500,              -- ms: nearest computer check (the hint layer is on only near one)
+        -- placement editor (/mdcpc, like gov_office /govpcs)
+        EDIT_RANGE = 40,          -- a computer may be placed / moved this far from the admin
+        ROT_STEP = 15,            -- degrees per wheel tick
+        ROT_FINE = 1,             -- with Shift held
+        HEIGHT_STEP = 0.02,       -- metres per wheel tick with Ctrl held
+        RAY = 25,
     },
 
     TOW = { MODEL = 525, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, SKIN = 50 },

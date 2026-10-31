@@ -74,6 +74,7 @@
     <script src="modules/mdc/client/widgets.lua" type="client" />
     <script src="modules/mdc/client/mdc.lua" type="client" />
     <script src="modules/mdc/client/terminals.lua" type="client" />
+    <script src="modules/mdc/client/terminal_editor.lua" type="client" />
     <script src="modules/mdc/client/pages/overview.lua" type="client" />
     <script src="modules/mdc/client/pages/lists.lua" type="client" />
     <script src="modules/mdc/client/pages/warrants.lua" type="client" />

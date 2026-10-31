@@ -1,14 +1,13 @@
 -- police_system / modules/mdc/server/terminals.lua
 -- MDC computers: the full MDC without a unit sign-in (J on foot next to one, with the police right; the MDC requests
--- only check the right). Placed by admins (admin_level >= POLICE.ADMIN_LEVEL) with /mdcpc (client/terminals.lua finds
--- the surface in front of the admin), stored in POLICE.TERMINALS.FILE (JSON, resource folder).
---   /mdcpc add [model]   a computer in front of the admin, facing them (model 0: no object, a computer of the map)
---   /mdcpc remove        the nearest one
---   /mdcpc turn [deg]    turns the nearest one (default 90)
---   /mdcpc list          every computer (F8)
--- terminal = { id, x, y, z, rz, interior, dimension, model }
+-- only check the right). Placed by admins (admin_level >= POLICE.ADMIN_LEVEL), stored in POLICE.TERMINALS.FILE
+-- (JSON, resource folder).
+--   /mdcpc         the mouse placement editor on / off (client/terminal_editor.lua, like gov_office /govpcs):
+--                  place, pick up + move, rotate, raise, delete; every change is re-checked here
+--   /mdcpc list    every computer (F8)
+-- terminal = { id, x, y, z, rz, interior, dimension, model, by, at }
 
-local T = POL.module("terminals", { list = {}, objects = {} })
+local T = POL.module("terminals", { list = {}, objects = {}, editing = {} })
 local C = POLICE.TERMINALS
 
 local function isAdmin(p) return (tonumber(getElementData(p, "admin_level")) or 0) >= POLICE.ADMIN_LEVEL end
@@ -41,13 +40,12 @@ local function spawn(e)
     local old = T.objects[e.id]
     if old and isElement(old) then destroyElement(old) end
     T.objects[e.id] = nil
-    local model = tonumber(e.model) or 0
-    if model <= 0 then return end
-    local obj = createObject(model, e.x, e.y, e.z, 0, 0, tonumber(e.rz) or 0)
+    local obj = createObject(tonumber(e.model) or C.MODEL, e.x, e.y, e.z, 0, 0, tonumber(e.rz) or 0)
     if not obj then return end
     setElementInterior(obj, tonumber(e.interior) or 0)
     setElementDimension(obj, tonumber(e.dimension) or 0)
     setElementFrozen(obj, true)
+    setElementData(obj, "pol:terminal", e.id)   -- the editor picks it by this
     T.objects[e.id] = obj
 end
 
@@ -56,21 +54,8 @@ local function sync(to)
     POL.send(to or root, "terminals", T.list)
 end
 
-local function nearest(player, range)
-    local x, y, z = getElementPosition(player)
-    local int, dim = getElementInterior(player), getElementDimension(player)
-    local best, bd
-    for i, e in ipairs(T.list) do
-        if (tonumber(e.interior) or 0) == int and (tonumber(e.dimension) or 0) == dim then
-            local d = math.sqrt((e.x - x) ^ 2 + (e.y - y) ^ 2 + (e.z - z) ^ 2)
-            if d <= range and (not bd or d < bd) then best, bd = i, d end
-        end
-    end
-    return best and T.list[best], best
-end
-
 function T.get(id)
-    for _, e in ipairs(T.list) do if e.id == id then return e end end
+    for i, e in ipairs(T.list) do if e.id == id then return e, i end end
     return nil
 end
 
@@ -86,51 +71,79 @@ end)
 
 POL.net("terminals:ready", function(player) sync(player) end)
 
--- /mdcpc from the client: sub, arg, and for "add" the surface point + heading found there
-POL.net("terminals:cmd", function(player, sub, arg, x, y, z, rz)
+------------------------------------------------------------------------ editor (/mdcpc)
+
+local function editor(player, on)
+    T.editing[player] = on or nil
+    POL.send(player, "terminals:editor", on and true or false)
+end
+
+addCommandHandler("mdcpc", function(player, sub)
     if not isAdmin(player) then return end
-    if sub == "add" then
-        x, y, z, rz = tonumber(x), tonumber(y), tonumber(z), tonumber(rz)
-        if not (x and y and z and rz) then return POL.notify(player, "police_system.terminals.no_surface") end
-        local px, py, pz = getElementPosition(player)
-        if math.sqrt((px - x) ^ 2 + (py - y) ^ 2 + (pz - z) ^ 2) > 5 then return end
-        local id = 0
-        for _, e in ipairs(T.list) do id = math.max(id, tonumber(e.id) or 0) end
-        id = id + 1
-        local model = tonumber(arg)
-        local e = { id = id, x = x, y = y, z = z + C.Z_OFFSET, rz = rz % 360, interior = getElementInterior(player),
-                    dimension = getElementDimension(player), model = model and math.floor(model) or C.MODEL,
+    if sub == "list" then
+        for _, e in ipairs(T.list) do
+            outputConsole(("#%d  %.2f, %.2f, %.2f  rot %d  int %d dim %d"):format(e.id, e.x, e.y, e.z,
+                math.floor(tonumber(e.rz) or 0), tonumber(e.interior) or 0, tonumber(e.dimension) or 0), player)
+        end
+        return POL.notify(player, "police_system.terminals.list", { count = #T.list })
+    end
+    editor(player, not T.editing[player])
+end)
+
+local function checkEdit(player)
+    if not T.editing[player] then return false end
+    if not isAdmin(player) then editor(player, false) return false end
+    return true
+end
+
+local function within(player, x, y, z)
+    local px, py, pz = getElementPosition(player)
+    return math.sqrt((px - x) ^ 2 + (py - y) ^ 2 + (pz - z) ^ 2) <= C.EDIT_RANGE
+end
+
+-- (id | false, x, y, z, rz): a new computer, or the picked one moved, in the admin's interior / dimension
+POL.net("terminals:place", function(player, id, x, y, z, rz)
+    if not checkEdit(player) then return end
+    x, y, z, rz = tonumber(x), tonumber(y), tonumber(z), tonumber(rz)
+    if not (x and y and z and rz) then return end
+    if not within(player, x, y, z) then return POL.notify(player, "police_system.terminals.too_far") end
+    rz = rz % 360
+    local int, dim = getElementInterior(player), getElementDimension(player)
+    id = tonumber(id)
+    if id then
+        local e = T.get(id)
+        if not e then return end
+        e.x, e.y, e.z, e.rz, e.interior, e.dimension = x, y, z, rz, int, dim
+        spawn(e)
+        POL.notify(player, "police_system.terminals.moved", { id = id })
+    else
+        local nid = 0
+        for _, e in ipairs(T.list) do nid = math.max(nid, tonumber(e.id) or 0) end
+        nid = nid + 1
+        local e = { id = nid, x = x, y = y, z = z, rz = rz, interior = int, dimension = dim, model = C.MODEL,
                     by = POL.accountOf(player) or "", at = POL.now() }
         T.list[#T.list + 1] = e
         spawn(e)
-        save()
-        sync()
-        POL.notify(player, "police_system.terminals.placed", { id = id })
-    elseif sub == "remove" or sub == "turn" then
-        local e, idx = nearest(player, 4)
-        if not e then return POL.notify(player, "police_system.terminals.none") end
-        if sub == "remove" then
-            table.remove(T.list, idx)
-            if isElement(T.objects[e.id]) then destroyElement(T.objects[e.id]) end
-            T.objects[e.id] = nil
-            POL.notify(player, "police_system.terminals.removed", { id = e.id })
-        else
-            e.rz = ((tonumber(e.rz) or 0) + (tonumber(arg) or 90)) % 360
-            spawn(e)
-            POL.notify(player, "police_system.terminals.turned", { id = e.id, rot = math.floor(e.rz) })
-        end
-        save()
-        sync()
-    elseif sub == "list" then
-        for _, e in ipairs(T.list) do
-            outputConsole(("#%d  %.2f, %.2f, %.2f  rot %d  int %d dim %d  model %d"):format(e.id, e.x, e.y, e.z,
-                math.floor(tonumber(e.rz) or 0), tonumber(e.interior) or 0, tonumber(e.dimension) or 0, tonumber(e.model) or 0), player)
-        end
-        POL.notify(player, "police_system.terminals.list", { count = #T.list })
-    else
-        POL.notify(player, "police_system.terminals.usage")
+        POL.notify(player, "police_system.terminals.placed", { id = nid })
     end
+    save()
+    sync()
 end)
+
+POL.net("terminals:delete", function(player, id)
+    if not checkEdit(player) then return end
+    local e, idx = T.get(tonumber(id))
+    if not e then return end
+    table.remove(T.list, idx)
+    if isElement(T.objects[e.id]) then destroyElement(T.objects[e.id]) end
+    T.objects[e.id] = nil
+    save()
+    sync()
+    POL.notify(player, "police_system.terminals.removed", { id = e.id })
+end)
+
+POL.net("terminals:stopEdit", function(player) T.editing[player] = nil end)
+addEventHandler("onPlayerQuit", root, function() T.editing[source] = nil end)
 
 function T.start()
     load()

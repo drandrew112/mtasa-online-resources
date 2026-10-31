@@ -1,8 +1,7 @@
 -- police_system / modules/mdc/client/terminals.lua
 -- MDC computers (server/terminals.lua): the list from the server, the nearest one checked every TERMINALS.CHECK ms
 -- (on foot, with the police right); the "J  MDC" hint layer is on only next to one. J asks the server, which opens
--- the full MDC without a unit (mdc:terminalOpen). /mdcpc (admins): the placement point is the surface in front of
--- the player (a ray down), facing them; the server checks the admin level.
+-- the full MDC without a unit (mdc:terminalOpen). Placing them: /mdcpc (terminal_editor.lua).
 
 local MDC = POL.mdc
 local C = POLICE.TERMINALS
@@ -82,17 +81,3 @@ function TM.start()
     POL.send("terminals:ready")
     setTimer(check, C.CHECK, 0)
 end
-
--- /mdcpc add [model] | remove | turn [deg] | list
-addCommandHandler("mdcpc", function(_, sub, arg)
-    sub = tostring(sub or ""):lower()
-    if sub ~= "add" then return POL.send("terminals:cmd", sub, arg) end
-    local x, y, z = getElementPosition(localPlayer)
-    local rz = getPedRotation(localPlayer)
-    local fx, fy = x - math.sin(math.rad(rz)) * 0.9, y + math.cos(math.rad(rz)) * 0.9
-    local hit, _, _, hz = processLineOfSight(fx, fy, z + 1.2, fx, fy, z - 1.5, true, false, false, true, false, false,
-        false, false, localPlayer)
-    if not hit then return POL.notify(L("police_system.terminals.no_surface")) end
-    -- the screen faces the admin
-    POL.send("terminals:cmd", "add", arg, fx, fy, hz, (rz + 180) % 360)
-end)
