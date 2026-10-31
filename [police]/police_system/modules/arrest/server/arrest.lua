@@ -8,7 +8,7 @@
 -- to jail; the warrants are served. AI arrest ("Busted"): no escorting, straight to the station.
 -- Every step is logged.
 
-local AR = POL.module("arrest", { cuffed = {}, escorts = {}, pending = {}, markers = {} })
+local AR = POL.module("arrest", { cuffed = {}, escorts = {}, pending = {}, markers = {}, custody = {} })
 local C = POLICE.ARREST
 local PLAYER_CONTROLS = { "sprint", "jump", "fire", "aim_weapon", "next_weapon", "previous_weapon", "enter_exit", "crouch" }
 
@@ -121,6 +121,7 @@ function AR.uncuff(officer, target, silent)
     local c = AR.cuffed[target]
     if not c then return false end
     AR.cuffed[target] = nil
+    AR.custody[target] = nil
     AR.stopEscort(target)
     if isElement(target) then
         removeElementData(target, "pol.cuffed")
@@ -221,12 +222,49 @@ function AR.place(officer, target, veh)
         if getVehicleOccupant(veh, seat) then seat = freeSeat(veh) end
         if not seat then return POL.notify(officer, "police_system.arrest.err_full") end
         warpPedIntoVehicle(target, veh, seat)
+        AR.custody[target] = veh
         setCustody(target, true)
         AR.refreshMenus(target)
     end, 100, 1)
     POL.events.logFor(officer, "placed", { name = POL.stop.nameOf(target) })
     return true
 end
+
+-- AR.custody[suspect] = the police vehicle it was placed in, until taken out / handed over / uncuffed. The server's
+-- seat is not always the suspect's own: a client that did not take the warp (or that GTA put out) syncs on foot and
+-- the other clients drop it out of the car (left behind on the way to the station). Put back into the same car: on
+-- an exit the server sees, and when the suspect's own client reports it is not seated (arrest:unseated).
+local RESEAT_COOLDOWN = 2000
+local reseating, reseatAt = {}, {}
+
+local function reseat(target, why)
+    local veh = AR.custody[target]
+    if not veh then return end
+    if not isElement(target) or not isElement(veh) or not AR.cuffed[target] or isPedDead(target) or isVehicleBlown(veh) then
+        AR.custody[target] = nil
+        return
+    end
+    local now = getTickCount()
+    if now - (reseatAt[target] or 0) < RESEAT_COOLDOWN then return end
+    reseatAt[target] = now
+    local cur = getPedOccupiedVehicle(target)
+    local seat = cur == veh and getPedOccupiedVehicleSeat(target) or freeSeat(veh)
+    if not seat then AR.custody[target] = nil return end   -- the car got full: stays where it is
+    outputDebugString(("[police] custody: %s (%s) back into %s seat %d (%s)"):format(tostring(target),
+        getElementType(target), tostring(veh), seat, why))
+    reseating[target] = true
+    if cur then removePedFromVehicle(target) end
+    setElementInterior(target, getElementInterior(veh))
+    setElementDimension(target, getElementDimension(veh))
+    warpPedIntoVehicle(target, veh, seat)
+    reseating[target] = nil
+    setCustody(target, true)
+    AR.refreshMenus(target)
+end
+
+POL.net("arrest:unseated", function(player)
+    if AR.custody[player] then reseat(player, "client not seated") end
+end)
 
 -- who may be taken out of a police vehicle: a cuffed suspect, or anyone else in it but an officer (on duty / AI)
 function AR.canTakeOut(target)
@@ -240,7 +278,14 @@ end
 addEventHandler("onVehicleEnter", root, function(ped)
     if isPoliceVehicle(source) then setCustody(ped, AR.canTakeOut(ped)) end
 end)
-addEventHandler("onVehicleExit", root, function(ped) setCustody(ped, false) end)
+addEventHandler("onVehicleExit", root, function(ped)
+    if reseating[ped] then return end
+    setCustody(ped, false)
+    -- out without a take out (the officer never does it this way): back in a moment later
+    if AR.custody[ped] then
+        setTimer(function() if isElement(ped) and not getPedOccupiedVehicle(ped) then reseat(ped, "exit") end end, 500, 1)
+    end
+end)
 
 -- only out of a police vehicle (a stopped driver is ordered out instead); the person stands at its own door:
 -- seats 0 / 2 on the left, 1 / 3 on the right, the rear seats farther back
@@ -257,6 +302,7 @@ function AR.takeOut(officer, target)
     local x = m[4][1] + m[1][1] * side + m[2][1] * back
     local y = m[4][2] + m[1][2] * side + m[2][2] * back
     local z = m[4][3] + m[1][3] * side + m[2][3] * back
+    AR.custody[target] = nil
     removePedFromVehicle(target)
     setCustody(target, false)
     setElementPosition(target, x, y, z + 0.2)
@@ -314,11 +360,13 @@ end)
 addEventHandler("onPedWasted", root, function() if AR.cuffed[source] then AR.uncuff(nil, source, true) end end)
 addEventHandler("onElementDestroy", root, function()
     if AR.cuffed[source] then AR.cuffed[source] = nil; AR.escorts[source] = nil end
+    AR.custody[source] = nil
 end)
 addEventHandler("onPlayerQuit", root, function()
     -- the automatic warrant of a cuffed player is made by wanted.lua (it runs before: same event, earlier script)
     AR.cuffed[source] = nil
     AR.escorts[source] = nil
+    AR.custody[source] = nil
     for t, o in pairs(AR.escorts) do if o == source then AR.stopEscort(t) end end
 end)
 
@@ -367,6 +415,7 @@ local function onHandoverHit(st, el)
             local mine = (veh and tv == veh) or AR.escorts[target] == officer
                 or (not veh and not tv and POL.dist(officer, target) < 6)
             if mine then
+                AR.custody[target] = nil
                 if tv then removePedFromVehicle(target) end
                 handover(officer, target, st)
                 done = done + 1

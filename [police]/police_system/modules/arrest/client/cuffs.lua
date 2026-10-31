@@ -108,10 +108,25 @@ addEventHandler("onClientElementStreamIn", root, function() track(source) end)
 addEventHandler("onClientElementStreamOut", root, function() CF.walk[source] = nil; if CF.list[source] then CF.list[source] = nil; refresh() end end)
 addEventHandler("onClientElementDestroy", root, function() CF.walk[source] = nil; if CF.list[source] then CF.list[source] = nil; refresh() end end)
 
+-- placed in a police car (pol.custody) but not seated here: the server still has us in the car, the other clients
+-- would drop us out of it by our on-foot sync. Two checks in a row (the warp may still be on its way), then the
+-- server seats us again.
+local unseated = 0
+local function custodyCheck()
+    if getElementData(localPlayer, "pol.cuffed") == true and getElementData(localPlayer, "pol.custody") == true
+        and not getPedOccupiedVehicle(localPlayer) and not isPedDead(localPlayer) then
+        unseated = unseated + 1
+        if unseated >= 2 then unseated = 0; POL.send("arrest:unseated") end
+    else
+        unseated = 0
+    end
+end
+
 function CF.start()
     for _, t in ipairs({ "ped", "player" }) do
         for _, e in ipairs(getElementsByType(t, root, true)) do track(e) end
     end
+    setTimer(custodyCheck, 1000, 0)
 end
 
 ------------------------------------------------------------------------ cuffing progress, Busted
