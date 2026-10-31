@@ -404,6 +404,7 @@
   "police_system.status.short_responding": "VON",
   "police_system.status.sub_ped_stop": "Igazoltatás",
   "police_system.status.sub_traffic_stop": "Közúti ellenőrzés",
+  "police_system.status.sub_arrest": "Előállítás",
   "police_system.stop.arrest": "Letartóztatás",
   "police_system.stop.bac": "Alkoholszonda",
   "police_system.stop.bac_result": "{name}: alkoholszonda {value} ezrelék.",

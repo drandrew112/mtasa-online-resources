@@ -404,6 +404,7 @@
   "police_system.status.short_responding": "RSP",
   "police_system.status.sub_ped_stop": "Pedestrian stop",
   "police_system.status.sub_traffic_stop": "Traffic stop",
+  "police_system.status.sub_arrest": "Arrest",
   "police_system.stop.arrest": "Arrest",
   "police_system.stop.bac": "Breathalyser test",
   "police_system.stop.bac_result": "{name}: breathalyser {value} per mille.",

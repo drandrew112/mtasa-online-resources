@@ -64,10 +64,14 @@ end
 
 -- who comes out of a police vehicle: a cuffed suspect first, else anyone else who is not an officer
 local function occupantToTakeOut(veh)
+    -- seat by seat (getVehicleOccupants did not return the placed suspect in a live test)
     local other
-    for _, o in pairs(getVehicleOccupants(veh)) do
-        if POL.arrest.isCuffed(o) then return o end
-        if not other and POL.arrest.canTakeOut(o) then other = o end
+    for seat = 0, getVehicleMaxPassengers(veh) or 3 do
+        local o = getVehicleOccupant(veh, seat)
+        if o then
+            if POL.arrest.isCuffed(o) then return o end
+            if not other and POL.arrest.canTakeOut(o) then other = o end
+        end
     end
     return other
 end
@@ -208,6 +212,12 @@ end
 
 -- inMenu = picked in the interact menu (its range is already checked there)
 function ST.action(officer, target, value, inMenu)
+    if value == "takeout" then
+        outputDebugString(("[police] takeout: officer=%s rights=%s unit=%s target=%s (%s) inVeh=%s"):format(
+            getPlayerName(officer), tostring(POL.rights.has(officer)), tostring(POL.units.of(officer) ~= nil),
+            tostring(target), isElement(target) and getElementType(target) or "-",
+            tostring(isElement(target) and getElementType(target) ~= "vehicle" and getPedOccupiedVehicle(target) or nil)))
+    end
     if not POL.rights.has(officer) or not POL.units.of(officer) or not isElement(target) or type(value) ~= "string" then return end
     local s = ST.list[target]
     -- distance: the officer at the target (a stopped vehicle may be checked from the police car next to it)
@@ -256,8 +266,22 @@ function ST.action(officer, target, value, inMenu)
             suspect = isPoliceVehicle(target) and occupantToTakeOut(target) or nil
             if not suspect and s and s.kind == "vehicle" then return orderOut(officer, s) end
         end
-        if not suspect then return POL.notify(officer, "police_system.arrest.err_bad") end
+        if not suspect then
+            local seats = {}
+            if getElementType(target) == "vehicle" then
+                for seat = 0, getVehicleMaxPassengers(target) or 3 do
+                    local o = getVehicleOccupant(target, seat)
+                    seats[#seats + 1] = seat .. "=" .. (o and ("%s cuffed=%s can=%s"):format(getElementType(o),
+                        tostring(POL.arrest.isCuffed(o)), tostring(POL.arrest.canTakeOut(o))) or "-")
+                end
+            end
+            outputDebugString(("[police] takeout: nobody to take out of %s police=%s seats: %s"):format(tostring(target),
+                tostring(getElementType(target) == "vehicle" and isPoliceVehicle(target)), table.concat(seats, ", ")))
+            return POL.notify(officer, "police_system.arrest.err_bad")
+        end
         local ok, err = POL.arrest.takeOut(officer, suspect)
+        outputDebugString(("[police] takeout: suspect=%s (%s) -> %s %s, still in vehicle: %s"):format(tostring(suspect),
+            getElementType(suspect), tostring(ok), tostring(err), tostring(getPedOccupiedVehicle(suspect))))
         if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
     elseif value == "tow" then
         if getElementType(target) == "vehicle" then POL.tow.request(officer, false, target) end

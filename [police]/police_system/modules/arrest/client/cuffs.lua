@@ -20,9 +20,42 @@ addCommandHandler("cufftune", function(_, bone, y, p, r)
     for b, v in pairs(BONES) do outputDebugString(("cuff bone %d = %d, %d, %d"):format(b, v[1], v[2], v[3])) end
 end)
 
+-- escorted (pol.escort = the officer): walk anim while the officer walks, by its smooth local speed with a
+-- hysteresis and a minimum hold, so the anim is not restarted on every speed wobble
+local WALK_ON, WALK_OFF, WALK_HOLD = 0.9, 0.4, 400   -- m/s, m/s, ms
+CF.walk = {}   -- [element] = { on, at }
+
+local function escortAnim(el, now)
+    local o = getElementData(el, "pol.escort")
+    local w = CF.walk[el]
+    if not isElement(o) then
+        if w then
+            CF.walk[el] = nil
+            if w.on then setPedAnimation(el) end
+        end
+        return
+    end
+    if not w then w = { on = false, at = 0 }; CF.walk[el] = w end
+    -- an attached ped keeps its own heading (MTA moves it with the officer, never turns it): the officer's, every frame
+    local _, _, rz = getElementRotation(o)
+    setElementRotation(el, 0, 0, rz, "default", true)
+    local vx, vy = getElementVelocity(o)
+    local speed = math.sqrt(vx * vx + vy * vy) * 50
+    local want = w.on and speed > WALK_OFF or (not w.on and speed > WALK_ON)
+    if want ~= w.on and now - w.at >= WALK_HOLD then
+        w.on, w.at = want, now
+        -- updatePosition: the anim's root motion goes into the movement (the attach pins it back in front of the
+        -- officer); without it the body slides forward over the loop and snaps back
+        if want then setPedAnimation(el, "ped", "WALK_player", -1, true, true, false, false)
+        else setPedAnimation(el) end
+    end
+end
+
 local function pose()
+    local now = getTickCount()
     for el in pairs(CF.list) do
         if isElement(el) and isElementStreamedIn(el) and not isPedDead(el) and not getPedOccupiedVehicle(el) then
+            escortAnim(el, now)
             for b, v in pairs(BONES) do setElementBoneRotation(el, b, v[1], v[2], v[3]) end
             updateElementRpHAnim(el)
         end
@@ -62,10 +95,18 @@ local function track(el)
     refresh()
 end
 
-addEventHandler("onClientElementDataChange", root, function(key) if key == "pol.cuffed" then track(source) end end)
+addEventHandler("onClientElementDataChange", root, function(key)
+    if key == "pol.cuffed" then
+        track(source)
+    elseif key == "pol.escort" and CF.walk[source] and not isElement(getElementData(source, "pol.escort")) then
+        -- escort over: the walk anim off now (also when the pose loop is not running for it any more)
+        if CF.walk[source].on then setPedAnimation(source) end
+        CF.walk[source] = nil
+    end
+end)
 addEventHandler("onClientElementStreamIn", root, function() track(source) end)
-addEventHandler("onClientElementStreamOut", root, function() if CF.list[source] then CF.list[source] = nil; refresh() end end)
-addEventHandler("onClientElementDestroy", root, function() if CF.list[source] then CF.list[source] = nil; refresh() end end)
+addEventHandler("onClientElementStreamOut", root, function() CF.walk[source] = nil; if CF.list[source] then CF.list[source] = nil; refresh() end end)
+addEventHandler("onClientElementDestroy", root, function() CF.walk[source] = nil; if CF.list[source] then CF.list[source] = nil; refresh() end end)
 
 function CF.start()
     for _, t in ipairs({ "ped", "player" }) do

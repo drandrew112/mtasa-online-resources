@@ -106,6 +106,10 @@ POL.on("units.changed", function() ST.refreshMenu() end)
 
 addEvent("onInteractMenuSelect")
 addEventHandler("onInteractMenuSelect", root, function(menuId, value, target)
+    if value == "takeout" then
+        outputDebugString(("[police] takeout picked: menu=%s ours=%s target=%s dist=%.1f"):format(tostring(menuId),
+            tostring(isTypeMenu(menuId)), isElement(target) and getElementType(target) or "-", isElement(target) and POL.dist(source, target) or -1))
+    end
     if not isTypeMenu(menuId) then return end
     -- the menus are checkRange = false: the server position of a traffic vehicle (and its driver) is seconds old,
     -- so the distance is checked here by the simulated pose (POL.dist)

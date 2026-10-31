@@ -147,6 +147,11 @@ function CH.finish(c, how)
             end
             POL.notify(POL.units.members(unit), "police_system.chase.ended_" .. (how == "caught" and "caught" or "lost"),
                 { name = c.name or "?" })
+            -- caught: the pursuit status goes off (Busy - Arrest) until the unit sets a new one
+            if how == "caught" and unit.status == "pursuit" then
+                POL.units.setStatus(unit, "busy")
+                POL.units.setSub(unit, "arrest")
+            end
         end
     end
     for _, b in pairs(c.blips) do if isElement(b) then destroyElement(b) end end
@@ -176,8 +181,9 @@ end
 
 local function tick()
     -- every wanted player has a chase
+    -- a cuffed player is in custody: no chase (and no AI) until the handover / release
     for player, st in pairs(POL.wanted.list) do
-        if not CH.list[player] and isElement(player) then
+        if not CH.list[player] and isElement(player) and not POL.arrest.isCuffed(player) then
             local c = newChase(player, "player")
             c.name = POL.nameOf(player)
             POL.history.player(player, function(row)
@@ -189,6 +195,8 @@ local function tick()
     for suspect, c in pairs(CH.list) do
         if not isElement(suspect) or (getElementType(suspect) ~= "vehicle" and isPedDead(suspect)) then
             CH.finish(c, "gone")
+        elseif POL.arrest.isCuffed(suspect) then
+            CH.finish(c, "caught")
         else
             local st = c.kind == "player" and POL.wanted.get(suspect)
             if c.kind == "player" then
@@ -272,6 +280,12 @@ POL.on("wanted.phase", function(player, phase)
         local inc = POL.events.incidentOf(unit, player)
         if inc and phase == "evading" then POL.events.log(unit, nil, "evading", {}, inc) end
     end
+end)
+
+-- cuffs on = the pursuit is over (the AI units retreat; the incident stays open for the handover)
+POL.on("arrest.cuffed", function(target)
+    local c = CH.list[target]
+    if c then CH.finish(c, "caught") end
 end)
 
 -- a unit that is not in pursuit any more leaves its chases

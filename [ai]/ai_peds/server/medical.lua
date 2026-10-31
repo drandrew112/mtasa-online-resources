@@ -8,9 +8,10 @@ AIPedsMedical = {}
 
 local T = AIPEDS
 local DOWN = { dazed = true, unconscious = true, clinical_death = true }
--- behaviour after getting up (the args they had are gone: civilian keeps its task, the others wait for their owner)
+-- behaviour after getting up (the args they had are gone: civilian keeps its task, the others wait for their owner;
+-- a cuffed ped loses the cuffs when it goes down - police_system uncuffs it - so it gets up as a civilian)
 local RESUME = { civilian = "civilian", scared = "civilian", enemy = "enemy", police = "police", patient = "patient",
-    detained = "detained", cuffed = "cuffed" }
+    detained = "detained", cuffed = "civilian" }
 local NO_DOWN = { dead = true, downed = true, exiting = true, seated = true }
 
 local function medsys()

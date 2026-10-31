@@ -8,7 +8,7 @@
 -- to jail; the warrants are served. AI arrest ("Busted"): no escorting, straight to the station.
 -- Every step is logged.
 
-local AR = POL.module("arrest", { cuffed = {}, escorts = {}, walking = {}, pending = {}, markers = {} })
+local AR = POL.module("arrest", { cuffed = {}, escorts = {}, pending = {}, markers = {} })
 local C = POLICE.ARREST
 local PLAYER_CONTROLS = { "sprint", "jump", "fire", "aim_weapon", "next_weapon", "previous_weapon", "enter_exit", "crouch" }
 
@@ -82,8 +82,26 @@ function AR.cuff(officer, target, cb)
         local st = POL.wanted.get(target)
         local stopped = POL.stop.of(target)
         if POL.speed(target) > 1.2 and not (st and st.surrendered) then return cb(false, "moving") end
-        if not st and not stopped then return cb(false, "no_reason") end
+        -- no wanted level, no stop: an active warrant is a reason too (looked up, then the checks again)
+        if not st and not stopped then
+            AR.pending[target] = true
+            POL.history.player(target, function(row)
+                if not (row and row.id) then AR.pending[target] = nil return cb(false, "no_reason") end
+                POL.warrants.activeFor(row.id, function(list)
+                    AR.pending[target] = nil
+                    if #list == 0 then return cb(false, "no_reason") end
+                    if not isElement(target) or not isElement(officer) then return cb(false, "gone") end
+                    if POL.dist(officer, target) > C.CUFF_DIST + 0.6 then return cb(false, "too_far") end
+                    AR.startCuff(officer, target, cb)
+                end)
+            end)
+            return
+        end
     end
+    AR.startCuff(officer, target, cb)
+end
+
+function AR.startCuff(officer, target, cb)
     AR.pending[target] = true
     POL.send(officer, "arrest:progress", target, C.CUFF_TIME)
     setTimer(function()
@@ -106,17 +124,33 @@ function AR.uncuff(officer, target, silent)
     AR.stopEscort(target)
     if isElement(target) then
         removeElementData(target, "pol.cuffed")
-        if getElementType(target) == "player" then setPlayerCuffControls(target, false) end
+        if getElementType(target) == "player" then
+            setPlayerCuffControls(target, false)
+        else
+            -- an AI ped still in the "cuffed" behaviour (released by the officer) walks off as a civilian
+            local p = aipeds()
+            if p and p:isAIPed(target) and not isPedDead(target) and p:getAIPedBehaviour(target) == "cuffed" then
+                p:setAIPedBehaviour(target, "civilian", {})
+                p:setAIPedKeep(target, false)
+            end
+        end
     end
     if not silent and officer then POL.events.logFor(officer, "uncuffed", { name = POL.stop.nameOf(target) }) end
     AR.refreshMenus(target)
     return true
 end
 
--- the officer grabs the cuffed suspect (NPC and player): attached in front of the officer, walk anim while the
--- officer moves (the ai_peds motor leaves an attached ped alone)
+-- the officer grabs the cuffed suspect (NPC and player): attached in front of the officer (the ai_peds motor leaves
+-- an attached ped alone). pol.escort = the officer (broadcast): every client plays the walk anim itself from the
+-- officer's smooth local speed (cuffs.lua) - server-side anim toggles by the jumpy synced velocity made it jump.
+-- An escorted player cannot walk on its own: its movement would fight the attach.
 local GRAB_OFFSET = 0.6
+local MOVE_CONTROLS = { "forwards", "backwards", "left", "right", "walk" }
 local grabTimer
+
+local function setPlayerMoveControls(p, on)
+    for _, c in ipairs(MOVE_CONTROLS) do toggleControl(p, c, on) end
+end
 
 local function grabTick()
     local any = false
@@ -126,13 +160,6 @@ local function grabTick()
             AR.stopEscort(target)
         else
             any = true
-            local vx, vy = getElementVelocity(officer)
-            local moving = vx * vx + vy * vy > 0.0004
-            if moving ~= AR.walking[target] then
-                AR.walking[target] = moving
-                if moving then setPedAnimation(target, "ped", "WALK_player", -1, true, false, false, false)
-                else setPedAnimation(target) end
-            end
         end
     end
     if not any and isTimer(grabTimer) then killTimer(grabTimer); grabTimer = nil end
@@ -144,8 +171,11 @@ function AR.escort(officer, target)
     if getPedOccupiedVehicle(officer) or POL.dist(officer, target) > C.CUFF_DIST + 1.5 then return false end
     AR.escorts[target] = officer
     if not isTimer(grabTimer) then grabTimer = setTimer(grabTick, 200, 0) end
+    setPedAnimation(target)
+    if getElementType(target) == "player" then setPlayerMoveControls(target, false) end
     setElementCollisionsEnabled(target, false)
     attachElements(target, officer, 0, GRAB_OFFSET, 0, 0, 0, 0)
+    setElementData(target, "pol.escort", officer)
     POL.events.logFor(officer, "escort", { name = POL.stop.nameOf(target) })
     AR.refreshMenus(target)
     return true
@@ -154,14 +184,22 @@ end
 function AR.stopEscort(target)
     if not AR.escorts[target] then return false end
     AR.escorts[target] = nil
-    AR.walking[target] = nil
     if isElement(target) then
         if isElementAttached(target) then detachElements(target) end
         setElementCollisionsEnabled(target, true)
-        setPedAnimation(target)
+        removeElementData(target, "pol.escort")
+        if getElementType(target) == "player" then setPlayerMoveControls(target, true) end
     end
     AR.refreshMenus(target)
     return true
+end
+
+-- pol.custody (broadcast) on whoever can be taken out of a police vehicle: the custody interact menu shows on it
+-- (defined before AR.place, which uses it)
+local function setCustody(el, on)
+    if not isElement(el) then return end
+    if on then setElementData(el, "pol.custody", true)
+    elseif getElementData(el, "pol.custody") then removeElementData(el, "pol.custody") end
 end
 
 local function freeSeat(veh)
@@ -192,18 +230,11 @@ end
 
 -- who may be taken out of a police vehicle: a cuffed suspect, or anyone else in it but an officer (on duty / AI)
 function AR.canTakeOut(target)
-    local veh = isElement(target) and getPedOccupiedVehicle(target)
+    local veh = isElement(target) and getElementType(target) ~= "vehicle" and getPedOccupiedVehicle(target)
     if not veh or not isPoliceVehicle(veh) then return false end
     if AR.cuffed[target] then return true end
     if POL.ai.peds[target] then return false end
     return not (getElementType(target) == "player" and POL.units.isOnDuty(target))
-end
-
--- pol.custody (broadcast) on whoever can be taken out of a police vehicle: the custody interact menu shows on it
-local function setCustody(el, on)
-    if not isElement(el) then return end
-    if on then setElementData(el, "pol.custody", true)
-    elseif getElementData(el, "pol.custody") then removeElementData(el, "pol.custody") end
 end
 
 addEventHandler("onVehicleEnter", root, function(ped)
@@ -219,8 +250,8 @@ function AR.takeOut(officer, target)
     if not isPoliceVehicle(veh) then return false, "not_police_vehicle" end
     if not AR.canTakeOut(target) then return false, "bad" end
     local seat = getPedOccupiedVehicleSeat(target) or 0
-    local minX, _, _, maxX = getElementBoundingBox(veh)
-    local side = (seat == 1 or seat == 3) and (maxX or 1) + 0.6 or (minX or -1) - 0.6
+    -- getElementBoundingBox is client-only: a fixed half width (police cars are ~1 m) + a step away from the door
+    local side = (seat == 1 or seat == 3) and 1.6 or -1.6
     local back = seat >= 2 and -0.9 or 0.2
     local m = getElementMatrix(veh)
     local x = m[4][1] + m[1][1] * side + m[2][1] * back
@@ -248,7 +279,38 @@ addEventHandler("onVehicleStartEnter", root, function(player, seat)
     if AR.cuffed[player] and (seat == 0 or not isPoliceVehicle(source)) then cancelEvent() end
 end)
 
-addEventHandler("onPlayerWasted", root, function() if AR.cuffed[source] then AR.uncuff(nil, source, true) end end)
+-- cuff / escort / custody state of an element, also what is left on it without an AR.cuffed entry (element data
+-- outlives a resource restart): data off, controls back
+local function clearState(el)
+    if not isElement(el) then return end
+    if isElementAttached(el) and getElementData(el, "pol.escort") then
+        detachElements(el)
+        setElementCollisionsEnabled(el, true)
+    end
+    for _, k in ipairs({ "pol.cuffed", "pol.escort", "pol.custody" }) do
+        if getElementData(el, k) ~= false and getElementData(el, k) ~= nil then removeElementData(el, k) end
+    end
+    if getElementType(el) == "player" then
+        setPlayerCuffControls(el, false)
+        setPlayerMoveControls(el, true)
+    end
+end
+
+addEventHandler("onPlayerWasted", root, function()
+    if AR.cuffed[source] then AR.uncuff(nil, source, true) end
+    clearState(source)
+end)
+-- an AI ped going down (lethal hit = "downed", not wasted) or taken over by another behaviour is out of the cuffs
+addEvent("onAIPedBehaviourChanged")
+addEventHandler("onAIPedBehaviourChanged", root, function(new)
+    if AR.cuffed[source] and new ~= "cuffed" then
+        AR.uncuff(nil, source, true)
+        clearState(source)
+    end
+end)
+addEventHandler("onPlayerSpawn", root, function()
+    if not AR.cuffed[source] then clearState(source) end
+end)
 addEventHandler("onPedWasted", root, function() if AR.cuffed[source] then AR.uncuff(nil, source, true) end end)
 addEventHandler("onElementDestroy", root, function()
     if AR.cuffed[source] then AR.cuffed[source] = nil; AR.escorts[source] = nil end
@@ -314,7 +376,19 @@ local function onHandoverHit(st, el)
     if done > 0 then POL.notify(officer, "police_system.arrest.handed_over", { count = done }) end
 end
 
+-- on stop the cuffs come off (a restart would leave them on with nobody to take them off)
+function AR.stop()
+    for el in pairs(AR.cuffed) do clearState(el) end
+    for el in pairs(AR.escorts) do clearState(el) end
+end
+
 function AR.start()
+    -- leftovers of a crash / an older version
+    for _, t in ipairs({ "player", "ped" }) do
+        for _, el in ipairs(getElementsByType(t)) do
+            if getElementData(el, "pol.cuffed") or getElementData(el, "pol.escort") or getElementData(el, "pol.custody") then clearState(el) end
+        end
+    end
     for _, st in ipairs(POLICE.STATIONS) do
         local h = st.handover
         local m = createMarker(h[1], h[2], h[3] - 1, "cylinder", POLICE.HANDOVER_RADIUS, 40, 110, 255, 90)
@@ -326,7 +400,8 @@ end
 ------------------------------------------------------------------------ AI arrest ("Busted")
 
 function AR.aiArrest(suspect, unit)
-    if not isElement(suspect) or getElementType(suspect) ~= "player" or AR.busted[suspect] then return end
+    -- a suspect cuffed by a player unit is theirs: the AI never takes it over
+    if not isElement(suspect) or getElementType(suspect) ~= "player" or AR.busted[suspect] or AR.cuffed[suspect] then return end
     AR.busted[suspect] = true
     POL.send(suspect, "arrest:busted")
     setTimer(function()
