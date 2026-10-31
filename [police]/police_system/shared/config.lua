@@ -3,7 +3,7 @@
 
 POLICE = {
     -- false while testing: everybody counts as police (like bt_core REQUIRE_RIGHT); work_police gives the right
-    REQUIRE_POLICE_RIGHT = false,
+    REQUIRE_POLICE_RIGHT = true,
     RIGHT_KEY = "pol.right",          -- player element data (subscribe: only the player itself gets it)
     WORK_ID = "police",
     ADMIN_LEVEL = 5,                  -- /polwanted, /poldebug
