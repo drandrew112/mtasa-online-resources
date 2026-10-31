@@ -24,17 +24,26 @@ local function spawnGuards(m, spot)
     if not M.running("ai_peds") then return 0 end
     local ai = exports.ai_peds
     ai:setAIGroupRelation(MIS.GUARD_GROUP, "player", "hostile")
-    local n = M.rand(MIS.GUARDS)
+    local fixed = spot.guards
+    local n = fixed and #fixed or M.rand(MIS.GUARDS)
     local count = 0
     for i = 1, n do
-        local a = (i / n) * math.pi * 2 + math.random() * 0.6
-        local r = 3 + math.random() * 5
-        local x, y = spot.x + math.cos(a) * r, spot.y + math.sin(a) * r
+        local x, y, z, rot
+        if fixed then
+            local g = fixed[i]
+            x, y, z = g.x, g.y, g.z
+            rot = g.rot or (math.deg(math.atan2(spot.y - y, spot.x - x)) - 90)
+        else
+            local a = (i / n) * math.pi * 2 + math.random() * 0.6
+            local r = 3 + math.random() * 5
+            x, y, z = spot.x + math.cos(a) * r, spot.y + math.sin(a) * r, spot.z
+            rot = math.deg(a) + 90
+        end
         local w = M.pick(MIS.GUARD_WEAPONS)
-        local ped = ai:createAIPed(M.pick(MIS.GUARD_SKINS), x, y, spot.z + 0.5, {
-            rot = math.deg(a) + 90, behaviour = "enemy", group = MIS.GUARD_GROUP,
+        local ped = ai:createAIPed(M.pick(MIS.GUARD_SKINS), x, y, z + 0.5, {
+            rot = rot, behaviour = "enemy", group = MIS.GUARD_GROUP,
             weapon = w[1], ammo = w[2], accuracy = MIS.GUARD_ACCURACY, aggroRadius = 35, leash = 80,
-            task = "guard", taskOpts = { x = x, y = y, z = spot.z + 0.5, rot = math.deg(a) + 90 },
+            task = "guard", taskOpts = { x = x, y = y, z = z + 0.5, rot = rot },
             role = "free", keepBody = false,
         })
         if ped then
@@ -166,7 +175,12 @@ function SUPPLY.start(founder, unitId, state)
     m.variant = math.random() < 0.5 and "crate" or "van"
 
     if m.variant == "van" then
-        m.van = M.track(m, createVehicle(MIS.SUPPLY_VAN, spot.x + 2, spot.y + 2, spot.z + 1, 0, 0, math.random(0, 359)))
+        local v = spot.van
+        if v then
+            m.van = M.track(m, createVehicle(MIS.SUPPLY_VAN, v.x, v.y, v.z + 1, 0, 0, v.rot or 0))
+        else
+            m.van = M.track(m, createVehicle(MIS.SUPPLY_VAN, spot.x + 2, spot.y + 2, spot.z + 1, 0, 0, math.random(0, 359)))
+        end
         if m.van then
             setVehicleEngineState(m.van, false)
             setElementData(m.van, "biz:mission", m.id)

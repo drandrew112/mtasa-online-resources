@@ -62,8 +62,17 @@ MIS.SUPPLY_SPOTS = {
     { name = "Lil' Probe Inn",  x = -130.0,  y = 1490.0, z = 19.21 },
     { name = "El Quebrados",    x = -1440.0, y = 2610.0, z = 54.84 },
     { name = "Verdant Meadows", x = 348.0,   y = 2304.9, z = 24.40 },
-    { name = "Bayside",         x = -2624.0, y = 2402.5, z = 10.77 },
+    { name = "Bayside",         x = -2258.37, y = 2360.39, z = 4.17,
+      van = { x = -2258.37, y = 2360.39, z = 4.17, rot = 102 },
+      guards = {
+          { x = -2262.88, y = 2361.39, z = 3.97 },
+          { x = -2259.83, y = 2368.11, z = 4.14 },
+          { x = -2252.47, y = 2364.76, z = 3.99 },
+          { x = -2252.39, y = 2356.01, z = 3.98 },
+      } },
 }
+-- optional per spot: van = { x, y, z, rot } fixed van spawn, guards = { { x, y, z[, rot] }, ... }
+-- fixed guard spots (all of them used, rot default: facing the spot)
 
 -- buyers of the product (on roads, the pursuers are lane bound)
 MIS.BUYERS = {
