@@ -10,6 +10,9 @@ ui = function(z) return uicore:ui(z) end
 -- Név színe csak az admin szinttől függ: admin = rang színe, egyébként fehér.
 -- Munka (work_core duty): mini kártya a crew tag mellett, a munka színével és nevével.
 -- Zászló: a játékos országa (ui_core, IP alapú), nem a nyelve.
+-- Rang (2026-10-30): a work_core rankBadges munkáinál (police) a work.rank szint képe a munka kártyától jobbra,
+--   img/ranks/<workId>/<szint>.png (előre forgatva). Moduláris: más munkának csak a mappa és a flag kell.
+-- Bilincs (police_system pol.cuffed): ikon a név felett.
 
 local adminTitles_forNametag = {}
 local function build_adminTitles_forNametag()
@@ -75,7 +78,7 @@ local BAR_W, HP_H, ARMOR_H = 70, 4, 2
 local ICON = 14
 local COLOR_WHITE = { 255, 255, 255 }
 local COLOR_LOWHP = { 255, 77, 77 }
-local IMG_MIC, IMG_BUBBLE, IMG_DOT = "img/mic.png", "img/bubble.png", "img/dot.png"
+local IMG_MIC, IMG_BUBBLE, IMG_DOT, IMG_CUFFS = "img/mic.png", "img/bubble.png", "img/dot.png", "img/cuffs.png"
 
 -- voice: a kliens maga látja, ki beszél (nincs element data)
 local speaking = {}
@@ -86,6 +89,7 @@ addEventHandler("onClientPlayerVoiceStop", root, function() speaking[source] = n
 local watchedKeys = {
 	admin_level = true, accName = true, displayName = true, adminDuty = true, admin_name = true,
 	level = true, chatTyping = true, ["work.id"] = true, crewTag = true, country = true,
+	["work.rank"] = true, ["pol.cuffed"] = true,
 }
 
 -- zászló: játékosonként egyszer kérdezzük le az országot + a textúrát (ui_core), utána a cache-ből rajzolunk
@@ -122,6 +126,16 @@ local function setWork(entry, workId)
 	entry.workW = entry.workName and (L.width(entry.workName, SMALL_S, FONT) + 10) or 0
 end
 
+-- rang kép: img/ranks/<workId>/<szint>.png, ha létezik (a meta.xml-ben felsorolva)
+local rankFiles = {}
+local function setRank(entry, p)
+	local lv = tonumber(getElementData(p, "work.rank"))
+	local path = entry.workId and lv and ("img/ranks/" .. tostring(entry.workId) .. "/" .. math.floor(lv) .. ".png") or nil
+	if path and rankFiles[path] == nil then rankFiles[path] = fileExists(path) end
+	entry.rankImg = path and rankFiles[path] and path or nil
+	entry.rankW = entry.rankImg and math.floor(entry.smallH * 128 / 58) or 0
+end
+
 -- (re)build every displayed value of one player from element data
 local function buildEntry(p, entry)
 	entry = entry or {}
@@ -149,6 +163,8 @@ local function buildEntry(p, entry)
 	entry.lvlW = (entry.level_text ~= "") and (L.width(entry.level_text, SMALL_S, FONT) + 8) or 0
 	entry.smallH = dxGetFontHeight(SMALL_S, FONT)
 	setFlag(entry, p)
+	setRank(entry, p)
+	entry.cuffed = getElementData(p, "pol.cuffed") == true
 	entry.typing = getElementData(p, "chatTyping") == true
 	return entry
 end
@@ -293,6 +309,7 @@ local function renderNametags()
 				-- fő sor felett: crew tag + munka mini kártya egymás mellett, együtt centrálva
 				local crewW = e.crewW
 				local topW = crewW + ((crewW > 0 and e.workW > 0) and GAP or 0) + e.workW
+					+ ((e.rankW > 0) and (e.rankW + GAP) or 0)
 				local topX = sX - topW / 2
 				local topBottom = rowTop - 3
 				if crewW > 0 then
@@ -306,6 +323,17 @@ local function renderNametags()
 					dxDrawRectangle(topX, cardY, 3, e.smallH, tocolor(wc[1], wc[2], wc[3], 255))
 					dxDrawText(e.workName, topX + 3, cardY, topX + e.workW, cardY + e.smallH,
 						tocolor(wc[1], wc[2], wc[3], 255), SMALL_S, FONT, "center", "center")
+					topX = topX + e.workW + GAP
+				end
+				-- rang a munka kártyától jobbra
+				if e.rankW > 0 then
+					dxDrawImage(topX, topBottom - e.smallH, e.rankW, e.smallH, e.rankImg)
+				end
+				-- bilincs ikon a név felett (a felső sor fölött)
+				if e.cuffed then
+					local s = ICON + 6
+					local above = (topW > 0) and (topBottom - e.smallH - 3) or (rowTop - 3)
+					dxDrawImage(sX - s / 2, above - s, s, s, IMG_CUFFS)
 				end
 
 				-- páncél (ha van) + health a sor alatt; minden frame-ben olvassuk

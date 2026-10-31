@@ -10,4 +10,21 @@
 	<file src="img/mic.png" />
 	<file src="img/bubble.png" />
 	<file src="img/dot.png" />
+	<file src="img/cuffs.png" />
+	<!-- rank badges: img/ranks/<workId>/<level>.png (work_core rankBadges, work.rank element data) -->
+	<file src="img/ranks/police/1.png" />
+	<file src="img/ranks/police/2.png" />
+	<file src="img/ranks/police/3.png" />
+	<file src="img/ranks/police/4.png" />
+	<file src="img/ranks/police/5.png" />
+	<file src="img/ranks/police/6.png" />
+	<file src="img/ranks/police/7.png" />
+	<file src="img/ranks/police/8.png" />
+	<file src="img/ranks/police/9.png" />
+	<file src="img/ranks/police/10.png" />
+	<file src="img/ranks/police/11.png" />
+	<file src="img/ranks/police/12.png" />
+	<file src="img/ranks/police/13.png" />
+	<file src="img/ranks/police/14.png" />
+	<file src="img/ranks/police/15.png" />
 </meta>
