@@ -29,6 +29,7 @@ HELP_INDEX = {
         { id = "websites", order = 30, title = { en = "In-game websites", hu = "Játékbeli weboldalak" } },
         { id = "atc", order = 35, title = { en = "Air traffic control", hu = "Légiforgalmi irányítás" } },
         { id = "medical", order = 40, title = { en = "Medical system", hu = "Orvosi rendszer" } },
+        { id = "police", order = 45, title = { en = "Police", hu = "Rendőrség" } },
     },
     topics = {
         -- features: one page per menu / app
@@ -88,5 +89,18 @@ HELP_INDEX = {
         { id = "medical_minigames",  category = "medical", order = 80, file = "medical/minigames.txt" },
         { id = "medical_equipment",  category = "medical", order = 90, file = "medical/equipment.txt" },
         { id = "medical_cases",      category = "medical", order = 100, file = "medical/cases.txt" },
+        -- police (police_system, work_police)
+        { id = "police", category = "police", order = 10, file = "police/police.txt" },
+        { id = "police_duty", category = "police", order = 20, file = "police/police_duty.txt" },
+        { id = "police_units", category = "police", order = 30, file = "police/police_units.txt" },
+        { id = "police_mdc", category = "police", order = 40, file = "police/police_mdc.txt" },
+        { id = "police_radio", category = "police", order = 50, file = "police/police_radio.txt" },
+        { id = "police_stops", category = "police", order = 60, file = "police/police_stops.txt" },
+        { id = "police_arrest", category = "police", order = 70, file = "police/police_arrest.txt" },
+        { id = "police_pursuits", category = "police", order = 80, file = "police/police_pursuits.txt" },
+        { id = "police_reports", category = "police", order = 90, file = "police/police_reports.txt" },
+        { id = "police_fines", category = "police", order = 100, file = "police/police_fines.txt" },
+        { id = "police_services", category = "police", order = 110, file = "police/police_services.txt" },
+        { id = "wanted", category = "police", order = 120, file = "police/wanted.txt" },
     },
 }

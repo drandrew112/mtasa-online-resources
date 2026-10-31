@@ -95,5 +95,8 @@
   "v_bank.tx.loan.installment_forced": "Loan #{loan} installment {n}/{of} (collected)",
   "v_bank.tx.loan.extra": "Loan #{loan} early repayment",
   "v_bank.tx.salary.gov": "Salary: {position}",
-  "v_bank.group.salary": "Salaries"
+  "v_bank.group.salary": "Salaries",
+  "v_bank.tx.fine.police": "Police fine: {item}",
+  "v_bank.tx.fine.police_npc": "Police fines (NPC): {item}",
+  "v_bank.tx.fine.police_refund": "Police fine refund: {item}"
 }

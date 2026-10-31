@@ -38,6 +38,12 @@ local function loadModelNames()
 end
 addEventHandler("onResourceStart", resourceRoot, loadModelNames)
 
+-- Clients keep a copy of the override table for their own getModelName.
+addEvent("veh_manager:requestNames", true)
+addEventHandler("veh_manager:requestNames", resourceRoot, function()
+    triggerClientEvent(client, "veh_manager:names", resourceRoot, modelNames)
+end)
+
 -- Human-readable name for a vehicle model id. A models.json override wins;
 -- otherwise GTA's built-in name is used ("Infernus", "Sparrow", ...).
 -- -> string | false

@@ -318,6 +318,45 @@ function Agents.spawn(lane, s, v, opts)
     return ag
 end
 
+-- an existing vehicle with its driver ped (a former agent driven by physics, e.g. a chase car or a vehicle stopped
+-- by the police) back into the simulation at lane / s. The elements are kept: syncing off, the clients place them
+-- again (puppets). Returns the agent or nil.
+function Agents.adopt(veh, ped, lane, s, v)
+    if not isElement(veh) or not isElement(ped) or getVehicleOccupant(veh, 0) ~= ped then return nil end
+    if A.byVeh[veh] then return A.byVeh[veh] end
+    local x, y, z, fx, fy, fz = Geo.pose(lane, s, 0)
+    if not x then return nil end
+    A.released[veh] = nil
+    local rx, ry, rz = Geo.rotation(fx, fy, fz)
+    setElementSyncer(veh, false)
+    setElementSyncer(ped, false)
+    setElementFrozen(veh, false)
+    setElementVelocity(veh, 0, 0, 0)
+    setElementPosition(veh, x, y, z + 0.6, false)
+    setElementRotation(veh, rx, ry, rz)
+    setVehicleEngineState(veh, true)
+    setElementData(veh, "ai_traffic", true)
+    setElementData(ped, "ai_traffic", true)
+    local len = vehicleLength(veh)
+    local id = nextId
+    nextId = nextId + 1
+    local ag = {
+        id = id, veh = veh, ped = ped, model = getElementModel(veh), len = len, half = len / 2,
+        plan = { { code = lane } }, s = s, v = v or 0, a = 0,
+        v0f = TRAFFIC.DRIVER_FACTOR[1] + random() * (TRAFFIC.DRIVER_FACTOR[2] - TRAFFIC.DRIVER_FACTOR[1]),
+        lat = 0, latRate = 0, latTarget = 0, latSlope = TRAFFIC.RETURN_SLOPE,
+        x = x, y = y, z = z, fx = fx, fy = fy, fz = fz, hx = 0, hy = 1,
+        born = getTickCount(), posRefresh = getTickCount() + random(TRAFFIC.SERVER_POS_REFRESH),
+    }
+    Agents.updatePose(ag)
+    A.list[id], A.byVeh[veh], A.byPed[ped] = ag, ag, ag
+    A.count = A.count + 1
+    hashAdd(ag)
+    occAdd(lane, ag)
+    Agents.extendPlan(ag)
+    return ag
+end
+
 local function forget(ag, reason)
     for _, p in ipairs(ag.plan) do occRemove(p.code, ag) end
     if ag.script then Scripted.forget(ag, reason) end
@@ -353,11 +392,20 @@ local function handOverDriver(ped, veh, reason, culprit, behaviour)
     return ok and taken == true
 end
 
+-- reasons that keep the driver in the vehicle (no ai_peds hand-over): the export, the chase motor (server/chase.lua)
+-- and a vehicle parked as a road block
+local KEEP_DRIVER = { export = true, chase = true, park = true }
+
 -- the vehicle leaves the simulation and becomes an ordinary physics vehicle
--- reason: "crash" | "damage" | "enter" | "jacked" | "export" | "ambush"; culprit: the player (or element) that
--- caused it; behaviour: forced ai_peds behaviour of the driver ("enemy" for an ambush), nil = ai_peds decides
+-- reason: "crash" | "damage" | "enter" | "jacked" | "export" | "ambush" | "chase" | "park"; culprit: the player (or
+-- element) that caused it; behaviour: forced ai_peds behaviour of the driver ("enemy" for an ambush), nil = ai_peds
+-- decides. A scripted vehicle with keepDriver (createScriptedVehicle option) keeps its driver after a crash / damage
+-- too (its owner decides what happens, e.g. the police AI switches to the chase motor).
 function Agents.release(ag, reason, culprit, behaviour)
     if not A.list[ag.id] then return false end
+    local keep = KEEP_DRIVER[reason] or (ag.script and ag.script.keepDriver and (reason == "crash" or reason == "damage"))
+    -- the chase motor and road blocks keep the vehicle: no "removed" event for its owner
+    if ag.script and (reason == "chase" or reason == "park") then ag.script.silent = true end
     forget(ag, reason)
     local veh, ped = ag.veh, ag.ped
     if not isElement(veh) then return false end
@@ -378,7 +426,7 @@ function Agents.release(ag, reason, culprit, behaviour)
     Sync.release(ag, reason)
     if crashed then setVehicleEngineState(veh, false) end
     -- crash / damage / jacked / a player got in: the driver gets out (ai_peds owns it from now on)
-    if reason ~= "export" and handOverDriver(ped, veh, reason, culprit, behaviour) then
+    if not keep and handOverDriver(ped, veh, reason, culprit, behaviour) then
         A.released[veh].ped = nil
     end
     return true

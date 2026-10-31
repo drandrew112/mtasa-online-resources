@@ -41,7 +41,7 @@ addEventHandler("onClientPedWeaponFire", root, function(weapon, _, _, hx, hy, hz
 end)
 
 -- damage to AI peds: reported by the attacker's client (local player, its vehicle, or an AI ped synced here)
-addEventHandler("onClientPedDamage", root, function(attacker)
+addEventHandler("onClientPedDamage", root, function(attacker, weapon, _, loss)
     if not isAIPed(source) or not isElement(attacker) then return end
     local mine = attacker == localPlayer
     if not mine and getElementType(attacker) == "vehicle" then mine = getVehicleController(attacker) == localPlayer end
@@ -50,7 +50,7 @@ addEventHandler("onClientPedDamage", root, function(attacker)
     local now = getTickCount()
     if lastDamage[source] and now - lastDamage[source] < 300 then return end
     lastDamage[source] = now
-    triggerServerEvent(EV_THREAT, resourceRoot, "damage", source, attacker)
+    triggerServerEvent(EV_THREAT, resourceRoot, "damage", source, attacker, weapon or 0, loss or 0)
 end)
 
 addEventHandler("onClientElementDestroy", root, function()

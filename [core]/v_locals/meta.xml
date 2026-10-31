@@ -64,6 +64,7 @@
     <file src="locales/en/mg_intravenous.json" />
     <file src="locales/en/mg_splinting.json" />
     <file src="locales/en/parachute.json" />
+    <file src="locales/en/police_system.json" />
     <file src="locales/en/realdriveby.json" />
     <file src="locales/en/rw_core.json" />
     <file src="locales/en/rw_customtracks.json" />
@@ -116,6 +117,7 @@
     <file src="locales/en/work_atc.json" />
     <file src="locales/en/work_core.json" />
     <file src="locales/en/work_ems.json" />
+    <file src="locales/en/work_police.json" />
     <file src="locales/en/work_traindriver.json" />
     <file src="locales/en/world_clothes_shop.json" />
     <file src="locales/en/world_elevators.json" />
@@ -170,6 +172,7 @@
     <file src="locales/hu/mg_intravenous.json" />
     <file src="locales/hu/mg_splinting.json" />
     <file src="locales/hu/parachute.json" />
+    <file src="locales/hu/police_system.json" />
     <file src="locales/hu/realdriveby.json" />
     <file src="locales/hu/rw_core.json" />
     <file src="locales/hu/rw_customtracks.json" />
@@ -222,6 +225,7 @@
     <file src="locales/hu/work_atc.json" />
     <file src="locales/hu/work_core.json" />
     <file src="locales/hu/work_ems.json" />
+    <file src="locales/hu/work_police.json" />
     <file src="locales/hu/work_traindriver.json" />
     <file src="locales/hu/world_clothes_shop.json" />
     <file src="locales/hu/world_elevators.json" />

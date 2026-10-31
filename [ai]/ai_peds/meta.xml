@@ -23,6 +23,8 @@
     <script src="server/behaviours/scared.lua"   type="server" />
     <script src="server/behaviours/enemy.lua"    type="server" />
     <script src="server/behaviours/exiting.lua"  type="server" />
+    <script src="server/behaviours/police.lua"   type="server" />
+    <script src="server/vehicles.lua"   type="server" />
     <script src="server/perception.lua" type="server" />
     <script src="server/traffic.lua"    type="server" />
     <script src="server/drivers.lua"    type="server" />
@@ -60,4 +62,8 @@
     <export function="isAIPedTrafficEnabled"  type="server" />
     <export function="getAIPedStats"      type="server" />
     <export function="isPointSeenByPlayers" type="server" />
+    <!-- police work: behaviours police / detained / cuffed / patient, vehicle tasks, keep -->
+    <export function="aiPedEnterVehicle"  type="server" />
+    <export function="aiPedExitVehicle"   type="server" />
+    <export function="setAIPedKeep"       type="server" />
 </meta>

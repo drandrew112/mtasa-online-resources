@@ -273,7 +273,7 @@ local function drawMoneyStack(mo, balanceAlpha)
     local k = 1 - math.exp(-dt / 70)
 
     local tr = moneyMetrics()
-    local y = tr.y
+    local y = tr.y + (UI.getWantedOffset and UI.getWantedOffset() or 0) -- korozes csillagok alatt
     for _, moneyType in ipairs(MONEY_TYPES) do
         local block = mo[moneyType]
         local entries = block.entries

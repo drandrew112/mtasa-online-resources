@@ -1,0 +1,12 @@
+# Penal code, fines, warnings
+@keywords: penal code, BTK, fine, ticket, warning, amount, refund, government
+@related: police_stops, police_mdc
+
+The penal code (BTK) lists the offences with their fines: traffic, parking, vehicle, pedestrians, public places, public order, crimes. **Warnings** have no fine. The current amounts are on the MDC **Penal code** page; the government can change them on /gov (Police · Fines), the default always stays.
+
+- A **player's fine** is taken from the bank account at once (it may go negative).
+- An **NPC's fine** is income of the state too.
+- The money goes to the state account chosen by the government (default: the treasury).
+- A **Captain** or higher can refund a fine on the citizen's profile (the player must be online).
+
+Crimes (theft, robbery, assault...) are reasons for arrest and warrants; their minutes count in the jail time.

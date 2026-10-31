@@ -63,5 +63,6 @@ WORK_DATA = {
     VEHICLE_WORK  = "work.vehicle",   -- vehicle: work id
     VEHICLE_OWNER = "work.owner",     -- vehicle: player who requested it
     PLAYER_LEVELS = "work.levels",    -- player: { [workId] = { level, xp, from, to } } (synced; to = false at max level)
+    PLAYER_RANK = "work.rank",        -- player: work level while on duty in a work with rankBadges (synced)
     LEVEL_STORAGE = "work.levels",    -- accData key (JSON { [workId] = xp })
 }

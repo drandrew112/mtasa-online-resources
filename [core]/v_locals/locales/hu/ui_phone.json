@@ -129,5 +129,10 @@
   "ui_phone.mail.new_mails": "{count|int} új emailed érkezett a telefonodra.",
   "ui_phone.mail.cmd_usage": "Használat: /phonemail <fiók|all> <tárgy> | <szöveg>",
   "ui_phone.mail.cmd_sent": "Telefonos email elküldve ({group}).",
-  "ui_phone.mail.cmd_failed": "Telefonos email hiba: {error}"
+  "ui_phone.mail.cmd_failed": "Telefonos email hiba: {error}",
+  "ui_phone.emergency.police_call_registered": "A bejelentésedet rögzítettük (#{id}). Egy egység felveszi veled a kapcsolatot.",
+  "ui_phone.emergency.police_describe": "Írd le, mi történt és hol.",
+  "ui_phone.emergency.police_no_units": "Most nincs szolgálatban rendőr egység.",
+  "ui_phone.emergency.police_open_call": "Az előző bejelentésed még folyamatban van.",
+  "ui_phone.emergency.police_what_happened": "Rendőrség: mi történt? (rövid cím)"
 }

@@ -815,8 +815,9 @@ end
 -- TR.GO_AROUND_ALT. Pilots on their own keep that level until only the base + final fix are left, then
 -- descend for the new approach; a controller has to clear them lower. Without a procedure: runway
 -- heading past the field, then a new approach from the side.
-local function goAround(ac)
+local function goAround(ac, why)
     local e = ac.rwy
+    outputDebugString(('avi_traffic: %s go-around (%s) alt %d cfl %s'):format(ac.cs, why or '?', ac.alt, tostring(ac.cfl)))
     ac.phase = "air"
     ac.missed = true
     ac.landClr, ac.vacateVia, ac.appClr = nil, nil, nil
@@ -841,7 +842,7 @@ local function goAround(ac)
     ac.ri = #ac.route + 1
 end
 
-function trafficGoAround(ac) goAround(ac) end
+function trafficGoAround(ac) goAround(ac, 'clearance') end
 
 -- approach set-up: a base point when the aircraft is on the airport side of the final fix
 -- (rwy / ff: that runway end and its final fix, default = the arrival runway)
@@ -1164,7 +1165,7 @@ local function tickAir(ac, dt)
         elseif kind == "final" then
             local glideAt = elev + TR.FINAL_AGL
             if ac.alt > glideAt + TR.GO_AROUND_MARGIN then
-                goAround(ac)
+                goAround(ac, 'too high at the final fix')
             else
                 ac.phase = "final"
                 ac.missed, ac.ga, ac.proc = nil, nil, nil
@@ -1204,7 +1205,7 @@ local function tickFinal(ac, dt)
     -- decision point: too high, or no landing clearance from the controller = go-around
     if d < TR.LAND_DECISION_DIST and not ac.landClr then
         if ac.alt > glide + 300 or controlled(ac) then
-            goAround(ac)
+            goAround(ac, 'decision point')
             return
         end
         ac.landClr = true

@@ -1,0 +1,15 @@
+# Arrest, escort, handover
+@keywords: arrest, handcuffs, cuff, escort, police car, back seat, handover, station, jail, busted
+@related: police_stops, wanted
+
+## Handcuffs
+**Arrest** in the actions menu (a stopped person, a wanted / surrendered suspect). A player must stand on foot within 1.5 m (or have surrendered); cuffing takes 2 s and fails if the suspect pulls away. A cuffed person has a cuff icon over the head and can only walk.
+
+## Escort and the car
+- **Escort** – the suspect follows you (again: stop).
+- **Place in vehicle** – into the back seat of the nearest police car. A cuffed player can also get in with `G`, but cannot get out.
+- **Take out of vehicle**.
+- **Remove handcuffs** – logged.
+
+## Handover
+Drive (or walk) the suspect to the **handover point** of the station (a blue marker at LSPD). An NPC is taken over; a player goes to jail: as many minutes as the wanted level, plus the minutes of the warrant reasons (warrants at most 10 minutes together). The jail time also runs while the player is offline. The suspect's warrants become served.

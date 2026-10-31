@@ -254,6 +254,44 @@ local function arrive(ag, tgt)
     end
 end
 
+------------------------------------------------------------------------ fleeing (setTrafficVehicleFlee)
+
+-- every retargetMs a turn point on the road ~200 m ahead, on the side away from the element it flees from
+local function fleeStep(ag, sc, now)
+    local fl = sc.flee
+    if now < (fl.next or 0) then return end
+    fl.next = now + 3000
+    local fx, fy = ag.x, ag.y
+    if isElement(fl.from) then fx, fy = getElementPosition(fl.from) end
+    local dx, dy = ag.x - fx, ag.y - fy
+    local l = sqrt(dx * dx + dy * dy)
+    if l < 1 then dx, dy, l = ag.hx, ag.hy, 1 end
+    -- mostly ahead (no u-turns in front of the police), bent away from the chaser
+    local ax, ay = ag.hx * 0.6 + dx / l * 0.4, ag.hy * 0.6 + dy / l * 0.4
+    local lane, s = snap(ag.x + ax * 200, ag.y + ay * 200, ag.z, nil, 90)
+    if not lane then return end
+    local px, py, pz = Geo.pose(lane, s, 0)
+    sc.targets = { { id = nextTargetId, kind = "turn", lane = lane, s = s, x = px, y = py, z = pz, wait = 0, hold = false, tag = "flee" } }
+    nextTargetId = nextTargetId + 1
+    sc.endLeft = nil
+    reroute(ag)
+end
+
+-- despawnUnseen: removed as soon as no camera sees it and every player is farther than minDist (checked every second)
+local function unseenStep(ag, sc, now)
+    local du = sc.despawnUnseen
+    if now < (du.next or 0) then return end
+    du.next = now + 1000
+    local players = Traffic.players
+    local min2 = du.minDist * du.minDist
+    for _, p in ipairs(players) do
+        if (p.x - ag.x) ^ 2 + (p.y - ag.y) ^ 2 < min2 then return end
+    end
+    if Views.anySees(players, ag.x, ag.y, ag.z + 1, now) then return end
+    Agents.destroy(ag, "despawned")
+    return true
+end
+
 -- once per simulation tick, before Sim.step
 function Scripted.step(now, dt)
     local ms = dt * 1000
@@ -261,8 +299,11 @@ function Scripted.step(now, dt)
         local sc = ag.script
         if not Agents.list[ag.id] then
             S.list[ag] = nil
+        elseif sc.despawnUnseen and unseenStep(ag, sc, now) then
+            -- gone
         else
             if sc.pursuit then pursuitStep(ag, sc, now, ms) end
+            if sc.flee then fleeStep(ag, sc, now) end
             local tgt = sc.targets[1]
             if tgt then
                 local cur = ag.plan[1].code
@@ -325,10 +366,36 @@ local function clamp(v, lo, hi)
     return v
 end
 
+-- the script table of a new scripted vehicle from the createScriptedVehicle options. Profile "pursuit" (police
+-- chases) = navmesh "emergency" routes + drives through red lights slowly (sim.lua gate) + the traffic gives way to
+-- it while its v_els lights are on (els.lua)
+local function newScript(options)
+    local profile = type(options.profile) == "string" and options.profile or "car"
+    local pursuitDrive = profile == "pursuit"
+    return {
+        targets = {}, exits = {}, wish = {}, noPath = {},
+        speedFactor = tonumber(options.speedFactor) and clamp(tonumber(options.speedFactor), 0.3, 1.5) or nil,
+        profile = pursuitDrive and "emergency" or profile,
+        pursuitDrive = pursuitDrive or nil,
+        keepDriver = options.keepDriver == true or nil,
+        owner = options.owner or (sourceResource and getResourceName(sourceResource) or nil),
+    }
+end
+
+local function addScripted(ag, script)
+    ag.script = script
+    S.list[ag] = true
+    S.count = S.count + 1
+    setElementData(ag.veh, "ai_traffic_scripted", true)
+end
+
 -- create a vehicle (with a driver) on the road nearest to x, y, z, standing; returns the vehicle and the
 -- driver ped, or false and a reason. options: heading (degrees, picks the lane direction), skin (driver),
 -- speedFactor (0.3 - 1.5, multiplies the wanted speed), profile (navmesh vehicle profile for the routes: "car"
--- (default), "bus", "truck", "emergency"...), pursuit = { target = element, ... } (see setScriptedPursuit)
+-- (default), "bus", "truck", "emergency"..., or "pursuit": emergency routes + red lights passed slowly + traffic
+-- gives way while its v_els lights are on), keepDriver (true: a crash / damage does not hand the driver over to
+-- ai_peds, the vehicle becomes a physics vehicle with its driver; see the "crash" removed event),
+-- pursuit = { target = element, ... } (see setScriptedPursuit)
 function createScriptedVehicle(model, x, y, z, options)
     options = type(options) == "table" and options or {}
     model, x, y, z = tonumber(model), tonumber(x), tonumber(y), tonumber(z)
@@ -339,15 +406,7 @@ function createScriptedVehicle(model, x, y, z, options)
     local len = Geo.length(lane)
     local ag = Agents.spawn(lane, clamp(s, 1, max(1, len - 1)), 0, { model = model, skin = tonumber(options.skin) })
     if not ag then return false, "create_failed" end
-    ag.script = {
-        targets = {}, exits = {}, wish = {}, noPath = {},
-        speedFactor = tonumber(options.speedFactor) and clamp(tonumber(options.speedFactor), 0.3, 1.5) or nil,
-        profile = type(options.profile) == "string" and options.profile or "car",
-        owner = sourceResource and getResourceName(sourceResource) or nil,
-    }
-    S.list[ag] = true
-    S.count = S.count + 1
-    setElementData(ag.veh, "ai_traffic_scripted", true)
+    addScripted(ag, newScript(options))
     if type(options.pursuit) == "table" and isElement(options.pursuit.target) then
         setScriptedPursuit(ag.veh, options.pursuit.target, options.pursuit)
     end
@@ -496,4 +555,131 @@ function engageScriptedVehicle(veh, culprit, behaviour)
     if not ag then return false end
     culprit = culprit or (ag.script.pursuit and ag.script.pursuit.target)
     return Agents.release(ag, "ambush", culprit, behaviour or "enemy")
+end
+
+------------------------------------------------------------------------ police / service extensions
+
+-- removed at the first moment no camera sees it and every player is farther than minDist (default CULL_MIN_DIST),
+-- instead of SCRIPTED_END_LIFE (tow trucks, ambulances, police cars going home). opts false = off again
+function setScriptedDespawnUnseen(veh, opts)
+    local ag = scripted(veh)
+    if not ag then return false end
+    if opts == false then ag.script.despawnUnseen = nil; return true end
+    opts = type(opts) == "table" and opts or {}
+    ag.script.despawnUnseen = { minDist = tonumber(opts.minDist) or T.CULL_MIN_DIST }
+    return true
+end
+
+-- a traffic vehicle runs away from `from` (an element): it becomes scripted (pursuit driving: red lights, faster)
+-- and keeps choosing a road ~200 m ahead, away from it. from = false: back to ordinary driving (it stays scripted
+-- until SCRIPTED_END_LIFE / its owner removes it)
+function setTrafficVehicleFlee(veh, from, opts)
+    local ag = isElement(veh) and Agents.byVeh[veh]
+    if not ag or not Agents.list[ag.id] then return false end
+    opts = type(opts) == "table" and opts or {}
+    if not ag.script then
+        addScripted(ag, newScript({ profile = "pursuit", speedFactor = opts.speedFactor or 1.35, keepDriver = opts.keepDriver }))
+    end
+    local sc = ag.script
+    if not from then
+        sc.flee = nil
+        sc.targets = {}
+        targetsEmptied(ag)
+        return true
+    end
+    sc.held = nil
+    sc.dwell = nil
+    ag.held = nil
+    sc.flee = { from = from, next = 0 }
+    sc.pursuitDrive = true
+    sc.profile = "emergency"
+    sc.speedFactor = clamp(tonumber(opts.speedFactor) or 1.35, 0.3, 1.5)
+    return true
+end
+
+-- road block: the vehicle leaves the simulation and is parked across the road at x, y, z (rotation rot), frozen,
+-- with its driver inside (the owner gets the crew out). Returns true.
+function parkScriptedVehicle(veh, x, y, z, rot)
+    local ag = scripted(veh)
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    if not ag or not x or not y or not z then return false end
+    Agents.release(ag, "park")
+    setElementPosition(veh, x, y, z + 0.5)
+    setElementRotation(veh, 0, 0, tonumber(rot) or 0)
+    setElementVelocity(veh, 0, 0, 0)
+    setElementFrozen(veh, true)
+    return true
+end
+
+-- a physics vehicle with a ped driver back into the simulation as a scripted vehicle (script = the old script
+-- table or createScriptedVehicle options). Snaps to the nearest lane in its driving direction. -> agent | nil
+function Scripted.adoptVehicle(veh, script)
+    local ped = isElement(veh) and getVehicleController(veh)
+    if not ped or getElementType(ped) ~= "ped" or isPedDead(ped) then return nil end
+    local x, y, z = getElementPosition(veh)
+    local _, _, rz = getElementRotation(veh)
+    local lane, s = snap(x, y, z, rz, 40)
+    if not lane then return nil end
+    local vx, vy = getElementVelocity(veh)
+    local ag = Agents.adopt(veh, ped, lane, clamp(s, 1, max(1, Geo.length(lane) - 1)), sqrt(vx * vx + vy * vy) * 50)
+    if not ag then return nil end
+    setElementFrozen(veh, false)
+    local sc = script and script.targets and script or newScript(script or {})
+    sc.targets, sc.exits, sc.wish, sc.noPath = {}, {}, {}, {}
+    sc.dwell, sc.endLeft, sc.silent, sc.failId, sc.seen, sc.missedId = nil, nil, nil, nil, nil, nil
+    addScripted(ag, sc)
+    reroute(ag)
+    return ag
+end
+
+-- a released / physics traffic vehicle with its driver back into the traffic as an ordinary vehicle (e.g. a car
+-- the police let go after a stop). -> true | false
+function adoptTrafficVehicle(veh)
+    local ped = isElement(veh) and getVehicleController(veh)
+    if not ped or getElementType(ped) ~= "ped" or isPedDead(ped) then return false end
+    local x, y, z = getElementPosition(veh)
+    local _, _, rz = getElementRotation(veh)
+    local lane, s = snap(x, y, z, rz, 40)
+    if not lane then return false end
+    return Agents.adopt(veh, ped, lane, clamp(s, 1, max(1, Geo.length(lane) - 1)), 0) ~= nil
+end
+
+------------------------------------------------------------------------ traffic stop (pull over + hold)
+
+-- the traffic vehicle pulls over to the right (the v_els pull-over, server/els.lua) and stops there, held: no
+-- culling, no removal, until releaseTrafficHold. byVeh: the police vehicle (kept for the owner). -> true | false
+function pullOverTrafficVehicle(veh, byVeh)
+    local ag = isElement(veh) and Agents.byVeh[veh]
+    if not ag or not Agents.list[ag.id] then return false end
+    if ag.script and not ag.script.held and ag.script.owner ~= (sourceResource and getResourceName(sourceResource)) then
+        return false   -- another resource's scripted vehicle (bus...)
+    end
+    if not ag.script then addScripted(ag, newScript({ owner = sourceResource and getResourceName(sourceResource) or nil })) end
+    local sc = ag.script
+    sc.flee, sc.pursuit = nil, nil
+    sc.held = { by = byVeh }
+    ag.held = sc.held
+    sc.targets = {}
+    sc.endLeft = nil
+    reroute(ag)
+    return true
+end
+
+-- the held vehicle drives on as ordinary traffic. -> true | false
+function releaseTrafficHold(veh)
+    local ag = isElement(veh) and Agents.byVeh[veh]
+    if not ag or not ag.script or not ag.script.held then return false end
+    ag.held = nil
+    -- back to random traffic: not a scripted vehicle any more
+    S.list[ag] = nil
+    S.count = S.count - 1
+    ag.script = nil
+    removeElementData(ag.veh, "ai_traffic_scripted")
+    Agents.replan(ag)
+    return true
+end
+
+function isTrafficVehicleHeld(veh)
+    local ag = isElement(veh) and Agents.byVeh[veh]
+    return ag and ag.held and true or false
 end

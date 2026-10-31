@@ -5,7 +5,7 @@ Traffic = { enabled = true, players = {} }
 
 local T = TRAFFIC
 local lastTick = 0
-local nextObstacles, nextEls, nextSpawn, nextCleanup, nextReleased = 0, 0, 0, 0, 0
+local nextObstacles, nextEls, nextSpawn, nextCleanup, nextReleased, nextChase = 0, 0, 0, 0, 0, 0
 
 -- players the traffic is simulated around: { { el, x, y, z } }
 local function activePlayers()
@@ -44,7 +44,7 @@ local function tick()
     if #players == 0 then
         -- plain traffic needs players; scripted vehicles keep driving (nobody is near, nothing else to do)
         if Agents.count > 0 then Agents.clear() end
-        if Scripted.count == 0 then
+        if Scripted.count == 0 and not next(Chase.list) then
             Signals.update(now)
             return
         end
@@ -55,6 +55,7 @@ local function tick()
 
     Scripted.step(now, dt)
     Sim.step(dt, now)
+    if now >= nextChase then nextChase = now + T.CHASE_STEP; Chase.step(now) end
     Scripted.flush()
 
     if now >= nextSpawn then nextSpawn = now + T.SPAWN_INTERVAL; Spawner.update(players, now) end
@@ -76,6 +77,9 @@ end)
 
 addEventHandler("onResourceStop", resourceRoot, function()
     Signals.stop()
+    for veh in pairs(Chase.list) do
+        if isElement(veh) then removeElementData(veh, DATA_CHASE) end
+    end
     Agents.clear(true)
     for veh, r in pairs(Agents.released) do
         local keep = isElement(veh) and Agents.hasPlayerInside(veh)

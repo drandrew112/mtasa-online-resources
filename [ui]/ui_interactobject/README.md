@@ -65,6 +65,13 @@ client/render.lua     markers, prompt, panel
 - `value` must be serialisable (number, string, boolean, element, or a table of those). Functions
   cannot cross a resource boundary, so there are no callbacks: the result arrives as an event.
 - `closeOnSelect` defaults to `true`.
+- `targetInVehicle = true` on an item: only shown while the target ped / player sits in a vehicle;
+  `false`: only while it is on foot (the server re-checks it). Other element types ignore it.
+  The same field on the menu definition filters the whole menu (e.g. `targetInVehicle = false`:
+  no person menu on someone sitting in a vehicle, the vehicle's menu covers it).
+- `checkRange = false` (server menus): the server skips its distance check and the owner checks
+  it in its `onInteractMenuSelect` handler. For elements whose server position lags behind the
+  client (simulated traffic vehicles and their drivers).
 - The anchor is above the head for peds/players and on top of the bounding box for everything else.
 
 ## Server exports (menus every / the listed players see)

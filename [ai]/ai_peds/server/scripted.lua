@@ -9,7 +9,7 @@ local function getP(ped)
 end
 
 local TASK_NAMES = { idle = true, wander = true, ["goto"] = true, patrol = true, guard = true, follow = true }
-local BEHAVIOURS = { civilian = true, scared = true, enemy = true }
+local BEHAVIOURS = { civilian = true, scared = true, enemy = true, police = true, detained = true, cuffed = true, patient = true }
 
 -- createAIPed(skin, x, y, z, opts) -> ped | false, reason
 -- opts: rot, dimension, interior, behaviour ("civilian" default | "scared" | "enemy"), task (name), taskOpts,
@@ -229,4 +229,29 @@ function isPointSeenByPlayers(x, y, z, maxDist, dimension)
         end
     end
     return false
+end
+
+------------------------------------------------------------------------ police work (server/behaviours/police.lua, server/vehicles.lua)
+
+-- the ped gets into veh at seat (0 = driver) with the enter animation (placed there after VEH_TASK_TIMEOUT).
+-- Events onAIPedEnteredVehicle(veh, seat) / onAIPedVehicleTaskFailed("enter", reason)
+function aiPedEnterVehicle(ped, veh, seat)
+    local p = getP(ped)
+    if not p or p.dead or not isElement(veh) or getElementType(veh) ~= "vehicle" then return false end
+    return VehTasks.enter(p, veh, seat)
+end
+
+-- the ped gets out of its vehicle (exit animation). Event onAIPedExitedVehicle(veh)
+function aiPedExitVehicle(ped)
+    local p = getP(ped)
+    if not p or p.dead then return false end
+    return VehTasks.exit(p)
+end
+
+-- keep = true: never culled (walkers / drivers the police stopped); false: back to normal
+function setAIPedKeep(ped, keep)
+    local p = getP(ped)
+    if not p then return false end
+    p.keep = keep and true or nil
+    return true
 end

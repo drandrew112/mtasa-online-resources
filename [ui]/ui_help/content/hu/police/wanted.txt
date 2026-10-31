@@ -1,0 +1,19 @@
+# Körözés
+@keywords: körözés, csillagok, rendőrség, megadás, lerázás, menekülés, börtön, elfogató, elfogtak
+@related: police_pursuits, police_arrest
+
+A jobb felső csillagok a körözési szinted (1–6). Csak nőhet; akkor szűnik meg, ha leráztad a rendőröket, letartóztattak, meghaltál vagy kiléptél.
+
+## Hogyan nő
+- Nem állsz meg a rendőrségnek, vagy továbbhajtasz, miközben villogóval követnek: 2. szint.
+- Rendőrök vagy rendőrautók sebzése: 3. szint, a további sebzés 4–6-ig emeli.
+- Más rendszerek által jelentett bűncselekmények (rablás, lopás...) saját szintet és okot adnak.
+
+## Megadás
+Ha rendőr van a közelben és gyalog állsz: **tartsd lenyomva az `E`-t** a megadáshoz. Ekkor a rendőrök lövés nélkül letartóztatnak.
+
+## A rendőrök lerázása
+Kerülj ki minden rendőrautó (kb. 180 m) és gyalogos rendőr (80 m) látóköréből: a csillagaid villognak, és a radaron egy kör mutatja, hol láttak utoljára. Ha elég ideig rejtve maradsz (1. szinten 20 mp … 6. szinten 120 mp), a rendőrség feladja. Ezért XP jár, ha az üldözés legalább egy percig tartott (15 percenként egyszer). Épületben az idő nem telik, és az AI rendőrök sem jönnek be.
+
+## Letartóztatás és börtön
+Ha letartóztatnak (játékosok vagy az AI: „Elfogtak”), a legközelebbi őrs börtönébe kerülsz annyi percre, ahányas a körözési szinted (plusz elfogatók). Az idő akkor is telik, ha nem vagy fent. Ha megbilincselve vagy 2+ szinten lépsz ki, elfogató parancs kerül rád.

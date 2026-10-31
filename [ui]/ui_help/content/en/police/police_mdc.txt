@@ -1,0 +1,15 @@
+# The MDC (police computer)
+@keywords: MDC, computer, tablet, J, overview, calls, pursuits, wanted, warrants, citizens, vehicles, reports, penal code
+@related: police_units, police_reports, police_fines
+
+Press `J` in a police car (with the police right). It takes most of the screen; your car stands while it is open. `J` or the X closes it.
+
+## Pages
+- **Overview** – reports waiting for you, units on duty with their status, active pursuits (Join), wanted players, calls, your unit's log.
+- **Calls** – calls of citizens (phone, emergency contact → police). **Respond** sets a route and your status, **Close** ends it.
+- **Pursuits** – suspect, level, vehicle, units, duration, area. **Join** to help.
+- **Wanted** – the temporary wanted levels of players with their reasons; they disappear when the wanted level ends.
+- **Warrants** – the warrants (permanent). Issue: pick the citizen, tick the reasons, write a short description and choose its language. Edit / revoke.
+- **Citizens / Vehicles** – the police database: every player and their vehicles, NPCs after their first police contact. Player / NPC filter, search by name, plate, citizen ID, model. A profile shows earlier reports, fines and warnings (date, officer), warrants, vehicles.
+- **Reports** – your drafts (they block the sign-off), submitted ones, the unit's. The editor: title, language, text.
+- **Penal code** – the current fines.

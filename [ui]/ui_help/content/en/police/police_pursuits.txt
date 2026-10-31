@@ -1,0 +1,16 @@
+# Pursuits
+@keywords: pursuit, chase, F4, join, AI police, road block, PIT, tank, wanted level
+@related: wanted, police_units
+
+## Starting and joining
+`F4` (or the radio's Pursuit) starts a pursuit of the stopped vehicle or the vehicle in front of you; a player who does not stop gets the "failure to stop" wanted level. Every wanted player has a pursuit anyway; join it on the MDC **Pursuits** page. Units in a pursuit see the suspect on the radar (and the search circle while it is out of sight).
+
+## AI police
+The AI units join by the wanted level (one player unit = one AI car less):
+- **1** – one car, follows, no shooting; on foot the officers walk up and arrest.
+- **2** – two cars, they box the suspect in and cut it off on its predicted route; they shoot.
+- **3** – three cars, PIT manoeuvres.
+- **4** – four cars, ramming, road blocks ahead.
+- **5–6** – tanks too.
+
+AI cars appear and disappear only where no player looks. Their sirens change tone from time to time.

@@ -385,6 +385,16 @@ local function drive(ped, st, now, dt)
     if st.jumpOff and now >= st.jumpOff then st.jumpOff = nil; ctl(ped, st, "jump", false) end
     st.fightNow = false   -- combat() sets it while aiming + firing / hitting
     local c = st.cmd
+    if c.m == "enter" then
+        -- getting into c.veh at c.seat: the enter task walks the ped to the door (retried while refused)
+        stopCombat(ped, st)
+        setMove(ped, st, false)
+        if getPedOccupiedVehicle(ped) ~= c.veh and isElement(c.veh) and now >= (st.enterAt or 0) then
+            -- passenger: true = any free passenger seat (MTA takes a boolean here); the server warps into the exact seat as fallback
+            st.enterAt = now + (setPedEnterVehicle(ped, c.veh, (c.seat or 0) > 0) and 4000 or 600)
+        end
+        return
+    end
     if getPedOccupiedVehicle(ped) then
         if c.m == "exit" then exitVehicle(ped, st, now)
         elseif now < (st.jackLeave or 0) then leaveJacked(ped, st, now) end
@@ -419,6 +429,9 @@ local function frame(slice)
     for ped, st in pairs(S) do
         if not isElement(ped) then
             S[ped] = nil
+        elseif isElementStreamedIn(ped) and isElementSyncer(ped) and not isPedDead(ped) and isElementAttached(ped) then
+            -- carried (police escort): the attach moves it, the motor must not touch it
+            if st.active then st.active = false; st.sent, st.endAt = {}, {}; releaseAll(ped, st) end
         elseif isElementStreamedIn(ped) and isElementSyncer(ped) and not isPedDead(ped) then
             if not st.active then
                 st.active = true
@@ -444,6 +457,8 @@ local function frame(slice)
                 if st and st.active then pst.ctl = {} else releaseAll(ped, pst) end
                 pst.cmd = nil
             end
+        elseif isElementAttached(ped) then
+            if next(pst.ctl) then releaseAll(ped, pst) end
         else
             puppet(ped, pst, now)
         end

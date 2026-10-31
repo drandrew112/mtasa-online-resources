@@ -1,0 +1,12 @@
+# A rádió
+@keywords: rádió, C, erősítés, mentő, vontató, code 4, státusz, személy lekérdezés, jármű lekérdezés
+@related: police_services, police_units
+
+Szolgálatban nyomd meg a `C`-t: bal oldalon megnyílik a rádió. `←` / `→` kategória, `↑` / `↓` üzenet, `Enter` küld, `C` vagy `Backspace` bezár. Amíg nyitva van, a nyilak és a `C` nem jutnak el a játékig (nincs guggolás, kormányzás).
+
+## Üzenetek
+- **Státusz**: Elérhető, Vonulás, Elfoglalt, Üldözés (üldözést indít a célpontra), **Code 4** (az aktuális intézkedés véget ér, jelentés vázlat készül, a státusz Elérhető).
+- **Erősítés és szolgáltatások**: Rendőri erősítés (a legközelebbi elérhető egységet küldi), Mentő, Vontató ([[police_services]]).
+- **Lekérdezés**: Személy lekérdezése (a legközelebbi személy), Jármű lekérdezése (a legközelebbi jármű) – az eredmény a lekérdezés ablakban jelenik meg.
+
+Minden üzenetnek neve van (pl. `REQUEST_BACKUP`): egy későbbi hangalapú rádió ugyanezeket az üzeneteket használja.

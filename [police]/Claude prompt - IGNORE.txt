@@ -1,0 +1,438 @@
+-# Claude prompt
+# Rendőrségi rendszer
+
+Az első fázisban csak tervezd meg a rendszert és részletesen vázold fel a szokásos html formátumban képekkel együtt.
+A végrehajtási fázisban nagyon figyelj oda, hogy pontosan kövesd a tervet.
+A végrehajtás során MCP-vel tesztelj és derítsd fel a hibákat. A hibák felderítése után pedig javítsd azokat.
+
+A rendőrségi rendszer fogja kezelni minden a rendvédelemhez köthető tevékenységet.
+Rendőr AI, körözések, bírságok, BTK, rendőrségi számítógép, jelentések, bírságok kiosztása, stb...
+
+Fontos cél, hogy minél kevesebb resource el tudja végezni a munkát. Ezért modulokat fogunk építeni minden különálló rendszernek egy resourceön belül.
+
+A fő resource a `police_system`.
+
+Ehhez még tartozik egy police_web ami a játékbeli és hagyományos böngészős weboldalat biztosítja.
+A police_web csak egy nyilvánosság számára elérhető szimpla weboldal amin megtalálja a játékos, hogy hogyan lehet rendőr, megnézheti a statisztikákat, stb...
+Térképet nem adunk ki nyilvánosan.
+
+Javasolhatsz több bontást is ha stabilabbnak látod, de szerintem minél kevesebb export hívás történik annál stabilabb lesz a szerver.
+
+Figyelj az optimalizációra! Ne hagyj feleslegesen futó onclientrender eventeket. Amit csak lehet a szerver számoljon ki. Figyelj az element data stream-re is, hogy ne kapjanak túl sok felesleges csomagot a játékosok.
+
+Körözésekhez a GTASA beépített wanted levelt használjuk ami 0-6 tartományban mozog.
+
+Megkülönböztető jelzéshez a v_els rendszer használd.
+Az AI is váltson időnként sziréna hangokat.
+
+## Rendőr jog
+A mentős és vérszállító rendszerhez hasonlóan itt is egy jogot fog nézni a játék.
+Ugyanúgy kell itt is REQUIRE_POLICE_RIGHT a configban ami alapból false a tesztelés idején.
+
+## Rendőrségi járművek
+- 596: Ford Crown Victoria - Egyszerű rendőrségi autó
+- 598: Skoda Octavia MK3 - Paintjob: hu_pd - ELS Extra: 1
+- 597: GTA5 rendőrautó - Egyenlőre nem adjuk hozzá, csak kommentbe tedd be, hogy később hozzáadhassam.
+- 599: Police Ranger NYPD
+- 432: Tank - Ezt CSAK nagyon magas körözési szinteken használjuk.
+
+## Automatikus körözés kezelés
+A játékos kaphat és el is veszíthet körözési szintet.
+Hozzáadás: Külső scriptek mint a bolt rablás adhat körözést vagy egyéb illegális cselekmények.
+Később ai pedek és sofőrök is hívhatnak rendőrt a játékosra ha az illegális dolgokat hajt végre.  - Ez későbbi
+
+Körözés növekedése:
+1 -> 2: Ha nem áll meg a játékos és nem adja fel magát.
+2 -> 3: Ha elkezdi a játékos lőni a rendőröket.
+További körözések a lövöldözés mértékétől.
+
+Rendőrök lerázása:
+A ui_core képes villogtatni a körözési szintet .
+Ez akkor törénhet amikor már a rendőrségi járműveket eléggé lehagyja a játékos és rendőr pedek sincsenek a közelben.
+Ezt a szintet meg kell tartania a játékosnak a körözési szintnek megfelelő ideig ahhoz, hogy elvesszen a körözése.
+Ezután újabb büncselekmény elkövetéséig nem fogják üldözni a rendőrök.
+
+A wanted level minden esetben ideiglenes. Nem menti el a savesystem lecsatlakozáskor.
+Ha a játékos interioron belül kap körözést akkor addig nincs AI rendőr amíg nem jön ki.
+Interiorban nem lehet lerázni a rendőröket.
+
+Körözés lerázása esetén a szinthez mérten kap XPt a játékos a v_levelsys-ben.
+
+Olyan nincs, hogy -1 körözés. Csak a teljes körözést lehet elveszíteni.
+Hozzáadni tudnak külső rendszerek is, de ők is ellenőrizni fogják a jelenlegi körözési szintet és nem fognak +1-et hozzáadni apróságokért.
+
+## Körözések
+A külső rendszerek hozzáadhatnak körözési okokat. Ezek előre definiált okok.
+Ezt az MDC civil adatbázisban is láthatóvá tesszük amíg a körözés tart.
+Amint a körözés megszűnik akkor eltűnik az ideiglenes körözési indok is.
+
+## Elfogató parancs
+Játékosokra ki lehet adni elfogató parancsot is.
+Ez független a GTASA alap körözési rendszerétől.
+
+Ezeket egy külön adatbázis táblában tároljuk.
+
+Itt is előre meghatározott okok miatt lehet kiadni elfogató parancsot.
+
+Az elfogató parancsot igazoltatáskor látja a rendőr.
+
+## AI
+Használd az ai_land_traffic és ai_peds exportjain a scripted AIt. Ha szükséges bővítsd az ai_land_traffic és ai_peds API-t.
+Körözés szintek
+1: Kevésbé agresszív. Csak megpróbál követni, de nem lőnek a rendőrök. Megpróbálnak letartóztatni anélkül hogy bárki is megsérülne.
+2: Agresszívabban próbálnak megállítani. Itt már lőni is fognak.
+3-4: pit menővereket is megpróbálnak végrehajtani. Később a 3. szintnél már meg fognak jelenni a helikopterek, de erre még az AI miatt nincs lehetőség jelenleg.
+5-6: Itt jönnek a képbe a tankok.
+A rendőrségi AI járművek csak akkor jelenhetnek meg és tűnhetnek meg, ha egy játékos kamerája sem lát rájuk.
+A játék figyelje a körözött játékos útvonalát és az alapján is próbáljon elé végni. Ezt csak 2es szinttől lehet. Amennyiben már lerázás fázisban akkor ez nem érvényes.
+Az üldöző egységeket az üldözés modul hívja meg, de az AI rendszer dönt arról, hogy hol jelennek meg és mit csinálnak pontosan.
+
+## Üldözés modul
+A modul szerver oldalon időnként ellenőrzi a játékosok körözését.
+A körözés szintjének megfelelő agresszivitású és mennyiségű üldöző rendőr lép a képbe.
+
+Az üldözéseket látják a bejelentkezett rendőri egységek az MDC-n egy külön oldalon és az áttekintésben is.
+Az üldözés modul felelős az AI meghívásáért. Az AI rendszer magától nem dönthet úgy, hogy neki most kell egy egység ide-oda.
+Az üldözéseket indíthatják játékos rendőrök is.
+Az NPC rendőrös üldözésekbe csatlakozhatnak játékos rendőrök is.
+
+Mégegyszer elmondom, hogy az üldözés modul felelős az AI meghívásáért.
+
+## MDC - Rendőrségi számítógép
+Rendőrautókban J gombbal megnyitható dx panel.
+Csak rendőr joggal lehessen megnyitni. Ha nincs valakinek rendőr joga az ne is kapjon róla figyelmeztetést.
+Fontos, hogy a Skoda esetében csak hu_pd paintjob-al működhet a rendőrségi gép mivel ezt az autót más rendszerek is használják más paintjobokkal.
+
+A panel a képernyő közepén a képernyő 80%-át elfoglalja.
+Kategóriákra bontva láthatók a felső sávban a menüpontok.
+
+Ez a panel egy modern rendőrségi számítógép dizájnját hordozza.
+Nem akarom, hogy túlságosan szürke legyen. Inkább legyen egy enyhe navy blue beütése és a UI elemek kövessék a modern rendőrségi rendszereket.
+
+### Kis kijelző
+A jobb alsó sarokban szolgálat közben látszik egy kis panel ami mutatja az egység számot és a státuszt.
+A státusz alatt kis F4-F5-F6-F7 szín kódokkal jelzi, hogy melyik gomb milyen státuszt állít be.
+
+### F gombok
+Státusz módosításhoz fogjuk használni
+- F4 Üldözés
+- F5 Elérhető
+- F6 Responding
+- F7 Elfoglalt
+
+### Szolgálatba lépés és egység létrehozása:
+Az egyésg létrehozás képernyő kisebb helyet foglal el.
+Amíg az egység nincs bejelentkezve addig nem fér hozzá semmihez.
+
+Egység társakat lehet hozzáadni, egység számot kijelölni.
+Egység tipusok elérhetőek az alap rendőrautókban:
+- Adam (A-) Kétszemélyes egység
+- Lincoln (L-) Egyszemélyes egység
+
+Egység státusza:
+Elérhető, responding, elfoglalt/intézkedés (helyszínen, intézkedik, közúti ellenőrzés, stb...), üldözésben.
+Ezeket a státuszokat manuálisan lehet csak állítani egyenlőre. Később automatizált rendszer is lesz a hívásoknál.
+
+### Jelentések
+
+Itt lehet majd jelentéseket kitölteni a szolgálati eseményekről. Traffic stop, intézkedések, letartóztatások, stb..
+A rendszer figyelmeztessen értesítésben, hogy jelentést kell kitölteni.
+Az MDC ajánljon fel egy előre megírt jelentést ami egy rövid szöveg a történtek alapján amit a játék megjegyzett.
+
+A jelentéseknél mindig látszódjon, hogy milyen nyelven írták őket.
+Ez alapértelmezetten a játékos beállított nyelve, de akár más nyelven is adhat le jelentést.
+A lényeg, hogy egy jelentés csak egy nyelvű lehet egyenlőre és nincs manuális fordítás.
+Később majd AIval le lehet fordítani, de az még később lesz csak.
+
+### Citizens / Civilek és Vehicles / Járművek
+Egy lista azokról akik / akiknek a járműve benne van a rendőrségi adatbázisban.
+
+A rendőrségi adatbázisban pedek és playerek is lehetnek valamint ped és player járművek.
+Ezt külön szűrővel lehet kapcsolgatni. Player/NPC
+
+Korábbi jelentések:
+A civilhez/járműhöz kapcsolódó korábbi jelentések megnyitása lehetséges innen is. Dáummal és névvel.
+
+Korábbi bírságok és figyelmeztetések
+A civilhez/járműhöz tartozó korábbi bírságok és figyelmeztetések visszanézhetők. Dáummal és névvel.
+
+Keresés: Járművet és civilt is lehessen keresni név, rendszám, egyéb adatok alapján
+Civil oldalon láthatóak legyenek az ideiglenes körözések és elfogató parancs is.
+
+### Bejelentések
+Később ide fognak érkezni a bejelentések.
+
+### Körözések
+Ideiglenesen létező körözések amik játékoshoz kapcsolódnak. Ezeket az áttekintés panelen is látni akarom.
+
+### Elfogató parancsok
+Itt lehet kiadni/törölni/módosítani elfogató parancsokat.
+Ki lehet választani milyen bűncselekmények miatt kell az elfogató és lehessen egy rövid leírást is megadni.
+A leírás nyelve állítható kell legyen. Alapértelmezés szerint a játékos saját nyelve. Később AI fordítóval is használható lesz.
+
+### Áttekintés / overview
+A főoldalon kell legyen egy áttekintés ahol láthatók az aktív bejelentések, más egységek, státuszuk és néhány statisztika is.
+Ezt is csak bejelentkezett egység látja.
+
+## Lekérdezésekért felelős modul
+Ez a modul fog felelni a rádiós és temp menüs lekérdezésekért.
+Ilyenkor a rendőr a jobb alsó sarokban lévő mini MDC panel mellett balra kap egy kis ablakot amin a lekérdezés adatai látszódnak. Ezt space megnyomásával eltüntetheti.
+
+## Esemény kezelő
+Ez a modul fogja kezelni az erősítés kéréseket, bejelentések kiosztását és minden egyéb eseményt amit nem szeretnénk hogy önállóan külön-külön végezzenek a modulok.
+Ez a rendszer kezeli a stoptheped traffic stopokat, ped stopokat is.
+
+Ez a rendszer felelős még az naplózásért is, hogy a jelentések automatikus kitöltése működjön.
+Naplózza a
+- fegyver elővételt
+- fegyver használatot
+- bilincselést
+- üldözés eseményeit
+Mindezekhez pedig időpontokat társít.
+
+## History modul
+Ez a modul felelős azért, hogy az AI pedek és járművek ne mindig üres adatlappal jelenjenek meg.
+Vannak chancek arra, hogy körözés legyen kiadva valamelyik ped ellen, lehetnek korábbi bírságai vagy figyelmeztetéseit.
+Ilyenkor mindig felvesszük a pedet vagy járművet a megfelelő adatbázisban és adunk neki nevet.
+A név a skin nemétől függ. Férfi skin nem kaphat női nevet.
+
+Ez a modul felel még azért is, hogy minden játékos és az általuk birtokolt jármű regisztrálva legyen a rendőrségi rendszerben is automatikusan.
+A szerver ezeket a resource indulásakor átnézi.
+Regisztrációkor automatikusan hozzáadja a játékost a civil táblához játékosként.
+Ha a játékos járművet vásárol az automatikusan hozzadódik a rendrőségnek fenntartott jármű adatbázishoz is.
+
+## Tow modul
+Ez egy AI scriptelt tow furgonnal érkezik a helyszínre, felcsatolja a járművet és továbbhajt.
+Eltűnik amikor már egy játékos sem látja a kamerában.
+Mindig a legközelebbi rendőrségre indul el ahol mindenképpen eltűnik az átadó helyen.
+
+A spawn a rendőri egység körüli úthálózaton x távolságon belül történik ahol nem látja egyik játékos sem.
+Ha a tow jármű még a felvétel előtt megsemmisül akkor a szállítás sikertelen és visszaáll minden. Erről értesítést kap a rendőr aki hívta.
+
+## Medical modul
+Ha nincs elérhető mentős a szerveren, de a rendőr mégis mentőt kér akkor egy AI scriptelt mentőautó fog megérkezni.
+Az AI mentő megáll, kinyílik a hátsó ajtó és bekerül a beteg.
+Ezután elhajt és a legközelebbi kórház felé indul.
+Eltűnik ha egy játékos kamerája sem látja már.
+
+A spawn csak olyan helyen történhet a rendőri egység körül x távolságon belül ahol nem lát rá egy játékos sem.
+Ha a mentőautó megsemmisül a kiérkezés előtt akkor sikertelen és újat kell hívni. Erről értesítést kap a rendőr aki hívta.
+
+## Arrest manager
+A letartóztatásokért felelős rendszer.
+Amikor a játékos letartóztat egy másik játékost vagy egy pedet akkor ez a rendszer lép működésbe.
+
+A pedet/játékost ilyenkor megbilincselik.
+
+Animációval mutatjuk a bilincs meglétét.
+Player: v_nametags-ban egy bilincs ikon a név felett
+Ped: Bilincs ikon a fej felett
+
+A bilincset le lehet venni játékosról és pedről is és el lehet engedni. Ezt a napló is követi.
+
+A bilincselt játékos nem tud futni csak sétálni.
+
+A megbilincselt pedet és játékost meg lehet fogni és lehet vinni magunkkal.
+
+A rendőrségi járműbe be és ki is lehet helyezni a megbilincselt pedet vagy játékost.
+Játékos esetében a G betűt beszálláshoz engedélyezzük, de a kiszállást letiltjuk.
+
+A letartóztatás után a letartóztatottat be lehet vinni a rendőrségre ahol át lehet adni.
+
+## BTK azaz bírságok és figyelmeztetések adatbázisa.
+Ezt egy json-ben tároljuk egyenlőre.
+Minden bírság tételnek van egy default értéke - Ezt a kormány módosíthatja, de a json-ben megmarad a default.
+
+Közlekedés
+- Sebességhatár túllépése
+- Piros jelzésen történő áthaladás
+- Elsőbbségadás elmulasztása
+- Szabálytalan előzés és sávváltás
+- Forgalommal szembeni közlekedés
+- Veszélyes vagy gondatlan vezetés
+- Sürgősségi jármű akadályozása
+- Illegális utcai versenyzés
+
+Parkolási
+- Tiltott helyen parkolás
+- Járdán történő szabálytalan parkolás
+- Gyalogátkelőhelyen történő parkolás
+- Mentési útvonal vagy behajtó eltorlaszolása
+
+Jármű
+- Rendszám nélküli vagy érvénytelen rendszámmal történő közlekedés
+- Érvénytelen forgalmi engedély
+- Lejárt műszaki vizsga
+- Veszélyes műszaki állapotú jármű
+- Nem engedélyezett járműátalakítás
+
+Gyalogos
+- Szabálytalan úttesten átkelés
+- Piros jelzés figyelmen kívül hagyása
+- Közlekedésre nem kijelölt útszakaszon tartózkodás
+- Tiltott területre történő belépés
+- Közúti forgalom indokolatlan akadályozása
+
+Közterület
+- Köztisztaság megsértése, szemetelés
+- Közterületi hangoskodás
+- Közterületi ittas rendzavarás
+- Közterületi vizelés
+- Jogosulatlan graffiti vagy falfirka
+
+Közrend
+- Rendőri intézkedés akadályozása
+- Rendőri felszólítás figyelmen kívül hagyása
+- Hamis személyazonosító adatok megadása
+- Hamis bejelentés
+- Közterületi verekedés
+- Más személy zaklatása vagy fenyegetése
+
+Büncselekmények
+- Lopás
+- Gépjárműlopás
+- Rablás
+- Betörés
+- Testi sértés
+- Emberölés
+
+Figyelmeztetések: Nincs fizetés
+- Kisebb sebességtúllépés
+- Irányjelzés elmulasztása
+- Kisebb parkolási szabálytalanság
+- Biztonsági öv használatának elmulasztása
+- Kisebb műszaki hiányosság
+- Kisebb közterületi rendzavarás
+- Kisebb gyalogos közlekedési szabálytalanság
+
+A bírságok bevételei az államkincstárhoz kerülnek alapértelmezés szerint.
+
+## Units manager
+Az egyésgek bejelentkezési kéréseit kapja meg és kezeli. Ez a modul felelős az egységek tagjaival történtekért is.
+Számontartja az egység vezetőjét és tagjait.
+Ha az egység vezetője kilép a szerverről, az egység megszűnik.
+Ha egy tag kilép a szerverről, akkor az egység megmarad.
+Egy játékos csak egy egység tagja lehet.
+Egység tagokat menet közben is fel lehessen venni.
+Vizsgálja, hogy ütközik-e az egység szám már létező egység számmal. Nem lehet A-10 és L-10 egyszerre.
+
+A rendszer ne engedje kijelentkezni azt az egységet amelyik még ne adta le a jelentéseit.
+Ezt szerintem elvárhatjuk a rendőröktől, mert úgyis a legtöbb jelentést automatikusan ki lehet tölteni csak át kell olvasni.
+
+Fizetés az egység zárásakor történik.
+Egység záráskor a jelentések alapján jár a fizetés.
+Különböző tipusú események máshogy fizetnek.
+
+A kormánynak van lehetőség a fizetéseket módosítani. Alap esetben a rendőrségi fizetéseket az államkincstár fizeti.
+
+## Stop the ped
+Ez a modul fogja kezelni az igazoltatásokat.
+Ez vonatkozik a jármű megállításra és utcai pedek megállítására is.
+
+Az E betűt hosszan nyomva lehet megállítani egy járókelőt vagy játékost.
+Játékos esetében ha x távolságon kívülre megy akkor eltűnik a megállítás interact object-je.
+
+A járműveket a bal shift egyszeri megnyomásával lehet megállítani és törölni is a megállítást.
+Mindig a rendőrautó előtt lévő járművet állítjuk meg.
+Ilyenkor a v_els-en keresztül bekapcsoljuk a villogót és fél másodpercre elindítjuk a szirénát is majd lekapcsoljuk. A villogó marad.
+Ha sziréna már be volt kapcsolva akkor ahhoz nem nyúlunk.
+
+A megállításnál megjelenik meg interact object amin keresztül megnyitható egy ui_inac tem menu.
+A megállításnál megjelenik a ped/járműhöz kapcsolódó blip amit csak az adott egység tagjai láthatnak.
+
+Ped/jármű megállításakor életbe lép a history modul is.
+Ilyenkor az a modul generál hátteret az NPCknek és a járműveiknek.
+
+Pedek megállításánál:
+- Személyes adatok lekérdezése
+- Alkohol szonda teszt
+- Drog teszt
+- Figyelmeztetés kiadása
+- Bírság kiszabása
+- Letartóztatás
+Járműből kiszállt ped esetén extra gombok:
+- Visszatérés a járműbe
+
+Járművek megállítása: sofőr oldal
+- Személyes adatok lekérdezése
+- Jármű adatainak lekérdezése
+- Alkohol szonda teszt
+- Drog teszt
+- Figyelmeztetés kiadása
+- Bírság kiszabása
+- Kiszállíáts a járműből - a ped kiszáll a járműből. Innentől kezdve rá a pedekre érvényes menü használható.
+
+## Rádió
+Szolgálat közben a C betűvel megnyitható egy kis panel ami a képernyő bal oldalán helyezkedik el.
+Kategóriák között a jobb-bal nyilakkal lehet váltani. A menüpontok között fel-le nyilakkal.
+
+Státuszok
+- Elérhető
+- Responding / Vonulás
+- Foglalt
+- Üldözésben
+- Code 4: Véget ért a hívás vagy intézkedés vége. Automatikus elérhető státusz.
+Erősítés / társszervek bevonása
+- Rendőr erősítés: Ha van másik szolgálatban lévő egység. Ha nincs akkor nem működik.
+- Mentő kérés: Ha van szolgálatban lévő mentős akkor létrehoz egy ERM feladatot. Itt megadható egy rövid leírás.
+- Vontató kérés: A legközelebbi járműhöz lehet vontatót kérni. Ha az éppen egy rendőrautó akkor egy temp menüben külön rákérdez, hogy biztosan a rendőrautót akarod-e elszállítani. Csak olyan járműre lehet szállítást kérni amelyikben nem ül senki. Szállítás kérése után nem lehet beszállni a járműbe.
+Lekérdezés
+- Civil lekérdezése: Legközelebbi ped/játékos lekérdezése
+- Jármű lekérdezése: Legközelebbi jármű adatainak lekérdezése
+
+Minden rádióban leadható üzenetnek legyen egy name id-je. Pl. REQUEST_TOW, REQUEST_BACKUP, REQUEST_AMBULANCE.
+Ez azért szükséges, mert később egy külső voice kliensen keresztül lehetőség lesz hang alapú rádiózásra is.
+
+## Rendfokozatok
+Ezt a work_police szint fogja eldönteni.
+A rendfokozat megjelenik a v_nametags-ban a név feletti sorban a munka mellett jobbra.
+A v_nametags-ban hozzáadtam ezekhez képeket is. Ezeket jobbra kell 90 fokban elforgatni. Hozzá kell még adni őket a v_nametags-ban.
+Azt szeretném, ha a v_nametags-ban ez egy moduláris funkció lenne és más munkáknál is meg lehetne csinálni. Például mentősöknél is lesz ilyen rangjelzés.
+Ezek egyben a work_police rangjai is.
+- Őrmester
+- Törzsőrmester
+- Főtörzsőrmester
+- Zászlós
+- Törzszászlós
+- Főtörzszászlós
+- Hadnagy
+- Főhadnagy
+- Százados
+- Őrnagy
+- Alezredes
+- Ezredes
+- Dandártábornok
+- Vezérőrnagy
+- Altábornagy
+
+## Work_police resource a [work]-ben
+Hozd létre a rendőr munkát a duty markerrel és rendőrségi járművekkel.
+A work_police adjon rendőr jogot.
+
+## Rendszám UI modul
+Rendőr joggal minden jármű felett egy kicsi dx panel jelenik meg megadott távolságon belül.
+Ezen leolvasható a rendszám tábla. Ezt fogják használni a rendőrségi adatbázisban való kereséshez.
+
+## Adatbázis kezelés
+Egy külön db modul végzi.
+Minden rendőrséghez tartozó tábla pol_-al kezdődik.
+Itt tároljuk a civileket, járműveiket és az ezekhez tartozó intézkedési előzményeket.
+Csak olyan civileket és járműveket tárolunk itt amelyek már egyszer intézkedés alá lettek vonva.
+
+Pooling:
+Szerver instancenként 2-2 pool legyen minden táblában. A rendszer mindig a legkisebb id-re írjon.
+Eddig úgy tűnt ez a megoldás elég stabilan működik és emiatt nem is ugráltak az IDk több ezret.
+
+## Kormányzati rendszerbe beépülés
+A bírságokat a kormány szabályozhatja a saját gov felületén.
+
+## AI Rendszerek fejlesztése
+Több eleme a tervben igényli az AI rendszerek fejlesztését.
+Tervezd meg ezeknek is az átalakítását.
+
+## ui_help integráció
+Részletes dokumentáció készítése a rendőrségi rendszerről a ui_help contentben.
+Ez fogja segíteni a rendőröket ha elakadnak szolgálat közben.
+
+## Egyéb
+A hiányosságokra hívd fel külön szekcióban a figyelmemet és jvasolj megoldást is.

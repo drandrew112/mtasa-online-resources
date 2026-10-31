@@ -1,0 +1,12 @@
+# Jelentések és fizetés
+@keywords: jelentés, vázlat, beadás, fizetés, bér, XP, napló, nyelv
+@related: police_units, police_mdc
+
+## A napló és a vázlat
+Minden lépés időbélyeggel naplózódik: megállítások, lekérdezések, tesztek, bírságok, bilincs, kísérés, átadás, üldözés események, fegyver elővétel és lövések (10 mp-enként összesítve), erősítés, vontató, mentő. Az intézkedést (megállítás, üldözés, elfogás, erősítés) a Code 4, az Elengedés vagy az átadás zárja le; ekkor a naplóból **jelentés vázlat** készül az egységvezető nyelvén, és az egység értesítést kap: „Jelentés szükséges”.
+
+## Szerkesztés és beadás
+Az MDC **Jelentések** oldalán nyisd meg a vázlatot, javítsd / egészítsd ki, és **Beadás**. Egy jelentés egy nyelvű (átállíthatod), a nyelve mindig látszik. Az egység bármely tagja beadhatja. Saját jelentést is írhatsz (Egyéb típus) – ezért nem jár fizetés.
+
+## Fizetés
+Az egység végén minden tag a beadott jelentések alapján kap fizetést: figyelmeztetéses / bírságos intézkedések, letartóztatások (játékosnál a körözési szint szerint), elfogással végződő üldözések, erősítés, plusz a szolgálati idő (10 aktív percenként). Óránkénti plafon van. A fizetést és az XP-t a kormány állítja (/gov Munkák oldal).

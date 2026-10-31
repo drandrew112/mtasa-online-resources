@@ -1,0 +1,21 @@
+# The police
+@keywords: police, cop, officer, LSPD, SAPD, law, rendőr
+@related: police_duty, police_units, police_mdc, wanted
+
+The San Andreas Police Department keeps order in the state. As an officer you stop vehicles and pedestrians, check papers, fine, chase and arrest suspects, and write reports. Everything you do is logged and becomes a report draft; your pay comes for the submitted reports.
+
+## Quick keys
+- `J` – the Mobile Data Computer (MDC), in a police car
+- `F4` pursuit · `F5` available · `F6` responding · `F7` busy – your unit's status
+- `C` – the radio (left side of the screen)
+- `E` (hold) – stop the pedestrian / player in front of you
+- `Left Shift` – stop the vehicle in front of your police car (again: cancel)
+- `Backspace` – hide the query window
+
+## Getting started
+1. Go on duty at the LSPD station ([[police_duty]]).
+2. Take a police car in the garage.
+3. Sign in to a unit on the MDC ([[police_units]]).
+4. Work: stops, calls, pursuits; then submit your reports and sign off.
+
+> Without the police right (being on duty) none of the police keys and panels work.

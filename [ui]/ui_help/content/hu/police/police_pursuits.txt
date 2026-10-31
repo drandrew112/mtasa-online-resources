@@ -1,0 +1,16 @@
+# Üldözések
+@keywords: üldözés, F4, csatlakozás, AI rendőr, útzár, PIT, tank, körözési szint
+@related: wanted, police_units
+
+## Indítás és csatlakozás
+Az `F4` (vagy a rádió Üldözés üzenete) üldözést indít a megállított / előtted lévő járműre; a meg nem álló játékos „nem áll meg” körözést kap. Minden körözött játékosnak eleve van üldözése; az MDC **Üldözések** oldalán csatlakozhatsz. Az üldöző egységek a radaron látják a gyanúsítottat (ha eltűnt a szem elől, a keresési kört).
+
+## AI rendőrök
+Az AI egységek a körözési szint szerint jönnek (egy játékos egység = egy AI autóval kevesebb):
+- **1** – egy autó, követ, nem lő; gyalog odamennek és letartóztatnak.
+- **2** – két autó, beszorítják és az előre jelzett útvonalán elévágnak; lőnek.
+- **3** – három autó, PIT manőverek.
+- **4** – négy autó, döngölés, útzár előtte.
+- **5–6** – tankok is.
+
+Az AI autók csak ott jelennek meg és tűnnek el, ahol egy játékos sem néz oda. A szirénájuk időnként hangot vált.

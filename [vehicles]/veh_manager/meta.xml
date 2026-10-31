@@ -4,6 +4,7 @@
 
     <script src="models.lua" type="server" />
     <script src="colors.lua" type="server" />
+    <script src="models_c.lua" type="client" />
 
     <!-- Model id -> display name overrides, loaded by models.lua. -->
     <file src="models.json" download="false" />
@@ -12,6 +13,7 @@
 
     <!-- ================= EXPORTS (server) ================= -->
     <export function="getModelName" type="server" />
+    <export function="getModelName" type="client" />
     <export function="applyForcedColor" type="server" />
     <export function="getForcedColor"   type="server" />
 

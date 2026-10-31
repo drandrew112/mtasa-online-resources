@@ -1,0 +1,12 @@
+# Reports and pay
+@keywords: report, draft, submit, pay, salary, wage, XP, log, language
+@related: police_units, police_mdc
+
+## The log and the draft
+Every step is logged with the time: stops, queries, tests, fines, cuffs, escorts, handovers, pursuit events, weapon draw and shots (summed every 10 s), backup, tow, ambulance. An incident (a stop, a pursuit, an arrest, a backup call) is closed by Code 4, Release or the handover; then a **report draft** is made from its log in the language of the unit leader, and the unit is told: "Report required".
+
+## Editing and submitting
+On the MDC **Reports** page open the draft, correct / complete it and **Submit**. One report has one language (you can change it); it is always shown. Any member of the unit can submit. You can also write a report of your own (type Other) – it is not paid.
+
+## Pay
+At the end of the unit every member is paid by the submitted reports: stops with a warning or a fine, arrests (players by their wanted level), pursuits with arrest, backup, plus the duty time (per 10 active minutes). There is an hourly cap. The pay and the XP are set by the government (Works page of /gov).

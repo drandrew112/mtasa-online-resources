@@ -20,11 +20,25 @@ local function pickWeapon()
 end
 
 -- opts: reason ("crash" | "damage" | "jacked" | "enter"), culprit (player / element that caused it),
--- behaviour ("scared" | "enemy": forced instead of the dice)
+-- behaviour ("scared" | "enemy": forced instead of the dice; or any other behaviour, e.g. "police" / "detained",
+-- with args = its enter args), keep (never culled), group, exit (false: stays seated with that behaviour)
 function Drivers.adopt(ped, veh, opts)
     opts = opts or {}
     if not isElement(ped) or getElementType(ped) ~= "ped" or isPedDead(ped) then return false end
     if Peds.list[ped] then return true end
+    if opts.behaviour and opts.behaviour ~= "enemy" and opts.behaviour ~= "scared" and Behaviours[opts.behaviour] then
+        local p = Peds.adopt(ped, "driver", { group = opts.group or "civilian" })
+        p.keep = opts.keep and true or nil
+        p.task = { name = "idle" }
+        local args = type(opts.args) == "table" and opts.args or {}
+        if opts.exit ~= false and isElement(veh) and getPedOccupiedVehicle(ped) == veh then
+            Peds.setBehaviour(p, "exiting", { vehicle = veh, final = opts.behaviour, finalArgs = args })
+        else
+            p.outAt = getTickCount()
+            Peds.setBehaviour(p, opts.behaviour, args)
+        end
+        return true
+    end
     local culprit = opts.culprit
     if isElement(culprit) and getElementType(culprit) == "vehicle" then culprit = getVehicleOccupant(culprit, 0) end
     if not (isElement(culprit) and Peds.alive(culprit)) then culprit = nil end

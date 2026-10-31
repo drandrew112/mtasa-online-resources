@@ -27,6 +27,8 @@
     <script src="server/sync.lua"      type="server" />
     <script src="server/spawner.lua"   type="server" />
     <script src="server/scripted.lua"  type="server" />
+    <script src="server/spots.lua"     type="server" />
+    <script src="server/chase.lua"     type="server" />
     <script src="server/main.lua"      type="server" />
 
     <!-- ================= CLIENT ================= -->
@@ -34,6 +36,7 @@
     <script src="client/puppets.lua" type="client" />
     <script src="client/reports.lua" type="client" />
     <script src="client/views.lua"   type="client" />
+    <script src="client/chase.lua"   type="client" />
     <file src="data/runtime/geo.dat" />
 
     <!-- ================= EXPORTS ================= -->
@@ -60,4 +63,18 @@
     <export function="getScriptedVehicleState" type="server" />
     <export function="setScriptedPursuit"      type="server" />
     <export function="engageScriptedVehicle"   type="server" />
+    <!-- police / service extensions (server/scripted.lua, server/spots.lua, server/chase.lua) -->
+    <export function="setScriptedDespawnUnseen" type="server" />
+    <export function="setTrafficVehicleFlee"    type="server" />
+    <export function="parkScriptedVehicle"      type="server" />
+    <export function="adoptTrafficVehicle"      type="server" />
+    <export function="pullOverTrafficVehicle"   type="server" />
+    <export function="releaseTrafficHold"       type="server" />
+    <export function="isTrafficVehicleHeld"     type="server" />
+    <export function="findHiddenRoadSpawn"      type="server" />
+    <export function="isElementSeenByPlayers"   type="server" />
+    <export function="predictRoadPath"          type="server" />
+    <export function="getTrafficVehiclePose"    type="server" />
+    <export function="setScriptedChase"         type="server" />
+    <export function="getScriptedChase"         type="server" />
 </meta>

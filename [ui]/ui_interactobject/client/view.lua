@@ -9,7 +9,9 @@ local function rootEntries(candidate)
         local menu = Menus[cached.id]
         if menu then
             for i, item in ipairs(menu.def.items) do
-                entries[#entries + 1] = { item = item, menu = menu, path = { i }, group = menu.def.title }
+                if ioItemFits(item, candidate.element) then
+                    entries[#entries + 1] = { item = item, menu = menu, path = { i }, group = menu.def.title }
+                end
             end
         end
     end
@@ -24,9 +26,11 @@ local function submenuEntries(top)
 
     local entries = {}
     for i, item in ipairs(parent.items) do
-        local path = ioShallowCopy(top.path)
-        path[#path + 1] = i
-        entries[#entries + 1] = { item = item, menu = menu, path = path }
+        if ioItemFits(item, State.focus) then
+            local path = ioShallowCopy(top.path)
+            path[#path + 1] = i
+            entries[#entries + 1] = { item = item, menu = menu, path = path }
+        end
     end
     return entries, parent.title
 end

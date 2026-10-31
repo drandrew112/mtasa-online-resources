@@ -95,5 +95,8 @@
   "v_bank.tx.loan.installment_forced": "#{loan} hitel törlesztőrészlet {n}/{of} (behajtva)",
   "v_bank.tx.loan.extra": "#{loan} hitel előtörlesztés",
   "v_bank.tx.salary.gov": "Fizetés: {position}",
-  "v_bank.group.salary": "Fizetések"
+  "v_bank.group.salary": "Fizetések",
+  "v_bank.tx.fine.police": "Rendőrségi bírság: {item}",
+  "v_bank.tx.fine.police_npc": "Rendőrségi bírságok (NPC): {item}",
+  "v_bank.tx.fine.police_refund": "Rendőrségi bírság visszatérítés: {item}"
 }

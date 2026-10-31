@@ -1,0 +1,12 @@
+# Backup, ambulance, tow truck
+@keywords: backup, ambulance, EMS, tow, tow truck, services, radio
+@related: police_radio
+
+## Backup
+Radio → **Police backup**: only when another unit is on duty. The nearest available unit is sent (message, route, status Responding). The backup unit is paid when it got there and the incident ended.
+
+## Ambulance
+Radio → **Ambulance**. When medics are on duty an ERM task is made for them with a short description. When nobody is on duty an AI ambulance comes with siren, stops next to the injured person, takes him and drives to the nearest hospital. If it is destroyed on its way, request a new one.
+
+## Tow truck
+Radio → **Tow truck**: the nearest empty vehicle (15 m) is towed to the station. For a police car a confirmation comes ("Tow your police car?"). The vehicle is locked from then on. The truck comes from where nobody sees it, hooks the vehicle up and drives to the station's tow point; an owned vehicle goes back to its owner's garage.

@@ -1,0 +1,15 @@
+# Letartóztatás, kísérés, átadás
+@keywords: letartóztatás, bilincs, bilincselés, kísérés, rendőrautó, hátsó ülés, átadás, őrs, börtön, elfogás
+@related: police_stops, wanted
+
+## Bilincs
+**Letartóztatás** az intézkedés menüben (megállított személy, körözött / megadott gyanúsított). A játékosnak gyalog, 1,5 m-en belül kell állnia (vagy megadta magát); a bilincselés 2 mp, és sikertelen, ha a gyanúsított elhúzódik. A megbilincselt személy feje felett bilincs ikon látszik, és csak sétálni tud.
+
+## Kísérés és autó
+- **Kísérés** – a gyanúsított követ (újra: vége).
+- **Autóba ültetés** – a legközelebbi rendőrautó hátsó ülésére. A megbilincselt játékos `G`-vel maga is beszállhat, de kiszállni nem tud.
+- **Kivétel a járműből**.
+- **Bilincs levétele** – naplózva.
+
+## Átadás
+Vidd (vagy kísérd) a gyanúsítottat az őrs **átadó pontjára** (kék marker az LSPD-n). Az NPC-t átveszik; a játékos börtönbe kerül: annyi percre, ahányas a körözési szintje, plusz az elfogató okok percei (az elfogatók együtt legfeljebb 10 perc). A börtönidő akkor is telik, ha a játékos nincs fent. Az elfogató parancsai végrehajtottá válnak.

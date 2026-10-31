@@ -214,12 +214,16 @@ addEventHandler("io:select", resourceRoot, function(id, path, target)
     if getElementDimension(player) ~= getElementDimension(target)
         or getElementInterior(player) ~= getElementInterior(target) then return end
 
-    local px, py, pz = getElementPosition(player)
-    local tx, ty, tz = getElementPosition(target)
-    if getDistanceBetweenPoints3D(px, py, pz, tx, ty, tz) > def.range + IO.SERVER_RANGE_TOLERANCE then return end
+    -- checkRange = false: the owner checks the distance itself (elements whose server position lags,
+    -- e.g. simulated traffic vehicles and their drivers)
+    if def.checkRange then
+        local px, py, pz = getElementPosition(player)
+        local tx, ty, tz = getElementPosition(target)
+        if getDistanceBetweenPoints3D(px, py, pz, tx, ty, tz) > def.range + IO.SERVER_RANGE_TOLERANCE then return end
+    end
 
     if not validPath(path) then return end
-    local item, blocked = ioResolvePath(def.items, path)
+    local item, blocked = ioResolvePath(def.items, path, target)
     if not item or item.items or blocked then return end
 
     triggerEvent("onInteractMenuSelect", player, id, item.value, target, path)

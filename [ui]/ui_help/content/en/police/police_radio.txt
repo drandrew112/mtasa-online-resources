@@ -1,0 +1,12 @@
+# The radio
+@keywords: radio, C, backup, ambulance, tow truck, code 4, status, check person, check vehicle
+@related: police_services, police_units
+
+On duty press `C`: the radio opens on the left. `←` / `→` category, `↑` / `↓` message, `Enter` sends, `C` or `Backspace` closes. While it is open the arrows and `C` do not reach the game (no crouch, no steering).
+
+## Messages
+- **Status**: Available, Responding, Busy, Pursuit (starts a pursuit of the target), **Code 4** (the current incident ends, a report draft is made, status Available).
+- **Backup & services**: Police backup (the nearest available unit is sent), Ambulance, Tow truck ([[police_services]]).
+- **Lookup**: Check person (the nearest person), Check vehicle (the nearest vehicle) – the result shows in the query window.
+
+Every message has a name (e.g. `REQUEST_BACKUP`): a voice radio will use the same messages later.

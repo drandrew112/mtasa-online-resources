@@ -1,0 +1,20 @@
+# Szolgálatba állás
+@keywords: szolgálat, munka, rendőr munka, ruha, egyenruha, rendőrautó, garázs, rang, rangok
+@related: police, police_units
+
+## Szolgálat
+A szolgálati pont az **LSPD** épületében van (Pershing Square, Los Santos). Állj a markerbe és nyomd meg az `E`-t: válassz ruhát, és szolgálatban vagy, rendőr joggal. A szolgálat végén a jog megszűnik (és az egységed is).
+
+## Járművek
+Az őrs mélygarázsában:
+- **Ford Crown Victoria** – az alap járőrautó.
+- **Skoda Octavia MK3** – rendőrségi fényezés (hu_pd) és fényhíd; az MDC csak rendőrségi fényezéssel működik benne.
+- **Police Ranger** – terepjáró, 2. rangtól.
+
+Minden rendőrautón van villogó és sziréna (`0` fények, `1` sziréna, `2` következő hang, `3` kürt).
+
+## Rangok
+A rangod a rendőr munkaszinted; a névtábládon a munka kártya mellett látszik. Jogok rang szerint:
+- elfogató parancsot minden rendőr kiadhat,
+- **Hadnagytól** (7. rang) más parancsát is módosíthatod / visszavonhatod,
+- **Századostól** (9. rang) bírságokat vizsgálhatsz felül és téríthetsz vissza.

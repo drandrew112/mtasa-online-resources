@@ -262,6 +262,7 @@ addEventHandler(EV_REPORT, resourceRoot, function(el, kind, data)
         setFighting(p, data == true)
         return
     end
+    if p.vt and VehTasks.report(p, kind, data) then return end
     local b = Behaviours[p.behaviour]
     if b and b.report then b.report(p, kind, data) end
 end)

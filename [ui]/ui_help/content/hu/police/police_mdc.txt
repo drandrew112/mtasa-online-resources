@@ -1,0 +1,15 @@
+# Az MDC (rendőrségi számítógép)
+@keywords: MDC, számítógép, tablet, J, áttekintés, bejelentések, üldözések, körözések, elfogató, állampolgárok, járművek, jelentések, BTK
+@related: police_units, police_reports, police_fines
+
+Rendőrautóban nyomd meg a `J`-t (rendőr joggal). A képernyő nagy részét elfoglalja; amíg nyitva van, az autó áll. A `J` vagy az X bezárja.
+
+## Oldalak
+- **Áttekintés** – rád váró jelentések, szolgálatban lévő egységek státusszal, aktív üldözések (Csatlakozás), körözött játékosok, bejelentések, az egységed naplója.
+- **Bejelentések** – az állampolgárok hívásai (telefon, segélyhívó → rendőrség). A **Vonulok** útvonalat és státuszt állít, a **Lezárás** befejezi.
+- **Üldözések** – gyanúsított, szint, jármű, egységek, időtartam, terület. **Csatlakozás** a segítéshez.
+- **Körözések** – a játékosok ideiglenes körözései az okokkal; a körözés végén eltűnnek.
+- **Elfogatók** – az elfogató parancsok (tartósak). Kiadás: válaszd ki az állampolgárt, jelöld be az okokat, írj rövid leírást és válaszd ki a nyelvét. Módosítás / visszavonás.
+- **Állampolgárok / Járművek** – a rendőrségi adatbázis: minden játékos és járműve, NPC-k az első intézkedés után. Játékos / NPC szűrő, keresés név, rendszám, azonosító, típus szerint. Az adatlapon korábbi jelentések, bírságok és figyelmeztetések (dátum, rendőr), elfogatók, járművek.
+- **Jelentések** – a vázlataid (a kijelentkezést ezek tartják vissza), a beadottak, az egységé. A szerkesztő: cím, nyelv, szöveg.
+- **BTK** – az aktuális bírságok.

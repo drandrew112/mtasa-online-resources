@@ -1,0 +1,20 @@
+# Going on duty
+@keywords: duty, work, police work, outfit, uniform, police car, garage, rank, ranks
+@related: police, police_units
+
+## Duty
+The duty point is inside the **LSPD** building (Pershing Square, Los Santos). Step into the marker and press `E`: pick an outfit and you are on duty, with the police right. Going off duty takes it away (and ends your unit).
+
+## Vehicles
+In the underground garage of the station:
+- **Ford Crown Victoria** – the basic patrol car.
+- **Skoda Octavia MK3** – police livery (hu_pd) and light bar; the MDC only works in the police livery.
+- **Police Ranger** – off-road, from rank 2.
+
+Every police car has emergency lights and siren (`0` lights, `1` siren, `2` next tone, `3` horn).
+
+## Ranks
+Your rank is your police work level; it shows on your name tag next to the work card. Rights by rank:
+- every officer may issue warrants,
+- from **Second Lieutenant** (rank 7) you may edit / revoke the warrants of others,
+- from **Captain** (rank 9) you review and refund fines.

@@ -1,0 +1,19 @@
+# Wanted level
+@keywords: wanted, stars, police, surrender, evade, escape, jail, warrant, busted
+@related: police_pursuits, police_arrest
+
+The stars top right are your wanted level (1–6). It only rises; it goes away when you lose the police, get arrested, die or leave the game.
+
+## How it rises
+- Not stopping for the police, or driving on while they follow you with lights on: level 2.
+- Hurting the police (officers, police cars): level 3, more damage raises it to 4–6.
+- Crimes reported by other systems (robbery, theft...) add their own level and reason.
+
+## Surrender
+When an officer is close and you stand on foot: **hold `E`** to surrender. Then the officers arrest you without shooting.
+
+## Losing the police
+Get out of sight of every police car (about 180 m) and officer on foot (80 m): your stars blink and a circle shows on the radar where you were last seen. Stay hidden long enough (20 s at level 1 … 120 s at level 6) and the police gives up. You get XP for it if the chase lasted at least a minute (once every 15 minutes). Inside a building the time does not run, and the AI police does not come in.
+
+## Arrest and jail
+Arrested (by players or by the AI: "Busted") you go to the jail of the nearest station for as many minutes as your wanted level (plus warrants). The time also runs while you are offline. Leaving the game cuffed or at level 2+ issues a warrant against you.

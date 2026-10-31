@@ -1,0 +1,21 @@
+# A rendőrség
+@keywords: police, cop, officer, LSPD, SAPD, rendőr, rendőrség, közrend
+@related: police_duty, police_units, police_mdc, wanted
+
+A San Andreas-i Rendőrség (SAPD) tartja fenn a rendet. Rendőrként járműveket és gyalogosokat állítasz meg, igazoltatsz, bírságolsz, üldözöl és letartóztatsz, és jelentéseket írsz. Minden lépésed naplózódik és jelentés vázlat lesz belőle; a fizetést a beadott jelentések után kapod.
+
+## Gyors billentyűk
+- `J` – a rendőrségi számítógép (MDC), rendőrautóban
+- `F4` üldözés · `F5` elérhető · `F6` vonulás · `F7` elfoglalt – az egységed státusza
+- `C` – a rádió (a képernyő bal oldalán)
+- `E` (nyomva tartva) – az előtted álló gyalogos / játékos megállítása
+- `Bal Shift` – a rendőrautó előtti jármű megállítása (újra: megszüntetés)
+- `Backspace` – a lekérdezés ablak elrejtése
+
+## Az első lépések
+1. Állj szolgálatba az LSPD-n ([[police_duty]]).
+2. Vegyél ki egy rendőrautót a garázsban.
+3. Jelentkezz be egy egységbe az MDC-n ([[police_units]]).
+4. Dolgozz: intézkedések, bejelentések, üldözések; a végén add be a jelentéseket és jelentkezz ki.
+
+> Rendőr jog (szolgálat) nélkül a rendőrségi billentyűk és panelek nem működnek.

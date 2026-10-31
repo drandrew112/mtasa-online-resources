@@ -77,6 +77,11 @@ local function gate(ag, c, dStop, now)
         local inside = g > 0 and ag.passedGroup == g and now - (ag.passedAt or 0) < 20000
         if not inside and not clearing then
             local light = Signals.light(phase)
+            -- scripted "pursuit" driving (police): through the red light, slowed down near the stop line (accelOf)
+            if light ~= "green" and ag.script and ag.script.pursuitDrive then
+                if dStop < 30 then ag.redSlow = now end
+                light = "green"
+            end
             if light == "red" and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.8) then return "signal" end
             if light == "yellow" and dStop > v * v / (2 * T.IDM_DECEL) then return "signal" end
         end
@@ -273,6 +278,7 @@ local function accelOf(ag, now)
     if sc then
         ag.stopGap = nil
         if sc.speedFactor then v0 = v0 * sc.speedFactor end
+        if ag.redSlow and now - ag.redSlow < 700 and v0 > T.PURSUIT_RED_SPEED then v0 = T.PURSUIT_RED_SPEED end
         -- waiting at a scripted stop
         if sc.dwell then
             ag.hold, ag.limit = "stop", "stop"

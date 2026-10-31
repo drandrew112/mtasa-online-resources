@@ -1,0 +1,12 @@
+# Erősítés, mentő, vontató
+@keywords: erősítés, mentő, EMS, vontató, vontatás, szolgáltatások, rádió
+@related: police_radio
+
+## Erősítés
+Rádió → **Rendőri erősítés**: csak ha van másik szolgálatos egység. A legközelebbi elérhető egységet küldi (üzenet, útvonal, Vonulás státusz). Az erősítő egység akkor kap fizetést, ha odaért és az intézkedés lezárult.
+
+## Mentő
+Rádió → **Mentő**. Ha van szolgálatban mentős, ERM feladat készül nekik rövid leírással. Ha nincs, egy AI mentő jön szirénával, megáll a sérült mellett, elviszi, és a legközelebbi kórház felé hajt. Ha útközben megsemmisül, kérj újat.
+
+## Vontató
+Rádió → **Vontató**: a legközelebbi üres jármű (15 m) az őrsre kerül. Rendőrautónál megerősítést kér („Elvontatják a rendőrautót?”). A járműbe ettől kezdve nem lehet beszállni. A vontató onnan jön, ahol senki nem látja, felveszi a járművet és az őrs vontató pontjára viszi; a saját jármű visszakerül a tulajdonosa garázsába.

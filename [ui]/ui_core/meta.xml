@@ -20,6 +20,7 @@
     <script src="client/textInput.lua" type="client" />
     <script src="client/markers.lua" type="client" />
     <script src="client/flags.lua" type="client" />
+    <script src="client/wanted.lua" type="client" />
 
     <script src="client/main.lua" type="client" />
 
@@ -31,6 +32,8 @@
 
     <!-- FILES -->
     <file src="client/images/loading.png" type="client" />
+    <file src="client/images/star_grey.png" type="client" />
+    <file src="client/images/star_white.png" type="client" />
     <file src="client/sounds/notify.wav" type="client" />
     <file src="client/sounds/infobox.wav" type="client" />
     <file src="client/fonts/Roboto.ttf" type="client" />
@@ -310,6 +313,8 @@
     <export function="showMoney" type="server" />
     <export function="drawCrewTagBoxForPlayer" type="client" />
     <export function="getCrewTagBoxSize" type="client" />
+    <export function="setWantedBlinking" type="client" />
+    <export function="isWantedBlinking" type="client" />
 
     <export function="ui" type="client" />
     <export function="getScreenWH" type="client" />

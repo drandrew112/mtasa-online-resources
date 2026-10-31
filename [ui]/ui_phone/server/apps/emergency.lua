@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 --[[
     ui_phone / server/apps/emergency.lua
-    "Emergency Services" contact. Only EMS works for now: the caller types a
+    "Emergency Services" contact. EMS and the police (pd: a police_system call on
+    the MDC Calls page, createPoliceCall) work; the fire department not yet. The caller types a
     title and a description (ui_core text input, see "contacts:prompt" in
     client/apps/contacts.lua) and a med_erm task is created with the caller's
     name and position. med_erm's auto dispatch (if running) prioritizes and dispatches it
@@ -95,16 +96,33 @@ local function submitEms(player, title, description)
     PhoneServer.close(player)
 end
 
+local POLICE = "police_system"
+
+local function submitPolice(player, title, description)
+    if not running(POLICE) then say(player, L.msg("ui_phone.emergency.nobody_answers_line")) return end
+    local id, err = exports[POLICE]:createPoliceCall(player, title, description)
+    if not id then
+        if err == "no_units" then say(player, L.msg("ui_phone.emergency.police_no_units"))
+        elseif err == "open_call" then say(player, L.msg("ui_phone.emergency.police_open_call"))
+        else say(player, L.msg("ui_phone.emergency.call_could_not_be_registered")) end
+        return
+    end
+    say(player, L.msg("ui_phone.emergency.police_call_registered", { id = id }))
+    PhoneServer.close(player)
+end
+
 -- Called by the "contacts:action" router (server/apps/contacts.lua).
 function emergencyCall(player, actionKey)
     if actionKey == "pd" then
-        say(player, L.msg("ui_phone.emergency.police_line_is_not_available_yet"))
+        if not running(POLICE) then say(player, L.msg("ui_phone.emergency.police_line_is_not_available_yet")) return end
+        pending[player] = { kind = "pd" }
+        prompt(player, "title", L.msg("ui_phone.emergency.police_what_happened"), contact().titleMax)
     elseif actionKey == "fd" then
         say(player, L.msg("ui_phone.emergency.fire_department_line_is_not_available"))
     elseif actionKey == "ems" then
         local ok, reason = canCallEms(player)
         if not ok then say(player, reason) return end
-        pending[player] = {}
+        pending[player] = { kind = "ems" }
         prompt(player, "title", L.msg("ui_phone.emergency.what_is_emergency_short_title"), contact().titleMax)
     end
 end
@@ -129,10 +147,12 @@ PhoneServer.on("contacts:promptResult", function(player, contactKey, step, text)
             return
         end
         p.title = title
-        prompt(player, "description", L.msg("ui_phone.emergency.describe_situation_patients_injuries"), c.descMax)
+        prompt(player, "description", p.kind == "pd" and L.msg("ui_phone.emergency.police_describe")
+            or L.msg("ui_phone.emergency.describe_situation_patients_injuries"), c.descMax)
     elseif step == "description" and p.title then
         pending[player] = nil
-        submitEms(player, p.title, clean(text, c.descMax))
+        if p.kind == "pd" then submitPolice(player, p.title, clean(text, c.descMax))
+        else submitEms(player, p.title, clean(text, c.descMax)) end
     end
 end)
 

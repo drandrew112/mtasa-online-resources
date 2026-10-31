@@ -29,7 +29,10 @@ local function tick()
             local veh = getPedOccupiedVehicle(el)
             p.x, p.y, p.z = getElementPosition(veh or el)
             -- peds without a syncer stand still: nothing to decide (dead bodies still get cleaned up)
-            if p.syncer or p.dead or p.behaviour == "exiting" then
+            -- a vehicle task (aiPedEnterVehicle / aiPedExitVehicle) runs first: the behaviour waits for it
+            if p.vt and VehTasks.update(p, now) then
+                -- busy getting in / out
+            elseif p.syncer or p.dead or p.behaviour == "exiting" then
                 local b = Behaviours[p.behaviour]
                 if b and b.update then
                     local ok, err = pcall(b.update, p, now)
@@ -56,6 +59,11 @@ addEvent("onAIPedTargetLost")          -- (ped) target, reason
 addEvent("onAIPedBehaviourChanged")    -- (ped) new, old
 addEvent("onAIPedWasted")              -- (ped) killer, weapon
 addEvent("onAIPedRemoved")             -- (ped) reason
+addEvent("onAIPedDamaged")             -- (ped) attacker, weapon, loss
+addEvent("onAIPedArrestTarget")        -- (ped) target: police behaviour stood next to its target for arrestTime
+addEvent("onAIPedEnteredVehicle")      -- (ped) vehicle, seat
+addEvent("onAIPedExitedVehicle")       -- (ped) vehicle
+addEvent("onAIPedVehicleTaskFailed")   -- (ped) "enter" | "exit", reason
 
 addEventHandler("onResourceStart", resourceRoot, function()
     if not Nav.available() then

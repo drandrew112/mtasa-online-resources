@@ -1,0 +1,21 @@
+# Egységek és státusz
+@keywords: egység, Adam, Lincoln, hívójel, bejelentkezés, kijelentkezés, státusz, F4, F5, F6, F7, társ
+@related: police_mdc, police_reports
+
+## Bejelentkezés
+Egységbe **rendőrautóban, az MDC-n** (`J`) lehet bejelentkezni. Amíg nem vagy egységben, az MDC csak a bejelentkezés ablakot mutatja.
+- **Adam (A-)** – 2–4 rendőr. Hívd meg a közeli rendőröket, ők egy felugró menüben fogadják el. Adam egység egyedül nem jelentkezhet be.
+- **Lincoln (L-)** – egyszemélyes.
+- **Szám** 1–99. A szám típustól függetlenül foglalt (A-10 és L-10 nem lehet egyszerre szolgálatban), az összes szerveren.
+
+Később is vehetsz fel tagot (Áttekintés → Rendőr hozzáadása). Egy rendőr egyszerre egy egységben lehet.
+
+## Státusz
+A jobb alsó mini kijelzőn a hívójeled, a rendőrök, a státusz és a gombok látszanak:
+- `F4` **Üldözés** (piros) – üldözést indít a megállított / előtted lévő járműre
+- `F5` **Elérhető** (zöld)
+- `F6` **Vonulás** (sárga)
+- `F7` **Elfoglalt** (narancs) – megállításkor alcímke kerül rá (pl. Közúti ellenőrzés)
+
+## Kijelentkezés
+A vezető az MDC-n jelentkezik ki, a tag egyszerűen kilép. **Amíg jelentés vár rád, nem jelentkezhetsz ki** – előbb add be őket. Ha a vezető kilép a szerverről, az egység megszűnik (a fizetés a jelentések beadása után jön); ha egy tag lép ki, az egység marad.

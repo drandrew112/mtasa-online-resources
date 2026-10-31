@@ -129,5 +129,10 @@
   "ui_phone.mail.new_mails": "You have {count|int} new email(s) on your phone.",
   "ui_phone.mail.cmd_usage": "Usage: /phonemail <account|all> <subject> | <text>",
   "ui_phone.mail.cmd_sent": "Phone mail sent ({group}).",
-  "ui_phone.mail.cmd_failed": "Phone mail failed: {error}"
+  "ui_phone.mail.cmd_failed": "Phone mail failed: {error}",
+  "ui_phone.emergency.police_call_registered": "Your call was registered (#{id}). A unit will contact you.",
+  "ui_phone.emergency.police_describe": "Describe what happened and where.",
+  "ui_phone.emergency.police_no_units": "No police unit is on duty right now.",
+  "ui_phone.emergency.police_open_call": "Your previous call is still being handled.",
+  "ui_phone.emergency.police_what_happened": "Police: what happened? (short title)"
 }

@@ -120,7 +120,7 @@ function PedTraffic.cull(players, now)
     for _, p in pairs(Peds.list) do
         if p.outAt and now - p.outAt < T.DRIVER_CULL_GRACE then
             p.seenAt = now
-        elseif p.kind ~= "scripted" and p.behaviour ~= "exiting" then
+        elseif p.kind ~= "scripted" and not p.keep and not p.vt and p.behaviour ~= "exiting" then
             local near, seen = math.huge, false
             local dim = getElementDimension(p.el)
             for _, pl in ipairs(players) do

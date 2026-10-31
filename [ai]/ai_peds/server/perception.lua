@@ -102,6 +102,8 @@ addEventHandler(EV_THREAT, resourceRoot, function(kind, a, b, c, d)
         end
         local x, y = getElementPosition(att)
         if (x - p.x) ^ 2 + (y - p.y) ^ 2 > 150 * 150 then return end
+        -- c = weapon, d = health loss (reported by the attacker's client)
+        triggerEvent("onAIPedDamaged", p.el, att, tonumber(c) or 0, tonumber(d) or 0)
         Perception.attacked(p, att)
     end
 end)

@@ -40,6 +40,11 @@ TX_KEYS = {
     -- fines
     ["fine.hospital_bay"]        = { from = P, to = "settled", force = true, params = { "hospital" } },
     ["fine.hospital_bay_income"] = { from = "settled", to = "payee", params = { "player", "hospital", "count" } },
+    -- police_system: a player's fine is forced (may go negative), an NPC's is state income from outside,
+    -- a refund (Százados) goes back from the same state account; payee = the BTK fine target (default treasury)
+    ["fine.police"]        = { from = P, to = "payee", force = true, params = { "item" } },
+    ["fine.police_npc"]    = { from = "system", to = "payee", params = { "item" } },
+    ["fine.police_refund"] = { from = "payee", to = P, force = true, params = { "item" } },
 
     -- shops (from the bank part of a purchase)
     ["shop.weapon"]         = { from = P, to = "system", params = { "item" } },

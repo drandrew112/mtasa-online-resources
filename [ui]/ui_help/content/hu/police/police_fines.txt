@@ -1,0 +1,12 @@
+# BTK, bírságok, figyelmeztetések
+@keywords: BTK, büntető törvénykönyv, bírság, csekk, figyelmeztetés, összeg, visszatérítés, kormány
+@related: police_stops, police_mdc
+
+A BTK a szabálysértéseket és bírságaikat sorolja fel: közlekedés, parkolás, jármű, gyalogosok, közterület, közrend, bűncselekmények. A **figyelmeztetésnek** nincs bírsága. Az aktuális összegek az MDC **BTK** oldalán láthatók; a kormány a /gov-on (Rendőrség · Bírságok) módosíthatja őket, az alapérték mindig megmarad.
+
+- A **játékos bírságát** azonnal levonják a bankszámlájáról (mínuszba is mehet).
+- Az **NPC bírsága** is az állam bevétele.
+- A pénz a kormány által választott állami számlára megy (alapból az államkincstárba).
+- **Százados** vagy magasabb rang az állampolgár adatlapján visszatérítheti a bírságot (a játékosnak online kell lennie).
+
+A bűncselekmények (lopás, rablás, testi sértés...) letartóztatási és elfogató okok; a perceik beleszámítanak a börtönidőbe.

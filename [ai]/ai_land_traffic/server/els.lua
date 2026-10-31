@@ -161,13 +161,23 @@ local movingUntil = {}   -- [vehicle] = tick: counts as moving a bit after slowi
 local function snapshot(now)
     local list = {}
     for veh in pairs(E.active) do
-        if isElement(veh) and getElementDimension(veh) == 0 and not Agents.byVeh[veh] then
-            local x, y, z = getElementPosition(veh)
-            local vx, vy = getElementVelocity(veh)
-            vx, vy = vx * 50, vy * 50
+        -- simulated vehicles only count with the scripted "pursuit" driving (police AI): their pose is the agent's
+        local ag = Agents.byVeh[veh]
+        local agentOk = ag and ag.script and ag.script.pursuitDrive
+        if isElement(veh) and getElementDimension(veh) == 0 and (not ag or agentOk) then
+            local x, y, z, vx, vy
+            if ag then
+                x, y, z, vx, vy = ag.x, ag.y, ag.z, ag.hx * ag.v, ag.hy * ag.v
+            else
+                x, y, z = getElementPosition(veh)
+                vx, vy = getElementVelocity(veh)
+                vx, vy = vx * 50, vy * 50
+            end
             local speed = sqrt(vx * vx + vy * vy)
             local fx, fy
-            if speed > 2 then
+            if ag then
+                fx, fy = ag.hx, ag.hy
+            elseif speed > 2 then
                 fx, fy = vx / speed, vy / speed
             else
                 local _, _, rz = getElementRotation(veh)
@@ -362,7 +372,7 @@ function Els.update(now)
         Agents.near(e.x, e.y, T.ELS_NOTICE_RANGE, near)
         local P = e.path
         for _, ag in ipairs(near) do
-            if abs(ag.z - e.z) < 6 or P then
+            if ag.veh ~= e.el and not ag.held and (abs(ag.z - e.z) < 6 or P) then
                 local rx, ry = ag.x - e.x, ag.y - e.y
                 local level = noticed(ag, e, sqrt(rx * rx + ry * ry), now)
                 if level > 0 then
@@ -399,6 +409,13 @@ function Els.update(now)
                     end
                 end
             end
+        end
+    end
+    -- vehicles held by a traffic stop (pullOverTrafficVehicle): aside as far as there is room, then standing
+    for _, ag in pairs(Agents.list) do
+        if ag.held then
+            local lat, right = pullOver(ag, nil, false, 100, now)
+            setYield(ag, 0, lat, now, true, right)
         end
     end
 end

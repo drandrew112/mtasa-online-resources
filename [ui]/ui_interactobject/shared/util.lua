@@ -32,6 +32,7 @@ local function sanitizeItems(items, depth)
                 disabled = item.disabled == true or nil,
                 closeOnSelect = item.closeOnSelect ~= false,
             }
+            if type(item.targetInVehicle) == "boolean" then clean.targetInVehicle = item.targetInVehicle end
             if item.items ~= nil and depth < IO.MAX_SUBMENU_DEPTH then
                 clean.items = sanitizeItems(item.items, depth + 1) or {}
                 clean.title = text(item.title) or clean.label
@@ -53,7 +54,7 @@ function ioSanitizeDef(def)
         offset = { tonumber(def.offset[1]) or 0, tonumber(def.offset[2]) or 0, tonumber(def.offset[3]) or 0 }
     end
 
-    return {
+    local clean = {
         title = text(def.title) or L.text("ui_interactobject.util.interact"),
         items = items,
         range = math.max(0.5, math.min(tonumber(def.range) or IO.DEFAULT_RANGE, IO.MAX_RANGE)),
@@ -61,29 +62,43 @@ function ioSanitizeDef(def)
         offset = offset,
         lineOfSight = def.lineOfSight ~= false,
         allowInVehicle = def.allowInVehicle == true,
+        checkRange = def.checkRange ~= false,
         enabled = def.enabled ~= false,
         dataKey = type(def.dataKey) == "string" and def.dataKey or nil,
         dataValue = cleanValue(def.dataValue),
         selfDataKey = type(def.selfDataKey) == "string" and def.selfDataKey or nil,
     }
+    if type(def.targetInVehicle) == "boolean" then clean.targetInVehicle = def.targetInVehicle end
+    return clean
 end
 
--- def.dataKey / def.dataValue filter on the target element's data.
+-- def.dataKey / def.dataValue filter on the target element's data; def.targetInVehicle the same
+-- in / on foot filter as on an item, for the whole menu.
 function ioDataMatches(def, element)
+    if not ioItemFits(def, element) then return false end
     if not def.dataKey then return true end
     local value = getElementData(element, def.dataKey)
     if def.dataValue ~= nil then return value == def.dataValue end
     return ioTruthy(value)
 end
 
+-- item.targetInVehicle: true = only while the target ped / player sits in a vehicle, false = only
+-- while it is on foot (other element types ignore it).
+function ioItemFits(item, target)
+    if item.targetInVehicle == nil or not isElement(target) then return true end
+    local elementType = getElementType(target)
+    if elementType ~= "ped" and elementType ~= "player" then return true end
+    return (getPedOccupiedVehicle(target) and true or false) == item.targetInVehicle
+end
+
 -- Walks an index path ({2, 1} = 2nd item's 1st child). Returns the item and whether any node on
--- the way is disabled.
-function ioResolvePath(items, path)
+-- the way is disabled (or, with a target, does not fit it).
+function ioResolvePath(items, path, target)
     local item, blocked = nil, false
     for i, index in ipairs(path) do
         item = type(items) == "table" and items[index]
         if not item then return nil end
-        if item.disabled then blocked = true end
+        if item.disabled or (target and not ioItemFits(item, target)) then blocked = true end
         if i < #path then items = item.items end
     end
     return item, blocked

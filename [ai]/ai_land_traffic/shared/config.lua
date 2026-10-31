@@ -193,6 +193,20 @@ TRAFFIC = {
     SCRIPTED_ARRIVE_GAP = 2.5,  -- stopped with the front this close to the stop point = arrived
     SCRIPTED_MAX_NODES = 40000, -- navmesh route search guard (routes are navmesh lane routes, profile option)
 
+    -- police / service extensions (server/chase.lua, server/spots.lua)
+    PURSUIT_RED_SPEED = 8,      -- m/s: "pursuit" driving passes a red light at most this fast
+    CHASE_NEAR = 80,            -- chase motor: closer than this to the target = physics, driven by the syncer client
+                                -- (below MTA's ped_syncer_distance, 100 m: a ped-driven vehicle farther away gets no syncer)
+    CHASE_FAR = 160,            -- ...farther than this and unseen = back into the simulation (lane pursuit)
+    CHASE_NO_SYNCER = 3000,     -- ms a physics chase car may stand without a syncer before it goes back into the simulation
+    CHASE_STEP = 500,           -- ms between the server's near / far checks
+    CHASE_STEER = 100,          -- ms between the client's steering updates
+    CHASE_PATH_EVERY = 1200,    -- ms between road path updates to the syncer of a physics chase car
+    CHASE_PATH_LENGTH = 220,    -- m of road sent ahead (points every CHASE_PATH_STEP m)
+    CHASE_PATH_STEP = 8,
+    CHASE_PATH_REROUTE = 35,    -- the target moved this far from the route's end: a new route
+    HIDDEN_SPAWN_TRIES = 80,    -- findHiddenRoadSpawn: lane points tried
+
     DRIVER_THROTTLE = 0.02,     -- tiny analog throttle on the drivers (client): stops GTA locking the wheels
     ADMIN_LEVEL = 4,            -- /traffic commands (elementData admin_level)
     DEBUG = false,
@@ -239,3 +253,5 @@ EV_STATE = "ai_traffic:state"         -- server -> client: agent state batch
 EV_RELEASE = "ai_traffic:release"     -- server -> client: vehicle left the simulation
 EV_REPORT = "ai_traffic:report"       -- client -> server: crash / damage by the local player
 EV_VIEW = "ai_traffic:view"           -- client -> server: camera position + look direction
+EV_CHASE_PATH = "ai_traffic:chasePath" -- server -> syncer: road path of a physics chase car (vehicle, { x, y, z, ... })
+DATA_CHASE = "ai_traffic.chase"       -- vehicle: chase motor order { t = target, m = mode, a = aggression, s = max km/h, f = fire }

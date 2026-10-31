@@ -1,0 +1,19 @@
+# Stops
+@keywords: stop, traffic stop, pull over, E, Left Shift, breathalyser, drug test, identity, query, fine, warning
+@related: police_arrest, police_fines
+
+## A pedestrian or a player
+Hold `E` (a ring fills) on the person in front of you, within 4 m, on foot. An NPC stops and turns to you; a player gets a message. A player who walks farther than 15 m away ends the stop (logged).
+
+## A vehicle
+In your police car press `Left Shift`: the vehicle in front of you (up to 25 m, straight ahead) is stopped. Your lights come on with a short siren (a running siren is left alone). An NPC car pulls over to the right and waits; a player is told to pull over and gets the "failure to stop" wanted level if still driving after 20 s. `Left Shift` again cancels it.
+
+## The actions menu
+Over the stopped person / vehicle a small police menu appears (only for your unit): `X` → **Actions** opens the menu:
+- **Personal details** / **Vehicle details** – the query window (WARRANT, WANTED, suspended licence, stolen vehicle, expired inspection in colour). `Backspace` hides it.
+- **Breathalyser test**, **Drug test** – an NPC's real result; players are negative for now.
+- **Issue warning**, **Issue fine** – from the penal code ([[police_fines]]).
+- **Order out of vehicle**, **Return to vehicle**, **Arrest** ([[police_arrest]]).
+- **Release** – the NPC walks / drives on; this is also Code 4 for the incident.
+
+The Busy sub label "Traffic stop" shows on your mini panel and on the MDC.

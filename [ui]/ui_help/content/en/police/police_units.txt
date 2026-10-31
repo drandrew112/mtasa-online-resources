@@ -1,0 +1,21 @@
+# Units and status
+@keywords: unit, Adam, Lincoln, callsign, sign in, sign off, status, F4, F5, F6, F7, partner
+@related: police_mdc, police_reports
+
+## Signing in
+Units sign in **in a police car, on the MDC** (`J`). Until you are in a unit the MDC only shows the sign-in window.
+- **Adam (A-)** – 2 to 4 officers. Invite the officers near you; they accept in a pop-up. An Adam unit never signs in alone.
+- **Lincoln (L-)** – one officer.
+- **Number** 1–99. A number is taken whatever the type (A-10 and L-10 cannot be on duty at the same time), on every server.
+
+Officers can be added later too (Overview → Add officer). One officer is in one unit at a time.
+
+## Status
+The mini panel bottom right shows your callsign, the officers, the status and the keys:
+- `F4` **Pursuit** (red) – starts a pursuit of the stopped vehicle / the vehicle in front
+- `F5` **Available** (green)
+- `F6` **Responding** (yellow)
+- `F7` **Busy** (orange) – a stop adds the sub label (e.g. Traffic stop)
+
+## Signing off
+The leader signs off on the MDC; a member just leaves. **You cannot sign off while reports are waiting** – submit them first. If the leader leaves the server the unit ends (its pay comes once the reports are in); a member leaving does not end it.

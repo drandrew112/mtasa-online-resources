@@ -113,6 +113,7 @@ function startDuty(player, workId, skin)
     setElementData(player, WORK_DATA.CIVIL_SKIN, civil, false)
     setElementModel(player, skin)
     setElementData(player, WORK_DATA.PLAYER_WORK, workId)
+    setRankData(player)
     applyVisibility(player)
     triggerEvent("onPlayerWorkDutyStart", player, workId, skin)
     return true
@@ -127,6 +128,7 @@ function endDuty(player, reason)
         setElementModel(player, d.civilSkin)
         removeElementData(player, WORK_DATA.CIVIL_SKIN)
         setElementData(player, WORK_DATA.PLAYER_WORK, false)
+        removeElementData(player, WORK_DATA.PLAYER_RANK)
         applyVisibility(player)
     end
     triggerEvent("onPlayerWorkDutyEnd", player, d.work, reason or "script")
@@ -194,4 +196,22 @@ addEventHandler("onElementDataChange", root, function(key, old)
     if client and type(key) == "string" and key:sub(1, 5) == "work." then
         if old == nil then removeElementData(source, key) else setElementData(source, key, old) end
     end
+end)
+
+-- rank badges (registerWork rankBadges = true): work.rank = the work level while on duty (broadcast, changes rarely:
+-- duty start, level change); v_nametags draws img/ranks/<workId>/<level>.png next to the work card
+function setRankData(player)
+    local d = duty[player]
+    local w = d and Works[d.work]
+    if not w or not w.rankBadges then
+        if getElementData(player, WORK_DATA.PLAYER_RANK) ~= nil then removeElementData(player, WORK_DATA.PLAYER_RANK) end
+        return
+    end
+    local lv = getPlayerWorkLevel(player, d.work)
+    if getElementData(player, WORK_DATA.PLAYER_RANK) ~= lv then setElementData(player, WORK_DATA.PLAYER_RANK, lv) end
+end
+
+addEventHandler("onPlayerWorkLevelChange", root, function(workId)
+    local d = duty[source]
+    if d and d.work == workId then setRankData(source) end
 end)

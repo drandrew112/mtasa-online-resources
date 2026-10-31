@@ -1,0 +1,19 @@
+# Intézkedések (megállítás)
+@keywords: megállítás, közúti ellenőrzés, igazoltatás, E, Bal Shift, alkoholszonda, drogteszt, lekérdezés, bírság, figyelmeztetés
+@related: police_arrest, police_fines
+
+## Gyalogos vagy játékos
+Tartsd nyomva az `E`-t (egy kör telik meg) az előtted álló személyen, 4 m-en belül, gyalog. Az NPC megáll és feléd fordul; a játékos üzenetet kap. Ha a játékos 15 m-nél messzebb megy, a megállítás véget ér (naplózva).
+
+## Jármű
+A rendőrautóban nyomd meg a `Bal Shift`-et: az előtted lévő jármű (25 m-ig, egyenesen előre) megáll. A villogód bekapcsol egy rövid szirénával (a már szóló szirénához nem nyúl). Az NPC autó jobbra húzódik és vár; a játékos felszólítást kap, és ha 20 mp után is továbbhajt, „nem áll meg” körözést kap. Újabb `Bal Shift` megszünteti.
+
+## Az intézkedés menü
+A megállított személy / jármű felett egy kis rendőrségi menü jelenik meg (csak az egységednek): `X` → **Intézkedés** nyitja a menüt:
+- **Személyes adatok** / **Jármű adatai** – a lekérdezés ablak (ELFOGATÓ, KÖRÖZÉS, bevont jogosítvány, lopott jármű, lejárt műszaki színkóddal). A `Backspace` elrejti.
+- **Alkoholszonda**, **Drogteszt** – az NPC valós eredménye; játékosnál egyelőre negatív.
+- **Figyelmeztetés**, **Bírság** – a BTK-ból ([[police_fines]]).
+- **Kiszállítás**, **Vissza a járműbe**, **Letartóztatás** ([[police_arrest]]).
+- **Elengedés** – az NPC továbbmegy / továbbhajt; ez egyben Code 4 az intézkedésre.
+
+A „Közúti ellenőrzés” alcímke a mini kijelzőn és az MDC-n is látszik.

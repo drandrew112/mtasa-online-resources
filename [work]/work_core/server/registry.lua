@@ -151,6 +151,7 @@ function registerWork(id, def)
         color = normaliseColor(def.color),
         skins = skins,
         levels = normaliseLevels(def),
+        rankBadges = def.rankBadges == true,   -- work.rank element data while on duty (v_nametags rank badge)
         owner = owner or (existing and existing.owner) or nil,
     }
     syncWorks()
@@ -180,7 +181,7 @@ local function copyWork(w)
     for i, s in ipairs(w.skins) do skins[i] = { model = s.model, name = s.name, level = s.level } end
     local names = {}
     for k, v in pairs(w.levels.names) do names[k] = v end
-    return { id = w.id, name = w.name, description = w.description,
+    return { id = w.id, name = w.name, description = w.description, rankBadges = w.rankBadges,
              color = { unpack(w.color) }, skins = skins, resource = w.owner,
              levels = { maxLevel = w.levels.maxLevel, baseXp = w.levels.baseXp,
                         stepXp = w.levels.stepXp, names = names } }

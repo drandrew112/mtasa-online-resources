@@ -186,6 +186,8 @@ end)
 -- Exports
 --------------------------------------------------------------------------------
 
+addEvent("onOwnedVehicleCreated") -- (id, accountName, model, plate), source = root
+
 -- Registers a new vehicle to an account. Money is the caller's problem.
 --   who    : player element or account-name string
 --   model  : vehicle model id
@@ -208,6 +210,8 @@ function giveVehicle(who, model, data)
     if not id then return false, "db_error" end
 
     refreshOwnedIds(accountName)
+    -- police_system registers every owned vehicle (its database); source = root
+    triggerEvent("onOwnedVehicleCreated", root, id, accountName, model, data.plate)
     return id
 end
 

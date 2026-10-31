@@ -14,6 +14,7 @@ loadstring(exports.gov_core:importLib())()
 GOV_WORK_DEFAULTS = {
     ems            = { payer = "state:treasury", taxKey = "exempt" },
     bloodtransport = { payer = "state:treasury", taxKey = "exempt" },
+    police         = { payer = "state:treasury", taxKey = "exempt" },
 }
 
 GOV_RANGE = {
