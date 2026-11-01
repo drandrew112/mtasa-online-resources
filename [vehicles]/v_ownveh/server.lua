@@ -8,6 +8,11 @@
 
 local spawned = {}
 
+-- Health is not persisted, so a stored vehicle comes back repaired. While the
+-- owner is wanted (police_system) it keeps the health it was stored with.
+local lastHealth = {} -- id -> health at the last despawn
+local MIN_RESPAWN_HEALTH = 251 -- below 250 the vehicle burns
+
 --------------------------------------------------------------------------------
 -- Helpers
 --------------------------------------------------------------------------------
@@ -105,6 +110,7 @@ local function despawnEntry(id, save)
     if save then persistEntry(id, entry) end
     removeBlip(entry)
     if isElement(entry.veh) then
+        lastHealth[id] = getElementHealth(entry.veh)
         destroyElement(entry.veh)
     end
     spawned[id] = nil
@@ -308,6 +314,9 @@ function spawnOwnedVehicle(player, id)
     if not veh then return false, "create_failed" end
 
     OwnVeh.applyState(veh, row)
+    if lastHealth[id] and (getPlayerWantedLevel(player) or 0) > 0 then
+        setElementHealth(veh, math.max(lastHealth[id], MIN_RESPAWN_HEALTH))
+    end
     setElementData(veh, "ownveh:id", id)
     setElementData(veh, "ownveh:owner", accountName)
 

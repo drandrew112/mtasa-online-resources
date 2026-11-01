@@ -272,6 +272,13 @@ addEventHandler("v_customs:repair", root, function()
     local veh = Customs.sessionVehicle(player)
     if not veh then return end
 
+    -- no repair while wanted (police_system sets the GTA wanted level)
+    if (getPlayerWantedLevel(player) or 0) > 0 then
+        notify(player, L.msg("v_customs.tuning.customs"), L.msg("v_customs.tuning.repair_wanted"))
+        triggerClientEvent(player, "v_customs:repairResult", player, false)
+        return
+    end
+
     local net = Customs.repairNet(veh)
     local price, vat = VAT.split("repair", net)
     if price > 0 and not canAfford(player, price) then

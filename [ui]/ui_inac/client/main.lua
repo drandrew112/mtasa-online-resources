@@ -157,7 +157,7 @@ function registerMenus()
                 action = function()
                     local veh = getPedOccupiedVehicle(localPlayer)
                     if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
-                    else fixVehicle(veh)
+                    else triggerServerEvent("ui_inac:repairVehicle", localPlayer)
                     end
                 end
             },

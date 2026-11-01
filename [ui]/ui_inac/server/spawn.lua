@@ -38,6 +38,11 @@ local function isJailed(player)
     return accData(player, "adminjail") and true or false
 end
 
+-- police_system mirrors its wanted level into the GTA wanted level
+local function isWanted(player)
+    return (getPlayerWantedLevel(player) or 0) > 0
+end
+
 local function inJob(player)
     if not resourceRunning("v_jobmanager") then return false end
     return exports.v_jobmanager:jobmanagerGetState(player) and true or false
@@ -95,6 +100,10 @@ addEventHandler("ui_inac:spawnVehicle", root, function(model)
         notify(player, errTitle, L.msg("ui_inac.main.spawn_jailed"))
         return
     end
+    if isWanted(player) then
+        notify(player, errTitle, L.msg("ui_inac.main.spawn_wanted"))
+        return
+    end
     if inJob(player) then
         notify(player, errTitle, L.msg("ui_inac.main.spawn_in_job"))
         return
@@ -128,6 +137,20 @@ addEventHandler("ui_inac:spawnVehicle", root, function(model)
     spawnedVehicles[player] = vehicle
     warpPedIntoVehicle(player, vehicle)
     seatRiders(vehicle, riders)
+end)
+
+-- Menu repair of the vehicle the player sits in (not while wanted).
+addEvent("ui_inac:repairVehicle", true)
+addEventHandler("ui_inac:repairVehicle", root, function()
+    local player = client
+    if not isElement(player) then return end
+    local vehicle = getPedOccupiedVehicle(player)
+    if not vehicle then return end
+    if isWanted(player) then
+        notify(player, L.msg("ui_inac.main.error"), L.msg("ui_inac.main.repair_wanted"))
+        return
+    end
+    fixVehicle(vehicle)
 end)
 
 addEventHandler("onPlayerQuit", root, function()
