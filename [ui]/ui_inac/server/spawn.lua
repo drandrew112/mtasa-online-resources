@@ -43,6 +43,13 @@ local function isWanted(player)
     return (getPlayerWantedLevel(player) or 0) > 0
 end
 
+-- cuffed by the police (also with no wanted level: an arrest on a warrant); the warp into the new vehicle
+-- would take the suspect out of the police car
+function isCuffed(player)
+    if not resourceRunning("police_system") then return false end
+    return exports.police_system:isElementCuffed(player) == true
+end
+
 local function inJob(player)
     if not resourceRunning("v_jobmanager") then return false end
     return exports.v_jobmanager:jobmanagerGetState(player) and true or false
@@ -102,6 +109,10 @@ addEventHandler("ui_inac:spawnVehicle", root, function(model)
     end
     if isWanted(player) then
         notify(player, errTitle, L.msg("ui_inac.main.spawn_wanted"))
+        return
+    end
+    if isCuffed(player) then
+        notify(player, errTitle, L.msg("ui_inac.main.not_while_cuffed"))
         return
     end
     if inJob(player) then

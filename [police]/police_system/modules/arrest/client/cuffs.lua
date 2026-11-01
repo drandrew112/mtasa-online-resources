@@ -95,8 +95,26 @@ local function track(el)
     refresh()
 end
 
+-- cuffed local player on foot: walk only (the walk control held every frame - the Alt key's release would drop it;
+-- sprint / jump / crouch are toggled off by the server)
+local walkForced = false
+local function forceWalk()
+    if not getPedOccupiedVehicle(localPlayer) then setPedControlState(localPlayer, "walk", true) end
+end
+local function setWalkForced(on)
+    if on == walkForced then return end
+    walkForced = on
+    if on then
+        addEventHandler("onClientPreRender", root, forceWalk)
+    else
+        removeEventHandler("onClientPreRender", root, forceWalk)
+        setPedControlState(localPlayer, "walk", false)
+    end
+end
+
 addEventHandler("onClientElementDataChange", root, function(key)
     if key == "pol.cuffed" then
+        if source == localPlayer then setWalkForced(getElementData(localPlayer, "pol.cuffed") == true) end
         track(source)
     elseif key == "pol.escort" and CF.walk[source] and not isElement(getElementData(source, "pol.escort")) then
         -- escort over: the walk anim off now (also when the pose loop is not running for it any more)
@@ -126,6 +144,7 @@ function CF.start()
     for _, t in ipairs({ "ped", "player" }) do
         for _, e in ipairs(getElementsByType(t, root, true)) do track(e) end
     end
+    setWalkForced(getElementData(localPlayer, "pol.cuffed") == true)
     setTimer(custodyCheck, 1000, 0)
 end
 

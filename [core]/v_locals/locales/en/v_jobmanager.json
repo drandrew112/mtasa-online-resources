@@ -9,6 +9,7 @@
   "v_jobmanager.core.leave_your_current_lobby_or_match": "Leave your current lobby or match first.",
   "v_jobmanager.core.lobby": "Lobby {id} ({players}/{max_players}).",
   "v_jobmanager.core.not_enough_players": "Not enough players.",
+  "v_jobmanager.core.not_while_cuffed": "You can't join a job while you are cuffed.",
   "v_jobmanager.core.only_lobby_host_can_start_job": "Only the lobby host can start the job.",
   "v_jobmanager.core.phone_service_is_unavailable_right_now": "The phone service is unavailable right now.",
   "v_jobmanager.core.quick_joined": "Quick-joined {name}.",

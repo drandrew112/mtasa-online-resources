@@ -9,6 +9,7 @@
   "v_jobmanager.core.leave_your_current_lobby_or_match": "Előbb lépj ki a jelenlegi lobbidból vagy meccsedből.",
   "v_jobmanager.core.lobby": "Lobby {id} ({players}/{max_players}).",
   "v_jobmanager.core.not_enough_players": "Nincs elég játékos.",
+  "v_jobmanager.core.not_while_cuffed": "Megbilincselve nem csatlakozhatsz Jobhoz.",
   "v_jobmanager.core.only_lobby_host_can_start_job": "A Jobot csak a lobby házigazdája indíthatja el.",
   "v_jobmanager.core.phone_service_is_unavailable_right_now": "A telefonszolgáltatás jelenleg nem elérhető.",
   "v_jobmanager.core.quick_joined": "Gyorscsatlakozás: {name}.",

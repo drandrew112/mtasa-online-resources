@@ -24,6 +24,19 @@ function walkStyleOptions()
     return options
 end
 
+-- no fast travel from a vehicle, nor cuffed by the police (pol.cuffed, police_system)
+local function fastTravelBlocked()
+    if getElementData(localPlayer, "pol.cuffed") == true then
+        uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.not_while_cuffed"))
+        return true
+    end
+    if getPedOccupiedVehicle(localPlayer) then
+        uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_can_t_use_fast_travel"))
+        return true
+    end
+    return false
+end
+
 function registerMenus()
     -- MAIN MENU
     registerMenu({
@@ -39,21 +52,21 @@ function registerMenus()
                     {
                         label = L("ui_inac.main.ls_airport"),
                         action = function()
-                            if getPedOccupiedVehicle(localPlayer) then return uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_can_t_use_fast_travel")) end
+                            if fastTravelBlocked() then return end
                             setElementPosition(localPlayer, 1683.09, -2286.06, 13.5)
                         end
                     },
                     {
                         label = L("ui_inac.main.lv_airport"),
                         action = function()
-                            if getPedOccupiedVehicle(localPlayer) then return uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_can_t_use_fast_travel")) end
+                            if fastTravelBlocked() then return end
                             setElementPosition(localPlayer, 1693.51, 1447.89, 10.76)
                         end
                     },
                     {
                         label = L("ui_inac.main.sf_airport"),
                         action = function()
-                            if getPedOccupiedVehicle(localPlayer) then return uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_can_t_use_fast_travel")) end
+                            if fastTravelBlocked() then return end
                             setElementPosition(localPlayer, -1409.88, -304.44, 14.14)
                         end
                     }

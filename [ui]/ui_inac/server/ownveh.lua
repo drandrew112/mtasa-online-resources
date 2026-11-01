@@ -66,6 +66,11 @@ addEventHandler("ui_inac:requestPersonalVehicle", root, function(id)
 
     id = tonumber(id)
     if not id then return end
+    -- a direct spawn warps the owner into the driver seat (out of the police car)
+    if isCuffed(player) then
+        notify(player, L.msg("ui_inac.main.error"), L.msg("ui_inac.main.not_while_cuffed"))
+        return
+    end
 
     local mine, anySpawned = false, false
     for _, v in ipairs(ownedList(player)) do

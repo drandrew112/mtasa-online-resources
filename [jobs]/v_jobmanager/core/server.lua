@@ -166,8 +166,21 @@ local function inCreator(player)
     return getElementData(player, "jobCreator") == true
 end
 
+-- a cuffed player (police_system) stays with the police: a job would take it out of the car / custody
+local function inCustody(player)
+    local res = getResourceFromName("police_system")
+    if not (res and getResourceState(res) == "running") then return false end
+    return exports.police_system:isElementCuffed(player) == true
+end
+
+local function refuseCuffed(player)
+    if not inCustody(player) then return false end
+    message(player, L.msg("v_jobmanager.core.not_while_cuffed"))
+    return true
+end
+
 local function joinJob(player, job)
-    if inCreator(player) or job.scriptOnly then return false end
+    if inCreator(player) or job.scriptOnly or refuseCuffed(player) then return false end
     if playerState[player] then
         message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
@@ -182,7 +195,7 @@ local function joinJob(player, job)
 end
 
 local function joinLobbyById(player, lobbyId)
-    if inCreator(player) then return false end
+    if inCreator(player) or refuseCuffed(player) then return false end
     if playerState[player] then
         message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
@@ -203,7 +216,7 @@ end
 -- Random open lobby across ALL jobs, or a brand new lobby for a random job
 -- if none are joinable right now.
 local function quickJob(player)
-    if inCreator(player) then return false end
+    if inCreator(player) or refuseCuffed(player) then return false end
     if playerState[player] then
         message(player, L.msg("v_jobmanager.core.leave_your_current_lobby_or_match"), 255, 120, 120)
         return false
@@ -789,7 +802,7 @@ end
 
 local function freePlayer(player)
     return isElement(player) and getElementType(player) == "player" and not playerState[player]
-        and not inCreator(player) and not isPedDead(player) and getElementData(player, "isLogged") == true
+        and not inCreator(player) and not inCustody(player) and not isPedDead(player) and getElementData(player, "isLogged") == true
 end
 
 local function cleanPoint(p)

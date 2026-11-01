@@ -37,6 +37,7 @@
   "ui_inac.main.ls_airport": "LS Airport",
   "ui_inac.main.lv_airport": "LV Airport",
   "ui_inac.main.my_business": "My Business",
+  "ui_inac.main.not_while_cuffed": "You can't do this while you are cuffed.",
   "ui_inac.main.played_time": "Played Time",
   "ui_inac.main.preference_saved": "Saved. It applies from your next join.",
   "ui_inac.main.preferences": "Preferences",

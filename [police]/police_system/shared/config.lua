@@ -30,7 +30,7 @@ POLICE = {
             vehicle = { 1560.49, -1694.36, 4.90 },
             handover = { 1581.31, -1684.30, 14.00 },
             tow = { 1550.83, -1626.90, 12.38 },
-            jail = { 1571.7, -1697.6, 13.6, rot = 0, interior = 0, dimension = 0, radius = 4.5 },
+            jail = { 1571.88, -1692.76, 12.60, rot = 0, interior = 0, dimension = 0, radius = 4.5 },
             release = { 1544.0, -1675.5, 13.6, rot = 90 },
         },
     },
