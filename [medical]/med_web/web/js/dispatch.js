@@ -167,7 +167,7 @@
                 if (u.status === 'handover' && u.handoverEnds) status += ` ${Math.max(0, u.handoverEnds - ERM.now())}s`;
                 const task = u.task ? `#${u.task} ${esc(u.taskTitle)}` : 'No task';
                 return `<li class="unit ${u.status}" data-id="${u.id}">
-                    <span class="unit-name">${esc(u.callsign)}<small>${esc(u.type)} · ${esc(u.plate)}</small></span>
+                    <span class="unit-name">${esc(u.callsign)}<small>${esc(u.type)} · ${esc(u.plate)}${u.competency ? ' · ' + esc(u.competency) : ''}${u.unqualified ? ' · not qualified' : ''}</small></span>
                     <span class="unit-status">${status}</span>
                     <span class="unit-sub">${task}</span>
                     <span class="unit-sub">${esc(u.members.map(clean).join(', '))}</span>
@@ -248,6 +248,7 @@
             <p>Status: <b style="color:${STATUS_COLOR[u.status]}">${ERM.STATUS[u.status]}</b>${u.responding ? ' · lights & siren' : ''}</p>
             <p>Plate: <b>${esc(u.plate)}</b></p>
             <p>Crew: <b>${esc(u.members.map(clean).join(', '))}</b></p>
+            ${u.competency ? `<p>Highest competency: <b>${esc(u.competency)}</b>${u.unqualified ? ' · <b>not qualified for ' + esc(u.type) + '</b>' : ''}</p>` : ''}
             <p>Task: <b>${u.task ? '#' + u.task + ' ' + esc(u.taskTitle) : 'None'}</b></p>
             <p>Location: <b>${esc(u.zone)}</b></p>
             <p>On duty since: <b>${ERM.clock(u.startedAt)}</b> · closed cases: <b>${u.closedTasks}</b></p>

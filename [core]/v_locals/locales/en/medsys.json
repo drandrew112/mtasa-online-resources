@@ -343,5 +343,7 @@
   "medsys.treatment.unknown_procedure": "Unknown procedure",
   "medsys.treatment.ventilated_through_tube": "Ventilated through the tube",
   "medsys.treatment.waiting_for_muscle_relaxant_to_work": "Waiting for the muscle relaxant to work",
-  "medsys.treatment.you_are_busy": "You are busy"
+  "medsys.treatment.you_are_busy": "You are busy",
+  "medsys.treatment.needs_competency": "Needs competency: {name}",
+  "medsys.panel.needs_competency": "Needs competency: {name}"
 }

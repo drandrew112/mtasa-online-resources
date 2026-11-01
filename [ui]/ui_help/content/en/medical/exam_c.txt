@@ -1,0 +1,31 @@
+# Exam: paramedic officer
+@keywords: paramedic officer, C exam, breathing, asthma, pulmonary oedema, Kussmaul, agonal breathing, ECG, rhythm, shockable, VF, VT, PEA, asystole, CPR, ROSC, 4H 4T
+@related: medical_exams, medical_monitor, medical_diagnosis, medical_cases
+
+Needs B+ and the RSI exam. A short review of the earlier exams (medicines, IV, intubation) and new material.
+
+## Breathing
+
+- **Wheezing, only short words:** severe asthma. **Silent chest:** life threatening.
+- **Crackles, swollen ankles, pink frothy sputum:** pulmonary oedema – sit up, Nitroglycerin, oxygen.
+- **Deep, fast, acetone smell (Kussmaul):** very high blood glucose.
+- **Slow, shallow:** opioid or sleeping pill poisoning.
+- **Snoring** in an unconscious patient: partial airway obstruction.
+- **Gasping (agonal):** cardiac arrest, start CPR.
+- **COPD** (pursed lips, leaning forward): oxygen helps the most.
+
+## ECG rhythms
+
+- **Shockable:** ventricular fibrillation (VF, chaotic waves) and pulseless ventricular tachycardia (wide, regular, fast waves).
+- **Not shockable:** asystole (flat line) and PEA (an organised rhythm on the monitor but no palpable pulse).
+- Never shock a talking patient in sinus rhythm: the shock can stop the heart.
+- **VT with a pulse, unstable patient:** synchronised cardioversion (SYNC). An unsynchronised shock can cause VF.
+
+## CPR
+
+- Shockable rhythm: defibrillate as soon as possible, CPR in between. After a shock, 2 minutes of CPR at once, only then a rhythm check.
+- Adrenaline: in a non-shockable rhythm as soon as possible, in a shockable one after the 3rd shock, then every 3–5 minutes.
+- Untreated VF turns into asystole within minutes.
+- Change the compressor about every 2 minutes. Adrenaline and a secured airway also help ROSC.
+- Reversible causes: **4H** (hypoxia, hypovolaemia, hypo-/hyperkalaemia, hypothermia), **4T** (tension pneumothorax, tamponade, toxins, thrombosis). Arrest from low glucose: Glucose 40% IV.
+- After ROSC: monitor, oxygen, watch the pressure and the rhythm, transport.

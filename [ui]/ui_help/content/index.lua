@@ -89,6 +89,13 @@ HELP_INDEX = {
         { id = "medical_minigames",  category = "medical", order = 80, file = "medical/minigames.txt" },
         { id = "medical_equipment",  category = "medical", order = 90, file = "medical/equipment.txt" },
         { id = "medical_cases",      category = "medical", order = 100, file = "medical/cases.txt" },
+        { id = "medical_exams",      category = "medical", order = 110, file = "medical/exams.txt" },
+        { id = "medical_exam_a",     category = "medical", order = 115, file = "medical/exam_a.txt" },
+        { id = "medical_exam_b",     category = "medical", order = 120, file = "medical/exam_b.txt" },
+        { id = "medical_exam_drug",  category = "medical", order = 125, file = "medical/exam_drug.txt" },
+        { id = "medical_exam_rsi",   category = "medical", order = 130, file = "medical/exam_rsi.txt" },
+        { id = "medical_exam_c",     category = "medical", order = 135, file = "medical/exam_c.txt" },
+        { id = "medical_exam_d",     category = "medical", order = 140, file = "medical/exam_d.txt" },
         -- police (police_system, work_police)
         { id = "police", category = "police", order = 10, file = "police/police.txt" },
         { id = "police_duty", category = "police", order = 20, file = "police/police_duty.txt" },

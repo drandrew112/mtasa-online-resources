@@ -1,0 +1,21 @@
+# Exam: "B" nurse
+@keywords: B exam, IV, cannula, Captopril, Tensiomin, Nitroglycerin, Salbutamol, Ventolin, Glucose, glucose gel, Naloxone, Narcan
+@related: medical_exams, medical_drugs, medical_procedures
+
+## IV access
+
+- Of the "B" medicines only Glucose 40% needs the IV, the others go without one.
+- After placing a cannula check that fluid runs freely. Swelling and pain around it: it slipped out, try a new site.
+- Before any medicine: right medicine, right dose, right route, right patient, no allergy.
+- Peripheral cannula: back of the hand, forearm, elbow.
+- After a failed attempt, try at a new site with a new sterile cannula.
+- Without IV: Captopril (under the tongue), Nitroglycerin spray, Naloxone (nasal), Salbutamol (nebulised), glucose gel.
+
+## Medicines
+
+- **Captopril (Tensiomin):** high blood pressure, 25 mg under the tongue (12.5 mg smaller dose). In a stroke, do not lower it between 130–220.
+- **Nitroglycerin spray:** pulmonary oedema (crackles, pink frothy sputum), 0.4 mg. Not with low blood pressure (systolic under 90).
+- **Salbutamol (Ventolin):** wheezing, asthma, COPD, 2.5–5 mg nebulised. Side effects: fast pulse, shaking.
+- **Glucose 40%:** raises low blood glucose fast through the IV, 40 ml (16 g). The choice for an unconscious patient.
+- **Glucose gel:** only for an awake patient who can swallow, 15 g.
+- **Naloxone (Narcan):** opioid (heroin, fentanyl) overdose. Signs: pinpoint pupils, slow shallow breathing, needle marks. 2–4 mg nasal. It can wear off and the patient falls asleep again: watch the breathing.

@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="work_ems" version="1.0.0" type="script"
-          description="EMS work on work_core: duty gives the medsys medic role, ambulances with A- plates" />
+          description="EMS work on work_core: duty gives the medsys medic role, ambulances with A- plates, competencies + exams" />
     <min_mta_version server="1.5.9" client="1.5.9" />
 
     <!-- ================= SHARED ================= -->
@@ -11,6 +11,7 @@
     <!-- ================= SERVER ================= -->
     <script src="server/modules.lua" type="server" />
     <script src="server/main.lua"    type="server" />
+    <script src="server/competency.lua" type="server" />
     <!-- modules go here, after server/modules.lua -->
 
     <!-- ================= TUTORIAL MODULE (tutorial/, see tutorial/README.md) ================= -->
@@ -23,6 +24,24 @@
 
     <!-- ================= CLIENT ================= -->
     <script src="client/main.lua" type="client" />
+    <!-- competency badges (tablet, exam panel) -->
+    <file src="img/badges/t.png" type="client" />
+    <file src="img/badges/a.png" type="client" />
+    <file src="img/badges/b.png" type="client" />
+    <file src="img/badges/bplus.png" type="client" />
+    <file src="img/badges/c.png" type="client" />
+    <file src="img/badges/d.png" type="client" />
+    <file src="img/badges/e.png" type="client" />
+    <!-- exam question images (exams/<lang>/*.json "image"); the JSON files are read by the server -->
+    <file src="exams/img/lifepak_pads.png" type="client" />
+    <file src="exams/img/glucometer_48.png" type="client" />
+    <file src="exams/img/fast_face.png" type="client" />
+    <file src="exams/img/pupils_pinpoint.png" type="client" />
+    <file src="exams/img/ecg_vf.png" type="client" />
+    <file src="exams/img/ecg_vt.png" type="client" />
+    <file src="exams/img/ecg_asystole.png" type="client" />
+    <file src="exams/img/ecg_sinus.png" type="client" />
+    <file src="exams/img/ecg_pea.png" type="client" />
 
     <!-- ================= SERVER EXPORTS ================= -->
     <export function="isPlayerEms"   type="server" />

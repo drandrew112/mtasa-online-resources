@@ -343,5 +343,7 @@
   "medsys.treatment.unknown_procedure": "Ismeretlen beavatkozás",
   "medsys.treatment.ventilated_through_tube": "Lélegeztetés a tubuson keresztül",
   "medsys.treatment.waiting_for_muscle_relaxant_to_work": "Várakozás az izomrelaxáns hatására",
-  "medsys.treatment.you_are_busy": "Elfoglalt vagy"
+  "medsys.treatment.you_are_busy": "Elfoglalt vagy",
+  "medsys.treatment.needs_competency": "Kompetencia kell hozzá: {name}",
+  "medsys.panel.needs_competency": "Kompetencia kell hozzá: {name}"
 }

@@ -121,13 +121,22 @@ function Login.draw(x, y, w, h)
     local bw = (lw - gap * (n - 1)) / n
     for i, t in ipairs(types) do
         local selected = Login.unitType == t
+        -- a type needs one crew member with its competency (Config.UNIT_COMPETENCY)
         Gfx.button(ix + (i - 1) * (bw + gap), ty + s(18), bw, s(36), t, {
             color = selected and { 224, 60, 49 } or { 39, 46, 55 },
             textColor = selected and Theme.text or Theme.dim,
+            disabled = not selected and not Competency.crewAllows(Login.members, t),
         }, function() Login.unitType = t end)
     end
-    Gfx.text(Login.unitType and TYPE_HINTS[Login.unitType] or L("med_erm.login.select_type_of_your_unit"),
-        ix, ty + s(58), lw, s(18), Theme.dim, Gfx.font(9))
+    local typeOk, typeNeed = true, nil
+    if Login.unitType then typeOk, typeNeed = Competency.crewAllows(Login.members, Login.unitType) end
+    if not typeOk then
+        Gfx.text(L("med_erm.competency.type_needs", { type = Login.unitType, need = typeNeed }),
+            ix, ty + s(58), lw, s(36), tocolor(255, 130, 110), Gfx.font(9), "left", "top", true)
+    else
+        Gfx.text(Login.unitType and TYPE_HINTS[Login.unitType] or L("med_erm.login.select_type_of_your_unit"),
+            ix, ty + s(58), lw, s(18), Theme.dim, Gfx.font(9))
+    end
 
     -- right column: crew ----------------------------------------------------
     Gfx.label(L("med_erm.detail.crew", { members = #Login.members }), rx, colY, rw)
@@ -149,7 +158,10 @@ function Login.draw(x, y, w, h)
             Gfx.round(rx + s(4), ry, rw - s(8), rowH, s(4), Theme.panel2)
         end
         local name = getPlayerName(p):gsub("#%x%x%x%x%x%x", "")
-        Gfx.text(Gfx.fit(name, rw - s(80), Gfx.font(10)), rx + s(14), ry, rw - s(80), rowH, Theme.text, Gfx.font(10))
+        local youW = p == localPlayer and s(40) or 0
+        local compW = Competency.draw(p, rx + s(14), ry, rw - s(24) - youW, rowH)
+        local nameW = rw - s(40) - youW - compW
+        Gfx.text(Gfx.fit(name, nameW, Gfx.font(10)), rx + s(14), ry, nameW, rowH, Theme.text, Gfx.font(10))
         if p == localPlayer then
             Gfx.text(L("med_erm.login.you"), rx, ry, rw - s(16), rowH, Theme.faint, Gfx.font(8, true), "right")
         end
@@ -176,7 +188,7 @@ function Login.draw(x, y, w, h)
     Gfx.button(ix + iw - s(160), fy, s(160), s(42), L("med_erm.login.sign_in"), {
         color = { 46, 160, 67 },
         font = Gfx.font(11, true),
-        disabled = not Login.unitType,
+        disabled = not Login.unitType or not typeOk,
     }, function()
         Tablet.send("erm:signIn", Login.unitType, Login.members, Login.unitNumber)
     end)
@@ -208,11 +220,13 @@ function Login.drawPicker(sx, sy, sw, sh)
         local e = list[i]
         local ry = ly + (i - 1 - offset) * rowH
         local name = getPlayerName(e.player):gsub("#%x%x%x%x%x%x", "")
-        Gfx.button(x + s(12), ry + s(2), w - s(24), rowH - s(4), Gfx.fit(name, w - s(110), Gfx.font(10)),
+        local compW = Competency.of(e.player) and s(90) or 0
+        Gfx.button(x + s(12), ry + s(2), w - s(24), rowH - s(4), Gfx.fit(name, w - s(110) - compW, Gfx.font(10)),
             { color = { 39, 46, 55 }, align = "left", font = Gfx.font(10) }, function()
                 Login.members[#Login.members + 1] = e.player
                 Login.picker = false
             end)
+        Competency.draw(e.player, x + s(12), ry, w - s(90), rowH)
         Gfx.text(string.format("%.1f m", e.dist), x + s(12), ry, w - s(36), rowH, Theme.faint, Gfx.font(9), "right")
     end
 

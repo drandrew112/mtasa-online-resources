@@ -306,6 +306,7 @@ function Tutorial.start(player)
         exports.medsys:setPlayerMedic(player, true)
         s.grantedMedic = true
     end
+    syncMedicPermissions(player)   -- no competency limits while the tutorial runs
     if isRunning("med_erm") then
         exports.med_erm:removePlayerFromUnit(player, L.msg("work_ems.session.you_started_ems_tutorial"))
     end
@@ -321,7 +322,7 @@ function Tutorial.start(player)
             return chat(player, L.msg("work_ems.session.tutorial_could_not_be_started"))
         end
         s.vehicle = vehicle
-        setElementData(vehicle, EMS.EQUIPMENT_DATA, EMS.EQUIPMENT_DEFAULT) -- med_equipments: kit + stretcher
+        setElementData(vehicle, EMS.EQUIPMENT_DATA, "als") -- med_equipments: full kit + stretcher (no ERM sign-in here)
         setElementDimension(vehicle, s.dimension)
         setElementInterior(player, 0)
         setElementDimension(player, s.dimension)
@@ -351,6 +352,7 @@ function Tutorial.finish(player, reason)
 
     if reason == "quit" or not isElement(player) then return true end
     if reason == "completed" or reason == "skipped" then markDone(player) end
+    syncMedicPermissions(player)   -- the competency limits apply again
 
     send(player, "ems:tut:end", reason)
     if s.grantedMedic and isRunning("medsys") and not isPlayerEms(player) then

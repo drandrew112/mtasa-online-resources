@@ -1,0 +1,24 @@
+# RSI exam
+@keywords: RSI, rapid sequence intubation, intubation, preoxygenation, Ketamine, Rocuronium, tube, GCS, airway
+@related: medical_exams, medical_procedures, medical_drugs
+
+From B+. Required for the paramedic officer exam.
+
+## When to intubate
+
+- The patient cannot protect the airway: GCS ≤ 8, snoring or gurgling breathing in an unconscious patient.
+- The oxygenation does not improve even with oxygen.
+- Airway burn (sooty mouth, hoarse voice, stridor): early, because the airway swells fast.
+
+## The order
+
+1. **Preoxygenation:** about 3 minutes of oxygen on the mask to build a reserve.
+2. **Induction:** Ketamine 1.5 mg/kg. Keeps the blood pressure, safe in shock.
+3. **Paralysis:** Rocuronium 1–1.2 mg/kg. The patient soon stops breathing.
+4. **Intubation.**
+5. **Ventilation with oxygen** through the tube, monitoring, transport.
+
+- Rocuronium works for long (40–60 minutes): the patient needs ventilation all the time.
+- Without oxygen the tube does not help: when it runs out, change the oxygen source at once.
+- Failed intubation and falling SpO2: stop, oxygenate on the mask, then try again.
+- Fentanyl is optional: a higher dose dulls the stress response but lowers the breathing and the pressure.

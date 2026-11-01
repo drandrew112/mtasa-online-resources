@@ -1,0 +1,24 @@
+# RSI vizsga
+@keywords: RSI, rapid sequence intubation, intubáció, preoxigenizáció, Ketamin, Rokuronium, tubus, GCS, légút
+@related: medical_exams, medical_procedures, medical_drugs
+
+B+ rangtól tehető le. A Mentőtiszt vizsgához kötelező.
+
+## Mikor kell intubálni
+
+- A beteg nem védi a légútját: GCS ≤ 8, horkoló vagy hörgő légzés eszméletlen betegnél.
+- Oxigénnel sem javuló oxigenizáció.
+- Légúti égés (kormos száj, rekedtség, stridor): korán, mert a légút gyorsan duzzad.
+
+## A sorrend
+
+1. **Preoxigenizáció:** kb. 3 perc maszkos oxigén, hogy nőjön a tartalék.
+2. **Indukció:** Ketamin 1,5 mg/ttkg. Megtartja a vérnyomást, sokkban is biztonságos.
+3. **Izomrelaxáció:** Rokuronium 1–1,2 mg/ttkg. Rövid időn belül megszűnik a saját légzés.
+4. **Intubáció.**
+5. **Lélegeztetés oxigénnel** a tubuson át, folyamatos monitorozás, szállítás.
+
+- A Rokuronium sokáig hat (40–60 perc): a beteg végig lélegeztetésre szorul.
+- Oxigén nélkül a tubus nem segít: ha elfogy, azonnal oxigénforrást cserélsz.
+- Sikertelen intubáció és eső SpO2: abbahagyod, maszkkal oxigenizálsz, majd újra próbálod.
+- A Fentanil opcionális: magasabb dózisa tompítja a stresszválaszt, de csökkenti a légzést és a vérnyomást.

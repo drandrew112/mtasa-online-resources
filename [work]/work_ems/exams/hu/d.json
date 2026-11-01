@@ -1,0 +1,318 @@
+{
+  "id": "d",
+  "title": "Mentőorvos",
+  "description": "A teljes tananyag ismétlése + részletes gyógyszerismeret, dózisszámítás, bőr- és légzéstípusok.",
+  "questionCount": 20,
+  "passPercent": 75,
+  "help": "medical_exam_d",
+  "questions": [
+    {
+      "id": "d_01",
+      "q": "70 kg-os beteg, Fentanil 1 mcg/ttkg. Mennyi a dózis?",
+      "answers": [
+        "70 mcg",
+        "7 mg",
+        "700 mcg",
+        "0,7 mcg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_02",
+      "q": "90 kg-os beteg, Rokuronium 1,2 mg/ttkg. Mennyi?",
+      "answers": [
+        "108 mg",
+        "10,8 mg",
+        "1080 mg",
+        "12 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_03",
+      "q": "60 kg-os beteg, Midazolam 0,05 mg/ttkg. Mennyi?",
+      "answers": [
+        "3 mg",
+        "30 mg",
+        "0,3 mg",
+        "300 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_04",
+      "q": "80 kg-os beteg, Inzulin 0,1 IU/ttkg. Mennyi?",
+      "answers": [
+        "8 IU",
+        "80 IU",
+        "0,8 IU",
+        "800 IU"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_05",
+      "q": "Mi a kockázata a Ketamin 2 mg/ttkg (narancs) dózisnak?",
+      "answers": [
+        "A szokásosnál erősebb hatás: csak indokolt esetben",
+        "Gyengébb hatás",
+        "Semmi",
+        "Ez a gyermekdózis"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_06",
+      "q": "Midazolam 0,1 mg/ttkg alkoholos betegnél. Mire számítasz?",
+      "answers": [
+        "Fokozott légzésdepresszió: készülj légútbiztosításra",
+        "Biztonságos",
+        "A Naloxon visszafordítja",
+        "Emelkedik a vérnyomás"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_07",
+      "q": "Fentanil és Midazolam együtt. Mi történik?",
+      "answers": [
+        "Hatásuk összeadódik: légzés- és keringésdepresszió",
+        "Kioltják egymást",
+        "Semmi különös",
+        "Hányás"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_08",
+      "q": "Mikor adsz Inzulint prehospitálisan?",
+      "answers": [
+        "Ritkán: csak igazolt, nagyon magas vércukornál, ismételt méréssel",
+        "Minden cukorbetegnek",
+        "Hipoglikémiában",
+        "Eszméletlenségnél"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_09",
+      "q": "Nagyon magas vércukor, kiszáradt beteg. Mi a prehospitális ellátás alapja?",
+      "answers": [
+        "Vénás folyadékpótlás, ami lassan a vércukrot is csökkenti",
+        "Glükóz 40%",
+        "Folyadékmegvonás",
+        "Nagy dózis Inzulin bólusban"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_10",
+      "q": "Fejsérült betegnél magas vérnyomás és lassú pulzus. Mit jelent?",
+      "answers": [
+        "Koponyaűri nyomásfokozódás (Cushing-reflex): sürgős szállítás",
+        "Normál reakció",
+        "Hipoglikémia",
+        "Asztma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_11",
+      "q": "Egyenlőtlen pupillák, tiszta folyadék a fülből?",
+      "answers": [
+        "Súlyos koponyasérülés, koponyaalapi törés gyanúja",
+        "Ópiát-mérgezés",
+        "Stroke",
+        "Alkoholmérgezés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_12",
+      "q": "Hideg, verejtékes bőr. Mire gondolsz elsőként?",
+      "answers": [
+        "Hipoglikémiára vagy stimuláns-mérgezésre",
+        "Magas vércukorra",
+        "Normál állapotra",
+        "Ópiát-mérgezésre"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_13",
+      "q": "Száraz bőr, sok vizelés, nagyon magas vércukor. Mi a háttér?",
+      "answers": [
+        "Kiszáradás a magas vércukor miatt",
+        "Hipoglikémia",
+        "Stimuláns-mérgezés",
+        "Asztma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_14",
+      "q": "Megharapott nyelv, bevizelés, zavartság, ami magától javul?",
+      "answers": [
+        "Görcsroham utáni (posztiktális) állapot",
+        "Tüdőödéma",
+        "Ópiát-mérgezés",
+        "Asztma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_15",
+      "q": "Altatószer-túladagolásnál miért nem segít a Naloxon?",
+      "answers": [
+        "Mert csak az ópiátok hatását fordítja vissza",
+        "Mert túl erős",
+        "Mert csak vénába adható",
+        "Segít, ez az ellenszere"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_16",
+      "q": "Peri-arrest hipotónia (systolés 60). Mit adsz?",
+      "answers": [
+        "Push-dose Adrenalint (0,02 mg) és keresed az okot",
+        "1 mg Adrenalin bólus",
+        "Captopril",
+        "Nitroglicerin"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_17",
+      "q": "Nitroglicerin, ha a beteg potencianövelőt (PDE5-gátló) szedett?",
+      "answers": [
+        "Ellenjavallt: súlyos vérnyomásesés",
+        "Biztonságos",
+        "Dupla dózis kell",
+        "Nincs összefüggés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_18",
+      "q": "Tüdőödéma, vérnyomás 210/120. Mi a kezelés?",
+      "answers": [
+        "Nitroglicerin, oxigén, ültetés",
+        "Folyadékbólus",
+        "Salbutamol",
+        "Nagy dózis Fentanil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_19",
+      "q": "Hipoglikémiás, ébren van és tud nyelni. Mi a legegyszerűbb?",
+      "answers": [
+        "Glükóz gél",
+        "Csak vénás glükóz",
+        "Inzulin",
+        "Naloxon"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_20",
+      "q": "Mi történhet szinkronizálatlan sokknál pulzusos VT-ben?",
+      "answers": [
+        "Kamrafibrillációt válthat ki",
+        "Mindig javít",
+        "Semmi",
+        "Biztos ROSC"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_21",
+      "q": "Miért kell az Adrenalint újraélesztés alatt 3–5 percenként ismételni?",
+      "answers": [
+        "Mert a hatása rövid, néhány perc",
+        "Mert az első adag nem szívódik fel",
+        "Nem kell ismételni",
+        "Mert a második adag az ellenszere"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_22",
+      "q": "Stroke-os beteg, systolés 110. Mi a gond?",
+      "answers": [
+        "130 alatt kevesebb vér jut az agyba, gyorsabban romlik",
+        "Ideális érték",
+        "Túl magas",
+        "Mindegy"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_23",
+      "q": "Égett beteg folyadékvesztése?",
+      "answers": [
+        "Plazmavesztés: a kötés csökkenti, korai szállítás",
+        "Nincs folyadékvesztés",
+        "Csak fájdalom",
+        "Csak vérzés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_24",
+      "q": "Nyílt törés kritikus vérzéssel. Mi a sorrend?",
+      "answers": [
+        "Előbb vérzéscsillapítás kötéssel, utána sínezés",
+        "Csak sín",
+        "Csak fájdalomcsillapítás",
+        "A csont visszahelyezése"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_25",
+      "q": "Hipoglikémiás beteg glükóz után felébredt. Mire figyelsz?",
+      "answers": [
+        "Ismételt vércukormérés, mert újra leeshet",
+        "Elengeded, rendben van",
+        "Inzulint adsz, nehogy túl magas legyen",
+        "Semmire"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_26",
+      "q": "Extrém magas vércukornál (700 mg/dL felett) mire számítasz?",
+      "answers": [
+        "Tudatzavarra, akár eszméletlenségre",
+        "Teljesen tünetmentes betegre",
+        "Hipoglikémiára",
+        "Tűhegynyi pupillákra"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_27",
+      "q": "Asztma, néma mellkas, kimerült, SpO2 74%. Mit teszel?",
+      "answers": [
+        "Salbutamol, oxigén; ha romlik, RSI mérlegelése",
+        "Midazolam",
+        "Naloxon",
+        "Captopril"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_28",
+      "q": "Mi tartozik a keringésmegállás reverzibilis okai közül a „4T”-be?",
+      "answers": [
+        "Tenziós PTX, tamponád, toxinok, trombózis",
+        "Tünet, tudat, testhő, tápláltság",
+        "Tachycardia, tremor, tónus, tűz",
+        "Tabletta, tubus, tű, tampon"
+      ],
+      "correct": 1
+    }
+  ]
+}

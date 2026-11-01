@@ -1,0 +1,340 @@
+{
+  "id": "drug",
+  "title": "Gyógyszervizsga",
+  "description": "Minden gyógyszer: hatás, dózis, adagolás módja, veszélyek, ellenszerek.",
+  "questionCount": 20,
+  "passPercent": 75,
+  "help": "medical_exam_drug",
+  "questions": [
+    {
+      "id": "drug_01",
+      "q": "Mi a Ketamin (Calypsol)?",
+      "answers": [
+        "Altató / indukciós szer (RSI 1. lépés), kis dózisban fájdalomcsillapító",
+        "Izomrelaxáns",
+        "Vérnyomáscsökkentő",
+        "Antidótum"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_02",
+      "q": "Hogyan hat a Ketamin a vérnyomásra?",
+      "answers": [
+        "Megtartja vagy emeli, ezért sokkos betegnél előnyös",
+        "Erősen csökkenti",
+        "Leállítja a szívet",
+        "Csak a pulzust lassítja"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_03",
+      "q": "Mennyi a Ketamin fájdalomcsillapító dózisa?",
+      "answers": [
+        "0,3 mg/ttkg",
+        "1,5 mg/ttkg",
+        "5 mg/ttkg",
+        "0,01 mg/ttkg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_04",
+      "q": "Mit csinál a Rokuronium?",
+      "answers": [
+        "Megbénítja az izmokat, a beteg nem lélegzik: csak altatás és intubálás mellett adható",
+        "Altat",
+        "Fájdalmat csillapít",
+        "Emeli a vércukrot"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_05",
+      "q": "Mi történik, ha ébren lévő beteg kap Rokuroniumot?",
+      "answers": [
+        "Tudatánál van, de nem tud mozogni és lélegezni: pánik, súlyos hiba",
+        "Elalszik és megnyugszik",
+        "Semmi",
+        "Javul a légzése"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_06",
+      "q": "Mire való a Fentanil?",
+      "answers": [
+        "Erős fájdalomcsillapító",
+        "Antidótum",
+        "Hányáscsillapító",
+        "Vérnyomásemelő"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_07",
+      "q": "Mennyi a Fentanil szokásos dózisa?",
+      "answers": [
+        "1 mcg/ttkg",
+        "1 mg/ttkg",
+        "10 mg fix",
+        "100 mcg/ttkg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_08",
+      "q": "Fentanil túladagolás jele és ellenszere?",
+      "answers": [
+        "Légzésdepresszió, szűk pupilla – Naloxon",
+        "Görcsök – glükóz",
+        "Magas vérnyomás – Captopril",
+        "Sípoló légzés – Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_09",
+      "q": "Adrenalin dózisa szívmegállásban?",
+      "answers": [
+        "1 mg IV, 3–5 percenként",
+        "10 mg egyszer",
+        "0,02 mg",
+        "25 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_10",
+      "q": "Mi a „push-dose” adrenalin?",
+      "answers": [
+        "Nagyon kis dózis (kb. 0,02 mg) peri-arrest vérnyomásesésben",
+        "Az újraélesztési dózis",
+        "Orrspray",
+        "Tabletta"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_11",
+      "q": "Mit csinál az Adrenalin?",
+      "answers": [
+        "Emeli a pulzust és a vérnyomást, javítja a ROSC esélyét",
+        "Lassítja a pulzust",
+        "Altat",
+        "Csökkenti a vércukrot"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_12",
+      "q": "Hogyan adod a Captoprilt?",
+      "answers": [
+        "Nyelv alá, véna nem kell",
+        "IV bólusban",
+        "Porlasztva",
+        "Izomba"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_13",
+      "q": "Mi a Nitroglicerin spray szokásos dózisa?",
+      "answers": [
+        "0,4 mg (1 puff), szükség esetén ismételhető",
+        "4 mg",
+        "40 mg",
+        "0,004 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_14",
+      "q": "Mennyi a Glükóz 40% szokásos dózisa?",
+      "answers": [
+        "40 ml (16 g)",
+        "400 ml",
+        "1 ml",
+        "5 liter"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_15",
+      "q": "Mennyi a glükóz gél szokásos dózisa?",
+      "answers": [
+        "15 g (egy tubus)",
+        "150 g",
+        "1 g",
+        "50 ml vénába"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_16",
+      "q": "Mit csinál az Inzulin?",
+      "answers": [
+        "Lassan csökkenti a nagyon magas vércukrot",
+        "Gyorsan emeli a vércukrot",
+        "Altat",
+        "Emeli a vérnyomást"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_17",
+      "q": "Mi az Inzulin legnagyobb veszélye?",
+      "answers": [
+        "Hipoglikémia (túl alacsony vércukor)",
+        "Magas vérnyomás",
+        "Hányás",
+        "Izombénulás"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_18",
+      "q": "Adsz Inzulint ismeretlen vércukrú, eszméletlen betegnek?",
+      "answers": [
+        "Soha, előbb vércukrot mérsz",
+        "Igen, mindig",
+        "Csak gélként",
+        "Igen, dupla dózist"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_19",
+      "q": "Mennyi a Naloxon szokásos dózisa?",
+      "answers": [
+        "4 mg orrspray (2 mg a kisebb)",
+        "40 mg",
+        "0,04 mg",
+        "400 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_20",
+      "q": "Mennyi a Salbutamol dózisa?",
+      "answers": [
+        "2,5–5 mg porlasztva",
+        "50 mg",
+        "0,1 mg vénába",
+        "25 mg tabletta"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_21",
+      "q": "Asztmás beteg mellkasa „néma”, alig hallani légzést. Mit jelent?",
+      "answers": [
+        "Életveszély: kimerült, alig mozgat levegőt – azonnali kezelés, ALS",
+        "Jó jel, gyógyul",
+        "Normál",
+        "Hiperventiláció"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_22",
+      "q": "Mire való a Midazolam (Dormicum)?",
+      "answers": [
+        "Nyugtatás: kokain / amfetamin okozta izgatottság, görcs",
+        "Ópiát ellenszere",
+        "Vércukor emelése",
+        "Vérnyomás emelése"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_23",
+      "q": "Mi a Midazolam veszélye?",
+      "answers": [
+        "Légzésdepresszió és vérnyomásesés; túladagolva altatószer-mérgezés",
+        "Magas vércukor",
+        "Szapora pulzus",
+        "Mindig allergia"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_24",
+      "q": "Mennyi a Midazolam szokásos dózisa?",
+      "answers": [
+        "0,05 mg/ttkg",
+        "5 mg/ttkg",
+        "0,5 g fix",
+        "1 mcg fix"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_25",
+      "q": "Mit jelent a ttkg alapú adagolás?",
+      "answers": [
+        "A dózis a beteg testtömegével szorzódik (80 kg × 1 mcg = 80 mcg)",
+        "Mindenki ugyanannyit kap",
+        "Életkor alapján számolják",
+        "Testmagasság alapján számolják"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_26",
+      "q": "Altatószer-túladagolás (benzodiazepin, gyakran alkohollal). Mi a prehospitális ellátás alapja?",
+      "answers": [
+        "Támogató kezelés: légút, oxigén, monitorozás",
+        "Naloxon",
+        "Glükóz",
+        "Adrenalin"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_27",
+      "q": "Melyik gyógyszer kezeli a stimuláns (kokain, amfetamin) mérgezést?",
+      "answers": [
+        "Midazolam",
+        "Naloxon",
+        "Inzulin",
+        "Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_28",
+      "q": "Melyiket NEM adhatod véna nélkül?",
+      "answers": [
+        "Adrenalin",
+        "Captopril",
+        "Naloxon",
+        "Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_29",
+      "q": "80 kg-os beteg Ketamin RSI dózisa (1,5 mg/ttkg)?",
+      "answers": [
+        "120 mg",
+        "15 mg",
+        "1,5 mg",
+        "1200 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_30",
+      "q": "Mi történik, ha ugyanabból a gyógyszerből több adagot adsz rövid időn belül?",
+      "answers": [
+        "Az adagok hatása összeadódik, túladagoláshoz vezethet",
+        "Csak az utolsó hat",
+        "Kioltják egymást",
+        "Semmi, mindig biztonságos"
+      ],
+      "correct": 1
+    }
+  ]
+}

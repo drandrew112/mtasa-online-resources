@@ -32,6 +32,17 @@ Config.UNIT_VEHICLE_TYPES = {
 }
 Config.UNIT_TYPES_DEFAULT = { "BLS", "ALS" }
 
+-- Competencies (work_core, registered by work_ems). A unit type needs at least ONE crew member with
+-- this competency (or higher); lower competencies can always be added to the crew. Without work_core
+-- / without the work's competencies nothing is required.
+Config.COMPETENCY_WORK = "ems"
+Config.UNIT_COMPETENCY = { BLS = "a", SOLO = "b", ALS = "bplus", DOC = "c", HELI = "c" }
+
+-- med_equipments level put into the unit's vehicle at sign-in ("basic" = only the stretcher again at
+-- sign-out). Only vehicles that already carry an equipment level (work_ems duty vehicles) get one.
+Config.UNIT_EQUIPMENT = { BLS = "bls", SOLO = "bls", ALS = "als", DOC = "als", HELI = "als" }
+Config.EQUIPMENT_SIGNED_OUT = "basic"
+
 -- Unit types selectable in a vehicle of the given model.
 function Config.unitTypesFor(model)
     return Config.UNIT_VEHICLE_TYPES[model] or Config.UNIT_TYPES_DEFAULT

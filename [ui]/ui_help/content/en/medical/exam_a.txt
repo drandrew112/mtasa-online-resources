@@ -1,0 +1,34 @@
+# Exam: "A" nurse
+@keywords: A exam, stroke, FAST, fracture, splint, bleeding, bandage, burn, Lifepak, electrode, blood glucose, hypoglycaemia, CPR, oxygen
+@related: medical_exams, medical_injuries, medical_diagnosis, medical_monitor
+
+Basics: no medicines, no IV.
+
+## Stroke
+
+- **FAST:** Face, Arm, Speech, Time. One side of the face droops, one arm gets weak, slurred speech.
+- Only a hospital can treat a stroke and it gets worse by the minute: transport fast.
+- Always check the blood glucose: low glucose can look like a stroke.
+- Do not force the blood pressure down: a systolic 130–220 mmHg is acceptable, too low a pressure harms the brain.
+
+## Bleeding, fractures, burns
+
+- Severe bleeding: direct pressure, pressure bandage. If it bleeds through, add another layer, do not remove the first.
+- Gunshot wound: stop the bleeding with a bandage.
+- Open fracture: the bone breaks through the skin and bleeds. Stop the bleeding first.
+- Splinting: fix the joint above and below the fracture. Check circulation, feeling and movement before and after.
+- Burns: sterile, non-stick dressing. Sooty mouth, hoarse voice, falling SpO2: airway burn, the dressing does not help, advanced care is needed.
+
+## Lifepak and CPR
+
+- Pads: one under the right collarbone, one on the left side of the lower chest (apex).
+- Besides the pulse the monitor shows the rhythm, the SpO2 and the blood pressure.
+- Nobody touches the patient during the analysis and the shock.
+- CPR: 30:2, 100–120 per minute, 5–6 cm deep.
+
+## Blood glucose and oxygen
+
+- Normal: about 70–100 mg/dL (3.9–5.6 mmol/L). Below 70 mg/dL it is low.
+- Low glucose: sweating, shaking, pale skin, confusion, fast pulse. Severe cases need sugar at once.
+- Oxygen: for a low SpO2 or shortness of breath. Target: 94–98%.
+- Unconscious but breathing well (no spine injury): recovery position.

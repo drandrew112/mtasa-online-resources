@@ -1,0 +1,208 @@
+{
+  "id": "rsi",
+  "title": "RSI exam",
+  "description": "Rapid sequence intubation: indications, preoxygenation, RSI medicines and their order, care after the tube.",
+  "questionCount": 13,
+  "passPercent": 75,
+  "help": "medical_exam_rsi",
+  "questions": [
+    {
+      "id": "rsi_01",
+      "q": "When is intubation indicated?",
+      "answers": [
+        "When the patient cannot protect the airway (GCS ≤ 8, snoring / gurgling breathing) or does not improve on oxygen",
+        "For every unconscious patient, without thinking",
+        "For severe pain",
+        "For high blood glucose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_02",
+      "q": "What is the correct order of RSI?",
+      "answers": [
+        "Preoxygenation → Ketamine → Rocuronium → intubation → ventilation with oxygen",
+        "Rocuronium → Ketamine → oxygen → intubation",
+        "Intubation → Ketamine → Rocuronium",
+        "Ketamine → intubation → oxygen, no Rocuronium needed"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_03",
+      "q": "What is preoxygenation?",
+      "answers": [
+        "About 3 minutes of oxygen on a mask before RSI to build up the patient's oxygen reserve",
+        "Oxygen after the tube",
+        "Giving carbon dioxide",
+        "Mouth-to-mouth ventilation"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_04",
+      "q": "Why is preoxygenation important?",
+      "answers": [
+        "After the paralysis the patient does not breathe and the SpO2 falls fast",
+        "Because it relieves pain",
+        "Because it puts the patient to sleep",
+        "It is not important"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_05",
+      "q": "What happens shortly after giving Rocuronium?",
+      "answers": [
+        "The patient's own breathing stops, they must be ventilated",
+        "The patient wakes up",
+        "The blood glucose rises",
+        "Nothing, it only works hours later"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_06",
+      "q": "What is the RSI dose of Rocuronium?",
+      "answers": [
+        "1–1.2 mg/kg",
+        "0.01 mg/kg",
+        "10 mg/kg",
+        "1 mcg/kg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_07",
+      "q": "What is the RSI dose of Ketamine?",
+      "answers": [
+        "1.5 mg/kg",
+        "0.3 mg/kg",
+        "15 mg/kg",
+        "0.05 mg/kg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_08",
+      "q": "Why is Ketamine the induction agent prehospitally?",
+      "answers": [
+        "It keeps the blood pressure, safe even in shock",
+        "Because it is the cheapest",
+        "Because it is a muscle relaxant",
+        "Because it has an antidote"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_09",
+      "q": "What is needed for an intubated patient to be oxygenated well?",
+      "answers": [
+        "Continuous ventilation with oxygen through the tube",
+        "The tube is enough, even without oxygen",
+        "A face mask next to the tube",
+        "Nothing, the tube ventilates by itself"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_10",
+      "q": "The oxygen of an intubated patient runs out. What happens?",
+      "answers": [
+        "The ventilation does not work and the SpO2 falls: change the oxygen source at once",
+        "Nothing",
+        "The patient improves",
+        "The patient wakes up"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_11",
+      "q": "How long does Rocuronium work?",
+      "answers": [
+        "For long (about 40–60 minutes): the patient needs ventilation all the time",
+        "For 10 seconds",
+        "For 2 minutes",
+        "Forever"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_12",
+      "q": "Why do we not give Rocuronium without sedation?",
+      "answers": [
+        "The patient stays conscious, paralysed and suffocating",
+        "Because it does not work",
+        "Because it raises the blood pressure",
+        "It is allowed, no problem"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_13",
+      "q": "Burned patient: soot around the mouth, hoarse voice, difficult breathing. What do you do?",
+      "answers": [
+        "Early intubation, because the airway swells fast",
+        "Never intubate",
+        "Only in hospital",
+        "Only after death"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_14",
+      "q": "Which breathing shows that an unconscious patient does not protect the airway?",
+      "answers": [
+        "Snoring",
+        "Fast breathing from pain",
+        "Wheezing in asthma",
+        "Normal breathing"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_15",
+      "q": "What is the role of Fentanyl in RSI?",
+      "answers": [
+        "Optional: a higher dose dulls the stress response to intubation but lowers the breathing and the blood pressure",
+        "The mandatory first drug",
+        "A muscle relaxant",
+        "The antidote of RSI"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_16",
+      "q": "What do you do after a successful intubation?",
+      "answers": [
+        "Continuous oxygen, monitoring (SpO2, rhythm), transport",
+        "Remove the oxygen",
+        "Take the tube out at once",
+        "Leave the patient alone"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_17",
+      "q": "What does GCS ≤ 8 mean?",
+      "answers": [
+        "Severe loss of consciousness: the patient probably cannot protect the airway",
+        "Normal consciousness",
+        "Mild confusion",
+        "Only strong pain"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_18",
+      "q": "The intubation fails and the SpO2 is falling. What do you do?",
+      "answers": [
+        "Stop, oxygenate with the mask, then try again",
+        "Keep trying for minutes without oxygen",
+        "Give Adrenaline",
+        "Release the patient"
+      ],
+      "correct": 1
+    }
+  ]
+}

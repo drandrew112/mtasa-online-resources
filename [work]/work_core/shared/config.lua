@@ -40,6 +40,11 @@ WORK = {
     MAX_LEVEL = 20,
     MAX_XP_PER_GRANT = 100000,        -- sanity cap for a single giveWorkXp call
 
+    -- Competency exams (server/exams.lua); a work can override both in registerCompetencies exams = {}
+    EXAM_PASS_PERCENT = 75,
+    EXAM_RETRY_COOLDOWN = 300,        -- seconds after a failed attempt before the exam can be taken again
+    EXAM_FEEDBACK_TIME = 2000,        -- ms the answer stays on screen marked right (green) / wrong (red)
+
     -- /workpos (prints marker / spawn positions)
     ADMIN_LEVEL = 3,
 
@@ -65,4 +70,5 @@ WORK_DATA = {
     PLAYER_LEVELS = "work.levels",    -- player: { [workId] = { level, xp, from, to } } (synced; to = false at max level)
     PLAYER_RANK = "work.rank",        -- player: work level while on duty in a work with rankBadges (synced)
     LEVEL_STORAGE = "work.levels",    -- accData key (JSON { [workId] = xp })
+    PLAYER_COMP = "work.comp",        -- player: { [workId] = { r = rank id, o = order, c = { cert ids } } } (synced)
 }

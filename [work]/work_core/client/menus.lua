@@ -80,13 +80,13 @@ local function openDutyMenu(marker)
         end
         items[#items + 1] = { label = L("work_core.menus.go_off_duty"), desc = L("work_core.menus.finish_work_and_put_your_own"),
                               value = { a = "off" } }
-        open({ title = work.name:upper(), items = items }, marker, "duty", #work.skins > 1)
+        open({ title = L.upper(work.name), items = items }, marker, "duty", #work.skins > 1)
     else
         local desc = L("work_core.menus.go_on_duty_in_this_outfit")
         local lvName = getPlayerWorkLevelName(localPlayer, workId)
         desc = L("work_core.menus.level_2", { work_id = getPlayerWorkLevel(localPlayer, workId), lv_name = lvName and (" " .. lvName) or "", desc = desc })
         if work.description ~= "" then desc = work.description .. " · " .. desc end
-        open({ title = L("work_core.menus.on_duty", { name = work.name:upper() }), items = skinItems(work, "on", desc) },
+        open({ title = L("work_core.menus.on_duty", { name = L.upper(work.name) }), items = skinItems(work, "on", desc) },
             marker, "duty", true)
     end
 end
@@ -95,7 +95,7 @@ local function openVehicleMenu(marker)
     local workId = getElementData(marker, WORK_DATA.MARKER_WORK)
     local work = Works[workId]
     if not work then return end
-    local title = L("work_core.menus.vehicles", { name = work.name:upper() })
+    local title = L("work_core.menus.vehicles", { name = L.upper(work.name) })
 
     if getPedOccupiedVehicle(localPlayer) then
         open({ title = title, items = {
@@ -123,13 +123,16 @@ local function onKey()
     local marker = CurrentMarker
     if not isElement(marker) or isCursorShowing() or isChatBoxInputActive() then return end
     local kind = getElementData(marker, WORK_DATA.MARKER_KIND)
-    if kind == "duty" then openDutyMenu(marker)
+    if kind == "exam" then
+        if not isExamPanelOpen() then triggerServerEvent("work:examOpen", resourceRoot, marker) end
+    elseif kind == "duty" then openDutyMenu(marker)
     elseif kind == "vehicle" then openVehicleMenu(marker) end
 end
 
 -- called by state.lua whenever the usable marker changes (nil = left it)
 function onCurrentMarkerChange(marker)
     if menu and menu.marker ~= marker then closeMenu() end
+    onExamMarkerChange(marker)
     if marker then
         bindKey(WORK.KEY, "down", onKey)
     else

@@ -235,5 +235,11 @@
   "med_erm.units.you_are_already_signed_in": "You are already signed in.",
   "med_erm.units.you_are_not_logged_in": "You are not logged in.",
   "med_erm.units.you_left_unit": "You left the unit.",
-  "med_erm.units.you_must_be_inside_ambulance_to": "You must be inside an ambulance to sign in."
+  "med_erm.units.you_must_be_inside_ambulance_to": "You must be inside an ambulance to sign in.",
+  "med_erm.competency.crew_needs": "A {type} unit needs a crew member with this competency: {need}.",
+  "med_erm.competency.type_needs": "{type}: a crew member with {need} competency is needed.",
+  "med_erm.competency.unit_not_qualified_title": "Unit not qualified",
+  "med_erm.competency.unit_not_qualified": "The crew no longer has {need} competency for a {type} unit. You cannot take new cases: finish the current one, then sign in again as another unit type.",
+  "med_erm.competency.cannot_take_case": "{callsign} is not qualified for its unit type and cannot take cases.",
+  "med_erm.competency.home_unqualified": "Not qualified as {type}: no new cases until you sign in again"
 }

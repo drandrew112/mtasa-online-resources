@@ -353,9 +353,14 @@ addEventHandler("medic:defib", resourceRoot, function(target, op, value)
     elseif not canMedicAttend(medic, target, MEDIC.PANEL_RANGE) then
         message, isError = L.msg("medsys.rhythm.too_far_from_patient"), true
     else
-        local charged = isCharged(state.monitor, getTickCount())
-        message, isError = handler(state, state.monitor, medic, value, getTickCount())
-        everyone = op == "shock" and charged -- everyone around sees what the shock did
+        local allowed, why = checkMedicPermission(medic, "defib." .. op)
+        if not allowed then
+            message, isError = why, true
+        else
+            local charged = isCharged(state.monitor, getTickCount())
+            message, isError = handler(state, state.monitor, medic, value, getTickCount())
+            everyone = op == "shock" and charged -- everyone around sees what the shock did
+        end
     end
     if message and everyone then
         notifyExaminers(target, message, isError)

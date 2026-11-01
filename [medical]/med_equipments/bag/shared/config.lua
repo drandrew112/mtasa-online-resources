@@ -4,7 +4,8 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 -- (x = right, y = forward, z = up). See DESIGN.md. The items themselves (models, hand / ground
 -- offsets, weights) are v_inventory items: medical_bag and lifepak15 (v_inventory/shared/items.lua).
 
--- A full ALS bag (v_inventory items in it). A medsys drug without an item is unlimited.
+-- A full ALS bag (v_inventory items in it): every tool and medicine. A medsys drug without an item
+-- is unlimited, so every medsys drug has an item and is listed here (BAG.STOCK = the counted drugs).
 local STOCK_ALS = {
     drugs = {
         ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, captopril = 3,
@@ -17,6 +18,24 @@ local STOCK_ALS = {
     glucometers = 1,           -- not used up
     airwayKits = 1,            -- not used up
     oxygen = 100,              -- percent of the cylinder
+    oxygenMinutes = 25,        -- a full cylinder lasts this many minutes of mask time
+}
+
+-- A full BLS bag: the basic medicines of the "B" competency exam + glucose, glucose gel, insulin,
+-- naloxone and midazolam; no intubation kit; the normal 15 minute cylinder. A drug left out here is
+-- out of stock (0) in a BLS bag, never unlimited (getReachableStock counts every BAG.STOCK drug).
+local STOCK_BLS = {
+    drugs = {
+        captopril = 3, nitroglycerin = 2, salbutamol = 2, glucose = 2, glucose_gel = 2, insulin = 1,
+        naloxone = 2, midazolam = 1,
+    },
+    ivKits = 4,
+    bandages = 6,
+    splints = 2,
+    glucometers = 1,
+    airwayKits = 0,
+    oxygen = 100,
+    oxygenMinutes = 15,
 }
 
 BAG = {
@@ -57,10 +76,11 @@ BAG = {
 
     -- Kit per equipment level (EQUIPMENT.LEVELS): the kinds in it and the bag's full stock.
     -- A level may leave a kind out (no Lifepak) or use its own item defs later (ITEM_DEFS per level).
-    -- BLS is a placeholder with the ALS kit until its own contents are decided.
+    -- "basic" has no kit (only the stretcher). Fill and restock use only the kit's own level, so a BLS
+    -- bag never gets ALS items.
     LEVELS = {
         als = { kinds = { "bag", "monitor" }, stock = STOCK_ALS },
-        bls = { kinds = { "bag", "monitor" }, stock = STOCK_ALS },
+        bls = { kinds = { "bag", "monitor" }, stock = STOCK_BLS },
     },
     ITEM_NAMES = { bag = L.text("med_bag.config.medical_bag"), monitor = L.text("med_bag.config.monitor_defibrillator") },
 
@@ -92,7 +112,7 @@ BAG = {
     DRUG_PREFIX = "drug_",
     -- emptied when an abandoned bag is recovered (with the drugs; the tools stay, the cylinder is emptied)
     CONSUMABLES = { "ivKits", "bandages", "splints" },
-    OXYGEN_DRAIN = 100 / 900,      -- % per second per mask: a full cylinder lasts 15 min of mask time
+    OXYGEN_MINUTES = 15,           -- mask minutes of a full cylinder without its own meta.minutes (level stock oxygenMinutes)
     OXYGEN_LOW = 20,               -- % warning
     LOW_STOCK_FRACTION = 0.25,     -- warn once when a counted item drops to this share
     RESTOCK_TIME = 6,              -- seconds, in a hospital bay

@@ -82,7 +82,7 @@ local function publicWorks()
     local t = {}
     for id, w in pairs(Works) do
         t[id] = { id = id, name = w.name, description = w.description, color = w.color, skins = w.skins,
-                  levels = w.levels }
+                  levels = w.levels, competency = publicCompetencies(id) }
     end
     return t
 end

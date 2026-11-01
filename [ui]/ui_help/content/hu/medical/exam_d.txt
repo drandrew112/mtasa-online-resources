@@ -1,0 +1,31 @@
+# Vizsga: Mentőorvos
+@keywords: mentőorvos, D vizsga, dózisszámítás, ttkg, Cushing, koponyasérülés, bőr, posztiktális, push-dose, PDE5, tüdőödéma, ROSC
+@related: medical_exams, medical_drugs, medical_diagnosis, medical_cases
+
+A teljes tananyag ismétlése (A, B, gyógyszer, RSI, Mentőtiszt), plusz részletesebb gyógyszerismeret.
+
+## Dózisszámítás
+
+- Fentanil 1 mcg/ttkg, 70 kg: 70 mcg. Rokuronium 1,2 mg/ttkg, 90 kg: 108 mg.
+- Midazolam 0,05 mg/ttkg, 60 kg: 3 mg. Inzulin 0,1 IU/ttkg, 80 kg: 8 IU.
+- A narancssárga (szokásosnál magasabb) dózisok csak indokolt esetben.
+- Fentanil + Midazolam: a hatásuk összeadódik (légzés- és keringésdepresszió). Midazolam alkoholos betegnél: készülj légútbiztosításra.
+- A Naloxon csak az ópiátokra hat, altatószerre nem.
+
+## Bőr, tudat, fejsérülés
+
+- **Hideg, verejtékes bőr:** hipoglikémia vagy stimuláns-mérgezés. **Száraz bőr:** magas vércukor, kiszáradás.
+- Extrém magas vércukor (700 mg/dL felett): tudatzavar, eszméletlenség.
+- **Cushing-reflex** (magas vérnyomás + lassú pulzus) fejsérültnél: koponyaűri nyomásfokozódás.
+- Egyenlőtlen pupillák, tiszta folyadék a fülből: súlyos koponyasérülés.
+- Megharapott nyelv, bevizelés, zavartság, ami magától javul: görcsroham utáni állapot.
+
+## Keringés
+
+- Peri-arrest hipotónia: push-dose Adrenalin (0,02 mg) és az ok keresése.
+- Az Adrenalin hatása rövid, ezért kell 3–5 percenként ismételni.
+- Nitroglicerin potencianövelő (PDE5-gátló) mellett ellenjavallt.
+- Tüdőödéma magas nyomással: Nitroglicerin, oxigén, ültetés.
+- Stroke-ban 130 alatti systolés nyomás rontja az agy vérellátását.
+- Nagyon magas vércukor, kiszáradás: vénás folyadék. Glükóz után felébredt hipoglikémiás betegnél ismételt mérés.
+- Égésnél plazmavesztés: kötés és korai szállítás. Nyílt törés kritikus vérzéssel: előbb kötés, utána sín.

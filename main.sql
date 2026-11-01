@@ -1011,3 +1011,39 @@ CREATE TABLE IF NOT EXISTS `pol_stats` (
     `amount` INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (`day`, `stat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================================
+-- work_competencies / work_exam_attempts  (owner: [work]/work_core, via v_mysql)
+-- ----------------------------------------------------------------------------
+-- work_core also creates both tables on start (CREATE TABLE IF NOT EXISTS).
+-- work_competencies: one row per held competency (rank or cert) of a work;
+--   base ranks (EMS "t") are never stored. source = exam | auto | appoint | admin.
+-- work_exam_attempts: every finished exam attempt; answers = MTA toJSON list of
+--   { q = question id, a = picked answer (1-4, file order), ok = bool }.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `work_competencies` (
+    `account`    VARCHAR(64) NOT NULL,
+    `work_id`    VARCHAR(32) NOT NULL,
+    `comp_id`    VARCHAR(32) NOT NULL,
+    `source`     VARCHAR(16) NOT NULL,
+    `granted_by` VARCHAR(64) NULL,
+    `granted_at` DATETIME    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`account`, `work_id`, `comp_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS `work_exam_attempts` (
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `account`     VARCHAR(64)  NOT NULL,
+    `work_id`     VARCHAR(32)  NOT NULL,
+    `exam_id`     VARCHAR(32)  NOT NULL,
+    `correct`     SMALLINT     NOT NULL,
+    `total`       SMALLINT     NOT NULL,
+    `percent`     TINYINT UNSIGNED NOT NULL,
+    `passed`      TINYINT(1)   NOT NULL,
+    `answers`     TEXT         NULL,
+    `started_at`  DATETIME     NOT NULL,
+    `finished_at` DATETIME     NOT NULL,
+    PRIMARY KEY (`id`),
+    KEY `idx_acc_exam` (`account`, `work_id`, `exam_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

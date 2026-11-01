@@ -1,0 +1,209 @@
+{
+  "id": "b",
+  "title": "\"B\" nurse",
+  "description": "IV access and the \"B\" medicines: Captopril, Nitroglycerin, Salbutamol, glucose, Naloxone.",
+  "questionCount": 13,
+  "passPercent": 75,
+  "help": "medical_exam_b",
+  "questions": [
+    {
+      "id": "b_01",
+      "q": "Why do you need IV access?",
+      "answers": [
+        "IV medicines (e.g. Glucose 40%) can only be given through a vein",
+        "So that the patient does not bleed",
+        "For the oxygen mask",
+        "For splinting"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_02",
+      "q": "Which of the \"B\" medicines needs an IV?",
+      "answers": [
+        "Glucose 40%",
+        "Captopril",
+        "Naloxone nasal spray",
+        "Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_04",
+      "q": "The cannulation failed. Can you reuse the same cannula?",
+      "answers": [
+        "No, every attempt needs a new, sterile cannula",
+        "Yes, twice",
+        "Yes, if there is no blood on it",
+        "Yes, if you wipe it with alcohol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_05",
+      "q": "Where do you first place a peripheral cannula in an adult?",
+      "answers": [
+        "A vein on the back of the hand, the forearm or the elbow",
+        "The carotid artery",
+        "The thigh bone",
+        "Close to the heart"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_07",
+      "q": "What is Captopril (Tensiomin) for?",
+      "answers": [
+        "Lowering high blood pressure, under the tongue",
+        "Raising low blood pressure",
+        "Raising blood glucose",
+        "Pain relief"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_09",
+      "q": "A suspected stroke patient's blood pressure is 190/100. Do you give Captopril?",
+      "answers": [
+        "No: in a stroke we do not lower it between 130–220, too low a pressure makes it worse",
+        "Yes, it must go below 120",
+        "Yes, a double dose",
+        "Yes, and nitroglycerin too"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_10",
+      "q": "What is Glucose 40% for?",
+      "answers": [
+        "Raising low blood glucose fast, through the IV",
+        "Lowering high blood glucose",
+        "Pain relief",
+        "Against opioid poisoning"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_11",
+      "q": "When can you give glucose gel?",
+      "answers": [
+        "Only to an awake patient who can swallow",
+        "To an unconscious patient",
+        "During CPR",
+        "Any time, into the vein"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_12",
+      "q": "Unconscious patient, blood glucose 35 mg/dL. What do you give?",
+      "answers": [
+        "Place an IV and give Glucose 40%",
+        "Glucose gel into the mouth",
+        "Nitroglycerin spray",
+        "Captopril"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_13",
+      "q": "What is Naloxone (Narcan) for?",
+      "answers": [
+        "Reversing an opioid (heroin, fentanyl) overdose",
+        "Against alcohol poisoning",
+        "Against sleeping pill poisoning",
+        "Raising blood glucose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_14",
+      "q": "Besides slow, shallow breathing, which sign shown in the picture points to an opioid overdose?",
+      "answers": [
+        "Pinpoint pupils",
+        "Dilated pupils",
+        "Unequal pupils",
+        "Normal pupils that do not react to light"
+      ],
+      "correct": 1,
+      "image": "exams/img/pupils_pinpoint.png"
+    },
+    {
+      "id": "b_16",
+      "q": "What do you watch after giving Naloxone?",
+      "answers": [
+        "It can wear off and the patient can fall asleep again: watch the breathing",
+        "Nothing, the effect is permanent",
+        "The patient can be released at once",
+        "Glucose must be given afterwards"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_17",
+      "q": "When is Nitroglycerin spray contraindicated?",
+      "answers": [
+        "With low blood pressure (systolic below 90 mmHg)",
+        "With high blood pressure",
+        "In pulmonary oedema",
+        "With chest pain"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_18",
+      "q": "In which condition does Nitroglycerin help?",
+      "answers": [
+        "Pulmonary oedema (crackles, pink frothy sputum)",
+        "Asthma",
+        "Hypoglycaemia",
+        "Opioid poisoning"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_19",
+      "q": "What is Salbutamol (Ventolin) for?",
+      "answers": [
+        "Wheezing: asthma, COPD, nebulised",
+        "High blood pressure",
+        "Seizures",
+        "Pain"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_21",
+      "q": "What do you check after placing a cannula?",
+      "answers": [
+        "That fluid runs freely and the site does not swell",
+        "Nothing, placing it is enough",
+        "The patient's blood glucose",
+        "The pupils"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_22",
+      "q": "Swelling and pain appear around the cannula and the fluid does not run. What happened?",
+      "answers": [
+        "The cannula slipped out of the vein: remove it and try at a new site",
+        "That is normal, carry on",
+        "An allergy, give more fluid",
+        "The patient is hypoglycaemic"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_23",
+      "q": "What do you check before giving any medicine?",
+      "answers": [
+        "Right medicine, right dose, right route, right patient, and no allergy to it",
+        "Only the colour of the medicine",
+        "Nothing, there is no time in an emergency",
+        "Only the patient's name"
+      ],
+      "correct": 1
+    }
+  ]
+}

@@ -132,6 +132,60 @@ Events: `onPlayerWorkXpGain (workId, amount, totalXp)`, `onPlayerWorkLevelChange
 Client: `getPlayerWorkLevel`, `getPlayerWorkXp`, `getPlayerWorkLevelName`, `hasWorkLevel` (read the
 synced `work.levels` element data).
 
+## Competencies and exams (2026-11-01)
+
+Exam based qualifications of a work, **independent of the work level** (server/competency.lua,
+server/exams.lua, client/exams.lua). A work registers them after `registerWork`:
+
+```lua
+exports.work_core:registerCompetencies("ems", {
+    ranks = {   -- the ladder, in order; a player's competency = the highest rank held
+        { id = "t", name = "Trainee", short = "T", base = true },                    -- everyone has it, never stored
+        { id = "a", name = "A nurse", short = "A", exam = "a", requires = { "t" }, badge = ":work_ems/img/badges/a.png" },
+        { id = "bplus", name = "B+ nurse", short = "B+", auto = { "b", "drug" },      -- given when all are held
+          nametagCerts = { "rsi" } },   -- holding a listed cert: work.rank = "<order>_<cert>" (e.g. "4_rsi")
+        { id = "e", name = "Chief physician", short = "E", appoint = { adminLevel = 3, requires = { "d" } } },
+    },
+    certs = {   -- extra qualifications next to the ladder
+        { id = "drug", name = "Drug exam", short = "Rx", exam = "drug", requires = { "b" }, exactRank = "b" },
+    },
+    activities = { ["action.iv"] = "b", ["drug.ketamine"] = "rsi" },   -- canPerform keys -> competency
+    exams = { passPercent = 75, retryCooldown = 300, help = "medical_exams", order = { "a", "b", "drug" } },
+    examData = { hu = { a = <exam>, ... }, en = { ... } },               -- read by the work resource
+    minigames = { { name = "<v_locals key>", desc = "<key>", resource = "mg_cpr", fn = "startCPRGame", args = { 30 }, argc = 1 } },
+    nametag = true,   -- with registerWork rankBadges: work.rank = the rank order instead of the work level
+})
+exports.work_core:createExamMarker("ems", x, y, z)   -- the exam centre (interact key)
+```
+
+`exam = { id, title, description, questionCount, passPercent, help, questions = { { id, q, answers = { 4 }, correct = 1..4, image } } }`.
+work_core never reads other resources' files: the work reads its JSON and passes the tables. Images are
+paths in the work resource (client files). The server draws `questionCount` random questions, shuffles
+the answers, keeps the correct ones, and scores. After every answer the client shows it for
+`WORK.EXAM_FEEDBACK_TIME` (2 s): the picked answer red if wrong, the correct one green. Closing the panel /
+leaving the marker / dying during an exam = a failed attempt. The exam marker is visible and usable only
+for players on duty in its work (`setElementVisibleToWork`). Passed exams are final; a failed one can be retaken after `retryCooldown`.
+
+| export | |
+|---|---|
+| `registerCompetencies(workId, def)`, `unregisterCompetencies(workId)` | removed with the owner resource |
+| `getPlayerCompetency(player, workId)` → id, order \| false | the highest rank (client too, + rank def) |
+| `hasCompetency(player, workId, id)` | rank: at least; cert: held (client too) |
+| `getPlayerCompetencies(player, workId)` → `{ rank, order, name, certs = { [id] = true } }` | |
+| `canPerform(player, workId, activity)` → true \| false, need id, need name | unlisted activity = allowed |
+| `getAllowedActivities(player, workId)` → `{ [activity] = true }` | |
+| `getCompetencyDefs(workId)` | server: `{ [id] = { name, short, kind, order } }`; client: `{ ranks, certs }` |
+| `grantCompetency(player, workId, id [, how, by])`, `revokeCompetency(player, workId, id)` | revoking a rank takes the higher ones; an auto rank also its certs |
+| `isCompetencyLoaded(player)`, `getExamResults(player, workId)` | |
+| `createExamMarker(workId, x, y, z [, opts])` | |
+
+Events: `onPlayerCompetencyChange` (workId, id, granted, how), `onPlayerCompetenciesLoaded`,
+`onPlayerExamFinish` (workId, examId, percent, passed), `onWorkExamsReload` (workId: register again).
+Element data `work.comp` = `{ [workId] = { r, o, c = { certs } } }`. Storage: MySQL `work_competencies`,
+`work_exam_attempts` (main.sql). Admin: `/appoint` `/unappoint` (rank `appoint.adminLevel`),
+`/competency <player> [work]` (1+), `/setcompetency <player> <work> <id> [remove]`, `/examreload [work]`
+(`WORK.ADMIN_LEVEL`); Hungarian aliases `/kinevez`, `/kinevezesvissza`, `/kompetencia`, `/setkompetencia`.
+
 ## Server events (source = player, unless noted otherwise)
 
 | event | args |

@@ -1,0 +1,34 @@
+# Vizsga: „A” kompetens ápoló
+@keywords: A vizsga, stroke, FAST, törés, sín, vérzés, kötés, égés, Lifepak, elektróda, vércukor, hipoglikémia, újraélesztés, CPR, oxigén
+@related: medical_exams, medical_injuries, medical_diagnosis, medical_monitor
+
+Alap ismeretek: gyógyszer és véna nélkül.
+
+## Stroke
+
+- **FAST:** Face (arc), Arm (kar), Speech (beszéd), Time (idő). Egyoldali arclógás, egyik kar gyengül, elkent beszéd.
+- A stroke-ot csak kórház tudja kezelni, kezelés nélkül percről percre romlik: gyors szállítás.
+- Mindig mérj vércukrot: az alacsony vércukor utánozhatja a stroke-ot.
+- A vérnyomást ne vidd le erőltetetten: 130–220 Hgmm systolés érték elfogadható, a túl alacsony nyomás rontja az agy vérellátását.
+
+## Vérzés, törés, égés
+
+- Erős vérzés: közvetlen nyomás, nyomókötés. Ha átvérzik, újabb réteget teszel rá, az elsőt nem veszed le.
+- Lőtt seb: vérzéscsillapítás kötéssel.
+- Nyílt törés: a csont átszakítja a bőrt, vérzik. Előbb a vérzést csillapítod.
+- Sínezés: a törés feletti és alatti ízületet is rögzíted. Előtte és utána ellenőrzöd a keringést, érzést és mozgást.
+- Égés: steril, nem tapadó fedőkötés. Kormos száj, rekedtség, eső SpO2: légúti égés, a kötés ezen nem segít, emelt szintű ellátás kell.
+
+## Lifepak és újraélesztés
+
+- Elektródák: egy a jobb kulcscsont alá, egy a bal oldalra, a mellkas alsó részére (szívcsúcs).
+- A monitor a pulzus mellett a ritmust, az SpO2-t és a vérnyomást mutatja.
+- Ritmuselemzés és sokk alatt senki nem érhet a beteghez.
+- CPR: 30:2, 100–120/perc, 5–6 cm mélyen.
+
+## Vércukor és oxigén
+
+- Normál: kb. 70–100 mg/dL (3,9–5,6 mmol/L). 70 mg/dL alatt alacsony.
+- Alacsony vércukor tünetei: izzadás, remegés, sápadtság, zavartság, gyors pulzus. Súlyos esetben azonnali cukorpótlás kell.
+- Oxigén: alacsony SpO2-nál vagy légszomjnál. Cél: 94–98%.
+- Eszméletlen, de jól légző beteg (gerincsérülés nélkül): stabil oldalfekvés.

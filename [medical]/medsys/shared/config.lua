@@ -11,6 +11,7 @@ MEDIC = {
     -- the patient receive them (mg_airway reads SPO2 / HEART_RATE from the patient).
     DATA_STATUS = "medic.status",
     DATA_ROLE = "medic.role",     -- true on players with the medic role (set by the server only)
+    DATA_PERMS = "medic.perms",   -- { [key] = needed competency name } of the denied activities (setMedicPermissions)
     DATA_SPO2 = "spo2",
     DATA_HEART_RATE = "heartRate",
     DATA_NAME = "medic.name",     -- optional patient name on peds (set by e.g. med_scenemanager)

@@ -1,0 +1,41 @@
+# Competencies and exams
+@keywords: competency, exam, exam centre, trainee, nurse, paramedic officer, emergency physician, chief physician, B+, RSI, drug exam, BLS, ALS, SOLO, DOC, HELI
+@related: medical_exam_a, medical_exam_b, medical_exam_drug, medical_exam_rsi, medical_exam_c, medical_exam_d, medical_equipment
+
+In the EMS work your **competency**, not your work level, decides what you may do to a patient, which unit you may start and which bag goes into the vehicle. You get competencies by passing exams in the **exam centre** (All Saints, next to the duty marker, `E`).
+
+## The ladder
+
+- **T – Trainee:** everyone starts here. Examination, CPR, bandaging, stretcher, transport request. Cannot start a unit alone.
+- **A – "A" nurse** (A exam): + oxygen mask, splinting, neuro exam (FAST), blood glucose, attaching the Lifepak.
+- **B – "B" nurse** (B exam): + IV access, basic medicines (Captopril, Nitroglycerin, Salbutamol, Glucose 40%, glucose gel, Naloxone), defibrillation in AED mode (ANALYZE, the device charges by itself, then SHOCK).
+- **B+ – "B+" nurse:** given automatically next to B once the **drug exam** is passed. + Insulin, Midazolam, Fentanyl, Adrenaline.
+- **C – Paramedic officer** (C exam, RSI needed first): + manual CHARGE, SYNC (cardioversion).
+- **D – Emergency physician** (D exam): + the above-usual (orange) doses.
+- **E – Chief physician:** no exam, appointment only (physicians only).
+
+## Additional exams
+
+- **Drug exam:** only for a "B" nurse. Passing it makes you B+ at once.
+- **RSI exam** (intubation): from B+. Ketamine, Rocuronium and the intubation need it. Required for the paramedic officer exam.
+
+## Exam rules
+
+- 75% is needed to pass. The questions and the answers come in a new order every time.
+- Click: select, double click or **Send**: next. Keys: `1`–`4`, `Enter`.
+- A failed exam can be taken again after 5 minutes. A passed exam is final.
+- Closing the panel or leaving the marker during an exam counts as a failed attempt.
+- On the **Minigames** tab you can practise CPR, IV access, intubation and splinting. No exam needs them.
+
+## Units
+
+Anyone can be added to a crew, also with a lower competency. For the unit type it is enough if **one** member qualifies:
+
+- **BLS:** at least A. BLS bag.
+- **SOLO:** at least B. BLS bag.
+- **ALS:** at least B+. ALS bag.
+- **DOC, HELI:** at least paramedic officer (C). ALS bag.
+
+The bag and the Lifepak go into the vehicle when you sign in on the tablet (`J`); before that it only carries the stretcher. If the member who qualified the unit leaves during the shift, the unit gets no new case until you sign in again.
+
+>! The BLS bag has no Fentanyl, Adrenaline, Ketamine, Rocuronium or intubation kit, and its oxygen lasts 15 minutes. The ALS bag has everything, its oxygen lasts 25 minutes.

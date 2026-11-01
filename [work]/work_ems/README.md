@@ -16,6 +16,22 @@ is in the `[medical]` resources.
 Settings (stations, skins, vehicles, plate) are in `shared/config.lua`. The positions are
 placeholders: fine-tune them with `/workpos`.
 
+## Competencies and exams (2026-11-01)
+
+`EMS.COMPETENCY` (shared/config.lua), registered by server/competency.lua: T (everyone) → A → B →
+B+ (B + drug exam, automatic) → C (needs RSI) → D → E (chief physician, `/appoint`, admin 3+, only a D).
+Certs: drug exam (only a B), RSI exam (from B+). Exam centre markers `EMS.EXAM_MARKERS` (All Saints, County General, LV General, SF Medical Center). Independent of the
+work level (the level names are gone).
+
+- Exams: `exams/<lang>/<id>.json` (hu + en, same question ids, answers in the same order), images in
+  `exams/img/` (listed in meta.xml). Edit the JSON, then `/examreload ems`. Keep the question `id`s.
+- medsys limits: `EMS.COMPETENCY.activities` → `exports.medsys:setMedicPermissions` on duty start,
+  competency change and medsys restart; none during the tutorial.
+- Unit types and the bag level by unit type: med_erm (`Config.UNIT_COMPETENCY`, `Config.UNIT_EQUIPMENT`).
+  Duty vehicles are handed out with `EMS.EQUIPMENT_DEFAULT = "basic"` (stretcher only).
+- Nametag: `rankBadges` + competency order → v_nametags `img/ranks/ems/1-7.png`; tablet / exam panel
+  badges: `img/badges/<rank>.png`. Study pages: ui_help `medical_exams`, `medical_exam_*`.
+
 ## Tutorial
 
 The optional EMS tutorial is a module in its own folder, `tutorial/`, described in

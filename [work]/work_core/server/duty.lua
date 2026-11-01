@@ -208,6 +208,17 @@ function setRankData(player)
         return
     end
     local lv = getPlayerWorkLevel(player, d.work)
+    -- a work with competency badges (registerCompetencies nametag = true) shows the competency rank instead
+    local c = Competencies[d.work]
+    if c and c.nametag then
+        local id, order = getPlayerCompetency(player, d.work)
+        lv = order or 1
+        -- a cert of the rank's nametagCerts (first one held) picks the "<order>_<cert>" badge variant
+        local rank = id and c.rankById[id]
+        for _, cert in ipairs(rank and rank.nametagCerts or {}) do
+            if hasCompetency(player, d.work, cert) then lv = lv .. "_" .. cert break end
+        end
+    end
     if getElementData(player, WORK_DATA.PLAYER_RANK) ~= lv then setElementData(player, WORK_DATA.PLAYER_RANK, lv) end
 end
 

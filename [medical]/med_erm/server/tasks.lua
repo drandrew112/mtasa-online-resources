@@ -163,6 +163,7 @@ function Tasks.assign(id, unitId)
     if not t.priority then return false, L.msg("med_erm.tasks.set_priority_p1_p4_first") end
     if u.task == t.id then return false, L.msg("med_erm.tasks.is_already_on_this_task", { callsign = u.callsign }) end
     if u.task then return false, L.msg("med_erm.tasks.already_has_task", { callsign = u.callsign, task = u.task }) end
+    if u.unqualified then return false, L.msg("med_erm.competency.cannot_take_case", { callsign = u.callsign }) end
 
     t.units[#t.units + 1] = u.id
     if not hasValue(t.unitLog, u.callsign) then t.unitLog[#t.unitLog + 1] = u.callsign end

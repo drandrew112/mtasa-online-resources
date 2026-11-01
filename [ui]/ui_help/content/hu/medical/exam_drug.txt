@@ -1,0 +1,26 @@
+# Gyógyszervizsga
+@keywords: gyógyszervizsga, Ketamin, Rokuronium, Fentanil, Adrenalin, Captopril, Nitroglicerin, Glükóz, Inzulin, Naloxon, Salbutamol, Midazolam, dózis, ttkg
+@related: medical_exams, medical_drugs
+
+Csak B rangú ápoló teheti le. Sikeres vizsga után automatikusan B+ leszel.
+
+## Adagolás
+
+- A ttkg alapú dózis a testtömeggel szorzódik: 80 kg × 1 mcg = 80 mcg.
+- Ugyanabból a szerből több adag hatása összeadódik, túladagoláshoz vezethet.
+- Véna nélkül adható: Captopril, Nitroglicerin, Naloxon, Salbutamol, glükóz gél. Minden más IV.
+
+## A gyógyszerek
+
+- **Ketamin (Calypsol):** altató, az RSI első lépése (1,5 mg/ttkg), kis dózisban fájdalomcsillapító (0,3 mg/ttkg). Megtartja vagy emeli a vérnyomást.
+- **Rokuronium (Esmeron):** izomrelaxáns, megszűnik a légzés. Csak altatás és intubáció mellett. Ébren lévő betegnek adni súlyos hiba.
+- **Fentanil:** erős fájdalomcsillapító, 1 mcg/ttkg. Csökkentheti a vérnyomást. Túladagolás: légzésdepresszió, szűk pupilla, ellenszere a Naloxon.
+- **Adrenalin (Tonogen):** szívmegállásban 1 mg IV 3–5 percenként. Peri-arrest vérnyomásesésben „push-dose”: kb. 0,02 mg. Emeli a pulzust és a vérnyomást, javítja a ROSC esélyét.
+- **Captopril:** 25 mg nyelv alá, magas vérnyomásra.
+- **Nitroglicerin:** 0,4 mg (1 puff); 2 puff már a szokásosnál magasabb dózis.
+- **Glükóz 40%:** 40 ml (16 g) IV. **Glükóz gél:** 15 g, csak nyelni tudó betegnek.
+- **Inzulin (Actrapid):** lassan csökkenti a nagyon magas vércukrot. Legnagyobb veszélye a hipoglikémia: ismeretlen vércukorra soha.
+- **Naloxon:** 4 mg orrspray (2 mg kisebb).
+- **Salbutamol:** 2,5–5 mg porlasztva. Néma mellkas asztmában: életveszély.
+- **Midazolam (Dormicum):** nyugtató, kokain/amfetamin okozta izgatottság, görcs, 0,05 mg/ttkg. Légzésdepresszió, vérnyomásesés.
+- Altatószer (benzodiazepin) túladagolásnál nincs ellenszer: légút, oxigén, monitorozás.

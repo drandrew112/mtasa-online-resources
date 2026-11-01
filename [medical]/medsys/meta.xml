@@ -70,6 +70,8 @@
     <!-- medic role (work_ems gives / takes it; med_equipments and med_erm check it) -->
     <export function="setPlayerMedic" type="server" />
     <export function="isPlayerMedic" type="server" />
+    <export function="setMedicPermissions" type="server" />
+    <export function="getMedicPermissions" type="server" />
     <export function="hasMedicAccess" type="server" />
     <export function="isMedicRoleRequired" type="server" />
     <export function="getMedicPlayers" type="server" />

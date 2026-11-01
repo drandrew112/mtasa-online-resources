@@ -116,8 +116,16 @@ local function rhythmColor(rhythm)
 end
 
 -- Is the monitor button usable (the ECG area of the heart rate tile)
+-- Competency limits of the local medic (server: setMedicPermissions) -> reason text | nil
+function medicDeniedReason(key)
+    local denied = getElementData(localPlayer, MEDIC.DATA_PERMS)
+    local need = type(denied) == "table" and denied[key]
+    return need and L("medsys.panel.needs_competency", { name = need }) or nil
+end
+
 local function canAttachMonitor()
     return panel.data.actions and panel.data.actions.monitor == true and not panel.pending
+        and not medicDeniedReason("action.monitor")
 end
 
 ---------------------------------------------------------------------------
@@ -153,7 +161,7 @@ local function drawVitals(x, y, data, cx, cy)
         local bx, by, bw, bh = ex, y + s(14), ew, th - s(28)
         local enabled = canAttachMonitor()
         local hovered = enabled and isInside(bx, by, bw, bh, cx, cy)
-        local reason = data.actions and data.actions.monitor
+        local reason = medicDeniedReason("action.monitor") or (data.actions and data.actions.monitor)
         if not enabled and type(reason) == "string" and isInside(bx, by, bw, bh, cx, cy) then
             panel.monitorReason = reason
         end
@@ -334,8 +342,9 @@ local function drawDoseRow(cx, cy)
     dxDrawText(L("medsys.panel.patient_weight", { weight = patientWeight() }), x + s(12), y + s(21),
         x + DOSE_LABEL_W - DRUG_GAP, y + DOSE_H, C.muted, 1, fonts.small, "left", "top", true)
     for _, b in ipairs(buttons) do
-        local hovered = not panel.pending and isInside(b.x, b.y, b.w, b.h, cx, cy)
-        dxDrawRectangle(b.x, b.y, b.w, b.h, hovered and C.buttonHover or C.button)
+        local locked = b.option.high and medicDeniedReason("dose.high")
+        local hovered = not locked and not panel.pending and isInside(b.x, b.y, b.w, b.h, cx, cy)
+        dxDrawRectangle(b.x, b.y, b.w, b.h, locked and C.buttonOff or hovered and C.buttonHover or C.button)
         dxDrawRectangle(b.x, b.y + b.h - s(3), b.w, s(3), b.option.high and C.orange or C.line)
         local label, total = medicFormatDose(drug, b.option, patientWeight())
         local sub = total and ("= " .. total) or nil
@@ -357,6 +366,7 @@ end
 
 -- IV medicines need the IV line in place, oral ones can always be given; none from an empty bag
 local function isDrugUsable(drug, id)
+    if id and medicDeniedReason("drug." .. id) then return false end
     local left = id and drugStock(id)
     if left ~= nil and left <= 0 then return false end
     return not medicDrugNeedsIV(drug) or (panel and panel.data and panel.data.ivAccess) == true
@@ -378,7 +388,10 @@ local function drawDrugMenu(cx, cy)
         local usable = isDrugUsable(drug, card.id)
         local left = drugStock(card.id)
         local hovered = not panel.pending and isInside(card.x, card.y, card.w, card.h, cx, cy)
-        if hovered then hoveredDrug, hoveredOff = drug, not usable and (left ~= nil and left <= 0 and "stock" or "iv") end
+        if hovered then
+            hoveredDrug = drug
+            hoveredOff = not usable and (medicDeniedReason("drug." .. card.id) or (left ~= nil and left <= 0 and "stock" or "iv"))
+        end
         local picked = panel.drugPick == card.id
         dxDrawRectangle(card.x, card.y, card.w, card.h, not usable and C.buttonOff or (hovered or picked) and C.button or C.tile)
         dxDrawRectangle(card.x, card.y, picked and s(8) or s(4), card.h, usable and C.accent or C.line)
@@ -410,8 +423,10 @@ local function drawDrugMenu(cx, cy)
         or L("medsys.panel.point_at_medicine_to_see_what")
     if hoveredOff == "stock" then
         text = L("medsys.panel.out_of_stock_restock_bag_at", { text = text })
-    elseif hoveredOff then
+    elseif hoveredOff == "iv" then
         text = L("medsys.panel.needs_iv_access", { text = text })
+    elseif hoveredOff then
+        text = hoveredOff .. "  ·  " .. text
     end
     dxDrawText(text, x + s(10), descY + s(6), DX + DRUG_W - PAD - s(10), descY + DRUG_DESC_H - s(4),
         hoveredOff and C.warn or (hoveredDrug or panel.drugPick) and C.text or C.muted, 1, fonts.small, "left", "top",
@@ -473,6 +488,7 @@ local function drawButtons(cx, cy)
         for _, button in ipairs(row.buttons) do
             local info = MEDIC_ACTIONS[button.action]
             local available = panel.data.actions and panel.data.actions[button.action]
+            if available == true then available = medicDeniedReason("action." .. button.action) or true end
             local enabled = available == true and not panel.pending
             local hovered = isInside(button.x, button.y, button.w, button.h, cx, cy)
 
@@ -715,7 +731,7 @@ local function onClick(button, state)
     if panel.drugMenu then
         if panel.drugPick then
             for _, b in ipairs(getDoseButtons()) do
-                if isInside(b.x, b.y, b.w, b.h, cx, cy) then
+                if isInside(b.x, b.y, b.w, b.h, cx, cy) and not (b.option.high and medicDeniedReason("dose.high")) then
                     local drugId = panel.drugPick
                     panel.pending = true
                     panel.drugMenu, panel.drugPick = false, nil
@@ -742,7 +758,7 @@ local function onClick(button, state)
     end
     for _, btn in ipairs(getButtons()) do
         if isInside(btn.x, btn.y, btn.w, btn.h, cx, cy) and panel.data.actions
-            and panel.data.actions[btn.action] == true then
+            and panel.data.actions[btn.action] == true and not medicDeniedReason("action." .. btn.action) then
             if btn.action == "medication" then
                 panel.drugMenu = not panel.drugMenu
                 panel.drugPick = nil

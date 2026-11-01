@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="work_core" version="1.0.0" type="script"
-          description="Work system core: work registry, duty markers + outfit selector, duty vehicle markers, payments, one work per player" />
+          description="Work system core: work registry, duty markers + outfit selector, duty vehicle markers, payments, one work per player, competencies + exams" />
     <min_mta_version server="1.5.9" client="1.5.9" />
 
     <!-- ================= SHARED ================= -->
@@ -11,11 +11,13 @@
     <!-- ================= SERVER ================= -->
     <script src="server/registry.lua" type="server" />
     <script src="server/levels.lua"   type="server" />
+    <script src="server/competency.lua" type="server" />
     <script src="server/duty.lua"     type="server" />
     <script src="server/markers.lua"  type="server" />
     <script src="server/markerui.lua" type="server" />
     <script src="server/vehicles.lua" type="server" />
     <script src="server/requests.lua" type="server" />
+    <script src="server/exams.lua"    type="server" />
     <script src="server/multipliers.lua" type="server" />
     <script src="server/payment.lua"  type="server" />
 
@@ -23,6 +25,7 @@
     <script src="client/state.lua"   type="client" />
     <script src="client/menus.lua"   type="client" />
     <script src="client/payment.lua" type="client" />
+    <script src="client/exams.lua"   type="client" />
     <file src="client/fonts/Roboto.ttf"  type="client" />
     <file src="client/fonts/RobotoB.ttf" type="client" />
 
@@ -73,6 +76,20 @@
     <export function="setAccountWorkXp"        type="server" />
     <export function="getWorkLevelInfo"        type="server" />
     <export function="getWorkLevelXp"          type="server" />
+    <!-- competencies + exams -->
+    <export function="registerCompetencies"    type="server" />
+    <export function="unregisterCompetencies"  type="server" />
+    <export function="getPlayerCompetency"     type="server" />
+    <export function="getPlayerCompetencies"   type="server" />
+    <export function="hasCompetency"           type="server" />
+    <export function="canPerform"              type="server" />
+    <export function="getAllowedActivities"    type="server" />
+    <export function="getCompetencyDefs"       type="server" />
+    <export function="grantCompetency"         type="server" />
+    <export function="revokeCompetency"        type="server" />
+    <export function="isCompetencyLoaded"      type="server" />
+    <export function="getExamResults"          type="server" />
+    <export function="createExamMarker"        type="server" />
 
     <!-- ================= CLIENT EXPORTS ================= -->
     <export function="getPlayerWork"          type="client" />
@@ -85,6 +102,11 @@
     <export function="getPlayerWorkXp"        type="client" />
     <export function="getPlayerWorkLevelName" type="client" />
     <export function="hasWorkLevel"           type="client" />
+    <export function="getPlayerCompetency"    type="client" />
+    <export function="hasCompetency"          type="client" />
+    <export function="getCompetencyDefs"      type="client" />
+    <export function="getCompetencyBadge"     type="client" />
+    <export function="isExamPanelOpen"        type="client" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="ui_core" />

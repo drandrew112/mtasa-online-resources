@@ -84,10 +84,15 @@ function stockAmount(bag, category, key)
     return n
 end
 
--- The full stock of the bag's equipment level (BAG.LEVELS)
+-- The full stock of the bag's equipment level (BAG.LEVELS). Never falls back to the ALS stock: an
+-- unknown level gets the BLS one.
 function bagStock(bag)
     local def = bag.kit and BAG.LEVELS[bag.kit.level]
-    return def and def.stock or BAG.STOCK
+    if not def then
+        outputDebugString("[med_equipments] bag of unknown level " .. tostring(bag.kit and bag.kit.level) .. ": BLS stock used", 2)
+        def = BAG.LEVELS.bls
+    end
+    return def.stock
 end
 
 local function fullAmount(bag, category, key)
@@ -135,6 +140,7 @@ function fillBag(bag)
     local full = stock.oxygen
     local cyl = i:createItem(BAG.OXYGEN_ITEM, {
         oxygen = full,
+        minutes = stock.oxygenMinutes or BAG.OXYGEN_MINUTES,
         bar = { label = L.msg("med_bag.hud.oxygen_label"), value = full, max = 100 },
     }, target)
     if cyl then oxygenLevel[cyl] = full end
@@ -247,6 +253,13 @@ local function checkLow(bag, category, key)
             notifyCrew(bag.kit, L.msg("med_bag.stock.medical_bag_is_running_low", { kit = kitLabel(bag.kit), label = label }))
         end
     end
+end
+
+-- % per second of mask time from the bag's fullest cylinder (its meta.minutes: 15 BLS, 25 ALS)
+function oxygenDrain(bag)
+    local cyl = bestCylinder(bag)
+    local minutes = cyl and type(cyl.meta) == "table" and tonumber(cyl.meta.minutes) or BAG.OXYGEN_MINUTES
+    return 100 / (math.max(1, minutes) * 60)
 end
 
 -- Takes amount (default 1) from the bag. True if it was there (or is not counted).
@@ -409,7 +422,7 @@ local function tick()
                     session.starved = nil
                     medsys:restorePatientEquipment(target, "oxygen", L.msg("med_bag.stock.oxygen_connected_ventilating_with_oxygen"))
                 end
-                consume(bag, "oxygen", nil, BAG.OXYGEN_DRAIN * dt)
+                consume(bag, "oxygen", nil, oxygenDrain(bag) * dt)
             end
         end
     end

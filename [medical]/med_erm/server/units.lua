@@ -60,6 +60,7 @@ function Units.payload(u)
             startedAt    = u.startedAt,
             members      = members,
             closedTasks  = u.closedTasks,
+            unqualified  = u.unqualified == true,
         },
         task = t and Tasks.public(t) or false,
         serverTime = now(),
@@ -160,6 +161,10 @@ local function signInCheck(player, unitType, candidates, unitNumber)
             members[#members + 1] = p
         end
     end
+    local qualified, need = Competency.crewAllows(members, unitType)
+    if not qualified then
+        return false, L.msg("med_erm.competency.crew_needs", { type = unitType, need = need })
+    end
     return members, veh
 end
 
@@ -198,6 +203,7 @@ local function signInFinish(player, unitType, members, veh, unitNumber, dbUsed)
     end
     u.shiftId = DB.startShift(u)
     Units.list[u.id] = u
+    Competency.equip(u)
 
     Units.sync(u)
     for _, p in ipairs(members) do
@@ -237,6 +243,7 @@ function Units.signOut(u, reason)
 
     DB.endShift(u, "signed out")
     Payment.payUnit(u)
+    Competency.unequip(u)
     Units.untagVehicle(u)
     for _, p in ipairs(u.members) do
         Units.byPlayer[p] = nil
@@ -256,6 +263,7 @@ function Units.removeMember(player, reason)
     if #u.members == 0 then
         Units.signOut(u, L.msg("med_erm.units.unit_disbanded"))
     else
+        Competency.recheck(u)
         Units.sync(u)
     end
 end
@@ -423,6 +431,8 @@ function Units.public(u)
         responding   = u.responseEntry and true or false,
         members      = members,
         accounts     = { unpack(u.accounts) },
+        competency   = Competency.crewBest(u.members),   -- highest rank short name in the crew ("" without work_core)
+        unqualified  = u.unqualified == true,
         x = x, y = y, z = z,
         zone         = zoneLabel(x, y, z),
         startedAt    = u.startedAt,

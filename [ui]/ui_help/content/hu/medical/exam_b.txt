@@ -1,0 +1,21 @@
+# Vizsga: „B” kompetens ápoló
+@keywords: B vizsga, véna, IV, kanül, Captopril, Tensiomin, Nitroglicerin, Salbutamol, Ventolin, Glükóz, glükóz gél, Naloxon, Narcan
+@related: medical_exams, medical_drugs, medical_procedures
+
+## Vénabiztosítás
+
+- A „B” gyógyszerek közül csak a Glükóz 40% kell vénán át, a többi véna nélkül is adható.
+- A kanül behelyezése után ellenőrzöd, hogy szabadon befolyik-e a folyadék. Duzzanat, fájdalom a szúrás körül: a kanül kicsúszott, új helyen szúrsz.
+- Gyógyszer előtt: jó gyógyszer, jó dózis, jó beadási mód, jó beteg, nincs-e allergia.
+- Perifériás kanül: kézhát, alkar, könyökhajlat.
+- Sikertelen szúrás után új helyen, új, steril kanüllel próbálkozol.
+- Véna nélkül adható: Captopril (nyelv alá), Nitroglicerin spray, Naloxon (orrspray), Salbutamol (porlasztva), glükóz gél.
+
+## Gyógyszerek
+
+- **Captopril (Tensiomin):** magas vérnyomás, 25 mg nyelv alá (12,5 mg kisebb dózis). Stroke-ban 130–220 között nem csökkentjük.
+- **Nitroglicerin spray:** tüdőödéma (szörcsölő légzés, rózsaszín habos köpet), 0,4 mg. Ellenjavallt alacsony vérnyomásnál (systolés 90 alatt).
+- **Salbutamol (Ventolin):** sípoló légzés, asztma, COPD, 2,5–5 mg porlasztva. Mellékhatás: szapora pulzus, remegés.
+- **Glükóz 40%:** alacsony vércukor gyors emelése vénán át, 40 ml (16 g). Eszméletlen betegnél ez a megoldás.
+- **Glükóz gél:** csak ébren lévő, nyelni tudó betegnek, 15 g.
+- **Naloxon (Narcan):** ópiát (heroin, fentanil) túladagolás. Jelek: tűhegynyi pupillák, lassú, felületes légzés, tűszúrásnyomok. 2–4 mg orrspray. A hatása elmúlhat, a beteg visszaaludhat: figyeld a légzést.

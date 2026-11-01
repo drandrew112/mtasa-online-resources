@@ -35,8 +35,9 @@ local function setup()
         maxLevel = EMS.MAX_LEVEL,
         levelXp = EMS.LEVEL_XP,
         levelStep = EMS.LEVEL_STEP,
-        levelNames = EMS.LEVEL_NAMES,
+        rankBadges = true,              -- nametag badge = the competency rank (registerCompetencies nametag)
     })
+    registerEmsCompetencies()
 
     local vehicles = {}
     for i, v in ipairs(EMS.VEHICLES) do
@@ -59,7 +60,10 @@ local function setup()
     end
 
     -- players already on duty (work_ems restarted while work_core kept them)
-    for _, player in ipairs(wc:getWorkPlayers(EMS.WORK_ID) or {}) do setMedic(player, true) end
+    for _, player in ipairs(wc:getWorkPlayers(EMS.WORK_ID) or {}) do
+        setMedic(player, true)
+        syncMedicPermissions(player)
+    end
 end
 
 addEventHandler("onResourceStart", resourceRoot, setup)
@@ -70,7 +74,10 @@ addEventHandler("onWorkCoreStart", root, setup)
 addEventHandler("onResourceStart", root, function(res)
     if getResourceName(res) ~= "medsys" then return end
     for player in pairs(Granted) do
-        if isElement(player) then exports.medsys:setPlayerMedic(player, true) end
+        if isElement(player) then
+            exports.medsys:setPlayerMedic(player, true)
+            syncMedicPermissions(player)
+        end
     end
 end)
 
@@ -94,6 +101,7 @@ end)
 addEventHandler("onPlayerWorkDutyStart", root, function(workId, skin)
     if workId ~= EMS.WORK_ID then return end
     setMedic(source, true)
+    syncMedicPermissions(source)
     if isRunning("v_achievements") then
         exports.v_achievements:unlockAchievement(source, "ems_duty")
     end
@@ -104,6 +112,7 @@ end)
 addEventHandler("onPlayerWorkDutyEnd", root, function(workId, reason)
     if workId ~= EMS.WORK_ID then return end
     setMedic(source, false)
+    clearMedicPermissions(source)
     -- off duty = out of the ERM unit (the unit signs out when nobody is left)
     if isRunning("med_erm") then
         exports.med_erm:removePlayerFromUnit(source, L.msg("work_ems.main.you_went_off_duty"))

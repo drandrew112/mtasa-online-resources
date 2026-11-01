@@ -1,0 +1,208 @@
+{
+  "id": "rsi",
+  "title": "RSI vizsga",
+  "description": "Rapid sequence intubation: indikációk, preoxigenizáció, RSI gyógyszerek és sorrend, tubus utáni teendők.",
+  "questionCount": 13,
+  "passPercent": 75,
+  "help": "medical_exam_rsi",
+  "questions": [
+    {
+      "id": "rsi_01",
+      "q": "Mikor indokolt az intubáció?",
+      "answers": [
+        "Ha a beteg nem tudja megvédeni a légútját (GCS ≤ 8, horkoló / hörgő légzés), vagy oxigénnel sem javul",
+        "Minden eszméletlen betegnél, gondolkodás nélkül",
+        "Erős fájdalomnál",
+        "Magas vércukornál"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_02",
+      "q": "Mi az RSI helyes sorrendje?",
+      "answers": [
+        "Preoxigenizáció → Ketamin → Rokuronium → intubáció → lélegeztetés oxigénnel",
+        "Rokuronium → Ketamin → oxigén → intubáció",
+        "Intubáció → Ketamin → Rokuronium",
+        "Ketamin → intubáció → oxigén, Rokuronium nem kell"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_03",
+      "q": "Mi a preoxigenizáció?",
+      "answers": [
+        "Kb. 3 perc maszkos oxigén az RSI előtt, hogy nőjön a beteg oxigéntartaléka",
+        "Oxigén a tubus után",
+        "Szén-dioxid adása",
+        "Szájon át lélegeztetés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_04",
+      "q": "Miért fontos a preoxigenizáció?",
+      "answers": [
+        "A relaxáció után a beteg nem lélegzik, az SpO2 gyorsan esik",
+        "Mert fájdalmat csillapít",
+        "Mert altat",
+        "Nem fontos"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_05",
+      "q": "Mi történik a Rokuronium beadása után rövid időn belül?",
+      "answers": [
+        "Megszűnik a beteg saját légzése, lélegeztetni kell",
+        "A beteg felébred",
+        "Emelkedik a vércukor",
+        "Semmi, csak órák múlva hat"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_06",
+      "q": "Mennyi a Rokuronium RSI dózisa?",
+      "answers": [
+        "1–1,2 mg/ttkg",
+        "0,01 mg/ttkg",
+        "10 mg/ttkg",
+        "1 mcg/ttkg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_07",
+      "q": "Mennyi a Ketamin RSI dózisa?",
+      "answers": [
+        "1,5 mg/ttkg",
+        "0,3 mg/ttkg",
+        "15 mg/ttkg",
+        "0,05 mg/ttkg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_08",
+      "q": "Miért Ketamin az induktor prehospitálisan?",
+      "answers": [
+        "Megtartja a vérnyomást, sokkos betegnél is biztonságos",
+        "Mert a legolcsóbb",
+        "Mert izomrelaxáns",
+        "Mert van ellenszere"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_09",
+      "q": "Mi kell ahhoz, hogy az intubált beteg oxigenizációja hatásos legyen?",
+      "answers": [
+        "Folyamatos lélegeztetés oxigénnel a tubuson át",
+        "Elég a tubus, oxigén nélkül is",
+        "Arcmaszk a tubus mellé",
+        "Semmi, a tubus magától lélegeztet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_10",
+      "q": "Intubált betegnél elfogyott az oxigén. Mi történik?",
+      "answers": [
+        "A lélegeztetés hatástalan, esik az SpO2: azonnal oxigénforrást kell cserélni",
+        "Semmi",
+        "Javul az állapota",
+        "A beteg felébred"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_11",
+      "q": "Meddig hat a Rokuronium?",
+      "answers": [
+        "Sokáig (kb. 40–60 perc): a beteg végig lélegeztetésre szorul",
+        "10 másodpercig",
+        "2 percig",
+        "Örökké"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_12",
+      "q": "Miért nem adunk Rokuroniumot altatás nélkül?",
+      "answers": [
+        "A beteg tudatánál marad, megbénul és fullad",
+        "Mert nem hat",
+        "Mert emeli a vérnyomást",
+        "Szabad, nincs vele gond"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_13",
+      "q": "Égett beteg: kormos száj, rekedtség, nehezített légzés. Mit teszel?",
+      "answers": [
+        "Korai intubáció indokolt, mert a légút gyorsan duzzad",
+        "Soha nem intubálsz",
+        "Csak a kórházban",
+        "Csak ha már meghalt"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_14",
+      "q": "Melyik légzés jelzi, hogy az eszméletlen beteg nem védi a légútját?",
+      "answers": [
+        "Horkoló légzés",
+        "Szapora légzés fájdalomnál",
+        "Sípoló légzés asztmában",
+        "Normál légzés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_15",
+      "q": "Mi a Fentanil szerepe az RSI-ben?",
+      "answers": [
+        "Opcionális: magasabb dózisa tompítja az intubációs stresszválaszt, de csökkenti a légzést és a vérnyomást",
+        "Kötelező első gyógyszer",
+        "Izomrelaxáns",
+        "Az RSI ellenszere"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_16",
+      "q": "Mi a teendő sikeres intubáció után?",
+      "answers": [
+        "Folyamatos oxigén, monitorozás (SpO2, ritmus), szállítás",
+        "Az oxigén levétele",
+        "A tubus azonnali eltávolítása",
+        "A beteg magára hagyása"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_17",
+      "q": "Mit jelent a GCS ≤ 8?",
+      "answers": [
+        "Súlyos tudatzavar: a beteg valószínűleg nem védi a légútját",
+        "Normál tudat",
+        "Enyhe zavartság",
+        "Csak erős fájdalom"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "rsi_18",
+      "q": "Nem sikerül az intubáció, esik az SpO2. Mit teszel?",
+      "answers": [
+        "Abbahagyod, maszkkal oxigenizálsz, majd újra próbálod",
+        "Oxigén nélkül folytatod percekig",
+        "Adrenalint adsz",
+        "Elengeded a beteget"
+      ],
+      "correct": 1
+    }
+  ]
+}

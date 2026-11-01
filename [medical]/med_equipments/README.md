@@ -23,8 +23,11 @@ can carry it. work_ems sets it on every duty vehicle (work_core vehicle `data`, 
 or a vehicle's own `equipment`) and on the tutorial ambulance. Other ambulances (blood transport 598,
 scene / AI transport vehicles, admin spawns) carry nothing.
 
-The value is the equipment level, `"bls"` or `"als"`. `BAG.LEVELS[level]` gives the kit's kinds and
-the bag's full stock (fill, restock, low-stock warnings use it). BLS is a placeholder with the ALS kit
-for now. Exports: `setVehicleEquipment(vehicle, "bls" | "als" | true | false)`,
+The value is the equipment level: `"basic"` (only the stretcher), `"bls"` or `"als"`.
+`BAG.LEVELS[level]` gives the kit's kinds and the bag's full stock (fill, restock, low-stock warnings
+use it; an unknown level gets the BLS stock, never the ALS one). Since 2026-11-01 work_ems hands out
+vehicles with `"basic"`, med_erm sets `"bls"` (BLS, SOLO) or `"als"` (ALS, DOC, HELI) at sign-in and
+`"basic"` at sign-out. BLS: basic medicines only (no Fentanyl, Adrenaline, Ketamine, Rocuronium, no
+airway kit), 15 minute oxygen; ALS: everything, 25 minute oxygen (cylinder `meta.minutes`). Exports: `setVehicleEquipment(vehicle, "bls" | "als" | true | false)`,
 `getVehicleEquipment(vehicle)`; `getVehicleKit` also returns `level` (and `monitor` may be nil for a
 level without a Lifepak). Changing the level rebuilds the kit.

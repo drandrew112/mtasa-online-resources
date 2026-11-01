@@ -1,0 +1,314 @@
+{
+  "id": "c",
+  "title": "Mentőtiszt",
+  "description": "Áttekintés (gyógyszerek, véna, intubáció) + légzéstípusok, újraélesztés gyógyszerei és eljárásai, EKG ritmusok: sokkolandó vagy sem.",
+  "questionCount": 20,
+  "passPercent": 75,
+  "help": "medical_exam_c",
+  "questions": [
+    {
+      "id": "c_01",
+      "q": "Sípoló légzés, a beteg csak rövid szavakban tud beszélni. Mire gondolsz?",
+      "answers": [
+        "Súlyos asztmás roham",
+        "Tüdőödéma",
+        "Ópiát-mérgezés",
+        "Stroke"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_02",
+      "q": "Szörcsölő légzés, duzzadt boka, rózsaszín habos köpet. Mi ez és mi a kezelés?",
+      "answers": [
+        "Tüdőödéma: ültetés, Nitroglicerin, oxigén",
+        "Asztma: Salbutamol",
+        "Pneumothorax: semmi",
+        "Hipoglikémia: glükóz"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_03",
+      "q": "Mély, szapora légzés acetonszagú lehelettel?",
+      "answers": [
+        "Ketoacidózis, nagyon magas vércukor",
+        "Ópiát-mérgezés",
+        "Alkoholmérgezés",
+        "Asztma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_04",
+      "q": "Lassú, felületes légzés. Mire utal?",
+      "answers": [
+        "Ópiát- vagy altatószer-mérgezésre",
+        "Asztmára",
+        "Lázra",
+        "Fájdalomra"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_05",
+      "q": "Horkoló légzés eszméletlen betegnél?",
+      "answers": [
+        "Részleges légúti elzáródás: légutat kell biztosítani",
+        "Normál alvás",
+        "Asztma",
+        "Tüdőödéma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_06",
+      "q": "Mit jelent a hörgő, kapkodó (agonális) légzés?",
+      "answers": [
+        "Keringésmegállás jele: kezdd az újraélesztést",
+        "Normál légzés",
+        "Hiperventiláció",
+        "Alvás"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_07",
+      "q": "COPD-s beteg, csücsörített ajak, előredőlve ül. Mi segít leginkább?",
+      "answers": [
+        "Oxigén (a Salbutamol kevésbé)",
+        "Naloxon",
+        "Inzulin",
+        "Captopril"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_08",
+      "q": "Melyik ritmus látható, és sokkolandó-e?",
+      "answers": [
+        "Kamrafibrilláció, sokkolandó",
+        "Asystolia, nem sokkolandó",
+        "Sinus ritmus, nem sokkolandó",
+        "PEA, sokkolandó"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vf.png"
+    },
+    {
+      "id": "c_09",
+      "q": "Melyik ritmusok sokkolandók?",
+      "answers": [
+        "VF és pulzus nélküli VT",
+        "Asystolia és PEA",
+        "Sinus ritmus",
+        "Sinus bradycardia"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_10",
+      "q": "Mi a teendő asystoliában?",
+      "answers": [
+        "CPR és mielőbb Adrenalin, sokk nélkül",
+        "Azonnali sokk",
+        "Csak oxigén",
+        "Captopril"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_11",
+      "q": "Mi a PEA?",
+      "answers": [
+        "Elektromos tevékenység pulzus nélkül: CPR, Adrenalin, a kiváltó ok keresése",
+        "Sokkolandó ritmus",
+        "Normál ritmus",
+        "Csak monitorozni kell"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_12",
+      "q": "Sokkolandó ritmusban mikor adod az első Adrenalint?",
+      "answers": [
+        "A 3. sokk után",
+        "Az 1. sokk előtt",
+        "Soha",
+        "Csak ROSC után"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_13",
+      "q": "Mi lesz a kezeletlen kamrafibrillációból néhány perc alatt?",
+      "answers": [
+        "Asystoliává romlik, egyre kisebb a túlélés esélye",
+        "Magától sinus ritmusba tér",
+        "PEA-vá javul",
+        "Semmi nem változik"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_14",
+      "q": "Miért nem sokkolunk normál sinus ritmust?",
+      "answers": [
+        "A sokk megállíthatja a szívet",
+        "Mert fájdalmas",
+        "Mert lemerül a gép",
+        "Lehet nyugodtan"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_15",
+      "q": "Pulzusos VT, instabil beteg. Mi a teendő?",
+      "answers": [
+        "Szinkronizált kardioverzió (SYNC mód)",
+        "Szinkronizálatlan sokk",
+        "Adrenalin 1 mg",
+        "Nem teszel semmit"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vt.png"
+    },
+    {
+      "id": "c_16",
+      "q": "Mi tartozik a keringésmegállás reverzibilis okai közül a „4H”-ba?",
+      "answers": [
+        "Hipoxia, hipovolémia, hipo- / hiperkalémia, hipotermia",
+        "Hőség, hányás, hasmenés, hörgés",
+        "Hipertónia, hiperglikémia, hipnózis, hisztéria",
+        "Hemoglobin, hematokrit, hormon, hő"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_17",
+      "q": "Mi növeli a ROSC esélyét a jó minőségű CPR mellett?",
+      "answers": [
+        "Adrenalin és biztosított légút",
+        "Glükóz gél",
+        "Captopril",
+        "Sínezés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_18",
+      "q": "Milyen gyakran cserélnek a kompresszort végzők?",
+      "answers": [
+        "Kb. 2 percenként, a ritmusellenőrzéskor",
+        "30 percenként",
+        "Soha",
+        "Minden befúvás után"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_19",
+      "q": "Mi a teendő ROSC után?",
+      "answers": [
+        "Monitor, oxigén, vérnyomás és ritmus figyelése, szállítás: újra leállhat",
+        "Elengeded a beteget",
+        "Leveszed a monitort",
+        "Sokkolsz még egyet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_20",
+      "q": "Ez a ritmus látható, a betegnek nincs pulzusa. Sokkolandó?",
+      "answers": [
+        "Nem: asystolia, CPR és Adrenalin",
+        "Igen, azonnal sokkolni kell",
+        "Igen, szinkron sokkal",
+        "Nem, ez normál ritmus"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_asystole.png"
+    },
+    {
+      "id": "c_21",
+      "q": "Ez a ritmus látható, a beteg nem reagál, pulzus nem tapintható. Mi a teendő?",
+      "answers": [
+        "Pulzus nélküli VT: sokkolandó, defibrillálás és CPR",
+        "Nem sokkolandó, csak CPR",
+        "Szinkron kardioverzió",
+        "Push-dose Adrenalin"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vt.png"
+    },
+    {
+      "id": "c_22",
+      "q": "A monitoron ez a ritmus látható, de a nagy artériákon nem tapintható pulzus. Mi ez?",
+      "answers": [
+        "PEA: nem sokkolandó, CPR és Adrenalin",
+        "Normál állapot, nincs teendő",
+        "Kamrafibrilláció, sokkolni kell",
+        "Asystolia"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_pea.png"
+    },
+    {
+      "id": "c_23",
+      "q": "A beteg beszél, pulzusa tapintható, a monitoron ez látható. Mit teszel a defibrillátorral?",
+      "answers": [
+        "Semmit: sinus ritmus, nem sokkolandó",
+        "Azonnal sokkolsz",
+        "Szinkron kardioverziót végzel",
+        "Elindítod az újraélesztést"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_sinus.png"
+    },
+    {
+      "id": "c_24",
+      "q": "Hirtelen összeesett beteg, ez a ritmus látható. Mi a legfontosabb?",
+      "answers": [
+        "Mielőbbi defibrillálás, közben CPR",
+        "Csak Adrenalin, sokk nélkül",
+        "Megvárod, hátha magától rendeződik",
+        "Szinkron kardioverzió alacsony energiával"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vf.png"
+    },
+    {
+      "id": "c_25",
+      "q": "Melyik ritmus NEM sokkolandó?",
+      "answers": [
+        "PEA",
+        "Kamrafibrilláció",
+        "Pulzus nélküli kamrai tachycardia",
+        "Mindegyik sokkolandó"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_26",
+      "q": "Sokk után mi a teendő?",
+      "answers": [
+        "Azonnal folytatod a CPR-t 2 percig, csak utána ritmusellenőrzés",
+        "Megvárod, hogy visszajöjjön a pulzus",
+        "Azonnal újra sokkolsz",
+        "Leveszed az elektródákat"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_27",
+      "q": "Hipoglikémia okozta szívmegállás. Mit adsz a CPR mellett?",
+      "answers": [
+        "Glükóz 40% IV",
+        "Inzulin",
+        "Naloxon",
+        "Captopril"
+      ],
+      "correct": 1
+    }
+  ]
+}

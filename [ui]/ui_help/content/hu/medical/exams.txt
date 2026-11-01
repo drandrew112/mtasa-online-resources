@@ -1,0 +1,41 @@
+# Kompetenciák és vizsgák
+@keywords: kompetencia, vizsga, vizsgaközpont, szekundáns, trainee, ápoló, mentőtiszt, mentőorvos, főorvos, B+, RSI, gyógyszervizsga, BLS, ALS, SOLO, DOC, HELI
+@related: medical_exam_a, medical_exam_b, medical_exam_drug, medical_exam_rsi, medical_exam_c, medical_exam_d, medical_equipment
+
+A mentős munkában nem a munkaszint, hanem a **kompetencia** dönti el, mit csinálhatsz a betegen, milyen egységet indíthatsz, és milyen táska kerül az autóba. Kompetenciát vizsgával szerezhetsz a **vizsgaközpontban** (All Saints, a duty marker mellett, `E`).
+
+## A létra
+
+- **T – Szekundáns / Trainee:** mindenki ezzel kezd. Vizsgálat, újraélesztés, kötözés, hordágy, szállításkérés. Egyedül nem indíthat egységet.
+- **A – „A” kompetens ápoló** (A vizsga): + oxigénmaszk, sínezés, neuro vizsgálat (FAST), vércukormérés, Lifepak felhelyezése.
+- **B – „B” kompetens ápoló** (B vizsga): + vénabiztosítás, alap gyógyszerek (Captopril, Nitroglicerin, Salbutamol, Glükóz 40%, Glükóz gél, Naloxon), defibrillálás AED módban (ANALYZE, a gép magától tölt, utána SHOCK).
+- **B+ – „B+” kompetens ápoló:** automatikusan jár a B mellé, ha a **Gyógyszervizsga** is megvan. + Inzulin, Midazolam, Fentanil, Adrenalin.
+- **C – Mentőtiszt** (C vizsga, előtte RSI kell): + kézi töltés (CHARGE), SYNC (kardioverzió).
+- **D – Mentőorvos** (D vizsga): + a szokásosnál magasabb (narancssárga) dózisok.
+- **E – Főorvos:** nincs vizsga, kinevezés (csak mentőorvos kaphatja).
+
+## Kiegészítő vizsgák
+
+- **Gyógyszervizsga:** csak B rangú ápoló teheti le. Sikeres vizsga után azonnal B+ leszel.
+- **RSI vizsga** (intubáció): B+ rangtól. Ketamin, Rokuronium és az intubáció ehhez kötött. A Mentőtiszt vizsgához kötelező.
+
+## Vizsgaszabályok
+
+- 75% kell a sikerhez. A kérdések és a válaszok sorrendje minden alkalommal más.
+- Kattintás: kijelöl, dupla kattintás vagy **Küldés**: tovább. Billentyűvel: `1`–`4`, `Enter`.
+- Sikertelen vizsga 5 perc múlva újra próbálható. A sikeres vizsga végleges.
+- Ha vizsga közben bezárod a panelt vagy elhagyod a markert, a kísérlet sikertelennek számít.
+- A **Minigamek** fülön gyakorolhatod a CPR-t, a vénabiztosítást, az intubációt és a sínezést. Egyik vizsgához sem kötelező.
+
+## Egységek
+
+A legénységbe bárki felvehető, akár alacsonyabb kompetenciával is. Az egység típusához elég, ha **egy** tag megfelel:
+
+- **BLS:** legalább A. BLS táska.
+- **SOLO:** legalább B. BLS táska.
+- **ALS:** legalább B+. ALS táska.
+- **DOC, HELI:** legalább Mentőtiszt (C). ALS táska.
+
+A táska és a Lifepak a tableten (`J`) történő bejelentkezéskor kerül az autóba, előtte csak hordágy van benne. Ha műszak közben kilép az a tag, akinek a kompetenciája az egységet indokolta, az egység nem kaphat új esetet, amíg újra be nem jelentkeztek.
+
+>! A BLS táskában nincs Fentanil, Adrenalin, Ketamin, Rokuronium és intubációs készlet, és az oxigén 15 perces. Az ALS táskában minden megvan, az oxigén 25 perces.

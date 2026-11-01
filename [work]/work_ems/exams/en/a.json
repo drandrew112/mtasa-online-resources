@@ -1,0 +1,299 @@
+{
+  "id": "a",
+  "title": "\"A\" nurse",
+  "description": "Stroke, fractures and bleeding, dressings, Lifepak, blood glucose, basic CPR. No medicines, no IV.",
+  "questionCount": 18,
+  "passPercent": 75,
+  "help": "medical_exam_a",
+  "questions": [
+    {
+      "id": "a_01",
+      "q": "What does the FAST acronym mean in stroke recognition?",
+      "answers": [
+        "Face, Arm, Speech, Time",
+        "Fever, Allergy, Sweating, Temperature",
+        "Forehead, Abdomen, Sight, Throat",
+        "Find, Assess, Stabilise, Transport"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_02",
+      "q": "Which finding of the neuro exam points to a stroke?",
+      "answers": [
+        "Drooping on one side of the face and slurred speech",
+        "Pinpoint pupils",
+        "Bitten tongue, wet trousers",
+        "Strong smell of alcohol"
+      ],
+      "correct": 1,
+      "image": "exams/img/fast_face.png"
+    },
+    {
+      "id": "a_03",
+      "q": "What must you always measure when you suspect a stroke, because it can cause similar signs?",
+      "answers": [
+        "Blood glucose (low glucose can mimic a stroke)",
+        "Body temperature",
+        "Pupil size",
+        "Nothing, FAST is enough"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_04",
+      "q": "Why is a stroke time-critical?",
+      "answers": [
+        "Untreated it gets worse every few minutes and only a hospital can treat it",
+        "Because it is contagious",
+        "Because the patient bleeds out quickly",
+        "It is not urgent"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_05",
+      "q": "Which systolic blood pressure is accepted on scene when a stroke is suspected?",
+      "answers": [
+        "130–220 mmHg, we do not force it down",
+        "60–90 mmHg",
+        "90–120 mmHg",
+        "Above 240 mmHg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_06",
+      "q": "Severe bleeding from a limb. What is the first step?",
+      "answers": [
+        "Direct pressure on the wound, then a pressure bandage",
+        "Raise the leg and wait",
+        "Put on a splint",
+        "Give the patient water"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_07",
+      "q": "A gunshot wound is bleeding heavily. What is the basis of the care?",
+      "answers": [
+        "Stopping the bleeding with a pressure bandage",
+        "Splinting",
+        "Intubation",
+        "Blood glucose measurement"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_08",
+      "q": "The bandage bleeds through. What do you do?",
+      "answers": [
+        "Add another layer and press harder, do not remove the first one",
+        "Take it off and put on a new one",
+        "Rinse it with water",
+        "Nothing, it stops by itself"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_09",
+      "q": "Which is the sign of an open fracture?",
+      "answers": [
+        "The bone breaks through the skin and the wound bleeds",
+        "Only swelling",
+        "Pain only on movement",
+        "A visible bruise"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_10",
+      "q": "How do you immobilise a forearm fracture?",
+      "answers": [
+        "The splint fixes the joint above and below the fracture",
+        "Bandage only the fracture site",
+        "Pull it straight and leave it",
+        "Do not fix it, only cool it"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_11",
+      "q": "What do you check before and after splinting?",
+      "answers": [
+        "Circulation, feeling and movement of the limb below the fracture",
+        "Blood glucose",
+        "The pupils",
+        "The breathing rate"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_12",
+      "q": "How do you treat a burned skin area?",
+      "answers": [
+        "With a sterile, non-stick dressing",
+        "With a splint",
+        "With butter or ointment",
+        "Not at all, only transport"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_13",
+      "q": "A burned patient is hoarse, has soot around the mouth and a falling SpO2. What do you think of?",
+      "answers": [
+        "An airway burn: a dressing does not help, advanced (ALS) care is needed",
+        "Only pain",
+        "Low blood glucose",
+        "A fracture"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_14",
+      "q": "Where do the defibrillator (Lifepak) pads go?",
+      "answers": [
+        "One under the right collarbone, one on the left side of the lower chest",
+        "Both on the back",
+        "Both on the abdomen",
+        "One on the forehead, one on the wrist"
+      ],
+      "correct": 1,
+      "image": "exams/img/lifepak_pads.png"
+    },
+    {
+      "id": "a_15",
+      "q": "After attaching the monitor, what do you see besides the pulse?",
+      "answers": [
+        "The rhythm, the SpO2 and the blood pressure",
+        "Only the pulse",
+        "The blood glucose",
+        "The body weight"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_16",
+      "q": "What is the rule during the AED rhythm analysis and the shock?",
+      "answers": [
+        "Nobody touches the patient",
+        "Keep doing chest compressions",
+        "Hold the patient's hand",
+        "Pour water on the chest"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_17",
+      "q": "What is the compression to ventilation ratio in adult CPR?",
+      "answers": [
+        "30:2",
+        "15:1",
+        "5:1",
+        "50:5"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_18",
+      "q": "At what rate do you do chest compressions?",
+      "answers": [
+        "100–120 per minute",
+        "40–60 per minute",
+        "160–200 per minute",
+        "20 per minute"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_19",
+      "q": "What is the normal blood glucose at rest?",
+      "answers": [
+        "About 70–100 mg/dL (3.9–5.6 mmol/L)",
+        "20–40 mg/dL",
+        "200–300 mg/dL",
+        "Above 500 mg/dL"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_20",
+      "q": "From what value is the blood glucose low?",
+      "answers": [
+        "Below 70 mg/dL (3.9 mmol/L)",
+        "Below 150 mg/dL",
+        "Below 250 mg/dL",
+        "Below 10 mg/dL"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_21",
+      "q": "The glucometer shows this. What does it mean?",
+      "answers": [
+        "Severe hypoglycaemia, sugar is needed at once",
+        "A normal value",
+        "A high value, insulin is needed",
+        "A measuring error, ignore it"
+      ],
+      "correct": 1,
+      "image": "exams/img/glucometer_48.png"
+    },
+    {
+      "id": "a_22",
+      "q": "What are the signs of low blood glucose?",
+      "answers": [
+        "Sweating, shaking, pale skin, confusion, fast pulse",
+        "Dry skin, deep fast breathing",
+        "Pinpoint pupils",
+        "Pink frothy sputum"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_24",
+      "q": "When do you put on an oxygen mask?",
+      "answers": [
+        "When the SpO2 is low or the patient is short of breath",
+        "Always, for every patient, all the time",
+        "Never",
+        "Only for a dead patient"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_25",
+      "q": "What is the target oxygen saturation for most acute patients?",
+      "answers": [
+        "94–98%",
+        "70–80%",
+        "100% at any cost",
+        "Above 50% is enough"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_26",
+      "q": "Unconscious patient who breathes well, no suspected spine injury. How do you position them?",
+      "answers": [
+        "Recovery position",
+        "Face down on the stomach",
+        "Sitting up",
+        "On the back with a pillow under the head"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "a_27",
+      "q": "How deep do you press the chest in adult CPR?",
+      "answers": [
+        "5–6 cm",
+        "1–2 cm",
+        "10–12 cm",
+        "As deep as is comfortable"
+      ],
+      "correct": 1
+    }
+  ]
+}

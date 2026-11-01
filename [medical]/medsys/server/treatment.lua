@@ -111,6 +111,44 @@ addEventHandler("onElementDataChange", root, function(key)
     if key == MEDIC.DATA_ROLE and client then syncMedicData(source) end
 end)
 
+-- Competency limits of a medic, set by a work resource (work_ems from the work_core competencies):
+-- { [key] = needed competency name } of every DENIED key. Keys: "action.<action>" (MEDIC_ACTIONS and
+-- "monitor"), "drug.<id>", "dose.high" (the orange doses), "defib.<op>" (charge, shock, analyze, sync).
+-- No table / a key not in it = allowed. Synced as MEDIC.DATA_PERMS so the panel greys them out.
+local Denied = {}
+
+local function syncPermissions(player)
+    if Denied[player] then setElementData(player, MEDIC.DATA_PERMS, Denied[player])
+    elseif getElementData(player, MEDIC.DATA_PERMS) ~= nil then removeElementData(player, MEDIC.DATA_PERMS) end
+end
+
+function setMedicPermissions(player, denied)
+    if not isElement(player) or getElementType(player) ~= "player" then return false end
+    local t = {}
+    for k, v in pairs(type(denied) == "table" and denied or {}) do
+        if type(k) == "string" then t[k] = tostring(v) end
+    end
+    Denied[player] = next(t) and t or nil
+    syncPermissions(player)
+    return true
+end
+
+function getMedicPermissions(player)
+    return Denied[player] or {}
+end
+
+-- -> true | false, reason
+function checkMedicPermission(medic, key)
+    local need = Denied[medic] and Denied[medic][key]
+    if need then return false, L.msg("medsys.treatment.needs_competency", { name = need }) end
+    return true
+end
+
+addEventHandler("onElementDataChange", root, function(key)
+    if key == MEDIC.DATA_PERMS and client then syncPermissions(source) end
+end)
+addEventHandler("onPlayerQuit", root, function() Denied[source] = nil end)
+
 -- Can this player work on the patient at all (not a check of a specific procedure)
 local function canAttend(medic, target, range)
     if not isElement(medic) or getElementType(medic) ~= "player" then return false end
@@ -670,6 +708,8 @@ addEventHandler("medic:measureGlucose", resourceRoot, function(target)
         triggerClientEvent(medic, "medic:glucoseResult", resourceRoot, target, false, reason)
     end
     if Examining[medic] ~= target then return end
+    local allowed, why = checkMedicPermission(medic, "action.glucometer")
+    if not allowed then return fail(why) end
     if Glucometers[medic] then return fail(L.msg("medsys.treatment.measuring")) end
     if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return fail(L.msg("medsys.rhythm.too_far_from_patient")) end
     local state = getLivePatient(target)
@@ -822,6 +862,14 @@ end
 function startTreatment(medic, target, action, option, dose)
     local procedure = PROCEDURES[action]
     if not procedure then return false, L.msg("medsys.treatment.unknown_procedure") end
+    local allowed, why = checkMedicPermission(medic, "action." .. action)
+    if allowed and action == "medication" then
+        allowed, why = checkMedicPermission(medic, "drug." .. tostring(option))
+        local drug = MEDIC_DRUGS[option]
+        local chosen = allowed and drug and drug.dosing and medicDrugDose(drug, dose)
+        if chosen and chosen.high then allowed, why = checkMedicPermission(medic, "dose.high") end
+    end
+    if not allowed then return false, why end
     if Treatments[medic] then return false, L.msg("medsys.treatment.you_are_busy") end
     if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return false, L.msg("medsys.rhythm.too_far_from_patient") end
     if procedure.resource and not isResourceRunning(procedure.resource) then return false, L.msg("medsys.treatment.equipment_unavailable") end

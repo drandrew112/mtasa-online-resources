@@ -62,6 +62,12 @@ function createDutyMarker(workId, x, y, z, opts)
     return marker or false
 end
 
+-- other marker kinds of work_core modules (server/exams.lua: "exam"); the caller sets the visibility
+function createKindMarker(kind, workId, x, y, z, opts)
+    local marker = baseMarker(kind, workId, x, y, z, opts, WORK.DUTY_MARKER_SIZE, WORK.DUTY_MARKER_ALPHA)
+    return marker or false
+end
+
 -- vehicles = { 416, { model = 416, name = "Ambulance", color = { r,g,b, r,g,b, ... },
 --                     plate = "EMS", data = { key = value } }, ... }
 --   platePrefix = "A-" instead of plate: a unique plate of the prefix + random digits

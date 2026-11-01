@@ -13,9 +13,18 @@ function Pages.home.draw(x, y, w, h)
 
     Gfx.text(L("med_erm.home.home"), ix, cy, iw, s(26), Theme.text, Gfx.font(15, true))
     local crew = {}
-    for _, m in ipairs(u.members) do crew[#crew + 1] = (m.name:gsub("#%x%x%x%x%x%x", "")) end
+    for _, m in ipairs(u.members) do
+        local name = m.name:gsub("#%x%x%x%x%x%x", "")
+        local c = Competency.of(m.player)
+        crew[#crew + 1] = c and (name .. " (" .. c.short .. ")") or name
+    end
     Gfx.text(Gfx.fit(L("med_erm.home.shift_since_crew", { started_at = State.formatClock(u.startedAt), started_at2 = State.formatDuration(State.serverNow() - u.startedAt), crew = table.concat(crew, ", ") }), iw, Gfx.font(9)),
         ix, cy + s(24), iw, s(18), Theme.dim, Gfx.font(9))
+
+    if u.unqualified then
+        Gfx.text(Gfx.fit(L("med_erm.competency.home_unqualified", { type = u.type }), iw, Gfx.font(9, true)),
+            ix, cy + s(40), iw, s(16), tocolor(255, 130, 110), Gfx.font(9, true))
+    end
 
     -- active case ------------------------------------------------------------
     cy = cy + s(56)

@@ -1,0 +1,314 @@
+{
+  "id": "c",
+  "title": "Paramedic officer",
+  "description": "Review (medicines, IV, intubation) + breathing patterns, CPR medicines and procedures, ECG rhythms: shockable or not.",
+  "questionCount": 20,
+  "passPercent": 75,
+  "help": "medical_exam_c",
+  "questions": [
+    {
+      "id": "c_01",
+      "q": "Wheezing, the patient can only speak in short words. What do you think of?",
+      "answers": [
+        "A severe asthma attack",
+        "Pulmonary oedema",
+        "Opioid poisoning",
+        "Stroke"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_02",
+      "q": "Crackles, swollen ankles, pink frothy sputum. What is it and what is the treatment?",
+      "answers": [
+        "Pulmonary oedema: sit up, Nitroglycerin, oxygen",
+        "Asthma: Salbutamol",
+        "Pneumothorax: nothing",
+        "Hypoglycaemia: glucose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_03",
+      "q": "Deep, fast breathing with an acetone smell on the breath?",
+      "answers": [
+        "Ketoacidosis, very high blood glucose",
+        "Opioid poisoning",
+        "Alcohol poisoning",
+        "Asthma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_04",
+      "q": "Slow, shallow breathing. What does it point to?",
+      "answers": [
+        "Opioid or sleeping pill poisoning",
+        "Asthma",
+        "Fever",
+        "Pain"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_05",
+      "q": "Snoring breathing in an unconscious patient?",
+      "answers": [
+        "Partial airway obstruction: the airway must be secured",
+        "Normal sleep",
+        "Asthma",
+        "Pulmonary oedema"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_06",
+      "q": "What does gasping (agonal) breathing mean?",
+      "answers": [
+        "A sign of cardiac arrest: start CPR",
+        "Normal breathing",
+        "Hyperventilation",
+        "Sleep"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_07",
+      "q": "COPD patient, pursed lips, sitting leaning forward. What helps the most?",
+      "answers": [
+        "Oxygen (Salbutamol less)",
+        "Naloxone",
+        "Insulin",
+        "Captopril"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_08",
+      "q": "Which rhythm is this, and is it shockable?",
+      "answers": [
+        "Ventricular fibrillation, shockable",
+        "Asystole, not shockable",
+        "Sinus rhythm, not shockable",
+        "PEA, shockable"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vf.png"
+    },
+    {
+      "id": "c_09",
+      "q": "Which rhythms are shockable?",
+      "answers": [
+        "VF and pulseless VT",
+        "Asystole and PEA",
+        "Sinus rhythm",
+        "Sinus bradycardia"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_10",
+      "q": "What do you do in asystole?",
+      "answers": [
+        "CPR and Adrenaline as soon as possible, no shock",
+        "Shock at once",
+        "Only oxygen",
+        "Captopril"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_11",
+      "q": "What is PEA?",
+      "answers": [
+        "Electrical activity without a pulse: CPR, Adrenaline, look for the cause",
+        "A shockable rhythm",
+        "A normal rhythm",
+        "Only needs monitoring"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_12",
+      "q": "In a shockable rhythm, when do you give the first Adrenaline?",
+      "answers": [
+        "After the 3rd shock",
+        "Before the 1st shock",
+        "Never",
+        "Only after ROSC"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_13",
+      "q": "What becomes of untreated ventricular fibrillation within a few minutes?",
+      "answers": [
+        "It turns into asystole, the chance of survival keeps falling",
+        "It returns to sinus rhythm by itself",
+        "It improves to PEA",
+        "Nothing changes"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_14",
+      "q": "Why do we not shock a normal sinus rhythm?",
+      "answers": [
+        "The shock can stop the heart",
+        "Because it hurts",
+        "Because the battery runs down",
+        "We can, no problem"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_15",
+      "q": "VT with a pulse, unstable patient. What do you do?",
+      "answers": [
+        "Synchronised cardioversion (SYNC mode)",
+        "An unsynchronised shock",
+        "Adrenaline 1 mg",
+        "Nothing"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vt.png"
+    },
+    {
+      "id": "c_16",
+      "q": "Which belong to the “4H” reversible causes of cardiac arrest?",
+      "answers": [
+        "Hypoxia, hypovolaemia, hypo- / hyperkalaemia, hypothermia",
+        "Heat, headache, hunger, hiccups",
+        "Hypertension, hyperglycaemia, hypnosis, hysteria",
+        "Haemoglobin, haematocrit, hormones, heat"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_17",
+      "q": "Besides good quality CPR, what improves the chance of ROSC?",
+      "answers": [
+        "Adrenaline and a secured airway",
+        "Glucose gel",
+        "Captopril",
+        "Splinting"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_18",
+      "q": "How often do the people doing compressions swap?",
+      "answers": [
+        "About every 2 minutes, at the rhythm check",
+        "Every 30 minutes",
+        "Never",
+        "After every breath"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_19",
+      "q": "What do you do after ROSC?",
+      "answers": [
+        "Monitor, oxygen, watch the blood pressure and the rhythm, transport: it can stop again",
+        "Release the patient",
+        "Take off the monitor",
+        "Give one more shock"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_20",
+      "q": "This rhythm is shown and the patient has no pulse. Is it shockable?",
+      "answers": [
+        "No: asystole, CPR and Adrenaline",
+        "Yes, shock at once",
+        "Yes, with a synchronised shock",
+        "No, it is a normal rhythm"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_asystole.png"
+    },
+    {
+      "id": "c_21",
+      "q": "This rhythm is shown, the patient does not respond and has no palpable pulse. What do you do?",
+      "answers": [
+        "Pulseless VT: shockable, defibrillation and CPR",
+        "Not shockable, only CPR",
+        "Synchronised cardioversion",
+        "Push-dose Adrenaline"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vt.png"
+    },
+    {
+      "id": "c_22",
+      "q": "This rhythm is on the monitor, but there is no palpable pulse on the large arteries. What is it?",
+      "answers": [
+        "PEA: not shockable, CPR and Adrenaline",
+        "Normal, nothing to do",
+        "Ventricular fibrillation, shock it",
+        "Asystole"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_pea.png"
+    },
+    {
+      "id": "c_23",
+      "q": "The patient talks, has a palpable pulse, and the monitor shows this. What do you do with the defibrillator?",
+      "answers": [
+        "Nothing: sinus rhythm, not shockable",
+        "Shock at once",
+        "Do a synchronised cardioversion",
+        "Start CPR"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_sinus.png"
+    },
+    {
+      "id": "c_24",
+      "q": "A patient collapsed suddenly and this rhythm is shown. What matters most?",
+      "answers": [
+        "Defibrillation as soon as possible, CPR in between",
+        "Only Adrenaline, no shock",
+        "Wait, it may settle by itself",
+        "Synchronised cardioversion with low energy"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_vf.png"
+    },
+    {
+      "id": "c_25",
+      "q": "Which rhythm is NOT shockable?",
+      "answers": [
+        "PEA",
+        "Ventricular fibrillation",
+        "Pulseless ventricular tachycardia",
+        "All of them are shockable"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_26",
+      "q": "What do you do after a shock?",
+      "answers": [
+        "Continue CPR at once for 2 minutes, only then check the rhythm",
+        "Wait for the pulse to come back",
+        "Shock again at once",
+        "Remove the pads"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_27",
+      "q": "Cardiac arrest caused by hypoglycaemia. What do you give besides CPR?",
+      "answers": [
+        "Glucose 40% IV",
+        "Insulin",
+        "Naloxone",
+        "Captopril"
+      ],
+      "correct": 1
+    }
+  ]
+}

@@ -12,6 +12,8 @@ ui = function(z) return uicore:ui(z) end
 -- Zászló: a játékos országa (ui_core, IP alapú), nem a nyelve.
 -- Rang (2026-10-30): a work_core rankBadges munkáinál (police) a work.rank szint képe a munka kártyától jobbra,
 --   img/ranks/<workId>/<szint>.png (előre forgatva). Moduláris: más munkának csak a mappa és a flag kell.
+--   EMS (2026-11-01): a work.rank a kompetencia sorszáma (T=1 ... E=7, work_core registerCompetencies nametag);
+--   B+ RSI vizsgával: "4_rsi" (rank nametagCerts), kép img/ranks/ems/4_rsi.png.
 -- Bilincs (police_system pol.cuffed): ikon a név felett.
 
 local adminTitles_forNametag = {}
@@ -129,9 +131,16 @@ end
 -- rang kép: img/ranks/<workId>/<szint>.png, ha létezik (a meta.xml-ben felsorolva)
 local rankFiles = {}
 local function setRank(entry, p)
-	local lv = tonumber(getElementData(p, "work.rank"))
-	local path = entry.workId and lv and ("img/ranks/" .. tostring(entry.workId) .. "/" .. math.floor(lv) .. ".png") or nil
+	local lv = getElementData(p, "work.rank")
+	if tonumber(lv) then lv = math.floor(tonumber(lv)) elseif type(lv) ~= "string" then lv = nil end
+	local dir = entry.workId and lv and ("img/ranks/" .. tostring(entry.workId) .. "/") or nil
+	local path = dir and (dir .. lv .. ".png") or nil
 	if path and rankFiles[path] == nil then rankFiles[path] = fileExists(path) end
+	-- "<szint>_<cert>" változat (pl. 4_rsi), ha nincs képe: a sima szint képe
+	if path and not rankFiles[path] and type(lv) == "string" then
+		path = dir .. (lv:match("^(%d+)_") or "") .. ".png"
+		if rankFiles[path] == nil then rankFiles[path] = fileExists(path) end
+	end
 	entry.rankImg = path and rankFiles[path] and path or nil
 	entry.rankW = entry.rankImg and math.floor(entry.smallH * 128 / 58) or 0
 end

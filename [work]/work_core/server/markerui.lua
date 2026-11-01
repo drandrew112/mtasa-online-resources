@@ -22,14 +22,15 @@ local nextId = 0
 local function define(marker, m)
     local work = Works[m.work]
     if not work then return end
-    local duty = m.kind == "duty"
+    local duty = m.kind == "duty" or m.kind == "exam"
     uiCall("createMarkerUI", m.uiId, {
         element = marker,
         type = duty and "work_duty" or "work_veh",
         color = work.color,
         name = work.name,
-        title = duty and L.msg("work_core.labels.go_on_duty") or L.msg("work_core.labels.work_vehicles"),
-        hidden = not duty,  -- vehicle cards: revealed by the meta of the players on duty
+        title = m.kind == "exam" and L.msg("work_core.labels.exam_centre")
+            or duty and L.msg("work_core.labels.go_on_duty") or L.msg("work_core.labels.work_vehicles"),
+        hidden = m.kind ~= "duty",  -- vehicle / exam cards: revealed by the meta of the players on duty
         radius = WORK.LABEL_DISTANCE, fullRadius = WORK.LABEL_FULL_DISTANCE,
         minScale = WORK.LABEL_MIN_SCALE, height = WORK.LABEL_HEIGHT,
     })
@@ -53,6 +54,11 @@ local function metaFor(player, m)
     if not work then return nil end
     local mine = getPlayerWork(player)
     local key = WORK.KEY:upper()
+
+    if m.kind == "exam" then
+        if mine ~= m.work then return { hidden = true } end
+        return { hidden = false, hint = L.msg("work_core.labels.press_open_exams", { key = key }) }
+    end
 
     if m.kind == "duty" then
         local meta
@@ -114,6 +120,8 @@ addEventHandler("onPlayerWorkDutyStart", root, refreshSource)
 addEventHandler("onPlayerWorkDutyEnd", root, refreshSource)
 addEventHandler("onPlayerWorkXpGain", root, refreshSource)
 addEventHandler("onPlayerWorkLevelChange", root, refreshSource)
+addEventHandler("onPlayerCompetencyChange", root, refreshSource)
+addEventHandler("onPlayerCompetenciesLoaded", root, refreshSource)
 addEventHandler("onVehicleEnter", root, function(player) refreshPlayer(player) end)
 addEventHandler("onVehicleExit", root, function(player) refreshPlayer(player) end)
 

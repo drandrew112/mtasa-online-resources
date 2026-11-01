@@ -84,6 +84,46 @@ function hasWorkLevel(player, workId, level)
     return getPlayerWorkLevel(player, workId) >= (tonumber(level) or 1)
 end
 
+-- Competencies (synced by the server in work.comp; see server/competency.lua)
+local function compData(player, workId)
+    local t = isElement(player) and getElementData(player, WORK_DATA.PLAYER_COMP)
+    return type(t) == "table" and t[workId] or nil
+end
+
+-- -> rank id, order, rank def { id, name, short, order, badge } | false
+function getPlayerCompetency(player, workId)
+    local d = compData(player, workId)
+    if not d or not d.r then return false end
+    local w = Works[workId]
+    local def
+    for _, r in ipairs(w and w.competency and w.competency.ranks or {}) do
+        if r.id == d.r then def = r end
+    end
+    return d.r, d.o, def
+end
+
+function hasCompetency(player, workId, id)
+    local d, w = compData(player, workId), Works[workId]
+    if not d or not w or not w.competency then return false end
+    for _, x in ipairs(d.c or {}) do if x == id then return true end end
+    for _, r in ipairs(w.competency.ranks) do
+        if r.id == id then return (d.o or 0) >= r.order end
+    end
+    return false
+end
+
+-- -> { ranks = { { id, name, short, order, badge } }, certs = { { id, name, short } } } | false
+function getCompetencyDefs(workId)
+    local w = Works[workId]
+    return w and w.competency or false
+end
+
+-- -> badge image path of the player's rank | false
+function getCompetencyBadge(player, workId)
+    local _, _, def = getPlayerCompetency(player, workId)
+    return def and def.badge or false
+end
+
 function getVehicleWork(vehicle)
     return isElement(vehicle) and getElementData(vehicle, WORK_DATA.VEHICLE_WORK) or false
 end
@@ -102,6 +142,9 @@ function canUseMarker(marker, kind)
     local vehicle = getPedOccupiedVehicle(localPlayer)
     if kind == "duty" then
         return not vehicle
+    end
+    if kind == "exam" then   -- only on duty in its work
+        return not vehicle and getPlayerWork(localPlayer) == getElementData(marker, WORK_DATA.MARKER_WORK)
     end
     -- vehicle marker: only for the players on duty in its work
     if getPlayerWork(localPlayer) ~= getElementData(marker, WORK_DATA.MARKER_WORK) then return false end

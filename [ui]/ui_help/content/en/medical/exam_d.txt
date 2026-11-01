@@ -1,0 +1,31 @@
+# Exam: emergency physician
+@keywords: emergency physician, D exam, dose calculation, per kg, Cushing, head injury, skin, postictal, push dose, PDE5, pulmonary oedema, ROSC
+@related: medical_exams, medical_drugs, medical_diagnosis, medical_cases
+
+A review of everything (A, B, drugs, RSI, paramedic officer) with more detailed medicine knowledge.
+
+## Dose calculation
+
+- Fentanyl 1 mcg/kg, 70 kg: 70 mcg. Rocuronium 1.2 mg/kg, 90 kg: 108 mg.
+- Midazolam 0.05 mg/kg, 60 kg: 3 mg. Insulin 0.1 IU/kg, 80 kg: 8 IU.
+- The orange (above usual) doses only when there is a reason.
+- Fentanyl + Midazolam: their effects add up (breathing and circulation depression). Midazolam with alcohol: be ready to secure the airway.
+- Naloxone only reverses opioids, not sleeping pills.
+
+## Skin, consciousness, head injury
+
+- **Cold, sweaty skin:** low glucose or stimulant poisoning. **Dry skin:** high glucose, dehydration.
+- Extremely high glucose (above 700 mg/dL): confusion, even unconsciousness.
+- **Cushing reflex** (high pressure + slow pulse) after a head injury: raised pressure in the skull.
+- Unequal pupils, clear fluid from the ear: severe head injury.
+- Bitten tongue, wet trousers, confusion that clears by itself: after a seizure.
+
+## Circulation
+
+- Peri-arrest low pressure: push-dose Adrenaline (0.02 mg) and look for the cause.
+- Adrenaline works only briefly, so repeat it every 3–5 minutes.
+- No Nitroglycerin after potency pills (PDE5 inhibitors).
+- Pulmonary oedema with high pressure: Nitroglycerin, oxygen, sit up.
+- In a stroke a systolic pressure under 130 harms the brain.
+- Very high glucose, dehydration: IV fluids. A hypoglycaemic patient who woke up after glucose: measure again.
+- Burns lose plasma: dressing and early transport. Open fracture with critical bleeding: bandage first, then the splint.

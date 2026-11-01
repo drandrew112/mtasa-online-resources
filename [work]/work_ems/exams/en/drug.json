@@ -1,0 +1,340 @@
+{
+  "id": "drug",
+  "title": "Drug exam",
+  "description": "Every medicine: effect, dose, route, dangers, antidotes.",
+  "questionCount": 20,
+  "passPercent": 75,
+  "help": "medical_exam_drug",
+  "questions": [
+    {
+      "id": "drug_01",
+      "q": "What is Ketamine (Calypsol)?",
+      "answers": [
+        "An anaesthetic / induction agent (RSI step 1), a painkiller in small doses",
+        "A muscle relaxant",
+        "A blood pressure lowering drug",
+        "An antidote"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_02",
+      "q": "How does Ketamine affect the blood pressure?",
+      "answers": [
+        "It keeps or raises it, so it is good in shock",
+        "It lowers it strongly",
+        "It stops the heart",
+        "It only slows the pulse"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_03",
+      "q": "What is the painkilling dose of Ketamine?",
+      "answers": [
+        "0.3 mg/kg",
+        "1.5 mg/kg",
+        "5 mg/kg",
+        "0.01 mg/kg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_04",
+      "q": "What does Rocuronium do?",
+      "answers": [
+        "It paralyses the muscles and the patient stops breathing: only with sedation and intubation",
+        "It puts the patient to sleep",
+        "It relieves pain",
+        "It raises blood glucose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_05",
+      "q": "What happens if an awake patient gets Rocuronium?",
+      "answers": [
+        "They stay conscious but cannot move or breathe: panic, a serious error",
+        "They fall asleep and calm down",
+        "Nothing",
+        "Their breathing improves"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_06",
+      "q": "What is Fentanyl for?",
+      "answers": [
+        "Strong pain relief",
+        "An antidote",
+        "Against vomiting",
+        "Raising blood pressure"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_07",
+      "q": "What is the usual dose of Fentanyl?",
+      "answers": [
+        "1 mcg/kg",
+        "1 mg/kg",
+        "10 mg fixed",
+        "100 mcg/kg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_08",
+      "q": "Sign and antidote of a Fentanyl overdose?",
+      "answers": [
+        "Depressed breathing, small pupils – Naloxone",
+        "Seizures – glucose",
+        "High blood pressure – Captopril",
+        "Wheezing – Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_09",
+      "q": "Dose of Adrenaline in cardiac arrest?",
+      "answers": [
+        "1 mg IV every 3–5 minutes",
+        "10 mg once",
+        "0.02 mg",
+        "25 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_10",
+      "q": "What is a push-dose of Adrenaline?",
+      "answers": [
+        "A very small dose (about 0.02 mg) for low blood pressure around an arrest",
+        "The cardiac arrest dose",
+        "A nasal spray",
+        "A tablet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_11",
+      "q": "What does Adrenaline do?",
+      "answers": [
+        "Raises the pulse and the blood pressure, improves the chance of ROSC",
+        "Slows the pulse",
+        "Puts the patient to sleep",
+        "Lowers blood glucose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_12",
+      "q": "How do you give Captopril?",
+      "answers": [
+        "Under the tongue, no IV needed",
+        "As an IV bolus",
+        "Nebulised",
+        "Into a muscle"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_13",
+      "q": "What is the usual dose of Nitroglycerin spray?",
+      "answers": [
+        "0.4 mg (1 puff), can be repeated if needed",
+        "4 mg",
+        "40 mg",
+        "0.004 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_14",
+      "q": "What is the usual dose of Glucose 40%?",
+      "answers": [
+        "40 ml (16 g)",
+        "400 ml",
+        "1 ml",
+        "5 litres"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_15",
+      "q": "What is the usual dose of glucose gel?",
+      "answers": [
+        "15 g (one tube)",
+        "150 g",
+        "1 g",
+        "50 ml into the vein"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_16",
+      "q": "What does Insulin do?",
+      "answers": [
+        "Slowly lowers a very high blood glucose",
+        "Raises blood glucose fast",
+        "Puts the patient to sleep",
+        "Raises the blood pressure"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_17",
+      "q": "What is the biggest danger of Insulin?",
+      "answers": [
+        "Hypoglycaemia (too low blood glucose)",
+        "High blood pressure",
+        "Vomiting",
+        "Muscle paralysis"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_18",
+      "q": "Do you give Insulin to an unconscious patient with an unknown blood glucose?",
+      "answers": [
+        "Never, measure the glucose first",
+        "Yes, always",
+        "Only as a gel",
+        "Yes, a double dose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_19",
+      "q": "What is the usual dose of Naloxone?",
+      "answers": [
+        "4 mg nasal spray (2 mg is the smaller one)",
+        "40 mg",
+        "0.04 mg",
+        "400 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_20",
+      "q": "What is the dose of Salbutamol?",
+      "answers": [
+        "2.5–5 mg nebulised",
+        "50 mg",
+        "0.1 mg into the vein",
+        "25 mg tablet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_21",
+      "q": "An asthmatic patient's chest is “silent”, you barely hear any breathing. What does it mean?",
+      "answers": [
+        "Life threatening: exhausted, hardly moving air – immediate treatment, ALS",
+        "A good sign, getting better",
+        "Normal",
+        "Hyperventilation"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_22",
+      "q": "What is Midazolam (Dormicum) for?",
+      "answers": [
+        "Sedation: agitation from cocaine / amphetamine, seizures",
+        "The antidote of opioids",
+        "Raising blood glucose",
+        "Raising blood pressure"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_23",
+      "q": "What is the danger of Midazolam?",
+      "answers": [
+        "Depressed breathing and low blood pressure; an overdose causes sedative poisoning",
+        "High blood glucose",
+        "Fast pulse",
+        "Always an allergy"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_24",
+      "q": "What is the usual dose of Midazolam?",
+      "answers": [
+        "0.05 mg/kg",
+        "5 mg/kg",
+        "0.5 g fixed",
+        "1 mcg fixed"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_25",
+      "q": "What does dosing per kg mean?",
+      "answers": [
+        "The dose is multiplied by the body weight (80 kg × 1 mcg = 80 mcg)",
+        "Everyone gets the same",
+        "It is calculated from the age",
+        "It is calculated from the height"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_26",
+      "q": "Sleeping pill (benzodiazepine) overdose, often with alcohol. What is the basis of prehospital care?",
+      "answers": [
+        "Supportive care: airway, oxygen, monitoring",
+        "Naloxone",
+        "Glucose",
+        "Adrenaline"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_27",
+      "q": "Which medicine treats stimulant (cocaine, amphetamine) poisoning?",
+      "answers": [
+        "Midazolam",
+        "Naloxone",
+        "Insulin",
+        "Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_28",
+      "q": "Which one can you NOT give without an IV?",
+      "answers": [
+        "Adrenaline",
+        "Captopril",
+        "Naloxone",
+        "Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_29",
+      "q": "RSI dose of Ketamine (1.5 mg/kg) for an 80 kg patient?",
+      "answers": [
+        "120 mg",
+        "15 mg",
+        "1.5 mg",
+        "1200 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_30",
+      "q": "What happens if you give several doses of the same medicine in a short time?",
+      "answers": [
+        "The doses add up and can lead to an overdose",
+        "Only the last one works",
+        "They cancel each other out",
+        "Nothing, it is always safe"
+      ],
+      "correct": 1
+    }
+  ]
+}

@@ -1,0 +1,209 @@
+{
+  "id": "b",
+  "title": "\"B\" kompetens ápoló",
+  "description": "Vénabiztosítás és a „B” gyógyszerek: Captopril, Nitroglicerin, Salbutamol, glükóz, Naloxon.",
+  "questionCount": 13,
+  "passPercent": 75,
+  "help": "medical_exam_b",
+  "questions": [
+    {
+      "id": "b_01",
+      "q": "Miért kell vénát biztosítani?",
+      "answers": [
+        "Az IV gyógyszerek (pl. Glükóz 40%) csak vénán keresztül adhatók",
+        "Hogy a beteg ne vérezzen",
+        "Az oxigénmaszkhoz",
+        "A sínezéshez"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_02",
+      "q": "A „B” gyógyszerek közül melyikhez kell véna?",
+      "answers": [
+        "Glükóz 40%",
+        "Captopril",
+        "Naloxon orrspray",
+        "Salbutamol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_04",
+      "q": "Nem sikerült a szúrás. Felhasználhatod újra ugyanazt a kanült?",
+      "answers": [
+        "Nem, minden szúrási kísérlethez új, steril kanül kell",
+        "Igen, kétszer",
+        "Igen, ha nem véres",
+        "Igen, ha letörlöd alkohollal"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_05",
+      "q": "Hová szúrsz elsőként perifériás kanült felnőttnél?",
+      "answers": [
+        "Kézhát, alkar vagy könyökhajlat vénájába",
+        "A nyaki verőérbe",
+        "A combcsontba",
+        "A szív közelébe"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_07",
+      "q": "Mire való a Captopril (Tensiomin)?",
+      "answers": [
+        "Magas vérnyomás csökkentésére, nyelv alá",
+        "Alacsony vérnyomás emelésére",
+        "Vércukor emelésére",
+        "Fájdalomcsillapításra"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_09",
+      "q": "Stroke-gyanús beteg vérnyomása 190/100. Adsz Captoprilt?",
+      "answers": [
+        "Nem: stroke-ban 130–220 között nem csökkentjük, a túl alacsony nyomás rontja",
+        "Igen, 120 alá kell vinni",
+        "Igen, dupla dózist",
+        "Igen, és nitrót is"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_10",
+      "q": "Mire való a Glükóz 40%?",
+      "answers": [
+        "Alacsony vércukor gyors emelésére, vénán át",
+        "Magas vércukor csökkentésére",
+        "Fájdalomcsillapításra",
+        "Ópiát-mérgezés ellen"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_11",
+      "q": "Mikor adhatsz glükóz gélt?",
+      "answers": [
+        "Csak ébren lévő, nyelni tudó betegnek",
+        "Eszméletlen betegnek",
+        "Újraélesztés alatt",
+        "Bármikor, vénába"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_12",
+      "q": "Eszméletlen beteg, vércukra 35 mg/dL. Mit adsz?",
+      "answers": [
+        "Vénát biztosítasz és Glükóz 40%-ot adsz",
+        "Glükóz gélt a szájába",
+        "Nitroglicerin sprayt",
+        "Captoprilt"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_13",
+      "q": "Mire való a Naloxon (Narcan)?",
+      "answers": [
+        "Ópiát (heroin, fentanil) túladagolás visszafordítására",
+        "Alkoholmérgezés ellen",
+        "Altatószer-mérgezés ellen",
+        "Vércukor emelésére"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_14",
+      "q": "Melyik képre jellemző tünet utal ópiát túladagolásra a lassú, felületes légzés mellett?",
+      "answers": [
+        "Tűhegynyi pupillák",
+        "Tágult pupillák",
+        "Egyenlőtlen pupillák",
+        "Fényre nem változó, normál pupillák"
+      ],
+      "correct": 1,
+      "image": "exams/img/pupils_pinpoint.png"
+    },
+    {
+      "id": "b_16",
+      "q": "Mire figyelsz Naloxon adása után?",
+      "answers": [
+        "A hatása elmúlhat, a beteg visszaaludhat: figyeled a légzést",
+        "Semmire, a hatás végleges",
+        "A beteg azonnal elengedhető",
+        "Utána glükózt kell adni"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_17",
+      "q": "Mikor ellenjavallt a Nitroglicerin spray?",
+      "answers": [
+        "Alacsony vérnyomásnál (systolés 90 Hgmm alatt)",
+        "Magas vérnyomásnál",
+        "Tüdőödémában",
+        "Mellkasi fájdalomnál"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_18",
+      "q": "Melyik állapotban segít a Nitroglicerin?",
+      "answers": [
+        "Tüdőödéma (szörcsölő légzés, rózsaszín habos köpet)",
+        "Asztma",
+        "Hipoglikémia",
+        "Ópiát-mérgezés"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_19",
+      "q": "Mire való a Salbutamol (Ventolin)?",
+      "answers": [
+        "Sípoló légzés: asztma, COPD, porlasztva",
+        "Magas vérnyomás",
+        "Görcsroham",
+        "Fájdalom"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_21",
+      "q": "A kanül behelyezése után mit ellenőrzöl?",
+      "answers": [
+        "Hogy szabadon befolyik-e a folyadék, és nem duzzad a szúrás helye",
+        "Semmit, a behelyezés elég",
+        "A beteg vércukrát",
+        "A pupillákat"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_22",
+      "q": "A kanül körül duzzanat és fájdalom jelenik meg, a folyadék nem folyik. Mi történt?",
+      "answers": [
+        "A kanül kicsúszott a vénából: eltávolítod és új helyen szúrsz",
+        "Normális, folytatod",
+        "Allergia, adsz rá még folyadékot",
+        "A beteg hipoglikémiás"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "b_23",
+      "q": "Mit ellenőrzöl, mielőtt bármilyen gyógyszert beadsz?",
+      "answers": [
+        "Jó gyógyszer, jó dózis, jó beadási mód, jó beteg, és nincs-e rá allergiája",
+        "Csak a gyógyszer színét",
+        "Semmit, sürgős helyzetben nincs idő",
+        "Csak a beteg nevét"
+      ],
+      "correct": 1
+    }
+  ]
+}

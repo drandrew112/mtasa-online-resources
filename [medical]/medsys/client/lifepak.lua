@@ -100,6 +100,7 @@ end
 
 local function isButtonEnabled(button, defib)
     if not button.op then return false end
+    if medicDeniedReason and medicDeniedReason("defib." .. button.op) then return false end
     if button.kind == "charge" then return not defib.charging and not defib.charged and not defib.analyzing end
     if button.kind == "shock" then return defib.charged end
     if button.kind == "analyze" then return not defib.analyzing end

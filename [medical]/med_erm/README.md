@@ -134,6 +134,18 @@ signed in; after sign-in every crew member can open it anywhere.
   dispatchers; broadcasts show up here) and *Case* (case chat: every unit on
   the active task + the dispatchers). Unread counts per channel.
 
+## Competencies (2026-11-01, server/competency.lua, client/competency.lua)
+
+- A unit type needs at least one crew member with `Config.UNIT_COMPETENCY[type]` (work_core
+  competencies of `Config.COMPETENCY_WORK`): BLS A, SOLO B, ALS B+, DOC / HELI C. Lower competencies
+  can always be added. The sign-in screen greys out the types the crew cannot start; the server checks again.
+- The member who qualified the unit leaves: `unqualified`, no new case (Tasks.assign refuses, auto dispatch
+  skips it) until the crew signs in again.
+- Sign-in sets the vehicle's med_equipments level (`Config.UNIT_EQUIPMENT`), sign-out `"basic"`; only
+  vehicles that already carry a level.
+- Tablet: badge + short code of every crew member (sign-in list, picker, home). Dispatcher web: highest
+  competency per unit (`Units.public` `competency`, `unqualified`).
+
 ## Shift-end payment (server/payment.lua)
 
 When a unit signs out (End Shift, the last member leaving, or disbanding),

@@ -1,0 +1,31 @@
+# Vizsga: Mentőtiszt
+@keywords: mentőtiszt, C vizsga, légzéstípus, asztma, tüdőödéma, Kussmaul, agonális légzés, EKG, ritmus, sokkolandó, VF, VT, PEA, asystolia, újraélesztés, ROSC, 4H 4T
+@related: medical_exams, medical_monitor, medical_diagnosis, medical_cases
+
+Előfeltétel: B+ és RSI vizsga. Rövid áttekintés a korábbiakból (gyógyszerek, véna, intubáció), és új anyag.
+
+## Légzéstípusok
+
+- **Sípoló, csak rövid szavak:** súlyos asztma. **Néma mellkas:** életveszély.
+- **Szörcsölő, duzzadt boka, rózsaszín habos köpet:** tüdőödéma – ültetés, Nitroglicerin, oxigén.
+- **Mély, szapora, acetonszag (Kussmaul):** nagyon magas vércukor.
+- **Lassú, felületes:** ópiát- vagy altatószer-mérgezés.
+- **Horkoló** eszméletlen betegnél: részleges légúti elzáródás.
+- **Hörgő, kapkodó (agonális):** keringésmegállás, kezdd az újraélesztést.
+- **COPD** (csücsörített ajak, előredőlve ül): az oxigén segít leginkább.
+
+## EKG ritmusok
+
+- **Sokkolandó:** kamrafibrilláció (VF, rendezetlen hullámok) és pulzus nélküli kamrai tachycardia (széles, szabályos, gyors hullámok).
+- **Nem sokkolandó:** asystolia (egyenes vonal) és PEA (rendezett ritmus a monitoron, de nincs tapintható pulzus).
+- Sinus ritmusú, beszélő beteget soha nem sokkolunk: a sokk megállíthatja a szívet.
+- **Pulzusos VT, instabil beteg:** szinkronizált kardioverzió (SYNC). Szinkron nélküli sokk VF-et válthat ki.
+
+## Újraélesztés
+
+- Sokkolandó ritmus: mielőbbi defibrillálás, közben CPR. Sokk után azonnal 2 perc CPR, csak utána ritmusellenőrzés.
+- Adrenalin: nem sokkolandó ritmusban mielőbb, sokkolandóban a 3. sokk után, majd 3–5 percenként.
+- Kezeletlen VF néhány perc alatt asystoliává romlik.
+- Kompresszorcsere kb. 2 percenként. A ROSC esélyét az Adrenalin és a biztosított légút is javítja.
+- Reverzibilis okok: **4H** (hipoxia, hipovolémia, hipo-/hiperkalémia, hipotermia), **4T** (tenziós PTX, tamponád, toxinok, trombózis). Hipoglikémiás szívmegállásban glükóz 40% IV.
+- ROSC után: monitor, oxigén, vérnyomás és ritmus figyelése, szállítás.

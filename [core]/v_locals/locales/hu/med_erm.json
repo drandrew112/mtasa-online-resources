@@ -235,5 +235,11 @@
   "med_erm.units.you_are_already_signed_in": "Már be vagy jelentkezve.",
   "med_erm.units.you_are_not_logged_in": "Nem vagy bejelentkezve.",
   "med_erm.units.you_left_unit": "Kiléptél az egységből.",
-  "med_erm.units.you_must_be_inside_ambulance_to": "A bejelentkezéshez mentőautóban kell ülnöd."
+  "med_erm.units.you_must_be_inside_ambulance_to": "A bejelentkezéshez mentőautóban kell ülnöd.",
+  "med_erm.competency.crew_needs": "{type} egységhez kell egy tag ezzel a kompetenciával: {need}.",
+  "med_erm.competency.type_needs": "{type}: kell egy {need} kompetenciájú tag a legénységben.",
+  "med_erm.competency.unit_not_qualified_title": "Nem megfelelő egység",
+  "med_erm.competency.unit_not_qualified": "A legénységben már nincs {need} kompetencia {type} egységhez. Új esetet nem kaphattok: fejezzétek be a mostanit, majd jelentkezzetek be más egységtípusként.",
+  "med_erm.competency.cannot_take_case": "{callsign} nem felel meg az egységtípusának, nem kaphat esetet.",
+  "med_erm.competency.home_unqualified": "Nem megfelelő {type} egység: új eset csak újbóli bejelentkezés után"
 }
