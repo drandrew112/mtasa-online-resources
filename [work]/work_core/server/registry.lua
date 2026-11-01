@@ -39,7 +39,7 @@ local function normaliseSkins(list)
             if not seen[model] then
                 seen[model] = true
                 local level = type(s) == "table" and tonumber(s.level) or nil
-                out[#out + 1] = { model = model, name = name and tostring(name) or (L.msg("work_core.registry.outfit", { model = model })),
+                out[#out + 1] = { model = model, name = name and (L.isMsg(name) and name or tostring(name)) or (L.msg("work_core.registry.outfit", { model = model })),
                                   level = level and math.max(1, math.floor(level)) or 1 }
             end
         end
@@ -102,6 +102,10 @@ function syncWorks(player)
     if not player then resyncAllLevels() end
 end
 
+-- names / descriptions / competency names are messages resolved at send time: send again in the new language
+addEvent("onPlayerLanguageChange")
+addEventHandler("onPlayerLanguageChange", root, function() syncWorks(source) end)
+
 function isPlayerReady(player)
     return readyPlayers[player] == true
 end
@@ -146,8 +150,8 @@ function registerWork(id, def)
 
     Works[id] = {
         id = id,
-        name = tostring(def.name or id),
-        description = def.description and tostring(def.description) or "",
+        name = L.isMsg(def.name) and def.name or tostring(def.name or id),
+        description = L.isMsg(def.description) and def.description or (def.description and tostring(def.description) or ""),
         color = normaliseColor(def.color),
         skins = skins,
         levels = normaliseLevels(def),

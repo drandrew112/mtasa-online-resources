@@ -44,6 +44,13 @@ handle("erm:leaveCase", function(player)
     return Tasks.leave(u.task, u.id)
 end)
 
+-- Backup: the nearest free unit of the chosen type joins the case (server/backup.lua).
+handle("erm:requestBackup", function(player, optionId)
+    local u = Units.ofPlayer(player)
+    if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
+    return Backup.request(u, optionId)
+end)
+
 -- Closing a case from the tablet (false call, broken scene, ...) needs a reason.
 handle("erm:closeCase", function(player, reason)
     local u = Units.ofPlayer(player)

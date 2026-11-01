@@ -20,6 +20,7 @@
 --       no longer fired: the tablet has no Handover button any more (the
 --       event stays registered so existing listeners keep loading)
 --   onErmMessage              (messageId, channel, target, from, fromDispatch, text)
+--   onErmBackupRequested      (taskId, requesterUnitId, assignedUnitId, option)   option = Config.BACKUP_OPTIONS id
 
 Events = {}
 
@@ -28,7 +29,7 @@ local NAMES = {
     "onErmTaskAssigned", "onErmTaskUnassigned", "onErmTaskClosed",
     "onErmUnitSignIn", "onErmUnitSignOut", "onErmUnitStatusChange",
     "onErmUnitHandoverStart", "onErmUnitHandoverComplete", "onErmMessage",
-    "onErmUnitHandoverRequest",
+    "onErmUnitHandoverRequest", "onErmBackupRequested",
 }
 
 for _, name in ipairs(NAMES) do

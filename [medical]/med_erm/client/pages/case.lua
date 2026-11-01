@@ -50,6 +50,34 @@ local function askLeave(t)
     }
 end
 
+-- Backup picker (drawn by the tablet over the page while Tablet.picker is set)
+local function drawBackupPicker(sx, sy, sw, sh)
+    local t = State.task
+    if not t then Tablet.picker = nil return end
+    Gfx.hit(0, 0, Gfx.screenW, Gfx.screenH, function() end)
+    Gfx.round(sx, sy, sw, sh, s(8), Theme.shade)
+
+    local opts = Config.BACKUP_OPTIONS
+    local rows = math.ceil(#opts / 2)
+    local bh, gap = s(40), s(8)
+    local w, h = s(420), s(122) + rows * (bh + gap) + s(46)
+    local x, y = sx + (sw - w) / 2, sy + (sh - h) / 2
+    Gfx.round(x, y, w, h, s(10), Theme.panel)
+    Gfx.text(L("med_erm.backup.title", { id = t.id }), x + s(20), y + s(16), w - s(40), s(26), Theme.text, Gfx.font(13, true))
+    Gfx.text(L("med_erm.backup.picker_text"), x + s(20), y + s(46), w - s(40), s(60), Theme.dim, Gfx.font(10), "left", "top", true)
+
+    local bw = (w - s(40) - gap) / 2
+    local by = y + s(110)
+    for i, o in ipairs(opts) do
+        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+        Gfx.button(x + s(20) + col * (bw + gap), by + row * (bh + gap), bw, bh, L(o.label), { color = { 56, 132, 244 } }, function()
+            Tablet.picker = nil
+            Tablet.send("erm:requestBackup", o.id)
+        end)
+    end
+    Gfx.button(x + s(20), y + h - s(54), w - s(40), s(38), L("common.cancel"), {}, function() Tablet.picker = nil end)
+end
+
 local function distanceText(t)
     local px, py = getElementPosition(localPlayer)
     local d = getDistanceBetweenPoints2D(px, py, t.x, t.y)
@@ -124,6 +152,12 @@ function Pages.case.draw(x, y, w, h)
     else
         Gfx.text(L("med_erm.case.awaiting_response"), ix, ly, iw, s(30), Theme.faint, Gfx.font(10, true))
     end
+
+    -- backup request (SOLO / DOC: transport, BLS: advanced care)
+    local rbw = s(170)
+    Gfx.button(ix + iw - rbw, ly + s(2), rbw, s(30), L("med_erm.backup.request"),
+        { color = { 56, 132, 244 }, disabled = u.status == "handover" or TabletTutorial.active, font = Gfx.font(9, true) },
+        function() Tablet.picker = drawBackupPicker end)
 
     -- buttons
     local by = y + h - btnH - s(16)

@@ -78,13 +78,19 @@ local function idList(v)
     return out
 end
 
+-- a name from the work's config: L.text message objects stay messages (resolved per player when sent)
+local function label(v, fallback)
+    if L.isMsg(v) then return v end
+    return tostring(v or fallback)
+end
+
 local function normalise(workId, def)
     local c = { work = workId, ranks = {}, rankById = {}, certs = {}, certById = {}, exams = {},
                 activities = {}, minigames = {}, nametag = def.nametag == true }
     for i, r in ipairs(type(def.ranks) == "table" and def.ranks or {}) do
         if type(r) == "table" and type(r.id) == "string" then
             local rank = {
-                id = r.id, order = #c.ranks + 1, name = tostring(r.name or r.id), short = tostring(r.short or r.id),
+                id = r.id, order = #c.ranks + 1, name = label(r.name, r.id), short = label(r.short, r.id),
                 badge = type(r.badge) == "string" and r.badge or nil,   -- client image path (":res/img.png")
                 nametagCerts = idList(r.nametagCerts),                   -- held cert -> nametag badge "<order>_<cert>"
                 base = r.base == true, exam = type(r.exam) == "string" and r.exam or nil,
@@ -100,7 +106,7 @@ local function normalise(workId, def)
     end
     for _, x in ipairs(type(def.certs) == "table" and def.certs or {}) do
         if type(x) == "table" and type(x.id) == "string" then
-            local cert = { id = x.id, name = tostring(x.name or x.id), short = tostring(x.short or x.id),
+            local cert = { id = x.id, name = label(x.name, x.id), short = label(x.short, x.id),
                            exam = type(x.exam) == "string" and x.exam or nil, requires = idList(x.requires),
                            exactRank = type(x.exactRank) == "string" and x.exactRank or nil }
             c.certs[#c.certs + 1] = cert
@@ -497,7 +503,7 @@ addCommandHandler("competency", function(player, _, target, workArg)
     if not c then return reply(player, "work_core.comp.give_work_id") end
     local info = getPlayerCompetencies(p, c.work)
     local certs = {}
-    for _, x in ipairs(c.certs) do if info.certs[x.id] then certs[#certs + 1] = x.name end end
+    for _, x in ipairs(c.certs) do if info.certs[x.id] then certs[#certs + 1] = L.resolveFor(player, x.name) end end
     reply(player, "work_core.comp.info", { player = getPlayerName(p), work = c.work, rank = info.name or "-",
         certs = #certs > 0 and table.concat(certs, ", ") or "-" })
     for examId, r in pairs(getExamResults and getExamResults(p, c.work) or {}) do

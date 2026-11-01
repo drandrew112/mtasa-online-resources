@@ -125,6 +125,13 @@ signed in; after sign-in every crew member can open it anywhere.
   task; the reason is stored as `<callsign>: <reason>`. The handover is
   started by the hospital (med_hospitals) and the task is closed once its last
   unit has handed over.
+- **Request Backup** (Active Case, `server/backup.lua`): the crew picks a unit
+  type from `Config.BACKUP_OPTIONS` (any ambulance / BLS / ALS / DOC / HELI /
+  SOLO); the nearest free unit of that type (by distance to the scene) is
+  assigned to the case and every unit on it is notified. With no free unit the
+  tablet says why (none on duty, or how many are on another case / in handover /
+  not qualified). `Config.BACKUP_COOLDOWN` between requests; fires
+  `onErmBackupRequested`. Not on the web tablet.
 - **Automatic Start Response**: when the driver of a unit with an active case
   drives off (above `Config.RESPONSE_AUTO_SPEED`, 15 km/h) without Start
   Response, the response is started automatically - once on the way to the

@@ -7,6 +7,7 @@ Tablet = {
     page    = "home",
     menu    = false,
     confirm = nil,     -- { title, text, action, label }
+    picker  = nil,     -- function(sx, sy, sw, sh) drawing a page's modal picker (backup request)
 }
 Pages = {}
 
@@ -41,7 +42,7 @@ end
 
 function Tablet.setPage(page)
     Tablet.page = page
-    Tablet.menu = false
+    Tablet.menu, Tablet.picker = false, nil
     TabletTutorial.report("page", page)
 end
 
@@ -184,7 +185,7 @@ local function render()
     end
 
     Gfx.hits, Gfx.scrollAreas = {}, {}
-    local overlay = Tablet.menu or Tablet.confirm or (not State.unit and Login.picker)
+    local overlay = Tablet.menu or Tablet.confirm or Tablet.picker or (not State.unit and Login.picker)
     Gfx.blockHover = overlay and true or false
 
     local x, y, w, h = frame()
@@ -212,6 +213,10 @@ local function render()
     if not State.unit and Login.picker then
         Gfx.hits = {}
         Login.drawPicker(sx, sy, sw, sh)
+    end
+    if Tablet.picker and State.unit then
+        Gfx.hits = {}
+        Tablet.picker(sx, sy, sw, sh)
     end
     if Tablet.confirm then
         Gfx.hits = {}
@@ -272,7 +277,7 @@ end
 function Tablet.show()
     if Tablet.open then return end
     Tablet.open = true
-    Tablet.menu, Tablet.confirm = false, nil
+    Tablet.menu, Tablet.confirm, Tablet.picker = false, nil, nil
     showCursor(true, false)
     lockControls()
     addEventHandler("onClientRender", root, render)
@@ -285,7 +290,7 @@ end
 function Tablet.close()
     if not Tablet.open then return end
     Tablet.open = false
-    Tablet.menu, Tablet.confirm = false, nil
+    Tablet.menu, Tablet.confirm, Tablet.picker = false, nil, nil
     Login.picker = false
     removeEventHandler("onClientRender", root, render)
     removeEventHandler("onClientClick", root, onClick)

@@ -120,7 +120,10 @@ end
 function medicDeniedReason(key)
     local denied = getElementData(localPlayer, MEDIC.DATA_PERMS)
     local need = type(denied) == "table" and denied[key]
-    return need and L("medsys.panel.needs_competency", { name = need }) or nil
+    if not need then return nil end
+    -- a locale key (work_core competency name) or plain text
+    if type(need) == "string" and need:find(".", 1, true) and L.has(need) then need = L(need) end
+    return L("medsys.panel.needs_competency", { name = need })
 end
 
 local function canAttachMonitor()

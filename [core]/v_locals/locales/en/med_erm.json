@@ -241,5 +241,22 @@
   "med_erm.competency.unit_not_qualified_title": "Unit not qualified",
   "med_erm.competency.unit_not_qualified": "The crew no longer has {need} competency for a {type} unit. You cannot take new cases: finish the current one, then sign in again as another unit type.",
   "med_erm.competency.cannot_take_case": "{callsign} is not qualified for its unit type and cannot take cases.",
-  "med_erm.competency.home_unqualified": "Not qualified as {type}: no new cases until you sign in again"
+  "med_erm.competency.home_unqualified": "Not qualified as {type}: no new cases until you sign in again",
+  "med_erm.backup.request": "Request Backup",
+  "med_erm.backup.title": "Request backup - Case #{id}",
+  "med_erm.backup.picker_text": "Select the unit you need. The nearest free unit of that type is assigned to this case.",
+  "med_erm.backup.opt_ambulance": "Any ambulance (BLS/ALS)",
+  "med_erm.backup.opt_bls": "BLS ambulance",
+  "med_erm.backup.opt_als": "ALS ambulance",
+  "med_erm.backup.opt_doc": "Doctor car (DOC)",
+  "med_erm.backup.opt_heli": "Air ambulance (HELI)",
+  "med_erm.backup.opt_solo": "Solo responder (SOLO)",
+  "med_erm.backup.select_unit_type": "Select the unit type you need.",
+  "med_erm.backup.wait": "Wait {seconds} s before requesting backup again.",
+  "med_erm.backup.none_on_duty": "Backup not possible: no {types} unit is on duty.",
+  "med_erm.backup.none_free": "Backup not possible: no free {types} unit ({busy} on another case, {handover} in hospital handover, {unqualified} not qualified).",
+  "med_erm.backup.requested_title": "Backup requested",
+  "med_erm.backup.requested_by": "{callsign} requested your unit as backup on case #{id}.",
+  "med_erm.backup.assigned_title": "Backup assigned",
+  "med_erm.backup.assigned": "{callsign} ({type}) is coming as backup, {distance} away."
 }

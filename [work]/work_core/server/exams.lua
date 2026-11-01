@@ -235,8 +235,8 @@ local function finish(player, aborted)
         local before = getPlayerCompetency(player, s.work)
         grantCompetency(player, s.work, target, "exam")
         local after = getPlayerCompetency(player, s.work)
-        granted = compDisplayName(c, target)
-        if after ~= before and after ~= target then granted = granted .. " + " .. compDisplayName(c, after) end
+        granted = L.resolveFor(player, compDisplayName(c, target))
+        if after ~= before and after ~= target then granted = granted .. " + " .. L.resolveFor(player, compDisplayName(c, after)) end
     end
     triggerEvent("onPlayerExamFinish", player, s.work, s.exam, percent, passed)
     triggerClientEvent(player, "work:examResult", resourceRoot, {

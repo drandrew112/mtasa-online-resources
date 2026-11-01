@@ -241,5 +241,22 @@
   "med_erm.competency.unit_not_qualified_title": "Nem megfelelő egység",
   "med_erm.competency.unit_not_qualified": "A legénységben már nincs {need} kompetencia {type} egységhez. Új esetet nem kaphattok: fejezzétek be a mostanit, majd jelentkezzetek be más egységtípusként.",
   "med_erm.competency.cannot_take_case": "{callsign} nem felel meg az egységtípusának, nem kaphat esetet.",
-  "med_erm.competency.home_unqualified": "Nem megfelelő {type} egység: új eset csak újbóli bejelentkezés után"
+  "med_erm.competency.home_unqualified": "Nem megfelelő {type} egység: új eset csak újbóli bejelentkezés után",
+  "med_erm.backup.request": "Segélykocsi kérése",
+  "med_erm.backup.title": "Segélykocsi kérése - #{id} eset",
+  "med_erm.backup.picker_text": "Válaszd ki, milyen egységre van szükség. A legközelebbi szabad ilyen egység kapja meg az esetet.",
+  "med_erm.backup.opt_ambulance": "Bármely mentőautó (BLS/ALS)",
+  "med_erm.backup.opt_bls": "BLS mentőautó",
+  "med_erm.backup.opt_als": "ALS mentőautó",
+  "med_erm.backup.opt_doc": "Mentőorvosi kocsi (DOC)",
+  "med_erm.backup.opt_heli": "Mentőhelikopter (HELI)",
+  "med_erm.backup.opt_solo": "Egyszemélyes egység (SOLO)",
+  "med_erm.backup.select_unit_type": "Válaszd ki, milyen egységre van szükség.",
+  "med_erm.backup.wait": "Várj {seconds} mp-et, mielőtt újra segélykocsit kérsz.",
+  "med_erm.backup.none_on_duty": "Segélykocsi nem kérhető: nincs szolgálatban {types} egység.",
+  "med_erm.backup.none_free": "Segélykocsi nem kérhető: nincs szabad {types} egység ({busy} másik esetnél, {handover} kórházi átadásnál, {unqualified} nem megfelelő képesítésű).",
+  "med_erm.backup.requested_title": "Segélykocsi-kérés",
+  "med_erm.backup.requested_by": "{callsign} segélykocsiként kérte az egységedet a #{id} esethez.",
+  "med_erm.backup.assigned_title": "Segélykocsi úton",
+  "med_erm.backup.assigned": "{callsign} ({type}) érkezik segélykocsiként, {distance} távolságra."
 }

@@ -117,8 +117,13 @@ end)
 -- No table / a key not in it = allowed. Synced as MEDIC.DATA_PERMS so the panel greys them out.
 local Denied = {}
 
+-- A name may be a message object (work_core competency names): the element data gets its locale key,
+-- the panel translates it in the medic's own language.
 local function syncPermissions(player)
-    if Denied[player] then setElementData(player, MEDIC.DATA_PERMS, Denied[player])
+    if Denied[player] then
+        local t = {}
+        for k, v in pairs(Denied[player]) do t[k] = L.isMsg(v) and v.t or v end
+        setElementData(player, MEDIC.DATA_PERMS, t)
     elseif getElementData(player, MEDIC.DATA_PERMS) ~= nil then removeElementData(player, MEDIC.DATA_PERMS) end
 end
 
@@ -126,7 +131,7 @@ function setMedicPermissions(player, denied)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
     local t = {}
     for k, v in pairs(type(denied) == "table" and denied or {}) do
-        if type(k) == "string" then t[k] = tostring(v) end
+        if type(k) == "string" then t[k] = L.isMsg(v) and v or tostring(v) end
     end
     Denied[player] = next(t) and t or nil
     syncPermissions(player)

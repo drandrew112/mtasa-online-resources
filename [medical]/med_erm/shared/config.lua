@@ -48,6 +48,19 @@ function Config.unitTypesFor(model)
     return Config.UNIT_VEHICLE_TYPES[model] or Config.UNIT_TYPES_DEFAULT
 end
 
+-- Backup request on the Active Case page: the crew picks one option, the nearest free unit of its
+-- types (by distance to the scene) is assigned to the case. label = v_locals key.
+Config.BACKUP_OPTIONS = {
+    { id = "AMB",  types = { "BLS", "ALS" }, label = "med_erm.backup.opt_ambulance" },
+    { id = "BLS",  types = { "BLS" },        label = "med_erm.backup.opt_bls" },
+    { id = "ALS",  types = { "ALS" },        label = "med_erm.backup.opt_als" },
+    { id = "DOC",  types = { "DOC" },        label = "med_erm.backup.opt_doc" },
+    { id = "HELI", types = { "HELI" },       label = "med_erm.backup.opt_heli" },
+    { id = "SOLO", types = { "SOLO" },       label = "med_erm.backup.opt_solo" },
+}
+-- Minimum time (ms) between two successful backup requests of a unit.
+Config.BACKUP_COOLDOWN = 15000
+
 -- Radius (metres) in which other players can be added to a crew.
 Config.ADD_MEMBER_RADIUS = 10
 

@@ -17,6 +17,7 @@
     <script src="server/competency.lua" type="server" />
     <script src="server/payment.lua" type="server" />
     <script src="server/chat.lua"    type="server" />
+    <script src="server/backup.lua"  type="server" />
     <script src="server/tablet.lua"  type="server" />
     <script src="server/dispatchers.lua" type="server" />
     <script src="server/http.lua"    type="server" />
