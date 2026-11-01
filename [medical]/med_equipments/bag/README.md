@@ -2,7 +2,8 @@
 
 Every ambulance (416, 456) carries one **medical bag** and one **Lifepak 15** (monitor / defibrillator),
 both v_inventory items. Without them a medic can only examine, run the neuro exam, do CPR and request
-transport (medsys). The bag holds the medicines, IV kits, bandages, splints, the oxygen cylinder, the
+transport (medsys). The bag holds the medicines, IV kits, infusion bags (500ml Izolite, ALS 6 /
+BLS 4, one per bag hung on a medsys IV line), bandages, splints, the oxygen cylinder, the
 glucometer and the airway kit; the consumables run out and are restocked in a hospital bay.
 
 Full design: [DESIGN.md](DESIGN.md).

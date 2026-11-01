@@ -86,6 +86,7 @@ function Peds.remove(p, reason, keepElement)
             removeElementData(p.el, DATA_MOVE)
             removeElementData(p.el, DATA_FIGHT)
             removeElementData(p.el, DATA_SAVE_LETHAL)
+            removeElementData(p.el, DATA_PROTECTED)
         else
             destroyElement(p.el)
         end

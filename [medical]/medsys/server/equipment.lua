@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Equipment adapter (med_equipments). Interventions need the medical bag / the monitor near the patient
--- (MEDIC_EQUIPMENT); the bag's consumables (medicines, IV kits, oxygen) run out. Everything goes
+-- (MEDIC_EQUIPMENT); the bag's consumables (medicines, IV kits, infusion bags, oxygen) run out. Everything goes
 -- through this file, so medsys works unchanged when MEDIC.REQUIRE_EQUIPMENT is false or med_equipments is
 -- not running (then no equipment is asked for at all).
 -- Tutorial patients (setTutorialPatient) need no equipment either, unless they were marked with
@@ -26,7 +26,8 @@ end
 
 local ITEM_MISSING = { bag = L.msg("medsys.equipment.needs_medical_bag"), monitor = L.msg("medsys.equipment.needs_monitor") }
 local STOCK_EMPTY = {
-    ivKits = L.msg("medsys.equipment.out_of_iv_kits_restock_at"), oxygen = L.msg("medsys.equipment.oxygen_cylinder_empty"),
+    ivKits = L.msg("medsys.equipment.out_of_iv_kits_restock_at"), fluids = L.msg("medsys.equipment.out_of_infusion_bags"),
+    oxygen = L.msg("medsys.equipment.oxygen_cylinder_empty"),
     bandages = L.msg("medsys.equipment.out_of_bandages"), splints = L.msg("medsys.equipment.out_of_splints"),
     glucometers = L.msg("medsys.equipment.no_glucometer"), airwayKits = L.msg("medsys.equipment.no_airway_kit"),
 }
@@ -45,6 +46,8 @@ function checkActionEquipment(equipment, action, state, option)
     if not equipment then return true end
     local need = MEDIC_EQUIPMENT[action]
     if not need then return true end
+    -- onlyOption: only that option needs the equipment (the panel button is always usable)
+    if need.onlyOption and option ~= need.onlyOption then return true end
     -- taking the mask off needs nothing
     if action == "oxygen" and state and state.oxygenMask then return true end
     if not equipment[need.item] then return false, ITEM_MISSING[need.item] end
@@ -117,6 +120,11 @@ function onEquipmentTreatmentDone(medic, target, action, option, state)
     if action == "medication" then
         local item = call("findStockItem", target, medic, "drugs", option)
         if item then call("consumeStock", item, "drugs", option) end
+    elseif action == "infusion" then
+        if option == "hang" then
+            local item = call("findStockItem", target, medic, "fluids")
+            if item then call("consumeStock", item, "fluids") end
+        end
     elseif action == "oxygen" then
         if state.oxygenMask then call("startPatientOxygen", target, medic) else call("stopPatientOxygen", target) end
     elseif action == "airway" then

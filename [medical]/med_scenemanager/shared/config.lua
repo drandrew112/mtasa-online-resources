@@ -207,7 +207,7 @@ MSM_STATE = {
     ivAccess = { label = "IV access", presets = { { "No", false }, { "Yes", true } } },
     rhythm = { label = "Heart rhythm", presets = {
         { "Normal sinus rhythm", "SINUS" }, { "Sinus bradycardia", "SINUS_BRADY" },
-        { "Sinus tachycardia", "SINUS_TACHY" }, { "VT with pulse", "VT_WITH_PULSE" },
+        { "Sinus tachycardia", "SINUS_TACHY" }, { "SVT", "SVT" }, { "VT with pulse", "VT_WITH_PULSE" },
         { "VF (arrest, shockable)", "VF" }, { "Pulseless VT (arrest, shockable)", "PULSELESS_VT" },
         { "PEA (arrest)", "PEA" }, { "Asystole (arrest)", "ASYSTOLE" } } },
 }

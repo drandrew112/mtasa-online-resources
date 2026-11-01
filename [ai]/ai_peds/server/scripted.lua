@@ -255,3 +255,20 @@ function setAIPedKeep(ped, keep)
     p.keep = keep and true or nil
     return true
 end
+
+-- protected = true (an arrested ped): only a script removes it (destroyAIPed / destroyElement). Not culled, not
+-- cleared with the ped traffic, its body is not cleaned up; DATA_PROTECTED tells the other resources (ai_land_traffic
+-- does not destroy it with the vehicle it came from). false: back to normal
+function setAIPedProtected(ped, on)
+    local p = getP(ped)
+    if not p then return false end
+    p.protected = on and true or nil
+    if p.protected then setElementData(p.el, DATA_PROTECTED, true)
+    elseif getElementData(p.el, DATA_PROTECTED) then removeElementData(p.el, DATA_PROTECTED) end
+    return true
+end
+
+function isAIPedProtected(ped)
+    local p = getP(ped)
+    return p and p.protected or false
+end

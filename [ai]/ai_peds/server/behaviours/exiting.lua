@@ -89,7 +89,7 @@ Behaviours.dead = {
         Peds.setCmd(p, { m = "idle" })
     end,
     update = function(p, now)
-        if p.keepBody or now - p.b.at < T.BODY_LIFE then return end
+        if p.keepBody or p.protected or now - p.b.at < T.BODY_LIFE then return end
         for _, pl in ipairs(getElementsWithinRange(p.x, p.y, p.z, T.BODY_NEAR, "player")) do
             if getElementDimension(pl) == getElementDimension(p.el) then return end
         end

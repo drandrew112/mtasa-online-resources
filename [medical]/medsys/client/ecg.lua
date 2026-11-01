@@ -5,10 +5,11 @@
 --
 -- Waveforms (MEDIC_RHYTHMS[rhythm].wave):
 --   sinus  P wave, narrow QRS, T wave (sinus / bradycardia / tachycardia by the rate)
+--   svt    narrow QRS and a peaked T at 150+, no visible P wave (SVT)
 --   vt     wide, regular, sine-like complexes without P waves (VT with pulse / pulseless VT)
 --   pea    slow, broad, low bumps without an R wave - electrical activity without a pulse (no beep)
 --   vf     chaotic irregular waves, no complexes
---   flat   asystole: an almost flat line
+--   flat   asystole / the adenosine pause: an almost flat line
 
 local SAMPLE_RATE = 100     -- samples per second
 local BUFFER_SECONDS = 5    -- the longest window a trace can show
@@ -46,6 +47,16 @@ local function sinusWave(tb, rr)
     local pEnd, pLength = math.min(0.12, rr * 0.18), math.min(0.09, rr * 0.15)
     if toNext > pEnd and toNext < pEnd + pLength then                 -- P
         return 0.13 * math.sin(math.pi * (toNext - pEnd) / pLength)
+    end
+    return 0
+end
+
+-- SVT: the narrow QRS of the sinus beat, a peaked T right after it, no P wave (the fast rate hides it)
+local function svtWave(tb, rr)
+    if tb < 0.09 then return sinusWave(tb, rr) end
+    local tStart, tLength = 0.09 + rr * 0.08, rr * 0.38
+    if tb >= tStart and tb < tStart + tLength then
+        return 0.32 * math.sin(math.pi * (tb - tStart) / tLength)
     end
     return 0
 end
@@ -91,8 +102,9 @@ end
 -- Generator
 ---------------------------------------------------------------------------
 
-local BEATING = { sinus = true, vt = true, pea = true }
-local BEEPING = { sinus = true, vt = true } -- the monitor detects these as QRS complexes (PEA: no)
+local BEATING = { sinus = true, svt = true, vt = true, pea = true }
+local BEEPING = { sinus = true, svt = true, vt = true } -- the monitor detects these as QRS complexes (PEA: no)
+local PLETH_GAIN = { svt = 0.7, vt = 0.4 } -- a too fast heart pumps less per beat
 
 local function onBeat()
     if not beepOn then return end
@@ -114,13 +126,15 @@ local function generateSample()
         end
         if wave == "sinus" then
             ecg = sinusWave(beatTime, rr)
+        elseif wave == "svt" then
+            ecg = svtWave(beatTime, rr)
         elseif wave == "vt" then
             ecg = vtWave(beatTime, rr)
         else
             ecg = peaWave(beatTime)
         end
         if input.pulse and input.spo2 > 0 then
-            pleth = plethWave(beatTime, rr) * (wave == "vt" and 0.4 or 1)
+            pleth = plethWave(beatTime, rr) * (PLETH_GAIN[wave] or 1)
         end
     else
         beatTime = 60 -- the first complex comes right when the heart starts beating again

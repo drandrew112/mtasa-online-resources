@@ -2,7 +2,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Consumables of the bags, the oxygen drain and the monitor links.
 --
 -- The stock of a bag is what is really in it (v_inventory items): drug stacks ("drug_<id>"), IV
--- kits, bandages, splints, the glucometer, the airway kit and the oxygen cylinder (meta.oxygen %).
+-- kits, infusion bags (fluid_isolyte), bandages, splints, the glucometer, the airway kit and the oxygen cylinder (meta.oxygen %).
 -- A medic may move them between bags in the inventory window; whatever a serving bag holds counts.
 --
 -- Which item serves a patient: same dimension / interior and within BAG.USE_RANGE of the patient
@@ -106,16 +106,18 @@ function hasStock(bag, category, key)
     return amount == nil or amount > 0
 end
 
--- The bag's HUD / window lines: IV kits and oxygen
+-- The bag's HUD / window lines: IV kits, infusion bags and oxygen
 function refreshBagDisplay(bag)
     if not isInventoryRunning() or not Items[bag.id] then return end
     local iv = stockAmount(bag, "ivKits") or 0
+    local fluids = stockAmount(bag, "fluids") or 0
     local _, o2 = bestCylinder(bag)
     local display = {
         { label = L.msg("med_bag.hud.iv_kits_label"), value = tostring(iv) },
+        { label = L.msg("med_bag.hud.fluids_label"), value = tostring(fluids) },
         { label = L.msg("med_bag.hud.oxygen_label"), value = ("%d%%"):format(math.floor(o2 + 0.5)) },
     }
-    local key = iv .. ":" .. math.floor(o2 + 0.5)
+    local key = iv .. ":" .. fluids .. ":" .. math.floor(o2 + 0.5)
     if bag.displayKey == key then return end
     bag.displayKey = key
     inv():setItemMeta(bag.id, "display", display)
@@ -226,7 +228,7 @@ function drugName(id)
 end
 
 local STOCK_LABELS = {
-    ivKits = "med_bag.stock.iv_kits", oxygen = "med_bag.stock.oxygen", bandages = "med_bag.stock.bandages",
+    ivKits = "med_bag.stock.iv_kits", fluids = "med_bag.stock.fluids", oxygen = "med_bag.stock.oxygen", bandages = "med_bag.stock.bandages",
     splints = "med_bag.stock.splints", glucometers = "med_bag.stock.glucometer", airwayKits = "med_bag.stock.airway_kit",
 }
 function stockLabel(category, key)

@@ -72,7 +72,13 @@ MEDIC = {
     EQUIPMENT_RESOURCE = "med_equipments",
 
     -- Treatments
-    IV_FLUID_RATE = 4,          -- ml/s restored with IV access (scaled by the cannulation quality)
+    -- Infusion (MEDIC_FLUIDS bag hung on the IV access, MEDIC_INFUSION_RATES): the cannula alone gives
+    -- no fluid. The rate is scaled by the cannulation quality (0.5 + quality / 200).
+    INFUSION_HANG_TIME = 4,     -- seconds to hang / change a bag (the medic kneels)
+    INFUSION_RATE_TIME = 1,     -- seconds to change the rate / take the bag off
+    INFUSION_MAX_VOLUME = 0.9,  -- fluids restore the blood volume up to this fraction (blood needs a hospital)
+    OVERLOAD_STEPS = { 1000, 1600, 2200 }, -- ml of fluid over that limit -> pulmonary oedema severity 1 / 2 / 3
+    OVERLOAD_DRAIN = 0.4,       -- ml/s of the excess the kidneys clear
     CPR_DURATION = 30,          -- seconds of compressions per CPR round
     CPR_TIME_BONUS = 45,        -- a good CPR round buys this many seconds on the death timer
     ROSC_BASE = 0.35,           -- return of circulation chance for a good CPR round...
@@ -138,6 +144,20 @@ MEDIC = {
     VT_SYSTOLIC_DROP = 30,
     VT_DEGRADE_TIME = 120,
     ROSC_VT_CHANCE = 0.15,      -- a restored heart beats in VT with pulse instead of a sinus rhythm
+    -- Lasting SVT (after a ROSC, setMedicalState "rhythm"): narrow, fast, regular. The heart beats at
+    -- a rate picked from SVT_RATE (below ARREST_HEART_RATE), the pressure drops, and without
+    -- adenosine it turns into VT with pulse after SVT_DEGRADE_TIME
+    SVT_RATE = { 175, 195 },
+    SVT_SYSTOLIC_DROP = 20,
+    SVT_DEGRADE_TIME = 300,
+    ROSC_SVT_CHANCE = 0.2,      -- a restored heart (not in VT) beats in SVT instead of a sinus rhythm
+    POST_ROSC_SVT_WINDOW = 300, -- seconds after a ROSC in which an SVT can still start...
+    POST_ROSC_SVT_CHANCE = 0.15,-- ...with this chance over the whole window
+    -- Adenosine: the heart stops for ADENOSINE_PAUSE_TIME seconds and restarts; only an SVT can
+    -- restart in a sinus rhythm (ADENOSINE_SUCCESS by dose: 6 mg, 12 mg), anything else comes back
+    ADENOSINE_PAUSE_TIME = 5,
+    ADENOSINE_SUCCESS = { 0.6, 0.85 },
+    ADENOSINE_PAIN = 30,        -- pain points of the chest pressure an awake patient feels
     -- Untreated arrest rhythms get worse (paused while CPR runs): seconds in the rhythm
     PVT_DEGRADE_TIME = 60,      -- pulseless VT -> VF
     VF_DEGRADE_TIME = 240,      -- VF -> asystole
@@ -157,8 +177,8 @@ MEDIC = {
     SHOCK_ROSC = 0.35,          -- after a successful shock the pulse returns with this chance (+ IV,
                                 -- airway, adrenaline bonuses), otherwise PEA or asystole follows
     SHOCK_ROSC_PEA = 0.6,       -- share of PEA among the non-ROSC outcomes (the rest is asystole)
-    CARDIOVERSION_SYNC = 0.75,  -- SYNC shock on VT with pulse: chance to convert it
-    CARDIOVERSION_UNSYNC = 0.45,-- unsynchronised shock on VT with pulse: chance to convert it...
+    CARDIOVERSION_SYNC = 0.75,  -- SYNC shock on VT with pulse / SVT: chance to convert it
+    CARDIOVERSION_UNSYNC = 0.45,-- unsynchronised shock on VT with pulse / SVT: chance to convert it...
     SHOCK_PULSE_VF = 0.3,       -- ...or it causes VF this often (a shock on a sinus rhythm always stops the heart)
     SHOCK_PAIN = 60,            -- pain points of a shock on a patient who is not down
 
@@ -169,7 +189,7 @@ MEDIC = {
     GLUCOSE_DRIFT = 0.08,       -- mg/dL per second towards the resting value
     GLUCOSE_MIN = 10, GLUCOSE_MAX = 900,
     GLUCOSE_WOBBLE = 1.5,       -- mg/dL: max size of the natural random fluctuation around the current value
-    GLUCOSE_IV_RATE = 0.12,     -- mg/dL/s an IV line (fluids) lowers a value above GLUCOSE_IV_ABOVE
+    GLUCOSE_IV_RATE = 0.12,     -- mg/dL/s a running infusion lowers a value above GLUCOSE_IV_ABOVE
     GLUCOSE_IV_ABOVE = 180,
     HYPO_GLUCOSE = 70,          -- below: sweating, the pulse rises (HYPO_HEART_RATE per mg/dL, max 25)
     HYPO_HEART_RATE = 0.5,
@@ -200,16 +220,19 @@ MEDIC = {
 
 -- Heart rhythms (ECG). label = shown under the ECG curve (most players cannot read an ECG),
 -- pulse = the heart pumps (palpable pulse), shockable = defibrillation can end it (VF, pVT only),
--- wave = the curve the client draws (client/ecg.lua)
+-- wave = the curve the client draws (client/ecg.lua), transient = only shown on the monitor for a
+-- moment (never the patient's rhythm: the panel snapshot puts it over the real one)
 MEDIC_RHYTHMS = {
     SINUS = { label = L.text("medsys.config.normal_sinus_rhythm"), pulse = true, wave = "sinus" },
     SINUS_BRADY = { label = L.text("medsys.config.sinus_bradycardia"), pulse = true, wave = "sinus" },
     SINUS_TACHY = { label = L.text("medsys.config.sinus_tachycardia"), pulse = true, wave = "sinus" },
+    SVT = { label = L.text("medsys.config.supraventricular_tachycardia"), pulse = true, wave = "svt" },
     VT_WITH_PULSE = { label = L.text("medsys.config.ventricular_tachycardia_with_pulse"), pulse = true, wave = "vt" },
     VF = { label = L.text("medsys.config.ventricular_fibrillation"), shockable = true, wave = "vf" },
     PULSELESS_VT = { label = L.text("medsys.config.pulseless_ventricular_tachycardia"), shockable = true, wave = "vt" },
     PEA = { label = L.text("medsys.config.pulseless_electrical_activity_continue_cpr"), wave = "pea" },
     ASYSTOLE = { label = L.text("medsys.config.asystole"), wave = "flat" },
+    ADENOSINE_PAUSE = { label = L.text("medsys.config.adenosine_pause"), wave = "flat", transient = true },
 }
 
 -- Rhythm a cardiac arrest starts with, by its cause (weights). default: a forced arrest
@@ -261,6 +284,8 @@ MEDIC_TEST = {
             injuries = {}, set = { { "rhythm", "ASYSTOLE" } } },
         { id = "vt_pulse", label = L.text("medsys.config.vt_with_pulse"), desc = L.text("medsys.config.wide_fast_rhythm_pulse_present_sync"),
             injuries = {}, set = { { "rhythm", "VT_WITH_PULSE" } } },
+        { id = "svt", label = L.text("medsys.config.svt"), desc = L.text("medsys.config.narrow_fast_rhythm_pulse_present_adenosine"),
+            injuries = {}, set = { { "rhythm", "SVT" } } },
         { id = "minor_burn", label = L.text("medsys.config.minor_burn"), desc = L.text("medsys.config.scalded_hand_conscious_and_stable"),
             injuries = { { "burn", 1 } } },
         { id = "hypertension", label = L.text("medsys.config.hypertensive_crisis"), desc = L.text("medsys.config.very_high_blood_pressure_give_captopril"),
@@ -503,6 +528,7 @@ MEDIC_ACTIONS = {
     splint = { label = L.text("medsys.config.splint") },
     cpr = { label = L.text("medsys.config.cpr") },
     iv = { label = L.text("medsys.config.iv_access") },
+    infusion = { label = L.text("medsys.config.infusion") }, -- the IV button once the cannula is in (no row of its own)
     airway = { label = L.text("medsys.config.intubate") },
     oxygen = { label = L.text("medsys.config.o2_mask"), activeLabel = L.text("medsys.config.remove_o2") }, -- activeLabel: while the mask is on
     medication = { label = L.text("medsys.config.medication") },
@@ -527,12 +553,43 @@ MEDIC_EQUIPMENT = {
     bandage = { item = "bag", stock = "bandages", consume = "done" },
     splint = { item = "bag", stock = "splints", consume = "done" },
     iv = { item = "bag", stock = "ivKits" },
+    -- only hanging a bag needs the bag and a fluid; the rate / taking it off need nothing
+    infusion = { item = "bag", stock = "fluids", onlyOption = "hang" },
     airway = { item = "bag", stock = "airwayKits" },
     oxygen = { item = "bag", stock = "oxygen" },
     medication = { item = "bag" },
     glucometer = { item = "bag", stock = "glucometers" },
     monitor = { item = "monitor" },
 }
+-- Infusion fluids (bags hung on the IV access). item = the v_inventory item in the medical bag
+-- (med_equipments stock "fluids"), volume = ml per bag, efficiency = share of it that stays in the vessels.
+MEDIC_FLUIDS = {
+    isolyte = { name = "Izolite", volume = 500, item = "fluid_isolyte", efficiency = 1.0 },
+}
+MEDIC_DEFAULT_FLUID = "isolyte"
+-- Drip rates, in the order of the panel buttons. mlps = ml/s at a perfect cannula.
+-- perm = medsys permission key (setMedicPermissions) needed for that rate
+MEDIC_INFUSION_RATES = {
+    { id = "slow", mlps = 0.5, label = L.text("medsys.config.rate_slow"), note = L.text("medsys.config.rate_slow_note") },
+    { id = "normal", mlps = 3, label = L.text("medsys.config.rate_normal"), note = L.text("medsys.config.rate_normal_note") },
+    { id = "pressure", mlps = 8, label = L.text("medsys.config.rate_pressure"), note = L.text("medsys.config.rate_pressure_note"),
+        perm = "infusion.pressure" },
+}
+MEDIC_DEFAULT_RATE = "normal"
+
+function medicInfusionRate(id)
+    for _, rate in ipairs(MEDIC_INFUSION_RATES) do
+        if rate.id == id then return rate end
+    end
+    return nil
+end
+
+-- ml/s of a rate at a cannulation quality (0-100)
+function medicInfusionFlow(rateId, quality)
+    local rate = medicInfusionRate(rateId)
+    return rate and rate.mlps * (0.5 + (quality or 0) / 200) or 0
+end
+
 MEDIC_DEAD_ACTION_GROUPS = { -- the only row when the patient is dead
     { label = L.text("medsys.config.transport"), actions = { "transport" } },
 }
@@ -609,6 +666,15 @@ MEDIC_DRUGS = {
             options = { { dose = 0.02, scale = 0.3, note = L.text("medsys.config.dose_push_dose") }, { dose = 0.1, scale = 0.5, note = L.text("medsys.config.dose_peri_arrest") },
                 { dose = 1, note = L.text("medsys.config.dose_cardiac_arrest") } } },
         duration = 300,
+    },
+    adenosine = {
+        name = "Adenosine (Adenocor)",
+        class = L.text("medsys.config.antiarrhythmic"),
+        desc = L.text("medsys.config.stops_heart_for_moment_ends_svt"),
+        adenosine = true, -- pause + SVT conversion when given (rhythm.lua applyAdenosine)
+        dosing = { unit = "mg", standard = 6, default = 1,
+            options = { { dose = 6, note = L.text("medsys.config.dose_first") }, { dose = 12, note = L.text("medsys.config.dose_second") } } },
+        duration = 10,
     },
     captopril = {
         name = "Captopril (Tensiomin)",
@@ -694,7 +760,7 @@ MEDIC_DRUGS = {
         duration = 1200,
     },
 }
-MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril", "nitroglycerin",
+MEDIC_DRUG_ORDER = { "ketamine", "rocuronium", "fentanyl", "epinephrine", "adenosine", "captopril", "nitroglycerin",
     "glucose", "glucose_gel", "insulin", "naloxone", "salbutamol", "midazolam" }
 
 -- Dose option of a medicine (index into dosing.options; nil / invalid = the default one) -> option, index

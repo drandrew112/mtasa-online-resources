@@ -1,5 +1,5 @@
 # Medicines
-@keywords: medicine, medicines, drug, drugs, medication, Ketamine, Calypsol, Rocuronium, Esmeron, Fentanyl, Adrenalin, Adrenaline, Epinephrine, Tonogen, Captopril, Tensiomin, Nitroglycerin, Glucose, glucose gel, Insulin, Actrapid, Naloxone, Narcan, Salbutamol, Ventolin, Midazolam, Dormicum, side effects, dose, RSI, painkiller, IV
+@keywords: medicine, medicines, drug, drugs, medication, Ketamine, Calypsol, Rocuronium, Esmeron, Fentanyl, Adrenalin, Adrenaline, Epinephrine, Tonogen, Adenosine, Adenocor, SVT, Captopril, Tensiomin, Nitroglycerin, Glucose, glucose gel, Insulin, Actrapid, Naloxone, Narcan, Salbutamol, Ventolin, Midazolam, Dormicum, side effects, dose, RSI, painkiller, IV
 @related: medical_exam, medical_procedures, medical_diagnosis, medical_injuries, medical_equipment
 
 **C row – Medication** opens the medicine grid. Giving one takes 3 seconds. Unless it is marked oral / inhaled / nasal, the medicine goes through the IV line: place the **IV access** first. The doses in a full bag are shown below (xN on the card); restock in a hospital bay.
@@ -35,6 +35,13 @@ Effects add up: two doses of a blood pressure medicine lower it twice as much. E
 - **What it does:** pulse +30, pressure +30. In cardiac arrest it makes CPR more likely to restart the heart (+15%).
 - **Use:** cardiac arrest (especially PEA / asystole), every few minutes. Very low pressure after ROSC.
 - **Side effects:** doses add up. Too many on a beating heart drive the pulse to 200: the heart stops (VF).
+
+## Adenosine (Adenocor)
+
+- **Group:** antiarrhythmic. IV. Full bag: 3 doses. Dose: 6 mg, then 12 mg if it did not work.
+- **What it does:** stops the heart for about 5 seconds (flat line on the monitor), then it restarts. In SVT it likely restarts in a normal (sinus) rhythm: 6 mg about 60%, 12 mg about 85%.
+- **Use:** only **SVT** (narrow, fast, regular rhythm, ~180/min, no P waves), mostly seen after ROSC. Untreated it turns into VT after about 5 minutes.
+- **Side effects:** an awake patient feels chest pressure. In any other rhythm (sinus, VT) only the pause shows, the rhythm stays; no effect in cardiac arrest. In an unstable SVT a SYNC cardioversion works too.
 
 ## Captopril (Tensiomin)
 

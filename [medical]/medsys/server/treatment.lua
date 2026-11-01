@@ -277,6 +277,7 @@ end
 --   dose = index of its dose option)
 -- start(medic, target, state, picked) -> session id or false
 -- duration     timed procedure without a minigame: it succeeds after this many seconds
+--              (or a function(option) returning them)
 -- progress(option, state, dose) text of the progress bar of a timed procedure
 -- stop(medic)  aborts the minigame (it fires its finish event)
 -- cleanup(state) optional, runs when the procedure ends in any way
@@ -396,7 +397,62 @@ PROCEDURES.iv = {
         if not success then return L.msg("medsys.treatment.cannulation_failed") end
         state.ivAccess = true
         state.ivQuality = quality
-        return L.msg("medsys.treatment.iv_access_secured_quality_fluids_running", { quality = quality })
+        return L.msg("medsys.treatment.iv_access_secured_hang_infusion", { quality = quality })
+    end,
+}
+
+-- The infusion bag on the IV access (the IV button turns into this once the cannula is in).
+-- option: "hang" (a new MEDIC_DEFAULT_FLUID bag from the medical bag, replaces the one hanging),
+-- "rate:<id>" (MEDIC_INFUSION_RATES), "stop" (the bag comes off, what is left in it is lost)
+local function infusionOp(option)
+    if option == "hang" or option == "stop" then return option end
+    local id = type(option) == "string" and option:match("^rate:(%w+)$")
+    if id and medicInfusionRate(id) then return "rate", id end
+    return nil
+end
+
+PROCEDURES.infusion = {
+    duration = function(option) return option == "hang" and MEDIC.INFUSION_HANG_TIME or MEDIC.INFUSION_RATE_TIME end,
+    animated = true,
+    can = function(state)
+        if not state.ivAccess then return false, L.msg("medsys.treatment.needs_iv_access") end
+        return true
+    end,
+    validate = function(state, option)
+        local op, id = infusionOp(option)
+        if not op then return false, L.msg("medsys.treatment.unknown_procedure") end
+        if op ~= "hang" and not state.infusion then return false, L.msg("medsys.treatment.no_infusion_bag") end
+        if op == "rate" and state.infusion.rate == id then return false, L.msg("medsys.treatment.infusion_already_at_rate") end
+        return true
+    end,
+    progress = function(option)
+        local op, id = infusionOp(option)
+        if op == "hang" then
+            local fluid = MEDIC_FLUIDS[MEDIC_DEFAULT_FLUID]
+            return L.msg("medsys.treatment.hanging_infusion", { volume = fluid.volume, name = fluid.name })
+        elseif op == "rate" then
+            return L.msg("medsys.treatment.setting_drip_rate", { rate = medicInfusionRate(id).label })
+        end
+        return L.msg("medsys.treatment.removing_infusion_bag")
+    end,
+    stop = function() end, -- releaseTreatment kills the timer
+    apply = function(state, success, option)
+        if not success then return L.msg("medsys.treatment.infusion_was_not_changed") end
+        if not state.ivAccess then return L.msg("medsys.treatment.needs_iv_access") end
+        local op, id = infusionOp(option)
+        if op == "hang" then
+            local fluid = MEDIC_FLUIDS[MEDIC_DEFAULT_FLUID]
+            local rate = state.infusion and state.infusion.rate or MEDIC_DEFAULT_RATE
+            state.infusion = { fluid = MEDIC_DEFAULT_FLUID, left = fluid.volume, rate = rate }
+            return L.msg("medsys.treatment.infusion_running", { volume = fluid.volume, name = fluid.name,
+                rate = medicInfusionRate(rate).label })
+        elseif op == "rate" then
+            if not state.infusion then return L.msg("medsys.treatment.no_infusion_bag") end
+            state.infusion.rate = id
+            return L.msg("medsys.treatment.drip_rate_set", { rate = medicInfusionRate(id).label })
+        end
+        removeInfusion(state)
+        return L.msg("medsys.treatment.infusion_bag_removed")
     end,
 }
 
@@ -524,6 +580,7 @@ PROCEDURES.medication = {
         if drug.glucose then
             state.glucose = math.min(MEDIC.GLUCOSE_MAX, state.glucose + drug.glucose * scale)
         end
+        if drug.adenosine then applyAdenosine(state, scale) end
         if scale >= (drug.dosing and drug.dosing.treatMin or 0.5) then
             for _, condition in ipairs(drug.treats or {}) do
                 for _, injury in ipairs(state.injuries) do
@@ -873,6 +930,10 @@ function startTreatment(medic, target, action, option, dose)
         local drug = MEDIC_DRUGS[option]
         local chosen = allowed and drug and drug.dosing and medicDrugDose(drug, dose)
         if chosen and chosen.high then allowed, why = checkMedicPermission(medic, "dose.high") end
+    elseif allowed and action == "infusion" then
+        local id = type(option) == "string" and option:match("^rate:(%w+)$")
+        local rate = id and medicInfusionRate(id)
+        if rate and rate.perm then allowed, why = checkMedicPermission(medic, rate.perm) end
     end
     if not allowed then return false, why end
     if Treatments[medic] then return false, L.msg("medsys.treatment.you_are_busy") end
@@ -908,13 +969,15 @@ function startTreatment(medic, target, action, option, dose)
     triggerClientEvent(medic, "medic:busy", resourceRoot, true)
     if procedure.animated then lockMedic(medic, target, true) end
 
-    if procedure.duration then
+    local duration = procedure.duration
+    if type(duration) == "function" then duration = duration(option) end
+    if duration then
         local treatment = Treatments[medic]
         treatment.timer = setTimer(function()
             treatment.timer = nil
             finishTreatment(medic, true, option, dose)
-        end, procedure.duration * 1000, 1)
-        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option, state, dose), procedure.duration * 1000)
+        end, duration * 1000, 1)
+        triggerClientEvent(medic, "medic:progress", resourceRoot, procedure.progress(option, state, dose), duration * 1000)
         onEquipmentTreatmentStart(medic, target, action)
         return true
     end

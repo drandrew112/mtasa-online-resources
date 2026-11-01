@@ -65,6 +65,8 @@ Patients[element] = {
     extraPain     = 0,                    -- pain set from outside, fades
     injuries      = { { id, type, severity, bleeding, treated, tick }, ... },
     ivAccess      = false, ivQuality = 0,
+    infusion      = nil,                  -- { fluid, left = ml, rate } bag on the IV access (stays there empty)
+    fluidExcess   = 0, overloadLevel = 0, -- ml of fluid beyond INFUSION_MAX_VOLUME / OVERLOAD_STEPS reached
     intubated     = false,
     oxygenMask    = false,
     hypertension  = 0,                    -- mmHg on the target systolic pressure
@@ -75,6 +77,9 @@ Patients[element] = {
     rhythm        = "SINUS",              -- MEDIC_RHYTHMS key, rhythmTick = since when
     ecgRate       = 0,                    -- electrical rate of a pulseless VT / PEA
     vtTick        = nil,                  -- lasting VT with pulse since
+    svtTick       = nil, svtRate = nil,   -- lasting SVT since / its rate
+    roscTick      = nil,                  -- last ROSC (post-ROSC SVT window)
+    pauseUntil    = nil, pauseConvert = nil, -- adenosine pause end / whether the SVT converts then
     monitor       = nil,                  -- { energy, sync, chargeTick, analyzeTick, advice, message, shocks }
     arrestTick    = nil, deathTick = nil, -- clinical death start / biological death time
     knockoutState = nil, knockoutUntil = nil,
@@ -86,8 +91,17 @@ Patients[element] = {
 ## Physiology (every `MEDIC.TICK` ms)
 
 - **Blood**: every wound bleeds at `BLEED_RATE[level]` ml/s (mild 1.5 / severe 5 / critical 12),
-  and burns lose plasma. IV access restores fluids up to 90%, and the body slowly compensates
-  while nothing bleeds. Without circulation, bleeding drops to 20%.
+  and burns lose plasma. The body slowly compensates (0.3 ml/s) while nothing bleeds. Without
+  circulation, bleeding drops to 20%.
+- **Infusion**: the IV cannula alone gives no fluid. A bag hung on it (`MEDIC_FLUIDS`, now only
+  **500ml Izolite**, item `fluid_isolyte` from the medical bag) drips at its rate
+  (`MEDIC_INFUSION_RATES`: Slow / KVO 0.5, Normal 3, Pressure bag 8 ml/s, × `0.5 + quality / 200`
+  of the cannula) until it is empty; the empty bag stays on the line until it is replaced or
+  taken off. It also runs in cardiac arrest. Fluid restores the blood volume up to
+  `INFUSION_MAX_VOLUME` (90%); anything beyond goes into `fluidExcess`, which the kidneys clear
+  at `OVERLOAD_DRAIN` (0.4 ml/s). Excess past `OVERLOAD_STEPS` (1000 / 1600 / 2200 ml) gives a
+  **pulmonary oedema** of severity 1 / 2 / 3 (an existing one gets worse and needs Nitroglycerin
+  again). A running infusion also dilutes a glucose above 180.
 - **Blood pressure** moves towards a target based on the blood loss (shock classes: compensated
   to ~15%, then the pressure falls), medicines and `hypertension`. The pressure / pulse targets
   wander randomly by up to `BP_JITTER` (4 mmHg) / `HR_JITTER` (2 BPM), so the values never sit still;
@@ -111,13 +125,24 @@ Patients[element] = {
   out: biological death (`killPed`).
 
 **Heart rhythm** (`server/rhythm.lua`, `MEDIC_RHYTHMS`): SINUS, SINUS_BRADY (< 60), SINUS_TACHY
-(> 100), VT_WITH_PULSE, VF, PULSELESS_VT, PEA, ASYSTOLE. Only VF and pulseless VT are shockable.
+(> 100), SVT, VT_WITH_PULSE, VF, PULSELESS_VT, PEA, ASYSTOLE. Only VF and pulseless VT are shockable.
+(ADENOSINE_PAUSE is `transient`: only the panel snapshot shows it during the adenosine pause.)
 
 - With a pulse the rhythm is named from the rate; at `VT_HEART_RATE` (170) and above it is VT with
   pulse. A *lasting* VT with pulse (after a ROSC with `ROSC_VT_CHANCE`, an unsynchronised shock,
   or `setMedicalState(el, "rhythm", "VT_WITH_PULSE")`) holds the pulse at `VT_RATE`, drops the
   pressure by `VT_SYSTOLIC_DROP` and turns pulseless after `VT_DEGRADE_TIME` (120 s) unless a
   shock converts it.
+- **SVT** (narrow, regular, no P wave): starts after a ROSC (from CPR or a shock) with
+  `ROSC_SVT_CHANCE` (0.2, when it is not VT), within `POST_ROSC_SVT_WINDOW` (300 s) after a ROSC
+  with `POST_ROSC_SVT_CHANCE` (0.15 over the window), or with
+  `setMedicalState(el, "rhythm", "SVT")`. It holds the pulse at a rate from `SVT_RATE` (175-195),
+  drops the pressure by `SVT_SYSTOLIC_DROP` (20) and turns into a lasting VT with pulse after
+  `SVT_DEGRADE_TIME` (300 s). Adenosine or a cardioversion ends it.
+- **Adenosine**: the heart stops for `ADENOSINE_PAUSE_TIME` (5 s): the monitor shows a flat line
+  and pulse 0 (`ADENOSINE_PAUSE`, the simulation keeps the real values), an awake patient gets
+  `ADENOSINE_PAIN`. Then an SVT restarts in a sinus rhythm with `ADENOSINE_SUCCESS` (6 mg 0.6,
+  12 mg 0.85); any other rhythm with a pulse comes back unchanged. No effect in cardiac arrest.
 - An arrest starts with a rhythm picked by its cause (`MEDIC_ARREST_RHYTHMS`): hypoxia /
   blood loss → PEA or asystole, the 200+ pulse → VF / pVT, a forced arrest (consciousness
   `clinical_death`, heartRate 0) → **asystole**, unless a pulseless rhythm is given with
@@ -131,10 +156,10 @@ Patients[element] = {
   and the panel reopens with the news. Possible changes: the pulse returns (ROSC chance: accuracy,
   +IV, +airway, +adrenaline; ×`CPR_SHOCKABLE_ROSC` in VF / pVT; 0 when too much blood is lost),
   PEA / asystole → VF (`CPR_TO_SHOCKABLE`), PEA ↔ asystole, VF ↔ pVT. A ROSC is not always a
-  sinus rhythm (VT with pulse).
+  sinus rhythm (VT with pulse, SVT).
 - **Shock** (monitor window): in VF / pVT it works with `SHOCK_SUCCESS`; a working shock gives a pulse with `SHOCK_ROSC` (+ the same bonuses), otherwise PEA or
   asystole follows, so CPR goes on. A failed one leaves VF (pVT may turn VF). PEA / asystole: no
-  effect. VT with pulse: SYNC cardioversion converts it with `CARDIOVERSION_SYNC`, an
+  effect. VT with pulse / SVT: SYNC cardioversion converts it with `CARDIOVERSION_SYNC`, an
   unsynchronised shock with `CARDIOVERSION_UNSYNC` (or causes VF with `SHOCK_PULSE_VF`). A shock
   on a sinus rhythm (normal / brady / tachy) **always** stops the heart (VF), synced or not; an
   awake patient gets `SHOCK_PAIN`. The shock stops a CPR
@@ -199,7 +224,8 @@ are listed one per line (two columns) with their remaining time.
 | Bandage | mg_arrows | an untreated wound / burn, or bleeding | treats the worst injury: bleeding stops (critical → mild), burn dressed |
 | Splint | mg_splinting | an untreated fracture | the limb is realigned and the splint secured: fracture splinted |
 | CPR | mg_cpr | clinical death | +45 s on the death timer; after 10 s of good compressions the rhythm can change (pulse back, or another arrest rhythm), which stops the minigame early. A round that ends without a change: "continue CPR" / "shockable rhythm - shock" |
-| IV access | mg_intravenous | no IV yet | IV fluids run (rate scales with the quality). Difficulty rises with shock |
+| IV access | mg_intravenous | no IV yet | cannula in (its quality scales the drip rate), no fluid yet. Difficulty rises with shock |
+| Infusion (the IV button once the cannula is in) | – (hang 4 s `INFUSION_HANG_TIME`, rate / remove 1 s `INFUSION_RATE_TIME`) | IV access | opens the infusion window in the medication window's place: the bag (ml left, bar, flow, time left), the drip rate buttons (Pressure bag needs `infusion.pressure`), **Hang 500 ml Izolite (n)** (uses one bag from the medical bag, replaces the hanging one) and **Remove bag**. The status line shows `IV: 320 ml, 3.0 ml/s` / `IV: bag empty` / `IV: no infusion` |
 | Intubate | mg_airway | no tube, and RSI (also in clinical death): Ketamine working + Rocuronium working (after its 15 s onset) | airway secured, suffocation treated, O2 mask off. The patient is pre-oxygenated to 95%, then the SpO2 falls during the attempt |
 | O2 mask / Remove O2 | – (3 s, `OXYGEN_TIME`) | no tube | toggles the oxygen mask: the SpO2 targets of the airway problems / shock +10, 100% otherwise, 2× faster recovery. A critical airway problem still needs the tube |
 | Medication | – (3 s, `DRUG_TIME`) | always opens; IV medicines need IV access, oral ones (`route = "oral"`, e.g. Captopril) do not | opens the medicine grid (name, group, "oral" mark; IV ones are greyed out without IV access, the hovered one is described under it); a card opens its **dose row** (see Dosing below), the picked dose is given after 3 s |
@@ -216,6 +242,7 @@ Medicines (`MEDIC_DRUGS` in `shared/config.lua`):
 | Rocuronium bromide (Esmeron) | RSI step 2 (muscle relaxant) | 40 min: after 15 s (`PARALYSIS_ONSET`) the patient cannot move (unconscious) or breathe: SpO2 −0.25%/s until intubated (half with the O2 mask). An **awake** patient (no Ketamine) panics: pulse +50, systolic +35, until it passes out or gets Ketamine |
 | Fentanyl | pain of an awake patient | 30 min: pain −70%, systolic −10 |
 | Adrenalin (Tonogen) | heart stimulant / cardiac arrest | 5 min: pulse +30, systolic +30, +15% ROSC chance for CPR (does not add up). Several doses can push the pulse to the arrest limit |
+| Adenosine (Adenocor) | SVT | IV. 5 s pause of the heart, then an SVT converts to sinus (6 mg 60%, 12 mg 85%); any other rhythm comes back unchanged, no effect in arrest |
 | Captopril (Tensiomin) | high blood pressure | oral (no IV needed). Target systolic −40 mmHg for 10 min. It also lowers a normal / low pressure: in shock it can drop it to the arrest limit |
 | Nitroglycerin spray | pulmonary oedema, high BP | oral. Systolic −30 for 10 min, treats pulmonary oedema |
 | Glucose 40% | low blood glucose | IV. +100 mg/dL at once; the glucose drifts back to the patient's resting value: measure again |
@@ -243,7 +270,7 @@ Blood glucose (`state.glucose`, mg/dL) drifts to its resting value (`setMedicalS
 sets both, `"glucoseNow"` only the current one). Low (< 70): sweating, faster pulse, confused
 < 58, dazed < 45, unconscious < 30, cardiac arrest after `HYPO_ARREST_TIME` below 20. High: fluid
 loss above 300 (dehydration), Kussmaul breathing and acetone breath above 350, confused ≥ 420,
-dazed ≥ 550, unconscious ≥ 700. An IV line slowly lowers a glucose above 180.
+dazed ≥ 550, unconscious ≥ 700. A running infusion slowly lowers a glucose above 180.
 
 The **Breathing** line of the bleeding tile (`MEDIC_BREATHING`): normal, rapid, wheezing,
 laboured, crackles, deep and rapid (Kussmaul), silent chest, slow, snoring, gasping, not breathing,
@@ -277,6 +304,7 @@ onset follow it (`MEDIC.DOSE_DURATION_MIN-MAX`). On the panel a medicine card op
 | Rocuronium | 0.6 / 1 / 1.2 mg/kg IV | 0.6 = slower onset, shorter; 1.2 = RSI (fast onset) |
 | Fentanyl | 0.5 / 1 / 1.5 / 3 mcg/kg IV | doses in the body adding up to 3.5 mcg/kg -> opioid overdose condition |
 | Adrenaline | 0.02 (push-dose) / 0.1 (peri-arrest) / 1 mg (cardiac arrest) IV | the ROSC bonus scales too |
+| Adenosine | 6 mg (first) / 12 mg (second) IV | the SVT conversion chance by dose (`ADENOSINE_SUCCESS`) |
 | Captopril | 12.5 / 25 mg oral | |
 | Nitroglycerin | 0.4 mg (1 puff) / 0.8 mg (2 puffs) | |
 | Glucose 40% | 20 / 40 / 60 ml (8 / 16 / 24 g) IV | the glucose jump scales |
@@ -297,7 +325,8 @@ local data = exports.medical_system:getMedicalState(element)
 -- { consciousness, consciousnessLabel, heartRate, systolic, diastolic, bloodPressure = "120/80",
 --   spo2, bleeding (0-3), bleedingLabel, bloodVolume, bloodPercent, pain,
 --   injuries = { { id, type, label, severity, severityLabel, bleeding, treated, treatedLabel } },
---   ivAccess, intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, dose, timeLeft } }, weight, clinicalDeath, deathTimeLeft, dead, isPatient,
+--   ivAccess, infusion = nil | { fluid, name, left, total, rate, mlps }, fluidExcess,
+--   intubated, oxygenMask, sedated, paralyzed, drugs = { { id, name, dose, timeLeft } }, weight, clinicalDeath, deathTimeLeft, dead, isPatient,
 --   rhythm, rhythmLabel, ecgRate (ECG complexes / min), monitor = nil | { energy, sync, shocks, chargeLeft, charged,
 --   analyzeLeft, advice, adviceAge, message, messageAge } }
 
@@ -311,9 +340,13 @@ exports.medical_system:setMedicalState(element, key, value) -- true / false
 --                 value with its current injuries / pain / medicines; set systolic first
 --   restingSpo2   lasting SpO2 cap (chronic hypoxia), the oxygen mask lifts it, intubation removes it
 --   bleeding      0 stops every bleeding, 1-3 adds a bleeding that is not tied to an injury
---   ivAccess, intubated, oxygenMask, monitor   booleans (monitor = the monitor / defibrillator is attached)
+--   ivAccess, intubated, oxygenMask, monitor   booleans (monitor = the monitor / defibrillator is attached;
+--                 ivAccess false takes the infusion off too)
+--   infusion      a full bag on the line: true / a MEDIC_FLUIDS id (gives IV access too), false = off
+--   infusionRate  drip rate of the hanging bag: "slow" | "normal" | "pressure"
 --   rhythm        MEDIC_RHYTHMS key: a pulseless one (VF, PULSELESS_VT, PEA, ASYSTOLE) = cardiac arrest in it,
---                 VT_WITH_PULSE = lasting VT (only a shock ends it), SINUS / SINUS_BRADY / SINUS_TACHY
+--                 VT_WITH_PULSE = lasting VT (only a shock ends it), SVT = lasting SVT
+--                 (adenosine / cardioversion ends it), SINUS / SINUS_BRADY / SINUS_TACHY
 --                 revive and move the resting pulse into the range when it is outside
 --   consciousness "stable" (wakes / revives), "dazed" / "unconscious" (forced for KNOCKOUT_TIME),
 --                 "clinical_death", "dead"

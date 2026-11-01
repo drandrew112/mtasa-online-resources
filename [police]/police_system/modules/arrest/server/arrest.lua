@@ -58,6 +58,8 @@ local function applyCuffs(officer, target)
         if p and p:isAIPed(target) then
             p:setAIPedBehaviour(target, "cuffed", {})
             p:setAIPedKeep(target, true)
+            -- an arrested ped goes only by our script (handover / release): ai_peds and ai_land_traffic leave it alone
+            p:setAIPedProtected(target, true)
         end
     end
     subjectName(target, function(name, row)
@@ -130,9 +132,12 @@ function AR.uncuff(officer, target, silent)
         else
             -- an AI ped still in the "cuffed" behaviour (released by the officer) walks off as a civilian
             local p = aipeds()
-            if p and p:isAIPed(target) and not isPedDead(target) and p:getAIPedBehaviour(target) == "cuffed" then
-                p:setAIPedBehaviour(target, "civilian", {})
-                p:setAIPedKeep(target, false)
+            if p and p:isAIPed(target) then
+                p:setAIPedProtected(target, false)
+                if not isPedDead(target) and p:getAIPedBehaviour(target) == "cuffed" then
+                    p:setAIPedBehaviour(target, "civilian", {})
+                    p:setAIPedKeep(target, false)
+                end
             end
         end
     end
@@ -374,6 +379,9 @@ local function clearState(el)
     if getElementType(el) == "player" then
         setPlayerCuffControls(el, false)
         setPlayerMoveControls(el, true)
+    else
+        local p = aipeds()
+        if p and p:isAIPed(el) then p:setAIPedProtected(el, false) end
     end
 end
 

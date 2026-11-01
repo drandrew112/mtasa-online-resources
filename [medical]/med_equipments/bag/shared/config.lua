@@ -8,11 +8,12 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 -- is unlimited, so every medsys drug has an item and is listed here (BAG.STOCK = the counted drugs).
 local STOCK_ALS = {
     drugs = {
-        ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, captopril = 3,
+        ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, adenosine = 3, captopril = 3,
         nitroglycerin = 3, glucose = 2, glucose_gel = 2, insulin = 1, naloxone = 2,
         salbutamol = 2, midazolam = 2,
     },
     ivKits = 6,                -- one per IV attempt
+    fluids = 6,                -- 500ml Izolite infusion bags, one per bag hung (medsys MEDIC_FLUIDS)
     bandages = 6,              -- one per dressing
     splints = 2,               -- one per fracture
     glucometers = 1,           -- not used up
@@ -30,6 +31,7 @@ local STOCK_BLS = {
         naloxone = 2, midazolam = 1,
     },
     ivKits = 4,
+    fluids = 4,
     bandages = 6,
     splints = 2,
     glucometers = 1,
@@ -105,13 +107,13 @@ BAG = {
     STOCK = STOCK_ALS,
     -- stock category -> v_inventory item id (drugs: DRUG_PREFIX .. id, oxygen: the cylinder's meta)
     STOCK_ITEMS = {
-        ivKits = "iv_kit", bandages = "bandage", splints = "splint",
+        ivKits = "iv_kit", fluids = "fluid_isolyte", bandages = "bandage", splints = "splint",
         glucometers = "glucometer", airwayKits = "airway_kit",
     },
     OXYGEN_ITEM = "medical_oxygen_cylinder",
     DRUG_PREFIX = "drug_",
     -- emptied when an abandoned bag is recovered (with the drugs; the tools stay, the cylinder is emptied)
-    CONSUMABLES = { "ivKits", "bandages", "splints" },
+    CONSUMABLES = { "ivKits", "fluids", "bandages", "splints" },
     OXYGEN_MINUTES = 15,           -- mask minutes of a full cylinder without its own meta.minutes (level stock oxygenMinutes)
     OXYGEN_LOW = 20,               -- % warning
     LOW_STOCK_FRACTION = 0.25,     -- warn once when a counted item drops to this share

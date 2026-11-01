@@ -118,7 +118,12 @@ Events (server, source = the ped, attach to `root`): `onAIPedArrived(tag, x, y, 
 `onAIPedTargetAcquired(target)`, `onAIPedTargetLost(target, reason)` (dead / gone / far / leash / peace / export),
 `onAIPedBehaviourChanged(new, old)`, `onAIPedWasted(killer, weapon)`, `onAIPedRemoved(reason)`.
 
-Element data: `ai_peds` = kind on every AI ped.
+Police work: `aiPedEnterVehicle(ped, veh, seat)`, `aiPedExitVehicle(ped)`, `setAIPedKeep(ped, bool)` (never culled),
+`setAIPedProtected(ped, bool)` / `isAIPedProtected(ped)`: a protected ped (police_system: every cuffed one) is removed
+only by a script (`destroyAIPed` / `destroyElement`): not culled, not cleared with the ped traffic, its body stays;
+element data `ai_peds.protected` = true, so ai_land_traffic does not destroy it with the vehicle it came from.
+
+Element data: `ai_peds` = kind on every AI ped, `ai_peds.protected` = true on protected ones.
 
 ### Example: gang territory
 

@@ -53,6 +53,7 @@ ITEMS = {
     },
     medical_oxygen_cylinder = { category = "o2", weight = 3.0, icon = "icons/oxygen.png", glyph = "O2" },
     iv_kit = { category = "iv", weight = 0.1, stackable = true, icon = "icons/iv_kit.png", glyph = "IV" },
+    fluid_isolyte = { category = "iv", weight = 0.5, stackable = true, icon = "icons/fluid_isolyte.png", glyph = "IZ" }, -- 500ml Izolite (medsys infusion)
     airway_kit = { category = "tool", weight = 0.6, icon = "icons/airway_kit.png", glyph = "AW" },
     glucometer = { category = "tool", weight = 0.2, icon = "icons/glucometer.png", glyph = "GL" },
     bandage = { category = "tool", weight = 0.05, stackable = true, icon = "icons/bandage.png", glyph = "BD" },
@@ -138,7 +139,7 @@ ITEMS = {
 -- Medicines: one stackable item per medsys MEDIC_DRUGS id, all with the same icon
 MEDICAL_DRUGS = {
     "ketamine", "rocuronium", "fentanyl", "epinephrine", "captopril", "nitroglycerin",
-    "glucose", "glucose_gel", "insulin", "naloxone", "salbutamol", "midazolam",
+    "glucose", "glucose_gel", "insulin", "naloxone", "salbutamol", "midazolam", "adenosine",
 }
 for _, id in ipairs(MEDICAL_DRUGS) do
     ITEMS["drug_" .. id] = { category = "drug", weight = 0.05, stackable = true, icon = "icons/drug.png",

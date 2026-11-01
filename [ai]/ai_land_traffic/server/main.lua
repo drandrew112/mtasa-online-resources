@@ -83,7 +83,7 @@ addEventHandler("onResourceStop", resourceRoot, function()
     Agents.clear(true)
     for veh, r in pairs(Agents.released) do
         local keep = isElement(veh) and Agents.hasPlayerInside(veh)
-        if isElement(r.ped) and getElementType(r.ped) == "ped" then destroyElement(r.ped) end
+        if Agents.ownsPed(r.ped, veh) then destroyElement(r.ped) end
         if isElement(veh) and not keep then destroyElement(veh) end
     end
 end)

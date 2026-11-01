@@ -367,17 +367,27 @@ local function forget(ag, reason)
     Sync.forget(ag)
 end
 
+-- is the driver ped of veh still ours to destroy with it? Not a protected one (ai_peds.protected: e.g. arrested by
+-- the police), nor one handed to ai_peds that is out of the vehicle (ai_peds decides about it: a stopped driver
+-- ordered out, later cuffed and driven away in a police car)
+function Agents.ownsPed(ped, veh)
+    if not isElement(ped) or getElementType(ped) ~= "ped" then return false end
+    if getElementData(ped, "ai_peds.protected") then return false end
+    if getElementData(ped, "ai_peds") and getPedOccupiedVehicle(ped) ~= veh then return false end
+    return true
+end
+
 -- reason: only reported for scripted vehicles ("destroyed" by default, "timeout", ...)
 function Agents.destroy(ag, reason)
     forget(ag, reason)
-    if isElement(ag.ped) then destroyElement(ag.ped) end
+    if Agents.ownsPed(ag.ped, ag.veh) then destroyElement(ag.ped) end
     if isElement(ag.veh) then destroyElement(ag.veh) end
 end
 
 -- the vehicle was destroyed by someone else
 function Agents.vehicleDestroyed(ag)
     forget(ag, "vehicle_destroyed")
-    if isElement(ag.ped) then destroyElement(ag.ped) end
+    if Agents.ownsPed(ag.ped, ag.veh) then destroyElement(ag.ped) end
 end
 
 -- the driver goes to ai_peds (gets out properly, then flees or attacks the culprit); never teleported out.
@@ -450,7 +460,7 @@ end
 function Agents.cleanupReleased(players, now)
     for veh, r in pairs(A.released) do
         if not isElement(veh) then
-            if isElement(r.ped) then destroyElement(r.ped) end
+            if Agents.ownsPed(r.ped, veh) then destroyElement(r.ped) end
             A.released[veh] = nil
         elseif now - r.at > TRAFFIC.RELEASED_MIN_LIFE then
             if not Agents.hasPlayerInside(veh) then
@@ -460,7 +470,7 @@ function Agents.cleanupReleased(players, now)
                     if (p.x - x) ^ 2 + (p.y - y) ^ 2 < TRAFFIC.RELEASED_CLEANUP_DIST ^ 2 then near = true; break end
                 end
                 if not near then
-                    if isElement(r.ped) and getElementType(r.ped) == "ped" then destroyElement(r.ped) end
+                    if Agents.ownsPed(r.ped, veh) then destroyElement(r.ped) end
                     destroyElement(veh)
                     A.released[veh] = nil
                 end

@@ -3,7 +3,10 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 -- With a pulse the rhythm is named from the heart rate (sinus / bradycardia / tachycardia, VT at
 -- MEDIC.VT_HEART_RATE and above), except a lasting VT with pulse (state.vtTick) that only a shock
--- ends and that turns pulseless after MEDIC.VT_DEGRADE_TIME.
+-- ends and that turns pulseless after MEDIC.VT_DEGRADE_TIME, and a lasting SVT (state.svtTick, after
+-- a ROSC) that only adenosine ends and that turns into VT with pulse after MEDIC.SVT_DEGRADE_TIME.
+-- Adenosine stops the heart for MEDIC.ADENOSINE_PAUSE_TIME seconds (state.pauseUntil, the monitor
+-- shows ADENOSINE_PAUSE); then an SVT may restart in a sinus rhythm, anything else comes back.
 -- A cardiac arrest starts with a rhythm picked by its cause (MEDIC_ARREST_RHYTHMS). Untreated it
 -- worsens (pVT -> VF -> asystole, PEA -> asystole); CPR pauses that.
 -- CPR: after MEDIC.CPR_CHANGE_MIN seconds of good compressions the rhythm can change at any
@@ -63,7 +66,11 @@ end
 function refreshPulseRhythm(state, now)
     local hr, current = state.heartRate, state.rhythm
     local rhythm = "SINUS"
-    if state.vtTick or hr >= MEDIC.VT_HEART_RATE then
+    if state.vtTick then
+        rhythm = "VT_WITH_PULSE"
+    elseif state.svtTick then
+        rhythm = "SVT"
+    elseif hr >= MEDIC.VT_HEART_RATE then
         rhythm = "VT_WITH_PULSE"
     elseif hr < MEDIC.BRADY_RATE + (current == "SINUS_BRADY" and 0.5 or -0.5) then
         rhythm = "SINUS_BRADY"
@@ -73,23 +80,105 @@ function refreshPulseRhythm(state, now)
     setRhythm(state, rhythm, now)
 end
 
--- Every step of a patient with a pulse. True when the lasting VT turned pulseless (arrest).
-function updatePulseRhythm(state, now)
-    if state.vtTick and now - state.vtTick >= MEDIC.VT_DEGRADE_TIME * 1000 then return true end
-    refreshPulseRhythm(state, now)
-    return false
+-- Panel line after a rhythm change (without a monitor the medic only knows that something changed)
+local function rhythmChangeMessage(state)
+    if not state.monitor then return L.msg("medsys.rhythm.patient_s_condition_changed_attach_monitor") end
+    local def = MEDIC_RHYTHMS[state.rhythm]
+    if def.shockable then return L.msg("medsys.rhythm.rhythm_change_shock", { label = def.label }) end
+    return L.msg("medsys.rhythm.rhythm_change", { label = def.label })
 end
 
--- Lasting VT with pulse
+-- Lasting VT with pulse (ends a lasting SVT)
 function startVT(state)
     state.vtTick = getTickCount()
+    state.svtTick, state.svtRate = nil, nil
     setRhythm(state, "VT_WITH_PULSE")
+end
+
+-- Lasting SVT at a rate picked from MEDIC.SVT_RATE
+function startSVT(state)
+    if state.vtTick then return end
+    state.svtTick = getTickCount()
+    state.svtRate = math.random(MEDIC.SVT_RATE[1], MEDIC.SVT_RATE[2])
+    setRhythm(state, "SVT")
+end
+
+-- Arrest / ROSC / death: no SVT, no adenosine pause, no post-ROSC window
+function clearSVT(state)
+    state.svtTick, state.svtRate, state.roscTick = nil, nil, nil
+    state.pauseUntil, state.pauseConvert = nil, nil
+end
+
+-- The adenosine pause is over: the heart restarts
+local function resolveAdenosine(state)
+    local convert = state.pauseConvert
+    state.pauseUntil, state.pauseConvert = nil, nil
+    local message
+    if convert and state.svtTick then
+        state.svtTick, state.svtRate = nil, nil
+        state.heartRate = math.min(state.heartRate, math.random(95, 110))
+        refreshPulseRhythm(state)
+        message = L.msg("medsys.rhythm.adenosine_sinus_restored")
+    else
+        message = L.msg("medsys.rhythm.adenosine_rhythm_unchanged")
+    end
+    writeVitalsData(state)
+    notifyExaminers(state.element, message, not convert)
+end
+
+-- Adenosine given (treatment.lua): the heart stops for a moment, an SVT may convert.
+-- scale: dose multiplier (1 = 6 mg, 2 = 12 mg)
+function applyAdenosine(state, scale)
+    if isInClinicalDeath(state) or state.dead then return false end
+    local now = getTickCount()
+    state.pauseUntil = now + MEDIC.ADENOSINE_PAUSE_TIME * 1000
+    local success = MEDIC.ADENOSINE_SUCCESS[(scale or 1) >= 2 and 2 or 1]
+    state.pauseConvert = state.svtTick ~= nil and math.random() < success
+    if not medicIsDown(state.consciousness) then
+        state.extraPain = math.max(state.extraPain, MEDIC.ADENOSINE_PAIN)
+    end
+    return true
+end
+
+function isAdenosinePause(state)
+    return state.pauseUntil ~= nil
+end
+
+-- Every step of a patient with a pulse. True when the lasting VT turned pulseless (arrest).
+function updatePulseRhythm(state, now, dt)
+    if state.pauseUntil then
+        if now < state.pauseUntil then return false end
+        resolveAdenosine(state)
+    end
+    if state.vtTick and now - state.vtTick >= MEDIC.VT_DEGRADE_TIME * 1000 then return true end
+    if state.svtTick and now - state.svtTick >= MEDIC.SVT_DEGRADE_TIME * 1000 then
+        startVT(state)
+        notifyExaminers(state.element, rhythmChangeMessage(state), true)
+    end
+    -- the first minutes after a ROSC: the heart can still slip into SVT
+    if state.roscTick then
+        if now - state.roscTick >= MEDIC.POST_ROSC_SVT_WINDOW * 1000 then
+            state.roscTick = nil
+        elseif not state.svtTick and not state.vtTick
+            and math.random() < (dt or 0) * MEDIC.POST_ROSC_SVT_CHANCE / MEDIC.POST_ROSC_SVT_WINDOW then
+            state.roscTick = nil
+            startSVT(state)
+            notifyExaminers(state.element, rhythmChangeMessage(state), true)
+        end
+    end
+    refreshPulseRhythm(state, now)
+    return false
 end
 
 -- Return of circulation from CPR or a shock: not always a sinus rhythm
 local function returnOfCirculation(state)
     restoreCirculation(state)
-    if math.random() < MEDIC.ROSC_VT_CHANCE then startVT(state) end
+    state.roscTick = getTickCount()
+    if math.random() < MEDIC.ROSC_VT_CHANCE then
+        startVT(state)
+    elseif math.random() < MEDIC.ROSC_SVT_CHANCE then
+        startSVT(state)
+    end
 end
 
 -- Too little blood for the heart to restart (give fluids)
@@ -111,14 +200,6 @@ function extendDeathTimer(state, seconds)
     if not isInClinicalDeath(state) then return end
     local now = getTickCount()
     state.deathTick = math.min(now + MEDIC.DEATH_TIME * 1000, state.deathTick + seconds * 1000)
-end
-
--- Panel line after a rhythm change (without a monitor the medic only knows that something changed)
-local function rhythmChangeMessage(state)
-    if not state.monitor then return L.msg("medsys.rhythm.patient_s_condition_changed_attach_monitor") end
-    local def = MEDIC_RHYTHMS[state.rhythm]
-    if def.shockable then return L.msg("medsys.rhythm.rhythm_change_shock", { label = def.label }) end
-    return L.msg("medsys.rhythm.rhythm_change", { label = def.label })
 end
 
 -- Outcome of a change during CPR: "ROSC" or the new rhythm (may equal the current one = no change)
@@ -281,10 +362,10 @@ local function deliverShock(state, medic)
             state.extraPain = math.max(state.extraPain, MEDIC.SHOCK_PAIN)
         end
         local unsyncVF = not monitor.sync and math.random() < MEDIC.SHOCK_PULSE_VF
-        if before == "VT_WITH_PULSE" then
+        if before == "VT_WITH_PULSE" or before == "SVT" then
             local base = monitor.sync and MEDIC.CARDIOVERSION_SYNC or MEDIC.CARDIOVERSION_UNSYNC
             if math.random() < base then
-                state.vtTick = nil
+                state.vtTick, state.svtTick, state.svtRate = nil, nil, nil
                 state.heartRate = math.min(state.heartRate, 110)
                 refreshPulseRhythm(state)
                 message = L.msg("medsys.rhythm.cardioversion_successful")
@@ -292,7 +373,9 @@ local function deliverShock(state, medic)
                 cardiacArrest(state, "shock")
                 message, bad = L.msg("medsys.rhythm.unsynchronised_shock_heart_went_into_vf"), true
             else
-                message, bad = L.msg("medsys.rhythm.shock_delivered_still_ventricular_tachycardia"), true
+                message = before == "SVT" and L.msg("medsys.rhythm.shock_delivered_still_svt")
+                    or L.msg("medsys.rhythm.shock_delivered_still_ventricular_tachycardia")
+                bad = true
             end
         else
             -- a shock on a normally beating (sinus) heart stops it, synchronised or not

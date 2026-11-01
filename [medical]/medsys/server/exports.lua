@@ -111,6 +111,26 @@ local SETTERS = {
     ivAccess = function(state, value)
         state.ivAccess = toBoolean(value)
         state.ivQuality = state.ivAccess and 100 or 0
+        if not state.ivAccess then removeInfusion(state) end
+        return true
+    end,
+
+    -- a full bag hung on the IV access: true / a MEDIC_FLUIDS id (gives IV access too), false = off.
+    -- infusionRate: a MEDIC_INFUSION_RATES id for the bag hanging
+    infusion = function(state, value)
+        if value == false or value == "false" or value == 0 then
+            removeInfusion(state)
+            return true
+        end
+        local id = MEDIC_FLUIDS[value] and value or MEDIC_DEFAULT_FLUID
+        if not state.ivAccess then state.ivAccess, state.ivQuality = true, 100 end
+        state.infusion = { fluid = id, left = MEDIC_FLUIDS[id].volume,
+            rate = state.infusion and state.infusion.rate or MEDIC_DEFAULT_RATE }
+        return true
+    end,
+    infusionRate = function(state, value)
+        if not state.infusion or not medicInfusionRate(value) then return false end
+        state.infusion.rate = value
         return true
     end,
 
@@ -176,7 +196,8 @@ local SETTERS = {
 }
 
 -- Heart rhythm (MEDIC_RHYTHMS key). A pulseless one is a cardiac arrest in that rhythm,
--- VT_WITH_PULSE a lasting VT (only a shock ends it), a sinus one moves the resting pulse into its
+-- VT_WITH_PULSE a lasting VT (only a shock ends it), SVT a lasting SVT (adenosine / cardioversion
+-- ends it), a sinus one moves the resting pulse into its
 -- range (bradycardia < 60, tachycardia > 100) when it is outside. A patient already in cardiac
 -- arrest only takes a pulseless rhythm: a rhythm with a pulse sets ASYSTOLE instead.
 SETTERS.rhythm = function(state, value)
@@ -197,6 +218,12 @@ SETTERS.rhythm = function(state, value)
         return true
     end
     state.vtTick = nil
+    if value == "SVT" then
+        startSVT(state)
+        state.heartRate = state.svtRate
+        return true
+    end
+    state.svtTick, state.svtRate = nil, nil
     local hr = state.heartRate
     if value == "SINUS_BRADY" and hr >= MEDIC.BRADY_RATE then
         SETTERS.restingHeartRate(state, 48)
@@ -211,7 +238,8 @@ end
 
 -- Changes one parameter. Keys: consciousness, heartRate, systolic, diastolic, spo2, bleeding,
 -- bloodVolume, pain, hypertension, restingSystolic, restingDiastolic, restingHeartRate, restingSpo2,
--- glucose, glucoseNow, ivAccess, intubated, oxygenMask, monitor, rhythm. The simulation keeps running from the new value.
+-- glucose, glucoseNow, ivAccess, infusion, infusionRate, intubated, oxygenMask, monitor, rhythm. The simulation keeps
+-- running from the new value.
 function setMedicalState(element, key, value)
     local setter = SETTERS[key]
     if not setter or not isValidPatient(element) then return false end

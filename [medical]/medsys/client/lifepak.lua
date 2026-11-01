@@ -297,11 +297,11 @@ function stopLifepakSounds()
     soundState = {}
 end
 
--- VF, pulseless VT, PEA and VT with pulse sound the alarm (asystole does not)
+-- VF, pulseless VT, PEA, VT with pulse and SVT sound the alarm (asystole and the adenosine pause do not)
 local function isAlarmRhythm(data)
     local def = MEDIC_RHYTHMS[data.rhythm]
-    if data.dead or not def or data.rhythm == "ASYSTOLE" then return false end
-    return not def.pulse or data.rhythm == "VT_WITH_PULSE"
+    if data.dead or not def or def.transient or data.rhythm == "ASYSTOLE" then return false end
+    return not def.pulse or data.rhythm == "VT_WITH_PULSE" or data.rhythm == "SVT"
 end
 
 local function updateSounds(data, defib)

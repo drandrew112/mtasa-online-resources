@@ -17,7 +17,10 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --     extraPain     = 0,                    -- pain set from outside, fades over time
 --     injuries      = { { id, type, severity, bleeding, treated, tick }, ... },
 --     nextInjuryId  = 1,
---     ivAccess      = false, ivQuality = 0, -- cannula in place, quality 0-100 (fluid rate)
+--     ivAccess      = false, ivQuality = 0, -- cannula in place, quality 0-100 (scales the drip rate)
+--     infusion      = nil,                  -- bag hung on the IV access: { fluid (MEDIC_FLUIDS), left = ml,
+--                                           -- rate (MEDIC_INFUSION_RATES id) }, it stays there empty
+--     fluidExcess   = 0, overloadLevel = 0, -- ml of fluid beyond INFUSION_MAX_VOLUME / OVERLOAD_STEPS reached
 --     intubated     = false,                -- airway secured
 --     oxygenMask    = false,                -- oxygen mask on
 --     noOxygen      = nil,                  -- intubated but the bag's oxygen ran out / is too far (med_equipments):
@@ -41,6 +44,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --     rhythmTick    = 0,                    -- getTickCount() since the current rhythm (arrest rhythms worsen)
 --     ecgRate       = 0,                    -- electrical rate of a pulseless VT / PEA (the others: heartRate / 0)
 --     vtTick        = nil,                  -- lasting VT with pulse since (turns pulseless after VT_DEGRADE_TIME)
+--     svtTick       = nil, svtRate = nil,   -- lasting SVT since and its rate (turns into VT after SVT_DEGRADE_TIME)
+--     roscTick      = nil,                  -- last ROSC (an SVT can start within POST_ROSC_SVT_WINDOW)
+--     pauseUntil    = nil, pauseConvert = nil, -- adenosine pause end, and whether the SVT converts then
 --     monitor       = nil,                  -- monitor / defibrillator attached: { energy, sync, chargeTick, ... }
 --     tachyTick     = nil,                  -- getTickCount() since the pulse is at ARREST_HEART_RATE+
 --     arrestTick    = nil,                  -- getTickCount() of the cardiac arrest
@@ -75,6 +81,9 @@ local function newState(element)
         nextInjuryId = 1,
         ivAccess = false,
         ivQuality = 0,
+        infusion = nil,
+        fluidExcess = 0,
+        overloadLevel = 0,
         intubated = false,
         oxygenMask = false,
         hypertension = 0,
@@ -146,6 +155,7 @@ function isPatientHealthy(state)
         and state.hypertension == 0 and #state.drugs == 0
         and state.restShift.systolic == 0 and state.restShift.diastolic == 0
         and state.restShift.heartRate == 0 and not state.spo2Limit and not state.vtTick
+        and not state.svtTick and not state.pauseUntil
         and state.consciousness == "stable"
         and state.glucoseRest == MEDIC.GLUCOSE and math.abs(state.glucose - MEDIC.GLUCOSE) < 10
         and state.bloodVolume >= MEDIC.BLOOD_VOLUME
@@ -449,13 +459,18 @@ function buildSnapshot(state)
             timeLeft = math.max(0, math.ceil((dose.untilTick - now) / 1000)) }
     end
 
-    local rhythm = MEDIC_RHYTHMS[state.rhythm]
+    local rhythmKey = state.rhythm
+    local heartRate = round(state.heartRate)
     local ecgRate = 0
-    if rhythm.pulse then
-        ecgRate = round(state.heartRate)
+    if state.pauseUntil then
+        -- adenosine: a few seconds of a flat line and no pulse (the simulation keeps the real values)
+        rhythmKey, heartRate = "ADENOSINE_PAUSE", 0
+    elseif MEDIC_RHYTHMS[rhythmKey].pulse then
+        ecgRate = heartRate
     elseif not state.dead then
         ecgRate = state.ecgRate
     end
+    local rhythm = MEDIC_RHYTHMS[rhythmKey]
 
     local deathTimeLeft
     if isInClinicalDeath(state) then
@@ -468,7 +483,7 @@ function buildSnapshot(state)
             and not (Persistent[state.element] and isPatientHealthy(state)),
         consciousness = state.consciousness,
         consciousnessLabel = MEDIC_CONSCIOUSNESS[state.consciousness],
-        heartRate = round(state.heartRate),
+        heartRate = heartRate,
         systolic = systolic,
         diastolic = diastolic,
         bloodPressure = ("%d/%d"):format(systolic, diastolic),
@@ -487,6 +502,8 @@ function buildSnapshot(state)
         neuroChecked = state.neuroChecked,
         neuro = state.neuroChecked and getNeuroFindings(state) or nil,
         ivAccess = state.ivAccess,
+        infusion = getInfusionSnapshot(state), -- nil = no bag
+        fluidExcess = round(state.fluidExcess),
         intubated = state.intubated,
         noOxygen = state.intubated and state.noOxygen or nil,
         oxygenMask = state.oxygenMask,
@@ -494,7 +511,7 @@ function buildSnapshot(state)
         paralyzed = isParalyzed(state, now),
         drugs = drugs,
         weight = state.weight,          -- kg
-        rhythm = state.rhythm,
+        rhythm = rhythmKey,
         rhythmLabel = rhythm.label,
         ecgRate = ecgRate,              -- rate of the ECG complexes (the pulse is heartRate)
         monitor = getMonitorSnapshot(state, now), -- nil while no monitor is attached
@@ -502,6 +519,20 @@ function buildSnapshot(state)
         deathTimeLeft = deathTimeLeft,
         dead = state.dead,
     }
+end
+
+-- The bag on the IV access: { fluid, name, left, total, rate, mlps } (mlps = the flow now) | nil
+function getInfusionSnapshot(state)
+    local infusion = state.infusion
+    if not infusion then return nil end
+    local fluid = MEDIC_FLUIDS[infusion.fluid]
+    return { fluid = infusion.fluid, name = fluid.name, left = math.ceil(infusion.left), total = fluid.volume,
+        rate = infusion.rate, mlps = getInfusionFlow(state) }
+end
+
+-- Takes the bag off (the IV access is gone or the medic removes it)
+function removeInfusion(state)
+    state.infusion = nil
 end
 
 -- Snapshot of an element that is not in the registry (healthy, or already dead)
@@ -541,6 +572,7 @@ function cardiacArrest(state, cause, rhythm)
     state.arrestTick = now
     state.deathTick = now + MEDIC.DEATH_TIME * 1000
     state.tachyTick, state.vtTick = nil, nil
+    clearSVT(state)
     setRhythm(state, rhythm or pickArrestRhythm(cause), now)
     state.heartRate, state.systolic, state.diastolic = 0, 0, 0
     state.knockoutState, state.knockoutUntil = nil, nil
@@ -560,6 +592,7 @@ function restoreCirculation(state)
     state.diastolic = MEDIC.ROSC_SYSTOLIC * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC)
     state.spo2 = math.max(state.spo2, MEDIC.ROSC_SPO2)
     state.vtTick = nil
+    clearSVT(state)
     refreshPulseRhythm(state)
 
     setConsciousness(state, "unconscious")
@@ -574,6 +607,7 @@ function biologicalDeath(state, killElement)
     state.arrestTick, state.deathTick = nil, nil
     state.heartRate, state.systolic, state.diastolic, state.spo2 = 0, 0, 0, 0
     state.vtTick = nil
+    clearSVT(state)
     setRhythm(state, "ASYSTOLE")
     if state.monitor then state.monitor.chargeTick, state.monitor.analyzeTick = nil, nil end
 

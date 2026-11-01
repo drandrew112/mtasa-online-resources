@@ -5,7 +5,7 @@
 -- medsys
 -- ---------------------------------------------------------------------------------------------
 
--- What reaches the patient: { bag = id|false, monitor = id|false, stock = { drugs, ivKits, bandages,
+-- What reaches the patient: { bag = id|false, monitor = id|false, stock = { drugs, ivKits, fluids, bandages,
 -- splints, glucometers, airwayKits, oxygen } | nil }. stock is the sum of every serving bag; a drug
 -- missing from stock.drugs is not counted (unlimited).
 function getEquipmentNear(target, medic)
@@ -19,7 +19,7 @@ function getEquipmentNear(target, medic)
     }
 end
 
--- A serving bag with stock of category ("drugs" + key, "ivKits", "bandages", "splints",
+-- A serving bag with stock of category ("drugs" + key, "ivKits", "fluids", "bandages", "splints",
 -- "glucometers", "airwayKits", "oxygen"): id | false
 function findStockItem(target, medic, category, key)
     local bag = findStockBag(target, medic, category, key)
@@ -93,7 +93,7 @@ function getPlayerItems(player)
     }
 end
 
--- The bag's stock { drugs = { id = n }, ivKits, bandages, splints, glucometers, airwayKits, oxygen } | false
+-- The bag's stock { drugs = { id = n }, ivKits, fluids, bandages, splints, glucometers, airwayKits, oxygen } | false
 function getItemStock(itemId)
     local item = Items[itemId]
     if not item or item.kind ~= "bag" then return false end

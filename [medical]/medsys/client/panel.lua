@@ -11,6 +11,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- the ECG area is the "attach the monitor" button; with it the ECG runs with the rhythm name under
 -- it, the monitor beeps on every QRS and the Lifepak 15 window (lifepak.lua) appears left of the
 -- panel with the SpO2 and the blood pressure.
+-- "IV access" puts in the cannula; once it is in, the same button is "Infusion" and opens the infusion
+-- window in the place of the medication window: the bag on the line (left / total, flow), the drip
+-- rate buttons (MEDIC_INFUSION_RATES), hanging a new bag from the medical bag and taking it off.
 -- The D row: "Neuro exam" (timed, its findings stay listed under the injuries) and "Glucometer"
 -- (holds out the meter, glucometer.lua draws it right of the panel, under the medication window
 -- while that is open). The breathing and the skin are
@@ -61,7 +64,8 @@ local BLEEDING_COLOR = { [0] = C.good, C.warn, C.orange, C.bad }
 local LEVEL_COLOR = { [0] = C.good, C.warn, C.orange, C.bad } -- breathing / neuro finding levels
 
 local keptGlucometer -- { target, tick }: the meter was out when the panel closed
-local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu, drugPick, glucometer }
+local keptInfusion -- { target, tick }: the infusion window was open when the panel closed (its procedures close it)
+local panel -- { target, name, data, message, messageError, messageTick, pending, drugMenu, drugPick, infusionMenu, glucometer }
 local fonts
 
 local function ensureFonts()
@@ -110,7 +114,7 @@ local function rhythmColor(rhythm)
     local def = MEDIC_RHYTHMS[rhythm]
     if not def or def.shockable then return C.bad end
     if not def.pulse then return C.orange end
-    if rhythm == "VT_WITH_PULSE" then return C.bad end
+    if rhythm == "VT_WITH_PULSE" or rhythm == "SVT" then return C.bad end
     if rhythm ~= "SINUS" then return C.warn end
     return C.good
 end
@@ -297,9 +301,14 @@ local DRUG_H = DRUG_TOP + DRUG_ROWS * (DRUG_CARD_H + DRUG_GAP) - DRUG_GAP + s(10
 local DX = math.min(screenW - DRUG_W - s(4), X + W + SIDE_GAP)
 local DY = Y
 
--- The glucometer anchor (x, y, w as the panel it sits next to): under the medication window while it is open
+-- Infusion window (same place as the medication window, only one of them is open)
+local INF_BAG_H = s(70)
+local INF_H = DRUG_TOP + INF_BAG_H + s(10) + DOSE_H + s(10) + DOSE_H + s(10) + DRUG_DESC_H + PAD
+
+-- The glucometer anchor (x, y, w as the panel it sits next to): under the medication / infusion window while it is open
 local function glucometerAnchor()
     if panel and panel.drugMenu then return X, DY + DRUG_H + SIDE_GAP, W end
+    if panel and panel.infusionMenu then return X, DY + INF_H + SIDE_GAP, W end
     return X, Y, W
 end
 
@@ -436,6 +445,143 @@ local function drawDrugMenu(cx, cy)
         true, true)
 end
 
+-- Rate buttons and the hang / remove buttons of the infusion window:
+-- { kind = "rate" | "hang" | "stop", rate, x, y, w, h }
+local function getInfusionButtons()
+    local list = {}
+    local rateY = DY + DRUG_TOP + INF_BAG_H + s(10)
+    local left = DX + PAD + DOSE_LABEL_W
+    local bw = (DRUG_W - PAD * 2 - DOSE_LABEL_W - DRUG_GAP * (#MEDIC_INFUSION_RATES - 1)) / #MEDIC_INFUSION_RATES
+    for i, rate in ipairs(MEDIC_INFUSION_RATES) do
+        list[#list + 1] = { kind = "rate", rate = rate, x = left + (i - 1) * (bw + DRUG_GAP), y = rateY, w = bw, h = DOSE_H }
+    end
+    local actY = rateY + DOSE_H + s(10)
+    local full = DRUG_W - PAD * 2
+    local hangW = (full - DRUG_GAP) * 0.62
+    list[#list + 1] = { kind = "hang", x = DX + PAD, y = actY, w = hangW, h = DOSE_H }
+    list[#list + 1] = { kind = "stop", x = DX + PAD + hangW + DRUG_GAP, y = actY, w = full - hangW - DRUG_GAP, h = DOSE_H }
+    return list
+end
+
+-- Infusion bags left in the reachable medical bags, nil = not counted
+local function fluidStock()
+    local equipment = panel and panel.data and panel.data.equipment
+    return equipment and equipment.stock and equipment.stock.fluids
+end
+
+-- Can this infusion button be used now -> true | reason text
+local function infusionButtonState(b)
+    local infusion = panel.data.infusion
+    local denied = medicDeniedReason("action.infusion")
+    if denied then return denied end
+    if b.kind == "rate" then
+        if not infusion then return L("medsys.panel.hang_bag_first") end
+        if b.rate.perm and medicDeniedReason(b.rate.perm) then return medicDeniedReason(b.rate.perm) end
+        if infusion.rate == b.rate.id then return L("medsys.panel.rate_already_set") end
+    elseif b.kind == "stop" then
+        if not infusion then return L("medsys.panel.no_bag_hanging") end
+    else
+        local equipment = panel.data.equipment
+        if equipment and not equipment.bag then return L("medsys.panel.needs_medical_bag_in_reach") end
+        local left = fluidStock()
+        if left ~= nil and left <= 0 then return L("medsys.panel.no_infusion_bags_left") end
+    end
+    return true
+end
+
+local function formatFlow(mlps)
+    return ("%.1f"):format(mlps or 0)
+end
+
+-- Draws the infusion window: the bag on the line, the rate row and the hang / remove buttons
+local function drawInfusionMenu(cx, cy)
+    local infusion = panel.data.infusion
+    local x, y = DX + PAD, DY + s(16)
+    dxDrawRectangle(DX, DY, DRUG_W, INF_H, C.bg)
+    dxDrawRectangle(DX, DY, DRUG_W, s(4), C.accent)
+    dxDrawText(L("medsys.panel.infusion_on_iv_access"), x, y, DX + DRUG_W - PAD, y + s(20), C.muted, 1, fonts.small,
+        "left", "top", true)
+
+    -- the bag: name, ml left, a bar and the flow / time left
+    local by, bw, bh = DY + DRUG_TOP, DRUG_W - PAD * 2, INF_BAG_H
+    dxDrawRectangle(x, by, bw, bh, C.tile)
+    if infusion then
+        local elapsed = (getTickCount() - panel.dataTick) / 1000
+        local left = math.max(0, infusion.left - (infusion.mlps or 0) * elapsed)
+        local empty = left <= 0
+        dxDrawRectangle(x, by, s(4), bh, empty and C.warn or C.spo2)
+        dxDrawText(("%d ml %s"):format(infusion.total, infusion.name), x + s(14), by + s(6), x + bw * 0.6, by + s(30),
+            C.text, 1, fonts.bold, "left", "top", true)
+        dxDrawText(("%d / %d ml"):format(math.ceil(left), infusion.total), x, by + s(6), x + bw - s(12), by + s(30),
+            empty and C.warn or C.text, 1, fonts.bold, "right", "top")
+        local barX, barY, barW, barH = x + s(14), by + s(32), bw - s(26), s(10)
+        dxDrawRectangle(barX, barY, barW, barH, C.line)
+        dxDrawRectangle(barX, barY, barW * math.min(1, left / infusion.total), barH, empty and C.warn or C.spo2)
+        local status
+        if empty then
+            status = L("medsys.panel.bag_empty_hang_new")
+        else
+            local rate = medicInfusionRate(infusion.rate)
+            local seconds = (infusion.mlps or 0) > 0 and math.ceil(left / infusion.mlps) or 0
+            status = L("medsys.panel.infusion_flow", { rate = rate and rate.label or infusion.rate,
+                flow = formatFlow(infusion.mlps), time = formatTime(seconds) })
+        end
+        dxDrawText(status, x + s(14), by + s(46), x + bw - s(12), by + bh - s(4), empty and C.warn or C.muted, 1,
+            fonts.small, "left", "top", true)
+    else
+        dxDrawRectangle(x, by, s(4), bh, C.line)
+        dxDrawText(L("medsys.panel.no_bag_on_line"), x + s(14), by, x + bw - s(12), by + bh, C.muted, 1, fonts.bold,
+            "left", "center", true)
+    end
+
+    -- rate row label
+    local buttons = getInfusionButtons()
+    local rateY = buttons[1].y
+    dxDrawRectangle(x, rateY, DOSE_LABEL_W - DRUG_GAP, DOSE_H, C.tile)
+    dxDrawRectangle(x, rateY, s(4), DOSE_H, C.accent)
+    dxDrawText(L("medsys.panel.drip_rate"), x + s(12), rateY, x + DOSE_LABEL_W, rateY + DOSE_H, C.text, 1, fonts.bold,
+        "left", "center")
+
+    local hoverReason
+    local fluid = MEDIC_FLUIDS[MEDIC_DEFAULT_FLUID]
+    for _, b in ipairs(buttons) do
+        local usable = infusionButtonState(b)
+        local enabled = usable == true and not panel.pending
+        local hovered = isInside(b.x, b.y, b.w, b.h, cx, cy)
+        if hovered and usable ~= true then hoverReason = usable end
+        local active = b.kind == "rate" and infusion and infusion.rate == b.rate.id
+        dxDrawRectangle(b.x, b.y, b.w, b.h, active and C.button or not enabled and C.buttonOff
+            or hovered and C.buttonHover or C.button)
+        if b.kind == "rate" then
+            local high = b.rate.perm ~= nil
+            dxDrawRectangle(b.x, b.y + b.h - s(3), b.w, s(3), active and C.spo2 or high and C.orange or C.line)
+            local labelColor = (enabled or active) and (high and C.orange or C.text) or C.muted
+            dxDrawText(b.rate.label, b.x, b.y + s(3), b.x + b.w, b.y + s(22), labelColor, 1, fonts.bold, "center", "top", true)
+            dxDrawText(b.rate.note, b.x + s(4), b.y + s(21), b.x + b.w - s(4), b.y + b.h - s(3),
+                (hovered and enabled) and C.text or C.spo2, 1, fonts.small, "center", "top", true)
+        else
+            local label
+            if b.kind == "hang" then
+                local left = fluidStock()
+                label = L(infusion and "medsys.panel.replace_bag" or "medsys.panel.hang_bag",
+                    { volume = fluid.volume, name = fluid.name })
+                if left ~= nil then label = ("%s (%d)"):format(label, left) end
+            else
+                label = L("medsys.panel.remove_bag")
+            end
+            local font = L.width(label, 1, fonts.bold) > b.w - s(8) and fonts.small or fonts.bold
+            dxDrawText(label, b.x, b.y, b.x + b.w, b.y + b.h, enabled and C.text or C.muted, 1, font, "center", "center")
+        end
+    end
+
+    -- hint / reason line
+    local descY = DY + INF_H - PAD - DRUG_DESC_H
+    dxDrawRectangle(x, descY, DRUG_W - PAD * 2, DRUG_DESC_H, C.tile)
+    local text = hoverReason or L("medsys.panel.infusion_hint")
+    dxDrawText(text, x + s(10), descY + s(6), DX + DRUG_W - PAD - s(10), descY + DRUG_DESC_H - s(4),
+        hoverReason and C.warn or C.muted, 1, fonts.small, "left", "top", true, true)
+end
+
 -- A free spot for the transport vehicle next to the body: the boot faces the body, the
 -- vehicle can stand there (nothing in the way along its length) and, if possible, drive off.
 local SPOT_DISTANCE = 5.5
@@ -484,18 +630,26 @@ local function drawGroupLabel(group, y)
     end
 end
 
+-- The action a row button stands for: the IV button is "infusion" once the cannula is in
+local function buttonAction(button)
+    if button.action == "iv" and panel and panel.data and panel.data.ivAccess then return "infusion" end
+    return button.action
+end
+
 local function drawButtons(cx, cy)
     local hoverReason
     for _, row in ipairs((getButtonRows())) do
         drawGroupLabel(row.group, row.y)
         for _, button in ipairs(row.buttons) do
-            local info = MEDIC_ACTIONS[button.action]
-            local available = panel.data.actions and panel.data.actions[button.action]
-            if available == true then available = medicDeniedReason("action." .. button.action) or true end
+            local action = buttonAction(button)
+            local info = MEDIC_ACTIONS[action]
+            local available = panel.data.actions and panel.data.actions[action]
+            if available == true then available = medicDeniedReason("action." .. action) or true end
             local enabled = available == true and not panel.pending
             local hovered = isInside(button.x, button.y, button.w, button.h, cx, cy)
 
             local selected = (button.action == "medication" and panel.drugMenu)
+                or (action == "infusion" and panel.infusionMenu)
                 or (button.action == "glucometer" and panel.glucometer)
             local bg = enabled and ((hovered or selected) and C.buttonHover or C.button) or C.buttonOff
             dxDrawRectangle(button.x, button.y, button.w, button.h, bg)
@@ -506,7 +660,7 @@ local function drawButtons(cx, cy)
                 or (info.activeLabel and active and info.activeLabel)
                 or info.label
             local stock = panel.data.equipment and panel.data.equipment.stock
-            if stock and button.action == "iv" and not panel.data.ivAccess then
+            if stock and action == "iv" then
                 label = ("%s (%d)"):format(label, stock.ivKits or 0)
             end
             local font = L.width(label, 1, fonts.bold) > button.w - s(8) and fonts.small or fonts.bold
@@ -552,6 +706,7 @@ local function render()
     if panel.drugMenu and (data.dead or not (data.actions and data.actions.medication == true)) then
         panel.drugMenu, panel.drugPick = false, nil
     end
+    if panel.infusionMenu and (data.dead or not data.ivAccess) then panel.infusionMenu = false end
     local gx, gy, gw = glucometerAnchor()
     if panel.glucometer then drawGlucometer(gx, gy, gw, cx, cy, false) end
 
@@ -634,11 +789,18 @@ local function render()
         dxDrawText(transportText or L("medsys.panel.transport_not_requested"), x, y, x + W, y + s(22),
             transportText and C.warn or C.muted, 1, fonts.body, "left", "center")
     else
-        local iv = data.ivAccess and L("medsys.panel.iv_access_in_place") or L("medsys.panel.iv_access_none")
+        local iv, ivColor = L("medsys.panel.iv_access_none"), C.muted
+        if data.infusion and data.infusion.left > 0 then
+            iv, ivColor = L("medsys.panel.iv_infusion_running", { left = data.infusion.left, flow = formatFlow(data.infusion.mlps) }), C.good
+        elseif data.infusion then
+            iv, ivColor = L("medsys.panel.iv_bag_empty"), C.warn
+        elseif data.ivAccess then
+            iv, ivColor = L("medsys.panel.iv_no_infusion"), C.warn
+        end
         local airway = data.intubated and (data.noOxygen and L("medsys.panel.airway_tube_no_oxygen") or L("medsys.panel.airway_secured"))
             or (data.oxygenMask and L("medsys.panel.airway_o2_mask")) or L("medsys.panel.airway_not_secured")
         local airwayColor = data.noOxygen and C.bad or ((data.intubated or data.oxygenMask) and C.good or C.muted)
-        dxDrawText(iv, x, y, x + W, y + s(22), data.ivAccess and C.good or C.muted, 1, fonts.body, "left", "center")
+        dxDrawText(iv, x, y, x + s(186), y + s(22), ivColor, 1, fonts.body, "left", "center", true)
         dxDrawText(airway, x + s(190), y, x + W, y + s(22), airwayColor, 1, fonts.body, "left", "center")
         dxDrawText(L("medsys.panel.pain_10", { pain = math.floor(data.pain / 10 + 0.5) }), x, y, X + W - PAD, y + s(22),
             data.pain >= 70 and C.orange or C.muted, 1, fonts.body, "right", "center")
@@ -680,6 +842,10 @@ local function render()
         layout.drugPanel = { DX, DY, DRUG_W, DRUG_H }
         layout.drugCards = getDrugCards()
         layout.doseButtons = panel.drugPick and getDoseButtons() or nil
+    elseif panel.infusionMenu then
+        drawInfusionMenu(cx, cy)
+        layout.infusionPanel = { DX, DY, DRUG_W, INF_H }
+        layout.infusionButtons = getInfusionButtons()
     end
     local _, buttonsTop = getButtonRows()
     layout.buttons = { x, buttonsTop, W - PAD * 2, Y + H - PAD - buttonsTop }
@@ -727,9 +893,20 @@ local function onClick(button, state)
     local mb = panel.monitorButton
     if mb and canAttachMonitor() and isInside(mb[1], mb[2], mb[3], mb[4], cx, cy) then
         panel.pending = true
-        panel.drugMenu = false
+        panel.drugMenu, panel.infusionMenu = false, false
         triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "monitor")
         return
+    end
+    if panel.infusionMenu then
+        for _, b in ipairs(getInfusionButtons()) do
+            if isInside(b.x, b.y, b.w, b.h, cx, cy) then
+                if infusionButtonState(b) ~= true then return end
+                panel.pending = true
+                triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, "infusion",
+                    b.kind == "rate" and ("rate:" .. b.rate.id) or b.kind)
+                return
+            end
+        end
     end
     if panel.drugMenu then
         if panel.drugPick then
@@ -760,11 +937,16 @@ local function onClick(button, state)
         end
     end
     for _, btn in ipairs(getButtons()) do
+        local action = buttonAction(btn)
         if isInside(btn.x, btn.y, btn.w, btn.h, cx, cy) and panel.data.actions
-            and panel.data.actions[btn.action] == true and not medicDeniedReason("action." .. btn.action) then
-            if btn.action == "medication" then
+            and panel.data.actions[action] == true and not medicDeniedReason("action." .. action) then
+            if action == "infusion" then
+                panel.infusionMenu = not panel.infusionMenu
+                panel.drugMenu, panel.drugPick = false, nil
+            elseif btn.action == "medication" then
                 panel.drugMenu = not panel.drugMenu
                 panel.drugPick = nil
+                panel.infusionMenu = false
             elseif btn.action == "glucometer" then
                 panel.glucometer = not panel.glucometer
                 resetGlucometer(panel.target)
@@ -773,7 +955,7 @@ local function onClick(button, state)
                 triggerServerEvent("medic:requestTransport", resourceRoot, panel.target, findTransportSpot(panel.target))
             else
                 panel.pending = true
-                panel.drugMenu = false
+                panel.drugMenu, panel.infusionMenu = false, false
                 triggerServerEvent("medic:requestTreatment", resourceRoot, panel.target, btn.action)
             end
             return
@@ -787,8 +969,8 @@ local function onKey(key, press)
         cancelEvent()
         if panel.drugPick then
             panel.drugPick = nil -- back to the medicine grid first
-        elseif panel.drugMenu then
-            panel.drugMenu = false -- closes the medication window first
+        elseif panel.drugMenu or panel.infusionMenu then
+            panel.drugMenu, panel.infusionMenu = false, false -- closes the side window first
         else
             closePanel(true)
         end
@@ -799,6 +981,7 @@ end
 function closePanel(notifyServer)
     if not panel then return end
     keptGlucometer = panel.glucometer and { target = panel.target, tick = getTickCount() } or nil
+    keptInfusion = panel.infusionMenu and { target = panel.target, tick = getTickCount() } or nil
     panel = nil
     ecgSetBeep(false)
     stopLifepakSounds()
@@ -820,6 +1003,7 @@ end
 -- equipment (the BAG / MONITOR / O2 chips, while med_equipments checks the equipment),
 -- drugPanel (the medication window) and drugCards = { { id, x, y, w, h } } (while it is open), doseButtons =
 -- { { index, option, x, y, w, h } } (while a medicine's dose row is open),
+-- infusionPanel / infusionButtons = { { kind, rate, x, y, w, h } } (while the infusion window is open),
 -- injuries, neuro (after the neuro exam), glucometer (while held out), buttons, monitorButton
 -- (until the monitor is attached), lifepak / lifepakScreen /
 -- lifepakKeypad (the monitor window and its parts, while attached), plus buttonList = { { action, x, y, w, h } }. false while closed / not drawn yet.
@@ -833,6 +1017,11 @@ addEventHandler("medic:panelOpen", resourceRoot, function(target, name, data, me
     if not wasOpen or panel.target ~= target then ecgReset() end
     -- the meter stays out on the same patient, also over a procedure (that closes the panel)
     local glucometer = wasOpen and panel.target == target and panel.glucometer or false
+    local infusionMenu = wasOpen and panel.target == target and panel.infusionMenu or false
+    if not infusionMenu and keptInfusion and keptInfusion.target == target and getTickCount() - keptInfusion.tick < 30000 then
+        infusionMenu = true
+    end
+    keptInfusion = nil
     if not glucometer and keptGlucometer and keptGlucometer.target == target
         and getTickCount() - keptGlucometer.tick < 60000 then
         glucometer = true
@@ -840,6 +1029,7 @@ addEventHandler("medic:panelOpen", resourceRoot, function(target, name, data, me
     keptGlucometer = nil
     panel = {
         glucometer = glucometer,
+        infusionMenu = infusionMenu,
         target = target,
         name = name,
         data = data,

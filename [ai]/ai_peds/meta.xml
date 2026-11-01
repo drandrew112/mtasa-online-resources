@@ -63,8 +63,10 @@
     <export function="isAIPedTrafficEnabled"  type="server" />
     <export function="getAIPedStats"      type="server" />
     <export function="isPointSeenByPlayers" type="server" />
-    <!-- police work: behaviours police / detained / cuffed / patient, vehicle tasks, keep -->
+    <!-- police work: behaviours police / detained / cuffed / patient, vehicle tasks, keep, protected -->
     <export function="aiPedEnterVehicle"  type="server" />
     <export function="aiPedExitVehicle"   type="server" />
     <export function="setAIPedKeep"       type="server" />
+    <export function="setAIPedProtected"  type="server" />
+    <export function="isAIPedProtected"   type="server" />
 </meta>

@@ -181,11 +181,12 @@ warning then handles them, §8).
 ```lua
 BAG.STOCK = {
     drugs = {                      -- MEDIC_DRUGS ids → doses in a full bag
-        ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, captopril = 3,
+        ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, adenosine = 3, captopril = 3,
         nitroglycerin = 3, glucose = 2, glucose_gel = 2, insulin = 1, naloxone = 2,
         salbutamol = 2, midazolam = 2,
     },
     ivKits   = 4,                  -- one per IV *attempt* (a failed cannulation wastes it)
+    fluids   = 4,                  -- 500ml Izolite infusion bags (ALS 6), one per bag hung on the IV line
     oxygen   = 100,                -- percent of one cylinder
     -- later, if wanted: bandages, splints, glucose strips (all optional: nil = unlimited)
 }
@@ -203,6 +204,7 @@ BAG.OXYGEN_LOW   = 20              -- % warning threshold
 |---|---|---|
 | Medication | `drugs[id] > 0` | when `apply` succeeds (the dose was given) |
 | IV access | `ivKits > 0` | when the minigame **starts** (attempt) |
+| Infusion: hang a bag | `fluids > 0` | when the bag is hung (rate change / removing needs no stock) |
 | O2 mask on | `oxygen > 0` | drains every second while the mask is on (see below) |
 | Glucometer / bandage / splint / airway | bag in range | nothing (unlimited for now) |
 
@@ -652,7 +654,7 @@ pick them up / open the bag).
 ### 17.3 Stock
 
 A bag's stock is what is in it, so a medic can move things between bags in the window. Categories:
-`drugs[id]`, `ivKits`, `bandages`, `splints`, `glucometers`, `airwayKits`, `oxygen` (the fullest cylinder).
+`drugs[id]`, `ivKits`, `fluids`, `bandages`, `splints`, `glucometers`, `airwayKits`, `oxygen` (the fullest cylinder).
 medsys: `MEDIC_EQUIPMENT` bandage / splint use one piece on success (`consume = "done"`), the glucometer and
 the airway kit must be in the bag (not used up). Restock = the bag is cleared and filled again. An abandoned
 bag loses its drugs, IV kits, bandages and splints and its cylinder is emptied (the tools stay).

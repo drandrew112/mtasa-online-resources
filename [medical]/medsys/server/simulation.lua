@@ -2,13 +2,15 @@
 -- runs while there is at least one patient.
 --
 -- Model per step:
---   blood volume  <- bleeding (per wound level) + burn plasma loss, IV fluids, slow compensation
+--   blood volume  <- bleeding (per wound level) + burn plasma loss, the infusion bag on the IV access
+--                    (MEDIC_FLUIDS, drips at its rate until empty), slow compensation; fluid beyond
+--                    INFUSION_MAX_VOLUME is excess -> pulmonary oedema (OVERLOAD_STEPS)
 --   SpO2          <- drifts to the lowest target of the airway causes / shock / restingSpo2, recovers otherwise;
 --                    the oxygen mask lifts the targets, the muscle relaxant stops the breathing
 --   heart rate/BP <- drift to targets derived from blood loss (shock classes), pain and hypoxia;
 --                    the pulse always rises as the pressure falls (baroreflex); the resting
 --                    setters (restingSystolic, ...) add lasting shifts to these targets
---   glucose       <- drifts to its resting value; glucose / insulin doses, IV fluids dilute a high one;
+--   glucose       <- drifts to its resting value; glucose / insulin doses, a running infusion dilutes a high one;
 --                    low: sweating, faster pulse, confusion -> coma -> arrest; high: fluid loss, coma
 --   conditions    <- stroke, overdoses, lung diseases... (MEDIC_INJURIES condition fields) shift the
 --                    targets, lower the SpO2 and the consciousness; some wear off, a stroke worsens
@@ -26,7 +28,6 @@ local simTimer
 local lastTick
 
 local BLOOD_REGEN = 0.3         -- ml/s the body compensates while nothing bleeds
-local IV_MAX_VOLUME = 0.9       -- IV fluids restore the volume up to this fraction
 local ARREST_SPO2_RATE = 1.5    -- %/s the SpO2 falls without circulation
 local SHOCK_SPO2 = { 0.65, 85, 0.3 } -- below this blood fraction the SpO2 drifts to 85% at 0.3%/s
 local PAIN_FADE = 1             -- external pain points lost per second
@@ -36,6 +37,36 @@ local function approach(value, target, step)
         return math.min(target, value + step)
     end
     return math.max(target, value - step)
+end
+
+-- ml/s running into the patient now (0: no IV access / no bag / empty bag)
+function getInfusionFlow(state)
+    local infusion = state.infusion
+    if not state.ivAccess or not infusion or infusion.left <= 0 then return 0 end
+    return medicInfusionFlow(infusion.rate, state.ivQuality)
+end
+
+-- Too much fluid (beyond INFUSION_MAX_VOLUME): every OVERLOAD_STEPS step raises the pulmonary oedema
+-- (an existing one gets worse and needs treating again); the kidneys clear the excess slowly
+function updateOverload(state, dt)
+    state.fluidExcess = math.max(0, state.fluidExcess - MEDIC.OVERLOAD_DRAIN * dt)
+    local level = 0
+    for i, limit in ipairs(MEDIC.OVERLOAD_STEPS) do
+        if state.fluidExcess >= limit then level = i end
+    end
+    if level == 0 then
+        state.overloadLevel = 0
+        return
+    end
+    if level <= (state.overloadLevel or 0) then return end
+    state.overloadLevel = level
+    for _, injury in ipairs(state.injuries) do
+        if injury.type == "pulmonary_edema" then
+            if injury.severity < level then injury.severity, injury.treated = level, false end
+            return
+        end
+    end
+    applyInjury(state.element, "pulmonary_edema", level)
 end
 
 local function updateBlood(state, dt, arrested)
@@ -52,20 +83,27 @@ local function updateBlood(state, dt, arrested)
     end
     if arrested then loss = loss * MEDIC.ARREST_BLEED_FACTOR end
 
-    local gain = 0
-    local maxVolume = MEDIC.BLOOD_VOLUME
-    if state.ivAccess and state.bloodVolume < MEDIC.BLOOD_VOLUME * IV_MAX_VOLUME then
-        gain = MEDIC.IV_FLUID_RATE * (0.5 + state.ivQuality / 200)
-        maxVolume = MEDIC.BLOOD_VOLUME * IV_MAX_VOLUME
-    elseif loss == 0 and not arrested then
-        gain = BLOOD_REGEN
-    end
-
     local volume = state.bloodVolume - loss * dt
-    if gain > 0 and volume < maxVolume then
-        volume = math.min(maxVolume, volume + gain * dt)
+    if loss == 0 and not arrested then
+        volume = volume + BLOOD_REGEN * dt
+    end
+    -- the infusion: whatever fits under the limit goes into the vessels, the rest is excess fluid
+    local flow = getInfusionFlow(state) * dt
+    if flow > 0 then
+        local infusion = state.infusion
+        flow = math.min(flow, infusion.left)
+        infusion.left = infusion.left - flow
+        local fluid = flow * (MEDIC_FLUIDS[infusion.fluid].efficiency or 1)
+        local room = math.max(0, MEDIC.BLOOD_VOLUME * MEDIC.INFUSION_MAX_VOLUME - volume)
+        volume = volume + math.min(room, fluid)
+        state.fluidExcess = state.fluidExcess + math.max(0, fluid - room)
+        if infusion.left <= 0 then
+            infusion.left = 0
+            notifyExaminers(state.element, L.msg("medsys.simulation.infusion_bag_empty"), true)
+        end
     end
     state.bloodVolume = math.max(0, math.min(MEDIC.BLOOD_VOLUME, volume))
+    updateOverload(state, dt)
 end
 
 local function updateSpO2(state, dt, arrested, bloodFraction, now)
@@ -125,6 +163,7 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
         + state.hypertension + shift.systolic + getDrugEffect(state, "systolic")
         + (state.panic and MEDIC.PANIC_SYSTOLIC or 0) + getConditionSum(state, "systolic")
         - (state.vtTick and MEDIC.VT_SYSTOLIC_DROP or 0) -- VT: the ventricles barely fill
+        - (state.svtTick and MEDIC.SVT_SYSTOLIC_DROP or 0) -- SVT: too fast to fill well
     local diastolic = systolic * (MEDIC.DIASTOLIC / MEDIC.SYSTOLIC) + shift.diastolic
     if spo2 < 50 then -- severe hypoxia: collapse before the arrest
         systolic = systolic * (spo2 / 50)
@@ -148,7 +187,8 @@ function getCirculationTargets(state, bloodFraction, pain, systolicNow)
     if spo2 < 85 then heartRate = heartRate + (85 - spo2) end
     -- severe hypoxia: the heart muscle fails, bradycardia before the arrest
     if spo2 < 50 then heartRate = 20 + spo2 end
-    -- lasting VT with pulse: the ventricles set the rate
+    -- lasting SVT / VT with pulse: the re-entry circuit sets the rate (VT wins)
+    if state.svtTick then heartRate = state.svtRate end
     if state.vtTick then heartRate = MEDIC.VT_RATE end
     return systolic, diastolic, math.max(0, heartRate)
 end
@@ -196,7 +236,7 @@ end
 
 local CONSCIOUSNESS_RANK = MEDIC_CONSCIOUSNESS_RANK
 
--- Blood glucose: drifts to the resting value, medicines and IV fluids move it
+-- Blood glucose: drifts to the resting value, medicines and a running infusion move it
 local function updateGlucose(state, dt, now)
     local glucose = state.glucose
     local rest = state.glucoseRest
@@ -206,7 +246,7 @@ local function updateGlucose(state, dt, now)
         glucose = math.max(rest, glucose - MEDIC.GLUCOSE_DRIFT * dt)
     end
     glucose = glucose + getDrugEffect(state, "glucoseRate") * dt
-    if state.ivAccess and glucose > MEDIC.GLUCOSE_IV_ABOVE then
+    if getInfusionFlow(state) > 0 and glucose > MEDIC.GLUCOSE_IV_ABOVE then
         glucose = glucose - MEDIC.GLUCOSE_IV_RATE * dt
     end
     -- tiny natural fluctuation: a mean-reverting random wobble (a few tenths of mg/dL, max +-GLUCOSE_WOBBLE)
@@ -311,7 +351,7 @@ local function stepPatient(state, dt, now)
         cause = "hypoglycemia"
     elseif updateTachycardia(state, now) then
         cause = "tachycardia"
-    elseif updatePulseRhythm(state, now) then
+    elseif updatePulseRhythm(state, now, dt) then
         cause = "vt" -- the VT with pulse lasted too long
     end
     if cause then

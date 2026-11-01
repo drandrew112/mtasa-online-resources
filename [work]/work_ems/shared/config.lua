@@ -89,10 +89,12 @@ EMS = {
             ["action.monitor"] = "a",
             ["defib.analyze"] = "b", ["defib.shock"] = "b",            -- AED mode: ANALYZE charges by itself
             ["defib.charge"] = "c", ["defib.sync"] = "c",              -- manual charge, cardioversion
-            ["action.iv"] = "b",
+            ["action.iv"] = "b", ["action.infusion"] = "b",
+            ["infusion.pressure"] = "bplus",                           -- the pressure bag drip rate
             ["drug.captopril"] = "b", ["drug.nitroglycerin"] = "b", ["drug.salbutamol"] = "b",
             ["drug.glucose"] = "b", ["drug.glucose_gel"] = "b", ["drug.naloxone"] = "b",
             ["drug.insulin"] = "bplus", ["drug.midazolam"] = "bplus", ["drug.fentanyl"] = "bplus", ["drug.epinephrine"] = "bplus",
+            ["drug.adenosine"] = "bplus",
             ["drug.ketamine"] = "rsi", ["drug.rocuronium"] = "rsi", ["action.airway"] = "rsi",
             ["dose.high"] = "d",                                       -- the orange (above usual) doses
         },

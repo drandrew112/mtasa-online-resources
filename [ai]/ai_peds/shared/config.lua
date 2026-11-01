@@ -155,3 +155,6 @@ DATA_FIGHT = "ai_peds.fight"
 MEDICAL_STATUS = "medic.status"
 -- medsys events: a lethal hit puts the ped down instead of killing it (AIPEDS.MEDICAL_SAVE_KINDS)
 DATA_SAVE_LETHAL = "medev.saveLethal"
+-- setAIPedProtected (e.g. an arrested ped): true while ai_peds never removes it on its own; other resources that
+-- clean up peds (ai_land_traffic: drivers of released vehicles) leave it alone too
+DATA_PROTECTED = "ai_peds.protected"

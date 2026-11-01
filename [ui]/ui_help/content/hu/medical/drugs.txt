@@ -1,5 +1,5 @@
 # Gyógyszerek
-@keywords: gyógyszer, gyógyszerek, medication, Ketamine, Calypsol, Rocuronium, Esmeron, Fentanyl, Adrenalin, Epinephrine, Tonogen, Captopril, Tensiomin, Nitroglycerin, Glucose, glükóz, cukor gél, Insulin, inzulin, Actrapid, Naloxone, Narcan, Salbutamol, Ventolin, Midazolam, Dormicum, mellékhatás, adag, RSI, fájdalomcsillapító, IV
+@keywords: gyógyszer, gyógyszerek, medication, Ketamine, Calypsol, Rocuronium, Esmeron, Fentanyl, Adrenalin, Epinephrine, Tonogen, Adenozin, Adenosine, Adenocor, SVT, Captopril, Tensiomin, Nitroglycerin, Glucose, glükóz, cukor gél, Insulin, inzulin, Actrapid, Naloxone, Narcan, Salbutamol, Ventolin, Midazolam, Dormicum, mellékhatás, adag, RSI, fájdalomcsillapító, IV
 @related: medical_exam, medical_procedures, medical_diagnosis, medical_injuries, medical_equipment
 
 A **C sor – Gyógyszerek** gomb megnyitja a gyógyszerrácsot. Egy beadás 3 másodperc. Ha nincs szájon át / inhalálva / orrba jelölve, a gyógyszer az IV kanülön megy be: előbb köss be **IV hozzáférés**-t. Alább a tele táskában lévő adagok (a kártyán xN); feltölteni kórházi mentő beállóban lehet.
@@ -35,6 +35,13 @@ A hatások összeadódnak: két adag vérnyomáscsökkentő kétszer annyival vi
 - **Mit csinál:** pulzus +30, vérnyomás +30. Szívmegállásban növeli az esélyét, hogy a CPR újraindítja a szívet (+15%).
 - **Mikor:** szívmegállás (főleg PEA / asystole), néhány percenként. Nagyon alacsony vérnyomás ROSC után.
 - **Mellékhatás:** az adagok összeadódnak. Dobogó szívre túl sok adag 200-ig hajtja a pulzust: a szív megáll (VF).
+
+## Adenozin (Adenocor)
+
+- **Csoport:** antiaritmiás szer. IV. Tele táskában: 3 adag. Adag: 6 mg, ha nem segít, 12 mg.
+- **Mit csinál:** kb. 5 másodpercre megállítja a szívet (a monitoron lapos vonal), aztán a szív újraindul. SVT-ben jó eséllyel normál (sinus) ritmusban indul újra: 6 mg kb. 60%, 12 mg kb. 85%.
+- **Mikor:** csak **SVT** (keskeny, gyors, szabályos ritmus, ~180/perc, P-hullám nélkül), ami főleg ROSC után jelenik meg. Kezeletlenül kb. 5 perc után VT lesz belőle.
+- **Mellékhatás:** az éber beteg mellkasi nyomást érez. Más ritmusban (sinus, VT) csak a szünet látszik, a ritmus nem változik; szívmegállásban hatástalan. Instabil SVT-ben a SYNC kardioverzió is működik.
 
 ## Captopril (Tensiomin)
 

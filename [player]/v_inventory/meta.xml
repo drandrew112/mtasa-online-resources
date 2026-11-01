@@ -32,6 +32,7 @@
     <file src="icons/lifepak15.png" type="client" />
     <file src="icons/oxygen.png" type="client" />
     <file src="icons/iv_kit.png" type="client" />
+    <file src="icons/fluid_isolyte.png" type="client" />
     <file src="icons/airway_kit.png" type="client" />
     <file src="icons/glucometer.png" type="client" />
     <file src="icons/bandage.png" type="client" />
