@@ -39,6 +39,10 @@ EMS = {
 
     -- Vehicles offered at the duty vehicle markers. Plates: PLATE_PREFIX + PLATE_DIGITS random digits.
     -- level = work level needed to request the vehicle.
+    -- equipment = med_equipments level of the vehicle's kit: "bls" | "als" (default EQUIPMENT_DEFAULT).
+    -- Only these vehicles carry EMS equipment (bag, Lifepak, stretcher), other ambulances none.
+    EQUIPMENT_DATA = "med.equipment",  -- vehicle element data read by med_equipments (shared/equipment.lua)
+    EQUIPMENT_DEFAULT = "als",
     PLATE_PREFIX = "A-",
     PLATE_DIGITS = 4,
     VEHICLES = {

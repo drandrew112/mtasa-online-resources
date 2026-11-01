@@ -1,5 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Kits: every ambulance owns one kit = one medical bag + one Lifepak 15. Both are v_inventory items
+-- Kits: every work_ems ambulance (equipment level set, shared/equipment.lua) owns one kit = the kinds
+-- of its level (BAG.LEVELS: now a medical bag + a Lifepak 15). Both are v_inventory items
 -- (the bag is a container with the drugs, IV kits, the oxygen cylinder and the tools in it).
 -- v_inventory keeps the items (hands, ground, objects, the window); the bag module decides where they may
 -- go: the side door (stowed in the ambulance), the stretcher (attached / stowed "aboard"), the
@@ -19,7 +20,7 @@ addEvent("onInventoryReady")
 
 local INV_RES = "v_inventory"
 
-Kits = {}         -- vehicle -> kit { vehicle, anchor, items = { bag, monitor }, menuId }
+Kits = {}         -- vehicle -> kit { vehicle, level, anchor, items = { bag, monitor }, menuId }
 Items = {}        -- uid -> item { id, kind, kit, state, carrier, lastHolder, stretcher, aboard, ... }
 local blown = {}  -- vehicle -> true between explode and respawn
 
@@ -196,7 +197,9 @@ local function createKitItem(kit, kind)
 end
 
 local function createKit(vehicle)
-    if Kits[vehicle] or blown[vehicle] or not isInventoryRunning() then return end
+    local level = getEquipmentLevel(vehicle)
+    local def = level and BAG.LEVELS[level]
+    if not def or Kits[vehicle] or blown[vehicle] or not isInventoryRunning() then return end
     local x, y, z = getElementPosition(vehicle)
     local anchor = createObject(BAG.ANCHOR_MODEL, x, y, z)
     if not anchor then return end
@@ -208,9 +211,9 @@ local function createKit(vehicle)
     attachElements(anchor, vehicle, p[1], p[2], p[3])
     setElementData(anchor, BAG_DATA.KIND, "anchor")
 
-    local kit = { vehicle = vehicle, anchor = anchor, items = {} }
+    local kit = { vehicle = vehicle, level = level, anchor = anchor, items = {} }
     Kits[vehicle] = kit
-    for _, kind in ipairs(BAG.KINDS) do
+    for _, kind in ipairs(def.kinds) do
         if not createKitItem(kit, kind) then
             outputDebugString("[med_equipments] could not create the " .. kind .. " of an ambulance", 2)
         end
@@ -242,17 +245,25 @@ addEventHandler("onInventoryItemDestroyed", root, function(uid)
     if item and Kits[item.kit.vehicle] == item.kit then destroyKit(item.kit, false) end
 end)
 
+-- A kit model with an equipment level (work_ems vehicles only)
 local function isAmbulance(vehicle)
     return getElementType(vehicle) == "vehicle" and BAG.VEHICLE_MODELS[getElementModel(vehicle)] == true
+        and getEquipmentLevel(vehicle) ~= nil
 end
 
 function scanVehicles()
     if not isInventoryRunning() then return end
     for _, vehicle in ipairs(getElementsByType("vehicle")) do
+        local kit = Kits[vehicle]
         if isAmbulance(vehicle) then
-            if not Kits[vehicle] and not blown[vehicle] then createKit(vehicle) end
-        elseif Kits[vehicle] then
-            destroyKit(Kits[vehicle])
+            -- another level: the old kit goes, the new one is built
+            if kit and kit.level ~= getEquipmentLevel(vehicle) then
+                destroyKit(kit)
+                kit = nil
+            end
+            if not kit and not blown[vehicle] then createKit(vehicle) end
+        elseif kit then
+            destroyKit(kit)
         end
     end
 end
@@ -295,6 +306,11 @@ end)
 
 addEventHandler("onElementModelChange", root, function()
     if getElementType(source) == "vehicle" then requestScan() end
+end)
+
+-- The equipment level was set / changed / removed (setVehicleEquipment, work_core vehicle data)
+addEventHandler("onElementDataChange", root, function(key)
+    if key == EQUIPMENT.DATA_KEY and getElementType(source) == "vehicle" then requestScan() end
 end)
 
 addEventHandler("onVehicleExplode", root, function()

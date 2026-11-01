@@ -66,11 +66,11 @@ end
 -- Others
 -- ---------------------------------------------------------------------------------------------
 
--- { bag = id, monitor = id } | false
+-- { level = "bls" | "als", bag = id, monitor = id | nil (a level without a Lifepak) } | false
 function getVehicleKit(vehicle)
     local kit = Kits[vehicle]
-    if not kit or not kit.items.bag or not kit.items.monitor then return false end
-    return { bag = kit.items.bag.id, monitor = kit.items.monitor.id }
+    if not kit or not kit.items.bag then return false end
+    return { level = kit.level, bag = kit.items.bag.id, monitor = kit.items.monitor and kit.items.monitor.id or nil }
 end
 
 -- { kind, state, vehicle, carrier, x, y, z, linkedTo } | false

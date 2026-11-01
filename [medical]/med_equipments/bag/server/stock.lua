@@ -84,9 +84,16 @@ function stockAmount(bag, category, key)
     return n
 end
 
-local function fullAmount(category, key)
-    if category == "drugs" then return BAG.STOCK.drugs[key] end
-    return BAG.STOCK[category]
+-- The full stock of the bag's equipment level (BAG.LEVELS)
+function bagStock(bag)
+    local def = bag.kit and BAG.LEVELS[bag.kit.level]
+    return def and def.stock or BAG.STOCK
+end
+
+local function fullAmount(bag, category, key)
+    local stock = bagStock(bag)
+    if category == "drugs" then return stock.drugs[key] end
+    return stock[category]
 end
 
 function hasStock(bag, category, key)
@@ -109,22 +116,23 @@ function refreshBagDisplay(bag)
     inv():setItemMeta(bag.id, "display", display)
 end
 
--- Fills the bag up to BAG.STOCK (a new kit, restocking)
+-- Fills the bag up to its level's stock (a new kit, restocking)
 function fillBag(bag)
     if not isInventoryRunning() then return end
     local i = inv()
+    local stock = bagStock(bag)
     i:clearContainer(bag.id)
     local target = { type = "container", container = bag.id }
-    for id, count in pairs(BAG.STOCK.drugs) do
+    for id, count in pairs(stock.drugs) do
         if count > 0 and i:getItemDef(BAG.DRUG_PREFIX .. id) then
             i:createItem(BAG.DRUG_PREFIX .. id, nil, target, { amount = count })
         end
     end
     for category, def in pairs(BAG.STOCK_ITEMS) do
-        local count = BAG.STOCK[category] or 0
+        local count = stock[category] or 0
         if count > 0 then i:createItem(def, nil, target, { amount = count }) end
     end
-    local full = BAG.STOCK.oxygen
+    local full = stock.oxygen
     local cyl = i:createItem(BAG.OXYGEN_ITEM, {
         oxygen = full,
         bar = { label = L.msg("med_bag.hud.oxygen_label"), value = full, max = 100 },
@@ -223,7 +231,7 @@ end
 
 -- Warns the crew once when a counted item gets low / runs out (reset by a restock)
 local function checkLow(bag, category, key)
-    local amount, full = stockAmount(bag, category, key), fullAmount(category, key)
+    local amount, full = stockAmount(bag, category, key), fullAmount(bag, category, key)
     if amount == nil or not full or full <= 0 then return end
     bag.warned = bag.warned or {}
     local flag = category .. ":" .. tostring(key)

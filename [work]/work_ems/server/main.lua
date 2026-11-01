@@ -40,7 +40,10 @@ local function setup()
 
     local vehicles = {}
     for i, v in ipairs(EMS.VEHICLES) do
-        vehicles[i] = { model = v.model, name = v.name, color = v.color, data = v.data,
+        -- med_equipments puts the EMS equipment (bag, Lifepak, stretcher) only into vehicles with this
+        local data = { [EMS.EQUIPMENT_DATA] = v.equipment or EMS.EQUIPMENT_DEFAULT }
+        for k, value in pairs(v.data or {}) do data[k] = value end
+        vehicles[i] = { model = v.model, name = v.name, color = v.color, data = data,
                         tuning = v.tuning, elsExtra = v.elsExtra, sirenType = v.sirenType, paintjob = v.paintjob, level = v.level,
                         platePrefix = EMS.PLATE_PREFIX, plateDigits = EMS.PLATE_DIGITS }
     end

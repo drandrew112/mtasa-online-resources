@@ -499,11 +499,13 @@ local function destroyStretcher(obj, destroying)
     if not destroying and isElement(obj) then destroyElement(obj) end
 end
 
+-- A stretcher model with an equipment level (work_ems vehicles only, shared/equipment.lua)
 local function isAmbulance(vehicle)
     return getElementType(vehicle) == "vehicle" and STRETCHER.VEHICLE_MODELS[getElementModel(vehicle)] == true
+        and getEquipmentLevel(vehicle) ~= nil
 end
 
--- Every ambulance gets a stretcher; vehicles that are no longer ambulances lose theirs.
+-- Every work_ems ambulance gets a stretcher; vehicles that are no longer ambulances lose theirs.
 function scanStretcherVehicles()
     for _, vehicle in ipairs(getElementsByType("vehicle")) do
         if isAmbulance(vehicle) then
@@ -539,6 +541,11 @@ end)
 
 addEventHandler("onElementModelChange", root, function()
     if getElementType(source) == "vehicle" then requestScan() end
+end)
+
+-- The equipment level was set / removed (setVehicleEquipment, work_core vehicle data)
+addEventHandler("onElementDataChange", root, function(key)
+    if key == EQUIPMENT.DATA_KEY and getElementType(source) == "vehicle" then requestScan() end
 end)
 
 addEventHandler("onVehicleExplode", root, function()

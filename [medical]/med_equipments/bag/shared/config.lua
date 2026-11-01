@@ -4,8 +4,24 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 -- (x = right, y = forward, z = up). See DESIGN.md. The items themselves (models, hand / ground
 -- offsets, weights) are v_inventory items: medical_bag and lifepak15 (v_inventory/shared/items.lua).
 
+-- A full ALS bag (v_inventory items in it). A medsys drug without an item is unlimited.
+local STOCK_ALS = {
+    drugs = {
+        ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, captopril = 3,
+        nitroglycerin = 3, glucose = 2, glucose_gel = 2, insulin = 1, naloxone = 2,
+        salbutamol = 2, midazolam = 2,
+    },
+    ivKits = 6,                -- one per IV attempt
+    bandages = 6,              -- one per dressing
+    splints = 2,               -- one per fracture
+    glucometers = 1,           -- not used up
+    airwayKits = 1,            -- not used up
+    oxygen = 100,              -- percent of the cylinder
+}
+
 BAG = {
-    -- Ambulances that carry a kit (one medical bag + one Lifepak 15 each)
+    -- Models that can carry a kit. Only vehicles with an equipment level (shared/equipment.lua,
+    -- set by work_ems) get one; the level picks the kit in LEVELS below.
     VEHICLE_MODELS = {
         [416] = true,              -- Mercedes Sprinter (HU)
         [483] = true,              -- Mercedes Sprinter 2018
@@ -35,9 +51,17 @@ BAG = {
     MENU_RANGE = 1.8,              -- metres from the side point
     PUT_BACK_RANGE = 2.5,          -- a ground item this close to the side point can be put back
 
-    -- The kit: kind -> v_inventory item id
+    -- The kit: kind -> v_inventory item id. KINDS = every kind any level may carry.
     ITEM_DEFS = { bag = "medical_bag", monitor = "lifepak15" },
     KINDS = { "bag", "monitor" },
+
+    -- Kit per equipment level (EQUIPMENT.LEVELS): the kinds in it and the bag's full stock.
+    -- A level may leave a kind out (no Lifepak) or use its own item defs later (ITEM_DEFS per level).
+    -- BLS is a placeholder with the ALS kit until its own contents are decided.
+    LEVELS = {
+        als = { kinds = { "bag", "monitor" }, stock = STOCK_ALS },
+        bls = { kinds = { "bag", "monitor" }, stock = STOCK_ALS },
+    },
     ITEM_NAMES = { bag = L.text("med_bag.config.medical_bag"), monitor = L.text("med_bag.config.monitor_defibrillator") },
 
     -- On the side of the stretcher (stretcher module, object 2146, local space: y = its long axis).
@@ -56,20 +80,9 @@ BAG = {
     CONNECT_RANGE = 6.0,           -- a connected item (the bag feeding the oxygen, the linked monitor)
                                    -- keeps working up to this; starting an action needs USE_RANGE
 
-    -- A full bag (v_inventory items in it). A medsys drug without an item is unlimited.
-    STOCK = {
-        drugs = {
-            ketamine = 2, rocuronium = 2, fentanyl = 3, epinephrine = 5, captopril = 3,
-            nitroglycerin = 3, glucose = 2, glucose_gel = 2, insulin = 1, naloxone = 2,
-            salbutamol = 2, midazolam = 2,
-        },
-        ivKits = 6,                -- one per IV attempt
-        bandages = 6,              -- one per dressing
-        splints = 2,               -- one per fracture
-        glucometers = 1,           -- not used up
-        airwayKits = 1,            -- not used up
-        oxygen = 100,              -- percent of the cylinder
-    },
+    -- The widest stock (ALS): its drug list = the counted drugs. A bag's own full stock is
+    -- LEVELS[kit.level].stock (bagStock() in server/stock.lua).
+    STOCK = STOCK_ALS,
     -- stock category -> v_inventory item id (drugs: DRUG_PREFIX .. id, oxygen: the cylinder's meta)
     STOCK_ITEMS = {
         ivKits = "iv_kit", bandages = "bandage", splints = "splint",

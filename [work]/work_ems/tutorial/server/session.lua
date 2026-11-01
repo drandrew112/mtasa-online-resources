@@ -321,6 +321,7 @@ function Tutorial.start(player)
             return chat(player, L.msg("work_ems.session.tutorial_could_not_be_started"))
         end
         s.vehicle = vehicle
+        setElementData(vehicle, EMS.EQUIPMENT_DATA, EMS.EQUIPMENT_DEFAULT) -- med_equipments: kit + stretcher
         setElementDimension(vehicle, s.dimension)
         setElementInterior(player, 0)
         setElementDimension(player, s.dimension)

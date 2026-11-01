@@ -12,12 +12,16 @@
     <script src="locals.lua" type="shared" />
 
     <!-- ================= SHARED ================= -->
+    <!-- which vehicles carry equipment (work_ems vehicles only) and at which level (BLS / ALS) -->
+    <script src="shared/equipment.lua" type="shared" />
     <script src="stretcher/shared/config.lua" type="shared" />
     <script src="stretcher/shared/util.lua" type="shared" />
     <script src="bag/shared/config.lua" type="shared" />
     <script src="bag/shared/util.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->
+    <script src="server/equipment.lua" type="server" />
+
     <!-- stretcher -->
     <script src="stretcher/server/stretcher.lua" type="server" />
     <script src="stretcher/server/interaction.lua" type="server" />
@@ -44,6 +48,10 @@
     <file src="bag/fx/screen.fx" type="client" />
 
     <!-- ================= EXPORTS ================= -->
+    <!-- equipment level of a vehicle: work_ems (duty vehicles, tutorial) -->
+    <export function="setVehicleEquipment" type="server" />
+    <export function="getVehicleEquipment" type="server" />
+
     <!-- bag: medsys (server/equipment.lua there) -->
     <export function="getEquipmentNear" type="server" />
     <export function="findStockItem" type="server" />
