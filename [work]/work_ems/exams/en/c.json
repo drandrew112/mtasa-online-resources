@@ -12,8 +12,8 @@
       "answers": [
         "A severe asthma attack",
         "Pulmonary oedema",
-        "Opioid poisoning",
-        "Stroke"
+        "A panic attack with hyperventilation",
+        "A blocked airway from a foreign body"
       ],
       "correct": 1
     },
@@ -22,9 +22,9 @@
       "q": "Crackles, swollen ankles, pink frothy sputum. What is it and what is the treatment?",
       "answers": [
         "Pulmonary oedema: sit up, Nitroglycerin, oxygen",
-        "Asthma: Salbutamol",
-        "Pneumothorax: nothing",
-        "Hypoglycaemia: glucose"
+        "Pneumonia: oxygen, lying flat, fluid through the IV",
+        "Pulmonary oedema: lie flat, raise the legs, fluid IV",
+        "Severe asthma: sit up, Salbutamol nebulised, oxygen"
       ],
       "correct": 1
     },
@@ -33,9 +33,9 @@
       "q": "Deep, fast breathing with an acetone smell on the breath?",
       "answers": [
         "Ketoacidosis, very high blood glucose",
-        "Opioid poisoning",
-        "Alcohol poisoning",
-        "Asthma"
+        "Hypoglycaemia, very low blood glucose",
+        "Alcohol poisoning with a full stomach",
+        "Hyperventilation caused by panic"
       ],
       "correct": 1
     },
@@ -44,9 +44,9 @@
       "q": "Slow, shallow breathing. What does it point to?",
       "answers": [
         "Opioid or sleeping pill poisoning",
-        "Asthma",
-        "Fever",
-        "Pain"
+        "Exhaustion after a long asthma attack only",
+        "Ketoacidosis with a very high glucose",
+        "Stimulant (cocaine, amphetamine) overdose"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "Snoring breathing in an unconscious patient?",
       "answers": [
         "Partial airway obstruction: the airway must be secured",
-        "Normal sleep",
-        "Asthma",
-        "Pulmonary oedema"
+        "Deep sleep after a seizure: let them rest and watch",
+        "Wheezing from narrowed airways: Salbutamol is needed",
+        "Fluid in the lungs: sit the patient up, give Nitro"
       ],
       "correct": 1
     },
@@ -66,9 +66,9 @@
       "q": "What does gasping (agonal) breathing mean?",
       "answers": [
         "A sign of cardiac arrest: start CPR",
-        "Normal breathing",
-        "Hyperventilation",
-        "Sleep"
+        "The patient breathes, so no CPR is needed",
+        "Hyperventilation: calm the patient down",
+        "Partial airway block: tilt the head only"
       ],
       "correct": 1
     },
@@ -77,9 +77,9 @@
       "q": "COPD patient, pursed lips, sitting leaning forward. What helps the most?",
       "answers": [
         "Oxygen (Salbutamol less)",
-        "Naloxone",
-        "Insulin",
-        "Captopril"
+        "Only Salbutamol, oxygen is dangerous",
+        "Nitroglycerin spray and sitting up",
+        "Lying flat so the patient can rest"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "Which rhythm is this, and is it shockable?",
       "answers": [
         "Ventricular fibrillation, shockable",
-        "Asystole, not shockable",
-        "Sinus rhythm, not shockable",
-        "PEA, shockable"
+        "Ventricular tachycardia, not shockable",
+        "Fine VF that looks like asystole, not shockable",
+        "PEA, shockable with synchronised mode"
       ],
       "correct": 1,
       "image": "exams/img/ecg_vf.png"
@@ -100,9 +100,9 @@
       "q": "Which rhythms are shockable?",
       "answers": [
         "VF and pulseless VT",
-        "Asystole and PEA",
-        "Sinus rhythm",
-        "Sinus bradycardia"
+        "VF and asystole",
+        "Pulseless VT and PEA",
+        "Asystole and PEA"
       ],
       "correct": 1
     },
@@ -111,9 +111,9 @@
       "q": "What do you do in asystole?",
       "answers": [
         "CPR and Adrenaline as soon as possible, no shock",
-        "Shock at once",
-        "Only oxygen",
-        "Captopril"
+        "CPR and a shock, because there is no rhythm at all",
+        "CPR, and Adrenaline only after the third cycle",
+        "CPR and Amiodarone, then shock if it changes"
       ],
       "correct": 1
     },
@@ -122,9 +122,9 @@
       "q": "What is PEA?",
       "answers": [
         "Electrical activity without a pulse: CPR, Adrenaline, look for the cause",
-        "A shockable rhythm",
-        "A normal rhythm",
-        "Only needs monitoring"
+        "Fast chaotic activity without a pulse: shock it, then CPR and Adrenaline",
+        "A slow rhythm with a weak pulse: watch it and give oxygen only",
+        "A rhythm with a pulse: synchronised cardioversion, then monitoring"
       ],
       "correct": 1
     },
@@ -133,9 +133,9 @@
       "q": "In a shockable rhythm, when do you give the first Adrenaline?",
       "answers": [
         "After the 3rd shock",
+        "After the 1st shock",
         "Before the 1st shock",
-        "Never",
-        "Only after ROSC"
+        "After the 5th shock"
       ],
       "correct": 1
     },
@@ -144,9 +144,9 @@
       "q": "What becomes of untreated ventricular fibrillation within a few minutes?",
       "answers": [
         "It turns into asystole, the chance of survival keeps falling",
-        "It returns to sinus rhythm by itself",
-        "It improves to PEA",
-        "Nothing changes"
+        "It turns into VT with a pulse, so the patient may wake up",
+        "It usually returns to sinus rhythm if CPR is done well",
+        "It turns into PEA, which is easier to treat than VF"
       ],
       "correct": 1
     },
@@ -155,9 +155,9 @@
       "q": "Why do we not shock a normal sinus rhythm?",
       "answers": [
         "The shock can stop the heart",
-        "Because it hurts",
-        "Because the battery runs down",
-        "We can, no problem"
+        "The shock would burn the skin badly",
+        "The rhythm is too slow for a shock",
+        "The pads cannot sense a sinus rhythm"
       ],
       "correct": 1
     },
@@ -166,9 +166,9 @@
       "q": "VT with a pulse, unstable patient. What do you do?",
       "answers": [
         "Synchronised cardioversion (SYNC mode)",
-        "An unsynchronised shock",
-        "Adrenaline 1 mg",
-        "Nothing"
+        "Unsynchronised shock at full energy",
+        "Adrenaline 1 mg IV, then CPR",
+        "Start CPR, the pulse will not hold"
       ],
       "correct": 1,
       "image": "exams/img/ecg_vt.png"
@@ -178,9 +178,9 @@
       "q": "Which belong to the “4H” reversible causes of cardiac arrest?",
       "answers": [
         "Hypoxia, hypovolaemia, hypo- / hyperkalaemia, hypothermia",
-        "Heat, headache, hunger, hiccups",
-        "Hypertension, hyperglycaemia, hypnosis, hysteria",
-        "Haemoglobin, haematocrit, hormones, heat"
+        "Hypoxia, hypertension, hypo- / hyperglycaemia, hyperthermia",
+        "Hypovolaemia, hypotension, hypocalcaemia, haemorrhage",
+        "Hypoxia, hypoglycaemia, hypothermia, heart tamponade"
       ],
       "correct": 1
     },
@@ -189,9 +189,9 @@
       "q": "Besides good quality CPR, what improves the chance of ROSC?",
       "answers": [
         "Adrenaline and a secured airway",
-        "Glucose gel",
-        "Captopril",
-        "Splinting"
+        "Captopril and a secured airway",
+        "Fast fluid and more breaths",
+        "Glucose IV given to everyone"
       ],
       "correct": 1
     },
@@ -200,9 +200,9 @@
       "q": "How often do the people doing compressions swap?",
       "answers": [
         "About every 2 minutes, at the rhythm check",
-        "Every 30 minutes",
-        "Never",
-        "After every breath"
+        "About every 5 minutes, after each Adrenaline",
+        "After every 30 compressions, at the breaths",
+        "Only when the one doing it gets tired"
       ],
       "correct": 1
     },
@@ -210,10 +210,10 @@
       "id": "c_19",
       "q": "What do you do after ROSC?",
       "answers": [
-        "Monitor, oxygen, watch the blood pressure and the rhythm, transport: it can stop again",
-        "Release the patient",
-        "Take off the monitor",
-        "Give one more shock"
+        "Monitor, watch the rhythm and blood pressure, transport: it can stop again",
+        "Take off the pads, give oxygen, and transport without the monitor",
+        "Give one more shock to keep the rhythm stable, then transport",
+        "Give Adrenaline every 3–5 minutes so the heart does not stop again"
       ],
       "correct": 1
     },
@@ -222,9 +222,9 @@
       "q": "This rhythm is shown and the patient has no pulse. Is it shockable?",
       "answers": [
         "No: asystole, CPR and Adrenaline",
-        "Yes, shock at once",
-        "Yes, with a synchronised shock",
-        "No, it is a normal rhythm"
+        "Yes: fine VF, shock at once",
+        "Yes: shock it with SYNC mode",
+        "No: check the leads, then wait"
       ],
       "correct": 1,
       "image": "exams/img/ecg_asystole.png"
@@ -234,9 +234,9 @@
       "q": "This rhythm is shown, the patient does not respond and has no palpable pulse. What do you do?",
       "answers": [
         "Pulseless VT: shockable, defibrillation and CPR",
-        "Not shockable, only CPR",
-        "Synchronised cardioversion",
-        "Push-dose Adrenaline"
+        "VT: synchronised cardioversion, then watch the pulse",
+        "PEA: not shockable, CPR and Adrenaline only",
+        "Fast sinus rhythm: oxygen and fluid, no CPR"
       ],
       "correct": 1,
       "image": "exams/img/ecg_vt.png"
@@ -246,9 +246,9 @@
       "q": "This rhythm is on the monitor, but there is no palpable pulse on the large arteries. What is it?",
       "answers": [
         "PEA: not shockable, CPR and Adrenaline",
-        "Normal, nothing to do",
-        "Ventricular fibrillation, shock it",
-        "Asystole"
+        "Sinus rhythm: the pulse is just too weak",
+        "PEA: shockable, shock and then CPR",
+        "VT with a pulse: synchronised shock"
       ],
       "correct": 1,
       "image": "exams/img/ecg_pea.png"
@@ -258,9 +258,9 @@
       "q": "The patient talks, has a palpable pulse, and the monitor shows this. What do you do with the defibrillator?",
       "answers": [
         "Nothing: sinus rhythm, not shockable",
-        "Shock at once",
-        "Do a synchronised cardioversion",
-        "Start CPR"
+        "SYNC cardioversion with low energy",
+        "Shock once to be safe, then monitor",
+        "Attach the pads and charge it to be ready"
       ],
       "correct": 1,
       "image": "exams/img/ecg_sinus.png"
@@ -270,9 +270,9 @@
       "q": "A patient collapsed suddenly and this rhythm is shown. What matters most?",
       "answers": [
         "Defibrillation as soon as possible, CPR in between",
-        "Only Adrenaline, no shock",
-        "Wait, it may settle by itself",
-        "Synchronised cardioversion with low energy"
+        "Adrenaline as soon as possible, shock after 3 cycles",
+        "Synchronised cardioversion with low energy at once",
+        "Airway and intubation first, then the defibrillation"
       ],
       "correct": 1,
       "image": "exams/img/ecg_vf.png"
@@ -284,7 +284,7 @@
         "PEA",
         "Ventricular fibrillation",
         "Pulseless ventricular tachycardia",
-        "All of them are shockable"
+        "Fine ventricular fibrillation"
       ],
       "correct": 1
     },
@@ -293,9 +293,9 @@
       "q": "What do you do after a shock?",
       "answers": [
         "Continue CPR at once for 2 minutes, only then check the rhythm",
-        "Wait for the pulse to come back",
-        "Shock again at once",
-        "Remove the pads"
+        "Check the pulse and the rhythm at once, CPR only if there is none",
+        "Wait 10 seconds for the monitor to analyse the new rhythm",
+        "Give Adrenaline at once, then continue CPR for 2 minutes"
       ],
       "correct": 1
     },
@@ -304,9 +304,9 @@
       "q": "Cardiac arrest caused by hypoglycaemia. What do you give besides CPR?",
       "answers": [
         "Glucose 40% IV",
-        "Insulin",
-        "Naloxone",
-        "Captopril"
+        "Glucose gel by mouth",
+        "Fluid IV, quickly",
+        "Insulin IV"
       ],
       "correct": 1
     }

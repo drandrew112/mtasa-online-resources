@@ -11,9 +11,9 @@
       "q": "What does the FAST acronym mean in stroke recognition?",
       "answers": [
         "Face, Arm, Speech, Time",
-        "Fever, Allergy, Sweating, Temperature",
-        "Forehead, Abdomen, Sight, Throat",
-        "Find, Assess, Stabilise, Transport"
+        "Face, Arm, Sight, Temperature",
+        "Facial droop, Ataxia, Sensation, Tone",
+        "Focus, Awareness, Speech, Tremor"
       ],
       "correct": 1
     },
@@ -22,9 +22,9 @@
       "q": "Which finding of the neuro exam points to a stroke?",
       "answers": [
         "Drooping on one side of the face and slurred speech",
-        "Pinpoint pupils",
-        "Bitten tongue, wet trousers",
-        "Strong smell of alcohol"
+        "Pinpoint pupils on both sides and very slow breathing",
+        "Bitten tongue, wet trousers and confusion that slowly clears",
+        "Sweating, shaking and confusion that develop within minutes"
       ],
       "correct": 1,
       "image": "exams/img/fast_face.png"
@@ -33,10 +33,10 @@
       "id": "a_03",
       "q": "What must you always measure when you suspect a stroke, because it can cause similar signs?",
       "answers": [
-        "Blood glucose (low glucose can mimic a stroke)",
+        "Blood glucose",
         "Body temperature",
-        "Pupil size",
-        "Nothing, FAST is enough"
+        "Oxygen saturation",
+        "Blood pressure on both arms"
       ],
       "correct": 1
     },
@@ -45,9 +45,9 @@
       "q": "Why is a stroke time-critical?",
       "answers": [
         "Untreated it gets worse every few minutes and only a hospital can treat it",
-        "Because it is contagious",
-        "Because the patient bleeds out quickly",
-        "It is not urgent"
+        "The swelling of the brain stops breathing within minutes in almost every case",
+        "The blood pressure falls quickly, so the patient goes into shock on scene",
+        "It is not, but the patient must be seen by a doctor on the same day"
       ],
       "correct": 1
     },
@@ -56,9 +56,9 @@
       "q": "Which systolic blood pressure is accepted on scene when a stroke is suspected?",
       "answers": [
         "130–220 mmHg, we do not force it down",
-        "60–90 mmHg",
-        "90–120 mmHg",
-        "Above 240 mmHg"
+        "100–140 mmHg, higher values are lowered",
+        "90–120 mmHg, to protect against bleeding",
+        "Anything above 160 mmHg must be lowered"
       ],
       "correct": 1
     },
@@ -67,9 +67,9 @@
       "q": "Severe bleeding from a limb. What is the first step?",
       "answers": [
         "Direct pressure on the wound, then a pressure bandage",
-        "Raise the leg and wait",
-        "Put on a splint",
-        "Give the patient water"
+        "Raise the limb above the heart, then a loose dressing",
+        "Splint the limb so that the bleeding vessel stays still",
+        "Cool the wound with cold water to narrow the vessels"
       ],
       "correct": 1
     },
@@ -78,9 +78,9 @@
       "q": "A gunshot wound is bleeding heavily. What is the basis of the care?",
       "answers": [
         "Stopping the bleeding with a pressure bandage",
-        "Splinting",
-        "Intubation",
-        "Blood glucose measurement"
+        "Searching for and removing the bullet on scene",
+        "Splinting the limb before anything else is done",
+        "Cleaning the wound well, then a loose dressing"
       ],
       "correct": 1
     },
@@ -89,9 +89,9 @@
       "q": "The bandage bleeds through. What do you do?",
       "answers": [
         "Add another layer and press harder, do not remove the first one",
-        "Take it off and put on a new one",
-        "Rinse it with water",
-        "Nothing, it stops by itself"
+        "Remove the soaked bandage and put a fresh, tighter one on the wound",
+        "Loosen the bandage a little, because it is too tight and bleeds more",
+        "Remove it, clean the wound to find the source, then bandage again"
       ],
       "correct": 1
     },
@@ -100,9 +100,9 @@
       "q": "Which is the sign of an open fracture?",
       "answers": [
         "The bone breaks through the skin and the wound bleeds",
-        "Only swelling",
-        "Pain only on movement",
-        "A visible bruise"
+        "Heavy swelling and a large bruise over the broken bone",
+        "The limb is clearly deformed or shorter than the other",
+        "Grating of the bone ends is felt when the limb is moved"
       ],
       "correct": 1
     },
@@ -111,9 +111,9 @@
       "q": "How do you immobilise a forearm fracture?",
       "answers": [
         "The splint fixes the joint above and below the fracture",
-        "Bandage only the fracture site",
-        "Pull it straight and leave it",
-        "Do not fix it, only cool it"
+        "The splint covers only the fracture so the joints can move",
+        "Straighten the arm fully first, then splint it in that way",
+        "Fix only the wrist, the elbow must stay free to move it"
       ],
       "correct": 1
     },
@@ -122,9 +122,9 @@
       "q": "What do you check before and after splinting?",
       "answers": [
         "Circulation, feeling and movement of the limb below the fracture",
-        "Blood glucose",
-        "The pupils",
-        "The breathing rate"
+        "Swelling, bruising and pain of the limb right over the fracture",
+        "Pulse, blood pressure and SpO2 of the patient on the monitor",
+        "Circulation, feeling and movement of the limb above the fracture"
       ],
       "correct": 1
     },
@@ -133,9 +133,9 @@
       "q": "How do you treat a burned skin area?",
       "answers": [
         "With a sterile, non-stick dressing",
-        "With a splint",
-        "With butter or ointment",
-        "Not at all, only transport"
+        "With a tight pressure bandage over it",
+        "By opening the blisters, then a dressing",
+        "With burn ointment, then a cotton pad"
       ],
       "correct": 1
     },
@@ -143,10 +143,10 @@
       "id": "a_13",
       "q": "A burned patient is hoarse, has soot around the mouth and a falling SpO2. What do you think of?",
       "answers": [
-        "An airway burn: a dressing does not help, advanced (ALS) care is needed",
-        "Only pain",
-        "Low blood glucose",
-        "A fracture"
+        "An airway burn: advanced (ALS) care is needed",
+        "Smoke irritation: oxygen and a dressing are enough",
+        "Panic and pain: calm the patient and dress the burns",
+        "A large skin burn: the pain makes the breathing worse"
       ],
       "correct": 1
     },
@@ -155,9 +155,9 @@
       "q": "Where do the defibrillator (Lifepak) pads go?",
       "answers": [
         "One under the right collarbone, one on the left side of the lower chest",
-        "Both on the back",
-        "Both on the abdomen",
-        "One on the forehead, one on the wrist"
+        "One under the left collarbone, one on the right side of the lower chest",
+        "One on the middle of the breastbone, one on the right side of the chest",
+        "Both on the left side of the chest, one above and one below the nipple"
       ],
       "correct": 1,
       "image": "exams/img/lifepak_pads.png"
@@ -167,9 +167,9 @@
       "q": "After attaching the monitor, what do you see besides the pulse?",
       "answers": [
         "The rhythm, the SpO2 and the blood pressure",
-        "Only the pulse",
-        "The blood glucose",
-        "The body weight"
+        "The rhythm, the SpO2 and the blood glucose",
+        "The SpO2, the temperature and the pupil reaction",
+        "The rhythm, the blood glucose and the temperature"
       ],
       "correct": 1
     },
@@ -178,9 +178,9 @@
       "q": "What is the rule during the AED rhythm analysis and the shock?",
       "answers": [
         "Nobody touches the patient",
-        "Keep doing chest compressions",
-        "Hold the patient's hand",
-        "Pour water on the chest"
+        "Compressions continue, only the breaths stop",
+        "One person holds the pads firmly on the chest",
+        "Only the ventilation continues with the bag"
       ],
       "correct": 1
     },
@@ -189,9 +189,9 @@
       "q": "What is the compression to ventilation ratio in adult CPR?",
       "answers": [
         "30:2",
-        "15:1",
-        "5:1",
-        "50:5"
+        "15:2",
+        "30:1",
+        "5:1"
       ],
       "correct": 1
     },
@@ -200,9 +200,9 @@
       "q": "At what rate do you do chest compressions?",
       "answers": [
         "100–120 per minute",
-        "40–60 per minute",
-        "160–200 per minute",
-        "20 per minute"
+        "80–100 per minute",
+        "120–140 per minute",
+        "60–80 per minute"
       ],
       "correct": 1
     },
@@ -211,9 +211,9 @@
       "q": "What is the normal blood glucose at rest?",
       "answers": [
         "About 70–100 mg/dL (3.9–5.6 mmol/L)",
-        "20–40 mg/dL",
-        "200–300 mg/dL",
-        "Above 500 mg/dL"
+        "About 40–60 mg/dL (2.2–3.3 mmol/L)",
+        "About 120–160 mg/dL (6.7–8.9 mmol/L)",
+        "About 180–220 mg/dL (10–12.2 mmol/L)"
       ],
       "correct": 1
     },
@@ -222,9 +222,9 @@
       "q": "From what value is the blood glucose low?",
       "answers": [
         "Below 70 mg/dL (3.9 mmol/L)",
-        "Below 150 mg/dL",
-        "Below 250 mg/dL",
-        "Below 10 mg/dL"
+        "Below 100 mg/dL (5.6 mmol/L)",
+        "Below 40 mg/dL (2.2 mmol/L)",
+        "Below 120 mg/dL (6.7 mmol/L)"
       ],
       "correct": 1
     },
@@ -233,9 +233,9 @@
       "q": "The glucometer shows this. What does it mean?",
       "answers": [
         "Severe hypoglycaemia, sugar is needed at once",
-        "A normal value",
-        "A high value, insulin is needed",
-        "A measuring error, ignore it"
+        "Slightly low, check it again in 30 minutes",
+        "A normal fasting value, no action is needed",
+        "High blood glucose, the patient needs insulin"
       ],
       "correct": 1,
       "image": "exams/img/glucometer_48.png"
@@ -245,9 +245,9 @@
       "q": "What are the signs of low blood glucose?",
       "answers": [
         "Sweating, shaking, pale skin, confusion, fast pulse",
-        "Dry skin, deep fast breathing",
-        "Pinpoint pupils",
-        "Pink frothy sputum"
+        "Dry warm skin, deep fast breathing, fruity breath",
+        "Great thirst, frequent urination, dry mouth, fatigue",
+        "Slow pulse, pinpoint pupils, slow shallow breathing"
       ],
       "correct": 1
     },
@@ -256,9 +256,9 @@
       "q": "When do you put on an oxygen mask?",
       "answers": [
         "When the SpO2 is low or the patient is short of breath",
-        "Always, for every patient, all the time",
-        "Never",
-        "Only for a dead patient"
+        "For every patient with chest pain, even with good SpO2",
+        "Only when the SpO2 falls below 80% and nothing else",
+        "Only for an unconscious patient who breathes normally"
       ],
       "correct": 1
     },
@@ -267,9 +267,9 @@
       "q": "What is the target oxygen saturation for most acute patients?",
       "answers": [
         "94–98%",
-        "70–80%",
-        "100% at any cost",
-        "Above 50% is enough"
+        "88–92%",
+        "100%",
+        "90–94%"
       ],
       "correct": 1
     },
@@ -278,9 +278,9 @@
       "q": "Unconscious patient who breathes well, no suspected spine injury. How do you position them?",
       "answers": [
         "Recovery position",
-        "Face down on the stomach",
-        "Sitting up",
-        "On the back with a pillow under the head"
+        "On the back, legs raised",
+        "Half sitting, back supported",
+        "On the back, head turned aside"
       ],
       "correct": 1
     },
@@ -289,9 +289,9 @@
       "q": "How deep do you press the chest in adult CPR?",
       "answers": [
         "5–6 cm",
-        "1–2 cm",
-        "10–12 cm",
-        "As deep as is comfortable"
+        "3–4 cm",
+        "7–8 cm",
+        "4–5 cm"
       ],
       "correct": 1
     }

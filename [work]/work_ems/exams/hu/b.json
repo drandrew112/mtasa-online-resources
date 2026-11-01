@@ -11,9 +11,9 @@
       "q": "Miért kell vénát biztosítani?",
       "answers": [
         "Az IV gyógyszerek (pl. Glükóz 40%) csak vénán keresztül adhatók",
-        "Hogy a beteg ne vérezzen",
-        "Az oxigénmaszkhoz",
-        "A sínezéshez"
+        "Minden betegnek kell, hogy a vérnyomást mérni lehessen rajta",
+        "Hogy vért vehessünk a helyszíni vércukorméréshez",
+        "Vénán át minden gyógyszer gyorsabban hat, ezért mind oda megy"
       ],
       "correct": 1
     },
@@ -24,7 +24,7 @@
         "Glükóz 40%",
         "Captopril",
         "Naloxon orrspray",
-        "Salbutamol"
+        "Nitroglicerin spray"
       ],
       "correct": 1
     },
@@ -33,9 +33,9 @@
       "q": "Nem sikerült a szúrás. Felhasználhatod újra ugyanazt a kanült?",
       "answers": [
         "Nem, minden szúrási kísérlethez új, steril kanül kell",
-        "Igen, kétszer",
-        "Igen, ha nem véres",
-        "Igen, ha letörlöd alkohollal"
+        "Igen, ugyanannál a betegnél, ha nem hajlott meg a hegye",
+        "Igen, még egyszer, ha nem ért hozzá semmi máshoz",
+        "Igen, ha a következő szúrás előtt letörlöd alkohollal"
       ],
       "correct": 1
     },
@@ -44,9 +44,9 @@
       "q": "Hová szúrsz elsőként perifériás kanült felnőttnél?",
       "answers": [
         "Kézhát, alkar vagy könyökhajlat vénájába",
-        "A nyaki verőérbe",
-        "A combcsontba",
-        "A szív közelébe"
+        "A nyaki vénába, mert nagy és jól látható",
+        "A lábfej vagy a boka vénájába, távol a sérülésektől",
+        "A lágyéki vénába, mert az a legnagyobb és legbiztosabb"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "Mire való a Captopril (Tensiomin)?",
       "answers": [
         "Magas vérnyomás csökkentésére, nyelv alá",
-        "Alacsony vérnyomás emelésére",
-        "Vércukor emelésére",
-        "Fájdalomcsillapításra"
+        "Magas vérnyomás csökkentésére, vénába",
+        "Mellkasi fájdalomra, az erek tágításával",
+        "Szapora pulzus lassítására, vízzel lenyelve"
       ],
       "correct": 1
     },
@@ -65,10 +65,10 @@
       "id": "b_09",
       "q": "Stroke-gyanús beteg vérnyomása 190/100. Adsz Captoprilt?",
       "answers": [
-        "Nem: stroke-ban 130–220 között nem csökkentjük, a túl alacsony nyomás rontja",
-        "Igen, 120 alá kell vinni",
-        "Igen, dupla dózist",
-        "Igen, és nitrót is"
+        "Nem: stroke-ban 130–220 között nem csökkentjük",
+        "Igen: 140 alá kell vinni, hogy ne vérezzen be",
+        "Igen, fél dózist, hogy csak kicsit essen",
+        "Nem, de Nitroglicerin sprayvel csökkentjük"
       ],
       "correct": 1
     },
@@ -77,9 +77,9 @@
       "q": "Mire való a Glükóz 40%?",
       "answers": [
         "Alacsony vércukor gyors emelésére, vénán át",
-        "Magas vércukor csökkentésére",
-        "Fájdalomcsillapításra",
-        "Ópiát-mérgezés ellen"
+        "Alacsony vércukor lassú emelésére, szájon át",
+        "Folyadékpótlásra sokkban, infúzióként",
+        "Alacsony vércukor emelésére, izomba adva"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "Mikor adhatsz glükóz gélt?",
       "answers": [
         "Csak ébren lévő, nyelni tudó betegnek",
-        "Eszméletlen betegnek",
-        "Újraélesztés alatt",
-        "Bármikor, vénába"
+        "Eszméletlen betegnek, a pofazacskóba",
+        "Minden hipoglikémiásnak, ébren vagy sem",
+        "Ha nincs véna, akkor aluszékonynak is"
       ],
       "correct": 1
     },
@@ -99,9 +99,9 @@
       "q": "Eszméletlen beteg, vércukra 35 mg/dL. Mit adsz?",
       "answers": [
         "Vénát biztosítasz és Glükóz 40%-ot adsz",
-        "Glükóz gélt a szájába",
-        "Nitroglicerin sprayt",
-        "Captoprilt"
+        "Glükóz gélt a pofazacskójába",
+        "Cukros italt óvatosan, kis kortyokban",
+        "Semmit, amíg magához nem tér"
       ],
       "correct": 1
     },
@@ -110,9 +110,9 @@
       "q": "Mire való a Naloxon (Narcan)?",
       "answers": [
         "Ópiát (heroin, fentanil) túladagolás visszafordítására",
-        "Alkoholmérgezés ellen",
-        "Altatószer-mérgezés ellen",
-        "Vércukor emelésére"
+        "Altató (benzodiazepin) túladagolás visszafordítására",
+        "Stimuláns (kokain, amfetamin) túladagolás ellen",
+        "Lassú légzéssel járó alkoholmérgezés visszafordítására"
       ],
       "correct": 1
     },
@@ -123,7 +123,7 @@
         "Tűhegynyi pupillák",
         "Tágult pupillák",
         "Egyenlőtlen pupillák",
-        "Fényre nem változó, normál pupillák"
+        "Fényre nem reagáló pupillák"
       ],
       "correct": 1,
       "image": "exams/img/pupils_pinpoint.png"
@@ -133,9 +133,9 @@
       "q": "Mire figyelsz Naloxon adása után?",
       "answers": [
         "A hatása elmúlhat, a beteg visszaaludhat: figyeled a légzést",
-        "Semmire, a hatás végleges",
-        "A beteg azonnal elengedhető",
-        "Utána glükózt kell adni"
+        "Napokig hat, így ha felébredt, a beteg nyugodtan otthon maradhat",
+        "Erősen emeli a vércukrot: néhány percenként újramérod",
+        "Nagyon csökkenti a vérnyomást: lefekteted, felpolcolod a lábát"
       ],
       "correct": 1
     },
@@ -144,9 +144,9 @@
       "q": "Mikor ellenjavallt a Nitroglicerin spray?",
       "answers": [
         "Alacsony vérnyomásnál (systolés 90 Hgmm alatt)",
-        "Magas vérnyomásnál",
-        "Tüdőödémában",
-        "Mellkasi fájdalomnál"
+        "Magas vérnyomásnál (systolés 160 Hgmm felett)",
+        "Szörcsölő légzéssel, habos köpettel járó tüdőödémában",
+        "Egy óránál frissebb mellkasi fájdalomnál"
       ],
       "correct": 1
     },
@@ -155,9 +155,9 @@
       "q": "Melyik állapotban segít a Nitroglicerin?",
       "answers": [
         "Tüdőödéma (szörcsölő légzés, rózsaszín habos köpet)",
-        "Asztma",
-        "Hipoglikémia",
-        "Ópiát-mérgezés"
+        "Asztmás roham (sípoló légzés, nyújtott kilégzés)",
+        "Vérzéses sokk (sápadt, hideg, szapora pulzus)",
+        "Stroke nagyon magas vérnyomással (190/100)"
       ],
       "correct": 1
     },
@@ -166,9 +166,9 @@
       "q": "Mire való a Salbutamol (Ventolin)?",
       "answers": [
         "Sípoló légzés: asztma, COPD, porlasztva",
-        "Magas vérnyomás",
-        "Görcsroham",
-        "Fájdalom"
+        "Szörcsölő légzés: tüdőödéma, porlasztva",
+        "Krupp, légúti duzzanat, injekcióban",
+        "Allergiás torokduzzanat, vénába adva"
       ],
       "correct": 1
     },
@@ -177,9 +177,9 @@
       "q": "A kanül behelyezése után mit ellenőrzöl?",
       "answers": [
         "Hogy szabadon befolyik-e a folyadék, és nem duzzad a szúrás helye",
-        "Semmit, a behelyezés elég",
-        "A beteg vércukrát",
-        "A pupillákat"
+        "Hogy visszajön-e vér a kanülbe, ennél több ellenőrzés nem kell",
+        "Hogy a beteg nem érez-e semmilyen fájdalmat a szúrás helyén",
+        "Hogy a kanül alatt a csuklón még jól tapintható-e a pulzus"
       ],
       "correct": 1
     },
@@ -188,9 +188,9 @@
       "q": "A kanül körül duzzanat és fájdalom jelenik meg, a folyadék nem folyik. Mi történt?",
       "answers": [
         "A kanül kicsúszott a vénából: eltávolítod és új helyen szúrsz",
-        "Normális, folytatod",
-        "Allergia, adsz rá még folyadékot",
-        "A beteg hipoglikémiás"
+        "Alvadék zárja el a kanült: erősen átmosod egy teli fecskendővel",
+        "Túl lassan folyik: feljebb emeled a zsákot és kinyitod a szorítót",
+        "Allergia a folyadékra: leállítod, és a következő gyógyszert adod"
       ],
       "correct": 1
     },
@@ -199,9 +199,9 @@
       "q": "Mit ellenőrzöl, mielőtt bármilyen gyógyszert beadsz?",
       "answers": [
         "Jó gyógyszer, jó dózis, jó beadási mód, jó beteg, és nincs-e rá allergiája",
-        "Csak a gyógyszer színét",
-        "Semmit, sürgős helyzetben nincs idő",
-        "Csak a beteg nevét"
+        "Jó gyógyszer, jó dózis és a lejárati idő, a többit utólag ellenőrzöd",
+        "A beteg nevét, testsúlyát és vércsoportját, és hogy működik-e a véna",
+        "Jó gyógyszer és jó beadási mód; a dózis minden betegnél ugyanannyi"
       ],
       "correct": 1
     }

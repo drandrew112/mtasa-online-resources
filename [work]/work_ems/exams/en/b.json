@@ -11,9 +11,9 @@
       "q": "Why do you need IV access?",
       "answers": [
         "IV medicines (e.g. Glucose 40%) can only be given through a vein",
-        "So that the patient does not bleed",
-        "For the oxygen mask",
-        "For splinting"
+        "Every patient needs it, so that the blood pressure can be measured",
+        "So that blood can be taken to measure the blood glucose on scene",
+        "Every medicine works faster through it, so all of them go there"
       ],
       "correct": 1
     },
@@ -24,7 +24,7 @@
         "Glucose 40%",
         "Captopril",
         "Naloxone nasal spray",
-        "Salbutamol"
+        "Nitroglycerin spray"
       ],
       "correct": 1
     },
@@ -33,9 +33,9 @@
       "q": "The cannulation failed. Can you reuse the same cannula?",
       "answers": [
         "No, every attempt needs a new, sterile cannula",
-        "Yes, twice",
-        "Yes, if there is no blood on it",
-        "Yes, if you wipe it with alcohol"
+        "Yes, on the same patient, if the tip is not bent",
+        "Yes, once more, if it did not touch anything else",
+        "Yes, if you wipe it with alcohol before the next try"
       ],
       "correct": 1
     },
@@ -44,9 +44,9 @@
       "q": "Where do you first place a peripheral cannula in an adult?",
       "answers": [
         "A vein on the back of the hand, the forearm or the elbow",
-        "The carotid artery",
-        "The thigh bone",
-        "Close to the heart"
+        "A vein in the neck, because it is large and easy to see",
+        "A vein on the foot or the ankle, away from the injuries",
+        "The groin vein, because it is the largest and most sure"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "What is Captopril (Tensiomin) for?",
       "answers": [
         "Lowering high blood pressure, under the tongue",
-        "Raising low blood pressure",
-        "Raising blood glucose",
-        "Pain relief"
+        "Lowering high blood pressure, through the IV",
+        "Relieving chest pain by widening the vessels",
+        "Lowering a fast pulse, swallowed with water"
       ],
       "correct": 1
     },
@@ -65,10 +65,10 @@
       "id": "b_09",
       "q": "A suspected stroke patient's blood pressure is 190/100. Do you give Captopril?",
       "answers": [
-        "No: in a stroke we do not lower it between 130–220, too low a pressure makes it worse",
-        "Yes, it must go below 120",
-        "Yes, a double dose",
-        "Yes, and nitroglycerin too"
+        "No: in a stroke we do not lower it between 130–220",
+        "Yes: it must go below 140 to prevent a brain bleed",
+        "Yes, half a dose, so that it only falls a little",
+        "No, but Nitroglycerin spray is given to lower it"
       ],
       "correct": 1
     },
@@ -77,9 +77,9 @@
       "q": "What is Glucose 40% for?",
       "answers": [
         "Raising low blood glucose fast, through the IV",
-        "Lowering high blood glucose",
-        "Pain relief",
-        "Against opioid poisoning"
+        "Raising low blood glucose slowly, by mouth",
+        "Replacing fluid in shock, as an IV infusion",
+        "Raising low blood glucose, into the muscle"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "When can you give glucose gel?",
       "answers": [
         "Only to an awake patient who can swallow",
-        "To an unconscious patient",
-        "During CPR",
-        "Any time, into the vein"
+        "To an unconscious patient, into the cheek",
+        "To any hypoglycaemic patient, awake or not",
+        "When there is no IV, even if they are drowsy"
       ],
       "correct": 1
     },
@@ -99,9 +99,9 @@
       "q": "Unconscious patient, blood glucose 35 mg/dL. What do you give?",
       "answers": [
         "Place an IV and give Glucose 40%",
-        "Glucose gel into the mouth",
-        "Nitroglycerin spray",
-        "Captopril"
+        "Glucose gel into the cheek pouch",
+        "Sweet drink in small sips, carefully",
+        "Nothing until the patient wakes up"
       ],
       "correct": 1
     },
@@ -110,9 +110,9 @@
       "q": "What is Naloxone (Narcan) for?",
       "answers": [
         "Reversing an opioid (heroin, fentanyl) overdose",
-        "Against alcohol poisoning",
-        "Against sleeping pill poisoning",
-        "Raising blood glucose"
+        "Reversing a sleeping pill (benzodiazepine) overdose",
+        "Reversing a stimulant (cocaine, amphetamine) overdose",
+        "Reversing alcohol poisoning with slow breathing"
       ],
       "correct": 1
     },
@@ -123,7 +123,7 @@
         "Pinpoint pupils",
         "Dilated pupils",
         "Unequal pupils",
-        "Normal pupils that do not react to light"
+        "Pupils not reacting to light"
       ],
       "correct": 1,
       "image": "exams/img/pupils_pinpoint.png"
@@ -133,9 +133,9 @@
       "q": "What do you watch after giving Naloxone?",
       "answers": [
         "It can wear off and the patient can fall asleep again: watch the breathing",
-        "Nothing, the effect is permanent",
-        "The patient can be released at once",
-        "Glucose must be given afterwards"
+        "The effect lasts for days, so once awake the patient can safely stay home",
+        "It raises the blood glucose strongly: measure it again every few minutes",
+        "It lowers the blood pressure a lot: lay the patient down and raise the legs"
       ],
       "correct": 1
     },
@@ -144,9 +144,9 @@
       "q": "When is Nitroglycerin spray contraindicated?",
       "answers": [
         "With low blood pressure (systolic below 90 mmHg)",
-        "With high blood pressure",
-        "In pulmonary oedema",
-        "With chest pain"
+        "With high blood pressure (systolic above 160 mmHg)",
+        "In pulmonary oedema with crackles and frothy sputum",
+        "With chest pain that started less than an hour ago"
       ],
       "correct": 1
     },
@@ -155,9 +155,9 @@
       "q": "In which condition does Nitroglycerin help?",
       "answers": [
         "Pulmonary oedema (crackles, pink frothy sputum)",
-        "Asthma",
-        "Hypoglycaemia",
-        "Opioid poisoning"
+        "Asthma attack (wheezing, long breathing out)",
+        "Shock after bleeding (pale, cold, fast pulse)",
+        "Stroke with very high blood pressure (190/100)"
       ],
       "correct": 1
     },
@@ -166,9 +166,9 @@
       "q": "What is Salbutamol (Ventolin) for?",
       "answers": [
         "Wheezing: asthma, COPD, nebulised",
-        "High blood pressure",
-        "Seizures",
-        "Pain"
+        "Crackles: pulmonary oedema, nebulised",
+        "Croup or airway swelling, as an injection",
+        "Allergic swelling of the throat, into the IV"
       ],
       "correct": 1
     },
@@ -177,9 +177,9 @@
       "q": "What do you check after placing a cannula?",
       "answers": [
         "That fluid runs freely and the site does not swell",
-        "Nothing, placing it is enough",
-        "The patient's blood glucose",
-        "The pupils"
+        "That blood flows back into the cannula, nothing else",
+        "That the patient feels no pain at the puncture site",
+        "That the pulse below the cannula can still be felt"
       ],
       "correct": 1
     },
@@ -188,9 +188,9 @@
       "q": "Swelling and pain appear around the cannula and the fluid does not run. What happened?",
       "answers": [
         "The cannula slipped out of the vein: remove it and try at a new site",
-        "That is normal, carry on",
-        "An allergy, give more fluid",
-        "The patient is hypoglycaemic"
+        "The cannula is blocked by a clot: flush it hard with a full syringe",
+        "The fluid runs too slowly: raise the bag higher and open the clamp",
+        "An allergy to the fluid: stop it and give the next medicine instead"
       ],
       "correct": 1
     },
@@ -199,9 +199,9 @@
       "q": "What do you check before giving any medicine?",
       "answers": [
         "Right medicine, right dose, right route, right patient, and no allergy to it",
-        "Only the colour of the medicine",
-        "Nothing, there is no time in an emergency",
-        "Only the patient's name"
+        "Right medicine, right dose and the expiry date, the rest is checked later",
+        "The patient's name, weight and blood group, and that the IV is working",
+        "Right medicine and right route; the dose is the same for every patient"
       ],
       "correct": 1
     }

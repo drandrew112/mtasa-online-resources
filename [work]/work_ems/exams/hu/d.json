@@ -11,9 +11,9 @@
       "q": "70 kg-os beteg, Fentanil 1 mcg/ttkg. Mennyi a dózis?",
       "answers": [
         "70 mcg",
-        "7 mg",
+        "7 mcg",
         "700 mcg",
-        "0,7 mcg"
+        "0,7 mg"
       ],
       "correct": 1
     },
@@ -23,8 +23,8 @@
       "answers": [
         "108 mg",
         "10,8 mg",
-        "1080 mg",
-        "12 mg"
+        "120 mg",
+        "90 mg"
       ],
       "correct": 1
     },
@@ -35,7 +35,7 @@
         "3 mg",
         "30 mg",
         "0,3 mg",
-        "300 mg"
+        "6 mg"
       ],
       "correct": 1
     },
@@ -46,7 +46,7 @@
         "8 IU",
         "80 IU",
         "0,8 IU",
-        "800 IU"
+        "10 IU"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "Mi a kockázata a Ketamin 2 mg/ttkg (narancs) dózisnak?",
       "answers": [
         "A szokásosnál erősebb hatás: csak indokolt esetben",
-        "Gyengébb hatás",
-        "Semmi",
-        "Ez a gyermekdózis"
+        "A szokásosnál gyengébb hatás: a beteg korán ébredhet",
+        "Semmi: a Ketaminnak nincs felső határa, a légzés megmarad",
+        "Ez a gyermekdózis: felnőttnél túl kevés, nem hat"
       ],
       "correct": 1
     },
@@ -66,9 +66,9 @@
       "q": "Midazolam 0,1 mg/ttkg alkoholos betegnél. Mire számítasz?",
       "answers": [
         "Fokozott légzésdepresszió: készülj légútbiztosításra",
-        "Biztonságos",
-        "A Naloxon visszafordítja",
-        "Emelkedik a vérnyomás"
+        "Gyengébb hatásra, mert az alkohol gyorsítja a lebontását",
+        "Nyugtalanságra: alkohollal a Midazolam serkentővé válik",
+        "Nincs változás: ha lassul a légzés, a Naloxon visszafordítja"
       ],
       "correct": 1
     },
@@ -77,9 +77,9 @@
       "q": "Fentanil és Midazolam együtt. Mi történik?",
       "answers": [
         "Hatásuk összeadódik: légzés- és keringésdepresszió",
-        "Kioltják egymást",
-        "Semmi különös",
-        "Hányás"
+        "Gyengítik egymást, ezért mindkét dózist emelni kell",
+        "Csak a fájdalomcsillapítás adódik össze, a légzés nem változik",
+        "A Midazolam kivédi a Fentanil légzésre gyakorolt hatását"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "Mikor adsz Inzulint prehospitálisan?",
       "answers": [
         "Ritkán: csak igazolt, nagyon magas vércukornál, ismételt méréssel",
-        "Minden cukorbetegnek",
-        "Hipoglikémiában",
-        "Eszméletlenségnél"
+        "Minden cukorbetegnek, aki ma elfelejtette a saját adagját, biztos ami biztos",
+        "Minden eszméletlen cukorbetegnek, akár a vércukormérés előtt is",
+        "Mindig a Glükóz 40%-kal együtt, hogy ne ingadozzon a vércukor"
       ],
       "correct": 1
     },
@@ -99,9 +99,9 @@
       "q": "Nagyon magas vércukor, kiszáradt beteg. Mi a prehospitális ellátás alapja?",
       "answers": [
         "Vénás folyadékpótlás, ami lassan a vércukrot is csökkenti",
-        "Glükóz 40%",
-        "Folyadékmegvonás",
-        "Nagy dózis Inzulin bólusban"
+        "Nagy dózis vénás Inzulin bólus, folyadék csak a kórházban",
+        "Csak kis kortyokban víz, a vénás folyadék ront rajta",
+        "Bőr alá adott Inzulin és folyadékmegszorítás"
       ],
       "correct": 1
     },
@@ -110,9 +110,9 @@
       "q": "Fejsérült betegnél magas vérnyomás és lassú pulzus. Mit jelent?",
       "answers": [
         "Koponyaűri nyomásfokozódás (Cushing-reflex): sürgős szállítás",
-        "Normál reakció",
-        "Hipoglikémia",
-        "Asztma"
+        "Sérülés utáni fájdalomreakció: fájdalomcsillapítás, megfigyelés",
+        "Nyaki sérülés okozta spinális sokk: folyadék, fektetés",
+        "Rejtett hasűri vérzés: folyadékpótlás, lábak felpolcolása"
       ],
       "correct": 1
     },
@@ -121,9 +121,9 @@
       "q": "Egyenlőtlen pupillák, tiszta folyadék a fülből?",
       "answers": [
         "Súlyos koponyasérülés, koponyaalapi törés gyanúja",
-        "Ópiát-mérgezés",
-        "Stroke",
-        "Alkoholmérgezés"
+        "Állásból elesés utáni vérzéses stroke",
+        "Fülgyulladás, ami az egyik szemideget nyomja",
+        "Agyrázkódás, a folyadék a külső fül sebéből jön"
       ],
       "correct": 1
     },
@@ -132,9 +132,9 @@
       "q": "Hideg, verejtékes bőr. Mire gondolsz elsőként?",
       "answers": [
         "Hipoglikémiára vagy stimuláns-mérgezésre",
-        "Magas vércukorra",
-        "Normál állapotra",
-        "Ópiát-mérgezésre"
+        "Nagyon magas vércukorra vagy kiszáradásra",
+        "Ópiát- vagy altatószer-mérgezésre",
+        "Fertőzéses lázra vagy hőgutára"
       ],
       "correct": 1
     },
@@ -143,9 +143,9 @@
       "q": "Száraz bőr, sok vizelés, nagyon magas vércukor. Mi a háttér?",
       "answers": [
         "Kiszáradás a magas vércukor miatt",
-        "Hipoglikémia",
-        "Stimuláns-mérgezés",
-        "Asztma"
+        "Veseelégtelenség, a folyadékot korlátozni kell",
+        "Túl sok folyadékbevitel, a szervezet üríti",
+        "A beteg saját Inzulinjának túladagolása"
       ],
       "correct": 1
     },
@@ -154,9 +154,9 @@
       "q": "Megharapott nyelv, bevizelés, zavartság, ami magától javul?",
       "answers": [
         "Görcsroham utáni (posztiktális) állapot",
-        "Tüdőödéma",
-        "Ópiát-mérgezés",
-        "Asztma"
+        "Javuló, átmeneti agyi keringészavar (TIA)",
+        "Magától rendeződött hipoglikémia utáni állapot",
+        "Lassan múló, súlyos alkoholmérgezés"
       ],
       "correct": 1
     },
@@ -165,9 +165,9 @@
       "q": "Altatószer-túladagolásnál miért nem segít a Naloxon?",
       "answers": [
         "Mert csak az ópiátok hatását fordítja vissza",
-        "Mert túl erős",
-        "Mert csak vénába adható",
-        "Segít, ez az ellenszere"
+        "Mert ehhez a nagy adaghoz túlságosan gyenge",
+        "Mert csak vénán keresztül beadva hat",
+        "Segít, ez az altatók ellenszere is"
       ],
       "correct": 1
     },
@@ -176,9 +176,9 @@
       "q": "Peri-arrest hipotónia (systolés 60). Mit adsz?",
       "answers": [
         "Push-dose Adrenalint (0,02 mg) és keresed az okot",
-        "1 mg Adrenalin bólus",
-        "Captopril",
-        "Nitroglicerin"
+        "1 mg Adrenalin bólust vénába, mint keringésmegállásban",
+        "Nitroglicerin sprayt a szív vérellátásának javítására",
+        "Semmit: megvárod, hogy leálljon, és akkor CPR"
       ],
       "correct": 1
     },
@@ -187,9 +187,9 @@
       "q": "Nitroglicerin, ha a beteg potencianövelőt (PDE5-gátló) szedett?",
       "answers": [
         "Ellenjavallt: súlyos vérnyomásesés",
-        "Biztonságos",
-        "Dupla dózis kell",
-        "Nincs összefüggés"
+        "Adható, de csak a szokásos fele",
+        "Adható, ha 2 óránál régebben vette be",
+        "Biztonságos, nem hatnak egymásra"
       ],
       "correct": 1
     },
@@ -198,9 +198,9 @@
       "q": "Tüdőödéma, vérnyomás 210/120. Mi a kezelés?",
       "answers": [
         "Nitroglicerin, oxigén, ültetés",
-        "Folyadékbólus",
-        "Salbutamol",
-        "Nagy dózis Fentanil"
+        "Folyadékbólus, oxigén, fektetés",
+        "Salbutamol, oxigén, ültetés",
+        "Csak Captopril, majd fektetés"
       ],
       "correct": 1
     },
@@ -209,9 +209,9 @@
       "q": "Hipoglikémiás, ébren van és tud nyelni. Mi a legegyszerűbb?",
       "answers": [
         "Glükóz gél",
-        "Csak vénás glükóz",
-        "Inzulin",
-        "Naloxon"
+        "Glükóz 40% IV",
+        "Csak infúzió",
+        "Várni, újramérni"
       ],
       "correct": 1
     },
@@ -220,9 +220,9 @@
       "q": "Mi történhet szinkronizálatlan sokknál pulzusos VT-ben?",
       "answers": [
         "Kamrafibrillációt válthat ki",
-        "Mindig javít",
-        "Semmi",
-        "Biztos ROSC"
+        "Égési sérülést, de mást nem",
+        "Minden esetben asystoliát",
+        "Biztonságos, ez az elsődleges"
       ],
       "correct": 1
     },
@@ -231,9 +231,9 @@
       "q": "Miért kell az Adrenalint újraélesztés alatt 3–5 percenként ismételni?",
       "answers": [
         "Mert a hatása rövid, néhány perc",
-        "Mert az első adag nem szívódik fel",
-        "Nem kell ismételni",
-        "Mert a második adag az ellenszere"
+        "Mert az első adag csak próbadózis",
+        "Mert minden adagnak nagyobbnak kell lennie",
+        "Mert CPR alatt lassan szívódik fel"
       ],
       "correct": 1
     },
@@ -242,9 +242,9 @@
       "q": "Stroke-os beteg, systolés 110. Mi a gond?",
       "answers": [
         "130 alatt kevesebb vér jut az agyba, gyorsabban romlik",
-        "Ideális érték",
-        "Túl magas",
-        "Mindegy"
+        "Semmi: ideális érték, ami véd a bevérzés ellen",
+        "Még mindig magas: Captoprillal 100 alá kell vinni",
+        "Csak 220 felett számít, alatta minden elfogadható"
       ],
       "correct": 1
     },
@@ -253,9 +253,9 @@
       "q": "Égett beteg folyadékvesztése?",
       "answers": [
         "Plazmavesztés: a kötés csökkenti, korai szállítás",
-        "Nincs folyadékvesztés",
-        "Csak fájdalom",
-        "Csak vérzés"
+        "Csak izzadás: vizet iszik, nem sürgős a szállítás",
+        "Vérvesztés: az égésre tett nyomókötés megállítja",
+        "Plazmavesztés: a hólyagokat megnyitva leengeded"
       ],
       "correct": 1
     },
@@ -264,9 +264,9 @@
       "q": "Nyílt törés kritikus vérzéssel. Mi a sorrend?",
       "answers": [
         "Előbb vérzéscsillapítás kötéssel, utána sínezés",
-        "Csak sín",
-        "Csak fájdalomcsillapítás",
-        "A csont visszahelyezése"
+        "Előbb sínezés, mozdulatlanul a vérzés is eláll",
+        "Előbb a csont visszahelyezése, majd kötés és sín",
+        "Előbb fájdalomcsillapítás és véna, majd kötés, sín"
       ],
       "correct": 1
     },
@@ -275,9 +275,9 @@
       "q": "Hipoglikémiás beteg glükóz után felébredt. Mire figyelsz?",
       "answers": [
         "Ismételt vércukormérés, mert újra leeshet",
-        "Elengeded, rendben van",
         "Inzulint adsz, nehogy túl magas legyen",
-        "Semmire"
+        "Semmire: ha felébredt, a vércukor normál marad",
+        "Csak a légzésre, a vércukor már nem változik"
       ],
       "correct": 1
     },
@@ -286,9 +286,9 @@
       "q": "Extrém magas vércukornál (700 mg/dL felett) mire számítasz?",
       "answers": [
         "Tudatzavarra, akár eszméletlenségre",
+        "Hideg verejtékre, remegésre, szapora pulzusra",
         "Teljesen tünetmentes betegre",
-        "Hipoglikémiára",
-        "Tűhegynyi pupillákra"
+        "Tűhegynyi pupillára, lassú légzésre"
       ],
       "correct": 1
     },
@@ -297,9 +297,9 @@
       "q": "Asztma, néma mellkas, kimerült, SpO2 74%. Mit teszel?",
       "answers": [
         "Salbutamol, oxigén; ha romlik, RSI mérlegelése",
-        "Midazolam",
-        "Naloxon",
-        "Captopril"
+        "Midazolam a légzés megnyugtatására, majd oxigén",
+        "Csak oxigén; a néma mellkas javulást jelent",
+        "Nitroglicerin és oxigén, a beteg ültetése"
       ],
       "correct": 1
     },
@@ -308,9 +308,9 @@
       "q": "Mi tartozik a keringésmegállás reverzibilis okai közül a „4T”-be?",
       "answers": [
         "Tenziós PTX, tamponád, toxinok, trombózis",
-        "Tünet, tudat, testhő, tápláltság",
-        "Tachycardia, tremor, tónus, tűz",
-        "Tabletta, tubus, tű, tampon"
+        "Tenziós PTX, trauma, testhő, tachycardia",
+        "Tamponád, toxinok, trombózis, hipotermia",
+        "Trauma, tamponád, tachycardia, toxinok"
       ],
       "correct": 1
     }

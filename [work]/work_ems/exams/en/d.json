@@ -11,9 +11,9 @@
       "q": "70 kg patient, Fentanyl 1 mcg/kg. What is the dose?",
       "answers": [
         "70 mcg",
-        "7 mg",
+        "7 mcg",
         "700 mcg",
-        "0.7 mcg"
+        "0.7 mg"
       ],
       "correct": 1
     },
@@ -23,8 +23,8 @@
       "answers": [
         "108 mg",
         "10.8 mg",
-        "1080 mg",
-        "12 mg"
+        "120 mg",
+        "90 mg"
       ],
       "correct": 1
     },
@@ -35,7 +35,7 @@
         "3 mg",
         "30 mg",
         "0.3 mg",
-        "300 mg"
+        "6 mg"
       ],
       "correct": 1
     },
@@ -46,7 +46,7 @@
         "8 IU",
         "80 IU",
         "0.8 IU",
-        "800 IU"
+        "10 IU"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "What is the risk of the 2 mg/kg (orange) Ketamine dose?",
       "answers": [
         "A stronger effect than usual: only when there is a reason",
-        "A weaker effect",
-        "None",
-        "It is the child dose"
+        "A weaker effect than usual: the patient may wake up early",
+        "None: Ketamine has no upper limit, it keeps the breathing",
+        "It is the child dose: in an adult it is too low to work"
       ],
       "correct": 1
     },
@@ -66,9 +66,9 @@
       "q": "Midazolam 0.1 mg/kg for a drunk patient. What do you expect?",
       "answers": [
         "More depressed breathing: be ready to secure the airway",
-        "It is safe",
-        "Naloxone reverses it",
-        "The blood pressure rises"
+        "A weaker effect, because alcohol speeds up its breakdown",
+        "Agitation: alcohol turns Midazolam into a stimulant",
+        "No change: Naloxone reverses it if the breathing slows"
       ],
       "correct": 1
     },
@@ -77,9 +77,9 @@
       "q": "Fentanyl and Midazolam together. What happens?",
       "answers": [
         "Their effects add up: depressed breathing and circulation",
-        "They cancel each other out",
-        "Nothing special",
-        "Vomiting"
+        "They weaken each other, so both doses must be increased",
+        "Only the pain relief adds up, the breathing is unchanged",
+        "Midazolam blocks the Fentanyl effect on the breathing"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "When do you give Insulin prehospitally?",
       "answers": [
         "Rarely: only for a confirmed, very high blood glucose, with repeated measurements",
-        "To every diabetic",
-        "In hypoglycaemia",
-        "In unconsciousness"
+        "To every diabetic patient who forgot their own dose today, to be safe",
+        "To every unconscious diabetic, even before the glucose is measured",
+        "Always together with Glucose 40%, so the glucose does not swing"
       ],
       "correct": 1
     },
@@ -99,9 +99,9 @@
       "q": "Very high blood glucose, dehydrated patient. What is the basis of prehospital care?",
       "answers": [
         "IV fluids, which slowly lower the blood glucose too",
-        "Glucose 40%",
-        "Withholding fluids",
-        "A large Insulin bolus"
+        "A large Insulin bolus IV, fluids only in the hospital",
+        "Only small sips of water, IV fluid makes it worse",
+        "Insulin under the skin and keeping fluids restricted"
       ],
       "correct": 1
     },
@@ -110,9 +110,9 @@
       "q": "Head injury with high blood pressure and a slow pulse. What does it mean?",
       "answers": [
         "Raised pressure in the skull (Cushing reflex): urgent transport",
-        "A normal reaction",
-        "Hypoglycaemia",
-        "Asthma"
+        "Pain reaction after the trauma: give pain relief and watch",
+        "Spinal shock from a neck injury: fluids and lying flat",
+        "Hidden bleeding in the abdomen: fluids and raise the legs"
       ],
       "correct": 1
     },
@@ -121,9 +121,9 @@
       "q": "Unequal pupils, clear fluid from the ear?",
       "answers": [
         "Severe head injury, suspected skull base fracture",
-        "Opioid poisoning",
-        "Stroke",
-        "Alcohol poisoning"
+        "Stroke with a bleed, after a fall from standing",
+        "Ear infection with pressure on one eye nerve",
+        "Concussion, the fluid is from the outer ear wound"
       ],
       "correct": 1
     },
@@ -132,9 +132,9 @@
       "q": "Cold, sweaty skin. What do you think of first?",
       "answers": [
         "Hypoglycaemia or stimulant poisoning",
-        "High blood glucose",
-        "A normal state",
-        "Opioid poisoning"
+        "Very high blood glucose or dehydration",
+        "Opioid or sleeping pill poisoning",
+        "Fever with an infection or heatstroke"
       ],
       "correct": 1
     },
@@ -143,9 +143,9 @@
       "q": "Dry skin, a lot of urine, very high blood glucose. What is behind it?",
       "answers": [
         "Dehydration from the high blood glucose",
-        "Hypoglycaemia",
-        "Stimulant poisoning",
-        "Asthma"
+        "Kidney failure, so fluids must be limited",
+        "Too much fluid intake, the body drains it",
+        "Overdose of the patient's own Insulin"
       ],
       "correct": 1
     },
@@ -154,9 +154,9 @@
       "q": "Bitten tongue, wet trousers, confusion that clears by itself?",
       "answers": [
         "The state after a seizure (postictal)",
-        "Pulmonary oedema",
-        "Opioid poisoning",
-        "Asthma"
+        "A stroke that is getting better (TIA)",
+        "Hypoglycaemia that corrected itself",
+        "Alcohol poisoning wearing off slowly"
       ],
       "correct": 1
     },
@@ -165,9 +165,9 @@
       "q": "Why does Naloxone not help in a sleeping pill overdose?",
       "answers": [
         "Because it only reverses opioids",
-        "Because it is too strong",
-        "Because it can only be given IV",
-        "It helps, it is the antidote"
+        "Because it is too weak for that dose",
+        "Because it only works through the IV",
+        "It does help, it is the antidote"
       ],
       "correct": 1
     },
@@ -176,9 +176,9 @@
       "q": "Low blood pressure around an arrest (systolic 60). What do you give?",
       "answers": [
         "Push-dose Adrenaline (0.02 mg) and look for the cause",
-        "A 1 mg Adrenaline bolus",
-        "Captopril",
-        "Nitroglycerin"
+        "A 1 mg Adrenaline bolus IV, as in cardiac arrest",
+        "Nitroglycerin spray to improve the heart's blood flow",
+        "Nothing: wait for the pulse to stop, then start CPR"
       ],
       "correct": 1
     },
@@ -187,9 +187,9 @@
       "q": "Nitroglycerin when the patient took a potency pill (PDE5 inhibitor)?",
       "answers": [
         "Contraindicated: severe drop in blood pressure",
-        "Safe",
-        "A double dose is needed",
-        "No connection"
+        "Allowed, but only half of the usual dose",
+        "Allowed if the pill was taken over 2 hours ago",
+        "Safe: the two medicines do not interact"
       ],
       "correct": 1
     },
@@ -198,9 +198,9 @@
       "q": "Pulmonary oedema, blood pressure 210/120. What is the treatment?",
       "answers": [
         "Nitroglycerin, oxygen, sit up",
-        "A fluid bolus",
-        "Salbutamol",
-        "A large dose of Fentanyl"
+        "Fluid bolus, oxygen, lie flat",
+        "Salbutamol, oxygen, sit up",
+        "Captopril only, then lie flat"
       ],
       "correct": 1
     },
@@ -209,9 +209,9 @@
       "q": "Hypoglycaemic, awake and able to swallow. What is the simplest?",
       "answers": [
         "Glucose gel",
-        "Only IV glucose",
-        "Insulin",
-        "Naloxone"
+        "Glucose 40% IV",
+        "IV fluid only",
+        "Wait and remeasure"
       ],
       "correct": 1
     },
@@ -220,9 +220,9 @@
       "q": "What can an unsynchronised shock cause in VT with a pulse?",
       "answers": [
         "Ventricular fibrillation",
-        "It always helps",
-        "Nothing",
-        "A sure ROSC"
+        "A burn, but nothing more",
+        "Asystole in every case",
+        "It is safe and preferred"
       ],
       "correct": 1
     },
@@ -231,9 +231,9 @@
       "q": "Why must Adrenaline be repeated every 3–5 minutes during CPR?",
       "answers": [
         "Because its effect is short, a few minutes",
-        "Because the first dose is not absorbed",
-        "It does not need repeating",
-        "Because the second dose is its antidote"
+        "Because the first dose is only a test dose",
+        "Because each dose must be higher than the last",
+        "Because it is absorbed slowly during CPR"
       ],
       "correct": 1
     },
@@ -242,9 +242,9 @@
       "q": "Stroke patient, systolic 110. What is the problem?",
       "answers": [
         "Below 130 less blood reaches the brain and it gets worse faster",
-        "An ideal value",
-        "Too high",
-        "It does not matter"
+        "Nothing: it is an ideal value that protects against a brain bleed",
+        "It is still too high: it must go below 100 with Captopril",
+        "It only matters above 220, everything below is acceptable"
       ],
       "correct": 1
     },
@@ -253,9 +253,9 @@
       "q": "Fluid loss of a burned patient?",
       "answers": [
         "Plasma loss: the dressing reduces it, early transport",
-        "There is no fluid loss",
-        "Only pain",
-        "Only bleeding"
+        "Only sweating: drink water, no hurry with transport",
+        "Blood loss: a pressure bandage on the burns stops it",
+        "Plasma loss: open the blisters to drain the fluid"
       ],
       "correct": 1
     },
@@ -264,9 +264,9 @@
       "q": "Open fracture with critical bleeding. What is the order?",
       "answers": [
         "First stop the bleeding with a bandage, then the splint",
-        "Only a splint",
-        "Only pain relief",
-        "Push the bone back"
+        "First the splint, the bleeding stops when it is still",
+        "First push the bone back in, then bandage and splint",
+        "First pain relief and IV, then bandage and splint"
       ],
       "correct": 1
     },
@@ -275,9 +275,9 @@
       "q": "A hypoglycaemic patient woke up after glucose. What do you watch?",
       "answers": [
         "Measure the glucose again, it can fall again",
-        "Release them, they are fine",
-        "Give Insulin so it does not go too high",
-        "Nothing"
+        "Give Insulin so the glucose does not go too high",
+        "Nothing: once awake, the glucose stays normal",
+        "Only the breathing, the glucose cannot change"
       ],
       "correct": 1
     },
@@ -286,9 +286,9 @@
       "q": "What do you expect with an extremely high blood glucose (above 700 mg/dL)?",
       "answers": [
         "Confusion, even unconsciousness",
+        "Cold sweat, shaking, fast pulse",
         "A patient without any signs",
-        "Hypoglycaemia",
-        "Pinpoint pupils"
+        "Pinpoint pupils, slow breathing"
       ],
       "correct": 1
     },
@@ -297,9 +297,9 @@
       "q": "Asthma, silent chest, exhausted, SpO2 74%. What do you do?",
       "answers": [
         "Salbutamol, oxygen; if it gets worse, consider RSI",
-        "Midazolam",
-        "Naloxone",
-        "Captopril"
+        "Midazolam to calm the breathing, then oxygen",
+        "Oxygen only; the silent chest means it improved",
+        "Nitroglycerin and oxygen, sit the patient up"
       ],
       "correct": 1
     },
@@ -308,9 +308,9 @@
       "q": "Which belong to the “4T” reversible causes of cardiac arrest?",
       "answers": [
         "Tension pneumothorax, tamponade, toxins, thrombosis",
-        "Temperature, tremor, tone, tachycardia",
-        "Tablets, tube, tourniquet, trauma",
-        "Thirst, tiredness, trembling, tears"
+        "Tension pneumothorax, trauma, temperature, tachycardia",
+        "Tamponade, toxins, thrombosis, hypothermia",
+        "Trauma, tamponade, tachycardia, toxins"
       ],
       "correct": 1
     }

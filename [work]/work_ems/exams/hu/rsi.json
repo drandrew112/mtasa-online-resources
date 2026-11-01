@@ -10,10 +10,10 @@
       "id": "rsi_01",
       "q": "Mikor indokolt az intubáció?",
       "answers": [
-        "Ha a beteg nem tudja megvédeni a légútját (GCS ≤ 8, horkoló / hörgő légzés), vagy oxigénnel sem javul",
-        "Minden eszméletlen betegnél, gondolkodás nélkül",
-        "Erős fájdalomnál",
-        "Magas vércukornál"
+        "Ha a beteg nem tudja megvédeni a légútját (GCS ≤ 8, horkoló légzés), vagy oxigénnel sem javul",
+        "Minden eszméletlen betegnél, akkor is, ha jól lélegzik és oxigénnel normál az SpO2",
+        "Ha a beteg izgatott és lerángatja a maszkot, hogy biztonságosan kapjon oxigént",
+        "Fentanilra sem szűnő erős fájdalomnál, hogy a beteget mélyen altatni lehessen"
       ],
       "correct": 1
     },
@@ -22,9 +22,9 @@
       "q": "Mi az RSI helyes sorrendje?",
       "answers": [
         "Preoxigenizáció → Ketamin → Rokuronium → intubáció → lélegeztetés oxigénnel",
-        "Rokuronium → Ketamin → oxigén → intubáció",
-        "Intubáció → Ketamin → Rokuronium",
-        "Ketamin → intubáció → oxigén, Rokuronium nem kell"
+        "Preoxigenizáció → Rokuronium → Ketamin → intubáció → lélegeztetés oxigénnel",
+        "Ketamin → Rokuronium → preoxigenizáció → intubáció → lélegeztetés oxigénnel",
+        "Preoxigenizáció → Ketamin → intubáció → Rokuronium → lélegeztetés oxigénnel"
       ],
       "correct": 1
     },
@@ -32,10 +32,10 @@
       "id": "rsi_03",
       "q": "Mi a preoxigenizáció?",
       "answers": [
-        "Kb. 3 perc maszkos oxigén az RSI előtt, hogy nőjön a beteg oxigéntartaléka",
-        "Oxigén a tubus után",
-        "Szén-dioxid adása",
-        "Szájon át lélegeztetés"
+        "Kb. 3 perc maszkos oxigén az RSI előtt",
+        "Kb. 3 perc oxigén a tubuson át az RSI után",
+        "Néhány gyors ballonos befúvás közvetlenül a Rokuronium előtt",
+        "Kb. 30 másodperc maszkos oxigén a Ketamin után"
       ],
       "correct": 1
     },
@@ -44,9 +44,9 @@
       "q": "Miért fontos a preoxigenizáció?",
       "answers": [
         "A relaxáció után a beteg nem lélegzik, az SpO2 gyorsan esik",
-        "Mert fájdalmat csillapít",
-        "Mert altat",
-        "Nem fontos"
+        "Megnyugtatja a beteget, így kevesebb Ketamin kell az indukcióhoz",
+        "Gyorsabban hat tőle a Rokuronium, így hamarabb mehet a tubus",
+        "Megemeli a vérnyomást, mielőtt a Ketamin lecsökkentené"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "Mi történik a Rokuronium beadása után rövid időn belül?",
       "answers": [
         "Megszűnik a beteg saját légzése, lélegeztetni kell",
-        "A beteg felébred",
-        "Emelkedik a vércukor",
-        "Semmi, csak órák múlva hat"
+        "A beteg elalszik, de önállóan tovább lélegzik",
+        "Kicsit lassul a légzés, a maszk még elegendő",
+        "Semmi a Ketaminig, utána áll le a légzés"
       ],
       "correct": 1
     },
@@ -66,9 +66,9 @@
       "q": "Mennyi a Rokuronium RSI dózisa?",
       "answers": [
         "1–1,2 mg/ttkg",
-        "0,01 mg/ttkg",
-        "10 mg/ttkg",
-        "1 mcg/ttkg"
+        "0,1–0,2 mg/ttkg",
+        "1,5–2 mg/ttkg",
+        "1–1,2 mcg/ttkg"
       ],
       "correct": 1
     },
@@ -78,8 +78,8 @@
       "answers": [
         "1,5 mg/ttkg",
         "0,3 mg/ttkg",
-        "15 mg/ttkg",
-        "0,05 mg/ttkg"
+        "1,2 mg/ttkg",
+        "0,15 mg/ttkg"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "Miért Ketamin az induktor prehospitálisan?",
       "answers": [
         "Megtartja a vérnyomást, sokkos betegnél is biztonságos",
-        "Mert a legolcsóbb",
-        "Mert izomrelaxáns",
-        "Mert van ellenszere"
+        "Az izmokat is ellazítja, így kevesebb Rokuronium kell",
+        "Sikertelen intubációnál a Naloxon visszafordítja",
+        "Ez hat a legtovább, így nem kell ismételni"
       ],
       "correct": 1
     },
@@ -99,9 +99,9 @@
       "q": "Mi kell ahhoz, hogy az intubált beteg oxigenizációja hatásos legyen?",
       "answers": [
         "Folyamatos lélegeztetés oxigénnel a tubuson át",
-        "Elég a tubus, oxigén nélkül is",
-        "Arcmaszk a tubus mellé",
-        "Semmi, a tubus magától lélegeztet"
+        "Oxigénmaszk az arcra, a tubus csak nyitva tartja a légutat",
+        "Lélegeztetés a tubuson át, de csak ha esik az SpO2",
+        "Oxigén a tubuson át, a beteg magától lélegzik"
       ],
       "correct": 1
     },
@@ -110,9 +110,9 @@
       "q": "Intubált betegnél elfogyott az oxigén. Mi történik?",
       "answers": [
         "A lélegeztetés hatástalan, esik az SpO2: azonnal oxigénforrást kell cserélni",
-        "Semmi",
-        "Javul az állapota",
-        "A beteg felébred"
+        "Kb. egy óráig semmi, a preoxigenizációból származó tartalék elegendő",
+        "A beteg a tubuson át magától kezd lélegezni, így az SpO2 stabil marad",
+        "Lassan esik az SpO2: a szállítás végig mehet, a kórházban cseréled"
       ],
       "correct": 1
     },
@@ -120,10 +120,10 @@
       "id": "rsi_11",
       "q": "Meddig hat a Rokuronium?",
       "answers": [
-        "Sokáig (kb. 40–60 perc): a beteg végig lélegeztetésre szorul",
-        "10 másodpercig",
-        "2 percig",
-        "Örökké"
+        "Kb. 40–60 percig",
+        "Kb. 5–10 percig",
+        "Kb. 2–3 óráig",
+        "Kb. 1–2 percig"
       ],
       "correct": 1
     },
@@ -132,9 +132,9 @@
       "q": "Miért nem adunk Rokuroniumot altatás nélkül?",
       "answers": [
         "A beteg tudatánál marad, megbénul és fullad",
-        "Mert nem hat",
-        "Mert emeli a vérnyomást",
-        "Szabad, nincs vele gond"
+        "Ketamin nélkül egyáltalán nem jut el az izmokig",
+        "Önmagában veszélyesen megemeli a vérnyomást",
+        "Altató nélkül egy percen belül elmúlna a hatása"
       ],
       "correct": 1
     },
@@ -143,9 +143,9 @@
       "q": "Égett beteg: kormos száj, rekedtség, nehezített légzés. Mit teszel?",
       "answers": [
         "Korai intubáció indokolt, mert a légút gyorsan duzzad",
-        "Soha nem intubálsz",
-        "Csak a kórházban",
-        "Csak ha már meghalt"
+        "Oxigénmaszk és megfigyelés, intubáció csak ha esik az SpO2",
+        "Nem intubálsz: az égett légút vérezni kezdene",
+        "Porlasztott Salbutamol a duzzadt légút megnyitására"
       ],
       "correct": 1
     },
@@ -154,9 +154,9 @@
       "q": "Melyik légzés jelzi, hogy az eszméletlen beteg nem védi a légútját?",
       "answers": [
         "Horkoló légzés",
-        "Szapora légzés fájdalomnál",
-        "Sípoló légzés asztmában",
-        "Normál légzés"
+        "Mély, szapora légzés",
+        "Sípoló légzés",
+        "Lassú, de szabályos légzés"
       ],
       "correct": 1
     },
@@ -164,10 +164,10 @@
       "id": "rsi_15",
       "q": "Mi a Fentanil szerepe az RSI-ben?",
       "answers": [
-        "Opcionális: magasabb dózisa tompítja az intubációs stresszválaszt, de csökkenti a légzést és a vérnyomást",
-        "Kötelező első gyógyszer",
-        "Izomrelaxáns",
-        "Az RSI ellenszere"
+        "Opcionális: tompítja az intubációs stresszt, de csökkenti a légzést és a vérnyomást",
+        "Kötelező: ez lesz az indukciós szer, ha éppen nincs Ketamin a mentőautón",
+        "Kötelező: mindig elsőként adjuk, még a Ketamin előtt, a fájdalom miatt",
+        "Opcionális: kiváltja a Rokuroniumot, ha a beteg már eleve eszméletlen"
       ],
       "correct": 1
     },
@@ -176,9 +176,9 @@
       "q": "Mi a teendő sikeres intubáció után?",
       "answers": [
         "Folyamatos oxigén, monitorozás (SpO2, ritmus), szállítás",
-        "Az oxigén levétele",
-        "A tubus azonnali eltávolítása",
-        "A beteg magára hagyása"
+        "Oxigén, amíg az SpO2 100%, utána leállítod a lélegeztetést",
+        "Leveszed a monitort, a tubus elég a biztonságos szállításhoz",
+        "Megvárod a helyszínen, hogy elmúljon a Rokuronium, majd szállítás"
       ],
       "correct": 1
     },
@@ -187,9 +187,9 @@
       "q": "Mit jelent a GCS ≤ 8?",
       "answers": [
         "Súlyos tudatzavar: a beteg valószínűleg nem védi a légútját",
-        "Normál tudat",
-        "Enyhe zavartság",
-        "Csak erős fájdalom"
+        "Közepes zavartság: a beteg válaszol, a légútját még megvédi",
+        "Enyhe zavartság: a beteg ébren van, egyelőre elég a maszkos oxigén",
+        "Fejsérülés utáni normál tudat, de a beteget figyelni kell"
       ],
       "correct": 1
     },
@@ -198,9 +198,9 @@
       "q": "Nem sikerül az intubáció, esik az SpO2. Mit teszel?",
       "answers": [
         "Abbahagyod, maszkkal oxigenizálsz, majd újra próbálod",
-        "Oxigén nélkül folytatod percekig",
-        "Adrenalint adsz",
-        "Elengeded a beteget"
+        "Folytatod, a tubus a leggyorsabb út az oxigénhez",
+        "Még egy adag Rokuroniumot adsz, majd újra próbálod",
+        "Adrenalint adsz az SpO2 emelésére, majd újra próbálod"
       ],
       "correct": 1
     }

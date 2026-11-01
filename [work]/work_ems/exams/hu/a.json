@@ -11,9 +11,9 @@
       "q": "Mit jelent a FAST betűszó a stroke felismerésében?",
       "answers": [
         "Arc (Face), Kar (Arm), Beszéd (Speech), Idő (Time)",
-        "Láz, Allergia, Szédülés, Tudat",
-        "Fej, Ágyék, Szem, Torok",
-        "Felmérés, Állapot, Stabilizálás, Transzport"
+        "Arc (Face), Kar (Arm), Látás (Sight), Hőmérséklet (Temperature)",
+        "Arclógás (Facial), Ataxia, Érzészavar (Sensation), Tónus",
+        "Fókusz (Focus), Éberség (Awareness), Beszéd (Speech), Remegés (Tremor)"
       ],
       "correct": 1
     },
@@ -22,9 +22,9 @@
       "q": "Melyik lelet utal stroke-ra a neuro vizsgálatnál?",
       "answers": [
         "Egyoldali arclógás és elkent beszéd",
-        "Tűhegynyi pupillák",
-        "Megharapott nyelv, bevizelés",
-        "Erős alkoholszag"
+        "Kétoldali tűhegynyi pupilla és nagyon lassú légzés",
+        "Megharapott nyelv, bevizelés, lassan oldódó zavartság",
+        "Percek alatt kialakuló izzadás, remegés és zavartság"
       ],
       "correct": 1,
       "image": "exams/img/fast_face.png"
@@ -33,10 +33,10 @@
       "id": "a_03",
       "q": "Stroke-gyanúnál mit mérj meg mindenképp, mert hasonló tüneteket okozhat?",
       "answers": [
-        "A vércukrot (az alacsony vércukor utánozhatja a stroke-ot)",
+        "A vércukrot",
         "A testhőmérsékletet",
-        "A pupillák méretét",
-        "Semmit, a FAST elég"
+        "Az oxigénszaturációt",
+        "A vérnyomást mindkét karon"
       ],
       "correct": 1
     },
@@ -45,9 +45,9 @@
       "q": "Miért időkritikus a stroke?",
       "answers": [
         "Kezelés nélkül néhány percenként súlyosbodik, csak a kórház tudja kezelni",
-        "Mert fertőző",
-        "Mert a beteg gyorsan elvérzik",
-        "Nem sürgős, ráér"
+        "Az agy duzzanata szinte mindig perceken belül légzésleállást okoz",
+        "Gyorsan esik a vérnyomás, így a beteg még a helyszínen sokkba kerül",
+        "Nem az, de a beteget még aznap orvosnak kell megvizsgálnia"
       ],
       "correct": 1
     },
@@ -56,9 +56,9 @@
       "q": "Stroke-gyanúnál milyen systolés vérnyomást fogadunk el a helyszínen?",
       "answers": [
         "130–220 Hgmm között, nem csökkentjük erőltetetten",
-        "60–90 Hgmm",
-        "90–120 Hgmm",
-        "240 Hgmm felett"
+        "100–140 Hgmm között, a magasabbat csökkentjük",
+        "90–120 Hgmm között, hogy ne legyen vérzés",
+        "160 Hgmm felett mindenképp csökkenteni kell"
       ],
       "correct": 1
     },
@@ -67,9 +67,9 @@
       "q": "Erős vérzés a végtagon. Mi az első lépés?",
       "answers": [
         "Közvetlen nyomás a sebre, majd nyomókötés",
-        "Felpolcolod a lábát és vársz",
-        "Sínt teszel fel",
-        "Vizet adsz a betegnek"
+        "A végtag szív fölé emelése, majd laza fedőkötés",
+        "Sínezés, hogy a vérző ér mozdulatlan maradjon",
+        "A seb hűtése hideg vízzel, hogy szűküljenek az erek"
       ],
       "correct": 1
     },
@@ -78,9 +78,9 @@
       "q": "Lőtt seb erősen vérzik. Mi az ellátás alapja?",
       "answers": [
         "Vérzéscsillapítás nyomókötéssel",
-        "Sínezés",
-        "Intubáció",
-        "Vércukormérés"
+        "A lövedék megkeresése és eltávolítása",
+        "A végtag sínezése minden más előtt",
+        "Alapos sebtisztítás, majd laza kötés"
       ],
       "correct": 1
     },
@@ -89,9 +89,9 @@
       "q": "A kötés átvérzik. Mit teszel?",
       "answers": [
         "Ráteszel még egy réteget és erősebben nyomod, az elsőt nem veszed le",
-        "Leveszed és újat teszel",
-        "Lemosod vízzel",
-        "Semmit, magától eláll"
+        "Leveszed az átázott kötést, és egy friss, szorosabbat teszel a sebre",
+        "Kicsit lazítasz a kötésen, mert túl szoros, és ezért vérzik jobban",
+        "Leveszed, kitisztítod a sebet a vérzés forrásáért, majd újrakötöd"
       ],
       "correct": 1
     },
@@ -100,9 +100,9 @@
       "q": "Melyik a nyílt törés jele?",
       "answers": [
         "A csont átszakítja a bőrt, a seb vérzik",
-        "Csak duzzanat látszik",
-        "Csak mozgatáskor fáj",
-        "Zúzódás látható"
+        "Erős duzzanat és nagy zúzódás a törés felett",
+        "A végtag láthatóan deformált vagy rövidebb",
+        "Mozgatáskor érezhető a csontvégek recsegése"
       ],
       "correct": 1
     },
@@ -111,9 +111,9 @@
       "q": "Hogyan rögzítesz egy alkartörést?",
       "answers": [
         "A sín a törés feletti és alatti ízületet is rögzíti",
-        "Csak a törés helyét kötöd körbe",
-        "Kihúzod egyenesre, és nem rögzíted",
-        "Nem rögzíted, csak hűtöd"
+        "A sín csak a törést fedi, az ízületek szabadon mozognak",
+        "Előbb teljesen kiegyenesíted a kart, majd úgy sínezed",
+        "Csak a csuklót rögzíted, a könyöknek mozognia kell"
       ],
       "correct": 1
     },
@@ -122,9 +122,9 @@
       "q": "Mit ellenőrzöl sínezés előtt és után?",
       "answers": [
         "A végtag keringését, érzését és mozgását a törés alatt",
-        "A vércukrot",
-        "A pupillákat",
-        "A légzésszámot"
+        "A duzzanatot, a zúzódást és a fájdalmat a törés felett",
+        "A beteg pulzusát, vérnyomását és SpO2-jét a monitoron",
+        "A végtag keringését, érzését és mozgását a törés felett"
       ],
       "correct": 1
     },
@@ -133,9 +133,9 @@
       "q": "Hogyan látod el az égett bőrfelületet?",
       "answers": [
         "Steril, nem tapadó fedőkötéssel",
-        "Sínezéssel",
-        "Vajjal, kenőccsel",
-        "Sehogy, csak szállítás"
+        "Szoros nyomókötéssel a sebre",
+        "A hólyagok megnyitása után kötéssel",
+        "Égési kenőccsel, majd vattapárnával"
       ],
       "correct": 1
     },
@@ -143,10 +143,10 @@
       "id": "a_13",
       "q": "Égett beteg rekedt, kormos a szája, esik az SpO2. Mire gondolsz?",
       "answers": [
-        "Légúti égésre: a kötés ezen nem segít, emelt szintű (ALS) ellátás kell",
-        "Csak fájdalomra",
-        "Alacsony vércukorra",
-        "Törésre"
+        "Légúti égésre: emelt szintű (ALS) ellátás kell",
+        "Füstirritációra: oxigén és kötés elegendő",
+        "Pánikra és fájdalomra: megnyugtatod, bekötöd",
+        "Kiterjedt bőrégésre: a fájdalom rontja a légzést"
       ],
       "correct": 1
     },
@@ -155,9 +155,9 @@
       "q": "Hová kerülnek a defibrillátor (Lifepak) elektródái?",
       "answers": [
         "Egy a jobb kulcscsont alá, egy a bal oldalra a mellkas alsó részére",
-        "Mindkettő a hátra",
-        "Mindkettő a hasra",
-        "Egy a homlokra, egy a csuklóra"
+        "Egy a bal kulcscsont alá, egy a jobb oldalra a mellkas alsó részére",
+        "Egy a szegycsont közepére, egy a mellkas jobb oldalára",
+        "Mindkettő a mellkas bal oldalára, egy a mellbimbó fölé, egy alá"
       ],
       "correct": 1,
       "image": "exams/img/lifepak_pads.png"
@@ -167,9 +167,9 @@
       "q": "A monitor felhelyezése után a pulzuson kívül mit látsz?",
       "answers": [
         "A ritmust, az SpO2-t és a vérnyomást",
-        "Csak a pulzust",
-        "A vércukrot",
-        "A testsúlyt"
+        "A ritmust, az SpO2-t és a vércukrot",
+        "Az SpO2-t, a testhőt és a pupillareakciót",
+        "A ritmust, a vércukrot és a testhőmérsékletet"
       ],
       "correct": 1
     },
@@ -178,9 +178,9 @@
       "q": "Az AED ritmuselemzése és a sokk alatt mi a szabály?",
       "answers": [
         "Senki nem érhet a beteghez",
-        "Folytatod a mellkaskompressziót",
-        "Megfogod a beteg kezét",
-        "Vizet öntesz a mellkasára"
+        "A kompresszió megy tovább, csak a befúvás áll",
+        "Egy ember erősen a mellkasra szorítja az elektródákat",
+        "Csak a ballonos lélegeztetés folytatódik"
       ],
       "correct": 1
     },
@@ -189,9 +189,9 @@
       "q": "Felnőtt újraélesztésnél mi a kompresszió és befúvás aránya?",
       "answers": [
         "30:2",
-        "15:1",
-        "5:1",
-        "50:5"
+        "15:2",
+        "30:1",
+        "5:1"
       ],
       "correct": 1
     },
@@ -200,9 +200,9 @@
       "q": "Milyen ütemben végzed a mellkaskompressziót?",
       "answers": [
         "100–120 / perc",
-        "40–60 / perc",
-        "160–200 / perc",
-        "20 / perc"
+        "80–100 / perc",
+        "120–140 / perc",
+        "60–80 / perc"
       ],
       "correct": 1
     },
@@ -211,9 +211,9 @@
       "q": "Mi a normál vércukorszint nyugalomban?",
       "answers": [
         "Kb. 70–100 mg/dL (3,9–5,6 mmol/L)",
-        "20–40 mg/dL",
-        "200–300 mg/dL",
-        "500 mg/dL felett"
+        "Kb. 40–60 mg/dL (2,2–3,3 mmol/L)",
+        "Kb. 120–160 mg/dL (6,7–8,9 mmol/L)",
+        "Kb. 180–220 mg/dL (10–12,2 mmol/L)"
       ],
       "correct": 1
     },
@@ -222,9 +222,9 @@
       "q": "Mettől beszélünk alacsony vércukorról?",
       "answers": [
         "70 mg/dL (3,9 mmol/L) alatt",
-        "150 mg/dL alatt",
-        "250 mg/dL alatt",
-        "10 mg/dL alatt"
+        "100 mg/dL (5,6 mmol/L) alatt",
+        "40 mg/dL (2,2 mmol/L) alatt",
+        "120 mg/dL (6,7 mmol/L) alatt"
       ],
       "correct": 1
     },
@@ -233,9 +233,9 @@
       "q": "A glükométer ezt mutatja. Mit jelent?",
       "answers": [
         "Súlyos hipoglikémia, azonnali cukorpótlás kell",
-        "Normál érték",
-        "Magas érték, inzulin kell",
-        "Mérési hiba, nem kell vele foglalkozni"
+        "Enyhén alacsony, 30 perc múlva újramérjük",
+        "Normál éhgyomri érték, nincs teendő",
+        "Magas vércukor, a betegnek inzulin kell"
       ],
       "correct": 1,
       "image": "exams/img/glucometer_48.png"
@@ -245,9 +245,9 @@
       "q": "Melyek az alacsony vércukor tünetei?",
       "answers": [
         "Izzadás, remegés, sápadtság, zavartság, gyors pulzus",
-        "Száraz bőr, mély szapora légzés",
-        "Tűhegynyi pupillák",
-        "Rózsaszín habos köpet"
+        "Száraz meleg bőr, mély szapora légzés, gyümölcsös lehelet",
+        "Nagy szomjúság, gyakori vizelés, szájszárazság, fáradtság",
+        "Lassú pulzus, tűhegynyi pupilla, lassú felületes légzés"
       ],
       "correct": 1
     },
@@ -256,9 +256,9 @@
       "q": "Mikor adsz oxigénmaszkot?",
       "answers": [
         "Ha alacsony az SpO2 vagy a beteg légszomjas",
-        "Minden betegnek kötelezően, végig",
-        "Soha",
-        "Csak halott betegnek"
+        "Minden mellkasi fájdalmasnak, jó SpO2 mellett is",
+        "Csak ha az SpO2 80% alá esik, más esetben nem",
+        "Csak eszméletlen, de normálisan légző betegnek"
       ],
       "correct": 1
     },
@@ -267,9 +267,9 @@
       "q": "Mi a cél oxigénszaturáció a legtöbb akut betegnél?",
       "answers": [
         "94–98%",
-        "70–80%",
-        "Mindenáron 100%",
-        "50% felett elég"
+        "88–92%",
+        "100%",
+        "90–94%"
       ],
       "correct": 1
     },
@@ -278,9 +278,9 @@
       "q": "Eszméletlen, de jól légző beteg, gerincsérülés gyanúja nélkül. Hogyan fekteted?",
       "answers": [
         "Stabil oldalfekvésbe",
-        "Hasra, arccal lefelé",
-        "Ültetve",
-        "Hanyatt, párnával a feje alatt"
+        "Hanyatt, felpolcolt lábbal",
+        "Félig ülő helyzetbe, háttámasszal",
+        "Hanyatt, oldalra fordított fejjel"
       ],
       "correct": 1
     },
@@ -289,9 +289,9 @@
       "q": "Milyen mélyen nyomod a mellkast felnőtt újraélesztésnél?",
       "answers": [
         "5–6 cm",
-        "1–2 cm",
-        "10–12 cm",
-        "Ahogy kényelmes"
+        "3–4 cm",
+        "7–8 cm",
+        "4–5 cm"
       ],
       "correct": 1
     }

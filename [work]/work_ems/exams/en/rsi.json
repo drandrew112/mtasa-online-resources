@@ -10,10 +10,10 @@
       "id": "rsi_01",
       "q": "When is intubation indicated?",
       "answers": [
-        "When the patient cannot protect the airway (GCS ≤ 8, snoring / gurgling breathing) or does not improve on oxygen",
-        "For every unconscious patient, without thinking",
-        "For severe pain",
-        "For high blood glucose"
+        "When the patient cannot protect the airway (GCS ≤ 8, snoring breathing) or does not improve on oxygen",
+        "For every unconscious patient, even if they breathe well and the SpO2 is normal on oxygen",
+        "When the patient is agitated and fights the mask, so that the oxygen can be given safely",
+        "For severe pain that Fentanyl does not relieve, so the patient can be sedated deeply"
       ],
       "correct": 1
     },
@@ -22,9 +22,9 @@
       "q": "What is the correct order of RSI?",
       "answers": [
         "Preoxygenation → Ketamine → Rocuronium → intubation → ventilation with oxygen",
-        "Rocuronium → Ketamine → oxygen → intubation",
-        "Intubation → Ketamine → Rocuronium",
-        "Ketamine → intubation → oxygen, no Rocuronium needed"
+        "Preoxygenation → Rocuronium → Ketamine → intubation → ventilation with oxygen",
+        "Ketamine → Rocuronium → preoxygenation → intubation → ventilation with oxygen",
+        "Preoxygenation → Ketamine → intubation → Rocuronium → ventilation with oxygen"
       ],
       "correct": 1
     },
@@ -32,10 +32,10 @@
       "id": "rsi_03",
       "q": "What is preoxygenation?",
       "answers": [
-        "About 3 minutes of oxygen on a mask before RSI to build up the patient's oxygen reserve",
-        "Oxygen after the tube",
-        "Giving carbon dioxide",
-        "Mouth-to-mouth ventilation"
+        "About 3 minutes of oxygen on a mask before RSI",
+        "About 3 minutes of oxygen through the tube after RSI",
+        "A few fast bag breaths right before the Rocuronium",
+        "About 30 seconds of oxygen on a mask after the Ketamine"
       ],
       "correct": 1
     },
@@ -44,9 +44,9 @@
       "q": "Why is preoxygenation important?",
       "answers": [
         "After the paralysis the patient does not breathe and the SpO2 falls fast",
-        "Because it relieves pain",
-        "Because it puts the patient to sleep",
-        "It is not important"
+        "It calms the patient, so less Ketamine is needed for the induction",
+        "It makes Rocuronium work faster, so the tube can go in sooner",
+        "It raises the blood pressure before the Ketamine lowers it"
       ],
       "correct": 1
     },
@@ -55,9 +55,9 @@
       "q": "What happens shortly after giving Rocuronium?",
       "answers": [
         "The patient's own breathing stops, they must be ventilated",
-        "The patient wakes up",
-        "The blood glucose rises",
-        "Nothing, it only works hours later"
+        "The patient falls asleep, but keeps breathing on their own",
+        "The breathing slows a little, the mask is still enough",
+        "Nothing until Ketamine is given, then the breathing stops"
       ],
       "correct": 1
     },
@@ -66,9 +66,9 @@
       "q": "What is the RSI dose of Rocuronium?",
       "answers": [
         "1–1.2 mg/kg",
-        "0.01 mg/kg",
-        "10 mg/kg",
-        "1 mcg/kg"
+        "0.1–0.2 mg/kg",
+        "1.5–2 mg/kg",
+        "1–1.2 mcg/kg"
       ],
       "correct": 1
     },
@@ -78,8 +78,8 @@
       "answers": [
         "1.5 mg/kg",
         "0.3 mg/kg",
-        "15 mg/kg",
-        "0.05 mg/kg"
+        "1.2 mg/kg",
+        "0.15 mg/kg"
       ],
       "correct": 1
     },
@@ -88,9 +88,9 @@
       "q": "Why is Ketamine the induction agent prehospitally?",
       "answers": [
         "It keeps the blood pressure, safe even in shock",
-        "Because it is the cheapest",
-        "Because it is a muscle relaxant",
-        "Because it has an antidote"
+        "It also relaxes the muscles, so less Rocuronium",
+        "Naloxone reverses it if the intubation fails",
+        "It works the longest, so no repeat dose is needed"
       ],
       "correct": 1
     },
@@ -99,9 +99,9 @@
       "q": "What is needed for an intubated patient to be oxygenated well?",
       "answers": [
         "Continuous ventilation with oxygen through the tube",
-        "The tube is enough, even without oxygen",
-        "A face mask next to the tube",
-        "Nothing, the tube ventilates by itself"
+        "An oxygen mask over the face, the tube keeps it open",
+        "Ventilation through the tube only when the SpO2 falls",
+        "Oxygen through the tube, the patient breathes alone"
       ],
       "correct": 1
     },
@@ -110,9 +110,9 @@
       "q": "The oxygen of an intubated patient runs out. What happens?",
       "answers": [
         "The ventilation does not work and the SpO2 falls: change the oxygen source at once",
-        "Nothing",
-        "The patient improves",
-        "The patient wakes up"
+        "Nothing for about an hour, the oxygen reserve from preoxygenation is enough",
+        "The patient starts breathing alone through the tube, so the SpO2 stays stable",
+        "The SpO2 falls slowly: you can finish the transport and change it in hospital"
       ],
       "correct": 1
     },
@@ -120,10 +120,10 @@
       "id": "rsi_11",
       "q": "How long does Rocuronium work?",
       "answers": [
-        "For long (about 40–60 minutes): the patient needs ventilation all the time",
-        "For 10 seconds",
-        "For 2 minutes",
-        "Forever"
+        "About 40–60 minutes",
+        "About 5–10 minutes",
+        "About 2–3 hours",
+        "About 1–2 minutes"
       ],
       "correct": 1
     },
@@ -132,9 +132,9 @@
       "q": "Why do we not give Rocuronium without sedation?",
       "answers": [
         "The patient stays conscious, paralysed and suffocating",
-        "Because it does not work",
-        "Because it raises the blood pressure",
-        "It is allowed, no problem"
+        "Without Ketamine it does not reach the muscles at all",
+        "It causes a dangerous rise of the blood pressure alone",
+        "It would wear off within a minute without the sedative"
       ],
       "correct": 1
     },
@@ -143,9 +143,9 @@
       "q": "Burned patient: soot around the mouth, hoarse voice, difficult breathing. What do you do?",
       "answers": [
         "Early intubation, because the airway swells fast",
-        "Never intubate",
-        "Only in hospital",
-        "Only after death"
+        "Oxygen mask and watch, intubate only if SpO2 falls",
+        "No intubation: the burned airway would bleed",
+        "Salbutamol nebulised to open the swollen airway"
       ],
       "correct": 1
     },
@@ -154,9 +154,9 @@
       "q": "Which breathing shows that an unconscious patient does not protect the airway?",
       "answers": [
         "Snoring",
-        "Fast breathing from pain",
-        "Wheezing in asthma",
-        "Normal breathing"
+        "Deep and fast",
+        "Wheezing",
+        "Slow but regular"
       ],
       "correct": 1
     },
@@ -164,10 +164,10 @@
       "id": "rsi_15",
       "q": "What is the role of Fentanyl in RSI?",
       "answers": [
-        "Optional: a higher dose dulls the stress response to intubation but lowers the breathing and the blood pressure",
-        "The mandatory first drug",
-        "A muscle relaxant",
-        "The antidote of RSI"
+        "Optional: it dulls the stress of intubation, but lowers breathing and blood pressure",
+        "Mandatory: it is the induction agent if Ketamine is not available on the vehicle",
+        "Mandatory: it is always given first, before the Ketamine, for pain relief",
+        "Optional: it replaces Rocuronium when the patient is already unconscious"
       ],
       "correct": 1
     },
@@ -176,9 +176,9 @@
       "q": "What do you do after a successful intubation?",
       "answers": [
         "Continuous oxygen, monitoring (SpO2, rhythm), transport",
-        "Remove the oxygen",
-        "Take the tube out at once",
-        "Leave the patient alone"
+        "Oxygen until the SpO2 is 100%, then stop the ventilation",
+        "Remove the monitor, the tube is enough for safe transport",
+        "Wait on scene until the Rocuronium wears off, then transport"
       ],
       "correct": 1
     },
@@ -187,9 +187,9 @@
       "q": "What does GCS ≤ 8 mean?",
       "answers": [
         "Severe loss of consciousness: the patient probably cannot protect the airway",
-        "Normal consciousness",
-        "Mild confusion",
-        "Only strong pain"
+        "Moderate confusion: the patient answers, but the airway is still protected",
+        "Mild confusion: the patient is awake, oxygen on a mask is enough for now",
+        "Normal consciousness after a head injury, but the patient must be watched"
       ],
       "correct": 1
     },
@@ -198,9 +198,9 @@
       "q": "The intubation fails and the SpO2 is falling. What do you do?",
       "answers": [
         "Stop, oxygenate with the mask, then try again",
-        "Keep trying for minutes without oxygen",
-        "Give Adrenaline",
-        "Release the patient"
+        "Keep trying, the tube is the fastest way to oxygen",
+        "Give another dose of Rocuronium, then try again",
+        "Give Adrenaline to raise the SpO2, then try again"
       ],
       "correct": 1
     }
