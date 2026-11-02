@@ -11,6 +11,7 @@
 	<file src="img/bubble.png" />
 	<file src="img/dot.png" />
 	<file src="img/cuffs.png" />
+	<file src="img/tablet.png" />
 	<!-- rank badges: img/ranks/<workId>/<level>.png (work_core rankBadges, work.rank element data) -->
 	<file src="img/ranks/police/1.png" />
 	<file src="img/ranks/police/2.png" />

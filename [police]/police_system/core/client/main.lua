@@ -14,6 +14,8 @@ end
 
 addEventHandler("onClientKey", root, function(button, press)
     if isConsoleActive() or isChatBoxInputActive() or isMainMenuActive() then return end
+    -- v_chat input open (its own DX box, not the MTA chatbox): no police key, J does not open the MDC
+    if getElementData(localPlayer, "showChatInput") then return end
     -- MTA reports the function keys upper-case ("F5"); every handler compares lower-case names
     button = button:lower()
     for i = 1, #keyHandlers do

@@ -207,6 +207,7 @@ TRAFFIC = {
     CHASE_PATH_REROUTE = 35,    -- the target moved this far from the route's end: a new route
     HIDDEN_SPAWN_TRIES = 80,    -- findHiddenRoadSpawn: lane points tried
 
+    NO_PLATE_CHANCE = 0.003,    -- a traffic car with no number plate (plate text "0", police_system ALPR)
     DRIVER_THROTTLE = 0.02,     -- tiny analog throttle on the drivers (client): stops GTA locking the wheels
     ADMIN_LEVEL = 4,            -- /traffic commands (elementData admin_level)
     DEBUG = false,

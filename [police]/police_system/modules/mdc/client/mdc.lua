@@ -1,6 +1,7 @@
 -- police_system / modules/mdc/client/mdc.lua
 -- The Mobile Data Computer: J in a police vehicle (driver or passenger), only with the police right; the Skoda 598
--- only with the hu_pd paintjob (isPoliceModelVehicle). No warning for anyone else (the key just goes on to other
+-- only with the hu_pd paintjob (isPoliceModelVehicle); signed in to a unit J opens it anywhere (on foot too). Not
+-- while the v_chat input is open (core/client/main.lua). No warning for anyone else (the key just goes on to other
 -- resources). 80 % of the screen (width and height), menu in the top bar, navy theme, the status colours of F4-F7.
 -- Without a unit only the smaller sign-in window shows (its Reports button: the own drafts, submitted off duty too).
 -- MDC computers (terminals.lua, J on foot next to one): the full MDC without a unit. Drawn into a render target only when something changed
@@ -244,6 +245,7 @@ function MDC.openMdc(terminal)
     showCursor(true)
     setLock(true)
     POL.send("mdc:open", true)
+    setElementData(localPlayer, "tabletOpen", "pol")   -- v_nametags: tablet icon
     MDC.load()
     MDC.dirty = true
     POL.layers.set("mdc", true)
@@ -257,6 +259,7 @@ function MDC.close()
     showCursor(false)
     setLock(false)
     POL.send("mdc:open", false)
+    if getElementData(localPlayer, "tabletOpen") == "pol" then setElementData(localPlayer, "tabletOpen", false) end
     POL.layers.set("mdc", false)
 end
 
@@ -290,6 +293,11 @@ POL.key("mdc", function(button, press)
                 if press then POL.send("mdc:terminal", id) end
                 return true
             end
+        end
+        -- signed in to a unit: the MDC opens anywhere (on foot, any vehicle)
+        if button == "j" and POL.hasRight() and POL.onDuty() then
+            if press then MDC.openMdc() end
+            return true
         end
         return false
     end

@@ -264,7 +264,10 @@ local function unlockControls()
     lockedControls = {}
 end
 
-addEventHandler("onClientResourceStop", resourceRoot, unlockControls)
+addEventHandler("onClientResourceStop", resourceRoot, function()
+    unlockControls()
+    if getElementData(localPlayer, "tabletOpen") == "ems" then setElementData(localPlayer, "tabletOpen", false) end
+end)
 
 -- medsys medic role: with the role required, only medics can open the tablet and be added
 -- to a crew. Without medsys nothing is required. UI only, the server checks it on sign-in.
@@ -285,6 +288,7 @@ function Tablet.show()
     end
     showCursor(true, false)
     lockControls()
+    setElementData(localPlayer, "tabletOpen", "ems")   -- v_nametags: tablet icon
     addEventHandler("onClientRender", root, render)
     addEventHandler("onClientClick", root, onClick)
     addEventHandler("onClientKey", root, onKey)
@@ -301,6 +305,7 @@ function Tablet.close()
     removeEventHandler("onClientClick", root, onClick)
     removeEventHandler("onClientKey", root, onKey)
     unlockControls()
+    if getElementData(localPlayer, "tabletOpen") == "ems" then setElementData(localPlayer, "tabletOpen", false) end
     if not getElementData(localPlayer, "textInputOpen") then showCursor(false) end
     TabletTutorial.report("close")
 end

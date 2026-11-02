@@ -5,7 +5,8 @@
 -- menu; death removes the cuffs. Escort ("grab"): the officer holds the suspect from behind (attached in front of
 -- the officer, walk anim while the officer moves; NPC and player alike). Place in / take out of a police vehicle (a player may get
 -- in with G on a rear seat, getting out is blocked). Handover at the station marker: the NPC goes, the player goes
--- to jail; the warrants are served. AI arrest ("Busted"): no escorting, straight to the station.
+-- to jail; the warrants are served. The officer first picks the charges in a temp menu (at least one, more can be
+-- ticked; stop/client/stop.lua "arrest:charges"), they go into the report (handover line). AI arrest ("Busted"): no escorting, straight to the station.
 -- Every step is logged.
 
 local AR = POL.module("arrest", { cuffed = {}, escorts = {}, pending = {}, markers = {}, custody = {} })
@@ -415,7 +416,7 @@ end)
 
 ------------------------------------------------------------------------ handover at the station
 
-local function handover(officer, target, station)
+local function handover(officer, target, station, charges)
     local unit = POL.units.of(officer)
     local isPlayer = getElementType(target) == "player"
     subjectName(target, function(name, row)
@@ -423,7 +424,7 @@ local function handover(officer, target, station)
         if not inc and unit then inc = incidentFor(officer, target, name, row) end
         local function finish(warrantMinutes)
             if inc then
-                POL.events.log(unit, officer, "handover", { name = name, station = station.name }, inc)
+                POL.events.log(unit, officer, "handover", { name = name, station = station.name, charges = charges }, inc)
                 inc.arrested = isPlayer and "player" or "npc"
             end
             if isPlayer then
@@ -447,26 +448,84 @@ local function handover(officer, target, station)
     end)
 end
 
+-- the charges an officer can pick at the handover: the arrestable / warrant items of the penal code
+local function chargeItems(officer)
+    local out = {}
+    for _, e in ipairs(POL.btk.items) do
+        if e.arrestable or e.warrant then
+            out[#out + 1] = { id = e.id, label = L.forPlayer(officer, btkKey(e.id)) }
+        end
+    end
+    return out
+end
+
+-- the next suspect of the officer's handover queue: the charges menu (client stop.lua "arrest:charges")
+local function nextHandover(officer)
+    local q = AR.handovers[officer]
+    if not q then return end
+    while q.list[1] and not (isElement(q.list[1]) and AR.cuffed[q.list[1]] and not isPedDead(q.list[1])) do
+        table.remove(q.list, 1)
+    end
+    local target = q.list[1]
+    if not target then AR.handovers[officer] = nil; return end
+    subjectName(target, function(name)
+        if AR.handovers[officer] ~= q or q.list[1] ~= target then return end
+        POL.send(officer, "arrest:charges", target, L.forPlayer(officer, "police_system.arrest.charges_title", { name = name }),
+            chargeItems(officer))
+    end)
+end
+
 local function onHandoverHit(st, el)
     if getElementType(el) ~= "player" or not POL.units.of(el) then return end
     local officer = el
     local veh = getPedOccupiedVehicle(officer)
-    local done = 0
+    local list = {}
     for target, c in pairs(AR.cuffed) do
         if isElement(target) and not isPedDead(target) then
             local tv = getPedOccupiedVehicle(target)
             local mine = (veh and tv == veh) or AR.escorts[target] == officer
                 or (not veh and not tv and POL.dist(officer, target) < 6)
-            if mine then
-                AR.custody[target] = nil
-                if tv then removePedFromVehicle(target) end
-                handover(officer, target, st)
-                done = done + 1
-            end
+            if mine then list[#list + 1] = target end
         end
     end
-    if done > 0 then POL.notify(officer, "police_system.arrest.handed_over", { count = done }) end
+    if #list == 0 then return end
+    AR.handovers[officer] = { st = st, list = list, done = 0 }
+    nextHandover(officer)
 end
+
+-- the officer picked the charges (at least one) and pressed Hand over
+POL.net("arrest:handover", function(officer, target, charges)
+    local q = AR.handovers[officer]
+    if not q or q.list[1] ~= target or not isElement(target) or not AR.cuffed[target] then return end
+    local valid, seen = {}, {}
+    for _, id in ipairs(type(charges) == "table" and charges or {}) do
+        local e = POL.btk.get(id)
+        if e and (e.arrestable or e.warrant) and not seen[id] then seen[id] = true; valid[#valid + 1] = id end
+    end
+    if #valid == 0 then return POL.notify(officer, "police_system.arrest.err_no_charges") end
+    local h = q.st.handover
+    local ox, oy, oz = getElementPosition(officer)
+    if getDistanceBetweenPoints3D(ox, oy, oz, h[1], h[2], h[3]) > POLICE.HANDOVER_RADIUS + 6 then
+        AR.handovers[officer] = nil
+        return POL.notify(officer, "police_system.arrest.err_too_far")
+    end
+    table.remove(q.list, 1)
+    AR.custody[target] = nil
+    if getPedOccupiedVehicle(target) then removePedFromVehicle(target) end
+    handover(officer, target, q.st, valid)
+    q.done = q.done + 1
+    if #q.list == 0 then
+        AR.handovers[officer] = nil
+        POL.notify(officer, "police_system.arrest.handed_over", { count = q.done })
+    else
+        nextHandover(officer)
+    end
+end)
+
+-- the charges menu was closed without a handover: the suspects stay in custody (drive into the marker again)
+POL.net("arrest:handoverCancel", function(officer) AR.handovers[officer] = nil end)
+addEventHandler("onPlayerQuit", root, function() AR.handovers[source] = nil end)
+AR.handovers = {}
 
 -- on stop the cuffs come off (a restart would leave them on with nobody to take them off)
 function AR.stop()

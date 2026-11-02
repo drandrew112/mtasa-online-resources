@@ -81,6 +81,7 @@ local ICON = 14
 local COLOR_WHITE = { 255, 255, 255 }
 local COLOR_LOWHP = { 255, 77, 77 }
 local IMG_MIC, IMG_BUBBLE, IMG_DOT, IMG_CUFFS = "img/mic.png", "img/bubble.png", "img/dot.png", "img/cuffs.png"
+local IMG_TABLET = "img/tablet.png"
 
 -- voice: a kliens maga látja, ki beszél (nincs element data)
 local speaking = {}
@@ -91,7 +92,7 @@ addEventHandler("onClientPlayerVoiceStop", root, function() speaking[source] = n
 local watchedKeys = {
 	admin_level = true, accName = true, displayName = true, adminDuty = true, admin_name = true,
 	level = true, chatTyping = true, ["work.id"] = true, crewTag = true, country = true,
-	["work.rank"] = true, ["pol.cuffed"] = true,
+	["work.rank"] = true, ["pol.cuffed"] = true, tabletOpen = true,
 }
 
 -- zászló: játékosonként egyszer kérdezzük le az országot + a textúrát (ui_core), utána a cache-ből rajzolunk
@@ -175,6 +176,8 @@ local function buildEntry(p, entry)
 	setRank(entry, p)
 	entry.cuffed = getElementData(p, "pol.cuffed") == true
 	entry.typing = getElementData(p, "chatTyping") == true
+	-- MDC (police_system) vagy EMS tablet (med_erm) nyitva: "pol" / "ems"
+	entry.tablet = getElementData(p, "tabletOpen") or false
 	return entry
 end
 
@@ -313,6 +316,13 @@ local function renderNametags()
 						local a = 70 + 185 * math.max(0, math.sin((now / 200) - i * 0.9))
 						dxDrawImage(bx + 7 + i * 6, by + 5, 4, 4, IMG_DOT, 0, 0, 0, tocolor(27, 34, 48, a))
 					end
+				end
+
+				-- tablet (MDC / EMS tablet) nyitva: kis tablet ikon a sor jobb szélén (a buborék után)
+				if e.tablet then
+					local tx = curX + (e.typing and (30 + GAP) or 0)
+					local tc = e.tablet == "ems" and tocolor(255, 120, 120, 235) or tocolor(120, 170, 255, 235)
+					dxDrawImage(tx, sY - e.nameH / 2 - ICON / 2, ICON, ICON, IMG_TABLET, 0, 0, 0, tc)
 				end
 
 				-- fő sor felett: crew tag + munka mini kártya egymás mellett, együtt centrálva

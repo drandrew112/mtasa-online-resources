@@ -296,6 +296,8 @@ function Agents.spawn(lane, s, v, opts)
     setElementSyncer(ped, false)
     warpPedIntoVehicle(ped, veh)
     setVehicleEngineState(veh, true)
+    -- very rarely a car with no number plate: plate text "0" (police_system ALPR: "no plate")
+    if not (opts and opts.model) and random() < TRAFFIC.NO_PLATE_CHANCE then setVehiclePlateText(veh, "0") end
     setElementData(veh, "ai_traffic", true)
     setElementData(ped, "ai_traffic", true)
 

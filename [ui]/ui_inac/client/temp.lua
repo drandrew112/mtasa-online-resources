@@ -219,6 +219,8 @@ function updateTempMenuItem(path, meta)
     if meta.price   ~= nil then item.price   = meta.price   end
     if meta.checked ~= nil then item.checked = meta.checked or nil end
     if meta.owned   ~= nil then item.owned   = meta.owned or nil end
+    if meta.label   ~= nil then item.label   = tostring(meta.label) end
+    if meta.desc    ~= nil then item.desc    = meta.desc or nil end
     return true
 end
 

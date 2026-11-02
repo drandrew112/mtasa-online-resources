@@ -1,6 +1,6 @@
 -- police_system / modules/query/client/window.lua
 -- The query window left of the mini panel: the last person / vehicle check of the unit. Flags colour coded
--- (WARRANT, WANTED, Suspended, Stolen, Expired). Backspace hides it (always, the decision), it hides by itself after
+-- (WARRANT, WANTED, Suspended, Stolen, Expired); a search result too (kind "search", items coloured by class). Backspace hides it (always, the decision), it hides by itself after
 -- HIDE_AFTER; the MDC keeps the checks (Overview / profile).
 
 local QW = POL.module("queryw", { data = nil, shownAt = 0 })
@@ -8,22 +8,35 @@ local QW = POL.module("queryw", { data = nil, shownAt = 0 })
 local function rows(r)
     local out, flags = {}, {}
     local c = POL.colors
-    if r.kind == "person" then
+    if r.kind == "search" then
+        -- search/server/search.lua: every item, green / orange / red by its class
+        local col = { legal = c.green, questionable = c.orange, illegal = c.red }
+        out[#out + 1] = { L(r.what == "vehicle" and "police_system.query.plate" or "police_system.query.name"), tostring(r.name) }
+        local illegal = 0
+        for _, it in ipairs(r.items or {}) do
+            if it.class == "illegal" then illegal = illegal + 1 end
+            out[#out + 1] = { L("police_system.search.class_" .. tostring(it.class)), L("police_system.item." .. tostring(it.id)), col[it.class] }
+        end
+        if #(r.items or {}) == 0 then out[#out + 1] = { "", L("police_system.search.nothing"), c.dim } end
+        if illegal > 0 then flags[#flags + 1] = { L.upper(L("police_system.search.illegal_found")), c.red } end
+    elseif r.kind == "person" then
         out[#out + 1] = { L("police_system.query.name"), r.name .. (r.npc and "  (NPC)" or "") }
         out[#out + 1] = { L("police_system.query.citizen_id"), "#" .. tostring(r.id) }
         out[#out + 1] = { L("police_system.query.birth"), tostring(r.birth or "-") }
         out[#out + 1] = { L("police_system.query.licence"), L("police_system.query.licence_" .. tostring(r.licence)),
-                          r.licence == "suspended" and c.red or nil }
+                          r.licence ~= "valid" and c.red or nil }
         if (r.warrants or 0) > 0 then flags[#flags + 1] = { "WARRANT", c.red } end
         if (r.wanted or 0) > 0 then flags[#flags + 1] = { "WANTED " .. ("★"):rep(r.wanted), c.yellow } end
-        if r.licence == "suspended" then flags[#flags + 1] = { L.upper(L("police_system.query.suspended")), c.orange } end
+        if r.licence ~= "valid" then flags[#flags + 1] = { L.upper(L("police_system.query.licence_" .. tostring(r.licence))), c.orange } end
     else
         out[#out + 1] = { L("police_system.query.plate"), tostring(r.plate or "-") }
         out[#out + 1] = { L("police_system.query.model"), exports.veh_manager:getModelName(r.model or 0) or "?" }
         out[#out + 1] = { L("police_system.query.owner"), tostring(r.owner) .. (r.ownerNpc and "  (NPC)" or "") }
-        out[#out + 1] = { L("police_system.query.registration"), tostring(r.registration) }
-        local exp = tostring(r.inspection):find("expired")
-        out[#out + 1] = { L("police_system.query.inspection"), tostring(r.inspection), exp and c.red or nil }
+        out[#out + 1] = { L("police_system.query.registration"), tostring(r.registration),
+                          tostring(r.registration):find("expired") and c.red or nil }
+        local exp = tostring(r.inspection):find("expired") or tostring(r.registration):find("expired")
+        out[#out + 1] = { L("police_system.query.inspection"), tostring(r.inspection),
+                          tostring(r.inspection):find("expired") and c.red or nil }
         if r.stolen then flags[#flags + 1] = { "STOLEN", c.red } end
         if (r.ownerWarrants or 0) > 0 then flags[#flags + 1] = { "OWNER WARRANT", c.red } end
         if exp then flags[#flags + 1] = { L.upper(L("police_system.query.expired")), c.orange } end
@@ -45,7 +58,8 @@ local function paint()
         local c = POL.colors
         dxDrawRectangle(0, 0, w, h, c.bg)
         dxDrawRectangle(0, 0, w, POL.px(30), c.panel2)
-        local title = r.kind == "person" and L("police_system.query.person_check") or L("police_system.query.vehicle_check")
+        local title = r.kind == "search" and L(r.what == "vehicle" and "police_system.search.title_vehicle" or "police_system.search.title_person")
+            or r.kind == "person" and L("police_system.query.person_check") or L("police_system.query.vehicle_check")
         dxDrawText(L.upper(title), POL.px(10), 0, w, POL.px(30), c.text, 1, POL.font(10, true), "left", "center")
         local fy = POL.px(36)
         if #flags > 0 then

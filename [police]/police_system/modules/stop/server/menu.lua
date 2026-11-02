@@ -1,7 +1,8 @@
 -- police_system / modules/stop/server/menu.lua
 -- The temp menu (ui_inac) of a stopped person / vehicle or a wanted / cuffed suspect, built for the officer in its
 -- language (stays open after a pick, except arrest / escort), and the actions it sends back (stop:action target, value):
---   details, vehicle (queries), bac, drug (tests), warn:<id>, fine:<id> (penal code), arrest, uncuff, escort, place,
+--   details, vehicle (queries), bac, drug (tests), search, search_vehicle (search/server/search.lua), warn:<id>,
+--   fine:<id> (penal code), arrest, uncuff, escort, place,
 --   takeout, out (order out of the vehicle), return (back into the vehicle), release (Release / Code 4)
 -- Tests: an NPC's result comes from its History; a player is always negative for now (pol.bac / pol.drug element
 -- data is read when a future drink / drug system sets it).
@@ -93,6 +94,7 @@ function ST.openMenu(officer, target)
         add("police_system.stop.vehicle_details", "vehicle", { desc = getVehiclePlateText(target) })
         add("police_system.stop.bac", "bac")
         add("police_system.stop.drug", "drug")
+        add("police_system.stop.search_vehicle", "search_vehicle")
         items[#items + 1] = { label = T(officer, "police_system.stop.warning"), items = btkItems(officer, true) }
         items[#items + 1] = { label = T(officer, "police_system.stop.fine"), items = btkItems(officer, false) }
         add("police_system.stop.order_out", "out")
@@ -117,6 +119,8 @@ function ST.openMenu(officer, target)
             items[#items + 1] = { label = T(officer, "police_system.stop.fine"), items = btkItems(officer, false) }
         end
         local veh = getPedOccupiedVehicle(target)
+        if (s or cuffed) and not veh then add("police_system.stop.search_person", "search") end
+        if s and s.fromVehicle and isElement(s.fromVehicle) then add("police_system.stop.search_vehicle", "search_vehicle") end
         if veh and POL.arrest.canTakeOut(target) then add("police_system.stop.take_out", "takeout") end
         if not cuffed then
             if not veh then add("police_system.stop.arrest", "arrest") end
@@ -239,6 +243,11 @@ function ST.action(officer, target, value, inMenu)
         if getElementType(target) == "vehicle" then POL.query.vehicle(officer, target) end
     elseif value == "bac" or value == "drug" then
         tests(officer, s, value)
+    elseif value == "search" then
+        if getElementType(target) ~= "vehicle" and (s or POL.arrest.isCuffed(target)) then POL.search.search(officer, target, "person", s) end
+    elseif value == "search_vehicle" then
+        local veh = getElementType(target) == "vehicle" and target or (s and s.fromVehicle)
+        if s and isElement(veh) then POL.search.search(officer, veh, "vehicle", s) end
     elseif kind == "warn" then
         issue(officer, s, "warning", arg)
     elseif kind == "fine" then

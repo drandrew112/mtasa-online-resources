@@ -10,6 +10,7 @@
 --   * interior / other dimension: paused (no progress), continued when the player comes out.
 --   * 1 -> 2: a unit with lights on following within FOLLOW_DIST while the suspect keeps moving MOVING_TIME s.
 --   * surrender offer: a unit within SURRENDER_DIST and the suspect stands on foot.
+--   * cuffed (in custody): none of the above, the phase stays active until the handover / release.
 
 local W = POL.wanted
 local C = POLICE.WANTED
@@ -110,6 +111,17 @@ local function tick()
                 setBlink(player, st, false)
                 POL.send(player, "wanted:state", st.level, st.phase)
             end
+        elseif POL.arrest and POL.arrest.isCuffed(player) then
+            -- in custody: the pursuit is over - no evasion, no level rise (lights-on police car), no surrender offer
+            st.lastSeen = now
+            st.movingFor = 0
+            if st.phase ~= "active" then
+                st.phase = "active"
+                hideCircle(st)
+                setBlink(player, st, false)
+                POL.send(player, "wanted:state", st.level, st.phase)
+            end
+            if st.offer then st.offer = false; POL.send(player, "wanted:surrender", false) end
         else
             local x, y, z = getElementPosition(player)
             local vehD, footD, lightD = nearestPolice(player, x, y, z)

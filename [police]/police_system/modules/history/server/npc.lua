@@ -126,7 +126,7 @@ local function makeCitizen(skin, prof, cb)
         or birthOf(prof and tonumber(prof.age) or random(C.AGE[1], C.AGE[2]), now)
     local warrant = not prof and chance(C.WARRANT)
     local flags = {
-        licence = pf.licence or (chance(C.SUSPENDED) and "suspended" or "valid"),
+        licence = pf.licence or (chance(C.SUSPENDED) and "suspended" or chance(C.EXPIRED_LICENCE) and "expired" or "valid"),
         bac = prof and (tonumber(pf.bac) or 0) or (chance(isNight() and C.ALCOHOL_NIGHT or C.ALCOHOL) and (floor((0.2 + random() * 1.4) * 100) / 100) or 0),
         drug = chance(C.DRUG),
         drugType = prof and pf.drugType or nil,
@@ -214,7 +214,8 @@ function H.npcVehicle(veh, cb)
         local expired
         if vp then expired = vp.inspection == "expired" else expired = chance(C.EXPIRED_INSPECTION) end
         local flags = {
-            registration = "valid",
+            registration = (not vp and chance(C.EXPIRED_REGISTRATION))
+                and ("expired " .. dateOf(now - random(10, 200) * 86400):sub(1, 7)) or "valid",
             inspection = expired and ("expired " .. dateOf(now - random(10, 300) * 86400):sub(1, 7))
                 or ("valid " .. dateOf(now + random(60, 700) * 86400):sub(1, 7)),
             stolen = vp and vp.stolen == true or (not vp and chance(C.STOLEN)),

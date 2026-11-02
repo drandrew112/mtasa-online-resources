@@ -1,0 +1,58 @@
+{
+  "_comment": "Ped / vehicle search (modules/search/server/search.lua). weight = how likely an item is picked (relative), class = legal (green) | questionable (orange) | illegal (red), boost = drug | warrant: the weight x boost_factor when the NPC uses drugs / has an active warrant. count = how many items are drawn [min, max]. Text: police_system.item.<id>.",
+  "boost_factor": 5,
+  "person": {
+    "count": [0, 3],
+    "items": [
+      { "id": "wallet",          "weight": 60, "class": "legal" },
+      { "id": "phone",           "weight": 55, "class": "legal" },
+      { "id": "keys",            "weight": 45, "class": "legal" },
+      { "id": "cigarettes",      "weight": 25, "class": "legal" },
+      { "id": "lighter",         "weight": 20, "class": "legal" },
+      { "id": "chewing_gum",     "weight": 15, "class": "legal" },
+      { "id": "sunglasses",      "weight": 12, "class": "legal" },
+      { "id": "earphones",       "weight": 12, "class": "legal" },
+      { "id": "receipts",        "weight": 10, "class": "legal" },
+      { "id": "pills",           "weight": 6,  "class": "questionable", "boost": "drug" },
+      { "id": "capsules",        "weight": 5,  "class": "questionable", "boost": "drug" },
+      { "id": "prescription",    "weight": 5,  "class": "questionable" },
+      { "id": "pocket_knife",    "weight": 5,  "class": "questionable" },
+      { "id": "cash_roll",       "weight": 4,  "class": "questionable", "boost": "drug" },
+      { "id": "syringe",         "weight": 2,  "class": "questionable", "boost": "drug" },
+      { "id": "small_scale",     "weight": 1,  "class": "questionable", "boost": "drug" },
+      { "id": "joint",           "weight": 3,  "class": "illegal", "boost": "drug" },
+      { "id": "weed_bag",        "weight": 2,  "class": "illegal", "boost": "drug" },
+      { "id": "cocaine_bag",     "weight": 1,  "class": "illegal", "boost": "drug" },
+      { "id": "brass_knuckles",  "weight": 1,  "class": "illegal", "boost": "warrant" },
+      { "id": "pistol",          "weight": 1,  "class": "illegal", "boost": "warrant" },
+      { "id": "fake_id",         "weight": 1,  "class": "illegal", "boost": "warrant" }
+    ]
+  },
+  "vehicle": {
+    "count": [1, 4],
+    "items": [
+      { "id": "first_aid_kit",   "weight": 50, "class": "legal" },
+      { "id": "warning_triangle","weight": 45, "class": "legal" },
+      { "id": "spare_wheel",     "weight": 35, "class": "legal" },
+      { "id": "jack",            "weight": 25, "class": "legal" },
+      { "id": "umbrella",        "weight": 15, "class": "legal" },
+      { "id": "gym_bag",         "weight": 15, "class": "legal" },
+      { "id": "water_bottles",   "weight": 15, "class": "legal" },
+      { "id": "toolbox",         "weight": 12, "class": "legal" },
+      { "id": "shopping_bags",   "weight": 12, "class": "legal" },
+      { "id": "child_seat",      "weight": 8,  "class": "legal" },
+      { "id": "crowbar",         "weight": 5,  "class": "questionable", "boost": "warrant" },
+      { "id": "baseball_bat",    "weight": 5,  "class": "questionable", "boost": "warrant" },
+      { "id": "pills",           "weight": 4,  "class": "questionable", "boost": "drug" },
+      { "id": "many_phones",     "weight": 2,  "class": "questionable", "boost": "warrant" },
+      { "id": "cash_bundle",     "weight": 2,  "class": "questionable", "boost": "drug" },
+      { "id": "fuel_can",        "weight": 4,  "class": "questionable" },
+      { "id": "weed_brick",      "weight": 1,  "class": "illegal", "boost": "drug" },
+      { "id": "cocaine_brick",   "weight": 1,  "class": "illegal", "boost": "drug" },
+      { "id": "pistol",          "weight": 1,  "class": "illegal", "boost": "warrant" },
+      { "id": "shotgun",         "weight": 1,  "class": "illegal", "boost": "warrant" },
+      { "id": "stolen_goods",    "weight": 1,  "class": "illegal", "boost": "warrant" },
+      { "id": "fake_plates",     "weight": 1,  "class": "illegal", "boost": "warrant" }
+    ]
+  }
+}

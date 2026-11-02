@@ -24,6 +24,7 @@
     <script src="modules/btk/server/btk.lua" type="server" />
     <script src="modules/history/server/npc.lua" type="server" />
     <script src="modules/history/server/register.lua" type="server" />
+    <script src="modules/history/server/cleanup.lua" type="server" />
     <script src="modules/records/server/records.lua" type="server" />
     <script src="modules/warrants/server/warrants.lua" type="server" />
     <script src="modules/events/server/log.lua" type="server" />
@@ -46,7 +47,9 @@
     <script src="modules/arrest/server/arrest.lua" type="server" />
     <script src="modules/stop/server/stop.lua" type="server" />
     <script src="modules/stop/server/menu.lua" type="server" />
+    <script src="modules/search/server/search.lua" type="server" />
     <script src="modules/query/server/query.lua" type="server" />
+    <script src="modules/plates/server/alpr.lua" type="server" />
     <script src="modules/radio/server/radio.lua" type="server" />
     <script src="modules/tow/server/tow.lua" type="server" />
     <script src="modules/medical/server/medical.lua" type="server" />

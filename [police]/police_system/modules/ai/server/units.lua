@@ -115,15 +115,33 @@ function AI.spawn(c, tank)
     return unit
 end
 
--- the unit goes away: no siren, its crew back in, driving on as traffic, removed when nobody sees it
+-- an AI officer stops fighting: no target, weapon away (the chase is over: cuffed, surrendered and taken, evaded).
+-- ai_peds "police" with no target only stands; a failed vehicle entry falls back to this, not to the old combat.
+function AI.pacify(ped)
+    if not isElement(ped) or isPedDead(ped) or not POL.running("ai_peds") then return end
+    pcall(function()
+        local p = exports.ai_peds
+        if not p:isAIPed(ped) then return end
+        p:giveAIPedWeapon(ped, 0)
+        p:setAIPedBehaviour(ped, "police", { target = false, armed = false })
+    end)
+end
+
+-- the unit goes away: no siren, its crew stops fighting and gets back in, driving on as traffic, removed when nobody
+-- sees it (a wrecked vehicle: the crew stands until unseen)
 function AI.retreat(unit)
     if unit.state == "retreat" then return end
     unit.state = "retreat"
     unit.chase = nil
+    unit.pendingArgs = nil
     removeBlip(unit)
     POL.ai.sirens.off(unit, true)
+    for _, ped in ipairs({ unit.driver, unit.partner }) do
+        if ped and isElement(ped) and not getPedOccupiedVehicle(ped) then AI.pacify(ped) end
+    end
     local t = traffic()
     if not t or not isElement(unit.veh) then return AI.remove(unit) end
+    if unit.dead or isVehicleBlown(unit.veh) then unit.manualDespawn = true; return end
     if unit.parked then setElementFrozen(unit.veh, false) end
     -- crew out on foot: back in first (tactics.lua finishes the retreat when they sat down)
     if POL.ai.tactics.crewOut(unit) then
@@ -225,15 +243,26 @@ addEventHandler("onElementDestroy", root, function()
         removeBlip(unit)
         for _, ped in ipairs({ unit.driver, unit.partner }) do
             if ped and isElement(ped) and not getPedOccupiedVehicle(ped) then
-                -- the crew outside stays until unseen (budget cleanup)
+                -- the crew outside stays until unseen (budget cleanup), not fighting any more
                 AI.orphans = AI.orphans or {}
                 AI.orphans[ped] = getTickCount()
+                AI.pacify(ped)
             elseif ped then
                 AI.peds[ped] = nil
             end
         end
     elseif AI.peds[source] then
         AI.peds[source] = nil
+    end
+end)
+
+-- a retreating crew could not get back in (vehicle gone / seat taken): it stays calm, removed when unseen
+addEvent("onAIPedVehicleTaskFailed")
+addEventHandler("onAIPedVehicleTaskFailed", root, function()
+    local unit = AI.peds[source]
+    if unit and unit.state == "retreat" then
+        AI.pacify(source)
+        unit.manualDespawn = true
     end
 end)
 

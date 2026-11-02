@@ -8,6 +8,8 @@
     GOV.page('police_fines', {
         keys: [...GOV.keys('police_system', ['hint', 'item', 'default', 'current', 'reset', 'save', 'target', 'target_hint',
             'changed', 'warnings_free'])],
+        // the server action is policeFines (the shell would call the page id "police_fines": no data, "undefined")
+        load: () => GOV.call('policeFines'),
         render(d) {
             let h = head(GOV.title('police_fines'), esc(T('hint')));
             const targets = arr(d.targets);

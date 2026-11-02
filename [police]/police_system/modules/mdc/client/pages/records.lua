@@ -69,7 +69,7 @@ local function drawCitizen(x, y, w, h)
     field(x + POL.px(16) + fw, fy, L("police_system.mdc.birth"), tostring(p.birth or "-") .. (p.age and (" (" .. p.age .. ")") or ""), nil, fw)
     field(x + POL.px(16) + fw * 2, fy, L("police_system.mdc.gender"), L("police_system.mdc.gender_" .. tostring(p.gender or "m")), nil, fw)
     field(x + POL.px(16) + fw * 3, fy, L("police_system.mdc.licence"), L("police_system.query.licence_" .. tostring(p.licence)),
-        p.licence == "suspended" and C.red or nil, fw)
+        p.licence ~= "valid" and C.red or nil, fw)
     local vtxt = {}
     for i, v in ipairs(p.vehicles or {}) do if i <= 2 then vtxt[#vtxt + 1] = (exports.veh_manager:getModelName(v.model or 0) or "?") .. " · " .. tostring(v.plate) end end
     field(x + POL.px(16) + fw * 4, fy, L("police_system.mdc.vehicles"), #vtxt > 0 and table.concat(vtxt, ", ") or "-", nil, fw)

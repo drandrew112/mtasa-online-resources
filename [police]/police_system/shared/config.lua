@@ -152,7 +152,7 @@ POLICE = {
     },
 
     QUERY = { HIDE_AFTER = 30000 },
-    PLATES = { RANGE = 25, MAX = 8, INTERVAL = 300 },
+    PLATES = { RANGE = 25, MAX = 8, INTERVAL = 300, CACHE = 60000 },   -- ALPR: only in a police vehicle; CACHE ms (flags)
     MDC = { PAGE_SIZE = 25, FEED_INTERVAL = 2000, CACHE = 10000 },
     -- MDC computers (/mdcpc): the full MDC without a unit, J on foot next to one
     TERMINALS = {
@@ -181,9 +181,12 @@ POLICE = {
     HISTORY = {
         WARRANT = 0.04, FINES = 0.30, WARNINGS = 0.25, SUSPENDED = 0.06,
         ALCOHOL = 0.05, ALCOHOL_NIGHT = 0.10, DRUG = 0.04,
-        EXPIRED_INSPECTION = 0.07, STOLEN = 0.02, FLEE = 0.03, FLEE_WARRANT = 0.15,
+        EXPIRED_INSPECTION = 0.07, EXPIRED_REGISTRATION = 0.03, EXPIRED_LICENCE = 0.04, STOLEN = 0.02, FLEE = 0.03, FLEE_WARRANT = 0.15,
         AGE = { 18, 72 },
         PLATE_CHECK = 12 * 3600 * 1000,   -- player vehicle plates re-read from v_ownveh
+        -- history/server/cleanup.lua: NPC citizens / vehicles older than this (s) are deleted, unless a player
+        -- (officer) left a note on them (record, warrant, report)
+        NPC_KEEP = 24 * 3600, NPC_CLEAN_EVERY = 3600 * 1000, NPC_CLEAN_BATCH = 500,
     },
 
     STATS_CACHE = 60,   -- s, getPublicStats (police_web)

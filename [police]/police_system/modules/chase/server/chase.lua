@@ -282,6 +282,23 @@ POL.on("wanted.phase", function(player, phase)
     end
 end)
 
+-- a surrender: the AI crews on foot stop shooting at once (tactics.lua footArgs: unarmed, they walk up and arrest)
+POL.on("wanted.surrendered", function(player)
+    local c = CH.list[player]
+    if not c then return end
+    c.surrendered = true
+    for _, u in pairs(POL.ai.units) do
+        if u.chase == c then
+            u.footKey = nil
+            for _, ped in ipairs({ u.driver, u.partner }) do
+                if ped and isElement(ped) and not getPedOccupiedVehicle(ped) and POL.running("ai_peds") then
+                    pcall(function() exports.ai_peds:giveAIPedWeapon(ped, 0) end)
+                end
+            end
+        end
+    end
+end)
+
 -- cuffs on = the pursuit is over (the AI units retreat; the incident stays open for the handover)
 POL.on("arrest.cuffed", function(target)
     local c = CH.list[target]

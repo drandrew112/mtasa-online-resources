@@ -26,6 +26,18 @@ local function subjectVehicle(inc)
     return {}
 end
 
+local function itemList(ids, lang)
+    local out = {}
+    for _, id in ipairs(ids) do out[#out + 1] = L.forLang(lang, "police_system.item." .. tostring(id)) end
+    return table.concat(out, ", ")
+end
+
+local function chargeList(ids, lang)
+    local out = {}
+    for _, id in ipairs(ids) do out[#out + 1] = L.forLang(lang, btkKey(id)) end
+    return table.concat(out, ", ")
+end
+
 -- the draft text of an incident in `lang`: title, body
 function R.build(inc, lang)
     local T = tpl(lang)
@@ -45,7 +57,7 @@ function R.build(inc, lang)
     })
     local body = { intro }
     for _, l in ipairs(inc.lines) do
-        local f = T.lines[l.k]
+        local f = T.lines[(l.k == "search" and l.d and l.d.vehicle) and "search_vehicle" or l.k]
         if f then
             local d = l.d or {}
             local p = { time = POL.clock(l.t), o = l.o, name = d.name or subjectName(inc), plate = d.plate or v.plate or "?",
@@ -53,6 +65,9 @@ function R.build(inc, lang)
                 result = d.result and T.drug.pos or T.drug.neg, amount = d.amount and L.money(d.amount, lang) or "",
                 item = d.item and L.forLang(lang, btkKey(d.item)) or "", station = d.station or "", level = d.level,
                 count = d.count, warrant = d.warrant and T.lines.warrant_found or "",
+                found = type(d.items) == "table" and (#d.items > 0 and itemList(d.items, lang) or T.lines.search_none) or "",
+                charges = type(d.charges) == "table" and #d.charges > 0 and T.lines.charges
+                    and fill(T.lines.charges, { list = chargeList(d.charges, lang) }) or "",
                 flags = (d.stolen and T.lines.flag_stolen or "") .. (d.inspection and fill(T.lines.flag_inspection, { value = d.inspection }) or "") }
             body[#body + 1] = fill(f, p)
         end

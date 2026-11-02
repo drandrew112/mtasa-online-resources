@@ -1,7 +1,8 @@
 -- police_system / modules/stop/client/stop.lua
 -- The officer's side of a stop: hold E (0.8 s, a ring fills) on a pedestrian / player in front within 4 m (on foot),
 -- left Shift in a police vehicle at the vehicle in front (25 m, +-12 deg; again = cancel). The ui_inac temp menu the
--- server builds (stop:menu) and its selection; the unit invite and "tow your police car?" confirmations.
+-- server builds (stop:menu) and its selection; the unit invite and "tow your police car?" confirmations; the charges
+-- of a handover (arrest:charges: ticks, Hand over only with at least one).
 
 local SC = POL.module("stopc", { hold = nil })
 local C = POLICE.STOP
@@ -117,6 +118,7 @@ end, 30)
 ------------------------------------------------------------------------ temp menus
 
 local menuTarget, menuKind
+local menuItemsCount = 0
 
 POL.handle("stop:menu", function(target, title, items)
     local m = inac()
@@ -155,8 +157,59 @@ POL.handle("tow:confirm", function(veh)
     } })
 end)
 
+-- handover charges: every charge is a tick (more can be picked), the last row hands over (only with a tick)
+local charges, chargeCount = {}, 0
+local function handoverLabel()
+    return L("police_system.arrest.handover_button") .. (chargeCount > 0 and ("  (" .. chargeCount .. ")") or "")
+end
+
+POL.handle("arrest:charges", function(target, title, list)
+    local m = inac()
+    if not m then return end
+    -- another menu still open: closed first (its close event must not cancel this handover)
+    menuTarget, menuKind = nil, nil
+    if m:isTempMenuOpen() then m:closeTempMenu() end
+    menuTarget, menuKind = target, "charges"
+    charges, chargeCount = {}, 0
+    local items = {}
+    for _, c in ipairs(list or {}) do
+        items[#items + 1] = { label = c.label, value = "c:" .. c.id, checked = false, closeOnSelect = false }
+    end
+    items[#items + 1] = { label = handoverLabel(), value = "handover", closeOnSelect = false,
+                          desc = L("police_system.arrest.handover_hint") }
+    menuItemsCount = #items
+    local tries = 0
+    local function open()
+        tries = tries + 1
+        if menuKind ~= "charges" or menuTarget ~= target then return end
+        if not m:createTempMenu({ title = title, items = items }) and tries < 8 then setTimer(open, 120, 1) end
+    end
+    open()
+end)
+
 addEvent("ui_inac:tempMenuSelect")
-addEventHandler("ui_inac:tempMenuSelect", localPlayer, function(rootId, value)
+addEventHandler("ui_inac:tempMenuSelect", localPlayer, function(rootId, value, path)
+    if menuKind == "charges" and type(value) == "string" then
+        local m = inac()
+        local id = value:match("^c:(.+)$")
+        if id then
+            charges[id] = not charges[id] or nil
+            chargeCount = chargeCount + (charges[id] and 1 or -1)
+            if m then
+                m:updateTempMenuItem(path, { checked = charges[id] == true })
+                m:updateTempMenuItem(tostring(menuItemsCount), { label = handoverLabel() })
+            end
+        elseif value == "handover" then
+            if chargeCount == 0 then return POL.notify(L("police_system.arrest.err_no_charges")) end
+            local list = {}
+            for k in pairs(charges) do list[#list + 1] = k end
+            local target = menuTarget
+            menuKind, menuTarget = nil, nil
+            if m then m:closeTempMenu() end
+            POL.send("arrest:handover", target, list)
+        end
+        return
+    end
     if menuKind == "stop" and isElement(menuTarget) and type(value) == "string" then
         POL.send("stop:action", menuTarget, value)
     elseif menuKind == "invite" then
@@ -171,5 +224,6 @@ end)
 addEvent("ui_inac:tempMenuClose")
 addEventHandler("ui_inac:tempMenuClose", localPlayer, function()
     if menuKind == "invite" then POL.send("unit:answer", false) end
+    if menuKind == "charges" then POL.send("arrest:handoverCancel") end
     menuKind, menuTarget = nil, nil
 end)
