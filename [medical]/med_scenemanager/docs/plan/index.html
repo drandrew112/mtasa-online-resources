@@ -1,0 +1,1064 @@
+<title>v_scenemanager terv</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@400;600&family=Roboto:wght@400;500;700&display=swap">
+<style>
+/* Layout: egy hasábos tervdokumentum, bal oldali tartalomjegyzék széles képernyőn; diszpécser-táblás színkódok (EMS zöld, PD kék, szint 0/1/2); a makettek a játék saját (sötét) színeit használják mindkét témában */
+:root {
+  --bg: #f5f7f8;
+  --surface: #ffffff;
+  --fg: #17212b;
+  --muted: #5a6875;
+  --line: #d9e0e6;
+  --code-bg: #eef2f5;
+  --ems: #0f7a52;
+  --ems-soft: #dff3ea;
+  --pd: #1d4f9c;
+  --pd-soft: #e1eafa;
+  --lvl0: #7b8794;
+  --lvl0-soft: #eceff2;
+  --lvl1: #9a6200;
+  --lvl1-soft: #fbefd6;
+  --lvl2: #b4232c;
+  --lvl2-soft: #fbe2e3;
+  --accent: #1d4f9c;
+  --stage: #3b4a57;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Segoe UI", sans-serif;
+  --font-body: "Barlow", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+  --font-game: "Roboto", "Segoe UI", Arial, sans-serif;
+  /* in-game UI colours (med_erm Theme, POL.colors, ui_inac, web_api osa.css) - identical in both page themes */
+  --erm-bezel: rgb(16,18,21); --erm-edge: rgb(44,48,54); --erm-bg: rgb(21,25,30); --erm-header: rgb(14,17,21);
+  --erm-panel: rgb(30,36,43); --erm-panel2: rgb(39,46,55); --erm-line: rgb(52,60,70); --erm-text: rgb(233,237,242);
+  --erm-dim: rgb(152,162,174); --erm-faint: rgb(98,108,120); --erm-accent: rgb(224,60,49); --erm-blue: rgb(56,132,244);
+  --erm-orange: rgb(247,107,21); --erm-green: rgb(46,160,67);
+  --pol-bg: rgb(10,18,34); --pol-panel: rgb(16,28,52); --pol-panel2: rgb(22,38,68); --pol-line: rgb(48,70,110);
+  --pol-text: rgb(225,232,245); --pol-dim: rgb(140,158,190); --pol-accent: rgb(70,140,255); --pol-accent-dim: rgb(40,80,150);
+  --pol-red: rgb(235,64,64); --pol-green: rgb(64,200,110); --pol-yellow: rgb(240,200,60); --pol-orange: rgb(245,140,50); --pol-hover: rgb(40,64,108);
+  --inac-title: rgba(0,0,0,.78); --inac-cyan: rgb(0,170,220); --inac-item: rgba(0,0,0,.67); --inac-desc: rgba(20,20,20,.67);
+  --osa-bg: #0f1216; --osa-panel: #161b21; --osa-panel-2: #1d232b; --osa-panel-3: #252d37; --osa-line: #2a323c;
+  --osa-text: #e8ecf1; --osa-dim: #98a2ae; --osa-faint: #626c78; --osa-accent: #e03c31; --osa-ok: #2ea043; --osa-bad: #da3633; --osa-warn: #e6be28; --osa-info: #3884f4;
+  --world: #4b5a48;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11171d; --surface: #182129; --fg: #e3e9ee; --muted: #93a1ad; --line: #2b3742; --code-bg: #1e2932;
+    --ems: #4fd09a; --ems-soft: #143428; --pd: #86aef0; --pd-soft: #1a2a44;
+    --lvl0: #9aa6b1; --lvl0-soft: #252f38; --lvl1: #f0b452; --lvl1-soft: #3a2c12; --lvl2: #f27c83; --lvl2-soft: #3d1a1d;
+    --accent: #86aef0; --stage: #26313b; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11171d; --surface: #182129; --fg: #e3e9ee; --muted: #93a1ad; --line: #2b3742; --code-bg: #1e2932;
+  --ems: #4fd09a; --ems-soft: #143428; --pd: #86aef0; --pd-soft: #1a2a44;
+  --lvl0: #9aa6b1; --lvl0-soft: #252f38; --lvl1: #f0b452; --lvl1-soft: #3a2c12; --lvl2: #f27c83; --lvl2-soft: #3d1a1d;
+  --accent: #86aef0; --stage: #26313b; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.6; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-block: 40px 80px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; grid-template-columns: 210px minmax(0, 1fr); gap: 44px; }
+@media (max-width: 960px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 24px; } nav.toc { position: static !important; } }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; }
+nav.toc strong { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .08em; font-size: 13px; color: var(--muted); }
+nav.toc ol { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 2px; }
+nav.toc a { color: var(--fg); text-decoration: none; display: block; padding: 3px 8px; border-radius: 4px; }
+nav.toc a:hover, nav.toc a:focus-visible { background: var(--surface); outline: none; color: var(--accent); }
+nav.toc .sub a { padding-left: 20px; font-size: 13px; color: var(--muted); }
+main { min-width: 0; }
+header.hero { border-bottom: 2px solid var(--fg); padding-bottom: 20px; margin-bottom: 8px; }
+.eyebrow { font-family: var(--font-mono); font-size: 12px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+h1 { font-family: var(--font-display); font-size: clamp(36px, 6vw, 56px); line-height: 1; margin: 8px 0 12px; text-wrap: balance; letter-spacing: -.01em; }
+h2 { font-family: var(--font-display); font-size: 30px; line-height: 1.1; margin: 0 0 14px; text-wrap: balance; }
+h3 { font-size: 18px; margin: 26px 0 8px; font-weight: 600; }
+section { padding-top: 48px; scroll-margin-top: 16px; }
+p, li { max-width: 74ch; }
+.lead { font-size: 19px; color: var(--muted); max-width: 72ch; }
+code, pre { font-family: var(--font-mono); font-size: 13.5px; }
+:not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 3px; }
+pre { background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 16px; overflow-x: auto; line-height: 1.5; margin: 12px 0; }
+pre .c { color: var(--muted); }
+.table-wrap { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .05em; font-size: 13px; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.lvl { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.lvl.l0 { color: var(--lvl0); background: var(--lvl0-soft); }
+.lvl.l1 { color: var(--lvl1); background: var(--lvl1-soft); }
+.lvl.l2 { color: var(--lvl2); background: var(--lvl2-soft); }
+.ag { font-family: var(--font-display); font-weight: 700; letter-spacing: .05em; font-size: 13px; padding: 1px 7px; border-radius: 3px; white-space: nowrap; }
+.ag.ems { color: var(--ems); background: var(--ems-soft); }
+.ag.pd { color: var(--pd); background: var(--pd-soft); }
+.levels { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; }
+.level-card { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--lvl0); border-radius: 6px; padding: 14px 16px; }
+.level-card.c1 { border-top-color: var(--lvl1); }
+.level-card.c2 { border-top-color: var(--lvl2); }
+.level-card b { font-family: var(--font-display); font-size: 22px; display: block; }
+.level-card p { margin: 6px 0 0; font-size: 15px; color: var(--muted); }
+.note { border-left: 3px solid var(--accent); padding: 8px 14px; background: var(--surface); margin: 14px 0; max-width: 80ch; }
+.note.warn { border-left-color: var(--lvl1); }
+.note.must { border-left-color: var(--lvl2); }
+.tag { font-family: var(--font-mono); font-size: 11.5px; padding: 1px 6px; border-radius: 3px; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+.cols > div { min-width: 0; }
+.decided { display: grid; gap: 0; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); overflow: hidden; }
+.decided > div { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 16px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.decided > div:last-child { border-bottom: 0; }
+.decided b { font-weight: 600; }
+@media (max-width: 560px) { .decided > div { grid-template-columns: minmax(0, 1fr); gap: 2px; } }
+ol.phases { counter-reset: ph; list-style: none; padding: 0; display: grid; gap: 10px; }
+ol.phases > li { counter-increment: ph; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px 12px 56px; position: relative; max-width: none; }
+ol.phases > li::before { content: counter(ph); position: absolute; left: 16px; top: 10px; font-family: var(--font-display); font-size: 26px; color: var(--accent); }
+.decisions { display: grid; gap: 10px; }
+.decision { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 12px 16px; }
+.decision h4 { margin: 0 0 4px; font-size: 16px; }
+.decision .rec { color: var(--ems); font-weight: 600; }
+.mermaid { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 16px; overflow-x: auto; }
+a { color: var(--accent); }
+footer { margin-top: 56px; padding-top: 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+
+/* ---------- mockups ---------- */
+.mk-bar { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 8px); z-index: 5; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; margin: 12px 0 4px; font-size: 14px; }
+.mk-bar .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+.mk-bar button { font: 600 13px var(--font-mono); padding: 4px 12px; background: transparent; color: var(--fg); border: 0; cursor: pointer; }
+.mk-bar button[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.mk-bar button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+body:not(.mk-en) .mk .en, body.mk-en .mk .hu { display: none; }
+.stage { background: var(--stage); border-radius: 8px; padding: 22px; overflow-x: auto; margin: 10px 0 6px; }
+.cap { font-size: 14px; color: var(--muted); margin: 0 0 22px; max-width: 80ch; }
+.cap b { color: var(--fg); }
+.mk { font-family: var(--font-game); }
+
+/* ERM tablet */
+.erm { width: 860px; background: var(--erm-bezel); border: 2px solid var(--erm-edge); border-radius: 22px; padding: 16px; color: var(--erm-text); position: relative; flex: none; }
+.erm-screen { background: var(--erm-bg); border-radius: 10px; overflow: hidden; position: relative; }
+.erm-head { background: var(--erm-header); height: 48px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 16px; }
+.erm-head .cs { font: 700 17px var(--font-game); }
+.erm-head .cs small { font: 400 12px var(--font-game); color: var(--erm-dim); margin-left: 10px; }
+.erm-head .clock { font: 700 13px var(--font-game); color: var(--erm-dim); }
+.erm-head .pill { justify-self: end; font: 700 11px var(--font-game); padding: 3px 10px; border-radius: 999px; background: var(--erm-orange); color: #fff; }
+.erm-page { padding: 18px 22px 18px; min-height: 470px; display: flex; flex-direction: column; gap: 12px; }
+.erm-title { display: flex; gap: 12px; align-items: center; }
+.prio { font: 700 13px var(--font-game); background: var(--erm-accent); color: #fff; border-radius: 5px; padding: 4px 9px; }
+.erm-title b { font: 700 19px var(--font-game); }
+.erm-sub { color: var(--erm-dim); font-size: 12px; margin-top: -8px; }
+.erm-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.erm-grid.two { grid-template-columns: 1fr 1fr; }
+.erm-info small { display: block; color: var(--erm-faint); font: 700 10.5px var(--font-game); letter-spacing: .05em; }
+.erm-info span { font-size: 13.5px; }
+.safety { border-radius: 8px; padding: 9px 12px; display: flex; flex-direction: column; gap: 2px; }
+.safety small { color: rgba(255,255,255,.75); font: 700 10.5px var(--font-game); letter-spacing: .05em; }
+.safety b { font: 700 14px var(--font-game); }
+.safety.bad { background: rgba(224,60,49,.18); border: 1px solid rgba(224,60,49,.7); }
+.safety.bad b { color: rgb(255,120,110); }
+.safety.ok { background: rgba(46,160,67,.16); border: 1px solid rgba(46,160,67,.6); }
+.safety.ok b { color: rgb(110,215,130); }
+.safety.info { background: var(--erm-panel); border: 1px solid var(--erm-line); }
+.erm-desc { background: var(--erm-panel); border-radius: 8px; padding: 10px 12px; font-size: 13.5px; line-height: 1.45; min-height: 74px; }
+.erm-line { display: flex; align-items: center; gap: 8px; }
+.erm-line .st { flex: 1; font: 700 13px var(--font-game); color: var(--erm-orange); }
+.gbtn { font: 700 12px var(--font-game); color: #fff; background: var(--erm-panel2); border: 0; border-radius: 6px; padding: 8px 14px; white-space: nowrap; }
+.gbtn.blue { background: var(--erm-blue); }
+.gbtn.violet { background: rgb(124,92,230); }
+.gbtn.green { background: rgb(46,140,90); }
+.gbtn.red { background: rgb(200,50,45); }
+.gbtn.dis { opacity: .4; }
+.gbtn.big { padding: 15px 8px; font-size: 13px; }
+.erm-btns { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: auto; }
+.overlay { position: absolute; inset: 0; background: rgba(0,0,0,.6); display: flex; align-items: center; justify-content: center; }
+.dlg { width: 470px; background: var(--erm-bg); border: 1px solid var(--erm-line); border-radius: 10px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+.dlg h5 { margin: 0; font: 700 16px var(--font-game); }
+.dlg p { margin: 0; color: var(--erm-dim); font-size: 13px; }
+.dlg .lbl { font: 700 10.5px var(--font-game); color: var(--erm-faint); letter-spacing: .05em; }
+.opt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt { font: 600 12.5px var(--font-game); color: var(--erm-text); background: var(--erm-panel); border: 1px solid var(--erm-line); border-radius: 6px; padding: 10px; text-align: left; }
+.opt.sel { background: var(--erm-blue); border-color: var(--erm-blue); color: #fff; }
+.opt.dis { opacity: .4; }
+.opt small { display: block; font-weight: 400; font-size: 11px; opacity: .8; }
+.dlg .row { display: flex; gap: 8px; }
+.dlg .row .gbtn { flex: 1; padding: 11px; }
+.alert-dlg { border: 2px solid var(--erm-accent); }
+.alert-dlg h5 { color: rgb(255,120,110); letter-spacing: .03em; }
+.erm-tabs { display: flex; gap: 6px; align-items: center; }
+.erm-tabs span { font: 700 12px var(--font-game); padding: 6px 12px; border-radius: 6px; background: var(--erm-panel); color: var(--erm-dim); }
+.erm-tabs span.on { background: var(--erm-panel2); color: var(--erm-text); box-shadow: inset 0 -2px 0 var(--erm-blue); }
+.erm-tabs span.ia.on { box-shadow: inset 0 -2px 0 rgb(124,92,230); }
+.msgs { background: var(--erm-panel); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; gap: 9px; min-height: 270px; }
+.msg { font-size: 13px; line-height: 1.4; }
+.msg .t { font: 700 10px var(--font-game); padding: 1px 6px; border-radius: 3px; color: #fff; margin-right: 6px; }
+.msg .who { font-weight: 700; margin-right: 6px; }
+.msg .time { color: var(--erm-faint); font-size: 11px; margin-right: 6px; }
+.msg.sys { color: var(--erm-dim); font-style: italic; }
+.t.pd { background: rgb(40,80,150); } .t.ems { background: rgb(46,140,90); } .t.sys { background: var(--erm-panel2); }
+.erm-input { background: var(--erm-panel); border-radius: 8px; padding: 11px 14px; color: var(--erm-faint); font-size: 13px; display: flex; justify-content: space-between; }
+
+/* police MDC */
+.mdc { width: 1060px; background: var(--pol-bg); border: 1px solid var(--pol-line); color: var(--pol-text); flex: none; position: relative; }
+.mdc-head { height: 54px; background: var(--pol-panel); border-bottom: 1px solid var(--pol-line); display: flex; align-items: center; padding: 0 16px; gap: 14px; }
+.mdc-head b { font: 700 16px var(--font-game); letter-spacing: .04em; }
+.mdc-head .sp { flex: 1; }
+.mdc-head .st { font: 700 11px var(--font-game); background: var(--pol-yellow); color: rgb(10,18,34); padding: 3px 10px; border-radius: 3px; }
+.mdc-head .cs { font: 700 15px var(--font-game); }
+.mdc-body { display: grid; grid-template-columns: 170px minmax(0, 1fr); min-height: 520px; }
+.mdc-menu { background: var(--pol-panel); border-right: 1px solid var(--pol-line); padding: 8px 0; display: flex; flex-direction: column; }
+.mdc-menu span { font-size: 13px; padding: 8px 16px; color: var(--pol-dim); display: flex; justify-content: space-between; }
+.mdc-menu span.on { background: var(--pol-accent-dim); color: var(--pol-text); }
+.mdc-menu i { font-style: normal; background: var(--pol-red); color: #fff; font: 700 10px var(--font-game); padding: 1px 6px; border-radius: 8px; }
+.mdc-page { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.mdc-page h6 { margin: 0; font: 700 18px var(--font-game); }
+.mdc-page .hint { color: var(--pol-dim); font-size: 12px; margin-top: -8px; }
+.mdc-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+.mdc-table th { background: transparent; color: var(--pol-dim); font: 700 11px var(--font-game); text-transform: uppercase; letter-spacing: .04em; border-bottom: 1px solid var(--pol-line); padding: 7px 8px; }
+.mdc-table td { border-bottom: 1px solid rgba(255,255,255,.04); padding: 7px 8px; vertical-align: middle; }
+.mdc-table tr:nth-child(even) td { background: rgba(255,255,255,.024); }
+.mdc-table tr.sel td { background: var(--pol-hover); }
+.mdc-table .dim { color: var(--pol-dim); }
+.mdc-table .yel { color: var(--pol-yellow); }
+.pb { font: 700 10px var(--font-game); padding: 1px 5px; border-radius: 3px; margin-right: 5px; white-space: nowrap; }
+.pb.scene { background: rgb(40,80,150); color: #fff; }
+.pb.ems { background: rgb(46,140,90); color: #fff; }
+.pb.secure { background: var(--pol-red); color: #fff; }
+.pb.safe { background: var(--pol-green); color: rgb(10,18,34); }
+.mbtn { font: 700 11.5px var(--font-game); padding: 5px 10px; border-radius: 3px; border: 0; background: var(--pol-panel2); color: var(--pol-text); white-space: nowrap; }
+.mbtn.primary { background: var(--pol-accent); }
+.mbtn.danger { background: rgb(190,50,50); }
+.mbtn.dis { background: rgb(30,40,60); color: var(--pol-dim); }
+.mdc-split { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px; }
+.mcard { background: var(--pol-panel); border: 1px solid var(--pol-line); padding: 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.mcard h6 { font-size: 15px; }
+.mcard .kv { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 3px 10px; font-size: 12.5px; }
+.mcard .kv span:nth-child(odd) { color: var(--pol-dim); }
+.secure-box { border: 2px solid var(--pol-red); background: rgba(235,64,64,.12); padding: 10px 12px; display: flex; flex-direction: column; gap: 6px; }
+.secure-box b { color: rgb(255,120,120); font: 700 13.5px var(--font-game); letter-spacing: .04em; }
+.secure-box p { margin: 0; font-size: 12.5px; color: var(--pol-text); }
+.threat { display: flex; justify-content: space-between; font-size: 12.5px; padding: 4px 8px; background: rgba(0,0,0,.25); }
+.threat .a { color: rgb(255,120,120); font-weight: 700; }
+.threat .n { color: var(--pol-green); font-weight: 700; }
+.mtabs { display: flex; gap: 4px; }
+.mtabs span { font: 700 11.5px var(--font-game); padding: 5px 10px; background: var(--pol-panel2); color: var(--pol-dim); }
+.mtabs span.on { background: var(--pol-accent-dim); color: var(--pol-text); }
+.mchat { background: rgba(0,0,0,.25); padding: 8px 10px; display: flex; flex-direction: column; gap: 6px; font-size: 12.5px; min-height: 150px; }
+.mchat .t { font: 700 9.5px var(--font-game); padding: 1px 5px; border-radius: 3px; color: #fff; margin-right: 5px; }
+.minput { background: var(--pol-panel2); padding: 8px 10px; font-size: 12.5px; color: var(--pol-dim); }
+
+/* ui_core / HUD pieces */
+.world { background: linear-gradient(180deg, rgb(120,140,150) 0%, rgb(150,160,150) 45%, var(--world) 46%, rgb(70,78,66) 100%); border-radius: 6px; position: relative; height: 300px; width: 860px; flex: none; overflow: hidden; }
+.notif { position: absolute; width: 330px; background: rgba(15,18,22,.92); border-left: 4px solid var(--erm-blue); color: #fff; padding: 10px 14px; font-size: 13px; line-height: 1.4; border-radius: 4px; }
+.notif b { display: block; font-size: 13.5px; margin-bottom: 2px; }
+.notif.warn { border-left-color: var(--erm-accent); }
+.notif.ok { border-left-color: var(--erm-green); }
+.tracker { position: absolute; right: 18px; top: 18px; width: 300px; background: rgba(15,18,22,.85); border: 1px solid rgba(235,64,64,.8); color: #fff; padding: 10px 12px; border-radius: 4px; font-size: 13px; }
+.tracker b { color: rgb(255,120,120); display: block; font-size: 12px; letter-spacing: .05em; }
+.tracker .row { display: flex; justify-content: space-between; margin-top: 4px; }
+.chatline { position: absolute; left: 18px; bottom: 18px; background: rgba(0,0,0,.6); color: #fff; font-size: 13px; padding: 7px 12px; border-radius: 4px; width: 420px; }
+.chatline .sug { margin-top: 6px; color: rgb(200,210,220); font-size: 12px; border-top: 1px solid rgba(255,255,255,.15); padding-top: 5px; }
+.chatline .sug b { color: #fff; }
+
+/* ui_inac temp menu */
+.inac-row { display: flex; gap: 22px; flex-wrap: wrap; align-items: flex-start; }
+.inac { width: 330px; font-family: var(--font-game); color: #fff; flex: none; }
+.inac .ttl { background: var(--inac-title); color: var(--inac-cyan); font: 700 13px var(--font-game); padding: 8px 12px; display: flex; justify-content: space-between; letter-spacing: .02em; text-transform: uppercase; }
+.inac .it { background: var(--inac-item); padding: 7px 12px; font-size: 13.5px; display: flex; justify-content: space-between; gap: 10px; }
+.inac .it.sel { background: #fff; color: #000; }
+.inac .it .v { color: rgb(180,180,180); white-space: nowrap; }
+.inac .it.sel .v { color: #000; }
+.inac .it .v.g { color: rgb(120,220,140); }
+.inac .arr { background: var(--inac-title); height: 26px; display: flex; align-items: center; justify-content: center; color: rgb(200,200,200); font-size: 11px; }
+.inac .desc { background: var(--inac-desc); padding: 9px 12px; font-size: 12.5px; line-height: 1.45; border-top: 2px solid var(--inac-cyan); }
+.inac .desc small { display: block; color: rgb(170,180,190); margin-top: 4px; font-size: 11.5px; }
+
+/* web console (web_api osa) */
+.osa { width: 1060px; background: var(--osa-bg); color: var(--osa-text); font-family: "Segoe UI", system-ui, sans-serif; border: 1px solid var(--osa-line); flex: none; }
+.osa-top { height: 56px; background: #0b0e11; display: flex; align-items: center; gap: 12px; padding: 0 16px; border-bottom: 1px solid var(--osa-line); }
+.osa-top b { font-size: 15px; }
+.osa-top small { display: block; color: var(--osa-dim); font-size: 11.5px; }
+.osa-top .sp { flex: 1; }
+.obtn { font: 600 12px "Segoe UI", system-ui, sans-serif; padding: 6px 11px; border-radius: 8px; background: var(--osa-panel-3); color: var(--osa-text); border: 0; white-space: nowrap; }
+.obtn.on { background: var(--osa-ok); }
+.obtn.primary { background: var(--osa-accent); }
+.obtn.ghost { background: transparent; color: var(--osa-dim); border: 1px solid var(--osa-line); }
+.lang { display: inline-flex; border: 1px solid var(--osa-line); border-radius: 8px; overflow: hidden; }
+.lang span { font: 700 11.5px "Segoe UI", sans-serif; padding: 5px 9px; color: var(--osa-dim); }
+.lang span.on { background: var(--osa-panel-3); color: var(--osa-text); }
+.osa-main { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; padding: 12px; }
+.opanel { background: var(--osa-panel); border: 1px solid var(--osa-line); border-radius: 8px; min-width: 0; }
+.opanel .bar { display: flex; gap: 8px; padding: 10px; flex-wrap: wrap; }
+.oin { background: var(--osa-panel-2); border: 1px solid var(--osa-line); border-radius: 8px; padding: 6px 10px; color: var(--osa-dim); font-size: 12.5px; }
+.oin.grow { flex: 1 1 200px; }
+.orow { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-top: 1px solid var(--osa-line); }
+.orow .main { flex: 1; min-width: 0; }
+.orow .name { font-weight: 600; font-size: 13.5px; }
+.orow .sub { font-size: 12px; color: var(--osa-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.otag { font: 700 10.5px "Segoe UI", sans-serif; padding: 2px 6px; border-radius: 4px; white-space: nowrap; }
+.otag.ems { background: rgba(46,160,67,.2); color: rgb(110,215,130); }
+.otag.pd { background: rgba(56,132,244,.2); color: rgb(130,175,250); }
+.otag.l0 { background: var(--osa-panel-3); color: var(--osa-faint); }
+.otag.flag { background: rgba(230,190,40,.18); color: var(--osa-warn); }
+.otag.unsafe { background: rgba(218,54,51,.2); color: rgb(255,123,114); }
+.flagform { margin: 0 12px 10px; background: var(--osa-panel-2); border: 1px solid var(--osa-warn); border-radius: 8px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+.flagform .ta { background: var(--osa-bg); border: 1px solid var(--osa-line); border-radius: 6px; padding: 8px; font-size: 12.5px; min-height: 52px; color: var(--osa-text); }
+.flagform .foot { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: var(--osa-dim); gap: 8px; }
+.flagform .err { color: rgb(255,123,114); font-size: 12px; }
+.otabs { display: flex; gap: 4px; padding: 10px 12px 0; }
+.otabs span { font-size: 12.5px; padding: 6px 10px; border-radius: 6px 6px 0 0; color: var(--osa-dim); }
+.otabs span.on { background: var(--osa-panel-2); color: var(--osa-text); }
+.issue { padding: 9px 12px; border-top: 1px solid var(--osa-line); display: flex; flex-direction: column; gap: 4px; }
+.issue .h { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+.issue .h b { font-size: 13px; }
+.issue .c { font-size: 12.5px; }
+.issue .m { font-size: 11.5px; color: var(--osa-dim); }
+.issue .acts { display: flex; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Tartalom">
+  <strong>Tartalom</strong>
+  <ol>
+    <li><a href="#osszefoglalo">Összefoglaló</a></li>
+    <li><a href="#dontesek-ok">Elfogadott döntések</a></li>
+    <li><a href="#szervek">Szervek és szintek</a></li>
+    <li><a href="#adat">Adatstruktúra (format 2)</a></li>
+    <li><a href="#biztonsag">Biztonságos helyszín</a></li>
+    <li><a href="#generator">Generátor, late join</a></li>
+    <li><a href="#rendorseg">Rendőrségi oldal</a></li>
+    <li><a href="#kommunikacio">Szervek közti kommunikáció</a></li>
+    <li><a href="#npc">NPC szerepek és előélet</a></li>
+    <li><a href="#hibak">Hibajelentés</a></li>
+    <li><a href="#feluletek">Felületek (makettek)</a></li>
+    <li class="sub"><a href="#mk-erm-case">ERM Active Case</a></li>
+    <li class="sub"><a href="#mk-erm-agency">Társszervek kérése</a></li>
+    <li class="sub"><a href="#mk-erm-alert">Érkezési figyelmeztetés</a></li>
+    <li class="sub"><a href="#mk-erm-msg">ERM Messages</a></li>
+    <li class="sub"><a href="#mk-mdc">MDC Calls</a></li>
+    <li class="sub"><a href="#mk-hud">HUD, értesítések</a></li>
+    <li class="sub"><a href="#mk-inac">Szerkesztő menük</a></li>
+    <li class="sub"><a href="#mk-web">Weboldal</a></li>
+    <li><a href="#nyelvek">Kétnyelvűség</a></li>
+    <li><a href="#atnevezes">Átnevezés</a></li>
+    <li><a href="#migracio">Migráció és PD szövegek</a></li>
+    <li><a href="#fazisok">Végrehajtási fázisok</a></li>
+    <li><a href="#nyitott">Nyitott kérdések</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="hero">
+  <div class="eyebrow">Terv v2 · 2026-11-02 · a módosításaiddal · végrehajtás csak külön engedéllyel</div>
+  <h1>v_scenemanager</h1>
+  <p class="lead">A med_scenemanager utódja a <code>[world]</code> mappában. Minden scene megmondja, melyik szerv kell hozzá (EMS, PD), a generátor ennek alapján dönt. A rendőrség és a mentők egy helyszínen dolgoznak együtt: biztonságos helyszín, társszervek kérése és közös chat. Minden szöveg angolul és magyarul is elérhető.</p>
+</header>
+
+<section id="osszefoglalo">
+  <h2>Összefoglaló</h2>
+  <ul>
+    <li><b>Szervek scene-enként</b> 0 / 1 / 2 szinttel. Kötelező (2) szervnél szabad egység nélkül nincs spawn. A szükséges (1) szerv akkor is megkapja a feladatot, ha <b>late join</b> időn belül szabadul fel egysége.</li>
+    <li><b>PD bejelentés</b> két nyelven, a med_erm-mel azonos, játékoshoz kötött fordítással: mindenki a saját nyelvén látja. 0-s szintű szervhez nem kell szöveg.</li>
+    <li><b>Biztonságos helyszín</b> csak EMS 2 + PD 2 esetén lehet „nem biztonságos”. A rendőrnek kötelező biztosítania, és a rendszer automatikusan is érzékeli. Az EMS külön mezőben látja az állapotot, érkezéskor figyelmeztetést kap, és várnia kell.</li>
+    <li><b>Szervek közti kommunikáció:</b> szöveges csatorna az MDC bejelentéseken, <b>Társszervek</b> fül az ERM tablet Messages oldalán, és <b>Társszervek kérése</b> gomb az Active Case-en.</li>
+    <li><b>NPC-k:</b> verekedők, ellenségesek (csak rendőrre / mindenkire), előélet, elfogató parancs, alkoholszint tartományból sorsolva, kábítószer. Járműnél vontatás és lopott jelző.</li>
+    <li><b>Hibajelentés:</b> <code>/flagscene</code> és web Flag. Egy scene-re egyszerre egy nyitott hiba lehet. Admin értesítés nincs. A szerkesztőben Check issues menü.</li>
+    <li><b>Migráció:</b> PD 1 csak a 470 járműves scene-ben. Az új PD szövegeket teljes logikai ellenőrzés után írjuk be, csak a scene adataiból igazolható állításokkal.</li>
+  </ul>
+</section>
+
+<section id="dontesek-ok">
+  <h2>Elfogadott döntések</h2>
+  <div class="decided">
+    <div><b>Hely</b><span><code>[world]/v_scenemanager</code></span></div>
+    <div><b>Parancsok</b><span>„med” nélkül: <code>/sceneeditor</code>, <code>/scenerandom</code>, <code>/scenesummon</code>, <code>/sceneauto</code>, <code>/scenelist</code>, <code>/sceneclear</code>, <code>/scenereload</code>, <code>/scenevariety</code>, <code>/flagscene</code>. Régi alias nincs.</span></div>
+    <div><b>MDC fordítás</b><span>Ugyanaz a modell, mint a med_erm <code>Tasks.textFor</code>: angol alap + <code>locales</code>, a néző nyelve a v_locals <code>getPlayerLanguage</code> szerint.</span></div>
+    <div><b>PD kiosztás</b><span>Nincs automatikus kiosztás. Később jön egy külön PD bejelentéskezelő, ahol a rendőr dönti el, megy-e. Most a hívás az MDC Calls listán jelenik meg.</span></div>
+    <div><b>Warrant / polgár adatok</b><span>Egyelőre nincs törlés és visszavonás. Később a police_system kap egy külön automatikus cleanup-ot.</span></div>
+    <div><b>Staging</b><span>Igen: nem biztonságos helyszínen az EMS a PD „biztonságos” jelentéséig vár.</span></div>
+    <div><b>Biztonságos helyszín</b><span>Csak EMS 2 + PD 2 esetén. Alapértelmezés: biztonságos. A rendőr nem felejtheti el, és automatikus érzékelés is van.</span></div>
+    <div><b>Late join</b><span>Kell: 1-es szerv, amelynek <code>LATE_JOIN</code> időn belül felszabadul egysége, utólag megkapja a feladatot.</span></div>
+    <div><b>Flagscene</b><span>Egy scene-re egy nyitott hiba. Ha már van, a rendszer elutasítja. Admin értesítés nincs.</span></div>
+    <div><b>Migráció</b><span>PD 1 csak a járműves scene-eken. A többi helyszíntípushoz bonyolultabb PD alapscript kell, az később jön.</span></div>
+    <div><b>PD szövegek</b><span>0-s szintnél nem kötelező. Az újonnan írt szövegek teljes logikai ellenőrzésen mennek át, valótlanság nélkül.</span></div>
+    <div><b>Nyelvek</b><span>Minden angolul és magyarul: játékbeli UI, szerkesztő, weboldal, scene szövegek, rendszerüzenetek.</span></div>
+  </div>
+</section>
+
+<section id="szervek">
+  <h2>Szervek és szükségességi szintek</h2>
+  <div class="levels">
+    <div class="level-card"><span class="lvl l0">0</span><b>Nem szükséges</b><p>Nincs feladat. Az <code>agencies</code> blokkban a szerv el is hagyható, szöveg nem kell hozzá.</p></div>
+    <div class="level-card c1"><span class="lvl l1">1</span><b>Szükséges</b><p>Spawnkor megkapja, ha van szabad egysége hatótávon belül. Ha nincs, a <code>LATE_JOIN</code> ablakban még megkaphatja.</p></div>
+    <div class="level-card c2"><span class="lvl l2">2</span><b>Kötelező</b><p>Csak akkor jön létre a helyszín, ha minden kötelező szervnél van szabad egység hatótávon belül, különben a generátor továbblép.</p></div>
+  </div>
+  <ul>
+    <li>Ha nincs 2-es szerv, legalább egy 1-es szervnél kell szabad egység.</li>
+    <li>Szabad egység: EMS = med_erm <code>getFreeUnits()</code>; PD = police_system egység <code>status == "available"</code>, új <code>getFreeUnits</code> exporttal.</li>
+    <li>Hatótáv szervenként: <code>AGENCIES.ems.MAX_UNIT_DISTANCE</code> (1500 m, ahogy most), <code>AGENCIES.pd.MAX_UNIT_DISTANCE</code>. Interior scene mindig hatótávon belül van.</li>
+    <li>A szervek adapterként épülnek be (<code>server/agencies/ems.lua</code>, <code>pd.lua</code>), a tűzoltóság később egy újabb adapter lesz.</li>
+  </ul>
+  <pre class="mermaid">
+flowchart TD
+  T["Generátor tick"] --> C["Jelöltek: enabled, weight, nem aktív, távolságok"]
+  C --> M{"Van 2-es szerv?"}
+  M -- igen --> A{"Minden 2-esnél van szabad egység?"}
+  M -- nem --> O{"Legalább egy 1-esnél van?"}
+  A -- nem --> S["Kihagyás"]
+  O -- nem --> S
+  A -- igen --> V["Változatosság, súlyozott sorsolás"]
+  O -- igen --> V
+  V --> P["Spawn: járművek, NPC-k, AI, előélet"]
+  P --> R["Feladat a 2-es szerveknek"]
+  P --> Q{"1-es szerv: van szabad egység?"}
+  Q -- igen --> J["Feladat neki is"]
+  Q -- nem --> L["Late join figyelés LATE_JOIN percig"]
+  L -- "egység felszabadul, a helyszín nyitott" --> J
+  </pre>
+</section>
+
+<section id="adat">
+  <h2>Adatstruktúra (format 2)</h2>
+  <p>Az <code>erm</code> blokk helyére az <code>agencies</code> blokk kerül. A 0-s szervet el lehet hagyni. Ha mégis szerepel <code>need: 0</code>-val, a <code>locales</code> nem kötelező. 1 és 2 esetén az <code>en</code> és a <code>hu</code> cím és leírás is kötelező.</p>
+<pre><code>{
+    "format": 2, "name": "ls_armed3", "category": "armed", "location": "Los Santos",
+    "enabled": true, "weight": 1,
+    "center": [2486.1, -1667.2, 13.3], "interior": 0, "dimension": 0,
+    "safe": false,                        <span class="c">// csak ha ems.need == 2 és pd.need == 2; alapértelmezés true</span>
+    "agencies": {
+        "ems": {
+            "need": 2, "priority": 1, "caller": "SceneManager", "lateJoin": true,
+            "locales": {
+                "en": { "title": "Gunshot wound, armed person on scene", "description": "..." },
+                "hu": { "title": "Lőtt seb, fegyveres személy a helyszínen", "description": "..." }
+            }
+        },
+        "pd": {
+            "need": 2, "priority": 1,
+            "locales": { "en": { "title": "...", "description": "..." }, "hu": { "title": "...", "description": "..." } },
+            "close": { "towed": true, "suspects": true }   <span class="c">// opcionális automatikus zárási feltételek</span>
+        }
+    },
+    "vehicles": [ {
+        "id": "v1", "model": 420, "pos": [...], "rot": [...],
+        "tow": true,
+        "record": {
+            "stolen": true,                   <span class="c">// lopott: a pol_vehicles sorban "stolen" jelző, a tulajdonos egy másik (generált) NPC</span>
+            "owner": "random",                <span class="c">// random | p1 (scene ped) | none</span>
+            "inspection": "valid"             <span class="c">// valid | expired</span>
+        }
+    } ],
+    "peds": [ {
+        "id": "p2", "skin": 105, "pos": [...], "rot": 120, "anim": "stand",
+        "role": "hostile",
+        "ai": { "mode": "hostile", "targets": "all", "weapon": 22, "ammo": 51, "accuracy": 0.35,
+                "aggroRadius": 35, "leash": 40, "task": "guard", "surrenderHealth": 30, "flee": 0.2 },
+        "record": {
+            "name": "", "age": [24, 38],      <span class="c">// üres név = véletlen a skin neméhez; kor fix szám vagy tartomány</span>
+            "flags": {
+                "licence": "suspended",
+                "bac": [0.8, 1.6],            <span class="c">// tartomány; spawnkor véletlen érték benne (police_system bac egység); [0, 0] vagy hiány = józan</span>
+                "drug": "stimulant",          <span class="c">// false | stimulant | opioid | sedative | cannabis</span>
+                "flee": true
+            },
+            "past": [ { "type": "fine", "btk": "traffic.speeding", "daysAgo": [20, 90] } ],
+            "warrants": [ { "reasons": [ "crime.robbery" ],
+                            "description": { "en": "Robbery of a pedestrian in Ganton.", "hu": "Gyalogos kirablása Gantonban." } } ],
+            "announce": false, "persistent": false
+        }
+    } ]
+}</code></pre>
+  <h3>Orvosi és rendőri adat összhangban</h3>
+  <ul>
+    <li>A <code>bac</code> és a <code>drug</code> a medsys-ben is megjelenik: az alkoholból <code>alcohol</code> állapot lesz (a súlyosság a sorsolt értékből), a stimuláns / opioid / nyugtató a medsys azonos nevű állapota. Így a mentő is ugyanazt találja, amit a rendőr. A <code>cannabis</code> csak rendőri adat, mert medsys állapot nincs hozzá.</li>
+    <li>A sorsolt értékek spawnonként egyszer készülnek el, és a ped elemadatában maradnak (<code>vsm.rolled</code>), hogy a rendőrség és a medsys ugyanazt az értéket lássa.</li>
+  </ul>
+  <h3>Validálás</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Szabály</th><th>Szint</th></tr></thead>
+    <tbody>
+      <tr><td>Minden <code>need</code> 0 / 1 / 2, legalább egy &gt; 0</td><td>hiba</td></tr>
+      <tr><td><code>need &gt; 0</code>: <code>en</code> és <code>hu</code> cím + leírás kötelező</td><td>hiba</td></tr>
+      <tr><td><code>safe: false</code> csak EMS 2 + PD 2 esetén</td><td>hiba</td></tr>
+      <tr><td><code>targets: "all"</code> ellenséges ped → <code>safe: false</code> kötelező (tehát EMS 2 + PD 2)</td><td>hiba</td></tr>
+      <tr><td>Bármely <code>hostile</code> ped → PD 2</td><td>hiba</td></tr>
+      <tr><td><code>bac</code> tartomány: 0 ≤ min ≤ max ≤ 4.0; <code>drug</code> az ismert listából</td><td>hiba</td></tr>
+      <tr><td>Warrant reason csak BTK <code>warrant: true</code> tétel vagy <code>WARRANT_EXTRA</code>; leírás <code>en</code> + <code>hu</code></td><td>hiba</td></tr>
+      <tr><td><code>stolen: true</code> és <code>owner: "p1"</code> egyszerre (saját autóját nem lophatja el)</td><td>hiba</td></tr>
+      <tr><td><code>tow: true</code>, de PD = 0</td><td>figyelmeztetés</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="biztonsag">
+  <h2>Biztonságos helyszín</h2>
+  <div class="note must"><b>Szabály:</b> a helyszín alapból biztonságos (<code>safe: true</code>). „Nem biztonságos” csak EMS 2 + PD 2 esetén lehet. Ilyenkor a rendőrnek kötelező biztonságossá tennie, és ezt nem felejtheti el: a rendszer figyelmezteti, nem engedi lezárni a bejelentést, és automatikusan is érzékeli, ha a helyszín már biztonságos.</div>
+
+  <h3>Állapotok</h3>
+  <pre class="mermaid">
+stateDiagram-v2
+  [*] --> Unsafe: spawn (safe false)
+  Unsafe --> Safe: automatikus (minden fenyegetés kezelve + rendőr a helyszínen)
+  Unsafe --> Safe: rendőr jelenti a helyszínen (nincs aktív fenyegetés 50 m-en belül)
+  Safe --> Unsafe: fenyegetés újra aktív (pl. elfutott gyanúsított visszatér és támad)
+  Safe --> [*]: bejelentés lezárva
+  </pre>
+
+  <h3>Érzékelés</h3>
+  <ul>
+    <li><b>Fenyegetés</b> = a scene <code>hostile</code> és <code>fighter</code> pedjei, valamint a fegyveres <code>suspect</code>-ek.</li>
+    <li><b>Kezelt fenyegetés</b>: megbilincselve, „downed” (medsys eszméletlen / klinikai halál), halott vagy megszűnt; megadta magát, és rendőr van 15 m-en belül; vagy elmenekült: <code>SAFETY.FLED_RADIUS</code> (120 m) felett van legalább <code>SAFETY.FLED_TIME</code> (30 s) óta.</li>
+    <li><b>Automatikus biztonságos</b>: minden fenyegetés kezelve, és legalább egy rendőr a centrum <code>SAFETY.CONFIRM_RADIUS</code> (40 m) körzetében van. A „bejelentő” ilyenkor a legközelebbi rendőr egysége, megjelölve: „automatikus”.</li>
+    <li><b>Kézi jelentés</b>: az MDC „Scene safe” gombja a helyszínen (40 m) lévő rendőrnél aktív, ha nincs aktív fenyegetés 50 m-en belül. Ez arra az esetre kell, amikor a rendőr előbb ítéli biztonságosnak a helyszínt, mint a 30 s menekülési idő.</li>
+    <li><b>Visszaesés</b>: ha egy kezelt fenyegetés újra támad a körzetben, a helyszín visszavált nem biztonságosra, és mindkét szerv értesítést kap.</li>
+  </ul>
+
+  <h3>Hogy a rendőr ne felejtse el</h3>
+  <ul>
+    <li>Az MDC Calls listán <span class="tag">SECURE</span> jelvény látszik, a bejelentés részleteinél piros „Helyszín biztosítása — kötelező” blokk, a fenyegetések listájával.</li>
+    <li>A bejelentést elvállaló egység tagjai a helyszín 150 m-es körzetében állandó HUD jelzőt kapnak (ui_core tracker), amíg a helyszín nem biztonságos: „A helyszín nincs biztosítva · az EMS vár 3:12”.</li>
+    <li>A bejelentést nem lehet lezárni, amíg nem biztonságos (Close tiltva, ok: „Előbb biztosítsd a helyszínt”).</li>
+    <li>Ha az elvállaló egység elhagyja a bejelentést nem biztonságos állapotban, a bejelentés visszaáll „open”-re, és minden szolgálatban lévő rendőr értesítést kap.</li>
+  </ul>
+
+  <h3>Mentőszolgálat</h3>
+  <ul>
+    <li>Az ERM feladat <code>meta.safety</code> mezőt kap (<code>safe</code> / <code>unsafe</code> + mikor és ki jelentette). Az Active Case-en és a web diszpécser konzolon külön <b>Scene safety / Helyszín biztonsága</b> mező mutatja.</li>
+    <li><b>Érkezési figyelmeztetés</b>: nem biztonságos helyszínen, amikor a mentőegység <code>STAGING.WARN_RADIUS</code>-on (200 m) belül ér, a tabletre figyelmeztető ablak, ui_core figyelmeztetés és hangjelzés jön: maradjon legalább <code>STAGING.MIN_DISTANCE</code> (100 m) távolságban.</li>
+    <li>A v_radar célpont a helyszín helyett egy <b>várakozási pontra</b> mutat: az úthálózat egy pontja 100–150 m-re a centrumtól, a rendőrségi megközelítéstől távolabbi oldalon.</li>
+    <li>Ha a mentő 100 m-en belülre megy, 15 mp-enként ismétlődő figyelmeztetést kap.</li>
+    <li>Biztonságos lett: tablet értesítés, a Társszervek chatben rendszerüzenet („LS-12 biztonságosnak jelentette a helyszínt”), a célpont visszaáll a helyszínre.</li>
+  </ul>
+</section>
+
+<section id="generator">
+  <h2>Generátor, late join és életciklus</h2>
+  <ul>
+    <li>Szabad egységek összesen = szabad EMS + szabad PD (szervenkénti <code>RATE</code> szorzóval). A várakozás = véletlen intervallum / ez az összeg. Csak olyan jelölt jöhet, amelyhez tartozik egy szabad szerv.</li>
+    <li><code>PENDING_PER_UNIT</code> szervenként számol (ERM: hozzárendeletlen task, PD: open hívás).</li>
+    <li><b>Late join</b>: az 1-es szerv, amely spawnkor nem kapott feladatot, <code>AGENCIES.x.LATE_JOIN</code> percig (alap 10) figyelve marad. Ha ezalatt felszabadul egy egysége hatótávon belül, és a helyszín még nyitott (legalább egy szervfeladat él), akkor ő is megkapja. Scene-enként kikapcsolható: <code>"lateJoin": false</code>.</li>
+    <li>A helyszín addig él, amíg minden létrejött szervfeladat le nem zárult, utána jön a mostani takarítás (<code>CLEANUP_*</code>, <code>MAX_LIFETIME</code>).</li>
+    <li>PD automatikus zárás a <code>close</code> feltételekkel: a <code>tow</code> járművek elvontatva, a gyanúsítottak kezelve. Kézi zárás az MDC-n (nem biztonságos helyszínen tiltva).</li>
+    <li>Változatosság: a <code>variety.lua</code> marad. A játékos szerinti előzmény a PD-re is kiterjed (<code>onPoliceCallResponded</code>), a kategória-egyensúly szervenként számol.</li>
+  </ul>
+</section>
+
+<section id="rendorseg">
+  <h2>Rendőrségi oldal (police_system)</h2>
+  <h3>Kétnyelvű bejelentések, ugyanúgy, mint a med_erm-ben</h3>
+  <ul>
+    <li>A bejelentés angol <code>title</code> / <code>description</code> mezője az alap, mellette <code>locales = { hu = {...} }</code>. Új <code>D.textFor(call, player)</code> = a med_erm <code>Tasks.textFor</code> mása: a néző nyelve (v_locals <code>getPlayerLanguage</code>), ha hiányzik egy mező vagy nyelv, angol.</li>
+    <li>A <code>D.list(player)</code> a nézőnek szánt szöveggel küldi a sorokat. Az új bejelentés értesítése (<code>police_system.dispatch.new_call</code>) játékosonként a saját nyelvén megy ki.</li>
+    <li>A telefonos hívás az, amit a hívó beírt: nincs fordítás, de a hívás <code>lang</code> mezőt kap.</li>
+  </ul>
+<pre><code><span class="c">-- új exportok</span>
+exports.police_system:getFreeUnits()                    <span class="c">-- { { callsign, x, y, z, interior, accounts } }</span>
+exports.police_system:createSceneCall({
+    title, description,                                <span class="c">-- angol alap</span>
+    locales  = { hu = { title, description } },
+    x, y, z, priority, caller = "SceneManager",
+    source   = "v_scenemanager",
+    meta     = { scene, instance, ermTask, safe = false, threats = n },
+})                                                      <span class="c">-- id | false, err</span>
+exports.police_system:createAgencyCall(fromResource, { reason, ermTask, unit, locales, x, y, z })  <span class="c">-- ERM "Társszervek kérése"</span>
+exports.police_system:closeSceneCall(id, reason)
+exports.police_system:getCall(id)
+exports.police_system:setCallSafety(id, state, by)       <span class="c">-- a v_scenemanager hívja; az MDC-n látszik</span>
+exports.police_system:postCallMessage(id, channel, fromLabel, text)  <span class="c">-- channel: "call" | "agency"</span>
+exports.police_system:setNPCRecord(ped, record)          <span class="c">-- előélet profil (pol.profile)</span>
+
+<span class="c">-- új események</span>
+onPoliceCallResponded(id, callsign, accounts)
+onPoliceCallClosed(id, reason, by)
+onPoliceSceneSafeReported(id, callsign, player)          <span class="c">-- kézi "Scene safe"</span>
+onPoliceCallMessage(id, channel, fromLabel, text)</code></pre>
+  <ul>
+    <li><b>AI csoport</b>: a szolgálatban lévő rendőr <code>setPlayerAIGroup(p, "police")</code>, szolgálat végén <code>false</code>. Az AI rendőr pedek is a <code>police</code> csoportba kerülnek.</li>
+    <li>A scene bejelentés incidensként logolódik (<code>scene_call</code>, <code>agency_call</code>) a fizetéshez és a jelentésekhez.</li>
+    <li>A későbbi PD bejelentéskezelő ugyanezt a listát fogja használni. Most nincs automatikus kiosztás.</li>
+  </ul>
+</section>
+
+<section id="kommunikacio">
+  <h2>Szervek közti kommunikáció</h2>
+  <div class="cols">
+    <div>
+      <h3>MDC: bejelentés csatorna</h3>
+      <ul>
+        <li>Minden bejelentésnek van szöveges csatornája: a <b>Call #41 / Bejelentés #41</b> fülön a bejelentést elvállaló rendőr egységek írnak.</li>
+        <li>Ha a bejelentés ERM esethez kötött (scene vagy társszervi kérés), megjelenik a <b>Társszervek</b> fül is: ezt az esethez rendelt mentők az ERM tableten látják.</li>
+        <li>A rendőrségi oldalon a <code>pol_shifts</code> eseménynaplóba kerül, a csatornák memóriában élnek, a bejelentés lezárása után 15 percig olvashatók.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>ERM tablet</h3>
+      <ul>
+        <li>Messages oldal: <b>Dispatch</b> · <b>Case #128</b> · új <b>Társszervek #128</b> fül (<code>channel = "agency"</code>), ha az esethez rendőrségi bejelentés tartozik.</li>
+        <li>Active Case: a <b>Request Backup / Segélykocsi kérése</b> gombtól balra új <b>Request Agency / Társszervek kérése</b> gomb. Választó: szerv (most a Rendőrség, a Tűzoltóság „hamarosan”), ok (helyszínbiztosítás, forgalomirányítás, agresszív személy, bűncselekmény gyanúja, haláleset, egyéb szöveggel).</li>
+        <li>Ha nincs szolgálatban rendőr, a kérést elutasítja, és megmondja az okát. A kérés állapota az Active Case <b>Police / Rendőrség</b> mezőjében látszik.</li>
+        <li>A web diszpécser konzol (med_web) ugyanezt a csatornát olvasási joggal mutatja.</li>
+      </ul>
+    </div>
+  </div>
+  <p>A szabad szöveg nem fordítódik, mindenki a saját nyelvén ír. A rendszerüzenetek (biztonságos lett, egység vonul, kérés elutasítva) v_locals kulcsok, és minden olvasó a saját nyelvén kapja őket.</p>
+</section>
+
+<section id="npc">
+  <h2>NPC szerepek és előélet</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Szerep</th><th>ai_peds</th><th>Csoport / reláció</th><th>Fenyegetés?</th></tr></thead>
+    <tbody>
+      <tr><td><b>fighter</b></td><td><code>enemy</code>, ököl vagy közelharci fegyver, cél a másik oldal</td><td><code>vsm&lt;inst&gt;.a</code> ↔ <code>.b</code> hostile; játékosra semleges (grudge, ha megütik)</td><td>igen</td></tr>
+      <tr><td><b>hostile · police</b></td><td><code>enemy</code>, guard / idle, aggro, leash, megadás</td><td><code>vsm&lt;inst&gt;.h</code> → <code>police</code></td><td>igen</td></tr>
+      <tr><td><b>hostile · all</b></td><td>mint fent</td><td><code>vsm&lt;inst&gt;.h</code> → minden játékos (új ai_peds opció: <code>hostileToPlayers</code>)</td><td>igen, és kötelező a <code>safe: false</code></td></tr>
+      <tr><td><b>suspect</b></td><td>civilian; <code>flee</code> eséllyel elfut rendőr láttán</td><td>semleges</td><td>csak ha van fegyvere</td></tr>
+      <tr><td><b>patient / bystander</b></td><td>nincs (statikus póz)</td><td>—</td><td>nem</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Az AI-s pedek ai_peds <code>scripted</code> fajták, <code>keep</code> és <code>protected</code> jelzővel: csak script szüntetheti meg őket. Mind medsys páciens (<code>medev.saveLethal</code>), tehát a verekedés és a lövöldözés sérültjei kezelhetők.</li>
+    <li>Verekedés indulása alapból <code>unit_near</code>: amikor egy kiküldött egység 150 m-en belül van, mert syncer nélkül a ped áll.</li>
+    <li>Előélet: a police_system <code>history/npc.lua</code> a véletlen helyett a <code>pol.profile</code>-t használja, ami nincs megadva, azt a mai esélyekkel generálja. Alap a lusta létrehozás (első rendőri kontaktnál). <code>announce: true</code> = már spawnkor létrejön, MDC-ben kereshető. <code>persistent: true</code> = <code>pol_citizens.ext_key</code>, minden spawnnál ugyanaz a személy.</li>
+    <li>Lopott jármű: a <code>pol_vehicles</code> sor <code>stolen</code> jelzőt kap, a tulajdonos egy külön generált NPC polgár. Rendszám-lekérdezésnél „LOPOTT” jelzés jelenik meg, és a vezető <code>flee</code> esélye a <code>FLEE_WARRANT</code> szintre nő.</li>
+  </ul>
+</section>
+
+<section id="hibak">
+  <h2>Hibajelentés (Flag scene)</h2>
+<pre><code><span class="c">// scenes/issues.json (az index.json mellett, ahhoz nem nyúlunk)</span>
+{
+    "format": 1, "seq": 18,
+    "issues": [ {
+        "id": 17, "scene": "ls_mva3", "path": "Los_Santos/mva/ls_mva3",
+        "comment": "The taxi floats above the road", "lang": "en",
+        "source": "command", "by": "DrAndrew112", "byName": "Dr Andrew",
+        "at": 1793606400, "pos": [1911.2, -1137.8, 24.5], "instance": 12, "server": "main:22003",
+        "status": "open", "resolvedBy": null, "resolvedAt": null
+    } ]
+}</code></pre>
+  <ul>
+    <li><b>Egy nyitott hiba / scene.</b> Ha van, a <code>/flagscene</code> és a web Flag is elutasítja („Ehhez a helyszínhez már van nyitott hibajelentés”), és megmutatja a meglévő hiba szövegét.</li>
+    <li><code>/flagscene &lt;indok...&gt;</code>: bárki, élő helyszín 80 m-es körzetében, 5–200 karakter, játékosonként 60 s cooldown. Visszajelzés ui_core értesítéssel. Admin értesítés nincs.</li>
+    <li>v_chat regisztráció, két nyelvű leírással (a v_chat parancs-adatbázisa a leírást kulcsként kapja, ha támogatja; ha nem, ezt is hozzáadjuk):</li>
+  </ul>
+<pre><code>loadstring(exports.v_chat:importCommands())()
+CMD.register("flagscene", "&lt;reason...&gt;", 0, L.key("v_scenemanager.cmd.flagscene_desc"))
+<span class="c">-- en: "Report a broken scene near you"   hu: "A közeli hibás helyszín bejelentése"</span></code></pre>
+  <ul>
+    <li>Web: Flag gomb a katalógus és az aktív helyszínek sorain, inline űrlap; Issues panel nyitott / megoldott füllel, Resolve gombbal.</li>
+    <li>Szerkesztő: R menü → <b>Check issues</b> → scene-enként egy gomb, a gomb leírása a hiba leírása. Kattintásra betölt és a bejelentés helyére teleportál. Betöltött scene-nél <b>Issue</b> menü: teleport, megoldottnak jelölés.</li>
+  </ul>
+</section>
+
+<section id="feluletek">
+  <h2>Felületek (makettek)</h2>
+  <p>HTML makettek a játék saját színeivel (med_erm <code>Theme</code>, police_system <code>POL.colors</code>, ui_inac, web_api). A méretek és az elrendezés a mostani kódot követik, az új elemek a meglévők mintájára készültek. A nyelvváltóval minden makett angolul és magyarul is látható.</p>
+  <div class="mk-bar" role="group" aria-label="Makett nyelve">
+    <span>Makett nyelve:</span>
+    <span class="seg"><button type="button" id="mk-hu" aria-pressed="true">HU</button><button type="button" id="mk-en" aria-pressed="false">EN</button></span>
+    <span class="tag">a beírt chat / komment szöveg nem fordítódik</span>
+  </div>
+
+  <!-- ERM ACTIVE CASE -->
+  <h3 id="mk-erm-case">ERM tablet · Active Case (nem biztonságos helyszín)</h3>
+  <div class="stage"><div class="mk erm">
+    <div class="erm-screen">
+      <div class="erm-head"><span class="cs">M-21<small>ALS · 21-MED</small></span><span class="clock">14:23:08</span><span class="pill"><span class="en">EN ROUTE</span><span class="hu">VONUL</span></span></div>
+      <div class="erm-page">
+        <div class="erm-title"><span class="prio">P1</span><b>#128&nbsp;&nbsp;<span class="en">Gunshot wound, armed person on scene</span><span class="hu">Lőtt seb, fegyveres személy a helyszínen</span></b></div>
+        <div class="erm-sub">Ganton · 640 m</div>
+        <div class="erm-grid">
+          <div class="erm-info"><small class="en">RECEIVED</small><small class="hu">BEÉRKEZETT</small><span class="en">14:20 (3 min ago)</span><span class="hu">14:20 (3 perce)</span></div>
+          <div class="erm-info"><small class="en">CALLER</small><small class="hu">BEJELENTŐ</small><span>SceneManager</span></div>
+          <div class="erm-info"><small class="en">UNITS</small><small class="hu">EGYSÉGEK</small><span>M-21</span></div>
+        </div>
+        <div class="erm-grid two">
+          <div class="safety bad"><small class="en">SCENE SAFETY</small><small class="hu">HELYSZÍN BIZTONSÁGA</small><b class="en">NOT SAFE · stage at 100 m+</b><b class="hu">NEM BIZTONSÁGOS · várj 100 m-en túl</b></div>
+          <div class="safety info"><small class="en">POLICE</small><small class="hu">RENDŐRSÉG</small><b class="en">Call #41 · LS-12 responding</b><b class="hu">#41 bejelentés · LS-12 vonul</b></div>
+        </div>
+        <div class="erm-desc"><span class="en">A man was shot in the leg on Grove Street, Ganton. The armed person is still nearby. Police are dispatched. Do not approach until the police report the scene safe.</span><span class="hu">Egy férfit lábon lőttek a Grove Streeten, Gantonban. A fegyveres személy még a közelben van. A rendőrség riasztva. Ne közelíts, amíg a rendőrség nem jelenti, hogy a helyszín biztonságos.</span></div>
+        <div class="erm-line">
+          <span class="st"><span class="en">●  Lights &amp; siren active - 2:41</span><span class="hu">●  Fény- és hangjelzés aktív - 2:41</span></span>
+          <span class="gbtn violet"><span class="en">Request Agency</span><span class="hu">Társszervek kérése</span></span>
+          <span class="gbtn blue"><span class="en">Request Backup</span><span class="hu">Segélykocsi kérése</span></span>
+        </div>
+        <div class="erm-btns">
+          <span class="gbtn big dis" style="text-align:center"><span class="en">Start Response</span><span class="hu">Kivonulás indítása</span></span>
+          <span class="gbtn big" style="text-align:center;background:rgb(84,94,108)"><span class="en">End Response</span><span class="hu">Kivonulás befejezése</span></span>
+          <span class="gbtn big dis" style="text-align:center"><span class="en">Leave Case</span><span class="hu">Feladat elhagyása</span></span>
+          <span class="gbtn big red" style="text-align:center"><span class="en">Close Case</span><span class="hu">Feladat lezárása</span></span>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <p class="cap"><b>Új:</b> „Scene safety” mező (piros / zöld, biztonságos helyszínen „SAFE · LS-12 · 14:31 (auto)” lesz belőle), „Police” mező a kapcsolt PD bejelentés állapotával, és <b>Társszervek kérése</b> gomb a backup mellett balra. Biztonságos alapértelmezésű helyszínen a Scene safety mező nem jelenik meg.</p>
+
+  <!-- ERM AGENCY PICKER -->
+  <h3 id="mk-erm-agency">ERM tablet · Társszervek kérése</h3>
+  <div class="stage"><div class="mk erm">
+    <div class="erm-screen">
+      <div class="erm-head"><span class="cs">M-14<small>BLS · 14-MED</small></span><span class="clock">14:09:51</span><span class="pill" style="background:rgb(46,160,67)"><span class="en">ON SCENE</span><span class="hu">HELYSZÍNEN</span></span></div>
+      <div class="erm-page" style="filter:blur(1.5px);opacity:.5">
+        <div class="erm-title"><span class="prio">P2</span><b>#127&nbsp;&nbsp;Fall from height</b></div>
+        <div class="erm-desc" style="min-height:300px"></div>
+      </div>
+      <div class="overlay"><div class="dlg">
+        <h5><span class="en">Request agency - Case #127</span><span class="hu">Társszervek kérése - #127 eset</span></h5>
+        <p><span class="en">Choose the agency and the reason. The request goes to the police MDC Calls page and opens the Inter-agency chat.</span><span class="hu">Válaszd ki a szervet és az okot. A kérés a rendőrségi MDC Bejelentések oldalára kerül, és megnyitja a Társszervek chatet.</span></p>
+        <span class="lbl"><span class="en">AGENCY</span><span class="hu">SZERV</span></span>
+        <div class="opt-grid">
+          <span class="opt sel"><span class="en">Police</span><span class="hu">Rendőrség</span><small class="en">3 units on duty</small><small class="hu">3 egység szolgálatban</small></span>
+          <span class="opt dis"><span class="en">Fire department</span><span class="hu">Tűzoltóság</span><small class="en">Coming later</small><small class="hu">Később</small></span>
+        </div>
+        <span class="lbl"><span class="en">REASON</span><span class="hu">OK</span></span>
+        <div class="opt-grid">
+          <span class="opt sel"><span class="en">Scene security</span><span class="hu">Helyszínbiztosítás</span></span>
+          <span class="opt"><span class="en">Traffic control</span><span class="hu">Forgalomirányítás</span></span>
+          <span class="opt"><span class="en">Aggressive person</span><span class="hu">Agresszív személy</span></span>
+          <span class="opt"><span class="en">Crime suspected</span><span class="hu">Bűncselekmény gyanúja</span></span>
+          <span class="opt"><span class="en">Death on scene</span><span class="hu">Haláleset a helyszínen</span></span>
+          <span class="opt"><span class="en">Other (write a note)</span><span class="hu">Egyéb (megjegyzéssel)</span></span>
+        </div>
+        <div class="row"><span class="gbtn violet" style="text-align:center"><span class="en">Send request</span><span class="hu">Kérés küldése</span></span><span class="gbtn" style="text-align:center"><span class="en">Cancel</span><span class="hu">Mégse</span></span></div>
+      </div></div>
+    </div>
+  </div></div>
+  <p class="cap">A kérésből <code>createAgencyCall</code> lesz: a cím és a leírás v_locals sablonból készül mindkét nyelven (pl. „EMS kérés: helyszínbiztosítás — #127 eset: Esés magasból”). Ha nincs szolgálatban rendőr, a gomb mellett hibaüzenet jelenik meg: „Nincs szolgálatban rendőr”.</p>
+
+  <!-- ERM ARRIVAL ALERT -->
+  <h3 id="mk-erm-alert">ERM tablet · Érkezési figyelmeztetés (200 m)</h3>
+  <div class="stage"><div class="mk erm">
+    <div class="erm-screen">
+      <div class="erm-head"><span class="cs">M-21<small>ALS · 21-MED</small></span><span class="clock">14:24:30</span><span class="pill"><span class="en">EN ROUTE</span><span class="hu">VONUL</span></span></div>
+      <div class="erm-page" style="filter:blur(1.5px);opacity:.5"><div class="erm-desc" style="min-height:360px"></div></div>
+      <div class="overlay"><div class="dlg alert-dlg">
+        <h5><span class="en">⚠  SCENE NOT SAFE</span><span class="hu">⚠  A HELYSZÍN NEM BIZTONSÁGOS</span></h5>
+        <p style="color:var(--erm-text)"><span class="en">Case #128: an armed person is on scene. Stay at least 100 m away until the police report the scene safe. Your map now shows the staging point.</span><span class="hu">#128 eset: fegyveres személy van a helyszínen. Maradj legalább 100 m-re, amíg a rendőrség nem jelenti, hogy a helyszín biztonságos. A térképen most a várakozási pont látszik.</span></p>
+        <div class="erm-grid two">
+          <div class="safety info"><small class="en">POLICE</small><small class="hu">RENDŐRSÉG</small><b class="en">LS-12 on scene</b><b class="hu">LS-12 a helyszínen</b></div>
+          <div class="safety info"><small class="en">STAGING POINT</small><small class="hu">VÁRAKOZÁSI PONT</small><b class="en">Grove St / Ganton Gym · 120 m</b><b class="hu">Grove St / Ganton Gym · 120 m</b></div>
+        </div>
+        <div class="row"><span class="gbtn blue" style="text-align:center"><span class="en">Understood</span><span class="hu">Értettem</span></span></div>
+      </div></div>
+    </div>
+  </div></div>
+  <p class="cap">Hangjelzés is szól. 100 m-en belül 15 mp-enként ui_core figyelmeztetés jön (lásd <a href="#mk-hud">HUD</a>). Amikor a helyszín biztonságos lesz, zöld ablak jelenik meg: „A helyszín biztonságos — megközelítheted”.</p>
+
+  <!-- ERM MESSAGES -->
+  <h3 id="mk-erm-msg">ERM tablet · Messages · Társszervek fül</h3>
+  <div class="stage"><div class="mk erm">
+    <div class="erm-screen">
+      <div class="erm-head"><span class="cs">M-21<small>ALS · 21-MED</small></span><span class="clock">14:31:44</span><span class="pill"><span class="en">EN ROUTE</span><span class="hu">VONUL</span></span></div>
+      <div class="erm-page">
+        <div class="erm-tabs"><b style="font-size:17px;margin-right:16px"><span class="en">Messages</span><span class="hu">Üzenetek</span></b>
+          <span><span class="en">Dispatch</span><span class="hu">Diszpécser</span></span>
+          <span><span class="en">Case #128</span><span class="hu">Feladat #128</span></span>
+          <span class="ia on"><span class="en">Inter-agency #128</span><span class="hu">Társszervek #128</span></span>
+        </div>
+        <div class="erm-sub" style="margin-top:0"><span class="en">Inter-agency chat: the police units on call #41 and every EMS unit on this case</span><span class="hu">Társszervi chat: a #41 bejelentés rendőr egységei és az eset minden mentőegysége</span></div>
+        <div class="msgs">
+          <div class="msg sys"><span class="time">14:21</span><span class="t sys"><span class="en">SYSTEM</span><span class="hu">RENDSZER</span></span><span class="en">Police call #41 is linked to this case. Scene not safe.</span><span class="hu">A #41 rendőrségi bejelentés ehhez az esethez kapcsolódik. A helyszín nem biztonságos.</span></div>
+          <div class="msg"><span class="time">14:26</span><span class="t pd"><span class="en">POLICE</span><span class="hu">RENDŐRSÉG</span></span><span class="who">LS-12 · Sgt. Kovacs</span>Two suspects, one armed. Stay at the staging point.</div>
+          <div class="msg"><span class="time">14:27</span><span class="t ems">EMS</span><span class="who">M-21 · Dr. Andrew</span>Copy, holding at Ganton Gym.</div>
+          <div class="msg sys"><span class="time">14:31</span><span class="t sys"><span class="en">SYSTEM</span><span class="hu">RENDSZER</span></span><span class="en">LS-12 reported the scene safe (automatic). You may approach.</span><span class="hu">Az LS-12 biztonságosnak jelentette a helyszínt (automatikus). Megközelítheted.</span></div>
+        </div>
+        <div class="erm-input"><span class="en">Write to the inter-agency chat…</span><span class="hu">Írj a társszervi chatbe…</span><span style="color:var(--erm-blue);font-weight:700"><span class="en">Send</span><span class="hu">Küldés</span></span></div>
+      </div>
+    </div>
+  </div></div>
+  <p class="cap">A játékosok által írt sorok nem fordítódnak, a rendszersorok és a címkék a néző nyelvén jelennek meg. A fül csak akkor látszik, ha az esethez rendőrségi bejelentés tartozik.</p>
+
+  <!-- MDC -->
+  <h3 id="mk-mdc">Rendőrségi MDC · Calls lista és bejelentés részletei</h3>
+  <div class="stage"><div class="mk mdc">
+    <div class="mdc-head"><b>SAPD MDC</b><span class="sp"></span><span class="st"><span class="en">RESPONDING</span><span class="hu">VONUL</span></span><span class="cs">LS-12</span></div>
+    <div class="mdc-body">
+      <div class="mdc-menu">
+        <span><span class="en">Overview</span><span class="hu">Áttekintés</span></span>
+        <span class="on"><span class="en">Calls</span><span class="hu">Bejelentések</span><i>2</i></span>
+        <span><span class="en">Pursuits</span><span class="hu">Üldözések</span></span>
+        <span><span class="en">Wanted</span><span class="hu">Körözések</span></span>
+        <span><span class="en">Warrants</span><span class="hu">Elfogatók</span></span>
+        <span><span class="en">Citizens</span><span class="hu">Állampolgárok</span></span>
+        <span><span class="en">Vehicles</span><span class="hu">Járművek</span></span>
+        <span><span class="en">Reports</span><span class="hu">Jelentések</span></span>
+        <span><span class="en">Penal code</span><span class="hu">BTK</span></span>
+      </div>
+      <div class="mdc-page">
+        <h6><span class="en">Calls</span><span class="hu">Bejelentések</span></h6>
+        <div class="hint"><span class="en">Calls from citizens (phone), scenes and other agencies.</span><span class="hu">Állampolgári (telefonos), helyszíni és társszervi bejelentések.</span></div>
+        <div style="overflow-x:auto"><table class="mdc-table">
+          <thead><tr><th>#</th><th><span class="en">Time</span><span class="hu">Idő</span></th><th><span class="en">Caller</span><span class="hu">Bejelentő</span></th><th><span class="en">Title</span><span class="hu">Cím</span></th><th><span class="en">Area</span><span class="hu">Terület</span></th><th><span class="en">Status</span><span class="hu">Státusz</span></th><th><span class="en">Units</span><span class="hu">Egységek</span></th><th></th></tr></thead>
+          <tbody>
+            <tr class="sel"><td>#41</td><td class="dim">14:20</td><td>SceneManager</td><td><span class="pb scene"><span class="en">SCENE</span><span class="hu">HELYSZÍN</span></span><span class="pb secure"><span class="en">SECURE</span><span class="hu">BIZTOSÍTANDÓ</span></span><span class="en">Shooting, armed person on Grove Street</span><span class="hu">Lövöldözés, fegyveres személy a Grove Streeten</span></td><td class="dim">Ganton</td><td><span class="en">assigned</span><span class="hu">kiosztva</span></td><td>LS-12</td><td style="white-space:nowrap"><span class="mbtn dis"><span class="en">Close</span><span class="hu">Lezárás</span></span></td></tr>
+            <tr><td>#40</td><td class="dim">14:12</td><td>EMS M-14</td><td><span class="pb ems">EMS</span><span class="en">EMS request: scene security — Case #127: Fall from height</span><span class="hu">EMS kérés: helyszínbiztosítás — #127 eset: Esés magasból</span></td><td class="dim">Idlewood</td><td class="yel"><span class="en">open</span><span class="hu">nyitott</span></td><td></td><td style="white-space:nowrap"><span class="mbtn primary"><span class="en">Respond</span><span class="hu">Vonulok</span></span> <span class="mbtn"><span class="en">Close</span><span class="hu">Lezárás</span></span></td></tr>
+            <tr><td>#39</td><td class="dim">14:05</td><td>John Smith</td><td>Loud music next door — they won't stop</td><td class="dim">Jefferson</td><td class="dim"><span class="en">closed</span><span class="hu">lezárva</span></td><td class="dim">LS-07</td><td></td></tr>
+          </tbody>
+        </table></div>
+        <div class="mdc-split">
+          <div class="mcard">
+            <h6>#41 · <span class="en">Shooting, armed person on Grove Street</span><span class="hu">Lövöldözés, fegyveres személy a Grove Streeten</span></h6>
+            <div class="kv">
+              <span><span class="en">Received</span><span class="hu">Beérkezett</span></span><span>14:20 · Ganton</span>
+              <span><span class="en">Source</span><span class="hu">Forrás</span></span><span><span class="en">Scene (automatic)</span><span class="hu">Helyszín (automatikus)</span></span>
+              <span>EMS</span><span><span class="en">Case #128 · M-21 staging</span><span class="hu">#128 eset · M-21 várakozik</span></span>
+            </div>
+            <div style="font-size:12.5px"><span class="en">A man was shot in the leg on Grove Street. Two suspects reported, one armed with a pistol. Secure the scene so EMS can treat the patient.</span><span class="hu">Egy férfit lábon lőttek a Grove Streeten. Két gyanúsítottat jelentettek, egyiküknél pisztoly van. Biztosítsd a helyszínt, hogy az EMS ellássa a sérültet.</span></div>
+            <div class="secure-box">
+              <b><span class="en">SECURE THE SCENE — REQUIRED</span><span class="hu">HELYSZÍN BIZTOSÍTÁSA — KÖTELEZŐ</span></b>
+              <p><span class="en">EMS is waiting at the staging point (3:12). The scene becomes safe automatically when every threat is under control and you are on scene. The call cannot be closed before that.</span><span class="hu">Az EMS a várakozási ponton vár (3:12). A helyszín automatikusan biztonságos lesz, amikor minden fenyegetés kezelve van, és te a helyszínen vagy. Addig a bejelentés nem zárható le.</span></p>
+              <div class="threat"><span><span class="en">Male, pistol</span><span class="hu">Férfi, pisztoly</span></span><span class="a"><span class="en">ACTIVE</span><span class="hu">AKTÍV</span></span></div>
+              <div class="threat"><span><span class="en">Male, unarmed</span><span class="hu">Férfi, fegyvertelen</span></span><span class="n"><span class="en">CUFFED</span><span class="hu">MEGBILINCSELVE</span></span></div>
+              <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="mbtn dis"><span class="en">Report scene safe</span><span class="hu">Helyszín biztonságos</span></span><span style="font-size:11.5px;color:var(--pol-dim)"><span class="en">Active threat within 50 m</span><span class="hu">Aktív fenyegetés 50 m-en belül</span></span></div>
+            </div>
+          </div>
+          <div class="mcard">
+            <div class="mtabs"><span><span class="en">Call #41</span><span class="hu">Bejelentés #41</span></span><span class="on"><span class="en">Inter-agency</span><span class="hu">Társszervek</span></span></div>
+            <div class="mchat">
+              <div style="color:var(--pol-dim);font-style:italic"><span class="t" style="background:var(--pol-panel2)"><span class="en">SYSTEM</span><span class="hu">RENDSZER</span></span><span class="en">EMS case #128 linked. M-21 assigned.</span><span class="hu">A #128 EMS eset kapcsolva. M-21 kiosztva.</span></div>
+              <div><span class="t" style="background:rgb(40,80,150)"><span class="en">POLICE</span><span class="hu">RENDŐRSÉG</span></span><b>LS-12 · Sgt. Kovacs</b> Two suspects, one armed. Stay at the staging point.</div>
+              <div><span class="t" style="background:rgb(46,140,90)">EMS</span><b>M-21 · Dr. Andrew</b> Copy, holding at Ganton Gym.</div>
+            </div>
+            <div class="minput"><span class="en">Write to the inter-agency channel…</span><span class="hu">Írj a társszervi csatornába…</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <p class="cap"><b>Új:</b> forrás-jelvények (HELYSZÍN, EMS, BIZTOSÍTANDÓ / BIZTONSÁGOS), a sorra kattintva részletek panel, kötelező biztosítás blokk a fenyegetések listájával, és csatorna fülek (Bejelentés / Társszervek). A scene és a társszervi bejelentések a néző nyelvén jelennek meg, a telefonos hívás (#39) a hívó szövegével.</p>
+
+  <!-- HUD -->
+  <h3 id="mk-hud">HUD és ui_core értesítések</h3>
+  <div class="stage"><div class="mk world">
+    <div class="tracker"><b class="en">SCENE NOT SECURED · CALL #41</b><b class="hu">A HELYSZÍN NINCS BIZTOSÍTVA · #41</b>
+      <div class="row"><span class="en">EMS waiting</span><span class="hu">Az EMS vár</span><span>3:12</span></div>
+      <div class="row"><span class="en">Active threats</span><span class="hu">Aktív fenyegetés</span><span>1</span></div>
+    </div>
+    <div class="notif warn" style="left:18px;top:18px"><b class="en">Scene not safe</b><b class="hu">A helyszín nem biztonságos</b><span class="en">You are 85 m from case #128. Stay back at least 100 m until the police report the scene safe.</span><span class="hu">85 m-re vagy a #128 esettől. Maradj legalább 100 m-re, amíg a rendőrség nem jelenti, hogy biztonságos.</span></div>
+    <div class="notif ok" style="left:18px;top:122px"><b class="en">Report saved</b><b class="hu">Hibajelentés elmentve</b><span class="en">Thank you! An admin will check scene ls_mva3.</span><span class="hu">Köszönjük! Egy admin megnézi az ls_mva3 helyszínt.</span></div>
+    <div class="chatline">/flagscene The taxi floats above the road
+      <div class="sug"><b>/flagscene</b> &lt;reason...&gt; — <span class="en">Report a broken scene near you</span><span class="hu">A közeli hibás helyszín bejelentése</span></div>
+    </div>
+  </div></div>
+  <p class="cap">Bal felül: mentőnek 100 m-en belül (piros), és a /flagscene sikeres visszajelzése (zöld). Jobb felül: a rendőr állandó jelzője a helyszín 150 m-es körzetében. Lent: a v_chat parancsjavaslat. További /flagscene válaszok: „80 m-en belül nincs helyszín.”, „Ehhez a helyszínhez már van nyitott hibajelentés: <i>…</i>”, „Az indok 5–200 karakter legyen.”, „Várj még 42 mp-et.”.</p>
+
+  <!-- UI_INAC -->
+  <h3 id="mk-inac">Szerkesztő · ui_inac temp menük</h3>
+  <div class="stage"><div class="mk inac-row">
+    <div class="inac">
+      <div class="ttl"><span class="en">Check issues</span><span class="hu">Hibás helyszínek</span><span>1/3</span></div>
+      <div class="it sel"><span>ls_mva3</span><span class="v">Los Santos</span></div>
+      <div class="it"><span>sf_fall12</span><span class="v">San Fierro</span></div>
+      <div class="it"><span>lv_mci13</span><span class="v">Las Venturas</span></div>
+      <div class="arr">▲ ▼</div>
+      <div class="desc">The taxi floats above the road<small class="en">Dr Andrew · 2026-11-02 14:05 · command</small><small class="hu">Dr Andrew · 2026-11-02 14:05 · parancs</small></div>
+    </div>
+    <div class="inac">
+      <div class="ttl"><span class="en">Agencies</span><span class="hu">Szervek</span><span>2/7</span></div>
+      <div class="it"><span>EMS</span><span class="v"><span class="en">2 · Mandatory</span><span class="hu">2 · Kötelező</span></span></div>
+      <div class="it sel"><span><span class="en">Police</span><span class="hu">Rendőrség</span></span><span class="v"><span class="en">2 · Mandatory</span><span class="hu">2 · Kötelező</span></span></div>
+      <div class="it"><span><span class="en">Scene safe at start</span><span class="hu">Biztonságos induláskor</span></span><span class="v"><span class="en">No</span><span class="hu">Nem</span></span></div>
+      <div class="it"><span>Late join</span><span class="v g"><span class="en">On</span><span class="hu">Be</span></span></div>
+      <div class="it"><span><span class="en">EMS texts (EN / HU)</span><span class="hu">EMS szövegek (EN / HU)</span></span><span class="v">✓ ✓</span></div>
+      <div class="it"><span><span class="en">Police texts (EN / HU)</span><span class="hu">Rendőrségi szövegek (EN / HU)</span></span><span class="v">✓ —</span></div>
+      <div class="it"><span><span class="en">Police auto close</span><span class="hu">Rendőrségi automatikus zárás</span></span><span class="v">›</span></div>
+      <div class="arr">▲ ▼</div>
+      <div class="desc"><span class="en">0 = not needed, 1 = needed (sent if a unit is free), 2 = mandatory (the scene only spawns with a free unit). ←/→ changes the level.</span><span class="hu">0 = nem szükséges, 1 = szükséges (megy, ha van szabad egység), 2 = kötelező (csak szabad egységgel jön létre). ←/→ váltja a szintet.</span><small class="en">Missing: Police HU text</small><small class="hu">Hiányzik: rendőrségi HU szöveg</small></div>
+    </div>
+    <div class="inac">
+      <div class="ttl"><span class="en">Criminal record · p2</span><span class="hu">Előélet · p2</span><span>4/10</span></div>
+      <div class="it"><span><span class="en">Name</span><span class="hu">Név</span></span><span class="v"><span class="en">Random</span><span class="hu">Véletlen</span></span></div>
+      <div class="it"><span><span class="en">Age</span><span class="hu">Kor</span></span><span class="v">24–38</span></div>
+      <div class="it"><span><span class="en">Licence</span><span class="hu">Jogosítvány</span></span><span class="v"><span class="en">Suspended</span><span class="hu">Bevonva</span></span></div>
+      <div class="it sel"><span><span class="en">Alcohol (BAC)</span><span class="hu">Alkohol (véralkohol)</span></span><span class="v">0.8–1.6</span></div>
+      <div class="it"><span><span class="en">Drug</span><span class="hu">Kábítószer</span></span><span class="v"><span class="en">Stimulant</span><span class="hu">Stimuláns</span></span></div>
+      <div class="it"><span><span class="en">Flees from police</span><span class="hu">Menekül a rendőr elől</span></span><span class="v g"><span class="en">Yes</span><span class="hu">Igen</span></span></div>
+      <div class="it"><span><span class="en">Past items (1)</span><span class="hu">Korábbi tételek (1)</span></span><span class="v">›</span></div>
+      <div class="it"><span><span class="en">Warrant</span><span class="hu">Elfogató parancs</span></span><span class="v"><span class="en">Robbery</span><span class="hu">Rablás</span></span></div>
+      <div class="it"><span><span class="en">Create at spawn</span><span class="hu">Létrehozás spawnkor</span></span><span class="v"><span class="en">Off</span><span class="hu">Ki</span></span></div>
+      <div class="it"><span><span class="en">Same person every spawn</span><span class="hu">Minden spawnnál ugyanaz</span></span><span class="v"><span class="en">Off</span><span class="hu">Ki</span></span></div>
+      <div class="arr">▲ ▼</div>
+      <div class="desc"><span class="en">Range of the blood alcohol level. Every spawn rolls a random value inside it. 0–0 = sober. medsys gets the matching alcohol state.</span><span class="hu">A véralkoholszint tartománya. Minden spawnnál véletlen érték készül benne. 0–0 = józan. A medsys a megfelelő alkoholos állapotot kapja.</span></div>
+    </div>
+    <div class="inac">
+      <div class="ttl"><span class="en">Vehicle record · v1</span><span class="hu">Jármű adatai · v1</span><span>2/4</span></div>
+      <div class="it"><span><span class="en">Tow</span><span class="hu">Vontatandó</span></span><span class="v g"><span class="en">Yes</span><span class="hu">Igen</span></span></div>
+      <div class="it sel"><span><span class="en">Stolen</span><span class="hu">Lopott</span></span><span class="v g"><span class="en">Yes</span><span class="hu">Igen</span></span></div>
+      <div class="it"><span><span class="en">Owner</span><span class="hu">Tulajdonos</span></span><span class="v"><span class="en">Random NPC</span><span class="hu">Véletlen NPC</span></span></div>
+      <div class="it"><span><span class="en">Inspection</span><span class="hu">Műszaki</span></span><span class="v"><span class="en">Valid</span><span class="hu">Érvényes</span></span></div>
+      <div class="arr">▲ ▼</div>
+      <div class="desc"><span class="en">The police database marks the vehicle stolen. The owner is a separate generated person, never a scene ped.</span><span class="hu">A rendőrségi adatbázis lopottként jelöli a járművet. A tulajdonos külön generált személy, soha nem a helyszín egyik pedje.</span></div>
+    </div>
+  </div></div>
+  <p class="cap">A ui_inac temp menük címsor + elemek + leírás dobozzal (a leírás a kijelölt elemé). A Check issues menüben a leírás maga a hiba szövege (ahogy beírták), alatta a bejelentő, a dátum és a forrás. A szerkesztő minden menüje v_locals kulcsokból épül.</p>
+
+  <!-- WEB -->
+  <h3 id="mk-web">Weboldal · Scene Manager konzol</h3>
+  <div class="stage"><div class="mk osa">
+    <div class="osa-top">
+      <div><b>Scene Manager</b><small class="en">Scenes · EMS + Police</small><small class="hu">Helyszínek · EMS + Rendőrség</small></div>
+      <span class="sp"></span>
+      <span style="font-size:12px;color:var(--osa-dim)"><span class="en">1936 scenes · 3 active · 3 open issues</span><span class="hu">1936 helyszín · 3 aktív · 3 nyitott hiba</span></span>
+      <span class="obtn on"><span class="en">Auto generator: on</span><span class="hu">Automatikus generátor: be</span></span>
+      <span class="lang"><span class="hu on">HU</span><span class="en">HU</span><span class="hu">EN</span><span class="en on">EN</span></span>
+      <span style="font-size:12.5px;color:var(--osa-dim)">DrAndrew112</span>
+      <span class="obtn"><span class="en">Sign out</span><span class="hu">Kijelentkezés</span></span>
+    </div>
+    <div class="osa-main">
+      <div class="opanel">
+        <div class="bar">
+          <span class="oin grow"><span class="en">Search name, title, place…</span><span class="hu">Keresés: név, cím, hely…</span></span>
+          <span class="oin">Los Santos ▾</span>
+          <span class="oin"><span class="en">Category: all</span><span class="hu">Kategória: mind</span> ▾</span>
+          <span class="oin"><span class="en">Agency: Police</span><span class="hu">Szerv: Rendőrség</span> ▾</span>
+          <span class="oin">☑ <span class="en">Has issues</span><span class="hu">Van hibája</span></span>
+        </div>
+        <div style="padding:0 12px 6px;font-size:12px;color:var(--osa-dim)"><span class="en">183 scenes</span><span class="hu">183 helyszín</span></div>
+        <div class="orow">
+          <div class="main"><div class="name">ls_mva3</div><div class="sub"><span class="en">T-bone collision at intersection · Glen Park</span><span class="hu">Oldalirányú ütközés kereszteződésben · Glen Park</span></div></div>
+          <span class="otag ems">EMS 2</span><span class="otag pd">PD 1</span><span class="otag flag">⚑ <span class="en">1 issue</span><span class="hu">1 hiba</span></span>
+          <span class="obtn ghost">Flag</span><span class="obtn primary">Spawn</span>
+        </div>
+        <div class="flagform">
+          <div class="err"><span class="en">This scene already has an open report:</span><span class="hu">Ehhez a helyszínhez már van nyitott hibajelentés:</span> “The taxi floats above the road” — Dr Andrew, 11-02 14:05</div>
+        </div>
+        <div class="orow">
+          <div class="main"><div class="name">ls_armed3</div><div class="sub"><span class="en">Gunshot wound, armed person on scene · Ganton</span><span class="hu">Lőtt seb, fegyveres személy a helyszínen · Ganton</span></div></div>
+          <span class="otag ems">EMS 2</span><span class="otag pd">PD 2</span><span class="otag unsafe"><span class="en">NOT SAFE</span><span class="hu">NEM BIZTONSÁGOS</span></span>
+          <span class="obtn ghost">Flag</span><span class="obtn primary">Spawn</span>
+        </div>
+        <div class="orow">
+          <div class="main"><div class="name">ls_motorcycle7</div><div class="sub"><span class="en">Motorcyclist down after a skid · Verona Beach</span><span class="hu">Megcsúszott motoros · Verona Beach</span></div></div>
+          <span class="otag ems">EMS 2</span><span class="otag pd">PD 1</span>
+          <span class="obtn ghost">Flag</span><span class="obtn primary">Spawn</span>
+        </div>
+        <div class="flagform">
+          <span style="font-size:12.5px;font-weight:600"><span class="en">Flag ls_motorcycle7 as broken</span><span class="hu">Az ls_motorcycle7 megjelölése hibásként</span></span>
+          <div class="ta">The motorbike is inside the lamp post</div>
+          <div class="foot"><span>36 / 200</span><span style="display:flex;gap:6px"><span class="obtn ghost"><span class="en">Cancel</span><span class="hu">Mégse</span></span><span class="obtn primary"><span class="en">Flag scene</span><span class="hu">Megjelölés hibásként</span></span></span></div>
+        </div>
+      </div>
+      <div class="opanel">
+        <div class="otabs"><span><span class="en">Active scenes</span><span class="hu">Aktív helyszínek</span></span><span class="on"><span class="en">Issues</span><span class="hu">Hibák</span></span></div>
+        <div style="display:flex;gap:6px;padding:10px 12px"><span class="obtn on"><span class="en">Open (3)</span><span class="hu">Nyitott (3)</span></span><span class="obtn"><span class="en">Resolved (12)</span><span class="hu">Megoldott (12)</span></span></div>
+        <div class="issue">
+          <div class="h"><b>ls_mva3</b><span class="otag flag"><span class="en">command</span><span class="hu">parancs</span></span></div>
+          <div class="c">The taxi floats above the road</div>
+          <div class="m">Dr Andrew · 2026-11-02 14:05 · <span class="en">instance</span><span class="hu">példány</span> #12</div>
+          <div class="acts"><span class="obtn on"><span class="en">Resolve</span><span class="hu">Megoldva</span></span><span class="obtn"><span class="en">Copy name</span><span class="hu">Név másolása</span></span></div>
+        </div>
+        <div class="issue">
+          <div class="h"><b>sf_fall12</b><span class="otag flag">web</span></div>
+          <div class="c">A beteg a falban fekszik, nem lehet hozzáférni.</div>
+          <div class="m">Kovacs · 2026-11-01 21:40</div>
+          <div class="acts"><span class="obtn on"><span class="en">Resolve</span><span class="hu">Megoldva</span></span><span class="obtn"><span class="en">Copy name</span><span class="hu">Név másolása</span></span></div>
+        </div>
+        <div class="issue">
+          <div class="h"><b>lv_mci13</b><span class="otag flag"><span class="en">command</span><span class="hu">parancs</span></span></div>
+          <div class="c">Car on the sidewalk blocks the ambulance</div>
+          <div class="m">Rayne · 2026-11-01 18:12 · <span class="en">instance</span><span class="hu">példány</span> #4</div>
+          <div class="acts"><span class="obtn on"><span class="en">Resolve</span><span class="hu">Megoldva</span></span><span class="obtn"><span class="en">Copy name</span><span class="hu">Név másolása</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+  <p class="cap"><b>Új:</b> HU / EN nyelvváltó (alapértelmezés a fiók v_locals nyelve), szerv-jelvények, „Szerv” és „Van hibája” szűrő, Flag gomb inline űrlappal, elutasítás a meglévő nyitott hiba szövegével, Issues fül. A hibák szövege az, amit a bejelentő beírt.</p>
+</section>
+
+<section id="nyelvek">
+  <h2>Kétnyelvűség</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mi</th><th>Hogyan</th></tr></thead>
+    <tbody>
+      <tr><td>Játékbeli UI (ERM tablet, MDC, HUD, értesítések, szerkesztő menük)</td><td>v_locals kulcsok <code>en</code> + <code>hu</code>: új <code>v_scenemanager.json</code>, bővül a <code>med_erm.json</code> és a <code>police_system.json</code></td></tr>
+      <tr><td>Scene szövegek (EMS, PD, warrant leírás, tanú szöveg)</td><td>scene JSON <code>locales.en</code> + <code>locales.hu</code>, a validálás mindkettőt megköveteli, ha a szint &gt; 0</td></tr>
+      <tr><td>MDC és ERM feladat szöveg</td><td>játékoshoz kötött fordítás (<code>textFor</code>), angol tartalék</td></tr>
+      <tr><td>Társszervi kérés szövege</td><td>v_locals sablon, mindkét nyelv a kéréskor elkészül, és a bejelentés <code>locales</code>-ába kerül</td></tr>
+      <tr><td>Rendszerüzenetek a csatornákban</td><td>kulcs + paraméterek tárolva, olvasáskor a néző nyelvén renderelve</td></tr>
+      <tr><td>Scene Manager weboldal</td><td>HU / EN váltó. A szövegeket egy <code>vsmWebTexts(lang)</code> http export adja a v_locals-ból, a választás a böngészőben megmarad</td></tr>
+      <tr><td>Parancs leírások (v_chat)</td><td><code>CMD.register</code> v_locals kulccsal. Ha a v_chat még nem támogatja, kap egy kis bővítést: a leírást a néző nyelvén mutatja</td></tr>
+      <tr><td>Játékos által írt szöveg (chat, /flagscene komment, telefonhívás)</td><td>nem fordítódik; a <code>lang</code> mezőben eltároljuk a beíró nyelvét</td></tr>
+      <tr><td>med_web diszpécser konzol</td><td>az új mezők (biztonság, rendőrség, társszervi csatorna) kétnyelvű kulcsokat kapnak. A konzol többi része ma angol, a teljes fordítása külön feladat</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="atnevezes">
+  <h2>Átnevezés</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Mi</th><th>Régi</th><th>Új</th></tr></thead>
+    <tbody>
+      <tr><td>Hely</td><td><code>[medical]/med_scenemanager</code></td><td><code>[world]/v_scenemanager</code></td></tr>
+      <tr><td>Lua prefix</td><td><code>MSM</code>, <code>msm*</code></td><td><code>VSM</code>, <code>vsm*</code></td></tr>
+      <tr><td>Parancsok</td><td><code>/medscene*</code></td><td><code>/scene*</code> + <code>/flagscene</code>, mind regisztrálva a v_chat-en</td></tr>
+      <tr><td>Események</td><td><code>onMedScene*</code></td><td><code>onSceneSpawned</code>, <code>onSceneRemoved</code>, <code>onSceneAutoChange</code>, <code>onSceneFlagged</code>, <code>onSceneSafetyChanged</code></td></tr>
+      <tr><td>Elemadat</td><td><code>msm.scene</code></td><td><code>vsm.scene</code>, <code>vsm.rolled</code></td></tr>
+      <tr><td>Web</td><td><code>/med_scenemanager/</code></td><td><code>/v_scenemanager/</code></td></tr>
+      <tr><td>Adat</td><td colspan="2"><code>scenes/</code> és <code>data/variety.json</code> átkerül, az <code>index.json</code> tartalma nem változik, mellé jön az <code>issues.json</code></td></tr>
+    </tbody>
+  </table></div>
+  <p>Érintett resource-ok: ui_phone (emergency), claude-mcp (medical / scene API, config, docs), v_locals, medsys (megjegyzések, alcohol / drug állapot), med_erm (biztonság, várakozási pont, Társszervek fül és gomb), med_web (új mezők), police_system (calls, csatornák, AI csoport, előélet, lopott jármű), ai_peds (<code>hostileToPlayers</code>), v_chat (kétnyelvű parancsleírás, ha kell), ui_help.</p>
+</section>
+
+<section id="migracio">
+  <h2>Migráció és PD szövegek</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Csoport</th><th class="num">Scene</th><th>EMS</th><th>PD</th><th>Teendő</th></tr></thead>
+    <tbody>
+      <tr><td>Járműves scene-ek (mva 75, mci 125, motorcycle 125, hitbycar 111, stroke 10, hypoglycemia 11, fall 6, airport 5, kategória nélküli 2)</td><td class="num">470</td><td><span class="lvl l2">2</span></td><td><span class="lvl l1">1</span></td><td>formátumváltás, <code>tow: true</code>, új PD szöveg EN + HU</td></tr>
+      <tr><td>Minden más</td><td class="num">1466</td><td><span class="lvl l2">2</span></td><td><span class="lvl l0">0</span></td><td>csak formátumváltás, PD blokk nélkül</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Hogyan lesz valótlanság nélküli a PD szöveg</h3>
+  <ol>
+    <li><b>Tényfájl scene-enként</b> a scene adataiból: járművek (modell → típus a veh_manager <code>models.json</code>-ból, szín a <code>colors</code>-ból, sérülés a <code>doors</code> / <code>panels</code> / <code>health</code> alapján), a járműben ülő pedek, a sérültek száma és tudatállapota, a zóna neve (getZoneName), a helyzet (úttest vagy járda a validátor adataiból), valamint a már átnézett EMS szöveg állításai.</li>
+    <li><b>Szűk szókincsű sablonok</b> rendőri szemszögből: mi történt, hány jármű, hol, mit kell tenni (helyszínbiztosítás, vontatás). Csak olyan állítás kerülhet bele, amely a tényfájl egy mezőjéhez köthető. Nincs tanú, menekülő, tűz, dugó, ittasság vagy rendszám, ha a scene ezt nem tartalmazza. Az „elzárja az utat” csak úttesten álló járműnél szerepelhet. Az „EMS értesítve” igaz, mert ezeknél az EMS mindig 2-es.</li>
+    <li><b>Automatikus ellenőrző script</b>: minden mondat minden állítása visszakereshető a tényfájlban (szín, típus, darabszám, zóna, sérült szám). Ellentmondás az EMS szöveggel (pl. más szín vagy jármű-szám) = hiba. A magyar és az angol változat tartalmilag azonos (ugyanazok az állítások).</li>
+    <li><b>Kézi logikai átnézés</b> mind a 470 scene-en, kategóriánként csoportosítva. A 34 nem baleseti kategóriájú járműves scene-t (stroke, hypoglycemia, fall, airport, kategória nélküli) egyenként olvasom el. Ahol a jármű szerepe nem igazolható (pl. nem derül ki, hogy a beteg vezette-e), ott a szöveg csak a tényt mondja ki („a helyszínen álló szürke szedánt el kell szállítani”), és a scene-t listázom neked.</li>
+    <li>Előbb kategóriánként 3 mintát kapsz jóváhagyásra, utána készül el a többi.</li>
+  </ol>
+  <p>Az útvonalak nem változnak, az <code>index.json</code> érintetlen. A pozíciók nem módosulnak. A konverzió a saját JSON író formátumában írja a fájlokat.</p>
+</section>
+
+<section id="fazisok">
+  <h2>Végrehajtási fázisok</h2>
+  <ol class="phases">
+    <li><b>Átnevezés és áthelyezés</b> <code>[world]/v_scenemanager</code>-be: prefix, <code>/scene*</code> parancsok, web útvonal, hivatkozó resource-ok. A működés még a régi.</li>
+    <li><b>Format 2, szervadapterek, generátor</b>: szintszabály, late join, több feladatos életciklus, validálás, v_locals namespace.</li>
+    <li><b>police_system</b>: játékoshoz kötött fordítás a Calls-ban, scene és társszervi bejelentés, részletek panel, csatornák, exportok és események, AI csoport, automatikus zárás, tow integráció.</li>
+    <li><b>Biztonságos helyszín</b>: érzékelés, kézi jelentés, visszaesés, HUD tracker, a lezárás tiltása; ERM oldalon a mező, az érkezési figyelmeztetés, a várakozási pont és a rendszerüzenetek.</li>
+    <li><b>ERM</b>: Társszervek kérése gomb és választó, Társszervek fül, med_web új mezők.</li>
+    <li><b>NPC szerepek és előélet</b>: fighter / hostile / suspect, <code>hostileToPlayers</code>, <code>pol.profile</code>, bac tartomány, drog, lopott jármű, medsys összhang.</li>
+    <li><b>Hibajelentés</b>: issues.json, <code>/flagscene</code> + v_chat, web Flag + Issues + nyelvváltó, szerkesztő Check issues.</li>
+    <li><b>Szerkesztő UI</b>: Agencies, ped Role / AI / Criminal record, jármű Record, mentéskori validálás, 3D szerep címkék, mind kétnyelvű.</li>
+    <li><b>Migráció</b>: konverzió, 470 PD szöveg mintákkal, ellenőrző script és teljes átnézés; néhány új példa scene (fegyveres, verekedés) MCP validálással.</li>
+    <li><b>Dokumentáció és tesztek</b>: README, ui_help (EN + HU), offline Lua tesztek (generátor, validálás, biztonság-érzékelés, issues). Az in-game teszthez a szerver újraindítása kell (a bridge nem indít újra resource-t).</li>
+  </ol>
+</section>
+
+<section id="nyitott">
+  <h2>Nyitott kérdések</h2>
+  <div class="decisions">
+    <div class="decision"><h4>K1 · Számértékek</h4><p>Várakozási táv 100 m, figyelmeztetés 200 m-től, menekülés 120 m / 30 s, rendőr megerősítő körzet 40 m, late join 10 perc, /flagscene 80 m és 60 s. <span class="rec">Javaslat: ezekkel indulunk, mind configban.</span></p></div>
+    <div class="decision"><h4>K2 · Társszervi kérés okai</h4><p>Helyszínbiztosítás, forgalomirányítás, agresszív személy, bűncselekmény gyanúja, haláleset, egyéb (szöveggel). <span class="rec">Javaslat: ez a lista.</span></p></div>
+    <div class="decision"><h4>K3 · Ki olvassa a társszervi csatornát</h4><p>A bejelentés rendőr egységei, az eset mentőegységei, és olvasásra a web diszpécserek. Írhatnak-e a diszpécserek is? <span class="rec">Javaslat: igen, „Dispatcher &lt;név&gt;” címkével.</span></p></div>
+    <div class="decision"><h4>K4 · Kézi „biztonságos” jelentés</h4><p>Maradjon a kézi gomb (50 m-en belül nincs aktív fenyegetés), vagy csak automatikus legyen? <span class="rec">Javaslat: mindkettő, ahogy a terv írja.</span></p></div>
+  </div>
+</section>
+
+<footer>A forrás: <code>[medical]/med_scenemanager/docs/plan/index.html</code>. Kód nem változott, a végrehajtáshoz külön engedély kell.</footer>
+</main>
+</div>
+
+<script>
+(function () {
+  var hu = document.getElementById("mk-hu"), en = document.getElementById("mk-en");
+  function set(lang) {
+    document.body.classList.toggle("mk-en", lang === "en");
+    hu.setAttribute("aria-pressed", lang === "hu" ? "true" : "false");
+    en.setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+    try { localStorage.setItem("vsm-plan-mk-lang", lang); } catch (e) {}
+  }
+  hu.addEventListener("click", function () { set("hu"); });
+  en.addEventListener("click", function () { set("en"); });
+  var saved = null;
+  try { saved = localStorage.getItem("vsm-plan-mk-lang"); } catch (e) {}
+  set(saved === "en" ? "en" : "hu");
+})();
+</script>
