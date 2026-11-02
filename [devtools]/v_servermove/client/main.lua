@@ -118,17 +118,21 @@ local function enforce()
     toggleAllControls(false, true, false)
 end
 
-addEventHandler("onClientResourceStart", resourceRoot, function()
-    layout()
-    showChat(false)
-    enforce()
-    setTimer(enforce, 500, 0)
-    addEventHandler("onClientRender", root, render, true, "low-1000")
-    addEventHandler("onClientClick", root, onClick)
-end)
+local enabled = false
 
-addEventHandler("onClientResourceStop", resourceRoot, function()
-    showCursor(false)
-    toggleAllControls(true, true, false)
-    showChat(true)
-end)
+if enabled then
+    addEventHandler("onClientResourceStart", resourceRoot, function()
+        layout()
+        showChat(false)
+        enforce()
+        setTimer(enforce, 500, 0)
+        addEventHandler("onClientRender", root, render, true, "low-1000")
+        addEventHandler("onClientClick", root, onClick)
+    end)
+
+    addEventHandler("onClientResourceStop", resourceRoot, function()
+        showCursor(false)
+        toggleAllControls(true, true, false)
+        showChat(true)
+    end)
+end
