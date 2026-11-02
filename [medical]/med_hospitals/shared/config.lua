@@ -13,6 +13,13 @@ HOSP = {
     BAY_MAX_SPEED = 6,             -- km/h: the vehicle counts as parked below this
     BAY_COLOR = { 230, 190, 40, 110 },
 
+    -- Ambulance bay area (hospitals.json "bayAreas"): a box colshape instead of bay markers (e.g. a
+    -- ramp behind the hospital). Any number of ambulances, each one's handover starts when it stops
+    -- inside. No marker, no card and no fines; an ERM unit's crew gets a subtitle on entering.
+    AREA_MARGIN_BELOW = 1.0,       -- metres added under "from"/"to" (vehicle position above the ground)
+    AREA_MARGIN_ABOVE = 2.0,
+    AREA_SUBTITLE_TIME = 4000,     -- ms
+
     -- Helicopter landing point (hospitals.json "heli"): a bay for helicopters only; the unit's
     -- handover starts when the helicopter has landed on it with a patient aboard, and the
     -- patient is pushed into the hospital's heli handover marker.

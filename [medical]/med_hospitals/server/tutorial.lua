@@ -16,6 +16,14 @@ local byPlayer = {}   -- player -> id
 local nextId = 0
 
 local function buildTutorialPoint(t, raw, kind, color)
+    if raw.area then  -- bay area: only its box colshape
+        local col = createAreaCol(raw)
+        if not col then return nil end
+        setElementDimension(col, t.dimension)
+        setElementInterior(col, t.interior)
+        t.elements[#t.elements + 1] = col
+        return { col = col, kind = kind, area = true }
+    end
     local marker = createMarker(raw.x, raw.y, raw.z, "cylinder", raw.size, color[1], color[2], color[3], color[4], t.player)
     local radius = raw.size / 2 + 0.6
     local col = createColTube(raw.x, raw.y, raw.z - 1, radius, kind == "bay" and HOSP.BAY_HEIGHT or 3)
@@ -128,7 +136,13 @@ local function updateSession(t)
     local player = t.player
     for _, bay in ipairs(t.bays) do
         local occupied = t.vehicle and inTutorialPoint(t, t.vehicle, bay) or false
-        if occupied ~= bay.occupied then
+        if occupied ~= bay.occupied and bay.area then
+            bay.occupied = occupied
+            if occupied then
+                triggerClientEvent(player, "hosp:subtitle", resourceRoot,
+                    L.forPlayer(player, "med_hospitals.handover.you_arrived_at_ambulance_bay"), HOSP.AREA_SUBTITLE_TIME)
+            end
+        elseif occupied ~= bay.occupied then
             bay.occupied = occupied
             local c = HOSP.BAY_COLOR
             setMarkerColor(bay.marker, c[1], c[2], c[3], occupied and 0 or c[4])

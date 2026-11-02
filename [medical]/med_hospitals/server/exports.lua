@@ -86,7 +86,7 @@ end
 function getVehicleHospitalBay(vehicle)
     if not isElement(vehicle) then return false end
     for bay, h in eachPoint("bay") do
-        if bay.vehicle == vehicle then return h.id, bay.index end
+        if bay.vehicle == vehicle or (bay.area and bay.vehicles[vehicle] ~= nil) then return h.id, bay.index end
     end
     return getTutorialVehicleBay(vehicle) -- the private bays of a work_ems tutorial (server/tutorial.lua)
 end

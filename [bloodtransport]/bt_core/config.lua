@@ -25,7 +25,7 @@ BT = {
     -- Institutions. kind = "bank" (blood supply center) | "hospital". x, y, z = the port marker.
     INSTITUTIONS = {
         { id = "ls_bank", kind = "bank", city = "LS", name = "Los Santos Blood Bank", x = 933.25, y = -1443.04, z = 12.55 },
-        { id = "ls_allsaints", kind = "hospital", city = "LS", name = "All Saints General Hospital", x = 1177.76, y = -1320.54, z = 13.09 },
+        { id = "ls_allsaints", kind = "hospital", city = "LS", name = "All Saints General Hospital", x = 1172.86, y = -1326.88, z = 14.41 },
         { id = "ls_country", kind = "hospital", city = "LS", name = "Country General Hospital", x = 2025.39, y = -1404.18, z = 16.21 },
         { id = "lv_bank", kind = "bank", city = "LV", name = "Las Venturas Blood Bank", x = 1365.85, y = 1897.09, z = 10.47 },
         { id = "lv_general", kind = "hospital", city = "LV", name = "Las Venturas General Hospital", x = 1610.86, y = 1817.01, z = 9.82 },

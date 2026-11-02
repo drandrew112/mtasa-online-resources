@@ -1,0 +1,16 @@
+<meta>
+	<info author="DrAndrew112" type="script" name="v_voice" version="1.0.0" description="Proximity voice chat: only nearby players hear each other" />
+
+	<script src="config.lua" type="shared" />
+	<script src="server.lua" type="server" />
+	<script src="client.lua" type="client" />
+
+	<!-- server: isPlayerTalking(player), getPlayerVoiceListeners(player) -> { player, ... } -->
+	<export function="isPlayerTalking" type="server" />
+	<export function="getPlayerVoiceListeners" type="server" />
+	<!-- client: isPlayerTalking(player), isLocalTalking() -->
+	<export function="isPlayerTalking" type="client" />
+	<export function="isLocalTalking" type="client" />
+
+	<min_mta_version client="1.5.6" server="1.5.6" />
+</meta>

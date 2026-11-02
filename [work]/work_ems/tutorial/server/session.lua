@@ -88,6 +88,33 @@ local function spawnPed(s, offset)
     return ped
 end
 
+-- Copies the objects of the TUTORIAL.HOSPITAL.maps resources into the session's dimension
+-- (destroyed with the session elements). Low LOD objects are left out.
+local function cloneMaps(s)
+    for _, name in ipairs(TUTORIAL.HOSPITAL.maps or {}) do
+        local res = getResourceFromName(name)
+        if res and getResourceState(res) == "running" then
+            for _, src in ipairs(getElementsByType("object", getResourceRootElement(res))) do
+                if getElementDimension(src) == 0 and not isElementLowLOD(src) then
+                    local x, y, z = getElementPosition(src)
+                    local rx, ry, rz = getElementRotation(src)
+                    local obj = createObject(getElementModel(src), x, y, z, rx, ry, rz)
+                    if obj then
+                        setObjectScale(obj, getObjectScale(src))
+                        setElementInterior(obj, getElementInterior(src))
+                        setElementDimension(obj, s.dimension)
+                        setElementAlpha(obj, getElementAlpha(src))
+                        setElementCollisionsEnabled(obj, getElementCollisionsEnabled(src))
+                        setElementDoubleSided(obj, isElementDoubleSided(src))
+                        setElementFrozen(obj, isElementFrozen(src))
+                        s.elements[#s.elements + 1] = obj
+                    end
+                end
+            end
+        end
+    end
+end
+
 local function destroySessionElements(s)
     for _, e in ipairs(s.elements) do
         if isElement(e) then destroyElement(e) end
@@ -139,6 +166,9 @@ end
 --   restocked = the bag is full again (after something was used)
 local function worldInfo(s)
     local info = { stretcher = { state = "none" } }
+    -- the ambulance stands in a bay of the tutorial hospital copy (handover step: drive in first)
+    info.inBay = s.handoverId ~= nil and isElement(s.vehicle) and isRunning("med_hospitals")
+        and exports.med_hospitals:getVehicleHospitalBay(s.vehicle) ~= false
     local obj = stretcherOf(s)
     if obj then
         local ms = exports.med_equipments
@@ -180,7 +210,7 @@ end
 
 local function encode(info)
     local st, items = info.stretcher, info.items
-    local key = st.state .. tostring(st.patient) .. tostring(st.loaded) .. tostring(info.restocked)
+    local key = st.state .. tostring(st.patient) .. tostring(st.loaded) .. tostring(info.restocked) .. tostring(info.inBay)
     if items then
         for _, kind in ipairs({ "bag", "monitor" }) do
             key = key .. items[kind].state .. tostring(items[kind].mine)
@@ -253,6 +283,10 @@ STEP_ENTER.transfer = function(s)
             if getPedOccupiedVehicle(player) ~= vehicle then
                 if getPedOccupiedVehicle(player) then removePedFromVehicle(player) end
                 warpPedIntoVehicle(player, vehicle, 0)
+            end
+            if not s.mapsCloned then
+                s.mapsCloned = true
+                cloneMaps(s)
             end
             local v = h.vehicle
             setElementVelocity(vehicle, 0, 0, 0)

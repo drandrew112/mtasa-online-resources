@@ -20,6 +20,7 @@
 
     <!-- ================= CLIENT ================= -->
     <script src="client/clipboard.lua" type="client" />
+    <script src="client/subtitle.lua"  type="client" />
 
     <!-- hospitals.json is read by the server only (not downloaded) -->
 

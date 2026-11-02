@@ -113,7 +113,7 @@ EMS = {
         nametag = true,
     },
     EXAM_MARKERS = {                              -- exam centres, ground level
-        { 1182.61, -1334.37, 12.58 },             -- LS All Saints
+        { 1152.37, -1316.61, 14.38 },             -- LS All Saints
         { 2014.44, -1433.86, 12.55 },             -- LS County General
         { 1603.63, 1817.20, 9.82 },               -- LV General
         { -2649.42, 638.66, 13.45 },              -- SF Medical Center

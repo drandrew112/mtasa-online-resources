@@ -4,6 +4,8 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- 1. An ERM unit with an active case parks its vehicle in an ambulance bay with a patient aboard
 --    (on its stretcher) -> the unit's status becomes Handover (no ERM timer: the hospital ends it).
 --    Without a patient the ambulance simply drives through. An occupied bay's marker is invisible.
+--    A bay area (box colshape, no marker) works the same for any number of ambulances; an ERM
+--    unit's crew gets a ui_core subtitle when it drives in.
 -- 2. Leaving the bay during the handover -> En Route, until the vehicle parks in a bay again.
 -- 3. A medic pushes the patient on that ambulance's stretcher into a handover marker of the same
 --    hospital -> 5 s -> the ped disappears (a player patient is treated and released), the unit's
@@ -79,20 +81,61 @@ local function onVehicleParked(bay, vehicle)
     triggerEvent("onHospitalHandoverStart", resourceRoot, unit.id, h.id)
 end
 
+-- An ERM unit's ambulance drove into a bay area: its occupants get a subtitle
+local function onAreaEntered(vehicle)
+    if not ermRunning() or not exports.med_erm:getVehicleUnit(vehicle) then return end
+    for _, p in pairs(getVehicleOccupants(vehicle) or {}) do
+        triggerClientEvent(p, "hosp:subtitle", resourceRoot,
+            L.forPlayer(p, "med_hospitals.handover.you_arrived_at_ambulance_bay"), HOSP.AREA_SUBTITLE_TIME)
+    end
+end
+
+-- Bay area: any number of vehicles; bay.vehicle = the first one (occupied / getVehicleHospitalBay)
+local function updateArea(bay)
+    local inside = {}
+    for _, v in ipairs(elementsInPoint(bay, "vehicle")) do inside[v] = true end
+    for v in pairs(bay.vehicles) do
+        if not inside[v] then bay.vehicles[v] = nil end
+    end
+    local first
+    for v in pairs(inside) do
+        if bay.vehicles[v] == nil then
+            bay.vehicles[v] = false
+            onAreaEntered(v)
+        end
+        if not bay.vehicles[v] and vehicleSpeed(v) <= HOSP.BAY_MAX_SPEED then
+            bay.vehicles[v] = true
+            onVehicleParked(bay, v)
+        end
+        first = first or v
+    end
+    bay.vehicle = first
+end
+
+-- Is the vehicle (still) in the bay?
+local function isVehicleInBay(bay, vehicle)
+    if bay.area then return bay.vehicles[vehicle] ~= nil end
+    return bay.vehicle == vehicle
+end
+
+local function updateMarkerBay(bay)
+    local occupant = bay.vehicle
+    if occupant and not isInPoint(occupant, bay) then occupant = nil end
+    if not occupant then occupant = elementsInPoint(bay, "vehicle")[1] end
+
+    if occupant ~= bay.vehicle then
+        bay.vehicle, bay.parked = occupant, false
+        setBayOccupied(bay, occupant ~= nil)
+    end
+    if occupant and not bay.parked and vehicleSpeed(occupant) <= HOSP.BAY_MAX_SPEED then
+        bay.parked = true
+        onVehicleParked(bay, occupant)
+    end
+end
+
 local function updateBays()
     for bay in eachPoint("bay") do
-        local occupant = bay.vehicle
-        if occupant and not isInPoint(occupant, bay) then occupant = nil end
-        if not occupant then occupant = elementsInPoint(bay, "vehicle")[1] end
-
-        if occupant ~= bay.vehicle then
-            bay.vehicle, bay.parked = occupant, false
-            setBayOccupied(bay, occupant ~= nil)
-        end
-        if occupant and not bay.parked and vehicleSpeed(occupant) <= HOSP.BAY_MAX_SPEED then
-            bay.parked = true
-            onVehicleParked(bay, occupant)
-        end
+        if bay.area then updateArea(bay) else updateMarkerBay(bay) end
     end
 end
 
@@ -106,7 +149,7 @@ local function updateActive()
         if not unit or unit.status ~= "handover" then
             -- ended elsewhere (completed, tablet status change, sign-out)
             active[unitId] = nil
-        elseif not isElement(a.vehicle) or a.bay.vehicle ~= a.vehicle then
+        elseif not isElement(a.vehicle) or not isVehicleInBay(a.bay, a.vehicle) then
             active[unitId] = nil
             exports.med_erm:setUnitStatus(unitId, "enroute")
             notifyCrew(unit, L.msg("med_hospitals.handover.you_left_ambulance_bay_status_is"))

@@ -802,6 +802,7 @@ function renderMinimap(x, y, w, h)
 		end
 
 		renderSpeedo(minimapPosX, minimapPosY, minimapWidth, minimapHeight)
+		renderVoiceIcon(minimapPosX, minimapPosY, minimapWidth, minimapHeight)
 
 		if damageEffectStart then
 			if tonumber(damageEffectStart) then

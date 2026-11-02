@@ -339,6 +339,8 @@ local function handoverCard()
         text = L("work_ems.steps.push_stretcher_into_blue_patient_handover")
     elseif st.state == "moving" then
         text = T.lastHandoverText or "..."
+    elseif st.state == "stowed" and not T.world.inBay then
+        text = L("work_ems.steps.drive_into_ambulance_bay_ramp")
     else
         text = L("work_ems.steps.you_arrived_at_hospital_on_real")
         if T.equipment then

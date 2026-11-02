@@ -9,6 +9,7 @@ is defined in `hospitals.json`.
 | kind | colour | what happens |
 |---|---|---|
 | **Ambulance Bay** (`bays`, any number) | yellow | An ERM unit with an active case stops its vehicle here (below `BAY_MAX_SPEED`) with a patient on its stretcher, and the unit becomes **Handover**. Without a patient the ambulance simply drives through. An occupied bay's marker has alpha 0, and it has no label. |
+| **Ambulance Bay Area** (`bayAreas`, any number) | none | A box colshape between two corners (`from` / `to`, e.g. the All Saints ramp) instead of bay markers. Works like a bay for any number of ambulances at once. No marker, no card and **no fines**; an ERM unit's crew gets a ui_core subtitle on entering ("You have arrived at the ambulance bay"). Box height: `AREA_MARGIN_BELOW` / `AREA_MARGIN_ABOVE` added to the corners' z. |
 | **Patient Handover** (`handover`, any number) | blue | A medic pushes the patient in on the stretcher. After **5 s** the ped disappears, the ERM handover completes, and the task closes. |
 | **Treatment** (`heal`, one) | green | A player standing here for **15 s** is healed completely (medsys `healCompletely` + full health). Free, unless the hospital's payer on the /gov Healthcare page is the patient (marker data `hosp.paid`, the label then has no "free of charge"). |
 
@@ -56,6 +57,7 @@ while `med_erm` is stopped (on-duty units cannot be told apart).
             "name": "All Saints General Hospital",
             "interior": 0, "dimension": 0,             // optional, default 0
             "bays":     [ { "x": 0, "y": 0, "z": 0, "size": 4.0 } ],
+            "bayAreas": [ { "from": { "x": 0, "y": 0, "z": 0 }, "to": { "x": 0, "y": 0, "z": 0 } } ],  // optional
             "handover": [ { "x": 0, "y": 0, "z": 0 } ],
             "heli": {                                  // optional: helicopter handover
                 "landing":  { "x": 0, "y": 0, "z": 0, "size": 12.0 },

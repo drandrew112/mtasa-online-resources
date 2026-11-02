@@ -60,5 +60,6 @@
   "med_hospitals.config.helicopter_patient_handover": "Helicopter Patient Handover",
   "med_hospitals.handover.your_helicopter_is_on_the_helipad": "Your helicopter is on the helipad: use the helicopter handover marker",
   "med_hospitals.handover.your_ambulance_is_in_a_ground_bay": "Your ambulance is in an ambulance bay: use the ground handover marker",
-  "med_hospitals.hospitals.heli_needs_landing_and_handover": "{id}: heli needs a landing and a handover with x, y, z"
+  "med_hospitals.hospitals.heli_needs_landing_and_handover": "{id}: heli needs a landing and a handover with x, y, z",
+  "med_hospitals.handover.you_arrived_at_ambulance_bay": "You have arrived at the ambulance bay"
 }

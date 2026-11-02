@@ -146,7 +146,7 @@
   "work_ems.steps.without_monitor_you_only_see_what": "Monitor nélkül csak azt látod, amit érzel és látsz: a pulzust (szívfrekvencia), a vérzést és a bőrt (sápadt = vérvesztés, kék = kevés oxigén).\n\nA zöld normális; a sárga, narancs és piros rosszabb. Az értékek élőben változnak.",
   "work_ems.steps.you_are_signed_in_header_shows": "Bejelentkeztél. A fejléc mutatja a hívójeledet, az egység típusát, a rendszámot és az állapotot (zöld = Szabad).\n\nA Kezdőlap mutatja a műszakodat és az aktív eseted. Az eseteket a diszpécserek osztják ki a szabad egységeknek, vagy a rendszer automatikusan.",
   "work_ems.steps.you_are_sitting_in_your_ambulance": "A mentőautódban ülsz. Minden EMS egység az EMS tablettel dolgozik: ezen jelentkezel be, ezen kapod az eseteidet, és ezen beszélsz a diszpécserekkel.\n\nNyomd meg a(z) {tablet_key} gombot a tablet megnyitásához.",
-  "work_ems.steps.you_arrived_at_hospital_on_real": "Megérkeztél a kórházba. Valós esetnél a sárga mentőállásba a beteggel való parkolás indítja az Átadás állapotot.\n\nSzállj ki, menj a hátsó ajtókhoz, és vedd ki a hordágyat - a beteg rajta jön ki.",
+  "work_ems.steps.you_arrived_at_hospital_on_real": "A mentő beállóban vagy. Valós esetnél, ha itt a beteggel a fedélzeten megállsz, az indítja az Átadás állapotot.\n\nSzállj ki, menj a hátsó ajtókhoz, és vedd ki a hordágyat - a beteg rajta jön ki.",
   "work_ems.steps.you_arrived_at_scene_so_your": "Megérkeztél a helyszínre, ezért az állapotod Helyszínen.\n\nZárd be a tabletet a(z) {tablet_key} gombbal.",
   "work_ems.steps.you_got_message_messages_has_two": "Üzeneted érkezett. Az Üzenetek két csatornát tartalmaz: Diszpécser (az egységed és a diszpécserek) és Eset (az eset összes egysége és a diszpécserek).\n\nNyisd meg a menüt, és válaszd az Üzenetek pontot.",
   "work_ems.steps.you_know_basics_now_you_can": "Most már ismered az alapokat:\n\n{lines}\n\nItt gyakorolhatod a minijátékokat, vagy bármikor újra megnézheted az oktatóprogramot a /{command} paranccsal.",
@@ -170,5 +170,6 @@
   "work_ems.minigames.splint": "Sínezés",
   "work_ems.minigames.splint_desc": "Törés rögzítése sínnel.",
   "work_ems.minigames.arrows": "Kötözés",
-  "work_ems.minigames.arrows_desc": "Gyors reakció és sorrend."
+  "work_ems.minigames.arrows_desc": "Gyors reakció és sorrend.",
+  "work_ems.steps.drive_into_ambulance_bay_ramp": "Megérkeztél az All Saintshez. Hajts a mentő beállóba: a kórház mögötti rámpára. Állj meg rajta a mentővel."
 }

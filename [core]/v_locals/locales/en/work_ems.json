@@ -146,7 +146,7 @@
   "work_ems.steps.without_monitor_you_only_see_what": "Without the monitor you only see what you can feel and see: the pulse (heart rate), the bleeding and the skin (pale = blood loss, blue = too little oxygen).\n\nGreen is normal; yellow, orange and red are worse. The values change live.",
   "work_ems.steps.you_are_signed_in_header_shows": "You are signed in. The header shows your callsign, unit type, plate and status (green = Available).\n\nThe Home page shows your shift and your active case. Cases are assigned to free units by the dispatchers, or automatically by the system.",
   "work_ems.steps.you_are_sitting_in_your_ambulance": "You are sitting in your ambulance. Every EMS unit works with the EMS tablet: you sign in on it, get your cases and talk to the dispatchers.\n\nPress {tablet_key} to open the tablet.",
-  "work_ems.steps.you_arrived_at_hospital_on_real": "You arrived at the hospital. On a real case, parking in a yellow ambulance bay with the patient starts the Handover status.\n\nGet out, go to the rear doors and take out the stretcher - the patient comes out on it.",
+  "work_ems.steps.you_arrived_at_hospital_on_real": "You are in the ambulance bay. On a real case, stopping here with the patient aboard starts the Handover status.\n\nGet out, go to the rear doors and take out the stretcher - the patient comes out on it.",
   "work_ems.steps.you_arrived_at_scene_so_your": "You arrived at the scene, so your status is On Scene.\n\nClose the tablet with {tablet_key}.",
   "work_ems.steps.you_got_message_messages_has_two": "You got a message. Messages has two channels: Dispatch (your unit and the dispatchers) and Case (every unit on the case and the dispatchers).\n\nOpen the menu and choose Messages.",
   "work_ems.steps.you_know_basics_now_you_can": "You know the basics now:\n\n{lines}\n\nYou can practice the minigames here, or watch this tutorial again any time with /{command}.",
@@ -170,5 +170,6 @@
   "work_ems.minigames.splint": "Splinting",
   "work_ems.minigames.splint_desc": "Fix a fracture with a splint.",
   "work_ems.minigames.arrows": "Bandaging",
-  "work_ems.minigames.arrows_desc": "Quick reaction and order."
+  "work_ems.minigames.arrows_desc": "Quick reaction and order.",
+  "work_ems.steps.drive_into_ambulance_bay_ramp": "You are at All Saints. Drive round to the ambulance bay: the ramp behind the hospital. Stop the ambulance on it."
 }

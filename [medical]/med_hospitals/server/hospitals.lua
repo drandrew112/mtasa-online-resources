@@ -1,6 +1,7 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Loads hospitals.json and builds the world elements of every hospital:
---   bays      ambulance parking markers (handover status of the unit, server/handover.lua)
+--   bays      ambulance parking markers (handover status of the unit, server/handover.lua);
+--             "bayAreas" are bays too (point.area): a box colshape, no marker, any number of vehicles
 --   handover  stretcher handover markers (patient handed over, server/handover.lua)
 --   heal      treatment marker (server/heal.lua); hosp.paid = the patient pays it (gov_health)
 --
@@ -106,6 +107,18 @@ local function parseHospital(raw, index)
         if not point then return nil, L.msg("med_hospitals.hospitals.handover_needs_x_y_z", { id = id, i = i }) end
         h.handover[#h.handover + 1] = point
     end
+    -- bay areas: a box between two corners, no marker (point x, y, z = bottom centre)
+    for i, a in ipairs(type(raw.bayAreas) == "table" and raw.bayAreas or {}) do
+        local from = type(a) == "table" and parsePoint(a.from, 0)
+        local to = type(a) == "table" and parsePoint(a.to, 0)
+        if not from or not to then return nil, L.msg("med_hospitals.hospitals.bay_needs_x_y_z", { id = id, i = "area " .. i }) end
+        local min = { x = math.min(from.x, to.x), y = math.min(from.y, to.y), z = math.min(from.z, to.z) }
+        local max = { x = math.max(from.x, to.x), y = math.max(from.y, to.y), z = math.max(from.z, to.z) }
+        h.bays[#h.bays + 1] = {
+            area = true, min = min, max = max, rot = 0,
+            x = (min.x + max.x) / 2, y = (min.y + max.y) / 2, z = min.z,
+        }
+    end
     -- helicopter handover: a landing point (like a bay, helicopters only) + its own handover marker
     if raw.heli ~= nil then
         local heli = type(raw.heli) == "table" and raw.heli or {}
@@ -145,8 +158,21 @@ function setHandoverVisibility(marker)
     exports.work_core:setElementVisibleToWork(marker, HOSP.HANDOVER_WORK)
 end
 
+-- Box colshape of a bay area (also used by the tutorial copy)
+function createAreaCol(point)
+    local x, y, z = point.min.x, point.min.y, point.min.z - HOSP.AREA_MARGIN_BELOW
+    return createColCuboid(x, y, z, point.max.x - x, point.max.y - y,
+        point.max.z + HOSP.AREA_MARGIN_ABOVE - z)
+end
+
 local function buildPoint(h, point, kind, index, color)
     point.hospital, point.kind, point.index = h, kind, index
+    if point.area then
+        local col = track(createAreaCol(point))
+        if not col then return false end
+        point.col = inWorld(col, h)
+        return true
+    end
     if point.heli then color = kind == "bay" and HOSP.HELI_COLOR or color end
     local marker = track(createMarker(point.x, point.y, point.z, "cylinder", point.size,
         color[1], color[2], color[3], color[4]))
@@ -168,7 +194,8 @@ local function buildHospital(h)
     for i, bay in ipairs(h.bays) do
         buildPoint(h, bay, "bay", i, HOSP.BAY_COLOR)
         bay.vehicle, bay.parked = nil, false
-        setElementData(bay.marker, HOSP_DATA.OCCUPIED, false)
+        if bay.area then bay.vehicles = {} end  -- [vehicle] = parked (an area holds any number)
+        if isElement(bay.marker) then setElementData(bay.marker, HOSP_DATA.OCCUPIED, false) end
     end
     for i, point in ipairs(h.handover) do
         if buildPoint(h, point, "handover", i, HOSP.HANDOVER_COLOR) then

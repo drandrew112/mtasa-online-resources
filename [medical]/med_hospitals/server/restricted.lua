@@ -1,5 +1,5 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Ambulance bays are for on-duty ambulances only.
+-- Ambulance bays are for on-duty ambulances only (bay areas excepted: no fines there).
 --
 -- A vehicle in a bay that is not an on-duty ERM unit's vehicle (an off-duty ambulance or anything
 -- else) turns the bay marker red and its driver is warned. While it stays, the driver is fined
@@ -69,7 +69,8 @@ local function updateRestricted()
 
     for bay in eachPoint("bay") do
         local vehicle = bay.vehicle
-        local bad = enforce and isElement(vehicle) and not isAuthorized(vehicle)
+        -- bay areas (e.g. the All Saints ramp) are not restricted: no warning, no fine
+        local bad = enforce and not bay.area and isElement(vehicle) and not isAuthorized(vehicle)
         setBayRestricted(bay, bad)
         if bad then seen[vehicle] = seen[vehicle] or bay.hospital end
     end

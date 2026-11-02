@@ -25,11 +25,15 @@ TUTORIAL = {
     },
     PATIENT_SKINS = { 7, 12, 15, 19, 24, 40, 41, 46, 56, 93 },
 
-    -- After loading the patient the camera fades and the ambulance is parked here
-    -- (med_hospitals hospital id; its handover markers are copied into the tutorial dimension)
+    -- After loading the patient the camera fades and the ambulance is put here, in front of the
+    -- hospital: the player drives into the ambulance bay (the ramp behind All Saints) and pushes the
+    -- patient in (med_hospitals hospital id; its bays / handover markers are copied into the
+    -- tutorial dimension). maps = map resources whose objects are copied into the tutorial
+    -- dimension too (the remodelled hospital is in dimension 0 only).
     HOSPITAL = {
         id = "ls_allsaints",
-        vehicle = { 1199.67, -1308.04, 13.45, 90 },
+        vehicle = { 1145.87, -1290.99, 13.44, 180 },
+        maps = { "map_ls_allsaints" },
     },
 
     -- Demo case on the tablet
