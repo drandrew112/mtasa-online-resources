@@ -529,6 +529,34 @@ CREATE TABLE IF NOT EXISTS `admin_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ---------------------------------------------------------------------------
+-- payments  (v_admin Payments page: SynHosting top-ups)
+-- ---------------------------------------------------------------------------
+-- Copy of `__syn_payments` (SynHosting's table, only read; same id) + the approval:
+-- status = pending | approved | rejected, suggested = account named in the comment
+-- ('' = none found), account = the credited account, bank_money = amount * multiplier
+-- (v_bank key payment.topup). v_admin also creates the table on start.
+CREATE TABLE IF NOT EXISTS `payments` (
+    `id`            INT          NOT NULL PRIMARY KEY,
+    `paymethodid`   INT          NOT NULL DEFAULT 0,
+    `amount`        INT          NOT NULL DEFAULT 0,
+    `comment`       TEXT         NULL,
+    `smsid`         TEXT         NULL,
+    `smssendernum`  TEXT         NULL,
+    `created`       TIMESTAMP    NULL DEFAULT NULL,
+    `copied_at`     INT          NOT NULL DEFAULT 0,
+    `status`        VARCHAR(10)  NOT NULL DEFAULT 'pending',
+    `suggested`     VARCHAR(64)  NULL DEFAULT NULL,
+    `account`       VARCHAR(64)  NULL DEFAULT NULL,
+    `multiplier`    INT          NOT NULL DEFAULT 10,
+    `bank_money`    BIGINT       NOT NULL DEFAULT 0,
+    `reviewed_by`   VARCHAR(64)  NULL DEFAULT NULL,
+    `reviewed_at`   INT          NOT NULL DEFAULT 0,
+    `reject_reason` VARCHAR(255) NULL DEFAULT NULL,
+    KEY `idx_status` (`status`),
+    KEY `idx_account` (`account`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ---------------------------------------------------------------------------
 -- jobs_official / jobs_community / jobs_draft  (v_jobmanager: race / DM games)
 -- ---------------------------------------------------------------------------
 -- Same columns in all three: data = game JSON (without id / createdBy), image =

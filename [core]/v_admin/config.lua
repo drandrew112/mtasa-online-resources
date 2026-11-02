@@ -75,6 +75,7 @@ ADMIN.perms = {
     organizationsEdit = 5, -- rename / balance / founder / properties / force sale (Dev)
     bank         = 3,   -- Bank page (v_bank): accounts + statements (Admin)
     bankEdit     = 5,   -- add / take money, transfers, freeze, overdraft list, access (Dev)
+    payments     = 4,   -- Payments page (SynHosting top-ups): approve / reject (SuperAdmin)
 }
 
 -- Admin panel (O key). Data is never hidden: every admin who can open the
@@ -112,6 +113,19 @@ ADMIN.accounts = {
     notesKey  = "admin_notes", -- accData key (JSON list of { t, admin, text })
     exportMax = 5000,   -- rows of one CSV export
     filtersKey = "admin_filters", -- accData key of the ADMIN's account: saved filters (JSON list of { name, filter })
+}
+
+-- Payments page: SynHosting payments (MySQL `__syn_payments`, only read) are copied into
+-- `table` and approved there; an approval books points * multiplier bank money to the account.
+ADMIN.payments = {
+    source        = "__syn_payments",
+    table         = "payments",
+    syncEvery     = 60,     -- s: new rows of the source are copied this often (and on every list request)
+    minMultiplier = 10,     -- bank money per point, the default and the lowest allowed
+    maxMultiplier = 1000,
+    pageSize      = 50,
+    -- paymethodid -> name (v_admin.payments.method_<id>)
+    methods       = { 0, 1, 2, 3, 7, 4, 5, 8, 9, 10, 11 },
 }
 
 -- Admin log page (MySQL `admin_log`).

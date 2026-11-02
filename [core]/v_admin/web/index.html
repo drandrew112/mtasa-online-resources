@@ -35,6 +35,7 @@
                 <button class="nav-item" data-page="organizations" data-perm="organizations">Organizations</button>
                 <button class="nav-item" data-page="reports" data-perm="reports">Reports <b class="badge" id="cntReports">0</b></button>
                 <button class="nav-item" data-page="bans">Bans &amp; mutes</button>
+                <button class="nav-item" data-page="payments" data-perm="payments">Payments <b class="badge" id="cntPayments">0</b></button>
                 <div class="cat">Server</div>
                 <button class="nav-item" data-page="server">Server</button>
                 <button class="nav-item" data-page="resources" data-perm="resources">Resources</button>
@@ -128,6 +129,19 @@
                         <div class="osa-panel-head"><strong>Muted / jailed online</strong></div>
                         <div class="osa-scroll grow" id="bnOnline"></div>
                     </div>
+                </section>
+
+                <!-- ============ payments (SynHosting) ============ -->
+                <section class="tab-page row-page" id="page-payments" hidden>
+                    <div class="osa-panel grow3">
+                        <div class="filters">
+                            <input class="osa-input" id="pySearch" type="search" placeholder="Comment, account, sender or #id" autocomplete="off">
+                            <span class="seg" id="pyStatus"></span>
+                        </div>
+                        <div class="osa-scroll grow" id="pyRows"></div>
+                        <div class="osa-panel-foot pager" id="pyPager"></div>
+                    </div>
+                    <div class="osa-panel grow2 org-detail" id="pyDetail"><div class="osa-empty">Pick a payment.</div></div>
                 </section>
 
                 <!-- ============ server ============ -->

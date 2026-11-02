@@ -1094,6 +1094,107 @@
     $('bnAll').addEventListener('click', () => { B.active = false; B.page = 0; $('bnAll').classList.add('active'); $('bnActive').classList.remove('active'); bansLoad(); });
     PAGES.bans = { show: bansLoad, render: bansRender };
 
+    /* ============================================================ payments (SynHosting) */
+
+    const PY_METHODS = { 0: 'Point balance', 1: 'Bank deposit', 2: 'Bank transfer', 3: 'Premium SMS', 7: 'Premium call (IVR)', 4: 'Postal payment',
+        5: 'PayPal', 8: 'PaysafeCard', 9: 'Bank card', 10: 'Google Pay', 11: 'Apple Pay' };
+    const PY_STATUS = { pending: ['Pending', 'warn'], approved: ['Approved', 'good'], rejected: ['Rejected', 'bad'] };
+    const PY = { status: 'pending', page: 0, search: '', data: null, sel: null };
+    const pyMethod = id => PY_METHODS[id] || `#${id}`;
+    const pyStatus = s => `<span class="${(PY_STATUS[s] || ['', 'dim'])[1]}">${esc((PY_STATUS[s] || [s])[0])}</span>`;
+    async function payLoad() {
+        const r = await page('payments', 'list', { status: PY.status === 'all' ? null : PY.status, text: PY.search, page: PY.page }, true);
+        if (r.ok) PY.data = r.result;
+        if (PY.data && !arr(PY.data.rows).some(p => p.id === PY.sel)) PY.sel = null;
+        payRender();
+        payDetail(true);
+    }
+    function payRender() {
+        const d = PY.data, c = (d && d.counts) || {};
+        const cnt = $('cntPayments');
+        cnt.textContent = c.pending || 0;
+        cnt.classList.toggle('hot', (c.pending || 0) > 0);
+        $('pyStatus').innerHTML = [['pending', `Pending (${c.pending || 0})`], ['approved', 'Approved'], ['rejected', 'Rejected'], ['all', 'All']]
+            .map(m => `<button class="osa-btn${PY.status === m[0] ? ' active' : ''}" data-st="${m[0]}">${m[1]}</button>`).join('');
+        grid($('pyRows'), [
+            { key: 'id', label: '#' },
+            { key: 'created', label: 'Date', text: p => fmtDate(p.created) },
+            { key: 'method', label: 'Method', text: p => esc(pyMethod(p.method)) },
+            { key: 'comment', label: 'Comment', text: p => esc(p.comment) },
+            { key: 'amount', label: 'Points', cls: 'r', text: p => `<b>${fmtInt(p.amount)}</b>` },
+            { key: 'status', label: 'Status', text: p => pyStatus(p.status) + (p.account ? ` <span class="dim">→ ${esc(p.account)}</span>` : '') },
+        ], d ? arr(d.rows) : [], { sel: p => p.id === PY.sel, click: p => { PY.sel = p.id; payRender(); payDetail(true); }, empty: d ? 'No payments.' : 'Loading...' });
+        $('pyPager').innerHTML = `<button class="osa-btn small" data-p="-1"${PY.page > 0 ? '' : ' disabled'}>‹</button><span>${PY.page + 1}</span>
+            <button class="osa-btn small" data-p="1"${d && d.more ? '' : ' disabled'}>›</button>`;
+    }
+    // what the approval books, shown live under the fields
+    function payPreview() {
+        const p = PY.data && arr(PY.data.rows).find(x => x.id === PY.sel);
+        const el = $('pyPreview');
+        if (!p || !el) return;
+        const min = PY.data.minMultiplier, max = PY.data.maxMultiplier;
+        const mult = Math.floor(Number($('pyMult').value) || 0), acc = $('pyAccount').value.trim();
+        const ok = mult >= min && mult <= max && acc !== '';
+        el.className = ok ? 'good' : 'bad';
+        el.innerHTML = mult < min || mult > max ? `The multiplier must be between ${min} and ${max}.`
+            : !acc ? 'Enter the account to credit.'
+            : `<b>${fmtInt(p.amount)} points × ${mult} = ${money(p.amount * mult)}</b> bank money to <b>${esc(acc)}</b>`;
+        $('pyApprove').disabled = !ok;
+    }
+    function payDetail() {
+        const el = $('pyDetail');
+        const d = PY.data, p = d && arr(d.rows).find(x => x.id === PY.sel);
+        if (!p) { el.innerHTML = '<div class="osa-empty">Pick a payment.</div>'; return; }
+        const kv = (k, v, cls) => `<div><small>${k}</small><b${cls ? ` class="${cls}"` : ''}>${v}</b></div>`;
+        let tiles = kv('Date', fmtDate(p.created)) + kv('Method', esc(pyMethod(p.method))) + kv('Points', fmtInt(p.amount), 'good')
+            + kv('SMS ID', val(p.smsId)) + kv('Sender', val(p.sender)) + kv('Status', pyStatus(p.status));
+        if (p.status === 'approved') tiles += kv('Account', esc(p.account)) + kv('Multiplier', '×' + p.multiplier) + kv('Bank money', money(p.bankMoney), 'good');
+        if (p.status !== 'pending') tiles += kv('Reviewed by', val(p.reviewedBy)) + kv('Reviewed', fmtDate(p.reviewedAt));
+        let body = '';
+        if (p.status === 'rejected') body = `<p><span class="dim">Reason:</span> <span class="bad">${esc(p.rejectReason)}</span></p>`;
+        else if (p.status === 'pending' && can('payments')) body = `<div class="col" style="gap:10px">
+                <strong>Approve</strong>
+                <div class="row left"><input class="osa-input grow" id="pyAccount" maxlength="64" placeholder="Account" value="${esc(p.suggested)}">
+                    <label>× <input class="osa-input" id="pyMult" type="number" min="${d.minMultiplier}" max="${d.maxMultiplier}" step="1" value="${p.eventMultiplier || d.minMultiplier}" style="width:90px"></label>
+                    <button class="osa-btn primary" id="pyApprove">Approve</button></div>
+                <span id="pyPreview"></span>
+                <span class="dim">${p.suggested ? `Account found in the comment: <b>${esc(p.suggested)}</b>` : 'No account name found in the comment: type it by hand, or reject.'}</span>
+                <strong style="margin-top:8px">Reject</strong>
+                <div class="row left"><input class="osa-input grow" id="pyReason" maxlength="200" placeholder="Reason (required)">
+                    <button class="osa-btn danger" id="pyReject">Reject</button></div>
+            </div>`;
+        el.innerHTML = `<div class="row left"><h2 style="margin:0">Payment #${p.id}</h2></div>
+            <div class="kv-grid">${tiles}</div>
+            <div><small class="dim">Comment</small><p style="margin:4px 0;white-space:pre-wrap">${p.comment ? esc(p.comment) : '<span class="dim">No comment: type the account by hand, or reject.</span>'}</p></div>${body}`;
+        payPreview();
+    }
+    async function payEdit(action, args) {
+        const r = await page('payments', action, Object.assign({ id: PY.sel }, args));
+        if (r.ok) payLoad();
+    }
+    $('pyDetail').addEventListener('input', e => { if (e.target.id === 'pyAccount' || e.target.id === 'pyMult') payPreview(); });
+    $('pyDetail').addEventListener('click', async e => {
+        const b = e.target.closest('button');
+        if (!b || b.disabled) return;
+        const p = PY.data && arr(PY.data.rows).find(x => x.id === PY.sel);
+        if (!p) return;
+        if (b.id === 'pyApprove') {
+            const mult = Math.floor(Number($('pyMult').value) || 0), acc = $('pyAccount').value.trim();
+            if (await OSA.ui.confirm('Approve payment', `${money(p.amount * mult)} bank money goes to ${acc}.`, 'Approve'))
+                return payEdit('approve', { account: acc, multiplier: mult });
+        }
+        if (b.id === 'pyReject') {
+            const reason = $('pyReason').value.trim();
+            if (!reason) return OSA.toast('Give a reason.');
+            if (await OSA.ui.confirm('Reject payment', 'Nobody gets anything for this payment.', 'Reject')) return payEdit('reject', { reason });
+        }
+    });
+    $('pyStatus').addEventListener('click', e => { const b = e.target.closest('button[data-st]'); if (b) { PY.status = b.dataset.st; PY.page = 0; PY.sel = null; payLoad(); } });
+    $('pyPager').addEventListener('click', e => { const b = e.target.closest('button[data-p]'); if (b && !b.disabled) { PY.page += Number(b.dataset.p); payLoad(); } });
+    let pyTimer = null;
+    $('pySearch').addEventListener('input', e => { PY.search = e.target.value.trim(); PY.page = 0; clearTimeout(pyTimer); pyTimer = setTimeout(payLoad, 400); });
+    PAGES.payments = { show: () => { PY.page = 0; payLoad(); }, render: () => {} };
+
     /* ============================================================ resources */
 
     const R = { list: null, mode: 'all' };
