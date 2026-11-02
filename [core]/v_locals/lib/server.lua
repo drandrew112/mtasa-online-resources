@@ -312,7 +312,7 @@ do
     -- message objects back (concatenation / tostring keep working).
     -- does a resource import v_locals (<include resource="v_locals"/>)? cached
     local localsUsers = {}
-    -- callers that do not import v_locals (med_scenemanager, dev tools) get text
+    -- callers that do not import v_locals (v_scenemanager, dev tools) get text
     -- in the default language instead of message objects
     local function plainResults(...)
         local n = select("#", ...)

@@ -107,6 +107,7 @@
     <file src="locales/en/v_ownveh.json" />
     <file src="locales/en/v_radar.json" />
     <file src="locales/en/v_radio.json" />
+    <file src="locales/en/v_scenemanager.json" />
     <file src="locales/en/v_shop_robbery.json" />
     <file src="locales/en/v_socialpanel.json" />
     <file src="locales/en/v_stats.json" />
@@ -215,6 +216,7 @@
     <file src="locales/hu/v_ownveh.json" />
     <file src="locales/hu/v_radar.json" />
     <file src="locales/hu/v_radio.json" />
+    <file src="locales/hu/v_scenemanager.json" />
     <file src="locales/hu/v_shop_robbery.json" />
     <file src="locales/hu/v_socialpanel.json" />
     <file src="locales/hu/v_stats.json" />

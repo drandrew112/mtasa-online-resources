@@ -98,5 +98,7 @@
   "v_bank.group.salary": "Fizetések",
   "v_bank.tx.fine.police": "Rendőrségi bírság: {item}",
   "v_bank.tx.fine.police_npc": "Rendőrségi bírságok (NPC): {item}",
-  "v_bank.tx.fine.police_refund": "Rendőrségi bírság visszatérítés: {item}"
+  "v_bank.tx.fine.police_refund": "Rendőrségi bírság visszatérítés: {item}",
+  "v_bank.tx.payment.topup": "#{payment} feltöltés ({points} pont x {multiplier})",
+  "v_bank.group.payment": "Feltöltések"
 }
