@@ -174,12 +174,19 @@ local cache = { text = nil }
 
 function resetCommandSuggestions() cache.text = nil end
 
+-- a description may be a v_locals key ("namespace.key"): shown in the player's language
+local function descText(desc)
+    if desc and L and desc:match("^[%w_]+%.[%w_.]+$") and L.has(desc) then return L(desc) end
+    return desc
+end
+
 local function build(text, width, maxH)
     local token = text:match("^/(%S*)")
     local list = token and matches(token:lower(), text:find("^/%S*%s") ~= nil) or {}
     local out = { entries = {}, more = 0, h = 0 }
     for i, e in ipairs(list) do
-        local lines = e.desc and wrap(e.desc, width - 16) or {}
+        local desc = descText(e.desc)
+        local lines = desc and wrap(desc, width - 16) or {}
         local h = HEAD_H + #lines * DESC_H + ENTRY_PAD
         if i > MAX_ENTRIES or out.h + h > maxH then
             out.more = #list - i + 1
