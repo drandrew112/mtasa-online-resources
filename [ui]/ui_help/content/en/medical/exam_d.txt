@@ -1,5 +1,5 @@
 # Exam: emergency physician
-@keywords: emergency physician, D exam, dose calculation, per kg, Cushing, head injury, skin, postictal, push dose, PDE5, pulmonary oedema, ROSC
+@keywords: emergency physician, D exam, dose calculation, per kg, Cushing, head injury, skin, postictal, push dose, PDE5, pulmonary oedema, ROSC, SVT, Adenosine
 @related: medical_exams, medical_drugs, medical_diagnosis, medical_cases
 
 A review of everything (A, B, drugs, RSI, paramedic officer) with more detailed medicine knowledge.
@@ -24,6 +24,7 @@ A review of everything (A, B, drugs, RSI, paramedic officer) with more detailed 
 
 - Peri-arrest low pressure: push-dose Adrenaline (0.02 mg) and look for the cause.
 - Adrenaline works only briefly, so repeat it every 3–5 minutes.
+- SVT after ROSC with a falling pressure: Adenosine 6 mg fast IV, then 12 mg. The flat line of a few seconds after it is the expected pause, not asystole: wait. In a sinus rhythm or VT only the pause shows, the rhythm stays.
 - No Nitroglycerin after potency pills (PDE5 inhibitors).
 - Pulmonary oedema with high pressure: Nitroglycerin, oxygen, sit up.
 - In a stroke a systolic pressure under 130 harms the brain.

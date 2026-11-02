@@ -9,7 +9,7 @@ In the EMS work your **competency**, not your work level, decides what you may d
 - **T – Trainee:** everyone starts here. Examination, CPR, bandaging, stretcher, transport request. Cannot start a unit alone.
 - **A – "A" nurse** (A exam): + oxygen mask, splinting, neuro exam (FAST), blood glucose, attaching the Lifepak.
 - **B – "B" nurse** (B exam): + IV access, basic medicines (Captopril, Nitroglycerin, Salbutamol, Glucose 40%, glucose gel, Naloxone), defibrillation in AED mode (ANALYZE, the device charges by itself, then SHOCK).
-- **B+ – "B+" nurse:** given automatically next to B once the **drug exam** is passed. + Insulin, Midazolam, Fentanyl, Adrenaline.
+- **B+ – "B+" nurse:** given automatically next to B once the **drug exam** is passed. + Insulin, Midazolam, Fentanyl, Adrenaline, Adenosine.
 - **C – Paramedic officer** (C exam, RSI needed first): + manual CHARGE, SYNC (cardioversion).
 - **D – Emergency physician** (D exam): + the above-usual (orange) doses.
 - **E – Chief physician:** no exam, appointment only (physicians only).

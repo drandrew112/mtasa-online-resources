@@ -1,5 +1,5 @@
 # Vizsga: Mentőtiszt
-@keywords: mentőtiszt, C vizsga, légzéstípus, asztma, tüdőödéma, Kussmaul, agonális légzés, EKG, ritmus, sokkolandó, VF, VT, PEA, asystolia, újraélesztés, ROSC, 4H 4T
+@keywords: mentőtiszt, C vizsga, légzéstípus, asztma, tüdőödéma, Kussmaul, agonális légzés, EKG, ritmus, sokkolandó, VF, VT, SVT, Adenozin, PEA, asystolia, újraélesztés, ROSC, 4H 4T
 @related: medical_exams, medical_monitor, medical_diagnosis, medical_cases
 
 Előfeltétel: B+ és RSI vizsga. Rövid áttekintés a korábbiakból (gyógyszerek, véna, intubáció), és új anyag.
@@ -20,6 +20,7 @@ Előfeltétel: B+ és RSI vizsga. Rövid áttekintés a korábbiakból (gyógysz
 - **Nem sokkolandó:** asystolia (egyenes vonal) és PEA (rendezett ritmus a monitoron, de nincs tapintható pulzus).
 - Sinus ritmusú, beszélő beteget soha nem sokkolunk: a sokk megállíthatja a szívet.
 - **Pulzusos VT, instabil beteg:** szinkronizált kardioverzió (SYNC). Szinkron nélküli sokk VF-et válthat ki.
+- **SVT** (keskeny, gyors, szabályos, kb. 180/perc, P-hullám nélkül, van pulzus; főleg ROSC után): Adenozin 6 mg IV, ha marad, 12 mg. Instabil és az Adenozin nem segített: SYNC kardioverzió. Kezeletlenül percek alatt VT-vé alakulhat.
 
 ## Újraélesztés
 

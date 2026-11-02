@@ -42,6 +42,7 @@
     <file src="exams/img/ecg_asystole.png" type="client" />
     <file src="exams/img/ecg_sinus.png" type="client" />
     <file src="exams/img/ecg_pea.png" type="client" />
+    <file src="exams/img/ecg_svt.png" type="client" />
 
     <!-- ================= SERVER EXPORTS ================= -->
     <export function="isPlayerEms"   type="server" />

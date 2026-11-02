@@ -17,6 +17,19 @@ MODLOADER = {
     ALWAYS_LOAD_OBJECTS = {
     },
 
+    -- engineSetModelFlag flags set while the replacement is loaded (reset when it unloads)
+    -- (dont_receive_shadows has no effect on map buildings: GTA copies it to the building only
+    --  when the map loads; see AS_OBJECT)
+    MODEL_FLAGS = {
+    },
+
+    -- map buildings removed and created again as objects while the replacement is loaded.
+    -- GTA casts tree / pole shadows on map buildings only, so the object gets none.
+    -- lod = model ID of its LOD building (removed and recreated as well)
+    AS_OBJECT = {
+        [5708] = { x = 1134.25, y = -1338.078125, z = 23.15625, rz = 0, lod = 5930 },  -- hospital: palm shadows were projected into the rooms
+    },
+
     -- auto-update: every new / changed "manual" model is downloaded after the login
     AUTOUPDATE_SETTING = "models_autoupdate",
     AUTOUPDATE_DEFAULT = false,

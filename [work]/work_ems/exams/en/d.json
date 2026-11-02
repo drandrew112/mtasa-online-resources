@@ -313,6 +313,40 @@
         "Trauma, tamponade, tachycardia, toxins"
       ],
       "correct": 1
+    },
+    {
+      "id": "d_29",
+      "q": "After ROSC the monitor shows this, pulse 185, the pressure is falling. What do you give?",
+      "answers": [
+        "Adenosine 6 mg fast IV, then 12 mg",
+        "Adrenaline 0.02 mg push dose IV",
+        "Fentanyl 1 mcg/kg for the pain",
+        "Captopril 25 mg under the tongue"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_svt.png"
+    },
+    {
+      "id": "d_30",
+      "q": "You gave 6 mg Adenosine and the monitor shows a flat line for a few seconds. What do you do?",
+      "answers": [
+        "Wait: it is the expected pause, the heart restarts",
+        "Start CPR at once: the patient is in asystole",
+        "Give 1 mg Adrenaline: the heart has stopped",
+        "Shock it: it is fine VF that looks flat"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_31",
+      "q": "What does Adenosine do in a sinus rhythm or in VT with a pulse?",
+      "answers": [
+        "Only the short pause shows, the rhythm stays",
+        "It turns the rhythm into a slower sinus rhythm",
+        "It ends a VT just as well as an SVT",
+        "It causes VF, so it is strictly forbidden"
+      ],
+      "correct": 1
     }
   ]
 }

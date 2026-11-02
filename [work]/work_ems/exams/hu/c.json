@@ -309,6 +309,52 @@
         "Inzulin IV"
       ],
       "correct": 1
+    },
+    {
+      "id": "c_28",
+      "q": "A betegnek van pulzusa, a monitor ezt a keskeny, gyors, szabályos ritmust mutatja (kb. 180/perc). Mi ez?",
+      "answers": [
+        "SVT (szupraventrikuláris tachycardia)",
+        "Pulzusos VT (kamrai tachycardia)",
+        "Fájdalom, félelem miatti sinus tachycardia",
+        "Durva hullámú kamrafibrilláció (VF)"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_svt.png"
+    },
+    {
+      "id": "c_29",
+      "q": "Pulzusos SVT ROSC után. Mi az első kezelés?",
+      "answers": [
+        "Adenozin 6 mg IV, ha marad, 12 mg",
+        "Adrenalin 1 mg IV, majd azonnal CPR",
+        "Szinkronizálatlan sokk AED módban",
+        "Semmi, az SVT magától mindig elmúlik"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_svt.png"
+    },
+    {
+      "id": "c_30",
+      "q": "Mi lesz a kezeletlen SVT-ből?",
+      "answers": [
+        "Percek alatt VT-vé alakulhat",
+        "Mindig sinus ritmusba tér vissza",
+        "Másodpercek alatt asystolia lesz",
+        "Órákig változatlan marad"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_31",
+      "q": "Instabil SVT (alacsony vérnyomás), az Adenozin nem segített. Mi működik még?",
+      "answers": [
+        "Szinkronizált kardioverzió (SYNC mód)",
+        "Szinkronizálatlan sokk teljes energiával",
+        "Adrenalin 1 mg IV 3–5 percenként",
+        "Mellkaskompresszió, amíg el nem múlik"
+      ],
+      "correct": 1
     }
   ]
 }

@@ -335,6 +335,61 @@
         "Nothing: the safe limit is the same per dose"
       ],
       "correct": 1
+    },
+    {
+      "id": "drug_31",
+      "q": "What is Adenosine (Adenocor) for?",
+      "answers": [
+        "Ending an SVT (a narrow, fast, regular rhythm)",
+        "Ending a VT with a pulse (a wide, fast rhythm)",
+        "Restarting the heart in asystole or in PEA",
+        "Slowing a fast sinus rhythm caused by pain"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_32",
+      "q": "What is the dose of Adenosine?",
+      "answers": [
+        "6 mg IV, if it does not work 12 mg",
+        "12 mg IV, if it does not work 6 mg",
+        "0.6 mg IV, if it does not work 1.2 mg",
+        "6 mg/kg IV, if it does not work 12 mg/kg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_33",
+      "q": "What does the monitor show right after Adenosine?",
+      "answers": [
+        "An almost flat line for a few seconds, then the heart restarts",
+        "VF for a few seconds that ends by itself, then a sinus rhythm",
+        "A heart rate that falls slowly over several minutes",
+        "No change, the rhythm only changes after about 5 minutes"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_34",
+      "q": "What does an awake patient feel after Adenosine?",
+      "answers": [
+        "A short chest pressure",
+        "A long-lasting headache",
+        "Sleepiness and confusion",
+        "Nothing at all"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_35",
+      "q": "Does Adenosine help in cardiac arrest?",
+      "answers": [
+        "No, it only works on an SVT with a pulse",
+        "Yes, it restarts the heart in asystole",
+        "Yes, it ends VF just like a shock does",
+        "Only together with 1 mg of Adrenaline"
+      ],
+      "correct": 1
     }
   ]
 }

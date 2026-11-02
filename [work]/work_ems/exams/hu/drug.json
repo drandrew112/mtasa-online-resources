@@ -335,6 +335,61 @@
         "Semmi: a biztonságos határ adagonként értendő"
       ],
       "correct": 1
+    },
+    {
+      "id": "drug_31",
+      "q": "Mire való az Adenozin (Adenocor)?",
+      "answers": [
+        "SVT (keskeny, gyors, szabályos ritmus) megszüntetésére",
+        "Pulzusos VT (széles, gyors ritmus) megszüntetésére",
+        "A szív újraindítására asystoliában vagy PEA-ban",
+        "Fájdalom okozta gyors sinus ritmus lassítására"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_32",
+      "q": "Mi az Adenozin adagja?",
+      "answers": [
+        "6 mg IV, ha nem hat, 12 mg",
+        "12 mg IV, ha nem hat, 6 mg",
+        "0,6 mg IV, ha nem hat, 1,2 mg",
+        "6 mg/ttkg IV, ha nem hat, 12 mg/ttkg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_33",
+      "q": "Mit mutat a monitor közvetlenül az Adenozin után?",
+      "answers": [
+        "Néhány másodpercig szinte egyenes vonalat, aztán a szív újraindul",
+        "Néhány másodpercig VF-et, ami magától elmúlik, aztán sinus ritmust",
+        "Több perc alatt lassan csökkenő szívfrekvenciát",
+        "Semmi változást, a ritmus csak kb. 5 perc múlva változik"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_34",
+      "q": "Mit érez az éber beteg az Adenozin után?",
+      "answers": [
+        "Rövid mellkasi nyomást",
+        "Hosszan tartó fejfájást",
+        "Álmosságot, zavartságot",
+        "Semmit nem érez"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "drug_35",
+      "q": "Segít az Adenozin szívmegállásban?",
+      "answers": [
+        "Nem, csak pulzusos SVT-ben hat",
+        "Igen, asystoliában újraindítja a szívet",
+        "Igen, a VF-et a sokkhoz hasonlóan megszünteti",
+        "Csak 1 mg Adrenalinnal együtt adva"
+      ],
+      "correct": 1
     }
   ]
 }

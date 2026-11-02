@@ -313,6 +313,40 @@
         "Trauma, tamponád, tachycardia, toxinok"
       ],
       "correct": 1
+    },
+    {
+      "id": "d_29",
+      "q": "ROSC után a monitor ezt mutatja, pulzus 185, a vérnyomás esik. Mit adsz?",
+      "answers": [
+        "Adenozin 6 mg gyors IV, majd 12 mg",
+        "Adrenalin 0,02 mg push-dose IV",
+        "Fentanil 1 mcg/ttkg a fájdalomra",
+        "Captopril 25 mg nyelv alá"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_svt.png"
+    },
+    {
+      "id": "d_30",
+      "q": "6 mg Adenozint adtál, a monitor néhány másodpercig egyenes vonalat mutat. Mi a teendő?",
+      "answers": [
+        "Várunk: ez a várt szünet, a szív újraindul",
+        "Azonnal CPR: a beteg asystoliában van",
+        "1 mg Adrenalin: a szív megállt",
+        "Sokkolunk: ez lapos, finom VF"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "d_31",
+      "q": "Mit csinál az Adenozin sinus ritmusban vagy pulzusos VT-ben?",
+      "answers": [
+        "Csak a rövid szünet látszik, a ritmus marad",
+        "Lassabb sinus ritmusba viszi a szívet",
+        "A VT-t ugyanúgy megszünteti, mint az SVT-t",
+        "VF-et okoz, ezért szigorúan tilos"
+      ],
+      "correct": 1
     }
   ]
 }

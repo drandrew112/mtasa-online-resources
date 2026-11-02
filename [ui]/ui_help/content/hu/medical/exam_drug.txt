@@ -1,5 +1,5 @@
 # Gyógyszervizsga
-@keywords: gyógyszervizsga, Ketamin, Rokuronium, Fentanil, Adrenalin, Captopril, Nitroglicerin, Glükóz, Inzulin, Naloxon, Salbutamol, Midazolam, dózis, ttkg
+@keywords: gyógyszervizsga, Ketamin, Rokuronium, Fentanil, Adrenalin, Adenozin, SVT, Captopril, Nitroglicerin, Glükóz, Inzulin, Naloxon, Salbutamol, Midazolam, dózis, ttkg
 @related: medical_exams, medical_drugs
 
 Csak B rangú ápoló teheti le. Sikeres vizsga után automatikusan B+ leszel.
@@ -16,6 +16,7 @@ Csak B rangú ápoló teheti le. Sikeres vizsga után automatikusan B+ leszel.
 - **Rokuronium (Esmeron):** izomrelaxáns, megszűnik a légzés. Csak altatás és intubáció mellett. Ébren lévő betegnek adni súlyos hiba.
 - **Fentanil:** erős fájdalomcsillapító, 1 mcg/ttkg. Csökkentheti a vérnyomást. Túladagolás: légzésdepresszió, szűk pupilla, ellenszere a Naloxon.
 - **Adrenalin (Tonogen):** szívmegállásban 1 mg IV 3–5 percenként. Peri-arrest vérnyomásesésben „push-dose”: kb. 0,02 mg. Emeli a pulzust és a vérnyomást, javítja a ROSC esélyét.
+- **Adenozin (Adenocor):** csak pulzusos SVT-re. 6 mg gyors IV, ha nem hat, 12 mg. A szív néhány másodpercre megáll (szinte egyenes vonal), aztán újraindul. Az éber beteg rövid mellkasi nyomást érez. Más ritmusban csak a szünet látszik; szívmegállásban hatástalan.
 - **Captopril:** 25 mg nyelv alá, magas vérnyomásra.
 - **Nitroglicerin:** 0,4 mg (1 puff); 2 puff már a szokásosnál magasabb dózis.
 - **Glükóz 40%:** 40 ml (16 g) IV. **Glükóz gél:** 15 g, csak nyelni tudó betegnek.

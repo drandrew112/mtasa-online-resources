@@ -309,6 +309,52 @@
         "Insulin IV"
       ],
       "correct": 1
+    },
+    {
+      "id": "c_28",
+      "q": "The patient has a pulse and the monitor shows this narrow, fast, regular rhythm (about 180/min). What is it?",
+      "answers": [
+        "SVT (supraventricular tachycardia)",
+        "VT (ventricular tachycardia) with a pulse",
+        "A fast sinus rhythm from pain or fear",
+        "Coarse ventricular fibrillation (VF)"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_svt.png"
+    },
+    {
+      "id": "c_29",
+      "q": "SVT with a pulse after ROSC. What is the first treatment?",
+      "answers": [
+        "Adenosine 6 mg IV, 12 mg if it stays",
+        "Adrenaline 1 mg IV, then CPR at once",
+        "An unsynchronised shock in AED mode",
+        "Nothing, an SVT always ends by itself"
+      ],
+      "correct": 1,
+      "image": "exams/img/ecg_svt.png"
+    },
+    {
+      "id": "c_30",
+      "q": "What becomes of an untreated SVT?",
+      "answers": [
+        "It can turn into VT within minutes",
+        "It always returns to a sinus rhythm",
+        "It turns into asystole within seconds",
+        "It stays the same for many hours"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "c_31",
+      "q": "Unstable SVT (low blood pressure) and Adenosine did not help. What else works?",
+      "answers": [
+        "Synchronised cardioversion (SYNC mode)",
+        "Unsynchronised shock at full energy",
+        "Adrenaline 1 mg IV every 3–5 minutes",
+        "Chest compressions until it ends"
+      ],
+      "correct": 1
     }
   ]
 }

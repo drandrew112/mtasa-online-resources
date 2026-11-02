@@ -9,7 +9,7 @@ A mentős munkában nem a munkaszint, hanem a **kompetencia** dönti el, mit csi
 - **T – Szekundáns / Trainee:** mindenki ezzel kezd. Vizsgálat, újraélesztés, kötözés, hordágy, szállításkérés. Egyedül nem indíthat egységet.
 - **A – „A” kompetens ápoló** (A vizsga): + oxigénmaszk, sínezés, neuro vizsgálat (FAST), vércukormérés, Lifepak felhelyezése.
 - **B – „B” kompetens ápoló** (B vizsga): + vénabiztosítás, alap gyógyszerek (Captopril, Nitroglicerin, Salbutamol, Glükóz 40%, Glükóz gél, Naloxon), defibrillálás AED módban (ANALYZE, a gép magától tölt, utána SHOCK).
-- **B+ – „B+” kompetens ápoló:** automatikusan jár a B mellé, ha a **Gyógyszervizsga** is megvan. + Inzulin, Midazolam, Fentanil, Adrenalin.
+- **B+ – „B+” kompetens ápoló:** automatikusan jár a B mellé, ha a **Gyógyszervizsga** is megvan. + Inzulin, Midazolam, Fentanil, Adrenalin, Adenozin.
 - **C – Mentőtiszt** (C vizsga, előtte RSI kell): + kézi töltés (CHARGE), SYNC (kardioverzió).
 - **D – Mentőorvos** (D vizsga): + a szokásosnál magasabb (narancssárga) dózisok.
 - **E – Főorvos:** nincs vizsga, kinevezés (csak mentőorvos kaphatja).

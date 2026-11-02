@@ -51,6 +51,34 @@ local function loadMod(category, id, codes, errors)
             end
         end
     end
+    local flags = MODLOADER.MODEL_FLAGS and MODLOADER.MODEL_FLAGS[id]
+    if flags and #elements > 0 then
+        for flag, state in pairs(flags) do
+            local called, set = pcall(engineSetModelFlag, id, flag, state)
+            if not called or not set then
+                errors[#errors + 1] = ("%s: model flag %s cannot be set"):format(base, flag)
+            end
+        end
+    end
+    local place = MODLOADER.AS_OBJECT and MODLOADER.AS_OBJECT[id]
+    if place and #elements > 0 then
+        local created = pcall(function()
+            removeWorldModel(id, 1, place.x, place.y, place.z)
+            local object = createObject(id, place.x, place.y, place.z, 0, 0, place.rz or 0)
+            elements[#elements + 1] = object
+            setElementDimension(object, -1)
+            if place.lod then
+                removeWorldModel(place.lod, 1, place.x, place.y, place.z)
+                local lod = createObject(place.lod, place.x, place.y, place.z, 0, 0, place.rz or 0, true)
+                elements[#elements + 1] = lod
+                setElementDimension(lod, -1)
+                setLowLODElement(object, lod)
+            end
+        end)
+        if not created then
+            errors[#errors + 1] = ("%s: cannot be created as object"):format(base)
+        end
+    end
     return ok, elements
 end
 
@@ -60,6 +88,12 @@ local function unloadMod(category, id)
     loaded[category][id] = nil
     pcall(engineRestoreModel, id)
     pcall(engineRestoreCOL, id)
+    local place = MODLOADER.AS_OBJECT and MODLOADER.AS_OBJECT[id]
+    if place then
+        pcall(restoreWorldModel, id, 1, place.x, place.y, place.z)
+        if place.lod then pcall(restoreWorldModel, place.lod, 1, place.x, place.y, place.z) end
+    end
+    if MODLOADER.MODEL_FLAGS and MODLOADER.MODEL_FLAGS[id] then pcall(engineResetModelFlags, id) end
     for _, element in ipairs(elements) do
         if isElement(element) then pcall(destroyElement, element) end
     end

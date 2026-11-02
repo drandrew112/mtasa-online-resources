@@ -1,5 +1,5 @@
 # Drug exam
-@keywords: drug exam, Ketamine, Rocuronium, Fentanyl, Adrenaline, Captopril, Nitroglycerin, Glucose, Insulin, Naloxone, Salbutamol, Midazolam, dose, per kg
+@keywords: drug exam, Ketamine, Rocuronium, Fentanyl, Adrenaline, Adenosine, SVT, Captopril, Nitroglycerin, Glucose, Insulin, Naloxone, Salbutamol, Midazolam, dose, per kg
 @related: medical_exams, medical_drugs
 
 Only for a "B" nurse. Passing it makes you B+ automatically.
@@ -16,6 +16,7 @@ Only for a "B" nurse. Passing it makes you B+ automatically.
 - **Rocuronium (Esmeron):** muscle relaxant, the breathing stops. Only with sedation and intubation. Giving it to an awake patient is a serious error.
 - **Fentanyl:** strong painkiller, 1 mcg/kg. Can lower the blood pressure. Overdose: depressed breathing, small pupils; the antidote is Naloxone.
 - **Adrenaline (Tonogen):** cardiac arrest 1 mg IV every 3–5 minutes. Peri-arrest low pressure: "push dose" about 0.02 mg. Raises the pulse and the pressure, helps ROSC.
+- **Adenosine (Adenocor):** only for an SVT with a pulse. 6 mg fast IV, if it does not work 12 mg. The heart stops for a few seconds (an almost flat line), then restarts. The awake patient feels a short chest pressure. In any other rhythm only the pause shows; no effect in cardiac arrest.
 - **Captopril:** 25 mg under the tongue for high blood pressure.
 - **Nitroglycerin:** 0.4 mg (1 puff); 2 puffs are already above the usual dose.
 - **Glucose 40%:** 40 ml (16 g) IV. **Glucose gel:** 15 g, only if the patient can swallow.

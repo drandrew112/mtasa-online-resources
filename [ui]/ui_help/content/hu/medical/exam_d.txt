@@ -1,5 +1,5 @@
 # Vizsga: Mentőorvos
-@keywords: mentőorvos, D vizsga, dózisszámítás, ttkg, Cushing, koponyasérülés, bőr, posztiktális, push-dose, PDE5, tüdőödéma, ROSC
+@keywords: mentőorvos, D vizsga, dózisszámítás, ttkg, Cushing, koponyasérülés, bőr, posztiktális, push-dose, PDE5, tüdőödéma, ROSC, SVT, Adenozin
 @related: medical_exams, medical_drugs, medical_diagnosis, medical_cases
 
 A teljes tananyag ismétlése (A, B, gyógyszer, RSI, Mentőtiszt), plusz részletesebb gyógyszerismeret.
@@ -24,6 +24,7 @@ A teljes tananyag ismétlése (A, B, gyógyszer, RSI, Mentőtiszt), plusz részl
 
 - Peri-arrest hipotónia: push-dose Adrenalin (0,02 mg) és az ok keresése.
 - Az Adrenalin hatása rövid, ezért kell 3–5 percenként ismételni.
+- ROSC utáni SVT eső vérnyomással: Adenozin 6 mg gyors IV, majd 12 mg. Az utána látható néhány másodperces egyenes vonal a várt szünet, nem asystolia: várunk. Sinus ritmusban vagy VT-ben csak a szünet látszik, a ritmus marad.
 - Nitroglicerin potencianövelő (PDE5-gátló) mellett ellenjavallt.
 - Tüdőödéma magas nyomással: Nitroglicerin, oxigén, ültetés.
 - Stroke-ban 130 alatti systolés nyomás rontja az agy vérellátását.

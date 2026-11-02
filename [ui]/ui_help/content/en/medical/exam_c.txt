@@ -1,5 +1,5 @@
 # Exam: paramedic officer
-@keywords: paramedic officer, C exam, breathing, asthma, pulmonary oedema, Kussmaul, agonal breathing, ECG, rhythm, shockable, VF, VT, PEA, asystole, CPR, ROSC, 4H 4T
+@keywords: paramedic officer, C exam, breathing, asthma, pulmonary oedema, Kussmaul, agonal breathing, ECG, rhythm, shockable, VF, VT, SVT, Adenosine, PEA, asystole, CPR, ROSC, 4H 4T
 @related: medical_exams, medical_monitor, medical_diagnosis, medical_cases
 
 Needs B+ and the RSI exam. A short review of the earlier exams (medicines, IV, intubation) and new material.
@@ -20,6 +20,7 @@ Needs B+ and the RSI exam. A short review of the earlier exams (medicines, IV, i
 - **Not shockable:** asystole (flat line) and PEA (an organised rhythm on the monitor but no palpable pulse).
 - Never shock a talking patient in sinus rhythm: the shock can stop the heart.
 - **VT with a pulse, unstable patient:** synchronised cardioversion (SYNC). An unsynchronised shock can cause VF.
+- **SVT** (narrow, fast, regular, about 180/min, no P wave, with a pulse; mostly after ROSC): Adenosine 6 mg IV, 12 mg if it stays. Unstable and Adenosine did not help: SYNC cardioversion. Untreated it can turn into VT within minutes.
 
 ## CPR
 
