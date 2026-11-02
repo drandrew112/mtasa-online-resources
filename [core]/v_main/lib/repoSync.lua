@@ -67,7 +67,7 @@ local IGNORE_EXACT = {
     ["[core]/v_paintjobs/meta.changethis.xml"]          = true,
     ["[vehicles]/v_ownveh/vehiclespawnpoints.txt"]      = true,
 }
-local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py", ".sql" }
+local IGNORE_SUFFIX   = { ".old", ".bak", ".orig", "~", ".md", ".py", ".sql", ".jpg", ".txt" }
 local IGNORE_BASENAME = {
     ["Thumbs.db"] = true, ["desktop.ini"] = true,
     [".gitattributes"] = true, [".gitignore"] = true, ["acl.xml"] = true,
