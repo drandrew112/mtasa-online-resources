@@ -11,13 +11,13 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
     Refused when:
       - med_erm is not running or no ambulance unit is signed in at all
         (a busy unit is fine - it takes the call after its current case),
-      - the caller stands at an open med_scenemanager scene (that scene already
+      - the caller stands at an open v_scenemanager scene (that scene already
         has its own task, an ambulance is on its way),
       - the caller's previous call is still open.
 ]]
 
 local ERM = "med_erm"
-local SCENES = "med_scenemanager"
+local SCENES = "v_scenemanager"
 
 local pending = {}   -- [player] = { title = string | nil }
 local openCalls = {} -- [player] = taskId of the caller's last call

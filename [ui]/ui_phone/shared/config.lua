@@ -80,7 +80,7 @@ PHONE_CONFIG.contacts = {
         -- Emergency Services (server/apps/emergency.lua). Only EMS works for now:
         -- the caller types a title + description and a med_erm task is created at
         -- the caller's position. Refused while no ambulance unit is signed in, or
-        -- at an open med_scenemanager scene (an ambulance is already on its way).
+        -- at an open v_scenemanager scene (an ambulance is already on its way).
         key = "emergency", name = L.text("ui_phone.config.emergency_services"), photo = "img/contacts/emergency.png",
         actions = {
             { key = "ems", label = L.text("ui_phone.config.ambulance_ems")      },
