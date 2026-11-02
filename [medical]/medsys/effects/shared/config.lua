@@ -19,7 +19,7 @@ MEDFX = {
 
 -- Forced animations. anim = { block, name }, loop, hold = freeze on the last frame.
 -- accept = other animations that are good enough for this state, they are left alone
--- (e.g. a med_scenemanager pose that is already lying, or the stretcher's down animation).
+-- (e.g. a v_scenemanager pose that is already lying, or the stretcher's down animation).
 -- release = played once when the state ends (the element gets up), nil = just stop.
 MEDFX_ANIMS = {
     down = {

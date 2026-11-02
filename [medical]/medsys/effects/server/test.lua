@@ -89,7 +89,7 @@ local SELF = {
     heal = function(p, ms) return ms:healCompletely(p), "Healed completely" end,
 }
 
--- Test peds for the forced animations. pose = a med_scenemanager-like pose played first,
+-- Test peds for the forced animations. pose = a v_scenemanager-like pose played first,
 -- the medical state follows after `delay` ms (shows the override).
 local PEDS = {
     unconscious = { label = "Unconscious ped", set = { { "consciousness", "unconscious" } } },

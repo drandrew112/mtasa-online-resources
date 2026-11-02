@@ -14,7 +14,7 @@ MEDIC = {
     DATA_PERMS = "medic.perms",   -- { [key] = needed competency name } of the denied activities (setMedicPermissions)
     DATA_SPO2 = "spo2",
     DATA_HEART_RATE = "heartRate",
-    DATA_NAME = "medic.name",     -- optional patient name on peds (set by e.g. med_scenemanager)
+    DATA_NAME = "medic.name",     -- optional patient name on peds (set by e.g. v_scenemanager)
 
     -- Baseline (healthy) values
     BLOOD_VOLUME = 5000,        -- ml

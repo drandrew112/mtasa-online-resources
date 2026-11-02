@@ -1,6 +1,6 @@
 -- Forced patient animations. The server writes the key (MEDFX.DATA_ANIM) by the consciousness;
 -- every client keeps it on the players / peds it streams, so it survives late joins, streaming
--- and other scripts resetting it (e.g. a med_scenemanager pose that does not fit the state).
+-- and other scripts resetting it (e.g. a v_scenemanager pose that does not fit the state).
 --
 -- Not forced: dead, in a vehicle, attached (stretcher, carried), on a stretcher, or blocked
 -- through setAnimationBlocked. An animation listed in `accept` is left alone.
