@@ -41,7 +41,13 @@ local function setWrecked(vehicle, state)
             setVehicleEngineState(vehicle, false)
         end
     elseif getElementData(vehicle, WRECK_KEY) ~= nil then
+        -- Repaired: give the engine back if someone is already at the wheel
+        -- (GTA only starts it on enter, so a driver waiting inside would be
+        -- stuck with it off).
         removeElementData(vehicle, WRECK_KEY)
+        if getVehicleController(vehicle) and not getVehicleEngineState(vehicle) then
+            setVehicleEngineState(vehicle, true)
+        end
     end
 end
 
