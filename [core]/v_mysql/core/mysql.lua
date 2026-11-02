@@ -33,9 +33,31 @@ end
 -- Connection handling
 --------------------------------------------------------------------------------
 
+-- port is optional: nil / false / "" / 0 leaves it out of the host string, so
+-- the MySQL client falls back to its default (3306).
+local function configPort()
+    local port = tonumber(MYSQL_CONFIG.port)
+    if port and port > 0 then return port end
+    return nil
+end
+
 local function hostString()
-    return ("dbname=%s;host=%s;port=%d;charset=%s"):format(
-        MYSQL_CONFIG.database, MYSQL_CONFIG.host, MYSQL_CONFIG.port, MYSQL_CONFIG.charset)
+    local parts = {
+        "dbname=" .. MYSQL_CONFIG.database,
+        "host=" .. MYSQL_CONFIG.host,
+    }
+    local port = configPort()
+    if port then parts[#parts + 1] = "port=" .. port end
+    if MYSQL_CONFIG.charset and MYSQL_CONFIG.charset ~= "" then
+        parts[#parts + 1] = "charset=" .. MYSQL_CONFIG.charset
+    end
+    return table.concat(parts, ";")
+end
+
+local function targetString()
+    local port = configPort()
+    return ("%s@%s%s/%s"):format(MYSQL_CONFIG.username, MYSQL_CONFIG.host,
+        port and (":" .. port) or "", MYSQL_CONFIG.database)
 end
 
 local reconnectPending = false
@@ -59,8 +81,7 @@ local function setConnected(newState)
     if newState == connected then return end
     connected = newState
     if newState then
-        mysqlLog("Connected to %s@%s:%d/%s",
-            MYSQL_CONFIG.username, MYSQL_CONFIG.host, MYSQL_CONFIG.port, MYSQL_CONFIG.database)
+        mysqlLog("Connected to %s", targetString())
         triggerEvent("mysql:connected", resourceRoot)
     else
         mysqlLog("Connection lost/unavailable")
@@ -95,7 +116,8 @@ function connectDatabase()
         "share=1;autoreconnect=1")
 
     if not connection then
-        mysqlLog("dbConnect() failed outright, retrying in %ds", MYSQL_RECONNECT_INTERVAL / 1000)
+        mysqlLog("dbConnect() failed outright (%s), retrying in %ds", targetString(),
+            MYSQL_RECONNECT_INTERVAL / 1000)
         scheduleReconnect()
         return
     end

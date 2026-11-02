@@ -18,7 +18,7 @@ MYSQL_ENABLE_SYNC = false
 
 MYSQL_CONFIG = {
     host     = "",          -- e.g. "mysql8.example.eu"
-    port     = 3306,
+    port     = 3306,        -- optional: false / nil = no port in the connect string (default 3306)
     database = "",          -- e.g. "s00000_myserver"
     username = "",
     password = "",
