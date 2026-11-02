@@ -30,6 +30,25 @@ elevators = {
                 z = 5.89062,
             },
         }
+    },
+    {
+        name = L.text("world_elevators.shared.all_saints_general"),
+        floors = {
+            {
+                name = L.text("world_elevators.shared.roof"),
+                x = 1159.63,
+                y = -1344.02,
+                z = 25.64,
+                rot = 180,
+            },
+            {
+                name = L.text("world_elevators.shared.gnd"),
+                x = 1168.45,
+                y = -1307.80,
+                z = 14.39,
+                rot = 90,
+            },
+        }
     }
 }
 end)

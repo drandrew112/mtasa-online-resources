@@ -3112,6 +3112,7 @@
   "world_clothes_shop|You are already wearing this outfit.": "world_clothes_shop.main.you_are_already_wearing_this_outfit",
   "world_clothes_shop|You don't have enough money.": "world_clothes_shop.main.you_don_t_have_enough_money",
   "world_clothes_shop|{label}'s outfits": "world_clothes_shop.main.s_outfits",
+  "world_elevators|All Saints General": "world_elevators.shared.all_saints_general",
   "world_elevators|ELEVATOR": "world_elevators.elevators.elevator",
   "world_elevators|Garage": "world_elevators.shared.garage",
   "world_elevators|Gnd": "world_elevators.shared.gnd",

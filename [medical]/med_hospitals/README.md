@@ -71,7 +71,7 @@ while `med_erm` is stopped (on-duty units cannot be told apart).
 ```
 
 - `z` is the ground (where the cylinder marker stands). `size` is optional and falls back to `HOSP.*_SIZE`.
-- `heli` (only All Saints so far): a helicopter lands on `landing` with a patient aboard (Maverick, helicopters only)
+- `heli` (no hospital uses it at the moment; All Saints hands over via the elevator and the ground bays since 2026-11-02): a helicopter lands on `landing` with a patient aboard (Maverick, helicopters only)
   and the unit becomes Handover; the medic pushes the stretcher into the `handover` marker of the helipad
   (a ground ambulance uses the ordinary bays / markers, never the heli ones). Not copied into the tutorial.
 - The objective point is the first bay, or the heal / handover marker if there is no bay.

@@ -41,11 +41,13 @@ addEventHandler("ui_inac:tempMenuSelect", root, function(id, floorId)
     local floor    = elevator and elevator.floors[floorId]
     if not floor then return end
 
-    local x, y, z = floor.x, floor.y, floor.z
+    local x, y, z, rot = floor.x, floor.y, floor.z, floor.rot
     fadeCamera(false)
     setTimer(function()
         if isElement(localPlayer) then
             setElementPosition(localPlayer, x, y, z)
+            -- an attached stretcher (and its patient / equipment) follows the pusher, so the exit heading matters
+            if rot then setElementRotation(localPlayer, 0, 0, rot) end
         end
         fadeCamera(true)
     end, 2000, 1)
