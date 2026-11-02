@@ -21,6 +21,7 @@
 --       event stays registered so existing listeners keep loading)
 --   onErmMessage              (messageId, channel, target, from, fromDispatch, text)
 --   onErmBackupRequested      (taskId, requesterUnitId, assignedUnitId, option)   option = Config.BACKUP_OPTIONS id
+--   onErmAgencyRequested      (taskId, requesterUnitId, agency, reason, callId)   Request agency (server/agency.lua)
 
 Events = {}
 
@@ -29,7 +30,7 @@ local NAMES = {
     "onErmTaskAssigned", "onErmTaskUnassigned", "onErmTaskClosed",
     "onErmUnitSignIn", "onErmUnitSignOut", "onErmUnitStatusChange",
     "onErmUnitHandoverStart", "onErmUnitHandoverComplete", "onErmMessage",
-    "onErmUnitHandoverRequest", "onErmBackupRequested",
+    "onErmUnitHandoverRequest", "onErmBackupRequested", "onErmAgencyRequested",
 }
 
 for _, name in ipairs(NAMES) do

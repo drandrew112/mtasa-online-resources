@@ -278,6 +278,11 @@ function Tablet.show()
     if Tablet.open then return end
     Tablet.open = true
     Tablet.menu, Tablet.confirm, Tablet.picker = false, nil, nil
+    -- a safe scene warning that came while the tablet was closed (client/pages/case.lua)
+    if Tablet.pendingSafetyAlert and Pages.case.safetyAlert and State.unit then
+        Tablet.setPage("case")
+        Tablet.picker = Pages.case.safetyAlert
+    end
     showCursor(true, false)
     lockControls()
     addEventHandler("onClientRender", root, render)

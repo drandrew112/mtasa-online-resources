@@ -204,6 +204,25 @@ function sendMessage(channel, target, text, from)
     return Chat.post(channel, tonumber(target), from, true, text)
 end
 
+-- setTaskMetaField(taskId, key, value) -> bool
+-- One meta field of a task (the rest stays); the crews see it at once. v_scenemanager: "safety", "police".
+function setTaskMetaField(taskId, key, value)
+    local t = Tasks.get(taskId)
+    if not t or type(key) ~= "string" or key == "locales" then return false end
+    Agency.setMeta(t, key, value)
+    return true
+end
+
+-- postAgencyMessage(taskId, from, text [, key, params]) -> messageId | false
+-- A line in the inter-agency chat of the task: an officer's message (police_system MDC) or, with key, a system
+-- line (v_locals key + params, every crew member reads it in their language).
+function postAgencyMessage(taskId, from, text, key, params)
+    local t = Tasks.get(taskId)
+    if not t then return false end
+    if key then return Chat.post("agency", t.id, "", true, "", nil, { key = tostring(key), params = type(params) == "table" and params or {} }) end
+    return Chat.post("agency", t.id, from or "SAPD", false, text, nil, { kind = "pd" })
+end
+
 -- removePlayerFromUnit(player [, reason]) -> bool
 -- Takes the player out of their unit (the unit signs out when nobody is left), e.g. before
 -- a tutorial. The reason is shown on the player's tablet.

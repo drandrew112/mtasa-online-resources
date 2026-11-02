@@ -61,6 +61,26 @@ Config.BACKUP_OPTIONS = {
 -- Minimum time (ms) between two successful backup requests of a unit.
 Config.BACKUP_COOLDOWN = 15000
 
+-- Request agency (Active Case, left of Request Backup): the police (police_system) with one of these reasons.
+-- label = v_locals key; note = a text is required. The call text is made in every language of AGENCY_LANGS.
+Config.AGENCY_REASONS = {
+    { id = "security", label = "med_erm.agency.reason_security" },
+    { id = "traffic",  label = "med_erm.agency.reason_traffic" },
+    { id = "violent",  label = "med_erm.agency.reason_violent" },
+    { id = "crime",    label = "med_erm.agency.reason_crime" },
+    { id = "death",    label = "med_erm.agency.reason_death" },
+    { id = "other",    label = "med_erm.agency.reason_other", note = true },
+}
+Config.AGENCY_LANGS = { "en", "hu" }
+Config.AGENCY_COOLDOWN = 30000
+
+-- Safe scene (meta.safety of v_scenemanager scenes): while "unsafe" the crew is warned when it gets within
+-- STAGING_WARN of the scene (once, tablet window + sound), and every STAGING_REPEAT ms within STAGING_MIN;
+-- the radar objective points at the staging point (meta.safety.staging) instead of the scene.
+Config.STAGING_WARN = 200
+Config.STAGING_MIN = 100
+Config.STAGING_REPEAT = 15000
+
 -- Radius (metres) in which other players can be added to a crew.
 Config.ADD_MEMBER_RADIUS = 10
 

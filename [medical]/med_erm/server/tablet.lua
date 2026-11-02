@@ -61,10 +61,19 @@ handle("erm:closeCase", function(player, reason)
     return Tasks.close(u.task, u.callsign .. ": " .. reason)
 end)
 
--- channel: "dispatch" (unit <-> dispatchers) or "case" (every unit on the task + dispatch)
+-- Request agency: the police (police_system call linked to the case, server/agency.lua)
+handle("erm:requestAgency", function(player, agency, reasonId, note)
+    local u = Units.ofPlayer(player)
+    if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
+    return Agency.request(u, agency, reasonId, note)
+end)
+
+-- channel: "dispatch" (unit <-> dispatchers), "case" (every unit on the task + dispatch) or "agency" (the case's
+-- units + the officers of the linked police call)
 handle("erm:sendMessage", function(player, text, channel)
     local u = Units.ofPlayer(player)
     if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
+    if channel == "agency" then return Agency.post(u, player, text) end
     local from = u.callsign .. " (" .. getPlayerName(player) .. ")"
     local id, err
     if channel == "case" then

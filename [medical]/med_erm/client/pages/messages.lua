@@ -1,7 +1,8 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
--- Messages: two channels, like the dispatcher console (without broadcast sending).
---   Dispatch -> the unit's thread with the dispatchers (broadcasts show here too)
---   Case     -> case chat: every unit on the active task + the dispatchers
+-- Messages: the channels of the dispatcher console (without broadcast sending) + the inter-agency chat.
+--   Dispatch     -> the unit's thread with the dispatchers (broadcasts show here too)
+--   Case         -> case chat: every unit on the active task + the dispatchers
+--   Inter-agency -> only when the case is linked to a police call: the units of the case + the officers of the call
 
 local s = Gfx.s
 
@@ -19,7 +20,10 @@ local function openInput()
     local res = getResourceFromName("ui_core")
     if not res or getResourceState(res) ~= "running" then return end
     local t = State.task
-    local prompt = Pages.messages.channel == "case" and t and L("med_erm.messages.message_to_case_chat", { id = t.id }) or L("med_erm.messages.message_to_dispatch")
+    local channel = Pages.messages.channel
+    local prompt = channel == "case" and t and L("med_erm.messages.message_to_case_chat", { id = t.id })
+        or channel == "agency" and t and L("med_erm.messages.message_to_agency", { id = t.id })
+        or L("med_erm.messages.message_to_dispatch")
     inputToken = exports.ui_core:openTextInput(prompt, 200, "")
 end
 
@@ -37,7 +41,16 @@ local function inChannel(m, channel)
     if channel == "case" then
         return m.channel == "task" and State.task and m.target == State.task.id
     end
-    return m.channel ~= "task"
+    if channel == "agency" then
+        return m.channel == "agency" and State.task and m.target == State.task.id
+    end
+    return m.channel ~= "task" and m.channel ~= "agency"
+end
+
+-- the case is linked to a police call (meta.police): the inter-agency tab is there
+local function agencyLinked()
+    local t = State.task
+    return t and type(t.meta) == "table" and type(t.meta.police) == "table" or false
 end
 
 -- Flattens the channel's messages into drawable rows (header / text lines / gap).
@@ -48,8 +61,12 @@ local function buildRows(width, channel)
     for _, m in ipairs(State.messages) do
         if inChannel(m, channel) then
             local tag = TAGS[m.channel] or TAGS.unit
-            local tagText, color = L(m.channel == "task" and "med_erm.messages.tag_dispatch" or tag[1]), tag[2]
-            if not m.fromDispatch then
+            local tagText, color = L((m.channel == "task" or m.channel == "agency") and "med_erm.messages.tag_dispatch" or tag[1]), tag[2]
+            if m.kind == "sys" then
+                tagText, color = L("med_erm.messages.tag_system"), { 70, 78, 90 }
+            elseif m.kind == "pd" then
+                tagText, color = L("med_erm.messages.tag_police"), { 40, 80, 150 }
+            elseif not m.fromDispatch then
                 if m.fromUnit == myUnit then
                     tagText, color = L("med_erm.messages.tag_sent"), { 46, 160, 67 }
                 else
@@ -72,6 +89,7 @@ local function drawTabs(x, y, h)
         { "dispatch", L("med_erm.messages.dispatch"), true },
         { "case", t and L("med_erm.messages.case", { id = t.id }) or L("med_erm.messages.case_chat"), t and true or false },
     }
+    if agencyLinked() then tabs[3] = { "agency", L("med_erm.messages.agency", { id = t.id }), true } end
     local tx = x
     for _, tab in ipairs(tabs) do
         local key, label, enabled = tab[1], tab[2], tab[3]
@@ -97,8 +115,9 @@ local function drawTabs(x, y, h)
 end
 
 function Pages.messages.draw(x, y, w, h)
-    -- the case chat disappears with the case
+    -- the case chat disappears with the case, the inter-agency chat with the link
     if Pages.messages.channel == "case" and not State.task then Pages.messages.channel = "dispatch" end
+    if Pages.messages.channel == "agency" and not agencyLinked() then Pages.messages.channel = "dispatch" end
     local channel = Pages.messages.channel
     State.markRead(channel)
 
@@ -107,6 +126,7 @@ function Pages.messages.draw(x, y, w, h)
     Gfx.text(L("med_erm.messages.messages"), ix, y + s(14), s(120), s(30), Theme.text, Gfx.font(15, true))
     drawTabs(ix + s(120), y + s(14), s(30))
     Gfx.text(channel == "case" and L("med_erm.messages.case_chat_every_unit_on_case")
+        or channel == "agency" and L("med_erm.messages.agency_chat_desc", { call = State.task.meta.police.call })
         or L("med_erm.messages.dispatch_channel", { callsign = State.unit.callsign }), ix, y + s(42), iw, s(18), Theme.dim, Gfx.font(9))
 
     local ly = y + s(66)
@@ -146,7 +166,9 @@ function Pages.messages.draw(x, y, w, h)
     local by = y + h - inputH - s(14)
     local hov = Gfx.hover(ix, by, iw - s(96), inputH)
     Gfx.round(ix, by, iw - s(96), inputH, s(8), hov and Theme.panel2 or Theme.panel)
-    Gfx.text(channel == "case" and L("med_erm.messages.write_to_case_chat") or L("med_erm.messages.write_message_to_dispatch"), ix + s(14), by, iw - s(120), inputH, Theme.faint, Gfx.font(10))
+    Gfx.text(channel == "case" and L("med_erm.messages.write_to_case_chat")
+        or channel == "agency" and L("med_erm.messages.write_to_agency_chat")
+        or L("med_erm.messages.write_message_to_dispatch"), ix + s(14), by, iw - s(120), inputH, Theme.faint, Gfx.font(10))
     Gfx.hit(ix, by, iw - s(96), inputH, openInput)
     Gfx.button(ix + iw - s(88), by, s(88), inputH, L("common.send"), { color = { 224, 60, 49 } }, openInput)
 end

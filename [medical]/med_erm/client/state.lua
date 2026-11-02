@@ -9,7 +9,7 @@ State = {
     task       = nil,   -- active task of the unit
     messages   = {},
     unread     = 0,     -- total, shown on the menu
-    unreadBy   = { dispatch = 0, case = 0 },
+    unreadBy   = { dispatch = 0, case = 0, agency = 0 },
     timeOffset = 0,     -- serverTime - local time
 }
 
@@ -56,35 +56,93 @@ local function radarRunning()
     return res and getResourceState(res) == "running"
 end
 
+-- the safe scene field of the active task (v_scenemanager): { state, since, by, auto, staging } | nil
+function State.safety()
+    local t = State.task
+    local s = t and type(t.meta) == "table" and t.meta.safety
+    return type(s) == "table" and s or nil
+end
+
+function State.unsafe()
+    local s = State.safety()
+    return s and s.state == "unsafe" or false
+end
+
+local objectiveKey   -- "<task>:scene" | "<task>:staging"
+
 function State.updateObjective()
     local t = State.task
     if not radarRunning() then
-        objectiveId, objectiveTask = nil, nil
+        objectiveId, objectiveTask, objectiveKey = nil, nil, nil
         return
     end
 
-    if t and (State.unit.reachedScene or arrivedTask == t.id) then
+    -- an unsafe scene: the staging point, also after the scene was reached (the crew must stay back)
+    local s = State.safety()
+    local staging = s and s.state == "unsafe" and type(s.staging) == "table" and s.staging or nil
+
+    if t and not staging and (State.unit.reachedScene or arrivedTask == t.id) then
         arrivedTask = t.id
         t = nil
     end
 
     if not t then
         if objectiveId then exports.v_radar:removeObjective(objectiveId) end
-        objectiveId, objectiveTask = nil, nil
+        objectiveId, objectiveTask, objectiveKey = nil, nil, nil
         return
     end
 
-    -- tasks created on the web have z = 0: let v_radar find the ground
-    local z = (t.z ~= 0) and t.z or nil
-    local label = string.format("#%d %s", t.id, t.title)
-    if objectiveId and objectiveTask == t.id then
-        exports.v_radar:updateObjective(objectiveId, t.x, t.y, z, label)
+    local x, y, z, label, key
+    if staging then
+        x, y, z = staging[1], staging[2], staging[3]
+        label = L("med_erm.safety.staging_objective", { id = t.id })
+        key = t.id .. ":staging"
+    else
+        -- tasks created on the web have z = 0: let v_radar find the ground
+        x, y, z = t.x, t.y, (t.z ~= 0) and t.z or nil
+        label = string.format("#%d %s", t.id, t.title)
+        key = t.id .. ":scene"
+    end
+    if objectiveId and objectiveKey == key then
+        exports.v_radar:updateObjective(objectiveId, x, y, z, label)
     else
         if objectiveId then exports.v_radar:removeObjective(objectiveId) end
-        objectiveId = exports.v_radar:addObjective(t.x, t.y, z, label) or nil
+        objectiveId = exports.v_radar:addObjective(x, y, z, label) or nil
         objectiveTask = objectiveId and t.id or nil
+        objectiveKey = objectiveId and key or nil
     end
 end
+
+-- Safe scene warnings: within STAGING_WARN of an unsafe scene once (alert + tablet window), within STAGING_MIN
+-- every STAGING_REPEAT; the scene becoming safe (or unsafe again) is announced once.
+local warned, lastRepeat, lastState = {}, 0, {}
+setTimer(function()
+    local t, s = State.task, State.safety()
+    if not t or not s then return end
+    local prev = lastState[t.id]
+    lastState[t.id] = s.state
+    if prev and prev ~= s.state then
+        State.updateObjective()
+        if s.state == "safe" then
+            State.notify(L("med_erm.safety.safe_title"), L("med_erm.safety.safe_text", { id = t.id, callsign = s.by or "-" }), true)
+            if Tablet.showSafetyAlert then Tablet.showSafetyAlert(false) end
+        else
+            warned[t.id] = nil
+            State.notify(L("med_erm.safety.unsafe_title"), L("med_erm.safety.unsafe_again", { id = t.id }), true)
+        end
+    end
+    if s.state ~= "unsafe" then return end
+    local x, y = getElementPosition(localPlayer)
+    local d = getDistanceBetweenPoints2D(x, y, t.x, t.y)
+    if d <= Config.STAGING_WARN and not warned[t.id] then
+        warned[t.id] = true
+        State.notify(L("med_erm.safety.unsafe_title"), L("med_erm.safety.warn_text", { id = t.id, distance = Config.STAGING_MIN }), true)
+        if Tablet.showSafetyAlert then Tablet.showSafetyAlert(true) end
+    elseif d <= Config.STAGING_MIN and getTickCount() - lastRepeat >= Config.STAGING_REPEAT then
+        lastRepeat = getTickCount()
+        State.notify(L("med_erm.safety.unsafe_title"), L("med_erm.safety.too_close", { distance = math.floor(d), min = Config.STAGING_MIN }), true)
+    end
+end, 1000, 0)
 
 -- Arrival check: close enough to the scene -> objective removed for good.
 setTimer(function()
@@ -114,21 +172,23 @@ addEventHandler("erm:sync", resourceRoot, function(data)
     State.updateObjective()
 end)
 
--- Tablet channel of a message: "case" (task chat) or "dispatch" (direct + broadcast).
+-- Tablet channel of a message: "case" (task chat), "agency" (inter-agency chat) or "dispatch" (direct + broadcast).
 function State.channelOf(msg)
-    return msg.channel == "task" and "case" or "dispatch"
+    if msg.channel == "task" then return "case" end
+    if msg.channel == "agency" then return "agency" end
+    return "dispatch"
 end
 
 function State.markRead(channel)
     State.unreadBy[channel] = 0
-    State.unread = State.unreadBy.dispatch + State.unreadBy.case
+    State.unread = State.unreadBy.dispatch + State.unreadBy.case + State.unreadBy.agency
 end
 
 addEvent("erm:messages", true)
 addEventHandler("erm:messages", resourceRoot, function(list)
     if TabletTutorial.active then return end
     State.messages = list or {}
-    State.unread, State.unreadBy = 0, { dispatch = 0, case = 0 }
+    State.unread, State.unreadBy = 0, { dispatch = 0, case = 0, agency = 0 }
 end)
 
 addEvent("erm:message", true)
@@ -150,7 +210,8 @@ function State.receiveMessage(msg)
         State.unreadBy[channel] = State.unreadBy[channel] + 1
         State.unread = State.unread + 1
         local title = msg.channel == "broadcast" and L("med_erm.state.dispatch_broadcast")
-            or channel == "case" and (msg.label or L("med_erm.messages.case_chat")) or L("med_erm.messages.dispatch")
+            or channel == "case" and (msg.label or L("med_erm.messages.case_chat"))
+            or channel == "agency" and (msg.label or L("med_erm.messages.agency_chat")) or L("med_erm.messages.dispatch")
         State.notify(title, msg.fromDispatch and msg.text or (msg.from:gsub("#%x%x%x%x%x%x", "") .. ": " .. msg.text))
     end
 end
@@ -159,7 +220,7 @@ addEvent("erm:signedOut", true)
 addEventHandler("erm:signedOut", resourceRoot, function(reason)
     if TabletTutorial.active then return end
     State.unit, State.task = nil, nil
-    State.messages, State.unread, State.unreadBy = {}, 0, { dispatch = 0, case = 0 }
+    State.messages, State.unread, State.unreadBy = {}, 0, { dispatch = 0, case = 0, agency = 0 }
     State.updateObjective()
     if Tablet.open then Tablet.close() end
     State.notify(L("med_erm.case.ems_tablet"), reason or L("med_erm.state.signed_out"))

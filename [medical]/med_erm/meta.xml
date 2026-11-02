@@ -18,6 +18,7 @@
     <script src="server/payment.lua" type="server" />
     <script src="server/chat.lua"    type="server" />
     <script src="server/backup.lua"  type="server" />
+    <script src="server/agency.lua"  type="server" /> <!-- police link, safe scene, inter-agency chat -->
     <script src="server/tablet.lua"  type="server" />
     <script src="server/dispatchers.lua" type="server" />
     <script src="server/http.lua"    type="server" />
@@ -69,6 +70,8 @@
     <export function="setHandoverTime"    type="server" />
     <export function="completeHandover"   type="server" />
     <export function="sendMessage"        type="server" />
+    <export function="setTaskMetaField"   type="server" />
+    <export function="postAgencyMessage"  type="server" />
     <export function="removePlayerFromUnit" type="server" />
 
     <!-- auto dispatch module on/off (also toggled from /ermadmin and the web console) -->

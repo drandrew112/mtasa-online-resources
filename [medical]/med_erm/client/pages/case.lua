@@ -78,6 +78,118 @@ local function drawBackupPicker(sx, sy, sw, sh)
     Gfx.button(x + s(20), y + h - s(54), w - s(40), s(38), L("common.cancel"), {}, function() Tablet.picker = nil end)
 end
 
+---------------------------------------------------------------- Request agency (server/agency.lua)
+
+local agencyPick = { agency = "pd", reason = nil }
+local noteToken
+
+addEventHandler("ui_core:textInputResult", root, function(token, text)
+    if token ~= noteToken then return end
+    noteToken = nil
+    if not text or not State.task then return end
+    Tablet.send("erm:requestAgency", agencyPick.agency, agencyPick.reason, text)
+end)
+
+local function sendAgencyRequest()
+    local reason
+    for _, r in ipairs(Config.AGENCY_REASONS) do if r.id == agencyPick.reason then reason = r end end
+    if not reason then
+        State.notify(L("med_erm.case.ems_tablet"), L("med_erm.agency.select_reason"))
+        return
+    end
+    Tablet.picker = nil
+    if reason.note then
+        noteToken = exports.ui_core:openTextInput(L("med_erm.agency.note_prompt"), 200, "")
+    else
+        Tablet.send("erm:requestAgency", agencyPick.agency, agencyPick.reason, "")
+    end
+end
+
+local function drawAgencyPicker(sx, sy, sw, sh)
+    local t = State.task
+    if not t then Tablet.picker = nil return end
+    Gfx.hit(0, 0, Gfx.screenW, Gfx.screenH, function() end)
+    Gfx.round(sx, sy, sw, sh, s(8), Theme.shade)
+    local reasons = Config.AGENCY_REASONS
+    local rows = math.ceil(#reasons / 2)
+    local bh, gap = s(40), s(8)
+    local w, h = s(460), s(150) + s(48) + rows * (bh + gap) + s(54)
+    local x, y = sx + (sw - w) / 2, sy + (sh - h) / 2
+    Gfx.round(x, y, w, h, s(10), Theme.panel)
+    Gfx.text(L("med_erm.agency.title", { id = t.id }), x + s(20), y + s(16), w - s(40), s(26), Theme.text, Gfx.font(13, true))
+    Gfx.text(L("med_erm.agency.picker_text"), x + s(20), y + s(46), w - s(40), s(40), Theme.dim, Gfx.font(10), "left", "top", true)
+    local bw = (w - s(40) - gap) / 2
+    local ay = y + s(92)
+    Gfx.label(L("med_erm.agency.agency_label"), x + s(20), ay, w - s(40))
+    Gfx.button(x + s(20), ay + s(18), bw, s(36), L("med_erm.agency.police"),
+        { color = agencyPick.agency == "pd" and { 56, 132, 244 } or { 48, 56, 66 } }, function() agencyPick.agency = "pd" end)
+    Gfx.button(x + s(20) + bw + gap, ay + s(18), bw, s(36), L("med_erm.agency.fire_later"), { disabled = true }, function() end)
+    local ry = ay + s(66)
+    Gfx.label(L("med_erm.agency.reason_label"), x + s(20), ry, w - s(40))
+    for i, r in ipairs(reasons) do
+        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+        Gfx.button(x + s(20) + col * (bw + gap), ry + s(18) + row * (bh + gap), bw, bh, L(r.label),
+            { color = agencyPick.reason == r.id and { 56, 132, 244 } or { 48, 56, 66 } }, function() agencyPick.reason = r.id end)
+    end
+    local by = y + h - s(54)
+    Gfx.button(x + s(20), by, bw, s(38), L("med_erm.agency.send"), { color = { 124, 92, 230 }, disabled = not agencyPick.reason }, sendAgencyRequest)
+    Gfx.button(x + s(20) + bw + gap, by, bw, s(38), L("common.cancel"), {}, function() Tablet.picker = nil end)
+end
+
+---------------------------------------------------------------- safe scene alert
+
+function Pages.case.safetyAlert(sx, sy, sw, sh)
+    local t, sf = State.task, State.safety()
+    if not t or not sf or sf.state ~= "unsafe" then
+        Tablet.picker, Tablet.pendingSafetyAlert = nil, false
+        return
+    end
+    Gfx.hit(0, 0, Gfx.screenW, Gfx.screenH, function() end)
+    Gfx.round(sx, sy, sw, sh, s(8), Theme.shade)
+    local w, h = s(470), s(250)
+    local x, y = sx + (sw - w) / 2, sy + (sh - h) / 2
+    Gfx.round(x - s(2), y - s(2), w + s(4), h + s(4), s(11), Theme.accent)
+    Gfx.round(x, y, w, h, s(10), Theme.bg)
+    Gfx.text(L("med_erm.safety.alert_title"), x + s(20), y + s(16), w - s(40), s(26), Gfx.rgb({ 255, 120, 110 }), Gfx.font(14, true))
+    Gfx.text(L("med_erm.safety.warn_text", { id = t.id, distance = Config.STAGING_MIN }), x + s(20), y + s(48), w - s(40), s(70),
+        Theme.text, Gfx.font(10), "left", "top", true)
+    local p = type(t.meta) == "table" and t.meta.police
+    local police = type(p) == "table" and (#(p.units or {}) > 0 and L("med_erm.safety.police_units", { units = table.concat(p.units, ", ") })
+        or L("med_erm.safety.police_waiting")) or "-"
+    Gfx.label(L("med_erm.case.police"), x + s(20), y + s(126), w / 2 - s(30))
+    Gfx.text(Gfx.fit(police, w / 2 - s(30), Gfx.font(10, true)), x + s(20), y + s(141), w / 2 - s(30), s(20), Theme.text, Gfx.font(10, true))
+    Gfx.label(L("med_erm.safety.staging_label"), x + w / 2, y + s(126), w / 2 - s(20))
+    Gfx.text(L(type(sf.staging) == "table" and "med_erm.safety.staging_on_map" or "med_erm.safety.staging_none", { distance = Config.STAGING_MIN }),
+        x + w / 2, y + s(141), w / 2 - s(20), s(20), Theme.text, Gfx.font(10, true))
+    Gfx.button(x + s(20), y + h - s(56), w - s(40), s(38), L("med_erm.safety.understood"), { color = { 56, 132, 244 } }, function()
+        Tablet.picker, Tablet.pendingSafetyAlert = nil, false
+    end)
+end
+
+function Tablet.showSafetyAlert(on)
+    if on then
+        Tablet.pendingSafetyAlert = true
+        if Tablet.open and State.unit then Tablet.picker = Pages.case.safetyAlert end
+    else
+        Tablet.pendingSafetyAlert = false
+        if Tablet.picker == Pages.case.safetyAlert then Tablet.picker = nil end
+    end
+end
+
+local function safetyField(sf)
+    if sf.state == "unsafe" then
+        return L("med_erm.safety.field_unsafe", { distance = Config.STAGING_MIN }), { 255, 120, 110 }
+    end
+    return L(sf.auto and "med_erm.safety.field_safe_auto" or "med_erm.safety.field_safe",
+        { callsign = sf.by or "-", time = State.formatClock(sf.since or 0) }), { 110, 215, 130 }
+end
+
+local function policeField(p)
+    if p.status == "closed" then return L("med_erm.case.police_closed", { call = p.call }) end
+    if #(p.units or {}) > 0 then return L("med_erm.case.police_responding", { call = p.call, units = table.concat(p.units, ", ") }) end
+    return L("med_erm.case.police_requested", { call = p.call })
+end
+
 local function distanceText(t)
     local px, py = getElementPosition(localPlayer)
     local d = getDistanceBetweenPoints2D(px, py, t.x, t.y)
@@ -123,6 +235,28 @@ function Pages.case.draw(x, y, w, h)
     info(L("med_erm.detail.caller"), t.caller ~= "" and t.caller or "-", ix + cw, cy, cw - s(10))
     info(L("med_erm.case.units"), table.concat(units, ", "), ix + cw * 2, cy, cw)
 
+    -- safe scene + police (only when the case has them)
+    local sf = State.safety()
+    local p = type(t.meta) == "table" and type(t.meta.police) == "table" and t.meta.police or nil
+    if sf or p then
+        cy = cy + s(46)
+        local fw = (iw - s(10)) / 2
+        local fx = ix
+        if sf then
+            local text, color = safetyField(sf)
+            Gfx.round(fx, cy, fw, s(40), s(6), sf.state == "unsafe" and tocolor(224, 60, 49, 50) or tocolor(46, 160, 67, 40))
+            Gfx.label(L("med_erm.safety.field_label"), fx + s(10), cy + s(4), fw - s(20))
+            Gfx.text(Gfx.fit(text, fw - s(20), Gfx.font(10, true)), fx + s(10), cy + s(18), fw - s(20), s(20), Gfx.rgb(color), Gfx.font(10, true))
+            fx = fx + fw + s(10)
+        end
+        if p then
+            Gfx.round(fx, cy, fw, s(40), s(6), Theme.panel)
+            Gfx.label(L("med_erm.case.police"), fx + s(10), cy + s(4), fw - s(20))
+            Gfx.text(Gfx.fit(policeField(p), fw - s(20), Gfx.font(10, true)), fx + s(10), cy + s(18), fw - s(20), s(20), Theme.text, Gfx.font(10, true))
+        end
+        cy = cy - s(2)
+    end
+
     -- description
     cy = cy + s(46)
     local btnH = s(50)
@@ -158,6 +292,11 @@ function Pages.case.draw(x, y, w, h)
     Gfx.button(ix + iw - rbw, ly + s(2), rbw, s(30), L("med_erm.backup.request"),
         { color = { 56, 132, 244 }, disabled = u.status == "handover" or TabletTutorial.active, font = Gfx.font(9, true) },
         function() Tablet.picker = drawBackupPicker end)
+    -- other agencies (the police), left of the backup button
+    local linked = p and p.status ~= "closed"
+    Gfx.button(ix + iw - rbw * 2 - s(8), ly + s(2), rbw, s(30), L("med_erm.agency.request"),
+        { color = { 124, 92, 230 }, disabled = linked or u.status == "handover" or TabletTutorial.active, font = Gfx.font(9, true) },
+        function() agencyPick.reason = nil; Tablet.picker = drawAgencyPicker end)
 
     -- buttons
     local by = y + h - btnH - s(16)

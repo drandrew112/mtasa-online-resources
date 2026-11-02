@@ -105,5 +105,14 @@ function ermSendMessage(token, channel, target, text)
     local s = Dispatchers.check(token)
     if not s then return DENIED end
     local id, err = Chat.post(channel, tonumber(target), s.display, true, text)
+    -- inter-agency chat: the officers of the linked police call read it too
+    if id and channel == "agency" then
+        local t = Tasks.get(target)
+        local p = t and type(t.meta) == "table" and t.meta.police
+        local res = getResourceFromName("police_system")
+        if type(p) == "table" and res and getResourceState(res) == "running" then
+            pcall(function() exports.police_system:postCallMessage(p.call, "agency", s.display, cleanText(text, 300)) end)
+        end
+    end
     return result(id, err)
 end

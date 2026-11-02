@@ -5,9 +5,12 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --   broadcast        -> every signed-in unit
 --   unit  (target=id) -> one unit (dispatcher <-> crew thread)
 --   task  (target=id) -> every unit currently assigned to the task
+--   agency (target=id) -> inter-agency chat of a task linked to a police call (meta.police): the units of the task
+--                        here, the officers of the call on the MDC (server/agency.lua forwards both ways)
 --
 -- Each message remembers its recipient unit ids at send time, so a tablet's
--- history is simply "messages addressed to my unit".
+-- history is simply "messages addressed to my unit". A system line (opts.key) is a v_locals message: every reader
+-- gets it in their own language.
 
 Chat = {
     messages = {},
@@ -27,9 +30,16 @@ end
 
 -- from: display name, fromDispatch: true when sent from the web console,
 -- fromUnit: id of the sending unit (tablet), so its own messages show as SENT.
-function Chat.post(channel, target, from, fromDispatch, text, fromUnit)
-    text = cleanText(text, 300)
-    if text == "" then return false, L.msg("med_erm.chat.empty_message") end
+-- opts: { key, params } = a system line (text resolved per reader), { kind = "pd" } = written by an officer (MDC)
+function Chat.post(channel, target, from, fromDispatch, text, fromUnit, opts)
+    opts = opts or {}
+    if opts.key then
+        text = L.msg(opts.key, opts.params)
+        from = L.msg("med_erm.messages.system")
+    else
+        text = cleanText(text, 300)
+        if text == "" then return false, L.msg("med_erm.chat.empty_message") end
+    end
 
     local recipients, label = {}, ""
     if channel == "broadcast" then
@@ -49,6 +59,12 @@ function Chat.post(channel, target, from, fromDispatch, text, fromUnit)
         recipients = { unpack(t.units) }
         label = L.msg("med_erm.messages.case", { id = t.id })
         target = t.id
+    elseif channel == "agency" then
+        local t = Tasks.get(target)
+        if not t then return false, L.msg("med_erm.admin.task_not_found") end
+        recipients = { unpack(t.units) }
+        label = L.msg("med_erm.messages.agency", { id = t.id })
+        target = t.id
     else
         return false, L.msg("med_erm.chat.unknown_channel")
     end
@@ -61,11 +77,12 @@ function Chat.post(channel, target, from, fromDispatch, text, fromUnit)
         channel      = channel,
         target       = target,
         label        = label,
-        from         = cleanText(from, 40),
+        from         = opts.key and from or cleanText(from, 60),
         fromDispatch = fromDispatch and true or false,
         fromUnit     = tonumber(fromUnit) or 0,
         text         = text,
         units        = recipients,
+        kind         = opts.key and "sys" or opts.kind or (fromDispatch and "dispatch" or "ems"),
     }
     Chat.nextId = Chat.nextId + 1
 
@@ -93,7 +110,7 @@ function Chat.since(lastId)
         if m.id > lastId then
             out[#out + 1] = {
                 id = m.id, ts = m.ts, time = m.time, channel = m.channel, target = m.target,
-                label = m.label, from = m.from, fromDispatch = m.fromDispatch, text = m.text,
+                label = m.label, from = m.from, fromDispatch = m.fromDispatch, text = m.text, kind = m.kind,
             }
         end
     end
