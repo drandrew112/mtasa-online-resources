@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "lv_heartattack21",
+    "category": "heartattack",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2612.397, 1380.373, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found unresponsive",
+                    "description": "A street cleaner found a woman lying on the sidewalk in her party dress. Cold, clammy, slow shallow breaths. She does not respond at all."
+                },
+                "hu": {
+                    "title": "Eszméletlenül találták",
+                    "description": "Egy utcaseprő egy alkalmi ruhába öltözött nőt talált a járdán fekve. Bőre hideg és nyirkos, légzése lassú és felületes. Egyáltalán nem reagál."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [2612.397, 1380.373, 10.82],
+            "rot": 90,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

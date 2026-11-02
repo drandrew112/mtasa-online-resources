@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "ls_false4",
+    "category": "false",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [2538.52, -2380.88, 13.63],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Child not breathing",
+                    "description": "A young-sounding caller says a child is not breathing on the pavement in Ocean Docks, then laughs and hangs up. Callback goes to voicemail."
+                },
+                "hu": {
+                    "title": "A gyermek nem lélegzik",
+                    "description": "Egy fiatalnak tűnő bejelentő azt mondja, egy gyermek nem lélegzik Ocean Docks járdáján, majd nevetve leteszi a telefont. A visszahívás hangpostára fut."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia25",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2439, 1366, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed after basketball",
+                    "description": "A student collapsed after playing basketball on a paved square near the Camel's Toe. His friends say he is diabetic and took extra insulin before the game."
+                },
+                "hu": {
+                    "title": "Kosárlabdázás után összeesett",
+                    "description": "Egy diák összeesett, miután kosárlabdázott egy kövezett téren, a Camel's Toe közelében. A barátai szerint cukorbeteg, és a játék előtt a szokásosnál több inzulint adott be."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 176,
+            "pos": [2439, 1366, 10.82],
+            "rot": 336,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 36, "consciousness": "dazed" }
+        }
+    ]
+}

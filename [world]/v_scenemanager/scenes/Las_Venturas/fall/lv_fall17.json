@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_fall17",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1811.68, 937.5, 8.24],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Grandmother tripped on the curb",
+                    "description": "An elderly woman tripped on the curb at the side of the road near the Four Dragons Casino and cannot get up. Her right leg looks shorter and turned outwards."
+                },
+                "hu": {
+                    "title": "Nagymama megbotlott a járdaszegélyben",
+                    "description": "Egy idős nő megbotlott a járdaszegélyben a Four Dragons Casino közelében, az út szélén, és nem tud felállni. A jobb lába rövidebbnek tűnik, és kifelé fordul."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [1811.68, 937.5, 8.24],
+            "rot": 90,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "pain": 35 }
+        }
+    ]
+}

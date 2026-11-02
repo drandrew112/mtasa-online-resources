@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_diabetes4",
+    "category": "diabetes",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1874.5, 1143.3, 45.45],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Glucose meter just says HIGH",
+                    "description": "A woman at a bus stop in Downtown called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert."
+                },
+                "hu": {
+                    "title": "A vércukormérő csak HIGH értéket mutat",
+                    "description": "Downtown egyik buszmegállójában egy nő segítséget kért, mert a vércukormérője csak a „HIGH” feliratot mutatja. Szédül, gyakran vizel, és homályosan lát. Leült, éber állapotban van."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [-1874.5, 1143.3, 45.45],
+            "rot": 98,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "bloodVolume": 4295, "glucose": 634 }
+        }
+    ]
+}

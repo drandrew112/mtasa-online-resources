@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "lv_overdose21",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2177.24, 1886.13, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pills and wine, very sleepy",
+                    "description": "A woman on the sidewalk near the Clown's Pocket mixed anxiety pills with a bottle of wine after an argument. She is slurring, falling asleep mid-sentence and breathing slowly."
+                },
+                "hu": {
+                    "title": "Altató és bor, súlyos álmosság",
+                    "description": "Egy nő a Clown's Pocket közelében, a járdán egy vita után szorongáscsökkentő tablettákat vett be egy üveg borral. Összefolyó szavakkal beszél, mondat közben elalszik, és lassan lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2177.24, 1886.13, 10.81],
+            "rot": 320,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "sedative", "severity": 2 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 88, "consciousness": "dazed" }
+        }
+    ]
+}

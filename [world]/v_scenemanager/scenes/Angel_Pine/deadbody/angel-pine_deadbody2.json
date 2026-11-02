@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "angel-pine_deadbody2",
+    "category": "deadbody",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2022.65, -2629.85, 59.1],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Body found by a hunter",
+                    "description": "A hunter found a man lying face down at the side of the road near Angel Pine. He has clearly been dead for some time."
+                },
+                "hu": {
+                    "title": "Vadász talált rá a holttestre",
+                    "description": "Egy vadász egy arccal lefelé fekvő férfit talált az út szélén Angel Pine közelében. Egyértelmű, hogy már jó ideje halott."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 100,
+            "pos": [-2022.65, -2629.85, 59.1],
+            "rot": 45,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

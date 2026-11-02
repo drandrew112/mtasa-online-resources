@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_deadbody1",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2185.66, 2308.63, 10.76],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Homeless person not waking",
+                    "description": "A shop worker opening up on the sidewalk near the Emerald Isle found a homeless man lying under a blanket, cold and stiff. He does not respond at all."
+                },
+                "hu": {
+                    "title": "Hajléktalan, akit nem lehet felébreszteni",
+                    "description": "Egy bolti dolgozó az Emerald Isle közelében, a járdán nyitáskor egy takaró alatt fekvő hajléktalan férfit talált. A teste hideg és merev, egyáltalán nem reagál."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 137,
+            "pos": [2185.66, 2308.63, 10.76],
+            "rot": 44,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

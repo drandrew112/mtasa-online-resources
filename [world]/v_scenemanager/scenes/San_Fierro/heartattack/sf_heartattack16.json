@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "sf_heartattack16",
+    "category": "heartattack",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2131.75, 658.25, 52.367],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest pain, short of breath",
+                    "description": "A cable car mechanic sat down on the curb after his shift, short of breath with chest pain spreading to his back. He jokes that the hills finally won."
+                },
+                "hu": {
+                    "title": "Mellkasi fájdalom és légszomj",
+                    "description": "Egy siklóvasút-szerelő a műszakja után leült a járdaszegélyre. Légszomja van, és a mellkasi fájdalom a hátába sugárzik. Viccelődik, hogy végül a dombok győztek."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 182,
+            "pos": [-2131.75, 658.25, 52.367],
+            "rot": 274,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

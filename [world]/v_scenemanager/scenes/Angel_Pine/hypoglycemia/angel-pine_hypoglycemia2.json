@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "angel-pine_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2293.89, -2234.2, 25.77],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cannot be woken, snoring",
+                    "description": "A woman is lying face down next to the country road in Angel Pine and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag."
+                },
+                "hu": {
+                    "title": "Nem ébreszthető, horkoló légzés",
+                    "description": "Egy nő arccal lefelé fekszik Angel Pine-ban, az országút mellett, és nem lehet felébreszteni. Horkoló hangot ad ki, és csurom verejték. A táskájából kiesett egy vércukormérő."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 198,
+            "pos": [-2293.89, -2234.2, 25.77],
+            "rot": 353,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 20, "heartRate": 105, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_hypoglycemia11",
+    "category": "hypoglycemia",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2482.79, -2508.71, 13.65],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk diabetic, unresponsive",
+                    "description": "Friends say a diabetic man drank all night on the sidewalk in Ocean Docks and did not eat. Now he is lying down, will not wake up properly and is cold and wet with sweat."
+                },
+                "hu": {
+                    "title": "Ittas cukorbeteg, nem reagál",
+                    "description": "Barátai szerint egy cukorbeteg férfi egész éjjel ivott Ocean Docks járdáján, és nem evett. Most fekszik, alig ébreszthető, hideg és csurom izzadság."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 20,
+            "pos": [2482.79, -2508.71, 13.65],
+            "rot": 167,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "glucose": 26, "consciousness": "unconscious" }
+        }
+    ]
+}

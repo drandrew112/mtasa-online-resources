@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "angel-pine_shooting2",
+    "category": "shooting",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1970.32, -2644.49, 59.31],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Shot during a bar fight",
+                    "description": "A fight at the local bar spilled outside by the road at the edge of the woods near Angel Pine and ended with a gunshot. A man is sitting on the ground, shot in the shoulder."
+                },
+                "hu": {
+                    "title": "Lövés egy bárverekedés során",
+                    "description": "A helyi bárban kirobbant verekedés az út mellé, az erdő szélére sodródott Angel Pine közelében, és lövéssel végződött. Egy férfi a földön ül, vállán lőtt sebbel."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 200,
+            "pos": [-1970.32, -2644.49, 59.31],
+            "rot": 9,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4228 }
+        }
+    ]
+}

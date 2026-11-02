@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypertension2",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1433, 2624, 11],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Dizzy, nosebleed",
+                    "description": "A woman got off the train dizzy with a nosebleed that will not stop. She sat down on the platform and a station worker gave her tissues."
+                },
+                "hu": {
+                    "title": "Szédülés, orrvérzés",
+                    "description": "Egy nő szédülve szállt le a vonatról, és nem akar elállni az orrvérzése. Leült a peronon, egy állomási dolgozó pedig zsebkendőt adott neki."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 41,
+            "pos": [1433, 2624, 11.393],
+            "rot": 277,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 172, "diastolic": 100, "heartRate": 94, "consciousness": "stable" }
+        }
+    ]
+}

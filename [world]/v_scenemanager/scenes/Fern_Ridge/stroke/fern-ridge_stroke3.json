@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "fern-ridge_stroke3",
+    "category": "stroke",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [523.08, 9.75, 24.31],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Talking nonsense",
+                    "description": "Passers-by on the road shoulder in Fern Ridge called because a man outside the general store is speaking gibberish and does not understand what they say. He is getting frustrated but can still walk."
+                },
+                "hu": {
+                    "title": "Összefüggéstelenül beszél",
+                    "description": "Járókelők hívtak segítséget az útpadkáról Fern Ridge-ben, mert egy férfi a vegyesbolt előtt halandzsázik, és nem érti, amit mondanak neki. Egyre ingerültebb, de még tud járni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 133,
+            "pos": [523.08, 9.75, 24.31],
+            "rot": 300,
+            "anim": "none",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

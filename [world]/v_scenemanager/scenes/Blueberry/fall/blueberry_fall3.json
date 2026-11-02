@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "blueberry_fall3",
+    "category": "fall",
+    "location": "Blueberry Acres",
+    "enabled": true,
+    "weight": 1,
+    "center": [18.34, -201.47, 1.55],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Slipped on loose gravel",
+                    "description": "A woman slipped on loose gravel at the side of the road near Blueberry and landed on her outstretched hand. Her wrist is swollen and bent."
+                },
+                "hu": {
+                    "title": "Megcsúszott a laza kavicson",
+                    "description": "Egy nő megcsúszott az út mellett lévő laza kavicson Blueberry közelében, és kinyújtott kézzel esett el. A csuklója megduzzadt és elferdült."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 225,
+            "pos": [18.34, -201.47, 1.55],
+            "rot": 196,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 34 }
+        }
+    ]
+}

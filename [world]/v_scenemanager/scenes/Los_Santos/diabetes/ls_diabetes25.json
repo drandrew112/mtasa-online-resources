@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "ls_diabetes25",
+    "category": "diabetes",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1980, -1381.5, 23.84],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Elderly diabetic, very drowsy",
+                    "description": "A neighbour found an elderly man on the pavement in Glen Park, very sleepy and hard to keep awake. He has been drinking huge amounts of water for days and has diabetes. His skin is dry and warm."
+                },
+                "hu": {
+                    "title": "Idős cukorbeteg, nagyon álmos",
+                    "description": "Egy szomszéd egy idős férfit talált Glen Park járdáján. Nagyon álmos, nehéz ébren tartani. Napok óta hatalmas mennyiségű vizet iszik, és cukorbeteg. Bőre száraz és meleg."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 33,
+            "pos": [1980, -1381.5, 23.84],
+            "rot": 1,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "bloodVolume": 3800,
+                "glucose": 820,
+                "systolic": 96,
+                "heartRate": 118,
+                "consciousness": "dazed"
+            }
+        }
+    ]
+}

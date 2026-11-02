@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_diabetes18",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2280.38, 685, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Tourist lost his insulin",
+                    "description": "A tourist outside a wedding chapel in Rockshore West lost his luggage with his insulin in it two days ago. Now he feels terrible, has stomach pain and is breathing heavily."
+                },
+                "hu": {
+                    "title": "A turista elveszítette az inzulinját",
+                    "description": "Egy turista két napja elvesztette a poggyászát, benne az inzulinjával, egy Rockshore West-i esküvői kápolna előtt. Most nagyon rosszul érzi magát, fáj a hasa, és nehezen, erőlködve lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 97,
+            "pos": [2280.38, 685, 10.82],
+            "rot": 287,
+            "anim": "tired",
+            "role": "patient",
+            "injuries": [],
+            "state": { "bloodVolume": 4116, "glucose": 456 }
+        }
+    ]
+}

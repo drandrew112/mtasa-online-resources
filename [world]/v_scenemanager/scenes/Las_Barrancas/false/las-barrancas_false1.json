@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "las-barrancas_false1",
+    "category": "false",
+    "location": "Las Barrancas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-841.25, 1411.25, 13.61],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Seizure reported",
+                    "description": "A passer-by reports someone having a seizure at the crossroads in Las Barrancas. The caller left before the call was finished."
+                },
+                "hu": {
+                    "title": "Görcsrohamot jelentettek",
+                    "description": "Egy járókelő arról számol be, hogy valakinek görcsrohama van egy Las Barrancas-i kereszteződésben. A bejelentő még a hívás befejezése előtt elment."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

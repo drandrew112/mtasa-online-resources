@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "lv_fall11",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2719, 966, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell out of a tree",
+                    "description": "A young man climbing a tree in the desert dust near the Julius Thruway East fell head first. He is lying face down, groaning, with blood coming from his nose."
+                },
+                "hu": {
+                    "title": "Leesett egy fáról",
+                    "description": "Egy fiatal férfi felmászott egy fára a Julius Thruway East közelében, a sivatagi porban, majd fejjel előre lezuhant. Arccal lefelé fekszik, nyög, és vér folyik az orrából."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 143,
+            "pos": [2719, 966, 10.82],
+            "rot": 45,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

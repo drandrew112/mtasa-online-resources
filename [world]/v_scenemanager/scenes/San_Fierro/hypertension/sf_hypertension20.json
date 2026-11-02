@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "sf_hypertension20",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1787, -1105, 55.258],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Neck pain, headache",
+                    "description": "A man flying a kite with his son got a sudden stiff neck and a throbbing headache. He looks flushed and is sweating."
+                },
+                "hu": {
+                    "title": "Nyakfájás és fejfájás",
+                    "description": "Egy férfi a fiával sárkányt eregetett, amikor hirtelen merevvé vált a nyaka, és lüktető fejfájása lett. Kipirultnak tűnik, és izzad."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-1787, -1105, 55.258],
+            "rot": 0,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 178,
+                "diastolic": 104,
+                "heartRate": 98,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

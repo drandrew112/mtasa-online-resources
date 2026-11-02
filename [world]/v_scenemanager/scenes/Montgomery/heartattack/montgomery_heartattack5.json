@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "montgomery_heartattack5",
+    "category": "heartattack",
+    "location": "Montgomery",
+    "enabled": true,
+    "weight": 1,
+    "center": [1245.256, 164.337, 19.617],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Unresponsive, grey skin",
+                    "description": "A woman was found slumped by the road outside the laundromat. Barely breathing, grey, cold and clammy. Her laundry basket is tipped over."
+                },
+                "hu": {
+                    "title": "Eszméletlen, szürkés bőr",
+                    "description": "Egy nőt összeroskadva találtak az út mellett, a mosoda előtt. Alig lélegzik, szürkés, hideg és nyirkos a bőre. A szennyeskosara felborult."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [1245.256, 164.337, 19.617],
+            "rot": 116,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

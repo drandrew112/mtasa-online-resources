@@ -1,0 +1,89 @@
+{
+    "format": 2,
+    "name": "ls_mva1",
+    "category": "mva",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1850.661, -1462.587, 13.398],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Car accident",
+                    "description": "Two cars collided at an intersection. One person is injured."
+                },
+                "hu": {
+                    "title": "Autóbaleset",
+                    "description": "Két autó ütközött egy kereszteződésben. Egy ember megsérült."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 412,
+            "pos": [1848.88, -1466.635, 13.225],
+            "rot": [0.23, 0.15, 48.21],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [101, 106, 121, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "7664 8HO",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0],
+            "tow": true
+        },
+        {
+            "id": "v2",
+            "model": 413,
+            "pos": [1851.711, -1463.412, 13.482],
+            "rot": [358.93, 359.99, 94.92],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [63, 62, 69, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "989X HZ9",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [1, 0, 0, 0],
+            "tow": true
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [1847.915, -1468.522, 13.398],
+            "rot": -134.8,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

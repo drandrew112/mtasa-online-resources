@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_deadbody2",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2847, -105, 8.97],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Jogger found lifeless",
+                    "description": "Cyclists found a jogger lying in a small park in Ocean Flats. He is not breathing, his lips are blue and his body is already cold."
+                },
+                "hu": {
+                    "title": "Élettelenül talált kocogó",
+                    "description": "Kerékpárosok egy kocogót találtak egy kis parkban Ocean Flats területén. Nem lélegzik, ajkai kékek, teste már kihűlt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 259,
+            "pos": [-2847, -105, 8.97],
+            "rot": 73,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

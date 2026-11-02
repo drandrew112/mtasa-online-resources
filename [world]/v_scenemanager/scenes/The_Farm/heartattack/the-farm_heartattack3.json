@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "the-farm_heartattack3",
+    "category": "heartattack",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1045.25, -1153.5, 128.149],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Barely breathing",
+                    "description": "A woman was found by the road near the farm gate, barely breathing, skin grey and cold."
+                },
+                "hu": {
+                    "title": "Alig lélegzik",
+                    "description": "Egy nőt a gazdaság kapuja közelében, az út mellett találtak. Alig lélegzik, bőre szürkés és hideg."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 191,
+            "pos": [-1045.25, -1153.5, 128.149],
+            "rot": 255,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

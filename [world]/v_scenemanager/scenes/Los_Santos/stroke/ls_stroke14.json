@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_stroke14",
+    "category": "stroke",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [232.64, -1072.27, 60.53],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Grandmother suddenly confused",
+                    "description": "A grandson called about his grandmother at the side of the road in Richman. During their walk she suddenly stopped talking sense, cannot find words and her smile is crooked. She was completely fine twenty minutes ago."
+                },
+                "hu": {
+                    "title": "A nagymama hirtelen összezavarodott",
+                    "description": "Egy unoka segítséget kért a Richman út menti részén lévő nagymamájához. Séta közben hirtelen értelmetlenül kezdett beszélni, nem találja a szavakat, és féloldalas a mosolya. Húsz perccel korábban még teljesen jól volt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [232.64, -1072.27, 60.53],
+            "rot": 52,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 178, "consciousness": "confused" }
+        }
+    ]
+}

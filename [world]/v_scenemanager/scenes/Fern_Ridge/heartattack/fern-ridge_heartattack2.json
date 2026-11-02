@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "fern-ridge_heartattack2",
+    "category": "heartattack",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1222.521, -131.865, 39.507],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest pain on the trail",
+                    "description": "A woman walking her dogs along the ridge road sat down with chest pain and cold sweat. The dogs refuse to leave her side."
+                },
+                "hu": {
+                    "title": "Mellkasi fájdalom az ösvényen",
+                    "description": "Egy nő a kutyáit sétáltatta a hegygerincen futó úton, amikor leült mellkasi fájdalommal és hideg verejtékkel. A kutyák nem hajlandók elmozdulni mellőle."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [1222.521, -131.865, 39.507],
+            "rot": 122,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

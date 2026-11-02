@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "blueberry_heartattack5",
+    "category": "heartattack",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [176.148, 70.135, 2.43],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Short of breath, uneasy",
+                    "description": "An elderly woman walking back from church had to sit by the road. She is short of breath, sweaty and just \"feels wrong\"."
+                },
+                "hu": {
+                    "title": "Légszomj, rossz közérzet",
+                    "description": "Egy idős nő hazafelé tartott a templomból, amikor le kellett ülnie az út mellett. Légszomja van, izzad, és egyszerűen úgy érzi, hogy „valami nincs rendben”."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [176.148, 70.135, 2.43],
+            "rot": 241,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "ls_shooting3",
+    "category": "shooting",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2203.191, -1067.587, 41.998],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man shot several times",
+                    "description": "A man was shot several times in Las Colinas. A neighbour heard the shots and found him on the pavement in a pool of blood. He is barely responsive."
+                },
+                "hu": {
+                    "title": "Többször meglőtt férfi",
+                    "description": "Egy férfit többször meglőttek Las Colinasban. Egy szomszéd meghallotta a lövéseket, és vértócsában fekve találta a járdán. Alig reagál."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 102,
+            "pos": [2203.191, -1067.587, 41.998],
+            "rot": 60,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 3200 }
+        }
+    ]
+}

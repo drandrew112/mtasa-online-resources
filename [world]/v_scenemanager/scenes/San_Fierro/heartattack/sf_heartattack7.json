@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_heartattack7",
+    "category": "heartattack",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2450.939, 1083.88, 55.727],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed, not breathing",
+                    "description": "A street musician stopped playing her violin, swayed and went down on the sidewalk. The crowd thought it was part of the show. It is not. She is not breathing."
+                },
+                "hu": {
+                    "title": "Összeesett, nem lélegzik",
+                    "description": "Egy utcazenész nő abbahagyta a hegedülést, megtántorodott, majd összeesett a járdán. A tömeg azt hitte, ez is az előadás része. Nem az. A nő nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2450.939, 1083.88, 55.727],
+            "rot": 72,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

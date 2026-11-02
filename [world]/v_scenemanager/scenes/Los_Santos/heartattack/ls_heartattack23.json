@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "ls_heartattack23",
+    "category": "heartattack",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2077.337, -2180.136, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Short of breath, uneasy",
+                    "description": "A retired man walking his groceries home had to sit on the sidewalk. Short of breath, heavy feeling in his chest, he \"just doesn't feel right\". His milk is getting warm."
+                },
+                "hu": {
+                    "title": "Légszomj, rossz közérzet",
+                    "description": "Egy nyugdíjas férfinak le kellett ülnie a járdára, miközben hazafelé vitte a bevásárlását. Légszomja van, nehéz érzést tapasztal a mellkasában, és „egyszerűen nincs jól”. A teje közben melegszik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [2077.337, -2180.136, 13.547],
+            "rot": 338,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

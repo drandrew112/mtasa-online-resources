@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_breathing24",
+    "category": "breathing",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1519, 1626, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cannot finish a sentence",
+                    "description": "A man outside the terminal at Las Venturas Airport cannot finish a sentence and is sucking in his neck muscles with every breath. He has used his inhaler five times."
+                },
+                "hu": {
+                    "title": "Nem tud végigmondani egy mondatot",
+                    "description": "Egy férfi a Las Venturas-i repülőtér terminálja előtt nem tud végigmondani egy mondatot, és minden lélegzetvételnél behúzódnak a nyakánál lévő légzőizmai. Ötször használta az inhalátorát."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [1519, 1626, 10.82],
+            "rot": 13,
+            "anim": "tired",
+            "role": "patient",
+            "injuries": [
+                { "type": "asthma", "severity": 3 }
+            ],
+            "state": { "spo2": 83, "heartRate": 128 }
+        }
+    ]
+}

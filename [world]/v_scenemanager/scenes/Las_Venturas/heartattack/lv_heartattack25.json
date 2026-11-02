@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_heartattack25",
+    "category": "heartattack",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1875.75, 1280.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found down, cold",
+                    "description": "A morning jogger found a man lying face down on the sidewalk in the desert dawn. Cold to the touch, not breathing."
+                },
+                "hu": {
+                    "title": "A földön találták, hideg",
+                    "description": "Egy kora reggeli futó egy hason fekvő férfit talált a sivatag hajnali hidegében. Tapintásra hideg, és nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [1875.75, 1280.5, 10.82],
+            "rot": 335,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

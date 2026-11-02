@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "sf_hypertension13",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2076.471, 102.965, 32.23],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Short of breath, frothy cough",
+                    "description": "A woman is struggling to breathe and coughing up pink froth. She says she has felt her heart pounding since the morning and her legs are swollen."
+                },
+                "hu": {
+                    "title": "Légszomj, habos köpet",
+                    "description": "Egy nő nehezen kap levegőt, és rózsaszínű, habos köpetet köhög fel. Azt mondja, reggel óta hevesen ver a szíve, és bedagadtak a lábai."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [-2076.471, 102.965, 32.23],
+            "rot": 266.3,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 222,
+                "diastolic": 132,
+                "heartRate": 106,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

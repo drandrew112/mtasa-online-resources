@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_overdose20",
+    "category": "overdose",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1462.25, -1190.87, 21.07],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Teen drank too much, vomiting",
+                    "description": "A teenager at a bus stop in Downtown Los Santos has been vomiting after drinking with friends for the first time. She is pale, sleepy and cannot stand up on her own."
+                },
+                "hu": {
+                    "title": "Tinédzser túl sokat ivott, hány",
+                    "description": "Egy tinédzser lány a Downtown Los Santos egyik buszmegállójában hány, miután életében először ivott a barátaival. Sápadt, álmos, és önerőből nem tud felállni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [1462.25, -1190.87, 21.07],
+            "rot": 206,
+            "anim": "vomit",
+            "role": "patient",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

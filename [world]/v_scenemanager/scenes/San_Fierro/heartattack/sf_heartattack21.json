@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "sf_heartattack21",
+    "category": "heartattack",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2208.25, 327.75, 35.32],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found unresponsive",
+                    "description": "A jogger found a woman lying on the sidewalk next to her open umbrella. Very slow, weak breathing, clammy skin, no response to pain."
+                },
+                "hu": {
+                    "title": "Eszméletlenül találták",
+                    "description": "Egy kocogó egy nyitott esernyő mellett fekvő nőt talált a járdán. Légzése nagyon lassú és gyenge, bőre nyirkos, fájdalomingerre nem reagál."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 216,
+            "pos": [-2208.25, 327.75, 35.32],
+            "rot": 295,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

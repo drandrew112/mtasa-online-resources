@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "dillimore_heartattack1",
+    "category": "heartattack",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [805.5, -602.125, 16.336],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed mid-sentence",
+                    "description": "A man complaining loudly about a speeding ticket outside the police station went face down mid-sentence. The deputies say he is not breathing."
+                },
+                "hu": {
+                    "title": "Mondat közben összeesett",
+                    "description": "Egy férfi hangosan panaszkodott a gyorshajtási bírsága miatt a rendőrség előtt, amikor mondat közben arccal előre összeesett. A járőrök szerint nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 58,
+            "pos": [805.5, -602.125, 16.336],
+            "rot": 324,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+        }
+    ]
+}

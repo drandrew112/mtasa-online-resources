@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_overdose1",
+    "category": "overdose",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1957.4, 1086.25, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Teen drank too much",
+                    "description": "A teenager outside the Four Dragons Casino keeps vomiting after drinking vodka with friends for the first time. She is pale, sleepy and cannot stand up on her own."
+                },
+                "hu": {
+                    "title": "Túl sokat ivott a tinédzser",
+                    "description": "Egy tinédzser lány a Four Dragons Casino előtt újra és újra hány, miután a barátaival életében először vodkát ivott. Sápadt, álmos, és önerőből nem tud felállni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [1957.4, 1086.25, 10.82],
+            "rot": 1,
+            "anim": "vomit",
+            "role": "patient",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

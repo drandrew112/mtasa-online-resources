@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypertension4",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1124.375, 1200.925, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Palpitations, restless",
+                    "description": "A young man feels his heart racing and cannot sit still. He took cold medicine with decongestant several times today."
+                },
+                "hu": {
+                    "title": "Szívdobogás, nyugtalanság",
+                    "description": "Egy fiatal férfi úgy érzi, hevesen ver a szíve, és képtelen nyugton ülni. Ma többször is bevett dekongesztánst tartalmazó megfázás elleni gyógyszert."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [1124.375, 1200.925, 10.82],
+            "rot": 90,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 172, "diastolic": 102, "heartRate": 108, "consciousness": "stable" }
+        }
+    ]
+}

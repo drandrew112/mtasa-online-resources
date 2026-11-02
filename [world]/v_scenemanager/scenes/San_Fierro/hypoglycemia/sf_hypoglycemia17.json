@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypoglycemia17",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2387, -25, 35.31],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cannot be woken, snoring",
+                    "description": "A woman is lying face down on the grass in Garcia and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag."
+                },
+                "hu": {
+                    "title": "Nem ébreszthető, horkol",
+                    "description": "Garcia füves területén egy nő arccal lefelé fekszik, és nem lehet felébreszteni. Horkol, és csuromvizesre izzadt. Kiesett a táskájából egy vércukormérő."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 233,
+            "pos": [-2387, -25, 35.31],
+            "rot": 220,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 103, "consciousness": "unconscious" }
+        }
+    ]
+}

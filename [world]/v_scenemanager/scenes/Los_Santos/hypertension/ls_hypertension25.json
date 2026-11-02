@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "ls_hypertension25",
+    "category": "hypertension",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1934.2, -1719.25, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Nosebleed, frightened",
+                    "description": "A woman has a nosebleed that started suddenly while she was walking. She is frightened, her head aches and her hands are trembling."
+                },
+                "hu": {
+                    "title": "Orrvérzés, rémület",
+                    "description": "Egy nőnek hirtelen vérezni kezdett az orra séta közben. Megijedt, fáj a feje, és remeg a keze."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 11,
+            "pos": [1934.2, -1719.25, 13.547],
+            "rot": 180,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 184,
+                "diastolic": 112,
+                "heartRate": 96,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

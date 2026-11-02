@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "dillimore_fall1",
+    "category": "fall",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [799, -553.63, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell off a porch",
+                    "description": "A man missed a step and fell off a high porch on the main street in Dillimore. He is dazed, has a bump on his head and his arm hurts badly."
+                },
+                "hu": {
+                    "title": "Leesett a verandáról",
+                    "description": "Egy férfi mellélépett, és leesett egy magas verandáról Dillimore főutcáján. Zavart, dudor van a fején, és erősen fáj a karja."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 158,
+            "pos": [799, -553.63, 16.34],
+            "rot": 96,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

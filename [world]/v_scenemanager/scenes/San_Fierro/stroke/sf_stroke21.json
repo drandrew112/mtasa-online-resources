@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_stroke21",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1830.06, 434.13, 17.54],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell, one leg will not move",
+                    "description": "An old man fell at a bus stop in Downtown and cannot get up because his right leg will not move. He is awake but his speech is thick and slow."
+                },
+                "hu": {
+                    "title": "Elesett, nem tudja mozgatni az egyik lábát",
+                    "description": "Downtown egyik buszmegállójában egy idős férfi elesett, és nem tud felkelni, mert a jobb lábát nem tudja mozgatni. Ébren van, de beszéde elmosódott és lassú."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-1830.06, 434.13, 17.54],
+            "rot": 60,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

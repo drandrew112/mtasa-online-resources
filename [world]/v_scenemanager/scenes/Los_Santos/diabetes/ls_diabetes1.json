@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "ls_diabetes1",
+    "category": "diabetes",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2054, -1202, 23.747],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Young man vomiting, breathing fast",
+                    "description": "A young man in Glen Park has been vomiting since the morning and is breathing very deep and fast. His friend says he is a type 1 diabetic and ran out of insulin two days ago. He is very thirsty and weak."
+                },
+                "hu": {
+                    "title": "Fiatal férfi hány, gyorsan lélegzik",
+                    "description": "Egy fiatal férfi Glen Parkban reggel óta hány, és nagyon mélyen, gyorsan lélegzik. Barátja szerint 1-es típusú cukorbeteg, és két napja elfogyott az inzulinja. Nagyon szomjas és gyenge."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [2054, -1202, 23.747],
+            "rot": 140,
+            "anim": "tired",
+            "role": "patient",
+            "injuries": [],
+            "state": { "bloodVolume": 4100, "glucose": 520 }
+        }
+    ]
+}

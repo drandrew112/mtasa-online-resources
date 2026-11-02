@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "sf_hypertension21",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2699.45, 256.375, 4.328],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Headache, breathless",
+                    "description": "A man is fighting for breath with a pounding headache. He says he has been coughing at night and sleeping sitting up for a week."
+                },
+                "hu": {
+                    "title": "Fejfájás és légszomj",
+                    "description": "Egy férfi alig kap levegőt, és erősen lüktet a feje. Azt mondja, egy hete éjjelente köhög, és csak ülő helyzetben tud aludni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [-2699.45, 256.375, 4.328],
+            "rot": 0,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 226,
+                "diastolic": 134,
+                "heartRate": 104,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

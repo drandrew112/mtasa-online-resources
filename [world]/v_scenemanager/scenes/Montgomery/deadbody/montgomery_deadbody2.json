@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "montgomery_deadbody2",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1490, 210, 20.88],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Elderly woman found cold",
+                    "description": "A neighbour found an elderly woman lying on the grass just outside Montgomery where she usually walks her dog. She is cold and does not breathe."
+                },
+                "hu": {
+                    "title": "Hidegen talált idős nő",
+                    "description": "Egy szomszéd egy idős nőt talált a füvön, közvetlenül Montgomery mellett, ott, ahol általában sétáltatja a kutyáját. Hideg, és nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 196,
+            "pos": [1490, 210, 20.88],
+            "rot": 86,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

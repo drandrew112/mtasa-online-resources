@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_drowning19",
+    "category": "drowning",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [474, -1882, 2.66],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pulled out, not breathing",
+                    "description": "Lifeguards pulled a man out of the sea and brought him onto the beach at Santa Maria Beach. He is not breathing and has no pulse. A bystander is doing chest compressions."
+                },
+                "hu": {
+                    "title": "Kihúzták a vízből, nem lélegzik",
+                    "description": "Az úszómesterek kihúztak egy férfit a tengerből, majd Santa Maria Beach partjára vitték. Nem lélegzik, és nincs pulzusa. Egy járókelő mellkasi kompressziókat végez."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [474, -1882, 2.66],
+            "rot": 330,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 3 }
+            ],
+            "state": { "spo2": 40, "rhythm": "PEA" }
+        }
+    ]
+}

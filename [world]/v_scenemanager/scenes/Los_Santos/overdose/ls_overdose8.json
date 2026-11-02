@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_overdose8",
+    "category": "overdose",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1494, -1602, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Teen drank too much, vomiting",
+                    "description": "A teenager in a parking lot in Pershing Square has been vomiting after drinking with friends for the first time. He is pale, sleepy and cannot stand up on his own."
+                },
+                "hu": {
+                    "title": "Tinédzser túl sokat ivott, hány",
+                    "description": "Egy tinédzser fiú a Pershing Square egyik parkolójában hány, miután életében először ivott a barátaival. Sápadt, álmos, és önerőből nem tud felállni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 97,
+            "pos": [1494, -1602, 13.55],
+            "rot": 359,
+            "anim": "vomit",
+            "role": "patient",
+            "injuries": [
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

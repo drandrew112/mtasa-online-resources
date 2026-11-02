@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "fern-ridge_deadbody2",
+    "category": "deadbody",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [1230, 0, 29.98],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Body in the bushes",
+                    "description": "A dog walker found a person lying in the brush on a grassy patch in Fern Ridge. The body is cold and there are flies around it."
+                },
+                "hu": {
+                    "title": "Holttest a bokrok között",
+                    "description": "Egy kutyasétáltató egy embert talált a bozótban, egy füves területen Fern Ridge-ben. A test hideg, és legyek keringenek körülötte."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 202,
+            "pos": [1230, 0, 29.98],
+            "rot": 183,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

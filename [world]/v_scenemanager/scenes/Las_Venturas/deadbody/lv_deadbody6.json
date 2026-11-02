@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_deadbody6",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1839, 1766, 9.7],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Body in the bushes",
+                    "description": "A dog walker found a person lying in the bushes on the grass near the Visage. The body is cold and there are flies around it."
+                },
+                "hu": {
+                    "title": "Holttest a bokrok között",
+                    "description": "Egy kutyasétáltató egy embert talált a bokrok között, a fűben, a Visage közelében. A test hideg, és legyek keringenek körülötte."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [1839, 1766, 9.7],
+            "rot": 211,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

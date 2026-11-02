@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_drowning18",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2099, 1266, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Went in after her dog",
+                    "description": "A dog walker went into the water after her dog and got into trouble. She is now by the water on The Strip, coughing and shivering. The dog is fine."
+                },
+                "hu": {
+                    "title": "A kutyája után ment a vízbe",
+                    "description": "Egy kutyasétáltató a vízbe ment a kutyája után, de bajba került. Most a Strip melletti vízparton van, köhög és reszket. A kutyának nincs baja."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [2099, 1266, 10.82],
+            "rot": 152,
+            "anim": "cough",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

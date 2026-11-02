@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "lv_hypertension12",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1914.95, 2682.5, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Headache, nosebleed",
+                    "description": "A man stumbled out of a shop with blood pouring from his nose and a crushing headache. He says his doctor warned him about his blood pressure last month."
+                },
+                "hu": {
+                    "title": "Fejfájás, orrvérzés",
+                    "description": "Egy férfi megtántorodva jött ki egy üzletből; az orrából ömlik a vér, és hasogató fejfájása van. Azt mondja, orvosa már a múlt hónapban figyelmeztette a vérnyomása miatt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [1914.95, 2682.5, 10.82],
+            "rot": 180,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "systolic": 202,
+                "diastolic": 124,
+                "heartRate": 98,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

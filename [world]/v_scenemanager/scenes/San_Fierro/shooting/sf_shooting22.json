@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_shooting22",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2295.13, -779.73, 88.16],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Mugging victim shot in the arm",
+                    "description": "A man refused to hand over his wallet at a bus stop in Missionary Hill and was shot in the arm. He is sitting against a wall, pressing a shirt on the wound."
+                },
+                "hu": {
+                    "title": "Rablás áldozata, karon lőtték",
+                    "description": "Missionary Hill egyik buszmegállójában egy férfi nem volt hajlandó átadni a pénztárcáját, ezért karon lőtték. A falnak támaszkodva ül, és egy inget szorít a sebre."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 229,
+            "pos": [-2295.13, -779.73, 88.16],
+            "rot": 10,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

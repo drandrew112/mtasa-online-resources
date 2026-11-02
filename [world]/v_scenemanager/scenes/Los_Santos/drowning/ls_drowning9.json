@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_drowning9",
+    "category": "drowning",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [134, -1762, 5.19],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Swimmer swallowed water",
+                    "description": "A swimmer got into trouble in the sea and was helped out and brought onto the beach at Santa Maria Beach. He is coughing hard, breathless and says his chest hurts."
+                },
+                "hu": {
+                    "title": "Úszó vizet nyelt",
+                    "description": "Egy úszó bajba került a tengerben, majd segítettek kijutnia, és a Santa Maria Beach partjára vitték. Erősen köhög, légszomja van, és azt mondja, fáj a mellkasa."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 45,
+            "pos": [134, -1762, 5.19],
+            "rot": 72,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 90 }
+        }
+    ]
+}

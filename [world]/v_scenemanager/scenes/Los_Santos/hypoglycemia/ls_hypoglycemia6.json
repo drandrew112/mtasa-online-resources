@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "ls_hypoglycemia6",
+    "category": "hypoglycemia",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1411.55, -1026.76, 23.87],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Bus passenger confused, sweaty",
+                    "description": "A bus driver put an older woman off the bus at a bus stop in Downtown Los Santos after she became confused and could not find her stop. She is sweating and tremors are visible. She takes diabetes tablets."
+                },
+                "hu": {
+                    "title": "Zavart, izzadt buszutas",
+                    "description": "Egy buszsofőr leszállított egy idősebb nőt a buszról Downtown Los Santos egyik megállójánál, miután zavarttá vált, és nem találta a megállóját. Izzad, láthatóan remeg. Cukorbetegség elleni tablettákat szed."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 232,
+            "pos": [1411.55, -1026.76, 23.87],
+            "rot": 179,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 46, "consciousness": "confused" }
+        }
+    ]
+}

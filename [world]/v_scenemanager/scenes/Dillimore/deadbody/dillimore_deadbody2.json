@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "dillimore_deadbody2",
+    "category": "deadbody",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [850, -380, 33.23],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man not breathing, very cold",
+                    "description": "A woman found a man lying on open ground near Dillimore. He is cold, not breathing and his skin is grey and blotchy."
+                },
+                "hu": {
+                    "title": "Nem lélegző, nagyon hideg férfi",
+                    "description": "Egy nő egy Dillimore közelében lévő nyílt területen talált rá egy fekvő férfira. Hideg, nem lélegzik, a bőre szürke és foltos."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [850, -380, 33.23],
+            "rot": 130,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

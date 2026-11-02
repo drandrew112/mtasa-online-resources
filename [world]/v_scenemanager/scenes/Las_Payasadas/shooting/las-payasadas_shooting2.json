@@ -1,0 +1,58 @@
+{
+    "format": 2,
+    "name": "las-payasadas_shooting2",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-359, 2704.34, 63.62],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Shots fired, two down",
+                    "description": "Several shots were fired on open scrubland near Las Payasadas. Two men are down: one is not moving, the other is rolling on the ground holding his leg."
+                },
+                "hu": {
+                    "title": "Lövések dördültek, ketten a földre kerültek",
+                    "description": "Több lövés dördült egy Las Payasadas közelében lévő nyílt, bozótos területen. Két férfi fekszik a földön: egyikük mozdulatlan, a másik a lábát fogva gurul."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 124,
+            "pos": [-359, 2704.34, 63.62],
+            "rot": 163,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3635 }
+        },
+        {
+            "id": "p2",
+            "skin": 23,
+            "pos": [-356.81, 2704.09, 63.72],
+            "rot": 153,
+            "anim": "injured",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

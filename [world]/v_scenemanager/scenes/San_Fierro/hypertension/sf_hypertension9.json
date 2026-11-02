@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypertension9",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2036.625, 1166.05, 45.445],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Panic, chest tight",
+                    "description": "A woman who just received bad news on the phone is breathing fast and says her chest feels tight. Her own home monitor showed a high reading this morning too."
+                },
+                "hu": {
+                    "title": "Pánik, mellkasi szorítás",
+                    "description": "Egy nő rossz hírt kapott telefonon; gyorsan lélegzik, és azt mondja, szorít a mellkasa. Reggel az otthoni vérnyomásmérője is magas értéket mutatott."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 11,
+            "pos": [-2036.625, 1166.05, 45.445],
+            "rot": 90,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 170, "diastolic": 102, "heartRate": 108, "consciousness": "stable" }
+        }
+    ]
+}

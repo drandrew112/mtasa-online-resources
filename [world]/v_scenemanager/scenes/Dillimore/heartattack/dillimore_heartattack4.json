@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "dillimore_heartattack4",
+    "category": "heartattack",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [688.8, -585, 16.328],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found down, cold",
+                    "description": "The mailman found a man lying face down next to the road early in the morning. Cold to the touch, no breathing."
+                },
+                "hu": {
+                    "title": "Földön fekve találták, hideg",
+                    "description": "A postás kora reggel egy arccal lefelé fekvő férfit talált az út mellett. Érintésre hideg, és nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [688.8, -585, 16.328],
+            "rot": 205,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "ASYSTOLE" }
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "lv_shooting12",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2079.09, 665.75, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Shotgun wound to the side",
+                    "description": "A man was hit by a shotgun blast outside a wedding chapel in Rockshore West. He is holding his side, breathing fast and his shirt is soaked with blood."
+                },
+                "hu": {
+                    "title": "Sörétes puska okozta oldalsérülés",
+                    "description": "Egy férfit sörétes puskalövés talált el Rockshore West egyik esküvői kápolnája előtt. Az oldalát fogja, gyorsan lélegzik, inge csurom vér."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [2079.09, 665.75, 10.82],
+            "rot": 11,
+            "anim": "hold_side",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4083, "spo2": 88 }
+        }
+    ]
+}

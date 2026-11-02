@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_shooting25",
+    "category": "shooting",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1809.97, -637.83, 16.94],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Bystander hit by stray bullet",
+                    "description": "A woman walking at the side of the road in Foster Valley was hit by a stray bullet in the shoulder when a fight broke out nearby. She is bleeding through her clothes and shaking."
+                },
+                "hu": {
+                    "title": "Elhaladó lövedék sebesített meg egy járókelőt",
+                    "description": "Foster Valley útja mellett egy sétáló nőt vállon talált egy eltévedt lövedék, amikor a közelben verekedés tört ki. A ruháján át is vérzik, és reszket."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [-1809.97, -637.83, 16.94],
+            "rot": 120,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4435 }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "el-castillo-del-diablo_false1",
+    "category": "false",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-160.96, 2518.3, 24.92],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Old farmer only dizzy",
+                    "description": "A neighbour reports an old farmer who fell over on the road shoulder near El Castillo del Diablo. He is up again, says he was only dizzy from the heat and refuses to go to hospital."
+                },
+                "hu": {
+                    "title": "A gazda csak szédült",
+                    "description": "Egy szomszéd egy idős gazdáról számol be, aki elesett az útpadkán El Castillo del Diablo közelében. Már felállt, azt mondja, csak a hőség miatt szédült meg, és nem hajlandó kórházba menni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 235,
+            "pos": [-160.96, 2518.3, 24.92],
+            "rot": 92,
+            "anim": "sit",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

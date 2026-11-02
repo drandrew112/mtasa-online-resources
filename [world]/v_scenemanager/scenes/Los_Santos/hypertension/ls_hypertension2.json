@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "ls_hypertension2",
+    "category": "hypertension",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1479.5, -1724.25, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Worst headache of his life",
+                    "description": "An office worker stepped out of a meeting near Pershing Square clutching his head, says it feels like it is about to split open. He stopped his blood pressure pills last month because he felt fine. Now the lights hurt his eyes and he has vomited twice into a planter."
+                },
+                "hu": {
+                    "title": "Élete legerősebb fejfájása",
+                    "description": "Egy irodai dolgozó kilépett egy Pershing Square közelében tartott megbeszélésről, és a fejét szorítja. Azt mondja, mindjárt szétreped. Múlt hónapban abbahagyta a vérnyomáscsökkentő szedését, mert jól érezte magát. Most fáj a szemének a fény, és kétszer hányt egy virágtartóba."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [1479.5, -1724.25, 13.547],
+            "rot": 90,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "systolic": 220,
+                "diastolic": 135,
+                "heartRate": 96,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

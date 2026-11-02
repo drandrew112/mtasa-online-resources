@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "angel-pine_drowning1",
+    "category": "drowning",
+    "location": "Angel Pine",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2086.84, -2520.15, 30.63],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Child pulled from a backyard pool",
+                    "description": "A boy was found face down in a backyard pool. His mother pulled him out and carried him next to the country road in Angel Pine to meet the ambulance. He is breathing weakly and very pale."
+                },
+                "hu": {
+                    "title": "Gyermeket mentettek ki egy kerti medencéből",
+                    "description": "Egy fiút arccal lefelé találtak egy hátsó udvari medencében. Az anyja kihúzta a vízből, majd az Angel Pine-i országút mellé vitte, hogy ott találkozzon a mentőkkel. A fiú gyengén lélegzik, és nagyon sápadt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [-2086.84, -2520.15, 30.63],
+            "rot": 163,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 75, "consciousness": "unconscious" }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_false9",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1998.5, -151.15, 35.86],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man asleep on the ground",
+                    "description": "A shop owner reports a man who collapsed on the sidewalk in Doherty. He is sitting up now, says he was only sleeping and refuses help."
+                },
+                "hu": {
+                    "title": "Földön alvó férfi",
+                    "description": "Dohertyben egy üzlettulajdonos jelentett egy férfit, aki összeesett a járdán. Most már ül, azt mondja, csak aludt, és visszautasítja a segítséget."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 79,
+            "pos": [-1998.5, -151.15, 35.86],
+            "rot": 106,
+            "anim": "sit",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

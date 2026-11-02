@@ -1,0 +1,48 @@
+{
+    "format": 2,
+    "name": "ls_deadbody10",
+    "category": "deadbody",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1350.1, -983.56, 29.89],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell from a building, no signs of life",
+                    "description": "People heard a thud in Temple and found a woman who fell from a high building. She has massive injuries and is not breathing."
+                },
+                "hu": {
+                    "title": "Leesett egy épületről, nincs életjel",
+                    "description": "Temple területén tompa puffanást hallottak, majd egy magas épületről lezuhant nőt találtak. Súlyos, kiterjedt sérülései vannak, és nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 150,
+            "pos": [1350.1, -983.56, 29.89],
+            "rot": 183,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 },
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

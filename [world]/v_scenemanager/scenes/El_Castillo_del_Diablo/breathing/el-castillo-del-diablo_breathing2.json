@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "el-castillo-del-diablo_breathing2",
+    "category": "breathing",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [35.48, 2308.79, 22.94],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Asthma from hay dust",
+                    "description": "A girl helping to stack hay by the dusty roadside in El Castillo del Diablo is wheezing badly from the dust. Her inhaler is at home."
+                },
+                "hu": {
+                    "title": "Szénaportól kialakult asztma",
+                    "description": "Egy lány szénát rakodott egy poros út mellett El Castillo del Diablo területén, és a portól erősen sípolva kezdett lélegezni. Az inhalátora otthon van."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [35.48, 2308.79, 22.94],
+            "rot": 208,
+            "anim": "tired",
+            "role": "patient",
+            "injuries": [
+                { "type": "asthma", "severity": 2 }
+            ],
+            "state": { "spo2": 89 }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_choking-in-restaurant1",
+    "category": "",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1565.236, -1885.933, 13.558],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man choking in restaurant",
+                    "description": "A man suddenly started choking while eating at a restaurant. He is struggling to breathe and appears unable to clear the obstruction. Staff members are calling for an ambulance."
+                },
+                "hu": {
+                    "title": "Férfi fulladozik az étteremben",
+                    "description": "Egy férfi evés közben hirtelen fulladozni kezdett egy étteremben. Nehezen kap levegőt, és úgy tűnik, nem tudja megszüntetni a légúti elzáródást. Az alkalmazottak mentőt hívnak."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 22,
+            "pos": [1564.267, -1886.093, 13.558],
+            "rot": -47.1,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

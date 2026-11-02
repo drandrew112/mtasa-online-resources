@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lil-probe-inn_shooting1",
+    "category": "shooting",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-130, 1590, 18.95],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Woman shot in the stomach",
+                    "description": "A woman was shot in the stomach behind the Lil' Probe Inn during an argument with her ex-partner. She is bent over, pale and getting weaker."
+                },
+                "hu": {
+                    "title": "Hason lőtt nő",
+                    "description": "Egy nőt hason lőttek a Lil' Probe Inn mögött, miközben vitatkozott volt partnerével. Görnyedten áll, sápadt, és egyre gyengébb."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 201,
+            "pos": [-130, 1590, 18.95],
+            "rot": 210,
+            "anim": "hold_side",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3742 }
+        }
+    ]
+}

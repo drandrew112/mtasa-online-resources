@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "the-farm_fall2",
+    "category": "fall",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1041.64, -1220.44, 129.11],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Slipped on loose gravel",
+                    "description": "A woman slipped on loose gravel by the road next to a farm in The Farm and landed on her outstretched hand. Her wrist is swollen and bent."
+                },
+                "hu": {
+                    "title": "Megcsúszott a laza kavicson",
+                    "description": "The Farm egyik gazdasága melletti úton egy nő megcsúszott a laza kavicson, és kinyújtott kezére esett. Csuklója duzzadt és elhajlott."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-1041.64, -1220.44, 129.11],
+            "rot": 189,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "pain": 28 }
+        }
+    ]
+}

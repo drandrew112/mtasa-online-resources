@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "las-payasadas_diabetes3",
+    "category": "diabetes",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-220, 2590, 62.6],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Insulin pump failed",
+                    "description": "A woman on the dusty ground in Las Payasadas says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+                },
+                "hu": {
+                    "title": "Elromlott az inzulinpumpa",
+                    "description": "Egy nő Las Payasadas poros földjén azt mondja, hogy az inzulinpumpája éjszaka leállt. Nagyon rosszul érzi magát, hányingere van, és nehezen, erőlködve lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 11,
+            "pos": [-220, 2590, 62.6],
+            "rot": 88,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 464 }
+        }
+    ]
+}

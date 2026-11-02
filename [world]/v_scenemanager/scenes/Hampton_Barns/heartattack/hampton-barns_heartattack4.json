@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "hampton-barns_heartattack4",
+    "category": "heartattack",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [624.969, 336.003, 19.817],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Unresponsive, grey skin",
+                    "description": "A man was found slumped by the road near the barns. Grey, cold and barely breathing. A pitchfork lies next to him."
+                },
+                "hu": {
+                    "title": "Nem reagál, szürkés bőr",
+                    "description": "Egy férfit az istállók közelében, az út mellett találtak összeroskadva. Szürkés, hideg, és alig lélegzik. Egy vasvilla hever mellette."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 29,
+            "pos": [624.969, 336.003, 19.817],
+            "rot": 283,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

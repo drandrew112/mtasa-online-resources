@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "sf_fall24",
+    "category": "fall",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1806.62, -285.97, 23.74],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Skateboarder crashed",
+                    "description": "A skateboarder lost control at a bus stop in Doherty and slid along the pavement. His wrist is deformed and he has deep grazes."
+                },
+                "hu": {
+                    "title": "Elesett a gördeszkás",
+                    "description": "Doherty egyik buszmegállójánál egy gördeszkás elvesztette az uralmát a deszka felett, és végigcsúszott a járdán. Csuklója deformálódott, és mély horzsolásai vannak."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 142,
+            "pos": [-1806.62, -285.97, 23.74],
+            "rot": 260,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

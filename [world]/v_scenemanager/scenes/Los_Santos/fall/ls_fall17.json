@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "ls_fall17",
+    "category": "fall",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2793, -1898.12, 11.07],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell off a ladder",
+                    "description": "A worker fell about four metres from a ladder outside a shop in Playa del Seville while fixing a sign. He landed on his arm, which is clearly deformed, and he has a cut on his forehead."
+                },
+                "hu": {
+                    "title": "Leesett a létráról",
+                    "description": "Egy munkás körülbelül négy métert zuhant le egy létráról Playa del Seville egyik üzlete előtt, miközben egy táblát javított. A karjára esett; a karja láthatóan deformálódott, a homlokán pedig vágott seb van."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [2793, -1898.12, 11.07],
+            "rot": 69,
+            "anim": "injured",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

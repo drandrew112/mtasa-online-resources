@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "ls_diabetes13",
+    "category": "diabetes",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1142.88, -1642.25, 13.95],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Worker vomiting, confused",
+                    "description": "A delivery worker on the sidewalk in Verona Beach keeps throwing up and cannot remember the next address on his list. His colleague says he is diabetic and has been ill with the flu all week."
+                },
+                "hu": {
+                    "title": "Hányó, zavart munkás",
+                    "description": "Egy kiszállító munkás Verona Beach járdáján újra és újra hány, és nem emlékszik a listáján következő címre. Kollégája szerint cukorbeteg, és egész héten influenzás volt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [1142.88, -1642.25, 13.95],
+            "rot": 316,
+            "anim": "vomit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "bloodVolume": 4100, "glucose": 470, "consciousness": "confused" }
+        }
+    ]
+}

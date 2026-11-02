@@ -1,0 +1,69 @@
+{
+    "format": 2,
+    "name": "sf_motorcycle10",
+    "category": "motorcycle",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2877.17, -843.73, 7.11],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Wheelie gone wrong",
+                    "description": "A teenager tried a wheelie on the road in San Fierro to impress his friends and fell backwards. His wrist is broken and he hit his head, but his helmet stayed on."
+                },
+                "hu": {
+                    "title": "Félresikerült a motoros egykerekezés",
+                    "description": "San Fierro útján egy tinédzser a barátai lenyűgözésére egykerekezni próbált a motorral, de hátraesett. Eltört a csuklója és beütötte a fejét, de a sisak a fején maradt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 461,
+            "pos": [-2872.88, -846.4, 6.74],
+            "rot": [0, 0, 291.7],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [30, 110, 50, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "SF62 382",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0],
+            "tow": true
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 23,
+            "pos": [-2877.17, -843.73, 7.11],
+            "rot": 280,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

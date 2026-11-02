@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "fort-carson_false2",
+    "category": "false",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-317.12, 1098.25, 19.59],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Child not breathing",
+                    "description": "A young-sounding caller says a child is not breathing at the crossroads in Fort Carson, then laughs and hangs up. The callback goes to voicemail."
+                },
+                "hu": {
+                    "title": "A gyermek nem lélegzik",
+                    "description": "Egy fiatalnak hangzó bejelentő azt mondja, hogy egy gyermek nem lélegzik a Fort Carson-i útkereszteződésnél, majd nevetve leteszi a telefont. A visszahívás hangpostára fut."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

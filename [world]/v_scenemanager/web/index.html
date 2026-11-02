@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scene Manager</title>
+    <link rel="stylesheet" href="/web_api/osa.css">
+    <link rel="stylesheet" href="css/scenes.css">
+</head>
+<body class="locked">
+    <div class="osa-login" id="login">
+        <form class="osa-login-box" id="loginForm" autocomplete="off">
+            <div class="sm-lang" id="loginLang"></div>
+            <h1 data-t="title">Scene Manager</h1>
+            <p data-t="sign_in_hint">Sign in with your game account (admin)</p>
+            <input id="user" class="plain" type="text" data-tp="username" placeholder="Username" maxlength="64" autocomplete="username">
+            <input id="pass" class="plain" type="password" data-tp="password" placeholder="Password" maxlength="128" autocomplete="current-password">
+            <div class="osa-login-error" id="loginError"></div>
+            <button class="osa-btn primary" type="submit" id="loginBtn" data-t="sign_in">Sign in</button>
+        </form>
+    </div>
+
+    <header class="osa-topbar">
+        <div class="osa-brand"><div><strong data-t="title">Scene Manager</strong><small data-t="subtitle">Scenes</small></div></div>
+        <div class="osa-top-right">
+            <span class="osa-muted" id="stats"></span>
+            <button class="osa-btn small" id="autoBtn">...</button>
+            <div class="sm-lang" id="topLang"></div>
+            <span class="who" id="who"></span>
+            <button class="osa-btn small" id="logout" data-t="sign_out">Sign out</button>
+            <span class="osa-conn" id="conn" title="Connection"></span>
+        </div>
+    </header>
+
+    <main class="sm-main">
+        <section class="osa-panel sm-catalog">
+            <div class="sm-toolbar">
+                <input class="osa-input" id="search" data-tp="search" placeholder="Search name, title, place..." maxlength="60">
+                <select class="osa-select" id="location"></select>
+                <select class="osa-select" id="category"></select>
+                <select class="osa-select" id="agency"></select>
+                <label class="sm-check"><input type="checkbox" id="hasIssues"> <span data-t="has_issues">Has issues</span></label>
+            </div>
+            <div class="sm-count osa-muted" id="count"></div>
+            <div class="sm-list" id="catalog"></div>
+        </section>
+
+        <section class="osa-panel sm-live">
+            <div class="sm-tabs">
+                <button class="sm-tab on" id="tabLive" data-t="active_scenes">Active scenes</button>
+                <button class="sm-tab" id="tabIssues"><span data-t="issues">Issues</span> <span class="sm-tabcount" id="issueCount"></span></button>
+            </div>
+            <div id="livePane" class="sm-pane">
+                <div class="osa-panel-head">
+                    <span class="osa-muted" id="liveInfo"></span>
+                    <button class="osa-btn small danger" id="clearAll" disabled data-t="remove_all">Remove all</button>
+                </div>
+                <div class="sm-confirm" id="clearConfirm" hidden>
+                    <span data-t="remove_all_confirm">Remove every active scene?</span>
+                    <button class="osa-btn small danger" id="clearYes" data-t="remove_all_yes">Remove all</button>
+                    <button class="osa-btn small" id="clearNo" data-t="cancel">Cancel</button>
+                </div>
+                <div class="sm-list" id="live"></div>
+            </div>
+            <div id="issuesPane" class="sm-pane" hidden>
+                <div class="sm-toolbar">
+                    <button class="osa-btn small on" id="issuesOpen" data-t="open">Open</button>
+                    <button class="osa-btn small" id="issuesResolved" data-t="resolved">Resolved</button>
+                </div>
+                <div class="sm-list" id="issues"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="/web_api/osa.js"></script>
+    <script src="js/scenes.js"></script>
+</body>
+</html>

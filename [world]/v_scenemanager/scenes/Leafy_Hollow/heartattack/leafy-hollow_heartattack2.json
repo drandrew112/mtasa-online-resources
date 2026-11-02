@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "leafy-hollow_heartattack2",
+    "category": "heartattack",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-953.91, -1716, 77.586],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest pain, sweating",
+                    "description": "A woodcutter sat down by the road with tight chest pain and drenched in sweat. He insists he only needs a break."
+                },
+                "hu": {
+                    "title": "Mellkasi fájdalom, izzadás",
+                    "description": "Egy favágó leült az út mellett; szorító mellkasi fájdalma van, és csurom víz az izzadságtól. Azt hajtogatja, hogy csak pihennie kell egy kicsit."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [-953.91, -1716, 77.586],
+            "rot": 333,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

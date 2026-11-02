@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "ls_hitbycar5",
+    "category": "hitbycar",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [604.17, -1848.44, 5.63],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Hit and run",
+                    "description": "A car hit a man in Santa Maria Beach and drove off. The victim is lying in the road, face down and not answering. Callers are stopping traffic."
+                },
+                "hu": {
+                    "title": "Cserbenhagyásos gázolás",
+                    "description": "Egy autó elütött egy férfit Santa Maria Beachen, majd elhajtott. Az áldozat arccal lefelé fekszik az úton, és nem válaszol. A bejelentők próbálják megállítani a forgalmat."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 21,
+            "pos": [604.17, -1848.44, 5.63],
+            "rot": 161,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

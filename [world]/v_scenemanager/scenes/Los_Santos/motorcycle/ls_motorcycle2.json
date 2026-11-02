@@ -1,0 +1,69 @@
+{
+    "format": 2,
+    "name": "ls_motorcycle2",
+    "category": "motorcycle",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1453.001, -882.999, 54.645],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Dirt bike crash in the hills",
+                    "description": "A dirt bike rider crashed on the trail below the Vinewood sign. His friend says he hit a rock, flew off and landed on his head. He is not responding properly."
+                },
+                "hu": {
+                    "title": "Terepmotoros baleset a dombok között",
+                    "description": "Egy terepmotoros balesetet szenvedett a Vinewood felirat alatti ösvényen. Barátja szerint nekiment egy sziklának, lerepült a motorról, és a fejére esett. Nem reagál megfelelően."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 468,
+            "pos": [1455.501, -881.499, 55.245],
+            "rot": [0, 0, 30],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [220, 190, 30, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS06 322",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0],
+            "tow": true
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 248,
+            "pos": [1453.001, -882.999, 54.645],
+            "rot": 100,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

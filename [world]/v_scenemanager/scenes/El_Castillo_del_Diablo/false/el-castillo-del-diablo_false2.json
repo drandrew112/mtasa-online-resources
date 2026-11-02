@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "el-castillo-del-diablo_false2",
+    "category": "false",
+    "location": "El Castillo del Diablo",
+    "enabled": true,
+    "weight": 1,
+    "center": [99.63, 2138.07, 17.62],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man asleep on the ground",
+                    "description": "A farmer reports a man who collapsed on the road shoulder in El Castillo del Diablo. He is sitting up now, says he was only sleeping and refuses help."
+                },
+                "hu": {
+                    "title": "Földön fekvő férfi azt állítja, hogy aludt",
+                    "description": "Egy gazda egy férfit jelentett, aki összeesett az útpadkán El Castillo del Diablo területén. Most már felült, azt mondja, csak aludt, és visszautasítja a segítséget."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 135,
+            "pos": [99.63, 2138.07, 17.62],
+            "rot": 169,
+            "anim": "sit",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "el-quebrados_heartattack4",
+    "category": "heartattack",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1488.875, 2648.5, 55.836],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Barely breathing",
+                    "description": "A local found a man slumped by the road at the edge of town. Barely breathing, grey and clammy."
+                },
+                "hu": {
+                    "title": "Alig lélegzik",
+                    "description": "Egy helybéli egy összeroskadt férfit talált az út mellett, a város szélén. A férfi alig lélegzik, szürkés és nyirkos a bőre."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [-1488.875, 2648.5, 55.836],
+            "rot": 324,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

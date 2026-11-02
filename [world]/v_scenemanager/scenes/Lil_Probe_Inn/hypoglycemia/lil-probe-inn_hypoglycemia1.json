@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lil-probe-inn_hypoglycemia1",
+    "category": "hypoglycemia",
+    "location": "Lil' Probe Inn",
+    "enabled": true,
+    "weight": 1,
+    "center": [-90, 1410, 9.47],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Sweaty and confused",
+                    "description": "A woman on the dusty ground at the Lil' Probe Inn is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+                },
+                "hu": {
+                    "title": "Izzadt és zavart",
+                    "description": "Egy nő a Lil' Probe Inn poros talaján erősen izzad és zavartnak tűnik. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenül kezdett beszélni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [-90, 1410, 9.47],
+            "rot": 51,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 49, "consciousness": "confused" }
+        }
+    ]
+}

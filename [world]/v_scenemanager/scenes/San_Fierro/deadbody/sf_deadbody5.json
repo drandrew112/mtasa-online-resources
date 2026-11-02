@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_deadbody5",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2787, 455, 4.36],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Body found by night guard",
+                    "description": "A night guard found a man lying in the park in Palisades. He has a head wound and has been there for hours. The guard did not touch him."
+                },
+                "hu": {
+                    "title": "Éjjeliőr talált rá a holttestre",
+                    "description": "Egy éjjeliőr egy férfit talált Palisades parkjában fekve. Fejsérülése van, és már órák óta ott feküdhet. Az őr nem nyúlt hozzá."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 240,
+            "pos": [-2787, 455, 4.36],
+            "rot": 274,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_fall18",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [896.08, 2263.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Old man on blood thinners fell",
+                    "description": "An old man slipped by the roadside in Las Venturas and hit his head. He takes blood thinners, is getting more confused and has vomited once."
+                },
+                "hu": {
+                    "title": "Véralvadásgátlót szedő idős férfi elesett",
+                    "description": "Egy idős férfi megcsúszott Las Venturasban, az út mellett, és beütötte a fejét. Véralvadásgátlót szed, egyre zavartabb, és egyszer hányt is."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 236,
+            "pos": [896.08, 2263.13, 10.82],
+            "rot": 257,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

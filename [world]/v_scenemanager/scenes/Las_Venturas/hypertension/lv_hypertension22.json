@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "lv_hypertension22",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2142.645, 1698.702, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Breathless, chest heavy",
+                    "description": "A smoker in his fifties became breathless walking up a short slope. His chest feels heavy and his face is flushed red."
+                },
+                "hu": {
+                    "title": "Légszomj, nehéz mellkas",
+                    "description": "Egy ötvenes éveiben járó dohányosnak már egy rövid emelkedőn felfelé is légszomja lett. Nehéznek érzi a mellkasát, az arca élénkvörösre vált."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [2142.645, 1698.702, 10.82],
+            "rot": 45.5,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 94,
+                "systolic": 196,
+                "diastolic": 118,
+                "heartRate": 112,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

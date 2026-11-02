@@ -1,0 +1,69 @@
+{
+    "format": 2,
+    "name": "ls_hitbycar15",
+    "category": "hitbycar",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2658.38, -2042.37, 19.45],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Clipped by a car mirror",
+                    "description": "A woman looking at her phone in Willowfield stepped into the road and was clipped by a car mirror. She is sitting on the curb with a swollen elbow and grazes."
+                },
+                "hu": {
+                    "title": "Visszapillantó tükör ütötte meg",
+                    "description": "Egy Willowfieldben a telefonját néző nő lelépett az útra, és eltalálta egy autó visszapillantó tükre. A járdaszegélyen ül, könyöke megduzzadt, és horzsolásai vannak."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 400,
+            "pos": [2660.38, -2046.87, 19.28],
+            "rot": [0, 0, 87],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 1000,
+            "colors": [170, 20, 20, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS35 227",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [0, 0, 0, 0, 0, 0],
+            "panels": [0, 0, 0, 0, 0, 0, 0],
+            "lights": [0, 0, 0, 0],
+            "wheels": [0, 0, 0, 0],
+            "tow": true
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [2658.38, -2042.37, 19.45],
+            "rot": 173,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

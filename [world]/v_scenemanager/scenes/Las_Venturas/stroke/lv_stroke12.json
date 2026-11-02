@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_stroke12",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [896.08, 2343.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell, one leg will not move",
+                    "description": "An old man fell by the roadside in Las Venturas and cannot get up because his right leg will not move. He is awake but his speech is thick and slow."
+                },
+                "hu": {
+                    "title": "Elesett, az egyik lába nem mozdul",
+                    "description": "Egy idős férfi elesett Las Venturasban, az út mellett, és nem tud felkelni, mert a jobb lába nem mozdul. Ébren van, de a beszéde nehézkes és lassú."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [896.08, 2343.13, 10.82],
+            "rot": 278,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 199 }
+        }
+    ]
+}

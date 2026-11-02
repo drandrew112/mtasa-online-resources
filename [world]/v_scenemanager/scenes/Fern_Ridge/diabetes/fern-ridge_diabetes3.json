@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "fern-ridge_diabetes3",
+    "category": "diabetes",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [1362.07, -34.76, 34.47],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Insulin pump failed",
+                    "description": "A woman on the road shoulder near Fern Ridge says her insulin pump stopped working overnight. She feels awful, is nauseous and breathing heavily."
+                },
+                "hu": {
+                    "title": "Elromlott az inzulinpumpa",
+                    "description": "Egy nő az útpadkán, Fern Ridge közelében azt mondja, hogy az inzulinpumpája éjszaka leállt. Nagyon rosszul érzi magát, hányingere van, és nehezen, erőlködve lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 190,
+            "pos": [1362.07, -34.76, 34.47],
+            "rot": 14,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 410 }
+        }
+    ]
+}

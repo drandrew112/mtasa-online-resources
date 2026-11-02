@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "dillimore_hypoglycemia3",
+    "category": "hypoglycemia",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [610, -640, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Jogger shaking and pale",
+                    "description": "A jogger on a grassy patch in Dillimore sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+                },
+                "hu": {
+                    "title": "A kocogó remeg és sápadt",
+                    "description": "Egy kocogó nő hirtelen leült egy füves területen Dillimore-ban. Remeg, izzad és sápadt. Azt mondja, reggel beadta magának az inzulint, de kihagyta a reggelit."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [610, -640, 19.74],
+            "rot": 261,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 44, "heartRate": 113 }
+        }
+    ]
+}

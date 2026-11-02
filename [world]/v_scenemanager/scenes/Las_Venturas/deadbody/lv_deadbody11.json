@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "lv_deadbody11",
+    "category": "deadbody",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1659.38, 1266.65, 10.81],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found after a fall from height",
+                    "description": "Residents found a man lying on a paved square at Las Venturas Airport below a tall building. His injuries are severe and he has not moved since they found him."
+                },
+                "hu": {
+                    "title": "Magasból esés után találták meg",
+                    "description": "Lakók egy férfit találtak a Las Venturas-i repülőtér aszfaltozott terén, egy magas épület alatt. Súlyos sérülései vannak, és a megtalálása óta nem mozdult."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [1659.38, 1266.65, 10.81],
+            "rot": 36,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "lv_hypertension7",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2380.25, 2643.125, 13.586],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Breathless, pounding heart",
+                    "description": "A man walking uphill suddenly became breathless with a pounding heart. He says he has felt the pressure in his head for days."
+                },
+                "hu": {
+                    "title": "Légszomj, heves szívdobogás",
+                    "description": "Egy felfelé sétáló férfi hirtelen légszomjat és heves szívdobogást tapasztalt. Azt mondja, napok óta nyomást érez a fejében."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [2380.25, 2643.125, 13.586],
+            "rot": 0,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 198,
+                "diastolic": 120,
+                "heartRate": 102,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

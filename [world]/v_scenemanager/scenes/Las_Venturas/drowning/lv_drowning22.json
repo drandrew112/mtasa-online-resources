@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_drowning22",
+    "category": "drowning",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1859.26, 1587.48, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Child pulled from the water",
+                    "description": "A father pulled his young daughter out of the water after she wandered off. She is lying by the water near Pirates in Men's Pants, confused and with blue lips."
+                },
+                "hu": {
+                    "title": "Gyermeket húztak ki a vízből",
+                    "description": "Egy apa kihúzta a vízből a kislányát, miután a gyermek elkóborolt. A Pirates in Men's Pants közelében, a víz mellett fekszik zavartan, elkékült ajkakkal."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 226,
+            "pos": [1859.26, 1587.48, 10.82],
+            "rot": 175,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 78, "consciousness": "dazed" }
+        }
+    ]
+}

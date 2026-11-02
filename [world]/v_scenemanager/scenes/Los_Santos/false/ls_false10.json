@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "ls_false10",
+    "category": "false",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1107.38, -1565.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk man shouting",
+                    "description": "A caller reports a drunk man shouting and falling over on the sidewalk in Market. He might be hurt."
+                },
+                "hu": {
+                    "title": "Kiabáló, ittas férfi",
+                    "description": "Egy bejelentő szerint egy részeg férfi kiabál és elesik a Market járdáján. Lehet, hogy megsérült."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 188,
+            "pos": [1107.38, -1565.25, 13.55],
+            "rot": 283,
+            "anim": "drunk",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

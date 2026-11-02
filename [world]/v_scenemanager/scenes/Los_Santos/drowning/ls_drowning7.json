@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_drowning7",
+    "category": "drowning",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1894, -1202, 20.13],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cramp in the water, panicking",
+                    "description": "A swimmer got a cramp in the pond and swallowed water before being helped out and brought onto the grass in Glen Park. She is anxious, coughing a little and breathing fast."
+                },
+                "hu": {
+                    "title": "Begörcsölt a vízben, pánikba esett",
+                    "description": "Egy úszónak begörcsölt az izma a tóban, és vizet nyelt, mielőtt kisegítették a partra, majd a fűre vitték Glen Parkban. Szorong, kissé köhög, és gyorsan lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 138,
+            "pos": [1894, -1202, 20.13],
+            "rot": 229,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 94, "heartRate": 112 }
+        }
+    ]
+}

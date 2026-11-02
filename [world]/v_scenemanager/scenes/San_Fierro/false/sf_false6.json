@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "sf_false6",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1696.82, 1265.39, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Seizure reported",
+                    "description": "A passer-by reports someone having a seizure at a bus stop in Esplanade North. The caller left before the call was finished."
+                },
+                "hu": {
+                    "title": "Rohamról érkezett bejelentés",
+                    "description": "Egy járókelő arról számolt be, hogy valaki rohamot kapott Esplanade North egyik buszmegállójában. A bejelentő a hívás befejezése előtt elment."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "bayside_hypertension2",
+    "category": "hypertension",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2420, 2320, 6.28],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest tightness, blurred vision",
+                    "description": "A heavy-set man in a yard in Bayside complains of a tight chest and blurred vision. He is sweaty and frightened and keeps rubbing his temples."
+                },
+                "hu": {
+                    "title": "Mellkasi szorítás, homályos látás",
+                    "description": "Egy túlsúlyos férfi mellkasi szorításra és homályos látásra panaszkodik egy bayside-i udvaron. Izzad, fél, és folyton a halántékát dörzsöli."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-2420, 2320, 6.28],
+            "rot": 244,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 66,
+                "spo2": 93,
+                "systolic": 223,
+                "diastolic": 133,
+                "heartRate": 115,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

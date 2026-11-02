@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "lv_heartattack15",
+    "category": "heartattack",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1354.225, 762.692, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fainted, very fast pulse",
+                    "description": "A young woman passed out on the sidewalk after a pool party. Her friends say her heart was racing before she dropped. She is breathing but will not wake up."
+                },
+                "hu": {
+                    "title": "Ájulás, nagyon szapora pulzus",
+                    "description": "Egy fiatal nő elájult a járdán egy medencés buli után. A barátai szerint előtte hevesen vert a szíve. Lélegzik, de nem ébreszthető."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 157,
+            "pos": [1354.225, 762.692, 10.82],
+            "rot": 311,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 84,
+                "systolic": 70,
+                "diastolic": 40,
+                "heartRate": 182,
+                "consciousness": "unconscious",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "las-payasadas_deadbody2",
+    "category": "deadbody",
+    "location": "Las Payasadas",
+    "enabled": true,
+    "weight": 1,
+    "center": [-224.98, 2812.88, 62.34],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Body found by a hunter",
+                    "description": "A hunter found a man lying face down on the dusty ground in Las Payasadas. He has clearly been dead for some time."
+                },
+                "hu": {
+                    "title": "Vadász talált rá a holttestre",
+                    "description": "Egy vadász egy arccal lefelé fekvő férfit talált Las Payasadas poros földjén. Egyértelmű, hogy már jó ideje halott."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 44,
+            "pos": [-224.98, 2812.88, 62.34],
+            "rot": 314,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

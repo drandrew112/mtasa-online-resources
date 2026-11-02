@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypoglycemia24",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2807, 535, 6.15],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Sweaty and confused",
+                    "description": "A woman in a small park in Palisades is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+                },
+                "hu": {
+                    "title": "Izzad és zavart",
+                    "description": "Palisades egyik kis parkjában egy nő erősen izzad és zavartnak tűnik. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenné vált a beszéde."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 169,
+            "pos": [-2807, 535, 6.15],
+            "rot": 11,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 44, "consciousness": "confused" }
+        }
+    ]
+}

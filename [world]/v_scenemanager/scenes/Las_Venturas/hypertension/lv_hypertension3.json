@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "lv_hypertension3",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1039, 2446, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Headache, breathless",
+                    "description": "A heavy-set man is struggling to breathe and has a crushing headache. Park staff found him sitting by the path, grey and sweating."
+                },
+                "hu": {
+                    "title": "Fejfájás, légszomj",
+                    "description": "Egy túlsúlyos férfi nehezen kap levegőt, és szétfeszítő fejfájása van. A park munkatársai az ösvény mellett ülve találták; szürkés a bőre, és izzad."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [1039, 2446, 10.82],
+            "rot": 160,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 228,
+                "diastolic": 136,
+                "heartRate": 102,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

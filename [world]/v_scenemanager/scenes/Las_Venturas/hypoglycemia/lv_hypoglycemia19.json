@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia19",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1054.67, 807.15, 10.75],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed after basketball",
+                    "description": "A student collapsed after playing basketball next to the road in Las Venturas. His friends say he is diabetic and took extra insulin before the game."
+                },
+                "hu": {
+                    "title": "Kosárlabdázás után összeesett",
+                    "description": "Egy diák összeesett, miután kosárlabdázott az út mellett Las Venturasban. A barátai szerint cukorbeteg, és a játék előtt a szokásosnál több inzulint adott be."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 143,
+            "pos": [1054.67, 807.15, 10.75],
+            "rot": 246,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 35, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "format": 2,
+    "name": "ls_fall5",
+    "category": "fall",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [351.31, -1393.22, 14.48],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk man fell, head bleeding",
+                    "description": "A drunk man fell backwards on the pavement in Rodeo and hit his head on the concrete. He is bleeding heavily from the back of the head and keeps trying to get up."
+                },
+                "hu": {
+                    "title": "Részeg férfi elesett, vérzik a feje",
+                    "description": "Egy részeg férfi hátraesett Rodeó járdáján, és a fejét a betonnak ütötte. Erősen vérzik a tarkójából, és újra meg újra megpróbál felállni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 186,
+            "pos": [351.31, -1393.22, 14.48],
+            "rot": 156,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

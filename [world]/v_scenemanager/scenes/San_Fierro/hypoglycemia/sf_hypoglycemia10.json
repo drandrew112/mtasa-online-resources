@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypoglycemia10",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2208.62, 738.63, 49.44],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Worker acting drunk",
+                    "description": "Coworkers on the sidewalk in Chinatown say a colleague is acting drunk, sweating and slurring, but he never drinks. He is a diabetic and worked through lunch."
+                },
+                "hu": {
+                    "title": "Részegnek tűnő munkás",
+                    "description": "Chinatown járdáján munkatársai szerint egyik kollégájuk részegnek tűnik, izzad és elmosódottan beszél, pedig sosem iszik. Cukorbeteg, és ebédszünet nélkül dolgozott."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 50,
+            "pos": [-2208.62, 738.63, 49.44],
+            "rot": 202,
+            "anim": "drunk",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 39, "consciousness": "confused" }
+        }
+    ]
+}

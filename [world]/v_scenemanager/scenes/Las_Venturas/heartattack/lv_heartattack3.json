@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_heartattack3",
+    "category": "heartattack",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2430.545, 779.268, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found down, no pulse",
+                    "description": "A street performer dressed as an Elvis impersonator was found motionless on the sidewalk. No pulse, not breathing. The crowd has not realised it is not part of the act."
+                },
+                "hu": {
+                    "title": "A földön találták, nincs pulzusa",
+                    "description": "Egy Elvis-imitátornak öltözött utcai előadóművészt mozdulatlanul találtak a járdán. Nincs pulzusa, és nem lélegzik. A tömeg még nem vette észre, hogy ez nem a műsor része."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 101,
+            "pos": [2430.545, 779.268, 10.82],
+            "rot": 349,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

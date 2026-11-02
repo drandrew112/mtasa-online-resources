@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "leafy-hollow_false1",
+    "category": "false",
+    "location": "Back o Beyond",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1140, -1860, 85.68],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Shots heard",
+                    "description": "Neighbours heard what sounded like gunshots at the edge of the woods near Leafy Hollow. Nobody saw anyone injured. It may have been fireworks."
+                },
+                "hu": {
+                    "title": "Lövéseket hallottak",
+                    "description": "A szomszédok lövésekhez hasonló hangokat hallottak Leafy Hollow közelében, az erdő szélén. Senki sem látott sérültet; lehet, hogy csak tűzijáték volt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

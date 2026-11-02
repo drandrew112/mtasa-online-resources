@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "fern-ridge_heartattack5",
+    "category": "heartattack",
+    "location": "Fern Ridge",
+    "enabled": true,
+    "weight": 1,
+    "center": [531.896, 114.063, 23.021],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fainted, rapid pulse",
+                    "description": "A mountain biker said her heart was fluttering, then passed out by the road. She is breathing fast but will not wake up."
+                },
+                "hu": {
+                    "title": "Elájult, szapora pulzus",
+                    "description": "Egy hegyikerékpáros nő azt mondta, hogy össze-vissza ver a szíve, majd elájult az út mellett. Gyorsan lélegzik, de nem lehet felébreszteni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [531.896, 114.063, 23.021],
+            "rot": 303,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 84,
+                "systolic": 70,
+                "diastolic": 40,
+                "heartRate": 182,
+                "consciousness": "unconscious",
+                "rhythm": "VT_WITH_PULSE"
+            }
+        }
+    ]
+}

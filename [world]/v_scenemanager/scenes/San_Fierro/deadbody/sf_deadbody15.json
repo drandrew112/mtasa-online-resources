@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "sf_deadbody15",
+    "category": "deadbody",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2081.5, 638.38, 52.36],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found after a fall from height",
+                    "description": "Residents found a man lying outside an office tower in Downtown below a tall building. His injuries are severe and he has not moved since they found him."
+                },
+                "hu": {
+                    "title": "Magasból lezuhant embert találtak",
+                    "description": "Lakók egy férfit találtak egy belvárosi irodatorony előtt, egy magas épület alatt fekve. Súlyos sérülései vannak, és megtalálása óta nem mozdult."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 222,
+            "pos": [-2081.5, 638.38, 52.36],
+            "rot": 70,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 3 }
+            ],
+            "state": { "consciousness": "dead" }
+        }
+    ]
+}

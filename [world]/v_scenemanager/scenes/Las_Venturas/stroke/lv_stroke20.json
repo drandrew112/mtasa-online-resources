@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_stroke20",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2310.4, 2445.74, -7.45],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found on the ground, cannot speak",
+                    "description": "A dog walker found an elderly woman lying at the side of the road in Roca Escalante. She is awake and looks at people but cannot speak, and her right side is limp."
+                },
+                "hu": {
+                    "title": "A földön találták, nem tud beszélni",
+                    "description": "Egy kutyasétáltató egy idős nőt talált az út mellett Roca Escalante területén. Ébren van, és az emberekre néz, de nem tud beszélni; jobb oldala ernyedt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 197,
+            "pos": [2310.4, 2445.74, -7.45],
+            "rot": 87,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 204, "consciousness": "dazed" }
+        }
+    ]
+}

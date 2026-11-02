@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypertension23",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2691.822, 1058.345, 6.813],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Blurry vision, worried",
+                    "description": "A woman with diabetes says her vision went blurry and her head is throbbing. She checked her sugar and it was fine."
+                },
+                "hu": {
+                    "title": "Homályos látás, aggodalom",
+                    "description": "Egy cukorbeteg nő azt mondja, homályossá vált a látása, és lüktet a feje. Megmérte a vércukrát, és az rendben volt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [2691.822, 1058.345, 6.813],
+            "rot": 345.2,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 174, "diastolic": 104, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}

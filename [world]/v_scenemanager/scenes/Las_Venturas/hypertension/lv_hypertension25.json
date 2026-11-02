@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "lv_hypertension25",
+    "category": "hypertension",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1859.964, 1124.268, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Headache, vomiting",
+                    "description": "A woman has vomited on the sidewalk and holds the back of her head. She says she has never had a headache this strong."
+                },
+                "hu": {
+                    "title": "Fejfájás, hányás",
+                    "description": "Egy nő a járdára hányt, és a tarkóját fogja. Azt mondja, még soha nem fájt ennyire a feje."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 9,
+            "pos": [1859.964, 1124.268, 10.82],
+            "rot": 22.3,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 188,
+                "diastolic": 112,
+                "heartRate": 102,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

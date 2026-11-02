@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "ls_heartattack14",
+    "category": "heartattack",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2203.191, -1067.587, 41.998],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Unresponsive, grey skin",
+                    "description": "Passers-by found a man slumped on the sidewalk, barely breathing, skin like cold ash. His shopping bag is spilled across the pavement."
+                },
+                "hu": {
+                    "title": "Eszméletlen, szürkés bőr",
+                    "description": "Járókelők egy férfit találtak összeroskadva a járdán. Alig lélegzik, bőre olyan szürke, mint a hideg hamu. A bevásárlószatyra tartalma szétszóródott a járdán."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 58,
+            "pos": [2203.191, -1067.587, 41.998],
+            "rot": 221,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

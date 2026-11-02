@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_overdose21",
+    "category": "overdose",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [733.41, -982.46, 53.03],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk, vomiting, will not wake",
+                    "description": "Friends at the side of the road in Richman say a woman drank most of a bottle of vodka in a drinking game. She has vomited and now only groans. She is lying face down."
+                },
+                "hu": {
+                    "title": "Részeg, hány, nem ébreszthető",
+                    "description": "Barátai szerint egy nő Richman út menti részén egy ivós játék során majdnem egy egész üveg vodkát megivott. Hányt, most pedig csak nyög. Arccal lefelé fekszik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 92,
+            "pos": [733.41, -982.46, 53.03],
+            "rot": 44,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "unconscious" }
+        }
+    ]
+}

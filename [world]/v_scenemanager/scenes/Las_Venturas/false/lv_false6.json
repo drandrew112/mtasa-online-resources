@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "lv_false6",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1959.26, 1467.48, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Seizure reported",
+                    "description": "A passer-by reports someone having a seizure by the water near Pirates in Men's Pants. The caller left before the call was finished."
+                },
+                "hu": {
+                    "title": "Görcsrohamot jelentettek",
+                    "description": "Egy járókelő arról számol be, hogy valakinek görcsrohama van a Pirates in Men's Pants közelében, a víz mellett. A bejelentő még a hívás befejezése előtt elment."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

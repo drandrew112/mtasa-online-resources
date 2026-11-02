@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypertension25",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2801.575, -160.25, 7.188],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Slow to respond",
+                    "description": "A man is slow to respond and keeps asking what day it is. A coworker says he complained of a terrible headache before lunch."
+                },
+                "hu": {
+                    "title": "Lassú reakciók",
+                    "description": "Egy férfi lassan reagál, és újra meg újra megkérdezi, milyen nap van. Munkatársa szerint ebéd előtt szörnyű fejfájásra panaszkodott."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-2801.575, -160.25, 7.188],
+            "rot": 0,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 190, "diastolic": 114, "heartRate": 94, "consciousness": "dazed" }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "the-farm_breathing2",
+    "category": "breathing",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1137.83, -1122.01, 129.18],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Old smoker cannot catch breath",
+                    "description": "An old smoker on the road shoulder in The Farm had to sit down because he cannot catch his breath. He breathes through pursed lips and his ankles are swollen."
+                },
+                "hu": {
+                    "title": "Idős dohányos, légszomjjal",
+                    "description": "The Farm területén egy idős dohányosnak le kellett ülnie az útpadkára, mert nem kap levegőt. Összeszorított ajkakkal lélegzik, bokái megduzzadtak."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-1137.83, -1122.01, 129.18],
+            "rot": 236,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 85 }
+        }
+    ]
+}

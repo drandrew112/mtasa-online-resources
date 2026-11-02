@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "sf_hypertension8",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2864.248, 990.559, 41.171],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Headache, blurred vision",
+                    "description": "A taxi driver got out of his cab because the road started to blur. He has a band-like headache and his neck feels stiff."
+                },
+                "hu": {
+                    "title": "Fejfájás, homályos látás",
+                    "description": "Egy taxis kiszállt az autójából, mert elhomályosult előtte az út. Szorító, pántszerű fejfájása van, és merevnek érzi a nyakát."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 15,
+            "pos": [-2864.248, 990.559, 41.171],
+            "rot": 222.6,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "systolic": 184,
+                "diastolic": 112,
+                "heartRate": 92,
+                "consciousness": "stable"
+            }
+        }
+    ]
+}

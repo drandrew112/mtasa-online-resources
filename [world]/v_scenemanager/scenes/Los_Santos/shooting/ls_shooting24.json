@@ -1,0 +1,58 @@
+{
+    "format": 2,
+    "name": "ls_shooting24",
+    "category": "shooting",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1654.2, -2061.26, 21.51],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drive-by, two down",
+                    "description": "Several shots fired from a passing car on the pavement in Verdant Bluffs. Two young men are down on the sidewalk, one is not moving and bleeding a lot, the other holds his leg. The car fled."
+                },
+                "hu": {
+                    "title": "Autóból leadott lövések, két sérült",
+                    "description": "Verdant Bluffs járdája mellett egy elhaladó autóból több lövést adtak le. Két fiatal férfi fekszik a járdán; egyikük nem mozdul, erősen vérzik, a másik a lábát fogja. Az autó elmenekült."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 175,
+            "pos": [1654.2, -2061.26, 21.51],
+            "rot": 151,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 3 }
+            ],
+            "state": { "bloodVolume": 3600, "consciousness": "unconscious" }
+        },
+        {
+            "id": "p2",
+            "skin": 174,
+            "pos": [1652.9, -2063.98, 21.51],
+            "rot": 23,
+            "anim": "injured",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

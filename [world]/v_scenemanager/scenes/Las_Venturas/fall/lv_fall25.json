@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "lv_fall25",
+    "category": "fall",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2034.5, 2536, 13.43],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Skateboarder crashed at speed",
+                    "description": "A skateboarder lost control at speed and slid along the asphalt outside a souvenir shop near the Julius Thruway North. His wrist is deformed and he has deep grazes."
+                },
+                "hu": {
+                    "title": "A gördeszkás nagy sebességnél bukott",
+                    "description": "Egy gördeszkás nagy sebességnél elvesztette az uralmát a deszka felett, és végigcsúszott az aszfalton a Julius Thruway North közelében, egy szuvenírbolt előtt. A csuklója deformálódott, és mély horzsolásai vannak."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 180,
+            "pos": [2034.5, 2536, 13.43],
+            "rot": 54,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 },
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

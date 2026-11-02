@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "sf_drowning2",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2863.25, 515, 3.54],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk man fell into the bay",
+                    "description": "A drunk man fell into the water and was pulled out by friends. He is now at the water's edge in Palisades, coughing up water and shivering."
+                },
+                "hu": {
+                    "title": "Részeg férfi esett az öbölbe",
+                    "description": "Egy részeg férfi a vízbe esett, a barátai húzták ki. Most Palisades vízpartján van, vizet köhög fel és reszket."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 72,
+            "pos": [-2863.25, 515, 3.54],
+            "rot": 339,
+            "anim": "cough",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 },
+                { "type": "alcohol", "severity": 1 }
+            ],
+            "state": { "spo2": 87 }
+        }
+    ]
+}

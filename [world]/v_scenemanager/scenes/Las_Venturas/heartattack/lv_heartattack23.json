@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_heartattack23",
+    "category": "heartattack",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1654.75, 1180.289, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Not breathing, face down",
+                    "description": "A woman collapsed face down on the sidewalk outside a souvenir shop. The shop owner says she is not breathing and her face is turning grey."
+                },
+                "hu": {
+                    "title": "Nem lélegzik, arccal lefelé fekszik",
+                    "description": "Egy nő arccal lefelé összeesett egy ajándékbolt előtt a járdán. A bolt tulajdonosa szerint nem lélegzik, az arca pedig szürkül."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 31,
+            "pos": [1654.75, 1180.289, 10.82],
+            "rot": 31,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+        }
+    ]
+}

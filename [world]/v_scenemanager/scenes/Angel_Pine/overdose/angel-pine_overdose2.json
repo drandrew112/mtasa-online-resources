@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "angel-pine_overdose2",
+    "category": "overdose",
+    "location": "Whetstone",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2064.17, -2641.83, 55.99],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Party pill, overheating",
+                    "description": "A young man next to the country road near Angel Pine took a pill at a party and is now shaking, sweating and clenching his jaw. His heart is racing and he says he is dying."
+                },
+                "hu": {
+                    "title": "Bulitabletta, túlmelegedés",
+                    "description": "Egy fiatal férfi Angel Pine közelében, az országút mellett bevett egy tablettát egy buliban, most pedig remeg, izzad, és összeszorítja az állkapcsát. A szíve hevesen ver, és azt mondja, hogy meg fog halni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 136,
+            "pos": [-2064.17, -2641.83, 55.99],
+            "rot": 40,
+            "anim": "tired",
+            "role": "patient",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 165, "heartRate": 148 }
+        }
+    ]
+}

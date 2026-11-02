@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia17",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2477.25, 2046.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Sweaty and confused",
+                    "description": "A woman outside a casino entrance on Old Venturas Strip is sweating heavily and seems confused. She told the caller she \"needs sugar\" and then stopped making sense."
+                },
+                "hu": {
+                    "title": "Izzadt és zavart",
+                    "description": "Egy nő erősen izzad és zavartnak tűnik az Old Venturas Strip egyik kaszinóbejárata előtt. Azt mondta a bejelentőnek, hogy „cukorra van szüksége”, majd összefüggéstelenül kezdett beszélni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2477.25, 2046.13, 10.82],
+            "rot": 359,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 45, "consciousness": "confused" }
+        }
+    ]
+}

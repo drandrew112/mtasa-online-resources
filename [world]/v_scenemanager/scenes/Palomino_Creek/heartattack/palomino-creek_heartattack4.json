@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "palomino-creek_heartattack4",
+    "category": "heartattack",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2309, -20.875, 26.484],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Found down, no pulse",
+                    "description": "A neighbour found a woman lying motionless next to the road with her dog standing guard. No breathing, no pulse anyone can find."
+                },
+                "hu": {
+                    "title": "A földön találták, nincs pulzusa",
+                    "description": "Egy szomszéd egy mozdulatlanul fekvő nőt talált az út mellett, mellette a kutyája őrködött. Nem lélegzik, pulzust sem sikerül tapintani."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 231,
+            "pos": [2309, -20.875, 26.484],
+            "rot": 181,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

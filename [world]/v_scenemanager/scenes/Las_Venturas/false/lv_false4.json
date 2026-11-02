@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_false4",
+    "category": "false",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1499, 886, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man asleep on the ground",
+                    "description": "A passer-by reports a man who collapsed on the sand near the LVA Freight Depot. He is sitting up now, says he was only sleeping and refuses help."
+                },
+                "hu": {
+                    "title": "Földön fekvő férfi azt állítja, hogy aludt",
+                    "description": "Egy járókelő egy férfit jelentett, aki összeesett az LVA Freight Depot közelében, a homokon. Most már felült, azt mondja, csak aludt, és visszautasítja a segítséget."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 230,
+            "pos": [1499, 886, 10.82],
+            "rot": 228,
+            "anim": "sit",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

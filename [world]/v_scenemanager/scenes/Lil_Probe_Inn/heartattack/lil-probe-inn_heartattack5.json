@@ -1,0 +1,51 @@
+{
+    "format": 2,
+    "name": "lil-probe-inn_heartattack5",
+    "category": "heartattack",
+    "location": "Lil Probe Inn",
+    "enabled": true,
+    "weight": 1,
+    "center": [-57.621, 1321.797, 11.583],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Unresponsive, grey skin",
+                    "description": "A woman was found slumped by the road outside the inn. Grey, cold, barely breathing."
+                },
+                "hu": {
+                    "title": "Eszméletlen, szürkés bőr",
+                    "description": "Egy nőt a fogadó előtt, az út mellett összeroskadva találtak. Bőre szürkés és hideg, alig lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 76,
+            "pos": [-57.621, 1321.797, 11.583],
+            "rot": 104,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "spo2": 86,
+                "systolic": 75,
+                "diastolic": 45,
+                "heartRate": 38,
+                "consciousness": "unconscious",
+                "rhythm": "SINUS_BRADY"
+            }
+        }
+    ]
+}

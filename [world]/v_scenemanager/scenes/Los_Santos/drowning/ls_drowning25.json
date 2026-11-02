@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_drowning25",
+    "category": "drowning",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [874, -1882, 4.48],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Teenager pulled from the water",
+                    "description": "A teenage boy was found floating in the sea and brought onto the beach at Verona Beach. He is breathing weakly, coughing up water, and very pale."
+                },
+                "hu": {
+                    "title": "Tinédzser fiút húztak ki a vízből",
+                    "description": "Egy tinédzser fiút lebegve találtak a tengerben, majd Verona Beach homokos partjára vitték. Gyengén lélegzik, vizet köhög fel, és nagyon sápadt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [874, -1882, 4.48],
+            "rot": 177,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 2 }
+            ],
+            "state": { "spo2": 78, "consciousness": "dazed" }
+        }
+    ]
+}

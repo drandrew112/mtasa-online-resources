@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "blueberry_stroke3",
+    "category": "stroke",
+    "location": "Red County",
+    "enabled": true,
+    "weight": 1,
+    "center": [408.21, -313.01, 10.61],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Stopped talking mid-sentence",
+                    "description": "A woman chatting with a friend by the road next to a farm near Blueberry stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp."
+                },
+                "hu": {
+                    "title": "Mondat közben elhallgatott",
+                    "description": "Egy nő a barátjával beszélgetett egy Blueberry közelében lévő farm melletti úton, amikor mondat közben elhallgatott, és maga elé meredt. Most már csak egyes szavakat tud kimondani, a jobb keze pedig ernyedt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 225,
+            "pos": [408.21, -313.01, 10.61],
+            "rot": 347,
+            "anim": "lean",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

@@ -1,0 +1,59 @@
+{
+    "format": 2,
+    "name": "lv_shooting24",
+    "category": "shooting",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2420, 689.88, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Gang fight, two wounded",
+                    "description": "A fight between two groups ended in gunfire outside a souvenir shop in Rockshore West. One young man is lying on the ground, another is crouching behind a bin with a bleeding hand."
+                },
+                "hu": {
+                    "title": "Bandaharc, két sebesült",
+                    "description": "Két csoport verekedése lövöldözésbe torkollott Rockshore West egyik ajándékboltja előtt. Egy fiatal férfi a földön fekszik, egy másik pedig egy kuka mögött guggol, vérző kézzel."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 293,
+            "pos": [2420, 689.88, 10.82],
+            "rot": 258,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 },
+                { "type": "fracture", "severity": 1 }
+            ],
+            "state": { "bloodVolume": 4073 }
+        },
+        {
+            "id": "p2",
+            "skin": 105,
+            "pos": [2420, 692.08, 10.92],
+            "rot": 185,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 1 }
+            ],
+            "state": {}
+        }
+    ]
+}

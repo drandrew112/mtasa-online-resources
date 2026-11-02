@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "regular-tom_heartattack2",
+    "category": "heartattack",
+    "location": "Regular Tom",
+    "enabled": true,
+    "weight": 1,
+    "center": [-335.468, 1742.175, 42.969],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest pain, short of breath",
+                    "description": "A woman carrying water jugs home sat down by the road with chest pain and shortness of breath."
+                },
+                "hu": {
+                    "title": "Mellkasi fájdalom, légszomj",
+                    "description": "Egy nő vízzel teli kannákat cipelt hazafelé, amikor mellkasi fájdalom és légszomj miatt leült az út mellett."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-335.468, 1742.175, 42.969],
+            "rot": 341,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 94,
+                "systolic": 160,
+                "diastolic": 95,
+                "heartRate": 108,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

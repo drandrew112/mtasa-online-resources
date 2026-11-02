@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypoglycemia14",
+    "category": "hypoglycemia",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2387, -165, 35.31],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Jogger shaking and pale",
+                    "description": "A jogger on the grass in Garcia sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+                },
+                "hu": {
+                    "title": "Reszkető, sápadt kocogó",
+                    "description": "Garcia füves területén egy kocogó nő hirtelen leült; reszket, izzad és sápadt. Azt mondja, reggel beadta az inzulinját, de kihagyta a reggelit."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 69,
+            "pos": [-2387, -165, 35.31],
+            "rot": 92,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 41, "heartRate": 114 }
+        }
+    ]
+}

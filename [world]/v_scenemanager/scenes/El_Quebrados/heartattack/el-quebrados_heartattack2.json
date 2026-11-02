@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "el-quebrados_heartattack2",
+    "category": "heartattack",
+    "location": "El Quebrados",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1403.375, 2594.45, 55.842],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed, no pulse",
+                    "description": "A woman leaving the church collapsed by the road. Not breathing, no pulse. The priest has started praying."
+                },
+                "hu": {
+                    "title": "Összeesett, nincs pulzusa",
+                    "description": "Egy nő összeesett az út mellett, miközben kilépett a templomból. Nem lélegzik, nincs pulzusa. A pap imádkozni kezdett."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 13,
+            "pos": [-1403.375, 2594.45, 55.842],
+            "rot": 110,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

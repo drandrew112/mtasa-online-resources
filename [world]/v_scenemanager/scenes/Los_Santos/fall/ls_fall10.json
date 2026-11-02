@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_fall10",
+    "category": "fall",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1829, -1782.25, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Teen fell from a wall",
+                    "description": "A teenager climbing a wall on the pavement in Idlewood fell about three metres onto her side. She is crying with pain in her leg and cannot put weight on it."
+                },
+                "hu": {
+                    "title": "Tinédzser lezuhant egy falról",
+                    "description": "Egy tinédzser lány megpróbált felmászni egy Idlewood járdáján álló falra, de körülbelül három métert zuhant az oldalára. Sírdogál a lábfájdalomtól, és nem tud ráállni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 139,
+            "pos": [1829, -1782.25, 13.55],
+            "rot": 292,
+            "anim": "injured",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "leafy-hollow_overdose1",
+    "category": "overdose",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-860, -1780, 87.06],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Needle still in his arm",
+                    "description": "A man is lying in a clearing in Leafy Hollow with a needle still in his arm. He groans when shaken but his breathing is slow and his lips are grey."
+                },
+                "hu": {
+                    "title": "Tű maradt a karjában",
+                    "description": "Egy férfi egy Leafy Hollow-i tisztáson fekszik, karjában még mindig egy tűvel. Megrázásra felnyög, de lassan lélegzik, ajkai szürkék."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 161,
+            "pos": [-860, -1780, 87.06],
+            "rot": 350,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "opioid", "severity": 2 }
+            ],
+            "state": { "spo2": 87, "consciousness": "dazed" }
+        }
+    ]
+}

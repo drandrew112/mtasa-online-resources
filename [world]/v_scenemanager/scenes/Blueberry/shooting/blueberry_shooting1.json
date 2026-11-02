@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "blueberry_shooting1",
+    "category": "shooting",
+    "location": "Blueberry",
+    "enabled": true,
+    "weight": 1,
+    "center": [210, -370, 6.16],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Shot in the back",
+                    "description": "A man was shot in the back while running away on a grassy patch in Blueberry. He is lying on his stomach and says he cannot feel his legs."
+                },
+                "hu": {
+                    "title": "Hátba lőtték",
+                    "description": "Egy férfit hátba lőttek, miközben egy füves területen menekült Blueberryben. Hason fekszik, és azt mondja, nem érzi a lábait."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [210, -370, 6.16],
+            "rot": 343,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [
+                { "type": "gunshot", "severity": 2 }
+            ],
+            "state": { "bloodVolume": 4304, "pain": 33 }
+        }
+    ]
+}

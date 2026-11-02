@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_stroke20",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1474.82, -284.4, 9.85],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cannot lift her arm",
+                    "description": "An elderly woman on the airport access road dropped her shopping bags and cannot lift her left arm anymore. She is confused and keeps asking the same question over and over."
+                },
+                "hu": {
+                    "title": "Nem tudja felemelni a karját",
+                    "description": "A repülőtérre vezető úton egy idős nő elejtette a bevásárlószatyrait, és már nem tudja felemelni a bal karját. Zavart, és újra meg újra ugyanazt kérdezi."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 130,
+            "pos": [-1474.82, -284.4, 9.85],
+            "rot": 136,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 175, "consciousness": "confused" }
+        }
+    ]
+}

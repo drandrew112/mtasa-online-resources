@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_diabetes14",
+    "category": "diabetes",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2035.38, 1142.68, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Glucose meter just says HIGH",
+                    "description": "A woman on the sidewalk near the Pink Swan called because her glucose meter only shows \"HIGH\". She feels dizzy, keeps urinating and her vision is blurry. She is sitting down and alert."
+                },
+                "hu": {
+                    "title": "A vércukormérő csak annyit mutat: HIGH",
+                    "description": "Egy nő a Pink Swan közelében lévő járdán segítséget hívott, mert a vércukormérője csak a „HIGH” feliratot mutatja. Szédül, gyakran vizel, és homályosan lát. Ébren van, és ül."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [2035.38, 1142.68, 10.82],
+            "rot": 295,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "bloodVolume": 4371, "glucose": 580 }
+        }
+    ]
+}

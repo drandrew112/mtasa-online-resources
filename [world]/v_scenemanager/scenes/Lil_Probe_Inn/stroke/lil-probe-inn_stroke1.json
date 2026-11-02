@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lil-probe-inn_stroke1",
+    "category": "stroke",
+    "location": "Bone County",
+    "enabled": true,
+    "weight": 1,
+    "center": [-129.62, 1270.65, 18.9],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Stopped talking mid-sentence",
+                    "description": "A woman chatting with a friend on open scrubland near the Lil' Probe Inn stopped talking mid-sentence and stared into nothing. Now she can only say single words and her right hand is limp."
+                },
+                "hu": {
+                    "title": "Mondat közben elhallgatott",
+                    "description": "Egy nő a Lil' Probe Inn közelében, a nyílt bozótos területen beszélgetett a barátjával, amikor mondat közben elhallgatott, és maga elé meredt. Most csak egyes szavakat tud kimondani, jobb keze ernyedt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 151,
+            "pos": [-129.62, 1270.65, 18.9],
+            "rot": 283,
+            "anim": "lean",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 189 }
+        }
+    ]
+}

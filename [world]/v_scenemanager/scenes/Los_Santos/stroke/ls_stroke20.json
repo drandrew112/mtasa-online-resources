@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_stroke20",
+    "category": "stroke",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [754, -1882, 2.51],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed, one side limp",
+                    "description": "A passer-by found an elderly woman on the ground at the water's edge in Verona Beach. She is snoring loudly and does not wake up, and her right arm and leg flop when lifted. Nobody saw her fall."
+                },
+                "hu": {
+                    "title": "Összeesett, egyik oldala ernyedt",
+                    "description": "Egy járókelő egy idős nőt talált a földön, Verona Beach vízpartján. Hangosan horkol, nem ébreszthető, és jobb karja, valamint lába ernyedten lóg, ha felemelik. Senki sem látta elesni."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 54,
+            "pos": [754, -1882, 2.51],
+            "rot": 323,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 3 }
+            ],
+            "state": { "systolic": 214, "diastolic": 120, "consciousness": "unconscious" }
+        }
+    ]
+}

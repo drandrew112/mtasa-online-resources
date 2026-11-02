@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_breathing3",
+    "category": "breathing",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1968.62, 831.25, 45.18],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Old man coughing, fever",
+                    "description": "An old man at a bus stop in Downtown has been coughing up green phlegm for a week, has a fever and is now very short of breath."
+                },
+                "hu": {
+                    "title": "Idős férfi köhög és lázas",
+                    "description": "Egy idős férfi Downtown egyik buszmegállójában egy hete zöld váladékot köhög fel, lázas, mostanra pedig nagyon fullad."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 168,
+            "pos": [-1968.62, 831.25, 45.18],
+            "rot": 40,
+            "anim": "cough",
+            "role": "patient",
+            "injuries": [
+                { "type": "copd", "severity": 2 }
+            ],
+            "state": { "spo2": 86 }
+        }
+    ]
+}

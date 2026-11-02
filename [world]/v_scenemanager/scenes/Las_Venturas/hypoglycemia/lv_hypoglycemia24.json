@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia24",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1910.74, 2638.57, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Acting strange, sweaty",
+                    "description": "A woman on the sidewalk in Prickle Pine is wandering in circles, sweaty and pale, and does not know what day it is. Her friend says she is diabetic."
+                },
+                "hu": {
+                    "title": "Furcsán viselkedik, izzad",
+                    "description": "Egy nő Prickle Pine járdáján körbe-körbe bolyong, izzadt és sápadt, és nem tudja, milyen nap van. A barátja szerint cukorbeteg."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 169,
+            "pos": [1910.74, 2638.57, 10.82],
+            "rot": 344,
+            "anim": "drunk",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 43, "heartRate": 110, "consciousness": "confused" }
+        }
+    ]
+}

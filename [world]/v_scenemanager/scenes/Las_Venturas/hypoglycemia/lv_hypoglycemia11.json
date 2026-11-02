@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia11",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2720, 867.25, 10.9],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Diabetic not waking up",
+                    "description": "A man outside a souvenir shop in Rockshore East cannot be woken up. His girlfriend says he took his insulin but threw up his breakfast this morning."
+                },
+                "hu": {
+                    "title": "A cukorbeteg nem ébreszthető",
+                    "description": "Egy férfit nem lehet felébreszteni a Rockshore East egyik ajándékboltja előtt. A barátnője szerint beadta az inzulinját, de ma reggel kihányta a reggelijét."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 47,
+            "pos": [2720, 867.25, 10.9],
+            "rot": 265,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 23, "heartRate": 104, "consciousness": "unconscious" }
+        }
+    ]
+}

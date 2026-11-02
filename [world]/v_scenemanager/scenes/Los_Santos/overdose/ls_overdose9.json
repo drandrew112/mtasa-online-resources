@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "ls_overdose9",
+    "category": "overdose",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [747.75, -1728.05, 9.5],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Agitated, chest pain, sweating",
+                    "description": "A man on the sidewalk in Marina is pacing, sweating heavily and clutching his chest. He admits using cocaine at a party. His heart is racing and he is very paranoid."
+                },
+                "hu": {
+                    "title": "Nyugtalan, mellkasi fájdalom, izzadás",
+                    "description": "Egy férfi Marina járdáján fel-alá járkál, erősen izzad, és a mellkasát szorítja. Bevallja, hogy egy bulin kokaint fogyasztott. Hevesen ver a szíve, és nagyon paranoid."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [747.75, -1728.05, 9.5],
+            "rot": 217,
+            "anim": "hold_side",
+            "role": "patient",
+            "injuries": [
+                { "type": "stimulant", "severity": 2 }
+            ],
+            "state": { "systolic": 192, "diastolic": 112, "heartRate": 158 }
+        }
+    ]
+}

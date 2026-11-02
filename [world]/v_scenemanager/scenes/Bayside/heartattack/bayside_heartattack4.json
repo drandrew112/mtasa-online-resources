@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "bayside_heartattack4",
+    "category": "heartattack",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2654.653, 2478.295, 35.33],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Dropped face down",
+                    "description": "A fisherman unloading his boat walked up to the road and dropped face down. Not breathing."
+                },
+                "hu": {
+                    "title": "Arccal előre esett össze",
+                    "description": "Egy halász kirakta a csónakjából a felszerelést, majd felment az útra és arccal előre összeesett. Nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 128,
+            "pos": [-2654.653, 2478.295, 35.33],
+            "rot": 133,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PULSELESS_VT" }
+        }
+    ]
+}

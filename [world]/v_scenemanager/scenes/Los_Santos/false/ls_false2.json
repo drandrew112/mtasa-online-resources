@@ -1,0 +1,33 @@
+{
+    "format": 2,
+    "name": "ls_false2",
+    "category": "false",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 0.3,
+    "center": [1255.273, -2216.925, 18.264],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Screaming for help",
+                    "description": "Someone is screaming for help. Caller hung up."
+                },
+                "hu": {
+                    "title": "Segítségért kiált",
+                    "description": "Valaki segítségért kiabál. A bejelentő letette a telefont."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": []
+}

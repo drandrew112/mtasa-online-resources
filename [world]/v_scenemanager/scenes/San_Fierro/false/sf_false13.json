@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_false13",
+    "category": "false",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1974.54, -1092.45, 32.02],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk man swaying",
+                    "description": "A caller says a man at the side of the road in Foster Valley is swaying and might fall over. He is drunk but talking, walking and says he is fine."
+                },
+                "hu": {
+                    "title": "Tántorgó részeg férfi",
+                    "description": "Egy bejelentő szerint Foster Valley útja mellett egy férfi tántorog, és úgy tűnik, mindjárt elesik. Részeg, de beszél és jár, és azt mondja, jól van."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [-1974.54, -1092.45, 32.02],
+            "rot": 94,
+            "anim": "drunk",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "ls_hypertension1",
+    "category": "hypertension",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1724.121, -1873.499, 13.564],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Hypertension",
+                    "description": "The patient is experiencing a sudden onset of dizziness, a severe throbbing headache, and palpitations while waiting for her train."
+                },
+                "hu": {
+                    "title": "Magas vérnyomás",
+                    "description": "A beteg hirtelen szédülni kezdett, erős, lüktető fejfájása és szívdobogása lett, miközben a vonatra várt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 11,
+            "pos": [1724.911, -1872.52, 13.564],
+            "rot": 14.6,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 190, "diastolic": 130 }
+        }
+    ]
+}

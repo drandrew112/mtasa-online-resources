@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia8",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1000.38, 1483.13, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cannot be woken, snoring",
+                    "description": "A woman is lying face down outside a wedding chapel in Blackfield and cannot be woken. She is snoring and soaked in sweat. A glucose meter fell out of her bag."
+                },
+                "hu": {
+                    "title": "Nem ébreszthető, horkol",
+                    "description": "Egy nő arccal lefelé fekszik a Blackfield egyik esküvői kápolnája előtt, és nem lehet felébreszteni. Horkol, és csurom víz az izzadságtól. Egy vércukormérő esett ki a táskájából."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 63,
+            "pos": [1000.38, 1483.13, 10.82],
+            "rot": 297,
+            "anim": "ko_front",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 22, "heartRate": 106, "consciousness": "unconscious" }
+        }
+    ]
+}

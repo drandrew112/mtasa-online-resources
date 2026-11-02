@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "bayside_hypertension4",
+    "category": "hypertension",
+    "location": "Bayside",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2688.62, 2212.77, 56.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Anxious, racing heart",
+                    "description": "A woman at the side of the road in Bayside is anxious, sweating and says her heart is pounding. She just had a heated argument and is breathing quickly."
+                },
+                "hu": {
+                    "title": "Szorongás, heves szívdobogás",
+                    "description": "Egy nő Bayside-ban, az út szélén szorong, izzad, és azt mondja, hevesen ver a szíve. Éppen most veszekedett valakivel, és gyorsan lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 88,
+            "pos": [-2688.62, 2212.77, 56.82],
+            "rot": 303,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "systolic": 184,
+                "diastolic": 109,
+                "heartRate": 114,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

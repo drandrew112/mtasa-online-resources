@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "the-farm_hypoglycemia2",
+    "category": "hypoglycemia",
+    "location": "The Farm",
+    "enabled": true,
+    "weight": 1,
+    "center": [-1200.12, -1088.77, 129.14],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Jogger shaking and pale",
+                    "description": "A jogger on the road shoulder in The Farm sat down suddenly, shaking, sweating and pale. She says she injected insulin this morning and skipped breakfast."
+                },
+                "hu": {
+                    "title": "Reszkető, sápadt kocogó",
+                    "description": "The Farm útjának padkáján egy kocogó nő hirtelen leült; reszket, izzad és sápadt. Azt mondja, reggel beadta az inzulinját, de kihagyta a reggelit."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 56,
+            "pos": [-1200.12, -1088.77, 129.14],
+            "rot": 60,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 42, "heartRate": 115 }
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "las-barrancas_overdose2",
+    "category": "overdose",
+    "location": "Tierra Robada",
+    "enabled": true,
+    "weight": 1,
+    "center": [-940, 1430, 32.71],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Moonshine, cannot stand",
+                    "description": "A man on the dusty ground near Las Barrancas drank a jar of homemade moonshine. He is vomiting, cannot stand and complains that his vision is blurry."
+                },
+                "hu": {
+                    "title": "Házi párlatot ivott, nem tud megállni a lábán",
+                    "description": "Egy férfi házi párlatot ivott egy üvegből Las Barrancas közelében, a poros földön. Hány, nem tud megállni a lábán, és homályos látásra panaszkodik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 206,
+            "pos": [-940, 1430, 32.71],
+            "rot": 10,
+            "anim": "vomit",
+            "role": "patient",
+            "injuries": [
+                { "type": "alcohol", "severity": 3 }
+            ],
+            "state": { "consciousness": "dazed" }
+        }
+    ]
+}

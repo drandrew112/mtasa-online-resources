@@ -1,0 +1,50 @@
+{
+    "format": 2,
+    "name": "ls_hypertension15",
+    "category": "hypertension",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2434, -1822, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pounding heart after workout",
+                    "description": "A man doing an outdoor workout feels his heart pounding out of his chest and his head throbbing. His gym bag is full of pre-workout powder."
+                },
+                "hu": {
+                    "title": "Edzés utáni heves szívdobogás",
+                    "description": "Egy férfi szabadtéri edzés közben úgy érzi, kiugrik a szíve a mellkasából, és lüktet a feje. Az edzőtáskája tele van edzés előtti teljesítményfokozó porral."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 19,
+            "pos": [2434, -1822, 13.547],
+            "rot": 0,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "systolic": 182,
+                "diastolic": 106,
+                "heartRate": 112,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

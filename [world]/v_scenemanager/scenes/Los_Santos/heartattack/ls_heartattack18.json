@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "ls_heartattack18",
+    "category": "heartattack",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1678.875, -1290.875, 14.039],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Man down, CPR needed",
+                    "description": "A tourist in a Hawaiian shirt collapsed in the middle of taking a selfie. His wife is screaming for help. He is blue around the lips and not breathing."
+                },
+                "hu": {
+                    "title": "Férfi a földön, újraélesztés szükséges",
+                    "description": "Egy hawaii inges turista összeesett, miközben szelfit készített. A felesége segítségért kiabál. A férfi ajkai kékek, és nem lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 7,
+            "pos": [1678.875, -1290.875, 14.039],
+            "rot": 1,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

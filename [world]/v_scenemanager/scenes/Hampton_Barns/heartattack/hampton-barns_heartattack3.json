@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "hampton-barns_heartattack3",
+    "category": "heartattack",
+    "location": "Hampton Barns",
+    "enabled": true,
+    "weight": 1,
+    "center": [646.662, 318.287, 20.225],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Nausea and weakness",
+                    "description": "A farmer's wife sat down by the road with nausea, cold sweat and a strange pressure between her shoulders. She blames the heat."
+                },
+                "hu": {
+                    "title": "Hányinger és gyengeség",
+                    "description": "Egy gazda felesége leült az út mellé hányingerrel, hideg verejtékkel és furcsa, a lapockái közötti nyomásérzéssel. A hőséget okolja."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 211,
+            "pos": [646.662, 318.287, 20.225],
+            "rot": 26,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 30,
+                "spo2": 95,
+                "systolic": 145,
+                "diastolic": 90,
+                "heartRate": 98,
+                "consciousness": "stable",
+                "rhythm": "SINUS"
+            }
+        }
+    ]
+}

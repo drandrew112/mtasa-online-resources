@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_stroke10",
+    "category": "stroke",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2743.76, 1028.09, 52.74],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell, one leg will not move",
+                    "description": "An old man fell in front of an apartment block in Paradiso and cannot get up because his right leg will not move. He is awake but his speech is thick and slow."
+                },
+                "hu": {
+                    "title": "Elesett, nem tudja mozgatni az egyik lábát",
+                    "description": "Paradiso egyik lakóháza előtt egy idős férfi elesett, és nem tud felkelni, mert a jobb lábát nem tudja mozgatni. Ébren van, de beszéde elmosódott és lassú."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [-2743.76, 1028.09, 52.74],
+            "rot": 69,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 191 }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "fort-carson_diabetes2",
+    "category": "diabetes",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-337.79, 1106.44, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Student, fruity breath",
+                    "description": "A student on the sidewalk in Fort Carson has stomach pain and her breath smells like nail polish remover. Her friends say she skipped her insulin all weekend at the county fair."
+                },
+                "hu": {
+                    "title": "Diák, gyümölcsös lehelet",
+                    "description": "Egy Fort Carsonban, a járdán álló diáklánynak fáj a hasa, és a lehelete körömlakklemosóra emlékeztető szagú. A barátai szerint a megyei vásár teljes hétvégéjén kihagyta az inzulint."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 192,
+            "pos": [-337.79, 1106.44, 19.74],
+            "rot": 137,
+            "anim": "tired",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 511, "heartRate": 113 }
+        }
+    ]
+}

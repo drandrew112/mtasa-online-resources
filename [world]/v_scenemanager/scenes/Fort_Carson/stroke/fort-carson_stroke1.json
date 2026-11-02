@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "fort-carson_stroke1",
+    "category": "stroke",
+    "location": "Fort Carson",
+    "enabled": true,
+    "weight": 1,
+    "center": [-235.32, 1190.88, 19.74],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fell, one leg will not move",
+                    "description": "An old man fell on the main street in Fort Carson and cannot get up because his right leg will not move. He is awake but his speech is thick and slow."
+                },
+                "hu": {
+                    "title": "Elesett, az egyik lába nem mozog",
+                    "description": "Egy idős férfi elesett Fort Carson főutcáján, és nem tud felkelni, mert a jobb lába nem mozog. Ébren van, de a beszéde elmosódott és lassú."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 162,
+            "pos": [-235.32, 1190.88, 19.74],
+            "rot": 12,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 188 }
+        }
+    ]
+}

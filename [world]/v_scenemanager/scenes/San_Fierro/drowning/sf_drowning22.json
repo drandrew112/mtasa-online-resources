@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "sf_drowning22",
+    "category": "drowning",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2505.12, 1387.25, 7.19],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cramp in the water",
+                    "description": "A swimmer got a cramp and swallowed water before she was helped out. She is sitting on the sidewalk by the waterfront in Esplanade North, anxious, coughing a little and breathing fast."
+                },
+                "hu": {
+                    "title": "Görcs a vízben",
+                    "description": "Egy úszónőnek begörcsölt az izma, és vizet nyelt, mielőtt kisegítették. Esplanade North vízparti járdáján ül, szorong, kissé köhög, és gyorsan lélegzik."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 40,
+            "pos": [-2505.12, 1387.25, 7.19],
+            "rot": 198,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "suffocation", "severity": 1 }
+            ],
+            "state": { "spo2": 94, "heartRate": 108 }
+        }
+    ]
+}

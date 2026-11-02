@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_airport8",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1639, 1686, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Overdose outside the terminal",
+                    "description": "Security found a man lying outside the terminal at Las Venturas Airport, barely breathing, with pinpoint pupils. An empty pill bottle is next to him."
+                },
+                "hu": {
+                    "title": "Túladagolás a terminál előtt",
+                    "description": "A biztonsági szolgálat egy férfit talált a Las Venturas-i repülőtér terminálja előtt. Alig lélegzik, a pupillái tűhegynyi méretűek. Mellette egy üres gyógyszeres üveg van."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 25,
+            "pos": [1639, 1686, 10.82],
+            "rot": 30,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "opioid", "severity": 3 }
+            ],
+            "state": { "spo2": 72, "consciousness": "unconscious" }
+        }
+    ]
+}

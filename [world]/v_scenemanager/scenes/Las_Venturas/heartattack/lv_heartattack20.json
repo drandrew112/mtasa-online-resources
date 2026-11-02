@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_heartattack20",
+    "category": "heartattack",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2420.25, 2263.101, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed, gasping",
+                    "description": "A man in a sweat-soaked suit collapsed on the sidewalk in the midday heat. Only occasional gasps, nobody can find a pulse."
+                },
+                "hu": {
+                    "title": "Összeesett, kapkodja a levegőt",
+                    "description": "Egy csurom izzadt öltönyös férfi a déli hőségben összeesett a járdán. Csak néha vesz egy-egy agonális levegőt, pulzusát senki sem találja."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 170,
+            "pos": [2420.25, 2263.101, 10.82],
+            "rot": 114,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "PEA" }
+        }
+    ]
+}

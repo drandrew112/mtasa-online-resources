@@ -1,0 +1,46 @@
+{
+    "format": 2,
+    "name": "lv_stroke14",
+    "category": "stroke",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [2697.25, 1306.13, 13.57],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Face drooping, slurred speech",
+                    "description": "A man outside a souvenir shop in Las Venturas suddenly started slurring his words and the right side of his face is drooping. His wife says he was completely fine twenty minutes ago."
+                },
+                "hu": {
+                    "title": "Féloldali arcgyengeség, elmosódott beszéd",
+                    "description": "Egy férfi Las Venturas egyik ajándékboltja előtt hirtelen elkezdett elmosódottan beszélni, és arca jobb oldala lebiggyedt. A felesége szerint húsz perccel ezelőtt még teljesen jól volt."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 43,
+            "pos": [2697.25, 1306.13, 13.57],
+            "rot": 347,
+            "anim": "sit",
+            "role": "patient",
+            "injuries": [
+                { "type": "stroke", "severity": 2 }
+            ],
+            "state": { "systolic": 192 }
+        }
+    ]
+}

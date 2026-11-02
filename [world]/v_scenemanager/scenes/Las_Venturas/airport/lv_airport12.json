@@ -1,0 +1,47 @@
+{
+    "format": 2,
+    "name": "lv_airport12",
+    "category": "airport",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1579, 1546, 10.82],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Drunk passenger fell on the stairs",
+                    "description": "A drunk passenger fell down the aircraft stairs on the apron at Las Venturas Airport and hit his head. He is confused, bleeding and aggressive with the crew."
+                },
+                "hu": {
+                    "title": "Részeg utas leesett a lépcsőn",
+                    "description": "Egy ittas utas leesett a repülőgép lépcsőjén a Las Venturas-i repülőtér előterében, és beütötte a fejét. Zavart, vérzik, és agresszívan viselkedik a személyzettel."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 108,
+            "pos": [1579, 1546, 10.82],
+            "rot": 251,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "head_injury", "severity": 2 },
+                { "type": "alcohol", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" }
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lil-probe-inn_heartattack1",
+    "category": "heartattack",
+    "location": "Lil Probe Inn",
+    "enabled": true,
+    "weight": 1,
+    "center": [-65.641, 1401.186, 9.662],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Collapsed, not breathing",
+                    "description": "A UFO enthusiast in a tinfoil hat collapsed outside the Lil' Probe Inn. Not breathing. The other regulars say he \"was taken\"."
+                },
+                "hu": {
+                    "title": "Összeesett, nem lélegzik",
+                    "description": "Egy alufólia-sapkát viselő UFO-rajongó összeesett a Lil' Probe Inn előtt. Nem lélegzik. A többi törzsvendég szerint „elvitték”."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 26,
+            "pos": [-65.641, 1401.186, 9.662],
+            "rot": 247,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "consciousness": "clinical_death", "rhythm": "VF" }
+        }
+    ]
+}

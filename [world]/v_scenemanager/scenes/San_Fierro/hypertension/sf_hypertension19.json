@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypertension19",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2816.7, 121.125, 7.18],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Throbbing headache",
+                    "description": "A hairdresser on a cigarette break says a throbbing headache has been building for hours and now she can barely see straight."
+                },
+                "hu": {
+                    "title": "Lüktető fejfájás",
+                    "description": "Egy fodrász cigarettaszünetben elmondja, hogy órák óta erősödik a lüktető fejfájása, és most már alig lát rendesen."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 10,
+            "pos": [-2816.7, 121.125, 7.18],
+            "rot": 0,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 176, "diastolic": 102, "heartRate": 92, "consciousness": "stable" }
+        }
+    ]
+}

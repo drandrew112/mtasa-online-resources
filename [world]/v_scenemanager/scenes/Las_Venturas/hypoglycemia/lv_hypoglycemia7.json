@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "lv_hypoglycemia7",
+    "category": "hypoglycemia",
+    "location": "Las Venturas",
+    "enabled": true,
+    "weight": 1,
+    "center": [1558.06, 1961.6, 10.99],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Seizure, then unresponsive",
+                    "description": "An old man next to the road in Redsands West had a short fit and is now not responding. His wife says he takes insulin and has eaten nothing since lunch."
+                },
+                "hu": {
+                    "title": "Roham után nem reagál",
+                    "description": "Egy idős férfinak rövid rohama volt az út mellett, Redsands Westben, most pedig nem reagál. A felesége szerint inzulint használ, és ebéd óta semmit sem evett."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 220,
+            "pos": [1558.06, 1961.6, 10.99],
+            "rot": 354,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [],
+            "state": { "glucose": 18, "consciousness": "unconscious" }
+        }
+    ]
+}

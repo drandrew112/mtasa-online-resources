@@ -1,0 +1,69 @@
+{
+    "format": 2,
+    "name": "ls_motorcycle4",
+    "category": "motorcycle",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2524, -1899.37, 13.55],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 1,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Dirt bike crash",
+                    "description": "A dirt bike rider crashed outside a shop in Willowfield after a jump. He is lying next to the road, complaining of back pain and cannot feel his feet well."
+                },
+                "hu": {
+                    "title": "Terepmotoros baleset",
+                    "description": "Egy terepmotoros elbukott egy ugrás után Willowfield egyik üzlete előtt. Az út mellett fekszik, hátfájásra panaszkodik, és alig érzi a lábfejét."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [
+        {
+            "id": "v1",
+            "model": 468,
+            "pos": [2525, -1897.37, 13.1],
+            "rot": [0, 0, 305],
+            "frozen": false,
+            "locked": false,
+            "engine": false,
+            "lightsOn": false,
+            "health": 420,
+            "colors": [95, 60, 35, 245, 245, 245, 0, 0, 0, 0, 0, 0],
+            "paintjob": 3,
+            "plate": "LS51 229",
+            "variant": [255, 255],
+            "upgrades": [],
+            "doors": [2, 0, 2, 3, 0, 0],
+            "panels": [3, 2, 2, 1, 2, 3, 1],
+            "lights": [1, 1, 0, 0],
+            "wheels": [0, 0, 0, 0],
+            "tow": true
+        }
+    ],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 28,
+            "pos": [2524, -1899.37, 13.55],
+            "rot": 97,
+            "anim": "ko_back",
+            "role": "patient",
+            "injuries": [
+                { "type": "fracture", "severity": 3 },
+                { "type": "head_injury", "severity": 1 }
+            ],
+            "state": { "pain": 30 }
+        }
+    ]
+}

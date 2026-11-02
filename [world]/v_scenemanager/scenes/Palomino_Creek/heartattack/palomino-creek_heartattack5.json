@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "palomino-creek_heartattack5",
+    "category": "heartattack",
+    "location": "Palomino Creek",
+    "enabled": true,
+    "weight": 1,
+    "center": [2377.625, 84.625, 26.484],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest pain, pounding head",
+                    "description": "A man who just lost an argument with his landlord is leaning on a wall, chest pain and a skull-splitting headache. The whole town heard the argument."
+                },
+                "hu": {
+                    "title": "Mellkasi fájdalom, lüktető fejfájás",
+                    "description": "Egy férfi épp elveszített egy vitát a főbérlőjével, most pedig a falnak támaszkodik, mellkasi fájdalommal és szétrepesztő fejfájással. Az egész város hallotta a veszekedést."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 187,
+            "pos": [2377.625, 84.625, 26.484],
+            "rot": 111,
+            "anim": "lean",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+{
+    "format": 2,
+    "name": "leafy-hollow_heartattack5",
+    "category": "heartattack",
+    "location": "Leafy Hollow",
+    "enabled": true,
+    "weight": 1,
+    "center": [-876.709, -1800.349, 89.396],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Chest pain, pounding head",
+                    "description": "A woman living in a cabin walked to the road for help. Crushing headache and chest pain. She ran out of her pills a week ago."
+                },
+                "hu": {
+                    "title": "Mellkasi fájdalom, lüktető fejfájás",
+                    "description": "Egy kunyhóban élő nő segítségért ment az úthoz. Szétfeszítő fejfájása és mellkasi fájdalma van. Egy hete elfogyott a gyógyszere."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 55,
+            "pos": [-876.709, -1800.349, 89.396],
+            "rot": 355,
+            "anim": "lean",
+            "role": "patient",
+            "injuries": [],
+            "state": {
+                "pain": 60,
+                "spo2": 95,
+                "systolic": 205,
+                "diastolic": 120,
+                "heartRate": 104,
+                "consciousness": "stable",
+                "rhythm": "SINUS_TACHY"
+            }
+        }
+    ]
+}

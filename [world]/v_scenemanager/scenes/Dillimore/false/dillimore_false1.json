@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "dillimore_false1",
+    "category": "false",
+    "location": "Dillimore",
+    "enabled": true,
+    "weight": 1,
+    "center": [714.63, -552.5, 16.34],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Woman fainted",
+                    "description": "A woman fainted outside a house in Dillimore. She is standing up again, embarrassed, and says she just got up too quickly."
+                },
+                "hu": {
+                    "title": "Elájult nő",
+                    "description": "Egy nő elájult egy dillimore-i ház előtt. Már újra áll, zavarban van, és azt mondja, csak túl gyorsan kelt fel."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 263,
+            "pos": [714.63, -552.5, 16.34],
+            "rot": 298,
+            "anim": "none",
+            "role": "bystander",
+            "injuries": [],
+            "state": {}
+        }
+    ]
+}

@@ -1,0 +1,44 @@
+{
+    "format": 2,
+    "name": "sf_hypertension16",
+    "category": "hypertension",
+    "location": "San Fierro",
+    "enabled": true,
+    "weight": 1,
+    "center": [-2295.25, 966.25, 65.107],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 3,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Dizzy and weak",
+                    "description": "A man in his sixties feels dizzy and weak after standing in the sun. He thinks he took a double dose of his salt pills by mistake."
+                },
+                "hu": {
+                    "title": "Szédülés és gyengeség",
+                    "description": "Egy hatvanas éveiben járó férfi megszédült és elgyengült, miután a napon állt. Úgy gondolja, tévedésből dupla adag sótablettát vett be."
+                }
+            }
+        },
+        "pd": { "need": 0 }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 20,
+            "pos": [-2295.25, 966.25, 65.107],
+            "rot": 270,
+            "anim": "crouch",
+            "role": "patient",
+            "injuries": [],
+            "state": { "systolic": 166, "diastolic": 94, "heartRate": 84, "consciousness": "stable" }
+        }
+    ]
+}
