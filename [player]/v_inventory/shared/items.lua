@@ -34,7 +34,7 @@ ITEMS = {
     -- ----------------------------------------------------------------------- medical (med_equipments)
     medical_bag = {
         category = "container", weight = 2.0, holdable = true, hand = "left", storable = false,
-        container = { capacity = 10, accepts = { drug = true, iv = true, o2 = true, tool = true } },
+        container = { capacity = 12, accepts = { drug = true, iv = true, o2 = true, tool = true } }, -- full ALS stock = 10.1 kg
         model = 1210, scale = 1.0,                          -- briefcase placeholder, 0.50 x 0.07 x 0.37 m
         offsets = {
             left = { 0.02, 0.0, -0.35, 0, 0, -90 },        -- long side along the leg, handle in the hand
