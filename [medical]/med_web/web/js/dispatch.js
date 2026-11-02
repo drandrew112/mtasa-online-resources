@@ -19,6 +19,36 @@
     const PRIO_COLOR = { 1: '#e5484d', 2: '#f76b15', 3: '#ffc53d', 4: '#3e9bff' };
     const STATUS_COLOR = { available: '#2ea043', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28' };
 
+    // texts of the safe scene / police fields (v_scenemanager, police_system) in English and Hungarian; the rest of
+    // the console is English for now
+    const HU = (navigator.language || '').toLowerCase().startsWith('hu');
+    const TX = HU ? {
+        safety: 'Helyszín biztonsága', unsafe: 'NEM BIZTONSÁGOS - az EMS vár', safe: 'Biztonságos', auto: 'automatikus',
+        police: 'Rendőrség', requested: 'bejelentés #{call}, kiosztásra vár', responding: 'bejelentés #{call} · {units}', closed: 'bejelentés #{call} lezárva',
+    } : {
+        safety: 'Scene safety', unsafe: 'NOT SAFE - EMS waits', safe: 'Safe', auto: 'automatic',
+        police: 'Police', requested: 'call #{call}, waiting for a unit', responding: 'call #{call} · {units}', closed: 'call #{call} closed',
+    };
+    const tx = (k, p) => TX[k].replace(/\{(\w+)\}/g, (m, n) => (p && p[n] !== undefined ? p[n] : m));
+
+    function agencyLines(t) {
+        const m = t.meta || {};
+        let out = '';
+        const sf = m.safety;
+        if (sf && typeof sf === 'object') {
+            out += sf.state === 'unsafe'
+                ? `<p>${tx('safety')}: <b style="color:#ff7b72">${tx('unsafe')}</b></p>`
+                : `<p>${tx('safety')}: <b style="color:#6ed782">${tx('safe')}</b>${sf.by ? ' · ' + esc(sf.by) : ''}${sf.auto ? ' (' + tx('auto') + ')' : ''}</p>`;
+        }
+        const p = m.police;
+        if (p && typeof p === 'object') {
+            const units = arr(p.units).join(', ');
+            const key = p.status === 'closed' ? 'closed' : units ? 'responding' : 'requested';
+            out += `<p>${tx('police')}: <b>${esc(tx(key, { call: p.call, units }))}</b></p>`;
+        }
+        return out;
+    }
+
     const unitById = id => S.units.find(u => u.id === id);
     const taskById = id => S.tasks.find(t => t.id === id) || S.closed.find(t => t.id === id);
     const isActive = t => t && t.status !== 'closed';
@@ -237,6 +267,7 @@
             ${t.caller ? `<p>Caller: <b>${esc(t.caller)}</b></p>` : ''}
             <p>Received: <b>${ERM.clock(t.createdAt)}</b> (${ERM.age(t.createdAt)} ago)</p>
             <p>Units: <b>${esc(units)}</b></p>
+            ${agencyLines(t)}
             ${t.description ? `<p>${esc(t.description)}</p>` : ''}
             <p style="color:var(--faint)">Right-click for actions</p>`;
     }

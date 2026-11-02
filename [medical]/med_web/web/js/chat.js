@@ -41,8 +41,14 @@
     function setChannels(units, tasks) {
         channelList = [{ key: 'broadcast', label: 'Broadcast (all units)' }];
         for (const u of units) channelList.push({ key: 'unit:' + u.id, label: `Unit ${u.callsign}` });
+        const hu = (navigator.language || '').toLowerCase().startsWith('hu');
         for (const t of tasks) {
             if (t.units.length) channelList.push({ key: 'task:' + t.id, label: `Case #${t.id} (${t.units.length} units)` });
+            // inter-agency chat of a case linked to a police call (EMS crews + officers)
+            const p = t.meta && t.meta.police;
+            if (p && typeof p === 'object' && p.status !== 'closed') {
+                channelList.push({ key: 'agency:' + t.id, label: (hu ? 'Társszervek #' : 'Inter-agency #') + t.id });
+            }
         }
         if (!channelList.some(c => c.key === current)) {
             channelList.push({ key: current, label: current.replace(':', ' #') + ' (offline)' });
