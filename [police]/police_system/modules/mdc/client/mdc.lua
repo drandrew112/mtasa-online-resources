@@ -119,7 +119,9 @@ end
 local function counts()
     local o = MDC.data.overview or {}
     local drafts = o.pending or 0
-    return { pursuits = #(o.pursuits or {}), wanted = #(o.wanted or {}), calls = 0, reports = drafts }
+    local open = 0
+    for _, c in ipairs(o.calls or {}) do if c.status == "open" then open = open + 1 end end
+    return { pursuits = #(o.pursuits or {}), wanted = #(o.wanted or {}), calls = open, reports = drafts }
 end
 
 local function drawMenu(w)

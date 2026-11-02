@@ -894,10 +894,12 @@ CREATE TABLE IF NOT EXISTS `pol_citizens` (
     `generated`    TINYINT(1)   NOT NULL DEFAULT 0,
     `created_at`   INT          NOT NULL DEFAULT 0,
     `last_seen`    INT          NOT NULL DEFAULT 0,
+    `ext_key`      VARCHAR(96)  DEFAULT NULL,
     `is_pool`      TINYINT(1)   NOT NULL DEFAULT 0,
     `server`       VARCHAR(32)  DEFAULT NULL,
     KEY `idx_polc_account` (`account_name`),
     KEY `idx_polc_name` (`name`),
+    KEY `idx_polc_ext` (`ext_key`),
     KEY `idx_polc_pool` (`is_pool`, `server`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 

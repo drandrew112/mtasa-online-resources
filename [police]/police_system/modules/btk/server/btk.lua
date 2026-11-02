@@ -91,3 +91,20 @@ function B.fineTarget()
 end
 
 function B.start() load() end
+
+-- export (v_scenemanager editor / validation): { list = { { id, cat, warrant, warning, extra } }, items = { [id] = true },
+-- warrant = { [id] = true } } - the penal code items and the warrant reasons (extra = WARRANT_EXTRA, text
+-- police_system.reason.<id>; the others police_system.btk.<id>)
+function getPenalItems()
+    local out = { list = {}, items = {}, warrant = {} }
+    for _, e in ipairs(B.items) do
+        out.list[#out.list + 1] = { id = e.id, cat = e.cat, warrant = e.warrant, warning = e.warning }
+        out.items[e.id] = true
+        if e.warrant then out.warrant[e.id] = true end
+    end
+    for _, x in ipairs(WARRANT_EXTRA) do
+        out.list[#out.list + 1] = { id = x.id, cat = "extra", warrant = true, extra = true }
+        out.warrant[x.id] = true
+    end
+    return out
+end

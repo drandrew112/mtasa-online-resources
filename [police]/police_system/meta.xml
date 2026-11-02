@@ -99,4 +99,17 @@
     <export function="getPublicStats" type="server" />
     <export function="getPublicPolice" type="server" />
     <export function="createPoliceCall" type="server" />
+    <!-- scenes (v_scenemanager) + inter-agency (med_erm): modules/events/server/dispatch.lua -->
+    <export function="createSceneCall" type="server" />
+    <export function="createAgencyCall" type="server" />
+    <export function="closeSceneCall" type="server" />
+    <export function="getCall" type="server" />
+    <export function="setCallSafety" type="server" />
+    <export function="setCallLink" type="server" />
+    <export function="postCallMessage" type="server" />
+    <export function="getFreeUnits" type="server" />
+    <export function="isOfficerOnDuty" type="server" />
+    <!-- scene NPC records (history/npc.lua), penal code (btk.lua) -->
+    <export function="registerNPC" type="server" />
+    <export function="getPenalItems" type="server" />
 </meta>

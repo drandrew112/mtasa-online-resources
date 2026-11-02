@@ -37,16 +37,26 @@ function M.overview(player)
     table.sort(wanted, function(a, b) return a.level > b.level end)
     return {
         unit = POL.units.state(unit), pending = POL.reports.pendingCount(unit), units = units,
-        pursuits = POL.chase.publicList(), wanted = wanted, calls = POL.dispatch.list(),
+        pursuits = POL.chase.publicList(), wanted = wanted, calls = POL.dispatch.list(player),
         arrestsToday = POL.web and POL.web.today("arrests") or 0,
         tail = unit and unit.tail or {}, tows = unit and POL.tow.forUnit(unit) or {},
     }
 end
 
 function API.overview(p, a, reply) reply(M.overview(p)) end
-function API.calls(p, a, reply) reply(POL.dispatch.list()) end
+function API.calls(p, a, reply) reply(POL.dispatch.list(p)) end
+function API.callDetail(p, a, reply)
+    local d = POL.dispatch.detail(p, a.id)
+    reply(d or false, d and nil or "not_found")
+end
 function API.callRespond(p, a, reply) if needUnit(p, reply) then reply(POL.dispatch.respond(p, a.id)) end end
 function API.callClose(p, a, reply) if needUnit(p, reply) then reply(POL.dispatch.closeCall(p, a.id)) end end
+function API.callMessage(p, a, reply)
+    if needUnit(p, reply) then reply(POL.dispatch.message(p, a.id, a.channel, a.text)) end
+end
+function API.callReportSafe(p, a, reply)
+    if needUnit(p, reply) then reply(POL.dispatch.reportSafe(p, a.id)) end
+end
 function API.pursuits(p, a, reply) reply(POL.chase.publicList()) end
 function API.pursuitJoin(p, a, reply)
     if not needUnit(p, reply) then return end

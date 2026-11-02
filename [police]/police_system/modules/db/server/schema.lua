@@ -15,10 +15,12 @@ POL_SCHEMA = {
     `generated`    TINYINT(1)   NOT NULL DEFAULT 0,
     `created_at`   INT          NOT NULL DEFAULT 0,
     `last_seen`    INT          NOT NULL DEFAULT 0,
+    `ext_key`      VARCHAR(96)  DEFAULT NULL,
     `is_pool`      TINYINT(1)   NOT NULL DEFAULT 0,
     `server`       VARCHAR(32)  DEFAULT NULL,
     KEY `idx_polc_account` (`account_name`),
     KEY `idx_polc_name` (`name`),
+    KEY `idx_polc_ext` (`ext_key`),
     KEY `idx_polc_pool` (`is_pool`, `server`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
 
@@ -132,6 +134,13 @@ POL_SCHEMA = {
     `amount` INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (`day`, `stat`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
+}
+
+-- columns added after the first release, for tables that already exist: run after POL_SCHEMA, a failure (the column
+-- is already there) is only logged
+POL_SCHEMA_UPGRADES = {
+    "ALTER TABLE `pol_citizens` ADD COLUMN `ext_key` VARCHAR(96) DEFAULT NULL AFTER `last_seen`",
+    "ALTER TABLE `pol_citizens` ADD KEY `idx_polc_ext` (`ext_key`)",
 }
 
 -- pool rows: the INSERT that makes a placeholder of each table

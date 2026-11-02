@@ -58,15 +58,25 @@ local starting = false
 function DBM.init()
     if DBM.ready or starting or not connected() then return end
     starting = true
+    local function ready()
+        DBM.ready = true
+        starting = false
+        DBM.pool.load(function()
+            POL.emit("db.ready")
+        end)
+    end
+    -- the upgrades of existing tables: an error (already done) does not stop the start
+    local function upgrade(i)
+        if i > #(POL_SCHEMA_UPGRADES or {}) then return ready() end
+        MYSQL.query(function(ok, err)
+            if ok == false then
+                outputDebugString("[police_system] schema upgrade " .. i .. " skipped: " .. tostring(err), 3)
+            end
+            upgrade(i + 1)
+        end, POL_SCHEMA_UPGRADES[i])
+    end
     local function run(i)
-        if i > #POL_SCHEMA then
-            DBM.ready = true
-            starting = false
-            DBM.pool.load(function()
-                POL.emit("db.ready")
-            end)
-            return
-        end
+        if i > #POL_SCHEMA then return upgrade(1) end
         MYSQL.query(function(ok, err)
             if ok == false then
                 outputDebugString("[police_system] schema " .. i .. " failed: " .. tostring(err), 1)

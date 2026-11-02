@@ -5,8 +5,12 @@
 --   hasPoliceRight(player), setPoliceRight(player, bool)                               (rights.lua)
 --   isPoliceVehicle(veh), isElementCuffed(el), radioCommand(player, id, args), getPublicStats()
 --   createPoliceCall(player, title, description) (ui_phone), getPublicPolice() (gov_web)
+--   createSceneCall, createAgencyCall, closeSceneCall, getCall, setCallSafety, setCallLink, postCallMessage,
+--   getFreeUnits, isOfficerOnDuty (dispatch.lua: v_scenemanager, med_erm), registerNPC (history/npc.lua),
+--   getPenalItems (btk.lua)
 -- Events (source = this resourceRoot): onPlayerWantedChange, onPlayerWantedEvaded, onPoliceArrest, onPoliceFineIssued,
--- onPoliceSystemStart (work_police gives the rights back).
+-- onPoliceSystemStart (work_police gives the rights back), onPoliceCallResponded, onPoliceCallClosed,
+-- onPoliceSceneSafeReported (dispatch.lua).
 
 addEvent("onPoliceArrest")        -- (suspect, officer | false, kind "player" | "ai")
 addEvent("onPoliceFineIssued")    -- (subjectInfo, btkId, amount, officer)
