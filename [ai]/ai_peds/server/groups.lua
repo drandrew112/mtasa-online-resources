@@ -48,6 +48,8 @@ function Groups.isHostile(p, el)
         if g > getTickCount() then return true end
         p.grudges[el] = nil
     end
+    -- createAIPed hostilePlayers: every player, whatever group they are in
+    if p.hostilePlayers and getElementType(el) == "player" then return true end
     return G.get(p.group, G.of(el)) == "hostile"
 end
 

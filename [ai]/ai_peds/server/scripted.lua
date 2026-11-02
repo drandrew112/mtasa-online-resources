@@ -15,7 +15,8 @@ local BEHAVIOURS = { civilian = true, scared = true, enemy = true, police = true
 -- opts: rot, dimension, interior, behaviour ("civilian" default | "scared" | "enemy"), task (name), taskOpts,
 --       group, weapon, ammo, health, armor, accuracy (0..1), aggroRadius, leash, home ({x, y, z}; default: spawn point
 --       for enemies with a patrol / guard task), retaliate (true), role (navmesh route role, "civilian" / "free"...),
---       speed ("walk" | "run" | "sprint": task moves), keepBody, target (enemy: attack now), fightBack (civilian)
+--       speed ("walk" | "run" | "sprint": task moves), keepBody, target (enemy: attack now), fightBack (civilian),
+--       hostilePlayers (true: hostile to every player whatever their group, e.g. v_scenemanager armed suspects)
 function createAIPed(skin, x, y, z, opts)
     opts = type(opts) == "table" and opts or {}
     x, y, z = tonumber(x), tonumber(y), tonumber(z)
@@ -30,6 +31,7 @@ function createAIPed(skin, x, y, z, opts)
     })
     if not p then return false, "create_failed" end
     p.keepBody = opts.keepBody and true or false
+    p.hostilePlayers = opts.hostilePlayers and true or nil
     if opts.health then setElementHealth(p.el, opts.health) end
     if opts.armor then setPedArmor(p.el, opts.armor) end
     if opts.weapon then Peds.giveWeapon(p, opts.weapon, opts.ammo) end
@@ -171,7 +173,7 @@ function giveAIPedWeapon(ped, weapon, ammo)
     return true
 end
 
--- combat settings: { aggroRadius, leash, accuracy, retaliate, home = {x, y, z} | false }
+-- combat settings: { aggroRadius, leash, accuracy, retaliate, home = {x, y, z} | false, hostilePlayers = bool }
 function setAIPedCombat(ped, opts)
     local p = getP(ped)
     if not p or type(opts) ~= "table" then return false end
@@ -181,6 +183,7 @@ function setAIPedCombat(ped, opts)
     if opts.accuracy then c.accuracy = math.max(0, math.min(1, tonumber(opts.accuracy) or c.accuracy)) end
     if opts.retaliate ~= nil then c.retaliate = opts.retaliate and true or false end
     if opts.home == false then c.home = nil elseif type(opts.home) == "table" then c.home = opts.home end
+    if opts.hostilePlayers ~= nil then p.hostilePlayers = opts.hostilePlayers and true or nil end
     return true
 end
 

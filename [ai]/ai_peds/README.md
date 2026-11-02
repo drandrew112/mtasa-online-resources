@@ -89,6 +89,7 @@ Peds:
   `accuracy` (0..1), `aggroRadius`, `leash`, `home` ({x, y, z}; an enemy with a patrol / guard task gets the task point),
   `retaliate` (true), `role` (navmesh ped route role of its tasks: `civilian` (sidewalks, crossings) / `free` / `police`...),
   `speed` (`walk` | `run` | `sprint` of its task moves), `keepBody`, `target` (enemy: attack now), `fightBack`.
+  `hostilePlayers` (true: hostile to every player whatever their group; `setAIPedCombat(ped, { hostilePlayers = false })` turns it off).
 - `destroyAIPed(ped)`, `isAIPed(ped)` (`traffic` | `driver` | `scripted` | false), `getAIPeds([kind])`,
   `getAIPedState(ped)` ({kind, behaviour, mode, task, group, weapon, target, syncer, dead, command, x, y, z, combat}).
 - `setAIPedBehaviour(ped, name, args)` (civilian: `task`, `taskOpts`; scared: `threat` element or `x, y, z`; enemy:
