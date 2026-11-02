@@ -130,6 +130,15 @@ function fillBag(bag)
     local stock = bagStock(bag)
     i:clearContainer(bag.id)
     local target = { type = "container", container = bag.id }
+    -- the cylinder goes in first: the bag's weight limit must never leave it out
+    local full = stock.oxygen
+    local cyl = i:createItem(BAG.OXYGEN_ITEM, {
+        oxygen = full,
+        minutes = stock.oxygenMinutes or BAG.OXYGEN_MINUTES,
+        bar = { label = L.msg("med_bag.hud.oxygen_label"), value = full, max = 100 },
+    }, target)
+    if cyl then oxygenLevel[cyl] = full
+    else outputDebugString("[med_equipments] oxygen cylinder could not be put into bag " .. tostring(bag.id), 2) end
     for id, count in pairs(stock.drugs) do
         if count > 0 and i:getItemDef(BAG.DRUG_PREFIX .. id) then
             i:createItem(BAG.DRUG_PREFIX .. id, nil, target, { amount = count })
@@ -139,13 +148,6 @@ function fillBag(bag)
         local count = stock[category] or 0
         if count > 0 then i:createItem(def, nil, target, { amount = count }) end
     end
-    local full = stock.oxygen
-    local cyl = i:createItem(BAG.OXYGEN_ITEM, {
-        oxygen = full,
-        minutes = stock.oxygenMinutes or BAG.OXYGEN_MINUTES,
-        bar = { label = L.msg("med_bag.hud.oxygen_label"), value = full, max = 100 },
-    }, target)
-    if cyl then oxygenLevel[cyl] = full end
     bag.warned, bag.displayKey = nil, nil
     refreshBagDisplay(bag)
 end
