@@ -39,9 +39,12 @@ function Walk.load()
     W.CELLS_X = W.TX * W.TILE
     W.index = fileRead(f, W.TX * W.TY * 8)
     W.file = f
-    -- zlib support check (MTA 1.6.1 r23219+)
-    local ok = pcall(decodeString, "zlib", encodeString("zlib", "navmesh", { format = "zlib" }), { format = "zlib" })
-    if not ok then
+    -- zlib support check (MTA 1.6.1 r23219+); older servers only warn and return false, so check the result too
+    local ok, r = pcall(function()
+        local enc = encodeString("zlib", "navmesh", { format = "zlib" })
+        return enc and decodeString("zlib", enc, { format = "zlib" })
+    end)
+    if not ok or r ~= "navmesh" then
         outputDebugString("[navmesh] decodeString zlib is not available (needs MTA 1.6.1 r23219+): walk grid disabled", 1)
         fileClose(f); W.file = nil
         return false
