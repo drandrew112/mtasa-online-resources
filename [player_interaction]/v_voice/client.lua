@@ -35,7 +35,7 @@ local function updateSpeaker(player, myVeh, mx, my, mz, rx, ry)
 	end
 
 	if VOICE.VEHICLE_SHARED and myVeh and getPedOccupiedVehicle(player) == myVeh then
-		setSoundVolume(player, 1)
+		setSoundVolume(player, VOICE.GAIN)
 		setSoundPan(player, 0)
 		return
 	end
@@ -48,7 +48,7 @@ local function updateSpeaker(player, myVeh, mx, my, mz, rx, ry)
 	if volume > 0 and not isLineOfSightClear(mx, my, mz, px, py, pz, true, false, false, true, false, true, false) then
 		volume = volume * VOICE.OCCLUDED_VOLUME
 	end
-	setSoundVolume(player, volume)
+	setSoundVolume(player, volume * VOICE.GAIN)
 
 	-- pan: how far to the right of the camera's view direction the speaker is
 	local flat = math.sqrt(dx * dx + dy * dy)
