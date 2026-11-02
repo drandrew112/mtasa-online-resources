@@ -128,12 +128,15 @@ TX_KEYS = {
     ["admin.debit"]    = { from = ANY, to = "system", admin = true, force = true, params = { "note", "admin" } },
     ["admin.transfer"] = { from = ANY, to = ANY, admin = true, force = true, params = { "note", "admin" } },
 
+    -- SynHosting payment approved on the v_admin Payments page: points * multiplier from nothing
+    ["payment.topup"]  = { from = "system", to = P, admin = true, params = { "payment", "points", "multiplier", "admin" } },
+
     -- one-time migration of the old balances (DESIGN.md 7)
     ["migration.opening"] = { from = "system", to = ANY, admin = true },
 }
 
 -- ledger filter groups of the website / admin panel: group -> key prefix
-TX_GROUPS = { "cash", "transfer", "work", "salary", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "loan", "admin" }
+TX_GROUPS = { "cash", "transfer", "work", "salary", "fine", "shop", "biz", "tax", "health", "gov", "atc", "pt", "loan", "payment", "admin" }
 
 --- the group of a key ("cash.deposit" -> "cash")
 function txGroup(key)
