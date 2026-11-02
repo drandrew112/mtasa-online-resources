@@ -94,6 +94,23 @@ Szerver: `openHelp(player [, topicId])`.
 
 Például egy munka bemutatójából a megfelelő oldal megnyitása: `exports.ui_help:openHelp("work_ems")`.
 
+## Támogatás (Donate) panel
+
+F3 vagy `/donate`. Fájlok: `donate_config.lua` (link, szorzók, jog), `client/donate.lua`,
+`server/donate.lua`.
+
+- Bal oldalt a leírás: jutalom (alap szorzó, futó event külön sávban), a fizetési link és az
+  account név **Másolás** gombbal (`setClipboard`), figyelmeztetés a megjegyzésről.
+- Jobb oldalt a játékos befizetései a v_admin `payments` táblájából (csak olvassa): függőben
+  (a megjegyzésben talált account = `suggested`), jóváhagyva (szorzó, bankpénz, ki hagyta jóvá),
+  elutasítva (ok).
+- Event: `/donateevent <szorzó> <óra> [név]`, `/donateevent stop`, `/donateevent` (admin >= 4).
+  Nem MySQL-ben, hanem a `donate_events.json` fájlban van, így szerver-példányonként külön él.
+  Egy befizetés a **befizetés idején** futó event szorzóját kapja: a v_admin Payments oldal ezt
+  írja be alapértelmezett szorzónak.
+- Kliens exportok: `openDonate()`, `closeDonate()`, `toggleDonate()`, `isDonateOpen()`.
+  Szerver: `getDonateMultiplier([timestamp])`, `getDonateEvent()`.
+
 ## Ötletek a bővítéshez
 
 - billentyű-jelvények (`[F1]` keretben) és táblázatok a markupban

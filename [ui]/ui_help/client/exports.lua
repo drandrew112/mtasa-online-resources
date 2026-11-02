@@ -11,6 +11,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --       file: path under content/<lang>/ of ui_help (text from another resource goes in `text`)
 --   removeHelpTopic(id) / removeHelpCategory(id) -> bool
 --   getHelpTopics() -> { { id, category, title, hidden }, ... }
+--   openDonate() / closeDonate() / toggleDonate() / isDonateOpen()   donate panel (F3)
 --
 -- event "ui_help:onClientHelpToggle" (open)  source = localPlayer
 
@@ -50,6 +51,22 @@ end
 
 function removeHelpTopic(id)
     return Help.removeTopic(id)
+end
+
+function openDonate()
+    return DonatePanel_open()
+end
+
+function closeDonate()
+    return DonatePanel_close()
+end
+
+function toggleDonate()
+    return DonatePanel_toggle()
+end
+
+function isDonateOpen()
+    return DonatePanel_isOpen()
 end
 
 function getHelpTopics()
