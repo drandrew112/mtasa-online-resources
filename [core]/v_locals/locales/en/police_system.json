@@ -501,6 +501,7 @@
   "police_system.reports.type_pursuit": "Pursuit",
   "police_system.reports.type_traffic_stop": "Traffic stop",
   "police_system.search.class_illegal": "Illegal",
+  "police_system.search.close_hint": "Backspace / Enter: close",
   "police_system.search.class_legal": "Legal",
   "police_system.search.class_questionable": "Questionable",
   "police_system.search.illegal_found": "Illegal item",

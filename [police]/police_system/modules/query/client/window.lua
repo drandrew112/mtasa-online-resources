@@ -1,7 +1,8 @@
 -- police_system / modules/query/client/window.lua
 -- The query window left of the mini panel: the last person / vehicle check of the unit. Flags colour coded
--- (WARRANT, WANTED, Suspended, Stolen, Expired); a search result too (kind "search", items coloured by class). Backspace hides it (always, the decision), it hides by itself after
--- HIDE_AFTER; the MDC keeps the checks (Overview / profile).
+-- (WARRANT, WANTED, Suspended, Stolen, Expired). Backspace hides it (always, the decision), it hides by itself after
+-- HIDE_AFTER; the MDC keeps the checks (Overview / profile). A search result (kind "search") gets its own panel in
+-- the centre of the screen instead (below).
 
 local QW = POL.module("queryw", { data = nil, shownAt = 0 })
 
@@ -97,8 +98,89 @@ local function draw()
 end
 POL.layers.add("query", draw, 11)
 
+------------------------------------------------------------------------ search panel (centre of the screen)
+-- A search result is its own panel: subject (person + name / vehicle + plate), every item with its class colour.
+-- Opening it closes the stop menu; Backspace or Enter closes it (no timeout).
+
+local sv = POL.canvas()
+local searchOpen = false
+
+local function paintSearch(r)
+    local c = POL.colors
+    local list, illegal = {}, 0
+    for _, it in ipairs(r.items or {}) do
+        if it.class == "illegal" then illegal = illegal + 1 end
+        list[#list + 1] = it
+    end
+    local w = POL.px(420)
+    local lh = POL.px(26)
+    local rowsH = math.max(#list, 1) * lh
+    local h = POL.px(30) + POL.px(46) + (illegal > 0 and POL.px(30) or 0) + rowsH + POL.px(40)
+    sv:paint(w, h, function()
+        local col = { legal = c.green, questionable = c.orange, illegal = c.red }
+        dxDrawRectangle(0, 0, w, h, c.bg)
+        dxDrawRectangle(0, 0, w, POL.px(30), c.panel2)
+        local title = L(r.what == "vehicle" and "police_system.search.title_vehicle" or "police_system.search.title_person")
+        dxDrawText(L.upper(title), POL.px(12), 0, w, POL.px(30), c.text, 1, POL.font(10, true), "left", "center")
+        local y = POL.px(36)
+        dxDrawText(L(r.what == "vehicle" and "police_system.query.plate" or "police_system.query.name"),
+            POL.px(12), y, w, y + POL.px(18), c.dim, 1, POL.font(9), "left", "center")
+        dxDrawText(tostring(r.name), POL.px(12), y + POL.px(14), w - POL.px(12), y + POL.px(44), c.text, 1,
+            POL.font(13, true), "left", "center", true)
+        y = y + POL.px(46)
+        if illegal > 0 then
+            local txt = L.upper(L("police_system.search.illegal_found")) .. " ×" .. illegal
+            dxDrawRectangle(POL.px(12), y + POL.px(2), w - POL.px(24), POL.px(24), c.red)
+            dxDrawText(txt, POL.px(12), y + POL.px(2), w - POL.px(12), y + POL.px(26), c.white, 1, POL.font(9, true), "center", "center")
+            y = y + POL.px(30)
+        end
+        if #list == 0 then
+            dxDrawText(L("police_system.search.nothing"), POL.px(12), y, w - POL.px(12), y + lh, c.dim, 1, POL.font(10), "left", "center")
+        end
+        for _, it in ipairs(list) do
+            local k = col[it.class] or c.text
+            dxDrawRectangle(POL.px(12), y + POL.px(6), POL.px(6), lh - POL.px(12), k)
+            dxDrawText(L("police_system.item." .. tostring(it.id)), POL.px(26), y, w - POL.px(110), y + lh, c.text, 1,
+                POL.font(10, true), "left", "center", true)
+            dxDrawText(L("police_system.search.class_" .. tostring(it.class)), w - POL.px(110), y, w - POL.px(12), y + lh,
+                k, 1, POL.font(9), "right", "center")
+            y = y + lh
+        end
+        dxDrawText(L("police_system.search.close_hint"), 0, h - POL.px(26), w - POL.px(10), h, c.dim, 1, POL.font(8), "right", "center")
+    end)
+end
+
+local function closeSearch()
+    searchOpen = false
+    POL.layers.set("searchpanel", false)
+end
+
+POL.layers.add("searchpanel", function()
+    if not searchOpen then return end
+    sv:draw(math.floor((POL.sw - sv.w) / 2), math.floor((POL.sh - sv.h) / 2))
+end, 12)
+
+local function showSearch(r)
+    -- the stop menu closes with the search
+    local ok, m = pcall(function() return getResourceState(getResourceFromName("ui_inac")) == "running" and exports.ui_inac end)
+    if ok and m then pcall(function() if m:isTempMenuOpen() then m:closeTempMenu() end end) end
+    paintSearch(r)
+    searchOpen = true
+    POL.layers.set("searchpanel", true)
+end
+
+POL.key("searchpanel", function(button, press)
+    if not searchOpen then return false end
+    if button == "backspace" or button == "enter" or button == "num_enter" then
+        if press then closeSearch() end
+        return true
+    end
+    return false
+end, 75)
+
 POL.handle("query:result", function(r)
     if type(r) ~= "table" then return end
+    if r.kind == "search" then return showSearch(r) end
     QW.data = r
     QW.shownAt = getTickCount()
     paint()

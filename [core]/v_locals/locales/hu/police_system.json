@@ -501,6 +501,7 @@
   "police_system.reports.type_pursuit": "Üldözés",
   "police_system.reports.type_traffic_stop": "Közúti ellenőrzés",
   "police_system.search.class_illegal": "Illegális",
+  "police_system.search.close_hint": "Backspace / Enter: bezár",
   "police_system.search.class_legal": "Legális",
   "police_system.search.class_questionable": "Kérdéses",
   "police_system.search.illegal_found": "Illegális tárgy",
