@@ -1,0 +1,67 @@
+{
+    "format": 2,
+    "name": "ls_brawl1",
+    "category": "brawl",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2512.114, -1674.215, 13.492],
+    "interior": 0,
+    "dimension": 0,
+    "safe": true,
+    "agencies": {
+        "ems": { "need": 0 },
+        "pd": {
+            "need": 2,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Two gang member fighting",
+                    "description": "There's a fight on Groove Street. Two gang members attacked each other."
+                },
+                "hu": {
+                    "title": "Két bandatag egymásra támadt",
+                    "description": "A Groove Street-en két banda tag megtámadta egymást, mert összevesztek valamin."
+                }
+            }
+        }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 107,
+            "pos": [2512.114, -1674.215, 13.492],
+            "rot": 117.5,
+            "anim": "none",
+            "role": "fighter",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "side": "a",
+                "weapon": 0,
+                "start": "unit_near",
+                "startRadius": 150,
+                "onPolice": "continue"
+            }
+        },
+        {
+            "id": "p2",
+            "skin": 105,
+            "pos": [2511.282, -1675.197, 13.546],
+            "rot": -17.8,
+            "anim": "none",
+            "role": "fighter",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "side": "b",
+                "weapon": 0,
+                "start": "unit_near",
+                "startRadius": 150,
+                "onPolice": "continue"
+            }
+        }
+    ]
+}
