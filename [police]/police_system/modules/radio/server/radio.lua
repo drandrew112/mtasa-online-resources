@@ -28,7 +28,7 @@ function RD.handle(player, id, args)
             local s = inc.el and POL.stop.of(inc.el)
             if s then POL.stop.release(player, s) else POL.events.close(inc, "code4", player) end
         end
-        POL.dispatch.clearObjective(unit)
+        POL.callouts.clearObjective(unit)
         POL.units.setStatus(unit, "available", player)
         return true
     elseif id == "REQUEST_BACKUP" then

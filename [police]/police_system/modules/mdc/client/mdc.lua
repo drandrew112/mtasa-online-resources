@@ -335,9 +335,9 @@ POL.key("mdc", function(button, press)
         end
         return true
     end
-    -- the F keys (status) and chat keys go on; everything else stays in the MDC
+    -- the F keys (status), chat keys and the call popup (Y / N) go on; everything else stays in the MDC
     if button == "f4" or button == "f5" or button == "f6" or button == "f7" or button == "t" or button == "y"
-        or button == "f8" or button == "escape" or button:find("mouse") then
+        or (button == "n" and POL.callout and POL.callout.offer) or button == "f8" or button == "escape" or button:find("mouse") then
         return false
     end
     return true

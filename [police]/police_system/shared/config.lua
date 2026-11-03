@@ -115,6 +115,14 @@ POLICE = {
         INVITE_TIMEOUT = 60000,
     },
 
+    -- CalloutManager (modules/callouts): the popup offer of a new call to the Available units near it
+    CALLOUTS = {
+        OFFER_RADIUS = 1500,      -- m: Available units this close get the popup
+        OFFER_TIME = 30,          -- s: the popup waits this long for Y / N
+        ARRIVE_RADIUS = 40,       -- m: on scene (objective gone, Responding -> Busy)
+        TICK = 1000,              -- ms: arrival + offer timeout check
+    },
+
     PAY = {
         traffic_warning = 300, traffic_fine = 500, arrest_npc = 1500, arrest_player = 3000,
         pursuit_caught = 2000, backup = 200, duty_10min = 150,

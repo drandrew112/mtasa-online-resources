@@ -6,7 +6,8 @@
 local HUD = POL.module("hud", {})
 local cv = POL.canvas()
 
-local SUBS = { traffic_stop = "police_system.status.sub_traffic_stop", ped_stop = "police_system.status.sub_ped_stop" }
+local SUBS = { traffic_stop = "police_system.status.sub_traffic_stop", ped_stop = "police_system.status.sub_ped_stop",
+               arrest = "police_system.status.sub_arrest", callout = "police_system.status.sub_callout" }
 
 function HUD.rect()
     local w, h = POL.px(300), POL.px(96)

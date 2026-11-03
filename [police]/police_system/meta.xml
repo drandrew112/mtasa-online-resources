@@ -29,6 +29,7 @@
     <script src="modules/warrants/server/warrants.lua" type="server" />
     <script src="modules/events/server/log.lua" type="server" />
     <script src="modules/events/server/dispatch.lua" type="server" />
+    <script src="modules/callouts/server/callouts.lua" type="server" />
     <script src="modules/reports/server/templates/en.lua" type="server" />
     <script src="modules/reports/server/templates/hu.lua" type="server" />
     <script src="modules/reports/server/drafts.lua" type="server" />
@@ -66,6 +67,7 @@
     <script src="core/client/main.lua" type="client" />
     <script src="modules/wanted/client/stars.lua" type="client" />
     <script src="modules/hud/client/mini.lua" type="client" />
+    <script src="modules/callouts/client/popup.lua" type="client" />
     <script src="modules/query/client/window.lua" type="client" />
     <script src="modules/radio/client/radio.lua" type="client" />
     <script src="modules/plates/client/plates.lua" type="client" />
@@ -102,7 +104,7 @@
     <export function="getPublicStats" type="server" />
     <export function="getPublicPolice" type="server" />
     <export function="createPoliceCall" type="server" />
-    <!-- scenes (v_scenemanager) + inter-agency (med_erm): modules/events/server/dispatch.lua -->
+    <!-- calls: scenes (v_scenemanager) + inter-agency (med_erm): modules/callouts/server/callouts.lua -->
     <export function="createSceneCall" type="server" />
     <export function="createAgencyCall" type="server" />
     <export function="closeSceneCall" type="server" />

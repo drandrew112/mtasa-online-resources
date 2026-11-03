@@ -366,6 +366,8 @@ end)
 
 POL.net("stop:ped", function(player, target)
     if not POL.rights.has(player) then return end
+    -- cuffed / escorted / in custody: already handled, silently ignored (the client does not offer hold E on them)
+    if isElement(target) and (POL.arrest.isCuffed(target) or POL.arrest.escorts[target] or getElementData(target, "pol.custody")) then return end
     local ok, err = ST.ped(player, target)
     if not ok then POL.notify(player, "police_system.stop.err_" .. tostring(err)) end
 end)

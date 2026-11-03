@@ -6,11 +6,11 @@
 --   isPoliceVehicle(veh), isElementCuffed(el), radioCommand(player, id, args), getPublicStats()
 --   createPoliceCall(player, title, description) (ui_phone), getPublicPolice() (gov_web)
 --   createSceneCall, createAgencyCall, closeSceneCall, getCall, setCallSafety, setCallLink, postCallMessage,
---   getFreeUnits, isOfficerOnDuty (dispatch.lua: v_scenemanager, med_erm), registerNPC (history/npc.lua),
+--   getFreeUnits (callouts.lua: v_scenemanager, med_erm), isOfficerOnDuty (dispatch.lua), registerNPC (history/npc.lua),
 --   getPenalItems (btk.lua)
 -- Events (source = this resourceRoot): onPlayerWantedChange, onPlayerWantedEvaded, onPoliceArrest, onPoliceFineIssued,
 -- onPoliceSystemStart (work_police gives the rights back), onPoliceCallResponded, onPoliceCallClosed,
--- onPoliceSceneSafeReported (dispatch.lua).
+-- onPoliceSceneSafeReported (callouts.lua).
 
 addEvent("onPoliceArrest")        -- (suspect, officer | false, kind "player" | "ai")
 addEvent("onPoliceFineIssued")    -- (subjectInfo, btkId, amount, officer)
@@ -60,7 +60,7 @@ addCommandHandler("poldebug", function(p)
     local n = function(t) local c = 0 for _ in pairs(t) do c = c + 1 end return c end
     local s = ("[police] db=%s units=%d onDuty=%d wanted=%d chases=%d ai=%d aiPeds=%d stops=%d cuffed=%d jailed=%d calls=%d"):format(
         tostring(POL.db.ready), n(POL.units.list), #POL.units.onDuty(), n(POL.wanted.list), n(POL.chase.list),
-        n(POL.ai.units), n(POL.ai.peds), n(POL.stop.list), n(POL.arrest.cuffed), n(POL.jail.list), n(POL.dispatch.calls))
+        n(POL.ai.units), n(POL.ai.peds), n(POL.stop.list), n(POL.arrest.cuffed), n(POL.jail.list), n(POL.callouts.calls))
     outputConsole(s, p)
     outputServerLog(s)
 end)

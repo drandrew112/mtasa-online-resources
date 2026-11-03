@@ -9,6 +9,12 @@ local C = POLICE.STOP
 
 local function inac() return getResourceFromName("ui_inac") and getResourceState(getResourceFromName("ui_inac")) == "running" and exports.ui_inac end
 
+-- already handled (stopped, cuffed, escorted, in custody) or attached (the one the officer escorts): no hold E on them
+local function alreadyHandled(e)
+    return getElementData(e, "pol.stop") or getElementData(e, "pol.cuffed") or getElementData(e, "pol.escort")
+        or getElementData(e, "pol.custody") or getElementAttachedTo(e)
+end
+
 -- the ped / player in front of the officer
 local function personInFront()
     local x, y, z = getElementPosition(localPlayer)
@@ -17,7 +23,7 @@ local function personInFront()
     local best, bd
     for _, t in ipairs({ "ped", "player" }) do
         for _, e in ipairs(getElementsWithinRange(x, y, z, C.PED_RANGE, t, getElementInterior(localPlayer), getElementDimension(localPlayer))) do
-            if e ~= localPlayer and not isPedDead(e) and not getPedOccupiedVehicle(e) and isElementStreamedIn(e) then
+            if e ~= localPlayer and not isPedDead(e) and not getPedOccupiedVehicle(e) and isElementStreamedIn(e) and not alreadyHandled(e) then
                 local ex, ey = getElementPosition(e)
                 local dx, dy = ex - x, ey - y
                 local d = math.sqrt(dx * dx + dy * dy)
