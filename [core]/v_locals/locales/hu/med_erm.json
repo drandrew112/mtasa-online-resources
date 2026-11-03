@@ -148,6 +148,7 @@
   "med_erm.login.add_crew_member": "Személyzeti tag hozzáadása",
   "med_erm.login.advanced_life_support": "Emelt szintű életmentés",
   "med_erm.login.air_ambulance": "Légi mentő",
+  "med_erm.login.supervisor_unit": "Felügyelő (főorvos, nem dispatchelhető)",
   "med_erm.login.automatic": "Automatikus",
   "med_erm.login.badge_auto": "AUTO",
   "med_erm.login.badge_edit": "SZERK",

@@ -124,7 +124,7 @@ function getFreeUnits(types)
     local set = typeFilter(types)
     local out = {}
     for _, u in ipairs(Units.publicList()) do
-        if u.task == 0 and u.status == "available" and not u.unqualified and (not set or set[u.type]) then
+        if u.task == 0 and u.status == "available" and not u.unqualified and (set and set[u.type] or (not set and not Config.NON_DISPATCH_TYPES[u.type])) then
             out[#out + 1] = u
         end
     end

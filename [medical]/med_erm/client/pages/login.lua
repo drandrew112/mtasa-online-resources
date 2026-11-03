@@ -19,6 +19,7 @@ TYPE_HINTS = {
     BLS  = L("med_erm.login.basic_life_support"),
     ALS  = L("med_erm.login.advanced_life_support"),
     HELI = L("med_erm.login.air_ambulance"),
+    SUP  = L("med_erm.login.supervisor_unit"),
 }
 end
 

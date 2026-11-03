@@ -20,13 +20,17 @@ Config.TABLET_VEHICLES = {
 }
 
 -- Unit types selectable on the sign-in screen.
-Config.UNIT_TYPES = { "SOLO", "DOC", "BLS", "ALS", "HELI" }
+Config.UNIT_TYPES = { "SOLO", "DOC", "BLS", "ALS", "HELI", "SUP" }
+
+-- Supervisor units: never get tasks from auto dispatch and do not count as free units for v_scenemanager
+-- (getFreeUnits skips these types unless the caller names them in its type filter).
+Config.NON_DISPATCH_TYPES = { SUP = true }
 
 -- Unit types allowed per vehicle model (sign-in screen + server check).
 -- 598 = Skoda Octavia (SOLO/DOC), 487/563 = helicopters (HELI); any other
 -- tablet vehicle (ambulance) gets UNIT_TYPES_DEFAULT.
 Config.UNIT_VEHICLE_TYPES = {
-    [598] = { "SOLO", "DOC" },
+    [598] = { "SOLO", "DOC", "SUP" },
     [487] = { "HELI" },
     [563] = { "HELI" },
 }
@@ -36,11 +40,11 @@ Config.UNIT_TYPES_DEFAULT = { "BLS", "ALS" }
 -- this competency (or higher); lower competencies can always be added to the crew. Without work_core
 -- / without the work's competencies nothing is required.
 Config.COMPETENCY_WORK = "ems"
-Config.UNIT_COMPETENCY = { BLS = "a", SOLO = "b", ALS = "bplus", DOC = "c", HELI = "c" }
+Config.UNIT_COMPETENCY = { BLS = "a", SOLO = "b", ALS = "bplus", DOC = "c", HELI = "c", SUP = "e" }  -- SUP: chief physician (E) only
 
 -- med_equipments level put into the unit's vehicle at sign-in ("basic" = only the stretcher again at
 -- sign-out). Only vehicles that already carry an equipment level (work_ems duty vehicles) get one.
-Config.UNIT_EQUIPMENT = { BLS = "bls", SOLO = "bls", ALS = "als", DOC = "als", HELI = "als" }
+Config.UNIT_EQUIPMENT = { BLS = "bls", SOLO = "bls", ALS = "als", DOC = "als", HELI = "als", SUP = "als" }
 Config.EQUIPMENT_SIGNED_OUT = "basic"
 
 -- Unit types selectable in a vehicle of the given model.

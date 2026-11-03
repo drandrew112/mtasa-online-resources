@@ -148,6 +148,7 @@
   "med_erm.login.add_crew_member": "Add crew member",
   "med_erm.login.advanced_life_support": "Advanced Life Support",
   "med_erm.login.air_ambulance": "Air ambulance",
+  "med_erm.login.supervisor_unit": "Supervisor (chief physician, no dispatch)",
   "med_erm.login.automatic": "Automatic",
   "med_erm.login.badge_auto": "AUTO",
   "med_erm.login.badge_edit": "EDIT",
