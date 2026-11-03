@@ -1,0 +1,96 @@
+{
+    "format": 2,
+    "name": "ls_brawl2",
+    "category": "brawl",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [2057.101, -1905.837, 13.547],
+    "interior": 0,
+    "dimension": 0,
+    "safe": false,
+    "agencies": {
+        "ems": {
+            "need": 2,
+            "priority": 2,
+            "caller": "SceneManager",
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Fight in the parking lot",
+                    "description": "One person is beating another in the parking lot. The police have been notified. Wait for their signal."
+                },
+                "hu": {
+                    "title": "Verekedés a parkolóban",
+                    "description": "Egy ember veri a másikat a parkolóban. Rendőrség értesítve. Várjatok a jelzésükre."
+                }
+            }
+        },
+        "pd": {
+            "need": 2,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "A fight in a parking lot",
+                    "description": "A known wanted person has beaten someone in a parking lot. Emergency medical services have been notified. Secure the scene and signal the paramedics."
+                },
+                "hu": {
+                    "title": "Verekedés egy parkolóban",
+                    "description": "Ism. körözött személy megvert valakit egy parkolóban. Mentőszolgálat értesítve. Biztosítsátok a helyszínt és jelezzetek a mentőknek."
+                }
+            }
+        }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 30,
+            "pos": [2057.101, -1905.837, 13.547],
+            "rot": 332.1,
+            "anim": "none",
+            "role": "fighter",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "side": "a",
+                "weapon": 0,
+                "start": "unit_near",
+                "startRadius": 150,
+                "onPolice": "stop"
+            },
+            "record": {
+                "warrants": [
+                    {
+                        "description": {
+                            "en": "He had previously beaten up several people for fun.",
+                            "hu": "Korábban több embert megvert szórakozásból."
+                        },
+                        "reasons": ["order.brawling"]
+                    }
+                ]
+            }
+        },
+        {
+            "id": "p2",
+            "skin": 26,
+            "pos": [2058.62, -1903.768, 13.547],
+            "rot": 99.4,
+            "anim": "ko_back",
+            "role": "fighter",
+            "injuries": [
+                { "type": "fracture", "severity": 1 },
+                { "type": "fracture", "severity": 2 }
+            ],
+            "state": { "consciousness": "confused" },
+            "ai": {
+                "side": "b",
+                "weapon": 0,
+                "start": "unit_near",
+                "startRadius": 150,
+                "onPolice": "flee"
+            }
+        }
+    ]
+}
