@@ -139,10 +139,32 @@ end
 -- the menu opened (core.lua Menu.show): modal, Auto-update
 -- ---------------------------------------------------------------------------
 
+-- The warning no longer depends on a one-time account flag (players who closed it once, or who
+-- got new models later, never saw it again): it opens on every login while models are missing,
+-- as soon as v_modloader has the list and has checked the files. Once per session.
+local noticeShown = false
+
 function onMenuShownModels(reopened)
     if reopened then return end
     ModelsNotice.sel = 1
-    ModelsNotice.open = Menu.data.modelsNotice == true
+    ModelsNotice.open = false
+    local tries = 0
+    setTimer(function()
+        tries = tries + 1
+        if not Menu.open or noticeShown or not modloaderRunning() then return end
+        local okS, s = pcall(function() return exports.v_modloader:getModelStatus("vehicles") end)
+        local count, _, checking = 0, 0, true
+        local okM, c, b, ch = pcall(function() return exports.v_modloader:getMissingModels() end)
+        if okM then count, checking = tonumber(c) or 0, ch end
+        local listed = okS and s and (s.total or 0) > 0
+        if listed and not checking then
+            noticeShown = true
+            if count > 0 and not ModelsNotice.open then
+                ModelsNotice.open = true
+                playUI("move")
+            end
+        end
+    end, 500, 60)
     -- the saved settings arrive with the login; give them a moment
     setTimer(function()
         if Menu.open and not ModelsNotice.open and modloaderRunning() then
