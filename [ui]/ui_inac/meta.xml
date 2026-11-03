@@ -19,6 +19,7 @@
 
     <export function="createTempMenu" type="client" />
     <export function="closeTempMenu" type="client" />
+    <export function="getTempMenuPosition" type="client" />
     <export function="isTempMenuOpen" type="client" />
     <export function="updateTempMenuItem" type="client" />
 

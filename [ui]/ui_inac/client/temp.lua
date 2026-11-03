@@ -181,11 +181,29 @@ function createTempMenu(config)
     MenuState.open = true
     MenuState.current = rootId
     MenuState:resetSelection()
+    -- config.resume = { path = "2/1", selected = 3 } from getTempMenuPosition(): reopen on that level/row
+    local resume = config.resume
+    if type(resume) == "table" and type(resume.path) == "string" then
+        local target = resume.path ~= "" and (rootId .. "/" .. resume.path) or rootId
+        local menu = MenuRegistry.menus[target]
+        if menu and tempIds[target] then
+            MenuState.current = target
+            MenuState.selected = math.max(1, math.min(tonumber(resume.selected) or 1, #menu.items))
+        end
+    end
     syncMenuRender()
     setElementData(localPlayer, "interactionMenuOpen", true)
     uicore:toggleMoveControls(false)
 
     return rootId
+end
+
+-- exports.ui_inac:getTempMenuPosition()  -  { path = "2/1" ("" = root), selected = n } of the
+-- open temp menu, for createTempMenu({ resume = ... }) after a rebuild; false when none is open.
+function getTempMenuPosition()
+    if not isTempMenuOpen() then return false end
+    local suffix = MenuState.current:sub(#rootId + 2)
+    return { path = suffix, selected = MenuState.selected }
 end
 
 -- exports.ui_inac:closeTempMenu()  -  close the whole temp menu (fires the close event).

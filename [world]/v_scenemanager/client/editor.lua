@@ -22,8 +22,15 @@ local function send(action, arg)
     triggerServerEvent("vsm:editorAction", resourceRoot, action, arg)
 end
 
+-- actions after which the menu closes (leaving the scene, moving the player, placing things);
+-- every other edit keeps the menu open and it is rebuilt in place when the new state arrives
+local CLOSING = {
+    new = true, load = true, issue_load = true, exit = true, leave = true, teleport = true,
+    addped = true, addveh = true, savevehicle = true, gotoped = true, gotoveh = true, issue_tp = true,
+}
+
 local function item(label, action, arg, desc, extra)
-    local it = { label = label, desc = desc, value = { a = action, v = arg } }
+    local it = { label = label, desc = desc, value = { a = action, v = arg }, closeOnSelect = CLOSING[action] == true }
     for k, v in pairs(extra or {}) do it[k] = v end
     return it
 end
@@ -333,6 +340,13 @@ local renderEditor -- onClientRender handler, attached only while the editor is 
 addEventHandler("vsm:editorState", resourceRoot, function(newState)
     local wasOn = state ~= false
     state = newState or false
+    if state and wasOn and menuId and exports.ui_inac:isTempMenuOpen() then
+        -- an edit came back: rebuild the menu with the new values, on the same level and row
+        local pos = exports.ui_inac:getTempMenuPosition()
+        local def = state.scene and sceneMenu(state.scene) or mainMenu()
+        def.resume = pos or nil
+        menuId = exports.ui_inac:createTempMenu(def)
+    end
     if state and not wasOn then
         bindKey(VSM.KEY_MENU, "down", onMenuKey)
         addEventHandler("onClientRender", root, renderEditor)
