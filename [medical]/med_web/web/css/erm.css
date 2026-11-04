@@ -196,6 +196,7 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select:
 .unit.enroute   { background: #da3633cc; }
 .unit.onscene   { background: #3884f4cc; }
 .unit.handover  { background: #e6be28dd; color: #1a1a1a; }
+.unit.break     { background: #f58c1edd; color: #1a1a1a; }
 .unit.drop-ok   { border-color: #fff; }
 .unit.drop-bad  { opacity: .45; }
 
@@ -247,6 +248,7 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select:
 .bg-enroute   { background: var(--enroute); }
 .bg-onscene   { background: var(--onscene); }
 .bg-handover  { background: var(--handover); }
+.bg-break     { background: #f58c1e; }
 
 /* ---------------------------------------------------------------- chat */
 

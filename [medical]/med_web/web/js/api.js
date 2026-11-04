@@ -25,6 +25,7 @@
         enroute: 'En Route',
         onscene: 'On Scene',
         handover: 'Handover',
+        break: 'Break',
     };
 
     ERM.TASK_STATUS = {

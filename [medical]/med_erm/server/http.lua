@@ -19,7 +19,7 @@ end
 local WEB_FUNCTIONS = {}
 for _, fn in ipairs({
     "ermLogin", "ermLogout", "ermGetState", "ermSetPriority", "ermAssign", "ermUnassign",
-    "ermCloseTask", "ermCreateTask", "ermSendMessage",
+    "ermCloseTask", "ermCreateTask", "ermSendMessage", "ermBreakApprove", "ermBreakDeny",
     "ermTabletLogin", "ermTabletLogout", "ermTabletState", "ermTabletCaseAction",
     "ermTabletLeaveCase", "ermTabletCloseCase", "ermTabletSendMessage", "ermTabletEndShift",
     "ermAdminLogin", "ermAdminLogout", "ermAdminQuery", "ermAdminAuto", "ermAdminAutoSet",
@@ -84,6 +84,18 @@ end
 function ermUnassign(token, taskId, unitId)
     if not Dispatchers.check(token) then return DENIED end
     return result(Tasks.unassign(taskId, unitId))
+end
+
+function ermBreakApprove(token, unitId)
+    local s = Dispatchers.check(token)
+    if not s then return DENIED end
+    return result(Break.approve(unitId, s.display))
+end
+
+function ermBreakDeny(token, unitId)
+    local s = Dispatchers.check(token)
+    if not s then return DENIED end
+    return result(Break.deny(unitId, s.display))
 end
 
 function ermCloseTask(token, taskId, reason)

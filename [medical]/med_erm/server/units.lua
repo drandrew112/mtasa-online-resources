@@ -61,6 +61,9 @@ function Units.payload(u)
             members      = members,
             closedTasks  = u.closedTasks,
             unqualified  = u.unqualified == true,
+            breakEnds    = u.breakEnds or 0,
+            breakRequest = u.breakRequest and true or false,
+            breakNext    = Break.nextAt(u),
         },
         task = t and Tasks.public(t) or false,
         serverTime = now(),
@@ -437,6 +440,8 @@ function Units.public(u)
         zone         = zoneLabel(x, y, z),
         startedAt    = u.startedAt,
         handoverEnds = u.handoverEnds or 0,
+        breakEnds    = u.breakEnds or 0,
+        breakRequest = u.breakRequest and true or false,
         closedTasks  = #u.closedTasks,
     }
 end

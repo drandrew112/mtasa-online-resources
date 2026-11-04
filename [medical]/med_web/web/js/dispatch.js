@@ -17,7 +17,7 @@
     };
 
     const PRIO_COLOR = { 1: '#e5484d', 2: '#f76b15', 3: '#ffc53d', 4: '#3e9bff' };
-    const STATUS_COLOR = { available: '#2ea043', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28' };
+    const STATUS_COLOR = { available: '#2ea043', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28', break: '#f58c1e' };
 
     // texts of the safe scene / police fields (v_scenemanager, police_system) in English and Hungarian; the rest of
     // the console is English for now
@@ -195,6 +195,8 @@
             html = list.map(u => {
                 let status = ERM.STATUS[u.status] || u.status;
                 if (u.status === 'handover' && u.handoverEnds) status += ` ${Math.max(0, u.handoverEnds - ERM.now())}s`;
+                if (u.status === 'break' && u.breakEnds) status += ` ${Math.max(0, Math.ceil((u.breakEnds - ERM.now()) / 60))} min`;
+                if (u.breakRequest) status += ' · break requested';
                 const task = u.task ? `#${u.task} ${esc(u.taskTitle)}` : 'No task';
                 return `<li class="unit ${u.status}" data-id="${u.id}">
                     <span class="unit-name">${esc(u.callsign)}<small>${esc(u.type)} · ${esc(u.plate)}${u.competency ? ' · ' + esc(u.competency) : ''}${u.unqualified ? ' · not qualified' : ''}</small></span>
@@ -233,6 +235,7 @@
             stat('En Route', count('enroute'), STATUS_COLOR.enroute) +
             stat('On Scene', count('onscene'), STATUS_COLOR.onscene) +
             stat('Handover', count('handover'), STATUS_COLOR.handover) +
+            stat('Break', count('break'), STATUS_COLOR.break) +
             stat('Not assigned', tcount('unassigned'), '#e5484d') +
             stat('Prioritized', tcount('prioritized'), '#ffc53d') +
             stat('Assigned', tcount('assigned'), '#57d172');
@@ -311,6 +314,11 @@
         if (await ERM.act('ermUnassign', taskId, unitId)) ERM.toast(`${u ? u.callsign : 'Unit'} released from #${taskId}`, true);
     }
 
+    async function breakAnswer(fn, unitId, text) {
+        const u = unitById(unitId);
+        if (await ERM.act(fn, unitId)) ERM.toast(`${text} ${u ? u.callsign : 'unit'}`, true);
+    }
+
     async function closeTask(id) {
         const r = await ERM.ui.form(`Close task #${id}`, [
             { name: 'reason', label: 'Reason (optional)', placeholder: 'e.g. Patient refused transport' },
@@ -376,6 +384,11 @@
         if (!u) return;
         const items = [{ header: `${u.callsign} · ${ERM.STATUS[u.status]}` }];
 
+        if (u.breakRequest) {
+            items.push({ header: 'Break requested' },
+                { label: 'Approve break (20 min)', action: () => breakAnswer('ermBreakApprove', id, 'Break approved for') },
+                { label: 'Deny break', action: () => breakAnswer('ermBreakDeny', id, 'Break denied for') });
+        }
         if (u.task) {
             items.push(
                 { label: `Show task #${u.task}`, action: () => { S.tab = 'active'; syncTabs(); selectTask(u.task, true); } },

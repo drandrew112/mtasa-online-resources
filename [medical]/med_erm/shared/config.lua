@@ -120,7 +120,14 @@ Config.STATUS = {
     enroute   = { label = L.text("med_erm.config.en_route"),  color = { 218, 54, 51 } },   -- red
     onscene   = { label = L.text("med_erm.config.on_scene"),  color = { 56, 132, 244 } },  -- blue
     handover  = { label = L.text("med_erm.config.handover"),  color = { 230, 190, 40 } },  -- yellow
+    ["break"] = { label = L.text("med_erm.config.break"),     color = { 245, 140, 30 } },  -- orange
 }
+
+-- Break request (Requests on the tablet's Home page): an available unit can ask for a break every
+-- COOLDOWN seconds (counted from the start of its last break); it lasts DURATION seconds and the unit can end it
+-- any time. Auto dispatch grants it at once, otherwise a dispatcher approves it. A pending request expires when the
+-- unit gets a case - no cooldown then.
+Config.BREAK = { DURATION = 20 * 60, COOLDOWN = 2 * 60 * 60 }
 
 Config.PRIORITY_COLORS = {
     [1] = { 229, 72, 77 },

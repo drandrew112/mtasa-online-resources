@@ -5,6 +5,41 @@ local s = Gfx.s
 
 Pages.home = {}
 
+-- Requests picker (drawn by the tablet over the page while Tablet.picker is set): for now only the break.
+local function drawRequestsPicker(sx, sy, sw, sh)
+    local u = State.unit
+    if not u then Tablet.picker = nil return end
+    Gfx.hit(0, 0, Gfx.screenW, Gfx.screenH, function() end)
+    Gfx.round(sx, sy, sw, sh, s(8), Theme.shade)
+
+    local w, h = s(420), s(212)
+    local x, y = sx + (sw - w) / 2, sy + (sh - h) / 2
+    Gfx.round(x, y, w, h, s(10), Theme.panel)
+    Gfx.text(L("med_erm.break.title"), x + s(20), y + s(16), w - s(40), s(26), Theme.text, Gfx.font(13, true))
+    Gfx.text(L("med_erm.break.picker_text"), x + s(20), y + s(46), w - s(40), s(40), Theme.dim, Gfx.font(10), "left", "top", true)
+
+    local nowT = State.serverNow()
+    local label, color, disabled, action = L("med_erm.break.opt_break"), Config.STATUS["break"].color, false, "erm:requestBreak"
+    if u.status == "break" then
+        label = L("med_erm.break.opt_end", { minutes = math.max(1, math.ceil((u.breakEnds - nowT) / 60)) })
+        action = "erm:endBreak"
+    elseif u.breakRequest then
+        label, action = L("med_erm.break.opt_pending"), "erm:cancelBreak"
+    elseif (u.breakNext or 0) > nowT then
+        label = L("med_erm.break.opt_wait", { minutes = math.max(1, math.ceil((u.breakNext - nowT) / 60)) })
+        disabled = true
+    elseif u.status ~= "available" then
+        disabled = true
+    end
+    Gfx.button(x + s(20), y + s(92), w - s(40), s(48), label,
+        { color = color, disabled = disabled or TabletTutorial.active, font = Gfx.font(10, true) },
+        function()
+            Tablet.picker = nil
+            Tablet.send(action)
+        end)
+    Gfx.button(x + s(20), y + h - s(54), w - s(40), s(38), L("common.cancel"), {}, function() Tablet.picker = nil end)
+end
+
 function Pages.home.draw(x, y, w, h)
     local u, t = State.unit, State.task
     local pad = s(18)
@@ -12,6 +47,8 @@ function Pages.home.draw(x, y, w, h)
     local cy = y + s(14)
 
     Gfx.text(L("med_erm.home.home"), ix, cy, iw, s(26), Theme.text, Gfx.font(15, true))
+    Gfx.button(ix + iw - s(120), cy - s(2), s(120), s(28), L("med_erm.break.request"),
+        { color = { 56, 132, 244 }, font = Gfx.font(9, true) }, function() Tablet.picker = drawRequestsPicker end)
     local crew = {}
     for _, m in ipairs(u.members) do
         local name = m.name:gsub("#%x%x%x%x%x%x", "")

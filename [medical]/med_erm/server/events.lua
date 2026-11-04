@@ -22,6 +22,8 @@
 --   onErmMessage              (messageId, channel, target, from, fromDispatch, text)
 --   onErmBackupRequested      (taskId, requesterUnitId, assignedUnitId, option)   option = Config.BACKUP_OPTIONS id
 --   onErmAgencyRequested      (taskId, requesterUnitId, agency, reason, callId)   Request agency (server/agency.lua)
+--   onErmUnitBreakRequest     (unitId)   a unit waits for a dispatcher to approve its break (server/breaks.lua)
+--   onErmUnitBreakStart       (unitId)   20 minute break started (status "break")
 
 Events = {}
 
@@ -31,6 +33,7 @@ local NAMES = {
     "onErmUnitSignIn", "onErmUnitSignOut", "onErmUnitStatusChange",
     "onErmUnitHandoverStart", "onErmUnitHandoverComplete", "onErmMessage",
     "onErmUnitHandoverRequest", "onErmBackupRequested", "onErmAgencyRequested",
+    "onErmUnitBreakRequest", "onErmUnitBreakStart",
 }
 
 for _, name in ipairs(NAMES) do

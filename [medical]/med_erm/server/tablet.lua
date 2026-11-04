@@ -51,6 +51,25 @@ handle("erm:requestBackup", function(player, optionId)
     return Backup.request(u, optionId)
 end)
 
+-- Break request (Home > Requests, server/breaks.lua)
+handle("erm:requestBreak", function(player)
+    local u = Units.ofPlayer(player)
+    if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
+    return Break.request(u)
+end)
+
+handle("erm:cancelBreak", function(player)
+    local u = Units.ofPlayer(player)
+    if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
+    return Break.cancel(u)
+end)
+
+handle("erm:endBreak", function(player)
+    local u = Units.ofPlayer(player)
+    if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
+    return Break.finish(u)
+end)
+
 -- Closing a case from the tablet (false call, broken scene, ...) needs a reason.
 handle("erm:closeCase", function(player, reason)
     local u = Units.ofPlayer(player)

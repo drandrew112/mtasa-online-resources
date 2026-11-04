@@ -164,7 +164,9 @@ function Tasks.assign(id, unitId)
     if u.task == t.id then return false, L.msg("med_erm.tasks.is_already_on_this_task", { callsign = u.callsign }) end
     if u.task then return false, L.msg("med_erm.tasks.already_has_task", { callsign = u.callsign, task = u.task }) end
     if u.unqualified then return false, L.msg("med_erm.competency.cannot_take_case", { callsign = u.callsign }) end
+    if u.status == "break" then return false, L.msg("med_erm.break.unit_on_break", { callsign = u.callsign }) end
 
+    u.breakRequest = nil   -- a pending break request expires with the new case (no cooldown)
     t.units[#t.units + 1] = u.id
     if not hasValue(t.unitLog, u.callsign) then t.unitLog[#t.unitLog + 1] = u.callsign end
     t.assignedAt = t.assignedAt or now()
