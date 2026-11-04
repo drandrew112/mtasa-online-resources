@@ -70,9 +70,9 @@ end)
 -- logged in: v_mainmenu (or the loading screen) takes over the screen
 addEvent("v_accounts:onClientLoggedIn", true)
 addEventHandler("v_accounts:onClientLoggedIn", localPlayer, function(_, isNew)
-    -- the account menu keeps the music going (no restart in between); a new account goes to the loading
+    -- the account menu keeps the music going (no restart in between); new accounts go there too
     local menu = getResourceFromName("v_mainmenu")
-    if not isNew and menu and getResourceState(menu) == "running" then setMusicActive(true) end
+    if menu and getResourceState(menu) == "running" then setMusicActive(true) end
     setPanel(nil, true)
 end)
 

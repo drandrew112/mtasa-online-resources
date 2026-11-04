@@ -119,15 +119,12 @@ addEventHandler("onPlayerAccountLogin", root, function(accountName, isNew)
     loadCollectibles(player)
     loadPreferences(player)
 
-    if isNew then
-        -- brand-new account: no menu, no mapcam - the loading hands the player to v_introduce
-        if resourceRunning("v_loading") then exports.v_loading:beginLoading(player, "fresh") end
-        return
-    end
+    -- a brand-new account goes to the menu too (custom models warning); its Join game
+    -- starts the "fresh" loading (no mapcam) that hands the player to v_introduce
     if resourceRunning("v_mainmenu") then
         triggerEvent("onPlayerDataReady", player, accountName)
     elseif resourceRunning("v_loading") then
-        exports.v_loading:beginLoading(player, "normal")
+        exports.v_loading:beginLoading(player, isNew and "fresh" or "normal")
     end
 end)
 

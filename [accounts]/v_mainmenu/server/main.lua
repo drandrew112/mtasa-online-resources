@@ -91,7 +91,10 @@ addEventHandler("v_mainmenu:join", root, function()
     local player = client
     if not inMenu[player] then return end
     inMenu[player] = nil
-    if not resourceRunning("v_loading") or not exports.v_loading:beginLoading(player, "normal") then
+    -- brand-new account (v_accounts, server-only data): "fresh" loading without mapcam,
+    -- v_introduce starts right after it (onPlayerLoaded)
+    local mode = getElementData(player, "acc.registered") == true and "fresh" or "normal"
+    if not resourceRunning("v_loading") or not exports.v_loading:beginLoading(player, mode) then
         outputServerLog(("[v_mainmenu] could not start the loading of %s"):format(getPlayerName(player)))
         open(player)
     end
