@@ -96,6 +96,7 @@ HELP_INDEX = {
         { id = "medical_exam_rsi",   category = "medical", order = 130, file = "medical/exam_rsi.txt" },
         { id = "medical_exam_c",     category = "medical", order = 135, file = "medical/exam_c.txt" },
         { id = "medical_exam_d",     category = "medical", order = 140, file = "medical/exam_d.txt" },
+        
         -- police (police_system, work_police)
         { id = "police", category = "police", order = 10, file = "police/police.txt" },
         { id = "police_duty", category = "police", order = 20, file = "police/police_duty.txt" },
