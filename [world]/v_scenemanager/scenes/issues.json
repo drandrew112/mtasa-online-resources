@@ -1,0 +1,23 @@
+{
+    "format": 1,
+    "seq": 1,
+    "issues": [
+        {
+            "id": 1,
+            "pos": [413.56, -1102.88, 82.31],
+            "at": 1793747523,
+            "by": "Krissz",
+            "byName": "Krissz",
+            "comment": "nincs itt beteg npc",
+            "instance": 8,
+            "lang": "hu",
+            "path": "Los_Santos/hypertension/ls_hypertension23",
+            "resolvedAt": 1793813302,
+            "resolvedBy": "drandrew112",
+            "scene": "ls_hypertension23",
+            "server": "FreeV | HU/EN | Light Roleplay, Minigames | MTA Online - Beta | SynHosting:22095",
+            "source": "command",
+            "status": "resolved"
+        }
+    ]
+}
