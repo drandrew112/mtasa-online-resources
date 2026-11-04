@@ -19,7 +19,7 @@ INTRO = {
     ACC_SKIPPED = "intro.skipped",     -- JSON { moduleId = version } the player skipped (no XP given)
 
     -- Raise it when rules.txt changes: everybody has to accept the new rules on the next login.
-    RULES_VERSION = 1,
+    RULES_VERSION = 2,
 
     -- Reward: the XP of each module (modules/*.lua, field xp) is given when the module is
     -- finished the first time. The last chapter tops it up to REWARD_TOTAL_XP, so a new

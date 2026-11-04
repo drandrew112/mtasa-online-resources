@@ -130,9 +130,23 @@ function Login.draw(x, y, w, h)
         }, function() Login.unitType = t end)
     end
     local typeOk, typeNeed = true, nil
-    if Login.unitType then typeOk, typeNeed = Competency.crewAllows(Login.members, Login.unitType) end
+    if Login.unitType then
+        typeOk, typeNeed = Competency.crewAllows(Login.members, Login.unitType)
+    else
+        -- nothing selected: if the crew qualifies for none of the types, say what is missing
+        local anyOk, firstNeed = false, nil
+        for _, t in ipairs(types) do
+            local ok, need = Competency.crewAllows(Login.members, t)
+            if ok then anyOk = true break end
+            firstNeed = firstNeed or need
+        end
+        if not anyOk and types[1] then
+            Login.unitType = nil
+            typeOk, typeNeed = false, firstNeed
+        end
+    end
     if not typeOk then
-        Gfx.text(L("med_erm.competency.type_needs", { type = Login.unitType, need = typeNeed }),
+        Gfx.text(L("med_erm.competency.type_needs", { type = Login.unitType or types[1], need = typeNeed }),
             ix, ty + s(58), lw, s(36), tocolor(255, 130, 110), Gfx.font(9), "left", "top", true)
     else
         Gfx.text(Login.unitType and TYPE_HINTS[Login.unitType] or L("med_erm.login.select_type_of_your_unit"),

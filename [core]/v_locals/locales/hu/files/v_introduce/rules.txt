@@ -1,11 +1,12 @@
 FreeV - Szerverszabályok
 
-A szerveren való játékkal elfogadod az alábbi szabályokat. Megszegésük figyelmeztetést, némítást, admin börtönt vagy kitiltást vonhat maga után, a súlyosságtól függően. Az adminok eseti alapon döntenek.
+A szerveren való játékkal elfogadod az alábbi szabályokat. Megszegésük figyelmeztetést, némítást, admin börtönt vagy kitiltást vonhat maga után, a súlyosságtól függően. Az adminok eseti alapon döntenek és amennyiben lehetséges minden oldalt figyelmesen megvizsgálnak.
 
 1. Tisztelet
 - Bánj tisztelettel a többi játékossal. Tilos a sértegetés, zaklatás, fenyegetés, rasszizmus, szexizmus vagy bármilyen gyűlöletbeszéd - a chaten, privát üzenetben, crew nevekben vagy bárhol máshol.
+- Tilos a diszkrimináció. Tilos az etnikai vagy szexuális kisebbségeket támadni. Ennek a szabálynak a megszegése súlyos következményekkel járhat.
 - Ne spameld a chatet, és ne reklámozz más szervereket vagy szolgáltatásokat.
-- Ne add ki magad adminnak vagy más játékosnak.
+- Ne add ki magad adminnak.
 
 2. Fair play
 - Tilos a csalás, hack, trainer, makró vagy bármilyen mod, ami előnyt ad a többi játékossal szemben.
@@ -13,15 +14,16 @@ A szerveren való játékkal elfogadod az alábbi szabályokat. Megszegésük fi
 - Ne használj több fiókot előny szerzésére (pénz, XP, tárgyak).
 
 3. Ölés és erőszak
-- Ne ölj meg más játékosokat ok nélkül nyilvános helyeken.
-- Ne támadj meg AFK játékosokat, a bevezetőben lévőket vagy menüben lévőket.
+- Ne ölj meg más játékosokat ok nélkül.
+- Ne akadályozd más játékos mozgását indokolatlanul. - Kivétel a rendőrségi körözés vagy elfogató parancs.
+- Ne támadj meg AFK játékosokat, a bevezetőben lévőket vagy menüben lévőket. - A nametagban látható, ha egy játékos éppen valamelyik menüben vagy panelen van. Ezt egy kis tablet ikon jelzi.
 - Ne ölj meg játékosokat újra és újra közvetlenül az újraéledésük után.
 - A saját szabályokkal rendelkező tevékenységekre (versenyek, deathmatchek, Arena War) ezek a szabályok vonatkoznak.
 
 4. Jobok és sürgősségi szolgálatok
-- A sürgősségi munkában szolgálatban lévő játékosok (például EMS) nem célpontok. Hagyd őket dolgozni.
-- A munkajárműveket és munkaeszközöket ne használd másra, mint a munkára.
-- Ne torlaszolj el szándékosan kórházakat, állomásokat vagy munkahelyeket.
+- A sürgősségi munkákban szolgálatban lévő játékosok (például Mentőszolgálat) nem célpontok. Hagyd őket dolgozni.
+- A munkajárműveket és munkaeszközöket ne használd másra, mint a munkára. - Az interakciós menüben lehívott járművek nem használhatók munka célra.
+- Ne torlaszolj el szándékosan kórházakat, munkaállomásokat vagy munkahelyeket.
 
 5. Járművek
 - Ne ütközz, ne torlaszolj el és ne rongálj meg más játékosok járműveit ok nélkül.
@@ -33,12 +35,15 @@ A szerveren való játékkal elfogadod az alábbi szabályokat. Megszegésük fi
 
 7. Nevek és crew-k
 - A játékosnevek, crew nevek és crew tagek nem lehetnek sértőek vagy félrevezetőek.
+- Tartsd be a fenti "Tisztelet" szekcióban foglalt szabályokat a játékosneved és crew név beállítása során.
 
 8. Adminok és bejelentések
-- Ha valaki megszegi a szabályokat, használd a /report parancsot. Írd le, mi történt, ki tette és mikor.
+- Mielőtt admint hívsz, mindig ellenőrizd az F1 súgó panelt. Rengeteg kérdésre ott is megoldást találsz. - Ennek elmulasztása kisebb következményeket vonhat maga után.
+- Ha valaki megszegi a szabályokat, használd a Discord ticket funkciót a create-ticket szobában.. Írd le, mi történt, ki tette és mikor. Csatolj hozzá bizonyítékokat is! A bizonyíték fontos, mert anélkül nem tudjuk 100%-ig biztosan megállapítani valaki bűnösségét.
+- Bár elsőroban a Discord ticketeket használjuk, a szerveren elréhető a /report parancs is. Itt viszont csak korlátozottan tudunk segíteni.
 - Kövesd az adminok utasításait. Ha nem értesz egyet egy döntéssel, beszélj nyugodtan az adminnal, vagy keresd a szerver csapatát a Discordon.
 - Ne élj vissza a bejelentési rendszerrel.
 
-A szabályok változhatnak. Ha változnak, újra meg fogják kérni, hogy olvasd el és fogadd el őket.
+A szabályok változhatnak. Ha változnak, újra meg fogunk kérni, hogy olvasd el és fogadd el őket.
 
-Jó szórakozást!
+Jó szórakozást kíván a FreeV csapata!

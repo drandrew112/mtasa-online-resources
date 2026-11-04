@@ -189,9 +189,9 @@ POLICE = {
     },
 
     HISTORY = {
-        WARRANT = 0.04, FINES = 0.30, WARNINGS = 0.25, SUSPENDED = 0.06,
-        ALCOHOL = 0.05, ALCOHOL_NIGHT = 0.10, DRUG = 0.04,
-        EXPIRED_INSPECTION = 0.07, EXPIRED_REGISTRATION = 0.03, EXPIRED_LICENCE = 0.04, STOLEN = 0.02, FLEE = 0.03, FLEE_WARRANT = 0.15,
+        WARRANT = 0.02, FINES = 0.20, WARNINGS = 0.15, SUSPENDED = 0.03,
+        ALCOHOL = 0.04, ALCOHOL_NIGHT = 0.08, DRUG = 0.04,
+        EXPIRED_INSPECTION = 0.03, EXPIRED_REGISTRATION = 0.02, EXPIRED_LICENCE = 0.02, STOLEN = 0.02, FLEE = 0.02, FLEE_WARRANT = 0.05,
         AGE = { 18, 72 },
         PLATE_CHECK = 12 * 3600 * 1000,   -- player vehicle plates re-read from v_ownveh
         -- history/server/cleanup.lua: NPC citizens / vehicles older than this (s) are deleted, unless a player

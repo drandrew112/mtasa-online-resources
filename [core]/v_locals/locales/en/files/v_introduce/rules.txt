@@ -1,44 +1,50 @@
-FreeV - Server rules
+FreeV – Server Rules
 
-By playing on this server you accept the rules below. Breaking them can get you a warning, a mute, an admin jail or a ban, depending on how serious it is. Admins decide case by case.
+By playing on the server, you agree to follow the rules listed below. Violating these rules may result in a warning, mute, admin jail, or ban, depending on the severity of the violation. Administrators make decisions on a case-by-case basis and, whenever possible, carefully review all sides of the situation.
 
 1. Respect
-- Treat other players with respect. No insults, harassment, threats, racism, sexism or other hate speech - in chat, in private messages, in crew names or anywhere else.
-- Do not spam the chat and do not advertise other servers or services.
-- Do not impersonate admins or other players.
+- Treat other players with respect. Insults, harassment, threats, racism, sexism, and any form of hate speech are prohibited – whether in chat, private messages, crew names, or anywhere else.
+- Discrimination is prohibited. Attacking ethnic or sexual minorities is not allowed. Violations of this rule may result in severe consequences.
+- Do not spam the chat or advertise other servers or services.
+- Do not impersonate an administrator.
 
-2. Fair play
-- No cheats, hacks, trainers, macros or mods that give you an advantage over other players.
-- Do not abuse bugs or glitches. If you find one, report it to an admin.
-- Do not use more than one account to get an advantage (money, XP, items).
+2. Fair Play
+- Cheating, hacks, trainers, macros, or any modifications that give you an unfair advantage over other players are prohibited.
+- Do not exploit bugs or glitches. If you discover one, report it to an administrator.
+- Do not use multiple accounts to gain an advantage (money, XP, items).
 
-3. Killing and violence
-- Do not kill other players without a reason in public places.
-- Do not attack players who are AFK, in the introduction or in a menu.
-- Do not kill players again and again right after they respawn.
-- Activities with their own rules (races, deathmatches, Arena War) follow those rules.
+3. Killing and Violence
+- Do not kill other players without a valid reason.
+- Do not unnecessarily obstruct other players' movement. Exception: police pursuits or arrest warrants.
+- Do not attack AFK players, players in the tutorial, or players who are using menus. A small tablet icon next to a player's nametag indicates when they are currently using a menu or panel.
+- Do not repeatedly kill players immediately after they respawn.
+- These rules do not apply to activities with their own specific rules (races, deathmatches, Arena War).
 
-4. Jobs and emergency services
-- Players on duty in an emergency job (for example EMS) are not targets. Let them do their work.
-- Do not use work vehicles or work equipment for anything else than the job.
-- Do not block hospitals, stations or workplaces on purpose.
+4. Jobs and Emergency Services
+- Players who are on duty in emergency services (e.g. the Ambulance Service) must not be targeted. Let them do their jobs.
+- Work vehicles and equipment must only be used for their intended work purposes. Vehicles spawned through the interaction menu cannot be used for work purposes.
+- Do not deliberately block hospitals, workstations, or workplaces.
 
 5. Vehicles
-- Do not ram, block or destroy other players' vehicles without a reason.
-- Do not park in a way that blocks roads, entrances or markers.
+- Do not ram, block, or damage other players' vehicles without a valid reason.
+- Do not park in a way that blocks roads, entrances, or markers.
 
-6. Money and trading
-- Do not scam other players. Agreements between players must be kept.
-- Selling or buying in-game money, items or accounts for real money is forbidden.
+6. Money and Trading
+- Do not scam other players. Agreements between players must be respected.
+- Buying or selling in-game money, items, or accounts for real-world money is prohibited.
 
-7. Names and crews
-- Player names, crew names and crew tags may not be offensive or misleading.
+7. Names and Crews
+- Player names, crew names, and crew tags must not be offensive or misleading.
+- Follow the rules outlined in the "Respect" section when choosing your player name or crew name.
 
-8. Admins and reports
-- If someone breaks the rules, use /report. Describe what happened, who did it and when.
-- Follow the instructions of the admins. If you do not agree with a decision, talk to the admin calmly or contact the server team on Discord.
-- Do not abuse the report system.
+8. Administrators and Reports
+- Before contacting an administrator, always check the F1 help panel. You may find answers to many of your questions there. Failure to do so may result in minor consequences.
+- If someone violates the rules, use the Discord ticket system in the **create-ticket** channel. Describe what happened, who was involved, and when it happened. Make sure to attach evidence as well! Evidence is important, as without it, we cannot determine someone's guilt with complete certainty.
+- Although Discord tickets are our primary reporting method, the **/report** command is also available in-game. However, assistance through this method is limited.
+- Follow administrators' instructions. If you disagree with a decision, feel free to discuss it with the administrator or contact the server management team on Discord.
+- Do not abuse the reporting system.
 
-The rules can change. When they change, you will be asked to read and accept them again.
+The rules are subject to change. If they are updated, you will be asked to read and accept them again.
 
-Have fun!
+Have fun playing!
+The FreeV Team

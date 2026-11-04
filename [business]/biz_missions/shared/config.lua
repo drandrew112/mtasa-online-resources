@@ -39,7 +39,7 @@ MIS = {
     DISCONNECT_RETURN = 0.5,       -- cargo part going back to the stock when its driver disconnects
     VISIBLE_DIST = 800,            -- other players see the shipment's blip / get a notice within this
     HIDE_DIST = 900,               -- ... and lose it beyond this
-    VAN_BLIP = 51,                 -- truck icon
+    VAN_BLIP = 50,                 -- truck icon
 
     -- enemies on the road (ai_land_traffic pursuit)
     WAVE_FIRST = { 60, 120 },      -- seconds after the first van moves
