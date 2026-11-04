@@ -36,7 +36,9 @@
     "596": "Ford Crown Vic Police",
     "597": "Vapid Police Cruiser (GTA5)",
     "598": "Skoda Octavia MK3 Facelift",
-    "599": "Police Ranger (NYPD)"
+    "599": "Police Ranger (NYPD)",
+    "602": "Audi A3 Sedan (Police)",
+    "603": "Audi RS6 C7 (Police)"
   },
   "skins": {
     "272": "OMSZ Coat",
@@ -48,6 +50,7 @@
     "282": "lvpd1",
     "283": "csher",
     "284": "lapdm1",
+    "285": "swat",
     "286": "fbi",
     "287": "army"
   },

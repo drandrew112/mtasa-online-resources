@@ -10,12 +10,14 @@ POLICE_WORK = {
     COLOR = { 40, 100, 220 },
 
     SKINS = {
-        { model = 280, name = L.text("work_police.config.skin_ls_officer") },
-        { model = 281, name = L.text("work_police.config.skin_sf_officer") },
-        { model = 282, name = L.text("work_police.config.skin_lv_officer") },
-        { model = 283, name = L.text("work_police.config.skin_county_sheriff") },
-        { model = 284, name = L.text("work_police.config.skin_motorbike_officer") },
-        { model = 288, name = L.text("work_police.config.skin_desert_sheriff") },
+        { model = 280, name = L.text("work_police.config.skin_hu_1") },
+        { model = 281, name = L.text("work_police.config.skin_hu_2") },
+        { model = 282, name = L.text("work_police.config.skin_hu_3") },
+        { model = 286, name = L.text("work_police.config.skin_hu_4") },
+        { model = 283, name = L.text("work_police.config.skin_lspd_1") },
+        { model = 284, name = L.text("work_police.config.skin_lspd_2") },
+        { model = 285, name = L.text("work_police.config.skin_lspd_3") },
+        { model = 288, name = L.text("work_police.config.skin_sheriff") },
     },
 
     -- work levels = ranks (police_system decides the rights by them: Hadnagy 7 warrants of others, Százados 9 fines)
@@ -40,6 +42,10 @@ POLICE_WORK = {
           tuning = { engine = 2, turbo = 2, brakes = 2, driveType = "awd" } },
         { model = 599, name = L.text("work_police.config.police_ranger"), level = 2,
           tuning = { engine = 2, turbo = 2, brakes = 2 } },
+        { model = 602, name = L.text("work_police.config.audi_a3"),
+          tuning = { engine = 3, turbo = 3, brakes = 3, driveType = "awd" } },
+        { model = 603, name = L.text("work_police.config.audi_rs6"),
+          tuning = { engine = 3, turbo = 3, brakes = 3, driveType = "awd" } },
         -- { model = 597, name = "GTA5 police car" },   -- later
     },
 
