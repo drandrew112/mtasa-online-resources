@@ -45,8 +45,14 @@ function Units.payload(u)
         members[#members + 1] = { player = p, name = getPlayerName(p), account = accountName(p) }
     end
     local t = u.task and Tasks.get(u.task)
+    local fines = {}
+    for _, f in ipairs(u.fines or {}) do
+        local def = Config.FINE_BY_ID[f.id]
+        fines[#fines + 1] = { id = f.id, label = def and def.label or f.id, amount = f.amount, at = f.at, by = f.by }
+    end
     return {
         unit = {
+            fines        = fines,
             id           = u.id,
             callsign     = u.callsign,
             type         = u.type,

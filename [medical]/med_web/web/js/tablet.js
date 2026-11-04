@@ -267,13 +267,18 @@
         } else {
             html += '<div class="tb-card none">No active case - waiting for dispatch</div>';
         }
-        const closed = u.closedTasks.slice().reverse();
-        html += `<div class="tb-label">Closed cases this shift (${closed.length})</div><div class="tb-list">`;
-        html += closed.length ? closed.map(c => `<div class="tb-row">
-            <span class="id">#${c.id}</span>${prioBadge(c.priority || 0)}
-            <span class="grow">${esc(c.title)}</span><span class="dim">${esc(c.zone)}</span>
-            <span class="dim">${OSA.clock(c.closedAt)}</span></div>`).join('')
-            : '<div class="osa-empty">No closed cases yet.</div>';
+        const events = u.closedTasks.map(c => ({ at: c.closedAt, c }))
+            .concat(arr(u.fines).map(f => ({ at: f.at, f })))
+            .sort((a, b) => b.at - a.at);
+        html += `<div class="tb-label">Recent events (${events.length})</div><div class="tb-list">`;
+        html += events.length ? events.map(e => e.f ? `<div class="tb-row">
+            <span class="id" style="color:#ff826e">FINE</span>
+            <span class="grow">${esc(e.f.label)} (${esc(e.f.by)})</span><span class="dim" style="color:#ff826e">-${e.f.amount} $</span>
+            <span class="dim">${OSA.clock(e.at)}</span></div>` : `<div class="tb-row">
+            <span class="id">#${e.c.id}</span>${prioBadge(e.c.priority || 0)}
+            <span class="grow">${esc(e.c.title)}</span><span class="dim">${esc(e.c.zone)}</span>
+            <span class="dim">${OSA.clock(e.at)}</span></div>`).join('')
+            : '<div class="osa-empty">No recent events yet.</div>';
         html += '</div>';
         setHtml($('tbHome'), html, 'home');
     }

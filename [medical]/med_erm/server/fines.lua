@@ -21,9 +21,10 @@ function Fines.issue(sup, targetId, fineId)
     target.fines[#target.fines + 1] = { id = fine.id, amount = fine.amount, at = now(), by = sup.callsign }
 
     Units.notify(target, L.msg("med_erm.supervisor.received_title"),
-        L.msg("med_erm.supervisor.received", { supervisor = sup.callsign, reason = L.msg(fine.label), amount = fine.amount }), true)
+        L.msg("med_erm.supervisor.received", { supervisor = sup.callsign, reason = L.msg(fine.label), amount = fine.amount }))  -- no alert sound: that is only for incoming tasks
     Units.notify(sup, L.msg("med_erm.supervisor.title"),
         L.msg("med_erm.supervisor.issued", { callsign = target.callsign, reason = L.msg(fine.label), amount = fine.amount }))
+    Units.sync(target)
     return true
 end
 

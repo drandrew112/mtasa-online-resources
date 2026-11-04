@@ -85,7 +85,11 @@ function Pages.home.draw(x, y, w, h)
 
     -- closed cases -----------------------------------------------------------
     cy = cy + cardH + s(20)
-    local closed = u.closedTasks or {}
+    -- recent events: closed cases + fines from the supervisor, oldest first (drawn newest first)
+    local closed = {}
+    for _, c in ipairs(u.closedTasks or {}) do closed[#closed + 1] = { at = c.closedAt, case = c } end
+    for _, f in ipairs(u.fines or {}) do closed[#closed + 1] = { at = f.at, fine = f } end
+    table.sort(closed, function(a, b) return (a.at or 0) < (b.at or 0) end)
     Gfx.label(L("med_erm.home.closed_cases_this_shift", { closed = #closed }), ix, cy, iw)
     cy = cy + s(20)
 
@@ -103,14 +107,23 @@ function Pages.home.draw(x, y, w, h)
 
     -- newest first
     for i = 1 + offset, math.min(#closed, offset + visible) do
-        local c = closed[#closed - i + 1]
+        local ev = closed[#closed - i + 1]
+        local c, f = ev.case, ev.fine
         local ry = cy + s(4) + (i - 1 - offset) * rowH
         if (i - offset) % 2 == 0 then Gfx.rect(ix + s(4), ry, iw - s(8), rowH, tocolor(255, 255, 255, 6)) end
-        Gfx.text("#" .. c.id, ix + s(12), ry, s(44), rowH, Theme.dim, Gfx.font(9, true))
-        Gfx.priorityBadge(ix + s(56), ry + (rowH - s(18)) / 2, s(28), s(18), c.priority ~= 0 and c.priority or nil)
-        local tw = iw - s(250)
-        Gfx.text(Gfx.fit(c.title, tw, Gfx.font(10)), ix + s(94), ry, tw, rowH, Theme.text, Gfx.font(10))
-        Gfx.text(Gfx.fit(c.zone, s(110), Gfx.font(9)), ix + iw - s(160), ry, s(110), rowH, Theme.dim, Gfx.font(9))
-        Gfx.text(State.formatClock(c.closedAt), ix, ry, iw - s(12), rowH, Theme.dim, Gfx.font(9, true), "right")
+        if f then
+            local red = tocolor(255, 130, 110)
+            Gfx.text(L("med_erm.home.fine_tag"), ix + s(12), ry, s(70), rowH, red, Gfx.font(9, true))
+            local tw = iw - s(250)
+            Gfx.text(Gfx.fit(L(f.label) .. " (" .. tostring(f.by) .. ")", tw, Gfx.font(10)), ix + s(94), ry, tw, rowH, Theme.text, Gfx.font(10))
+            Gfx.text("-" .. tostring(f.amount) .. " $", ix + iw - s(160), ry, s(110), rowH, red, Gfx.font(9, true))
+        else
+            Gfx.text("#" .. c.id, ix + s(12), ry, s(44), rowH, Theme.dim, Gfx.font(9, true))
+            Gfx.priorityBadge(ix + s(56), ry + (rowH - s(18)) / 2, s(28), s(18), c.priority ~= 0 and c.priority or nil)
+            local tw = iw - s(250)
+            Gfx.text(Gfx.fit(c.title, tw, Gfx.font(10)), ix + s(94), ry, tw, rowH, Theme.text, Gfx.font(10))
+            Gfx.text(Gfx.fit(c.zone, s(110), Gfx.font(9)), ix + iw - s(160), ry, s(110), rowH, Theme.dim, Gfx.font(9))
+        end
+        Gfx.text(State.formatClock(ev.at), ix, ry, iw - s(12), rowH, Theme.dim, Gfx.font(9, true), "right")
     end
 end

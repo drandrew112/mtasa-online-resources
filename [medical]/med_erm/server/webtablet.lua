@@ -114,6 +114,7 @@ local function state(s, lastMessageId, lastEventId)
     local members = {}
     for _, m in ipairs(unit.members) do members[#members + 1] = { name = m.name, account = m.account } end
     unit.members = members
+    for _, f in ipairs(unit.fines) do f.label = L.msg(f.label) end
 
     local t = u.task and Tasks.get(u.task)
     local task = false
