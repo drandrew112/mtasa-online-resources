@@ -168,7 +168,7 @@ function adminWebState(token, withStatic)
     local s = check(token)
     if not s then return DENIED end
 
-    local players = adminPlayerList(true)
+    local players = adminPlayerList(true, s.level)
     local data = {
         ok      = true,
         time    = now(),

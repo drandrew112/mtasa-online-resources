@@ -343,7 +343,7 @@
             ${section('Account', [
                 ['Name', p.name], ['ID', p.id],
                 ['Account', p.account || 'not logged in', p.account ? '' : 'dim'],
-                ['Account ID', p.accountId], ['E-mail', p.email], ['Registered', fmtDate(p.created)],
+                ['Account ID', p.accountId], ['E-mail', p.email || (p.emailHidden ? 'Hidden' : '-'), p.email ? '' : 'dim'], ['Registered', fmtDate(p.created)],
                 ['Admin level', `${p.adminLevel}  ${p.rank}`, p.adminLevel > 0 ? 'warn' : ''],
             ])}
             ${section('Character', [
@@ -892,7 +892,7 @@
         const loading = '<div class="osa-empty">Loading...</div>';
         if (A.tab === 'overview') {
             body = `<div class="tilesgrid">
-                ${kv('E-mail', d.email)}${kv('Update mails', d.hasEmail ? (d.updates ? 'Subscribed' : 'Unsubscribed') : '-', d.updates ? 'good' : 'dim')}
+                ${kv('E-mail', d.email || (d.emailHidden && d.hasEmail ? 'Hidden' : '-'), d.email ? '' : 'dim')}${kv('Update mails', d.hasEmail ? (d.updates ? 'Subscribed' : 'Unsubscribed') : '-', d.updates ? 'good' : 'dim')}
                 ${kvb('Cash', money(d.money), 'good', [['money', 'Edit']])}${kvb('Bank', money(d.bank), 'good', [['bank', 'Edit']])}
                 ${kvb('Level · XP', `${d.level} · ${fmtInt(d.xp)}`, '', [['level', 'Level'], ['xp', 'XP']])}
                 ${kv('Playtime', d.playtimeText || `${Math.floor(d.playtime / 60)}h ${String(d.playtime % 60).padStart(2, '0')}m`)}

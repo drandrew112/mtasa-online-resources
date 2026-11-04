@@ -45,13 +45,11 @@ local function playerOfAccount(name)
     end
 end
 
---- "jo•••@gmail.com" below ADMIN.perms.fullEmail
+--- the e-mail address, or false below ADMIN.perms.fullEmail (never sent, not even masked)
 local function showEmail(actor, email)
     if type(email) ~= "string" or email == "" then return false end
     if getAdminLevel(actor) >= permLevel("fullEmail") then return email end
-    local user, domain = email:match("^([^@]*)@(.*)$")
-    if not user then return "•••" end
-    return utf8.sub(user, 1, 2) .. "•••@" .. domain
+    return false
 end
 
 -- JSON value of one account_data key (both stored shapes, see v_mysql accdata.lua)
@@ -187,6 +185,7 @@ local function buildRows(actor, args)
     local regDays = tonumber(args.registered)
     local email, updates = args.email, args.updates
     local conds = type(args.conds) == "table" and args.conds or {}
+    local seeEmail = getAdminLevel(actor) >= permLevel("fullEmail")   -- no searching by address below it
 
     local out = {}
     for _, e in ipairs(cache.rows) do
@@ -202,7 +201,7 @@ local function buildRows(actor, args)
         local keep = true
         if search ~= "" then
             keep = lower(e.name):find(search, 1, true) or (e.display and lower(e.display):find(search, 1, true))
-                or (e.email and lower(e.email):find(search, 1, true)) or tostring(e.id) == search
+                or (seeEmail and e.email and lower(e.email):find(search, 1, true)) or tostring(e.id) == search
         end
         if keep and admin == "admins" then keep = e.adminLevel > 0
         elseif keep and tonumber(admin) then keep = e.adminLevel == tonumber(admin) end
@@ -296,6 +295,7 @@ local function detail(actor, name, reply)
         local d = {
             id = tonumber(row.id), name = acc, display = row.display_name or false,
             email = showEmail(actor, row.email), hasEmail = type(row.email) == "string" and row.email ~= "",
+            emailHidden = getAdminLevel(actor) < permLevel("fullEmail"),
             adminLevel = tonumber(row.admin_level) or 0, created = tonumber(row.created_at) or 0,
             updated = tonumber(row.updated_at) or 0,
             money = tonumber(data["money-BETA"]) or 0, bank = tonumber(row.bank) or 0, level = tonumber(data.level) or 0, xp = tonumber(data.xp) or 0,
@@ -327,7 +327,7 @@ local function detail(actor, name, reply)
             local ok2, s = pcall(function() return exports.v_achievements:getPlayerAchievementSummary(acc) end)
             if ok2 and type(s) == "table" then d.achievements = { done = s.done, total = s.total } end
         end
-        if getAdminLevel(actor) < permLevel("fullEmail") then d.lastIp = d.lastIp and "•••" or false end
+        if getAdminLevel(actor) < permLevel("fullIp") then d.lastIp = d.lastIp and "•••" or false end
         MYSQL.query(function(bans)
             d.banned = bans and bans[1] and { reason = bans[1].reason, admin = bans[1].admin, at = tonumber(bans[1].created_at) } or false
             MYSQL.query(function(v)

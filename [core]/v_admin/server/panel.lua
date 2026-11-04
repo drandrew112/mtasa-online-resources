@@ -124,11 +124,17 @@ end
 
 --- Data of every online player (panel + web panel). Texts are resolved to English when
 --- `english` is set (the web page cannot resolve message objects).
-function adminPlayerList(english)
+--- level = the viewing admin's level: e-mail addresses only from ADMIN.perms.fullEmail.
+function adminPlayerList(english, level)
     local list = {}
+    local seeEmail = (tonumber(level) or 0) >= ADMIN.perms.fullEmail
     for _, player in ipairs(getElementsByType("player")) do
         local d = collectPlayer(player)
         if english then d.rank = L.resolveFor("en", d.rank) end
+        if not seeEmail then
+            d.emailHidden = d.email and true or nil
+            d.email = false
+        end
         list[#list + 1] = d
     end
     table.sort(list, function(a, b) return a.id < b.id end)
@@ -142,7 +148,7 @@ local function sendPanel(admin, isRefresh, tab, arg)
         return
     end
 
-    local list = adminPlayerList()
+    local list = adminPlayerList(false, getAdminLevel(admin))
 
     triggerClientEvent(admin, E.panelData, resourceRoot, list, getAdminLevel(admin), isRefresh and true or false, tab or false, arg,
         { id = INSTANCE.id(), name = INSTANCE.name() })

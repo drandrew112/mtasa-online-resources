@@ -191,7 +191,7 @@ local function drawDetails(p, x, y, w)
         { L("v_admin.players.id"), p.id },
         { L("v_admin.players.account"), p.account or L("v_admin.players.not_logged_in"), not p.account and C.dim },
         { L("v_admin.players.account_3"), p.accountId or "-" },
-        { L("v_admin.players.e_mail"), p.email or "-" },
+        { L("v_admin.players.e_mail"), p.email or (p.emailHidden and L("v_admin.players.e_mail_hidden")) or "-", not p.email and C.dim },
         { L("v_admin.players.registered"), fmtDate(p.created) },
         { L("v_admin.players.admin_level"), p.adminLevel .. "  " .. AP.rankName(p.adminLevel), p.adminLevel > 0 and C.head },
     }, lx, y, colW)

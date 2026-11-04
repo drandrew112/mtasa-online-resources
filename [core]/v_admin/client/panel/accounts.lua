@@ -500,7 +500,7 @@ local function drawOverview(d, x, y, w, h)
     local played = d.playtimeText or (("%dh %02dm"):format(math.floor(d.playtime / 60), d.playtime % 60))
     local editLabel = L("v_admin.accounts.edit")
     local tiles = {
-        { L("v_admin.players.e_mail"), d.email or "-" },
+        { L("v_admin.players.e_mail"), d.email or (d.emailHidden and d.hasEmail and L("v_admin.players.e_mail_hidden")) or "-", not d.email and C.dim },
         { L("v_admin.accounts.update_mails"), d.hasEmail and (d.updates and L("v_admin.accounts.subscribed") or L("v_admin.accounts.unsubscribed")) or "-",
           d.updates and C.good or C.dim },
         { L("v_admin.accounts.cash"), "€" .. AP.fmtInt(d.money), C.good, buttons = {

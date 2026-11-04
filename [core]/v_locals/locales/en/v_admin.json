@@ -468,6 +468,7 @@
   "v_admin.players.copied_to_clipboard": "{label} copied to the clipboard.",
   "v_admin.players.dead": "DEAD",
   "v_admin.players.e_mail": "E-mail",
+  "v_admin.players.e_mail_hidden": "Hidden",
   "v_admin.players.enter_duration_in_minutes": "Enter the duration in minutes.",
   "v_admin.players.enter_reason": "Enter a reason.",
   "v_admin.players.enter_skin_id": "Enter a skin ID.",

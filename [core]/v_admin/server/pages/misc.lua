@@ -100,7 +100,7 @@ PAGES.register("bans", {
             local page = math.max(0, math.floor(tonumber(args.page) or 0))
             params[#params + 1] = size + 1
             params[#params + 1] = page * size
-            local showIp = getAdminLevel(actor) >= permLevel("fullEmail")
+            local showIp = getAdminLevel(actor) >= permLevel("fullIp")
             MYSQL.query(function(rows)
                 if not rows then return reply(false, L.msg("v_admin.page.database_error")) end
                 local out = {}

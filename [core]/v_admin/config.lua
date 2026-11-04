@@ -59,7 +59,8 @@ ADMIN.perms = {
 
     -- admin panel pages (v_admin 3.0)
     accounts     = 1,   -- Accounts page: list + details (Trial Mod)
-    fullEmail    = 5,   -- unmasked e-mail addresses   (Dev)
+    fullEmail    = 4,   -- e-mail addresses of players (below: never sent, not even masked) (SuperAdmin)
+    fullIp       = 5,   -- unmasked IP addresses        (Dev)
     accountEdit  = 4,   -- money / level / XP / work level of an account, online or offline (SuperAdmin)
     vehicles     = 4,   -- give / delete / restore an owned vehicle (SuperAdmin)
     achievements = 4,   -- give / reset achievements   (SuperAdmin)
@@ -69,7 +70,7 @@ ADMIN.perms = {
     adminLog     = 1,   -- Admin log page              (Trial Mod)
     weekly       = 4,   -- Weekly page, /weekly        (SuperAdmin)
     news         = 5,   -- News page, /news            (Dev)
-    mail         = 5,   -- Mail page, /mail            (Dev)
+    mail         = 3,   -- Mail page, /mail (sending; addresses stay hidden below fullEmail) (Admin)
     resources    = 5,   -- Resources page             (Dev)
     organizations = 3,  -- Organizations page (biz_core): view (Admin)
     organizationsEdit = 5, -- rename / balance / founder / properties / force sale (Dev)
@@ -80,7 +81,8 @@ ADMIN.perms = {
 
 -- Admin panel (O key). Data is never hidden: every admin who can open the
 -- panel sees every field; only the ACTIONS are gated by ADMIN.perms.
--- (Exception: e-mail addresses are masked below ADMIN.perms.fullEmail.)
+-- (Exceptions: e-mail addresses are never sent below ADMIN.perms.fullEmail,
+--  IP addresses are masked below ADMIN.perms.fullIp.)
 ADMIN.panel = {
     key     = "o",
     refresh = 3000,     -- ms between player-list refreshes while the panel is open

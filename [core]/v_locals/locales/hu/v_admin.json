@@ -468,6 +468,7 @@
   "v_admin.players.copied_to_clipboard": "{label} vágólapra másolva.",
   "v_admin.players.dead": "HALOTT",
   "v_admin.players.e_mail": "E-mail",
+  "v_admin.players.e_mail_hidden": "Rejtett",
   "v_admin.players.enter_duration_in_minutes": "Add meg az időtartamot percben.",
   "v_admin.players.enter_reason": "Adj meg egy indokot.",
   "v_admin.players.enter_skin_id": "Adj meg egy skin ID-t.",
