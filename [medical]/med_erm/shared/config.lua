@@ -52,6 +52,23 @@ function Config.unitTypesFor(model)
     return Config.UNIT_VEHICLE_TYPES[model] or Config.UNIT_TYPES_DEFAULT
 end
 
+-- Supervisor (SUP unit) fines (server/fines.lua, tablet page "Supervisor"): a SUP unit fines any other signed-in
+-- unit. Fines live only on the unit (gone after its shift) and are deducted from the shift-end pay as separate
+-- items (server/payment.lua). label = v_locals key.
+Config.FINES = {
+    { id = "harm",      amount = 1500, label = "med_erm.fine.harm" },
+    { id = "neglect",   amount = 1000, label = "med_erm.fine.neglect" },
+    { id = "protocol",  amount = 800,  label = "med_erm.fine.protocol" },
+    { id = "drugs",     amount = 700,  label = "med_erm.fine.drugs" },
+    { id = "equipment", amount = 800,  label = "med_erm.fine.equipment" },
+    { id = "vehicle",   amount = 500,  label = "med_erm.fine.vehicle" },
+    { id = "handover",  amount = 900,  label = "med_erm.fine.handover" },
+    { id = "response",  amount = 900,  label = "med_erm.fine.response" },
+}
+Config.FINE_BY_ID = {}
+for _, f in ipairs(Config.FINES) do Config.FINE_BY_ID[f.id] = f end
+Config.FINE_MAX_PER_UNIT = 30
+
 -- Backup request on the Active Case page: the crew picks one option, the nearest free unit of its
 -- types (by distance to the scene) is assigned to the case. label = v_locals key.
 Config.BACKUP_OPTIONS = {

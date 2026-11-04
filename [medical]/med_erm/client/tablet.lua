@@ -117,6 +117,10 @@ local function drawMenu(screen)
             end, nil, nil, true },
         }
     end
+    -- SUP units only (client/pages/supervisor.lua): after Messages
+    if State.unit and State.unit.type == "SUP" then
+        table.insert(items, 4, { L("med_erm.supervisor.title"), function() Tablet.setPage("supervisor") end, "supervisor" })
+    end
     items[#items + 1] = { L("med_erm.tablet.close_tablet"), function() Tablet.close() end }
 
     local iw, ih = s(200), s(38)

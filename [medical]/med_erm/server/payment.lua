@@ -76,7 +76,8 @@ local function taskLabel(c)
 end
 
 function Payment.payUnit(u)
-    if #u.closedTasks == 0 or not workCoreRunning() then return end
+    local fines = u.fines or {}
+    if (#u.closedTasks == 0 and #fines == 0) or not workCoreRunning() then return end
 
     local n = math.max(1, #u.roster)
     local items = {}
@@ -86,11 +87,20 @@ function Payment.payUnit(u)
             items[#items + 1] = { label = taskLabel(c), amount = amount }
         end
     end
+    -- supervisor fines (server/fines.lua): separate negative items, shared like the earnings
+    for _, f in ipairs(fines) do
+        local fine = Config.FINE_BY_ID[f.id]
+        items[#items + 1] = {
+            label = L.msg("med_erm.payment.fine", { reason = fine and L.msg(fine.label) or f.id, supervisor = f.by }),
+            amount = -(f.amount / n),
+        }
+    end
     if #items == 0 then return end
 
     for _, player in ipairs(u.roster) do
         if isElement(player) and getElementType(player) == "player" then
-            exports.work_core:payWork(player, Config.PAY.WORK_ID, items, L.msg("med_erm.payment.shift_ended", { callsign = u.callsign }))
+            -- chargeNegative: a net negative total (fines above the earnings) is still taken from the account
+            exports.work_core:payWork(player, Config.PAY.WORK_ID, items, L.msg("med_erm.payment.shift_ended", { callsign = u.callsign }), { chargeNegative = true })
         end
     end
 end

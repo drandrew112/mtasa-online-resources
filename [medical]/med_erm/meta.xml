@@ -15,6 +15,7 @@
     <script src="server/tasks.lua"   type="server" />
     <script src="server/units.lua"   type="server" />
     <script src="server/competency.lua" type="server" />
+    <script src="server/fines.lua"   type="server" /> <!-- supervisor fines -->
     <script src="server/payment.lua" type="server" />
     <script src="server/chat.lua"    type="server" />
     <script src="server/backup.lua"  type="server" />
@@ -43,6 +44,7 @@
     <script src="client/pages/home.lua"     type="client" />
     <script src="client/pages/case.lua"     type="client" />
     <script src="client/pages/messages.lua" type="client" />
+    <script src="client/pages/supervisor.lua" type="client" />
     <script src="client/tutorial.lua"       type="client" />
     <script src="client/unitlabel.lua"      type="client" />
     <script src="client/admin/panel.lua"   type="client" />
