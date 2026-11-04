@@ -1,0 +1,37 @@
+-# Claude prompt
+# Kórházi munka
+
+## Alapvető működés
+A kórházi munkában a mentőktől átvett és a lábon érkező betegek ellátása a feladatunk. Itt kapnak végleges ellátást vagy elhelyezést.
+
+Ha van mentőegység bejelentkezve, akkor jelentősen csökken a lábon érkező betegek száma, mivel a mentők folyamatosan hoznak elég beteget.
+
+A kórházi munka során fontos a szinkronizáció.
+Egyszerre több kórházi dolgozó is lehet szolgálatban ezért fontos, hogy ők együtt is tudjanak dolgozni.
+
+## Meglévő rendszerek használata
+Használni fogjuk a medsys, med_equipments rendszereket.
+A kórházon belül viszont egészen más módon kell ezeket a rendszereket használni.
+Az említett resourceökben új modulokat fogunk felvenni amiket a hospitális ellátás során fogunk használni. Ilyen lesz a kórházi hordágy rendszer, beteg nyilvántartás, külön kórházi betegvizsgáló panel, CT vizsgálat, stb...
+A kórházi hordágyakhoz mindig tartozik felszerelés amit nem lehet levenni.
+
+A kórházi hordágy kérő és törlő markerben a mentőszolgálat hordágyai nem törölhetőek.
+
+## Pozíciók az All Saints General kórházhoz. Egyenlőre csak ez az egy kórház lesz elérhető a munkához.
+work duty: { "x": 1153.84, "y": -1307.44, "z": 14.38 }
+ct: { "x": 1153.31, "y": -1299.59, "z": 14.38 }
+sokktalanító 1: { "x": 1154.29, "y": -1348.62, "z": 14.39 } -- ágy helye
+sokktalanító 2: { "x": 1167.93, "y": -1348.46, "z": 14.41 } -- ágy helye
+hordágy kérés/törlés: { "x": 1168.86, "y": -1315.92, "z": 14.39 }
+átadás után ide kerülnek hordággyal együtt a betegek:
+{ "x": 1158.81, "y": -1344.55, "z": 14.40, "rot": 180 } -- soki 1 folyosó
+{ "x": 1162.21, "y": -1344.70, "z": 14.41, "rot": 180 } -- soki 2 folyosó
+{ "x": 1156.31, "y": -1337.02, "z": 14.40, "rot": 180 } -- triage pult mellett
+Lábon érkező betegek spawn helyei:
+{ "x": 1167.87, "y": -1339.53, "z": 14.41, "rot": 0 }
+{ "x": 1165.42, "y": -1338.90, "z": 14.41, "rot": 0 }
+{ "x": 1169.68, "y": -1337.94, "z": 14.42, "rot": 90 }
+{ "x": 1169.25, "y": -1336.05, "z": 14.41, "rot": 90 }
+{ "x": 1169.52, "y": -1332.85, "z": 14.42, "rot": 90 }
+{ "x": 1169.65, "y": -1329.95, "z": 14.42, "rot": 90 }
+{ "x": 1169.14, "y": -1327.82, "z": 14.41, "rot": 90 }
