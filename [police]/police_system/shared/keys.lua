@@ -51,6 +51,6 @@ POLICE_DYNAMIC_KEYS = {
     "police_system.callouts.kind_phone", "police_system.callouts.kind_scene", "police_system.callouts.kind_agency",
     "police_system.status.sub_callout", "police_system.log.weapon_drawn", "police_system.log.weapon_fired",
     "police_system.log.warrant_issued", "police_system.log.warrant_edited", "police_system.log.warrant_revoked",
-    "police_system.log.report_submitted", "police_system.log.tow_requested", "police_system.log.ambulance_requested",
+    "police_system.log.report_submitted", "police_system.log.tow_requested", "police_system.log.ambulance_requested", "police_system.log.transport_requested",
     "police_system.log.surrendered", "police_system.log.failure_to_stop", "police_system.log.stop_left", "police_system.log.fine_refund",
 }

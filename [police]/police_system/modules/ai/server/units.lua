@@ -7,6 +7,8 @@
 -- Only dimension 0 / interior 0 (the scripted traffic vehicles only sync there).
 --
 -- Every unit has a radar blip (BLIP) that only its suspect (a player) sees, until it retreats.
+-- Every police car gets the v_customs level 4 upgrades + all-wheel drive (TUNING). AI officers left on foot after a
+-- chase walk off on the sidewalk (AI.walkAway) and go when nobody sees them (budget.lua cleanup).
 --
 -- unit = { veh, driver, partner, chase, tank, blip, role ("tail" | "intercept" | "roadblock"), state ("chase" | "foot" |
 --          "search" | "retreat" | "roadblock" | "boarding"), spawnedAt, sirenAt, opts (chase motor options) }
@@ -75,12 +77,14 @@ local function addPed(ped, unit)
     setElementData(ped, "pol.ai", true)
 end
 
--- a new unit for chase c. -> unit | nil
-function AI.spawn(c, tank)
+-- a new unit for chase c. near (optional, catch-up): { minDist, maxDist, playerDist } instead of SPAWN_MIN / MAX.
+-- -> unit | nil
+function AI.spawn(c, tank, near)
     local t = traffic()
     if not t or not POL.inWorld(c.suspect) then return nil end
     local tx, ty, tz = getElementPosition(c.suspect)
-    local sx, sy, sz, rot = t:findHiddenRoadSpawn(tx, ty, tz, { minDist = A.SPAWN_MIN, maxDist = A.SPAWN_MAX,
+    local sx, sy, sz, rot = t:findHiddenRoadSpawn(tx, ty, tz, { minDist = near and near.minDist or A.SPAWN_MIN,
+        maxDist = near and near.maxDist or A.SPAWN_MAX, playerDist = near and near.playerDist or nil,
         toward = c.suspect, priority = true })
     if not sx then return nil end
     local model, zone = pickModel(sx, sy)
@@ -88,9 +92,12 @@ function AI.spawn(c, tank)
     local skins = zone == "rural" and A.RURAL_SKINS or A.SKINS
     local skin = tank and A.TANK_SKIN or skins[math.random(#skins)]
     local veh, driver = t:createScriptedVehicle(model, sx, sy, sz, { heading = rot, skin = skin, profile = "pursuit",
-        speedFactor = tank and 1.0 or 1.4, keepDriver = true })
+        speedFactor = tank and 1.0 or A.SPEED_FACTOR, keepDriver = true })
     if not veh then return nil end
     local def = POLICE.VEHICLES[model] or {}
+    if not tank and A.TUNING and POL.running("v_customs") then
+        pcall(function() exports.v_customs:applyVehicleTuning(veh, A.TUNING) end)
+    end
     if def.paintjob and POL.running("v_paintjobs") then pcall(function() exports.v_paintjobs:setVehicleCustomPaintjob(veh, def.paintjob) end) end
     if def.elsExtra and POL.running("v_els") then pcall(function() exports.v_els:setElsExtra(veh, def.elsExtra) end) end
     setVehiclePlateText(veh, "SAPD" .. math.random(100, 999))
@@ -127,8 +134,36 @@ function AI.pacify(ped)
     end)
 end
 
+-- an AI officer without a unit (its vehicle wrecked / gone, it could not get back in): weapon away, out of the
+-- unit, walks off along the sidewalk as a pedestrian (ai_peds civilian wander) until nobody sees it (budget.lua)
+function AI.walkAway(ped, unit)
+    if not isElement(ped) or isPedDead(ped) then return end
+    if unit then
+        if unit.driver == ped then unit.driver = nil end
+        if unit.partner == ped then unit.partner = nil end
+    end
+    AI.walkers[ped] = getTickCount()
+    if AI.orphans then AI.orphans[ped] = nil end
+    if getPedOccupiedVehicle(ped) or not POL.running("ai_peds") then return end
+    pcall(function()
+        local p = exports.ai_peds
+        if not p:isAIPed(ped) then return end
+        p:giveAIPedWeapon(ped, 0)
+        p:setAIPedGroup(ped, "civilian")
+        p:setAIPedBehaviour(ped, "civilian", { task = "wander", fightBack = 0 })
+    end)
+end
+AI.walkers = {}
+
+-- the crew of a unit that is out of the vehicle walks off
+function AI.walkAwayCrew(unit)
+    for _, ped in ipairs({ unit.driver, unit.partner }) do
+        if ped and isElement(ped) and getPedOccupiedVehicle(ped) ~= unit.veh then AI.walkAway(ped, unit) end
+    end
+end
+
 -- the unit goes away: no siren, its crew stops fighting and gets back in, driving on as traffic, removed when nobody
--- sees it (a wrecked vehicle: the crew stands until unseen)
+-- sees it (a wrecked vehicle: the crew outside walks off)
 function AI.retreat(unit)
     if unit.state == "retreat" then return end
     unit.state = "retreat"
@@ -141,7 +176,11 @@ function AI.retreat(unit)
     end
     local t = traffic()
     if not t or not isElement(unit.veh) then return AI.remove(unit) end
-    if unit.dead or isVehicleBlown(unit.veh) then unit.manualDespawn = true; return end
+    if unit.dead or isVehicleBlown(unit.veh) then
+        unit.manualDespawn = true
+        AI.walkAwayCrew(unit)
+        return
+    end
     if unit.parked then setElementFrozen(unit.veh, false) end
     -- crew out on foot: back in first (tactics.lua finishes the retreat when they sat down)
     if POL.ai.tactics.crewOut(unit) then
@@ -165,10 +204,14 @@ function AI.leave(unit)
     t:setScriptedDespawnUnseen(unit.veh, { minDist = A.DESPAWN_DIST })
 end
 
-function AI.remove(unit)
+-- force: also the crew outside the vehicle (resource stop); otherwise they walk off and go unseen
+function AI.remove(unit, force)
     removeBlip(unit)
-    AI.units[unit.veh] = nil
-    AI.vehicles[unit.veh] = nil
+    if unit.veh then
+        AI.units[unit.veh] = nil
+        AI.vehicles[unit.veh] = nil
+    end
+    if not force then AI.walkAwayCrew(unit) end
     for _, ped in ipairs({ unit.driver, unit.partner }) do
         if ped then
             AI.peds[ped] = nil
@@ -243,10 +286,8 @@ addEventHandler("onElementDestroy", root, function()
         removeBlip(unit)
         for _, ped in ipairs({ unit.driver, unit.partner }) do
             if ped and isElement(ped) and not getPedOccupiedVehicle(ped) then
-                -- the crew outside stays until unseen (budget cleanup), not fighting any more
-                AI.orphans = AI.orphans or {}
-                AI.orphans[ped] = getTickCount()
-                AI.pacify(ped)
+                -- the crew outside walks off, gone when unseen (budget cleanup)
+                AI.walkAway(ped, unit)
             elseif ped then
                 AI.peds[ped] = nil
             end
@@ -261,7 +302,7 @@ addEvent("onAIPedVehicleTaskFailed")
 addEventHandler("onAIPedVehicleTaskFailed", root, function()
     local unit = AI.peds[source]
     if unit and unit.state == "retreat" then
-        AI.pacify(source)
+        AI.walkAway(source, unit)
         unit.manualDespawn = true
     end
 end)
@@ -272,5 +313,12 @@ addEventHandler("onVehicleExplode", root, function()
 end)
 
 function AI.stop()
-    for _, u in pairs(AI.units) do AI.remove(u) end
+    for _, u in pairs(AI.units) do AI.remove(u, true) end
+    for ped in pairs(AI.walkers) do
+        if isElement(ped) then
+            if POL.running("ai_peds") then pcall(function() exports.ai_peds:destroyAIPed(ped) end) end
+            if isElement(ped) then destroyElement(ped) end
+        end
+    end
+    AI.walkers = {}
 end

@@ -164,18 +164,22 @@ POL.handle("tow:confirm", function(veh)
 end)
 
 -- handover charges: every charge is a tick (more can be picked), the last row hands over (only with a tick)
-local charges, chargeCount = {}, 0
+-- mode "transport": the same ticks, the last row requests the prisoner transport van (modules/transport) instead
+local charges, chargeCount, chargesMode = {}, 0, nil
 local function handoverLabel()
-    return L("police_system.arrest.handover_button") .. (chargeCount > 0 and ("  (" .. chargeCount .. ")") or "")
+    local button = chargesMode == "transport" and L("police_system.transport.request_button")
+        or L("police_system.arrest.handover_button")
+    return button .. (chargeCount > 0 and ("  (" .. chargeCount .. ")") or "")
 end
 
-POL.handle("arrest:charges", function(target, title, list)
+POL.handle("arrest:charges", function(target, title, list, mode)
     local m = inac()
     if not m then return end
     -- another menu still open: closed first (its close event must not cancel this handover)
     menuTarget, menuKind = nil, nil
     if m:isTempMenuOpen() then m:closeTempMenu() end
     menuTarget, menuKind = target, "charges"
+    chargesMode = mode
     charges, chargeCount = {}, 0
     local items = {}
     for _, c in ipairs(list or {}) do
@@ -212,7 +216,8 @@ addEventHandler("ui_inac:tempMenuSelect", localPlayer, function(rootId, value, p
             local target = menuTarget
             menuKind, menuTarget = nil, nil
             if m then m:closeTempMenu() end
-            POL.send("arrest:handover", target, list)
+            if chargesMode == "transport" then POL.send("transport:request", target, list)
+            else POL.send("arrest:handover", target, list) end
         end
         return
     end
@@ -230,6 +235,6 @@ end)
 addEvent("ui_inac:tempMenuClose")
 addEventHandler("ui_inac:tempMenuClose", localPlayer, function()
     if menuKind == "invite" then POL.send("unit:answer", false) end
-    if menuKind == "charges" then POL.send("arrest:handoverCancel") end
+    if menuKind == "charges" and chargesMode ~= "transport" then POL.send("arrest:handoverCancel") end
     menuKind, menuTarget = nil, nil
 end)

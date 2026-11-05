@@ -279,6 +279,36 @@ local function reseat(target, why)
     AR.refreshMenus(target)
 end
 
+-- the suspect into a vehicle that is not a police car (prisoner transport van): seated, kept there by the custody
+-- watchdog like in a police car (seat = a free one of seats)
+function AR.loadInto(target, veh, seats)
+    if not AR.cuffed[target] or not isElement(veh) then return false end
+    AR.stopEscort(target)
+    AR.custody[target] = nil
+    if getPedOccupiedVehicle(target) then removePedFromVehicle(target) end
+    local seat
+    for _, s in ipairs(seats or { 2, 3 }) do
+        if s <= getVehicleMaxPassengers(veh) and not getVehicleOccupant(veh, s) then seat = s; break end
+    end
+    if not seat then return false end
+    setTimer(function()
+        if not isElement(target) or not isElement(veh) or not AR.cuffed[target] then return end
+        setElementInterior(target, getElementInterior(veh))
+        setElementDimension(target, getElementDimension(veh))
+        warpPedIntoVehicle(target, veh, seat)
+        setCustodyVehicle(target, veh)
+        setCustody(target, false)
+        AR.refreshMenus(target)
+    end, 100, 1)
+    return true
+end
+
+-- out of the custody vehicle for the handover (no reseat)
+function AR.unload(target)
+    AR.custody[target] = nil
+    if isElement(target) and getPedOccupiedVehicle(target) then removePedFromVehicle(target) end
+end
+
 POL.net("arrest:unseated", function(player)
     if AR.custody[player] then reseat(player, "client not seated") end
 end)
@@ -416,8 +446,10 @@ end)
 
 ------------------------------------------------------------------------ handover at the station
 
+-- officer may be gone (prisoner transport: the officer who requested it left): logged / paid only with a unit
 local function handover(officer, target, station, charges)
-    local unit = POL.units.of(officer)
+    if not isElement(officer) then officer = nil end
+    local unit = officer and POL.units.of(officer)
     local isPlayer = getElementType(target) == "player"
     subjectName(target, function(name, row)
         local inc = unit and POL.events.incidentOf(unit, target)
@@ -448,8 +480,10 @@ local function handover(officer, target, station, charges)
     end)
 end
 
+AR.handover = handover
+
 -- the charges an officer can pick at the handover: the arrestable / warrant items of the penal code
-local function chargeItems(officer)
+function AR.chargeItems(officer)
     local out = {}
     for _, e in ipairs(POL.btk.items) do
         if e.arrestable or e.warrant then
@@ -471,7 +505,7 @@ local function nextHandover(officer)
     subjectName(target, function(name)
         if AR.handovers[officer] ~= q or q.list[1] ~= target then return end
         POL.send(officer, "arrest:charges", target, L.forPlayer(officer, "police_system.arrest.charges_title", { name = name }),
-            chargeItems(officer))
+            AR.chargeItems(officer))
     end)
 end
 

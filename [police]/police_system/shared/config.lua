@@ -93,6 +93,19 @@ POLICE = {
             [6] = { cars = 5, tanks = 2, mode = "ram",    aggression = 1.0, armed = true, accuracy = 0.65, weapon = 31, roadblock = true },
         },
         SPAWN_MIN = 180, SPAWN_MAX = 400,
+        SPEED_FACTOR = 1.5,       -- lane simulation speed x this (ai_land_traffic clamps at 1.5)
+        -- every AI police car (not the tank): v_customs applyVehicleTuning, all upgrades at level 4 + all-wheel drive
+        TUNING = { engine = 4, turbo = 4, brakes = 4, tires = 4, weight = 4, driveType = "awd" },
+        -- catch-up: a unit that fell far behind (CATCHUP_DIST for CATCHUP_TIME s) or is stuck (moved less than
+        -- STUCK_MOVE m in STUCK_TIME s while farther than STUCK_MIN_DIST) and that no player sees is replaced by a new
+        -- one CATCHUP_SPAWN_MIN-MAX m from the suspect (at most once per CATCHUP_GAP s per chase)
+        CATCHUP_DIST = 230, CATCHUP_TIME = 6,
+        STUCK_MOVE = 6, STUCK_TIME = 10, STUCK_MIN_DIST = 35,
+        CATCHUP_SPAWN_MIN = 100, CATCHUP_SPAWN_MAX = 220, CATCHUP_PLAYER_DIST = 90, CATCHUP_GAP = 8,
+        -- AI officers left on foot after a chase (vehicle wrecked / gone, could not get back in): they walk off on the
+        -- sidewalk and go once no player camera sees them and every player is WALK_DESPAWN_DIST away (not before
+        -- WALK_MIN s); RETREAT_BOARD s to get back in, then they walk too
+        WALK_DESPAWN_DIST = 35, WALK_MIN = 5, RETREAT_BOARD = 25,
         DESPAWN_DIST = 150,       -- gone only when unseen and this far from every player
         SPAWN_GAP = 2500,         -- ms between two new units of one chase
         FOOT_DIST = 40,           -- suspect stopped / on foot this close: the crew gets out
@@ -181,6 +194,12 @@ POLICE = {
 
     TOW = { MODEL = 525, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, SKIN = 50 },
     MEDICAL = { MODEL = 416, SPAWN_MIN = 150, SPAWN_MAX = 350, SKIN = 274, PAINTJOB = "hu_omsz" },
+    -- prisoner transport (modules/transport): an AI van (Enforcer) takes a cuffed suspect to the nearest station.
+    -- REQUEST_DIST: the officer this close to the suspect; LOAD_DIST: the suspect (on foot / in a car) this close to
+    -- the standing van gets in; WAIT s for that, else the van leaves; a player rides RIDE s, then (faded out) the
+    -- handover happens; an NPC is handed over when the van reaches the station or goes unseen
+    TRANSPORT = { MODEL = 427, SKIN = 280, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, LOAD_DIST = 20,
+                  WAIT = 120, RIDE = 20, SPEED_FACTOR = 1.2, SEATS = { 2, 3, 1 } },
 
     -- work_police levels = ranks (police_system decides the rights by them)
     RANKS = {

@@ -10,6 +10,9 @@
 --              unless the suspect surrendered. The suspect drives off: back in, chase on.
 --   search     evading: lights only, the units drive around the last known position, no interception
 -- Tank (levels 5-6): rams, fires the cannon in front of it.
+--   catch-up   a unit far behind / stuck that nobody sees is replaced by a new one near the suspect
+-- Lane driving is ai_land_traffic's emergency driving (passes the cars that pulled over, inner lane); the physics chase
+-- motor passes the traffic on the free side.
 
 local T = {}
 POL.ai.tactics = T
@@ -272,6 +275,45 @@ addEventHandler("onTrafficVehicleTargetReached", root, function(veh, id, kind, t
     end
 end)
 
+------------------------------------------------------------------------ catch-up
+
+-- a unit far behind (CATCHUP_DIST for CATCHUP_TIME) or stuck (hardly moved in STUCK_TIME) that no player sees is
+-- replaced by a new one closer to the suspect (spawned unseen like every unit). -> true when replaced
+local function catchUp(unit, dist, now)
+    local c = unit.chase
+    if unit.replacing then return true end
+    local x, y = POL.pos(unit.veh)
+    local m = unit.motion
+    if not m then
+        unit.motion = { x = x, y = y, at = now }
+    elseif now - m.at >= A.STUCK_TIME * 1000 then
+        unit.stuck = getDistanceBetweenPoints2D(x, y, m.x, m.y) < A.STUCK_MOVE and dist > A.STUCK_MIN_DIST
+        unit.motion = { x = x, y = y, at = now }
+    end
+    if dist > A.CATCHUP_DIST then unit.farSince = unit.farSince or now else unit.farSince = nil end
+    local far = unit.farSince and now - unit.farSince >= A.CATCHUP_TIME * 1000
+    if not (unit.stuck or far) then return false end
+    if now - (c.catchupAt or 0) < A.CATCHUP_GAP * 1000 then return false end
+    local t = traffic()
+    if not t or t:isElementSeenByPlayers(unit.veh) then return false end
+    c.catchupAt = now
+    unit.replacing = true
+    -- not while the 2 Hz loop walks AI.units (the spawn adds to it)
+    setTimer(function()
+        unit.replacing = nil
+        if AI.units[unit.veh] ~= unit or unit.chase ~= c or unit.state ~= "chase" or not POL.chase.list[c.suspect] then return end
+        if t:isElementSeenByPlayers(unit.veh) then return end
+        local fresh = AI.spawn(c, unit.tank, { minDist = A.CATCHUP_SPAWN_MIN, maxDist = A.CATCHUP_SPAWN_MAX,
+            playerDist = A.CATCHUP_PLAYER_DIST })
+        if not fresh then return end
+        fresh.role = unit.role == "roadblock" and "tail" or unit.role
+        outputDebugString(("[police] ai catch-up: unit %s (%s, %.0f m) replaced"):format(tostring(unit.veh),
+            unit.stuck and "stuck" or "far", dist))
+        AI.remove(unit)
+    end, 50, 1)
+    return true
+end
+
 ------------------------------------------------------------------------ the 2 Hz loop
 
 function T.update(unit, d)
@@ -312,6 +354,7 @@ local function step(unit, now)
         return
     end
     if unit.state == "roadblock" then return end
+    if unit.state == "chase" and catchUp(unit, dist, now) then return end
     -- crew out when the suspect stands / is on foot / surrendered close by
     local still = not sveh or POL.speed(sveh) < 1 or c.surrendered
     if still and dist < A.FOOT_DIST and not unit.tank then return toFoot(unit) end
@@ -337,8 +380,8 @@ end
 -- the second and further units of a chase from level 2 cut it off
 POL.on("ai.spawned", function(unit) end)
 local spawn = AI.spawn
-function AI.spawn(c, tank)
-    local unit = spawn(c, tank)
+function AI.spawn(c, tank, near)
+    local unit = spawn(c, tank, near)
     if unit and not tank and c.level >= A.INTERCEPT_LEVEL then
         local tails = 0
         for _, u in pairs(AI.units) do if u.chase == c and u.role == "tail" and u ~= unit then tails = tails + 1 end end

@@ -8,16 +8,21 @@
     <include resource="biz_weed" />
     <include resource="ui_core" />
     <include resource="v_radar" />
+    <include resource="ui_inac" />
 
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
+    <script src="server/positions.lua" type="server" />
     <script src="server/common.lua" type="server" />
     <script src="server/enemies.lua" type="server" />
     <script src="server/supply.lua" type="server" />
     <script src="server/sell.lua" type="server" />
     <script src="server/main.lua" type="server" />
+    <script src="server/editor.lua" type="server" />
     <script src="client/hud.lua" type="client" />
+    <script src="client/editor.lua" type="client" />
 
+    <!-- /bizmissioneditor (admin level 5+): mission positions, saved to data/positions.json -->
     <!-- used when running: ai_peds (guards, ambushers), ai_land_traffic (pursuit) -->
 
     <export function="startSupplyMission" type="server" />

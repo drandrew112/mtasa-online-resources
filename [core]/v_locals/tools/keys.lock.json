@@ -2950,7 +2950,7 @@
   "work_ems|IV access": "work_ems.config.iv_access",
   "work_ems|IV access, airway and pain. Most medicines need an IV access; the ones marked oral do not.": "work_ems.steps.iv_access_airway_and_pain_most",
   "work_ems|Intubation": "work_ems.config.intubation",
-  "work_ems|Is this your first shift? The tutorial shows you the EMS tablet, your equipment, the examination panel and the monitor / defibrillator, the treatments, the stretcher, the hospital handover and restocking. It takes about 15 minutes in a private copy of the world.\n\nIt is not required: you can skip it now and start it any time later with /{command}.": "work_ems.steps.is_this_your_first_shift_tutorial",
+  "work_ems|This tutorial covers only the practical side of the ambulance service. To work as EMS you also need to pass competency exams, which you can take at the hospital.\n\nThe tutorial is not required, but we recommend it: it clearly shows how to handle the equipment and the stretcher, how to use the patient examination panel and how to hand a patient over. It takes about 15 minutes in a private copy of the world.\n\nYou can skip it now and start it any time later with /{command}.": "work_ems.steps.is_this_your_first_shift_tutorial",
   "work_ems|LS All Saints General Hospital": "work_ems.config.ls_all_saints_general_hospital",
   "work_ems|LS Country General Hospital": "work_ems.config.ls_country_general_hospital",
   "work_ems|LV General Hospital": "work_ems.config.lv_general_hospital",

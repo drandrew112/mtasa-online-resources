@@ -8,7 +8,8 @@
 -- The mode's aim point is only used with the target in plain sight close by; otherwise the car follows the road path
 -- the server sends (EV_CHASE_PATH: navmesh route to the target, pure pursuit, slowing down before corners). Rays
 -- ahead steer it around walls; when it hardly moves for 1.5 s it reverses out (repeated stucks: longer, alternating
--- sides), and with its nose against a wall it backs off at once.
+-- sides), and with its nose against a wall it backs off at once. Traffic straight ahead (any vehicle but the target)
+-- is passed on the free side (left first); with both sides blocked it slows to that car's speed and sounds the horn.
 -- The timer only runs while a streamed-in chase vehicle is synced here.
 
 local list = {}        -- [vehicle] = state { path, pathAt, pathI, lastX, lastY, lastAt, stuckN, stuckAt, reverseUntil,
@@ -110,6 +111,36 @@ local function blocked(veh, x, y, z, dx, dy, len, target)
     return hit and el ~= target and (nz or 0) < 0.55
 end
 
+-- a vehicle (not the target, not the own one) in direction (dx, dy) within len m from (x, y, z) -> it | nil
+local function vehicleAhead(veh, x, y, z, dx, dy, len, target)
+    local hit, _, _, _, el = processLineOfSight(x, y, z, x + dx * len, y + dy * len, z, false, true, false, false, false,
+        false, false, false, veh)
+    if hit and el and el ~= target and getElementType(el) == "vehicle" then return el end
+    return nil
+end
+
+-- traffic in the way (straight ahead, two lanes wide): the side that is free (+1 left / -1 right), 0 = both blocked
+-- (behind it), nil = nothing in the way. Siren cars pass on the left first (the traffic pulls over to the right).
+local function trafficSide(veh, x, y, z, fx, fy, len, target)
+    local car = vehicleAhead(veh, x, y, z, fx, fy, len, target)
+    if not car then
+        -- a car just beside the nose line (the bumper corners)
+        local px, py = fy, -fx
+        car = vehicleAhead(veh, x + px * 0.9, y + py * 0.9, z, fx, fy, len * 0.7, target)
+            or vehicleAhead(veh, x - px * 0.9, y - py * 0.9, z, fx, fy, len * 0.7, target)
+        if not car then return nil end
+    end
+    local px, py = fy, -fx                                       -- right
+    local function free(side)
+        local sx, sy = x - px * side * 2.6, y - py * side * 2.6
+        if processLineOfSight(x, y, z, sx, sy, z, true, true, false, true, false, false, false, false, veh) then return false end
+        return not vehicleAhead(veh, sx, sy, z, fx, fy, len + 4, target) and not blocked(veh, sx, sy, z, fx, fy, len, target)
+    end
+    if free(1) then return 1 end
+    if free(-1) then return -1 end
+    return 0, car
+end
+
 local function startReverse(st, now, ms, side)
     st.reverseUntil = now + ms
     st.reverseSide = side
@@ -200,6 +231,27 @@ local function steer(veh, ped, o, st, now)
             return
         end
     end
+    -- traffic ahead (not the target): around it on the free side, else slow down behind it and use the horn
+    local trafficCap
+    local tprobe = 7 + max(0, fwdSpeed) / 3.6 * 1.1
+    local side, car = trafficSide(veh, bx, by, bz, fx, fy, tprobe, tgt)
+    if side and side ~= 0 then
+        -- keep the side for a moment (no zig-zag between two free sides)
+        if st.passSide and now < (st.passUntil or 0) and side ~= st.passSide then
+            local px, py = fy, -fx
+            if not vehicleAhead(veh, bx - px * st.passSide * 2.6, by - py * st.passSide * 2.6, bz, fx, fy, tprobe + 4, tgt) then
+                side = st.passSide
+            end
+        end
+        st.passSide, st.passUntil = side, now + 1200
+        avoid = avoid + side * 0.45
+        trafficCap = 90
+    elseif side == 0 then
+        local cvx, cvy = getElementVelocity(car)
+        trafficCap = max(15, sqrt(cvx * cvx + cvy * cvy) * 180 - 5)
+        st.hornUntil = now + 400
+    end
+    setPedControlState(ped, "horn", st.hornUntil ~= nil and now < st.hornUntil)
     angle = angle + avoid
 
     local amount = min(1, abs(angle) / 0.5)
@@ -212,6 +264,7 @@ local function steer(veh, ped, o, st, now)
     if turn > 1.2 then cap = min(cap, 35) elseif turn > 0.7 then cap = min(cap, 55) elseif turn > 0.35 then cap = min(cap, 85) end
     if abs(angle) > 0.9 then cap = min(cap, 30) elseif abs(angle) > 0.5 then cap = min(cap, 55) end
     if front then cap = min(cap, 25) end
+    if trafficCap then cap = min(cap, trafficCap) end
     local throttle, brake = speed < cap, speed > cap + 12
     if o.m == "follow" and direct then
         -- keep a gap behind the target (shorter when more aggressive)

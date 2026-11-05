@@ -54,6 +54,7 @@
     <script src="modules/radio/server/radio.lua" type="server" />
     <script src="modules/tow/server/tow.lua" type="server" />
     <script src="modules/medical/server/medical.lua" type="server" />
+    <script src="modules/transport/server/transport.lua" type="server" />
     <script src="modules/mdc/server/api.lua" type="server" />
     <script src="modules/mdc/server/terminals.lua" type="server" />
     <script src="modules/web/server/stats.lua" type="server" />

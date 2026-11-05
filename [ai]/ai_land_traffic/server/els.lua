@@ -372,7 +372,8 @@ function Els.update(now)
         Agents.near(e.x, e.y, T.ELS_NOTICE_RANGE, near)
         local P = e.path
         for _, ag in ipairs(near) do
-            if ag.veh ~= e.el and not ag.held and (abs(ag.z - e.z) < 6 or P) then
+            -- an emergency driver (scripted, sim.lua) does not give way to the others: it passes them
+            if ag.veh ~= e.el and not ag.held and not (ag.script and ag.script.emergency) and (abs(ag.z - e.z) < 6 or P) then
                 local rx, ry = ag.x - e.x, ag.y - e.y
                 local level = noticed(ag, e, sqrt(rx * rx + ry * ry), now)
                 if level > 0 then

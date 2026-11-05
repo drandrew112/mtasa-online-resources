@@ -3,7 +3,8 @@
 -- language (stays open after a pick, except arrest / escort), and the actions it sends back (stop:action target, value):
 --   details, vehicle (queries), bac, drug (tests), search, search_vehicle (search/server/search.lua), warn:<id>,
 --   fine:<id> (penal code), arrest, uncuff, escort, place,
---   takeout, out (order out of the vehicle), return (back into the vehicle), release (Release / Code 4)
+--   takeout, out (order out of the vehicle), return (back into the vehicle), release (Release / Code 4),
+--   transport (prisoner transport for a cuffed suspect: charges menu, then the AI van - modules/transport)
 -- Tests: an NPC's result comes from its History; a player is always negative for now (pol.bac / pol.drug element
 -- data is read when a future drink / drug system sets it).
 
@@ -106,7 +107,9 @@ function ST.openMenu(officer, target)
         add("police_system.stop.vehicle_details", "vehicle", { desc = getVehiclePlateText(target) })
         if isPoliceVehicle(target) then
             if suspectToPlace(officer) then add("police_system.stop.place", "place") end
-            if occupantToTakeOut(target) then add("police_system.stop.take_out", "takeout") end
+            local o = occupantToTakeOut(target)
+            if o then add("police_system.stop.take_out", "takeout") end
+            if o and POL.arrest.isCuffed(o) and not POL.transport.jobOf(o) then add("police_system.stop.transport", "transport") end
         end
     else
         local cuffed = POL.arrest.isCuffed(target)
@@ -129,6 +132,7 @@ function ST.openMenu(officer, target)
                 add(POL.arrest.escorts[target] == officer and "police_system.stop.stop_escort" or "police_system.stop.escort", "escort")
                 if nearestPoliceVehicle(officer) then add("police_system.stop.place", "place") end
             end
+            if not POL.transport.jobOf(target) then add("police_system.stop.transport", "transport") end
             add("police_system.stop.uncuff", "uncuff")
         end
         if s and s.fromVehicle and isElement(s.fromVehicle) and not getPedOccupiedVehicle(target) and not cuffed then
@@ -140,7 +144,7 @@ function ST.openMenu(officer, target)
     local function keepOpen(list)
         for _, it in ipairs(list) do
             if it.items then keepOpen(it.items)
-            elseif it.value ~= "arrest" and it.value ~= "escort" then it.closeOnSelect = false end
+            elseif it.value ~= "arrest" and it.value ~= "escort" and it.value ~= "transport" then it.closeOnSelect = false end
         end
     end
     keepOpen(items)
@@ -302,6 +306,10 @@ function ST.action(officer, target, value, inMenu)
         if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
     elseif value == "tow" then
         if getElementType(target) == "vehicle" then POL.tow.request(officer, false, target) end
+    elseif value == "transport" then
+        local suspect = target
+        if getElementType(target) == "vehicle" then suspect = isPoliceVehicle(target) and occupantToTakeOut(target) or nil end
+        if suspect and POL.arrest.isCuffed(suspect) then POL.transport.ask(officer, suspect) end
     end
 end
 

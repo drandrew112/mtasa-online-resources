@@ -3,6 +3,9 @@
 --   free road (lane / curve speed), leaders on the route, upcoming curve speeds, stop lines
 --   (traffic lights, right of way, occupied junction paths, full exit lane, emergency vehicles),
 --   non-traffic obstacles (players, their vehicles, peds), emergency vehicle reactions (els.lua).
+-- Emergency drivers (scripted, sc.emergency) skip the yield / claim / full exit lane gates and pass the cars ahead
+-- that pulled over, stand or crawl: a lateral offset beside them (emStep) when that corridor is free; a car far
+-- enough to the side is no leader then (TRAFFIC.EM_*).
 
 Sim = {}
 
@@ -68,6 +71,7 @@ local function gate(ag, c, dStop, now)
     -- exit lane) until the car has pulled aside
     local pe = ag.els
     local clearing = pe and pe.clear and pe.expires > now and (abs(ag.lat - pe.lat) > 0.3 or Lanes.wantsRight(ag))
+    local em = ag.script and ag.script.emergency
     if dStop > max(35, v * v / (2 * T.IDM_DECEL) + 12) then return nil end
 
     -- traffic light (only the first signalled node of a multi-node intersection counts)
@@ -90,7 +94,7 @@ local function gate(ag, c, dStop, now)
     -- emergency vehicle about to cross
     local hx, hy = ag.hx, ag.hy
     local jx, jy = Geo.pose(-c, 0)
-    if jx and not clearing and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.6) and Els.approachingJunction(ag, c, jx, jy, hx, hy) then
+    if jx and not clearing and not em and dStop > v * v / (2 * T.IDM_MAX_DECEL * 0.6) and Els.approachingJunction(ag, c, jx, jy, hx, hy) then
         return "els"
     end
 
@@ -99,8 +103,8 @@ local function gate(ag, c, dStop, now)
 
     local conf = Net.cconf[c]
     if conf then
-        -- somebody on a conflicting path has been waiting longer: let it go first
-        for i = 1, #conf do
+        -- somebody on a conflicting path has been waiting longer: let it go first (not an emergency driver)
+        for i = 1, em and 0 or #conf do
             local cl = claims[conf[i]]
             if cl then
                 for b in pairs(cl) do
@@ -137,7 +141,7 @@ local function gate(ag, c, dStop, now)
 
     local waited = ag.stopSince and now - ag.stopSince or 0
     local yl = Net.cyield[c]
-    if yl and waited < T.DEADLOCK_WAIT then
+    if yl and not em and waited < T.DEADLOCK_WAIT then
         for i = 1, #yl do
             local ap = approachPrev[yl[i]]
             if ap then
@@ -153,7 +157,7 @@ local function gate(ag, c, dStop, now)
     end
 
     local boxed = laneEntryBlocked(Net.cto[c], ag)
-    if boxed and not clearing then return "box", boxed end
+    if boxed and not clearing and not em then return "box", boxed end
     return nil
 end
 
@@ -244,7 +248,8 @@ local function obstacleAccel(ag, v, v0, n, now)
     if best and bestGap < 12 + T.OBSTACLE_GAP and v < 0.5 and sqrt(best.vx * best.vx + best.vy * best.vy) < 0.5 then
         if ag.blockedBy ~= best.el then ag.blockedBy, ag.blockedSince = best.el, now end
         local waited = now - ag.blockedSince
-        if waited > T.OVERTAKE_AFTER and not ag.overtake and now >= (ag.bypassAt or 0) then
+        local after = ag.script and ag.script.emergency and T.EM_OVERTAKE_AFTER or T.OVERTAKE_AFTER
+        if waited > after and not ag.overtake and now >= (ag.bypassAt or 0) then
             ag.bypassAt = now + T.BYPASS_RECHECK
             local _, ew = extents(best, ag)
             local lat = bestSide - (ew + 1.0 + 1.3)
@@ -262,6 +267,122 @@ local function obstacleAccel(ag, v, v0, n, now)
         ag.blockedBy = nil
     end
     return bestA
+end
+
+------------------------------------------------------------------------ emergency driving
+
+local emAgents, emObs = {}, {}
+
+-- is the strip at lateral offset lat (from the agent's lane centre, + = right) free for reach m ahead? Traffic of
+-- every lane (oncoming: plus its travel), players, their vehicles and peds count; straight-line test along the heading
+local function emCorridorFree(ag, lat, reach)
+    local hx, hy = ag.hx, ag.hy
+    local ox, oy = ag.x - hy * ag.lat, ag.y + hx * ag.lat          -- lane centre at the agent
+    local cx, cy, r = ox + hx * reach * 0.5, oy + hy * reach * 0.5, reach * 0.5 + 10
+    for i = #emAgents, 1, -1 do emAgents[i] = nil end
+    Agents.near(cx, cy, r, emAgents)
+    for i = 1, #emAgents do
+        local b = emAgents[i]
+        if b ~= ag and abs(b.z - ag.z) < 4 then
+            local rx, ry = b.x - ox, b.y - oy
+            local along = rx * hx + ry * hy
+            local ext = reach
+            if b.hx * hx + b.hy * hy < 0 then ext = reach + b.v * 2 end
+            if along > -ag.half - b.half and along < ext + b.half
+                and abs(rx * hy - ry * hx - lat) < 2 * T.ELS_CAR_HALF_WIDTH + T.EM_PASS_MARGIN then
+                return false
+            end
+        end
+    end
+    for i = #emObs, 1, -1 do emObs[i] = nil end
+    Obstacles.near(cx, cy, r, emObs)
+    for i = 1, #emObs do
+        local o = emObs[i]
+        if abs(o.z - ag.z) < 4 then
+            local rx, ry = o.x - ox, o.y - oy
+            local along = rx * hx + ry * hy
+            local ea, ew = extents(o, ag)
+            if along > -ag.half - ea and along < reach + ea
+                and abs(rx * hy - ry * hx - lat) < T.ELS_CAR_HALF_WIDTH + ew + T.EM_PASS_MARGIN then
+                return false
+            end
+        end
+    end
+    return true
+end
+
+-- the nearest car ahead on the agent's own lane chain within EM_PASS_LOOK -> agent, gap (bumper to bumper) | nil
+local function emLeader(ag)
+    local dist = -ag.s
+    local plan = ag.plan
+    for i = 1, #plan do
+        if dist > T.EM_PASS_LOOK then return nil end
+        local code = plan[i].code
+        local o = Agents.occ[code]
+        if o then
+            local best, bestD
+            for b in pairs(o) do
+                if b ~= ag and b.plan[1].code == code then
+                    local d = dist + b.s
+                    if d > 0 and (not bestD or d < bestD) then best, bestD = b, d end
+                end
+            end
+            if best then
+                local gap = bestD - ag.half - best.half
+                if gap < T.EM_PASS_LOOK then return best, gap end
+                return nil
+            end
+        end
+        dist = dist + Geo.length(code)
+    end
+    return nil
+end
+
+-- where an emergency driver passes car b: beside it on the side away from where b moved (innermost lane of a
+-- multi-lane carriageway: only on the right, the left is the median)
+local function emSides(ag, b)
+    local code = ag.plan[1].code
+    local innermost = code > 0 and Net.lright[code] and not Net.lleft[code]
+    local right = min(T.EM_PASS_MAX_LAT, max(0, b.lat + T.EM_PASS_LAT))
+    local left = max(-T.EM_PASS_MAX_LAT, min(0, b.lat - T.EM_PASS_LAT))
+    if innermost then return right end
+    if b.lat < -0.3 then return right, left end
+    return left, right
+end
+
+-- every EM_PASS_CHECK: the lateral offset to drive at (ag.emPass), nil = the lane centre
+local function emStep(ag, now)
+    if now < (ag.emAt or 0) then return end
+    ag.emAt = now + T.EM_PASS_CHECK
+    local b, gap = emLeader(ag)
+    if not b then
+        if ag.emPass and now > ag.emPass.untilAt then ag.emPass = nil end
+        return
+    end
+    local wanted = segSpeed(ag.plan[1].code) * ag.v0f * (ag.script.speedFactor or 1)
+    local yielding = b.els and b.els.expires > now
+    if not (yielding or b.held or b.v < max(4, wanted * T.EM_PASS_SLOW)) then
+        if ag.emPass and now > ag.emPass.untilAt then ag.emPass = nil end
+        return
+    end
+    local reach = max(0, gap) + 2 * b.half + 12
+    local first, second = emSides(ag, b)
+    -- the side it is already on first (no zig-zag)
+    if second and ag.emPass and abs(ag.emPass.lat - second) < abs(ag.emPass.lat - first) then first, second = second, first end
+    for _, lat in ipairs({ first, second or false }) do
+        if lat and abs(b.lat - lat) >= T.EM_PASS_CLEAR and emCorridorFree(ag, lat, reach) then
+            ag.emPass = { lat = lat, untilAt = now + T.EM_PASS_HOLD }
+            return
+        end
+    end
+    -- no way round it now: back into the lane behind it
+    ag.emPass = nil
+end
+
+-- an emergency driver is (or will be when it gets there) far enough beside car b: b is no leader
+local function emBeside(ag, b, gap)
+    local latThere = Geo.latAfter(ag.lat, ag.latRate, ag.latTarget, ag.latSlope, gap > 0 and gap or 0)
+    return abs(b.lat - latThere) >= T.EM_PASS_CLEAR
 end
 
 ------------------------------------------------------------------------ per agent
@@ -284,7 +405,17 @@ local function accelOf(ag, now)
             ag.hold, ag.limit = "stop", "stop"
             return v > 0.05 and -T.IDM_DECEL or 0
         end
+        if sc.emergency then
+            emStep(ag, now)
+            -- beside the lane (passing): slower
+            if (ag.emPass or abs(ag.lat) > 0.6) and v0 > T.EM_PASS_SPEED then v0 = T.EM_PASS_SPEED end
+        elseif ag.emPass then
+            ag.emPass = nil
+        end
+    elseif ag.emPass then
+        ag.emPass = nil
     end
+    local em = sc and sc.emergency
 
     local e = ag.els
     if e then
@@ -395,7 +526,10 @@ local function accelOf(ag, now)
                     local bs = b.s
                     if i > 1 or bs > ag.s or (bs == ag.s and b.id > ag.id) then
                         local d = dist + bs
-                        if d > 0 and (not bestD or d < bestD) then best, bestD = b, d end
+                        -- an emergency driver beside it (passing) does not follow it
+                        if d > 0 and (not bestD or d < bestD) and not (em and emBeside(ag, b, d - ag.half - b.half)) then
+                            best, bestD = b, d
+                        end
                     end
                 end
             end
@@ -430,7 +564,8 @@ local function moveLateral(ag, ds, now)
     local target, slope = 0, T.RETURN_SLOPE
     if ag.lcUntil and ag.lcUntil > now then slope = T.LANE_CHANGE_SLOPE end
     if ag.els and ag.els.lat ~= 0 then target, slope = ag.els.lat, T.ELS_SLOPE
-    elseif ag.overtake then target, slope = ag.overtake.lat, T.OVERTAKE_SLOPE end
+    elseif ag.overtake then target, slope = ag.overtake.lat, T.OVERTAKE_SLOPE
+    elseif ag.emPass then target, slope = ag.emPass.lat, T.EM_PASS_SLOPE end
     if target ~= ag.latTarget or slope ~= ag.latSlope then
         ag.latTarget = target
         ag.latSlope = slope

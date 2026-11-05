@@ -63,6 +63,7 @@
     <export function="getScriptedVehicleState" type="server" />
     <export function="setScriptedPursuit"      type="server" />
     <export function="engageScriptedVehicle"   type="server" />
+    <export function="setScriptedEmergency"    type="server" />
     <!-- police / service extensions (server/scripted.lua, server/spots.lua, server/chase.lua) -->
     <export function="setScriptedDespawnUnseen" type="server" />
     <export function="setTrafficVehicleFlee"    type="server" />

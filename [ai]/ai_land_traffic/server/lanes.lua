@@ -5,6 +5,7 @@
 --   * a car held up by a clearly slower leader in the outer lane passes through the inner lane
 --   * a driver giving way to an emergency vehicle (els.lua, e.right) goes to the outer lane first (also slow
 --     or held; no cooldown)
+--   * an emergency driver (scripted, sc.emergency) keeps to the inner lane, the outer one only for a right turn
 -- Every lane change needs a free gap in the target lane: traffic and non-traffic obstacles (players, their
 -- vehicles, the emergency vehicle itself) alike.
 -- A lane change moves the agent onto the neighbouring lane at once (Agents.changeLane) with the old
@@ -115,6 +116,7 @@ end
 
 local function change(ag, to, now)
     if Agents.changeLane(ag, to, now) then
+        ag.emPass = nil   -- an emergency driver's passing offset belonged to the old lane
         ag.laneFree = now + T.LANE_CHANGE_COOLDOWN
         ag.slowSince = nil
         return true
@@ -156,6 +158,17 @@ function Lanes.update(ag, now)
     if want then
         local s2 = ag.s * Geo.length(want) / len
         if gapOK(ag, want, s2, false) then change(ag, want, now) end
+        return
+    end
+
+    -- emergency driving: the inner (left) lane, the outer one only for a right turn ahead (sim.lua passes the cars)
+    if ag.script and ag.script.emergency then
+        local turnRight = turnAhead(ag, "R", T.LANE_TURN_LOOK)
+        if left and not turnRight and Net.lnext[left] and not junctionWithin(ag, T.EM_INNER_JUNCTION) then
+            if gapOK(ag, left, ag.s * Geo.length(left) / len, true) then change(ag, left, now) end
+        elseif right and turnRight and Net.lnext[right] then
+            if gapOK(ag, right, ag.s * Geo.length(right) / len, true) then change(ag, right, now) end
+        end
         return
     end
 

@@ -53,6 +53,13 @@ MIS = {
     PURSUIT_PASSENGERS = { 1, 2 },
     PURSUIT_WEAPONS = { { 30, 300 }, { 28, 400 }, { 32, 400 } },
     ENEMY_GROUP = "biz_raiders",
+
+    -- /bizmissioneditor: previews + editing of the positions below; saves to POSITIONS_FILE,
+    -- which (when present) replaces SUPPLY_SPOTS, VAN_SPAWNS and BUYERS of this file
+    EDITOR_ADMIN = 5,
+    EDITOR_KEY = "r",              -- menu
+    EDITOR_LABEL_DIST = 150,       -- 3D labels within this
+    POSITIONS_FILE = "data/positions.json",
 }
 
 -- supply steal targets

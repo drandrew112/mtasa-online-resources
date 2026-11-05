@@ -58,33 +58,46 @@ function B.fulfil(c, d, now)
     end
 end
 
--- physics vehicles that could not go back into the traffic and crews left without a vehicle: removed unseen
+-- physics vehicles that could not go back into the traffic: removed unseen; a retreating crew that could not get
+-- back in within RETREAT_BOARD s walks off; officers on foot without a unit (AI.walkers) go when no camera sees them
+-- and every player is WALK_DESPAWN_DIST away
 function B.cleanup(now)
     local t = POL.running("ai_land_traffic") and exports.ai_land_traffic
-    local function unseenFar(el)
+    local function unseenFar(el, dist)
         if not isElement(el) then return true end
         local x, y = getElementPosition(el)
         for _, p in ipairs(getElementsByType("player")) do
             local px, py = getElementPosition(p)
-            if (px - x) ^ 2 + (py - y) ^ 2 < A.DESPAWN_DIST ^ 2 then return false end
+            if (px - x) ^ 2 + (py - y) ^ 2 < dist ^ 2 then return false end
         end
         return not (t and t:isElementSeenByPlayers(el))
     end
     for _, u in pairs(AI.units) do
+        if u.state == "retreat" and u.boardAt and now - u.boardAt > A.RETREAT_BOARD * 1000 and POL.ai.tactics.crewOut(u) then
+            AI.walkAwayCrew(u)
+            u.manualDespawn = true
+        end
         if (u.manualDespawn or u.dead) and u.state == "retreat" or (u.dead and not u.chase) then
-            if unseenFar(u.veh) then AI.remove(u) end
+            if unseenFar(u.veh, A.DESPAWN_DIST) then AI.remove(u) end
         end
     end
-    if AI.orphans then
-        for ped, at in pairs(AI.orphans) do
-            if not isElement(ped) then
-                AI.orphans[ped] = nil
-            elseif now - at > 30000 and unseenFar(ped) then
-                AI.orphans[ped] = nil
-                AI.peds[ped] = nil
-                if POL.running("ai_peds") then pcall(function() exports.ai_peds:destroyAIPed(ped) end) end
-                if isElement(ped) then destroyElement(ped) end
-            end
+    for ped, at in pairs(AI.walkers) do
+        if not isElement(ped) or isPedDead(ped) and now - at > 60000 then
+            AI.walkers[ped] = nil
+            AI.peds[ped] = nil
+        elseif now - at > A.WALK_MIN * 1000 and unseenFar(ped, A.WALK_DESPAWN_DIST) then
+            AI.walkers[ped] = nil
+            AI.peds[ped] = nil
+            if POL.running("ai_peds") then pcall(function() exports.ai_peds:destroyAIPed(ped) end) end
+            if isElement(ped) then destroyElement(ped) end
         end
     end
 end
+
+-- the chase tick stops with the last chase: retreating units and walkers are cleaned up on their own
+setTimer(function()
+    if next(AI.units) or next(AI.walkers) then
+        local ok, err = pcall(B.cleanup, getTickCount())
+        if not ok then outputDebugString("[police_system] ai cleanup: " .. tostring(err), 1) end
+    end
+end, 2000, 0)

@@ -39,6 +39,9 @@ function RD.handle(player, id, args)
         return POL.medical.request(player)
     elseif id == "REQUEST_TOW" then
         return POL.tow.request(player, args.confirm == true)
+    elseif id == "REQUEST_TRANSPORT" then
+        -- the escorted / nearest cuffed suspect: charges menu first (modules/transport)
+        return POL.transport.ask(player, isElement(args.target) and args.target or nil)
     elseif id == "QUERY_PERSON" then
         return POL.query.nearestPerson(player)
     elseif id == "QUERY_VEHICLE" then

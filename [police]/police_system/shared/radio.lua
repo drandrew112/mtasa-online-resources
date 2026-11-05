@@ -5,7 +5,7 @@
 
 RADIO_CATEGORIES = {
     { id = "status", items = { "STATUS_AVAILABLE", "STATUS_RESPONDING", "STATUS_BUSY", "STATUS_PURSUIT", "CODE_4" } },
-    { id = "services", items = { "REQUEST_BACKUP", "REQUEST_AMBULANCE", "REQUEST_TOW" } },
+    { id = "services", items = { "REQUEST_BACKUP", "REQUEST_AMBULANCE", "REQUEST_TOW", "REQUEST_TRANSPORT" } },
     { id = "lookup", items = { "QUERY_PERSON", "QUERY_VEHICLE" } },
 }
 
@@ -18,6 +18,7 @@ RADIO_IDS = {
     REQUEST_BACKUP = {},
     REQUEST_AMBULANCE = {},
     REQUEST_TOW = {},
+    REQUEST_TRANSPORT = {},
     QUERY_PERSON = {},
     QUERY_VEHICLE = {},
 }
@@ -36,7 +37,7 @@ RADIO_TEXT_KEYS = {
     "police_system.radio.cat_status", "police_system.radio.cat_services", "police_system.radio.cat_lookup",
     "police_system.radio.status_available", "police_system.radio.status_responding", "police_system.radio.status_busy",
     "police_system.radio.status_pursuit", "police_system.radio.code_4", "police_system.radio.request_backup",
-    "police_system.radio.request_ambulance", "police_system.radio.request_tow", "police_system.radio.query_person",
+    "police_system.radio.request_ambulance", "police_system.radio.request_tow", "police_system.radio.request_transport", "police_system.radio.query_person",
     "police_system.radio.query_vehicle",
     "police_system.status.pursuit", "police_system.status.available", "police_system.status.responding",
     "police_system.status.busy", "police_system.status.short_pursuit", "police_system.status.short_available",

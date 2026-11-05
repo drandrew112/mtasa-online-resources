@@ -84,6 +84,9 @@ end
 function isElementSeenByPlayers(el)
     if not isElement(el) then return false end
     local x, y, z = getElementPosition(el)
+    -- a simulated vehicle: its pose (the element position is only refreshed every few seconds)
+    local ag = Agents.byVeh[el]
+    if ag and Agents.list[ag.id] then x, y, z = ag.x, ag.y, ag.z end
     return Views.anySees(Traffic.players, x, y, z + 1, getTickCount())
 end
 

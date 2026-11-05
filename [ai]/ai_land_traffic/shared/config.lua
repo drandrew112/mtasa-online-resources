@@ -207,6 +207,25 @@ TRAFFIC = {
     CHASE_PATH_REROUTE = 35,    -- the target moved this far from the route's end: a new route
     HIDDEN_SPAWN_TRIES = 80,    -- findHiddenRoadSpawn: lane points tried
 
+    -- emergency driving (sim.lua / lanes.lua): scripted vehicles with sc.emergency (profile "pursuit", option
+    -- emergency = true, setScriptedEmergency). They do not give way to other emergency vehicles, ignore the yield /
+    -- full exit lane gates, keep to the inner (left) lane of multi-lane carriageways (outer only for a right turn) and
+    -- pass the cars ahead that pulled over / stand / crawl: beside them at EM_PASS_LAT from that car (left, or right
+    -- when it moved left - the innermost lane only right), when that corridor (other lanes, oncoming traffic, players)
+    -- is free, at most EM_PASS_SPEED while out of the lane
+    EM_PASS_LAT = 2.6,          -- lateral distance kept from the passed car
+    EM_PASS_CLEAR = 2.1,        -- a car ahead this far to the side is no leader any more (being passed)
+    EM_PASS_MAX_LAT = 3.4,      -- max offset from the own lane centre
+    EM_PASS_MARGIN = 0.35,      -- corridor safety margin (lateral)
+    EM_PASS_SLOPE = 0.25,       -- steering out / back (lateral m per m)
+    EM_PASS_LOOK = 45,          -- cars this far ahead are considered
+    EM_PASS_SLOW = 0.5,         -- a leader below this fraction of the wanted speed (and below 4 m/s at least) is passed
+    EM_PASS_SPEED = 13,         -- m/s while beside the lane (~47 km/h)
+    EM_PASS_HOLD = 1500,        -- ms the offset is kept after the last car that needed it
+    EM_PASS_CHECK = 300,        -- ms between decisions
+    EM_OVERTAKE_AFTER = 700,    -- ms behind a standing non-traffic obstacle before going round it (else OVERTAKE_AFTER)
+    EM_INNER_JUNCTION = 25,     -- no move into the inner lane with a junction this close ahead
+
     NO_PLATE_CHANCE = 0.003,    -- a traffic car with no number plate (plate text "0", police_system ALPR)
     DRIVER_THROTTLE = 0.02,     -- tiny analog throttle on the drivers (client): stops GTA locking the wheels
     ADMIN_LEVEL = 4,            -- /traffic commands (elementData admin_level)

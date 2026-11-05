@@ -860,10 +860,17 @@ addEventHandler("onClientKey", root, function(key, press)
     -- Same while the virtual browser (ui_browser) is open.
     if getElementData(localPlayer, "browserOpen") then return end
 
+    -- Same while the ui_help F1 panel (search / AI assistant field) or the F3
+    -- donate panel is open: "p" typed there must not open the menu.
+    if getElementData(localPlayer, "helpOpen") then return end
+    if getElementData(localPlayer, "donateOpen") then return end
+
     -- the download screen (v_modloader models) is up; the menu comes back after it
     if getElementData(localPlayer, "download_screen") then return end
 
     if not pauseMenuOpen then
+        -- a higher-priority handler (text field, panel) already consumed the key
+        if wasEventCancelled() then return end
         -- v_introduce: while the server introduction runs only the panel it teaches may open
         local introAllow = getElementData(localPlayer, "intro.allow")
         if OPEN_KEYS[key]

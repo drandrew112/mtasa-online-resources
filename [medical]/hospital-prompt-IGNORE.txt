@@ -31,7 +31,7 @@ Ezen a számítógépen van
 - triage (egy 1től 4ig terjedő skála amin érkezéskor be kell sorolni a betegeket)
 - Kórházi felszerelések: Itt lehet megnézni, hogy hiányzik-e valami a kórházi felszerelésből. Itt lehet rendelni felszereléseket. A rendelés 30 másodperc után megérkezik a kórházba. A rendelés minden felszerelést feltölt ami a rendelés leadásakor hiányzott.
 
-## Triage
+## Triage modul
 A triage egy beteg besorolás aszerint, hogy kinek mennyire súlyos az állapota.
 1 és 4 közötti számmal jelöljük.
 Aki még nem kapott triage számot: Az interaction menüben a betegvizsgálat alatt egy triage gombbal meg lehet adni.
@@ -41,6 +41,50 @@ A triage-t a számítógépen a beteg nyilvántartásban is be lehet állítani.
 Egy egyszerű UI a beteg teste közepén. Kicsi és átlátszó.
 Ezen látható a beteg neve és triage státusza valamint az, hogy ki a kezelője.
 Kezelő: Az a kórházi dolgozó aki felel azért a betegért
+
+## Beteg felvétel és beteg út
+1. Beteg érkezése
+- Mentőszolgálat hozza be
+- Lábon érkező betegek
+- Mentőszolgálat vagy bárki más által behozott betegek akiket csak leraktak a kórházba - Őket külön fel kell venni. Ez akkor fordulhat elő, ha a rendőr behoz valakit vagy a mentőszolgálat nem tujda átadni valamiért a markerben a beteget vagy pont több beteget hoznak.
+2. Triage
+- A beteget triageolni kell. Triage előtt nem lehet kezelni.
+- Triageolni bárki tud a kórházban.
+2. Kezelő választása
+- A beteget magához kell vennie egy kórházi dolgozónak.
+- A kezelő tud csak vizsgálatokat és beavatkozásokat kezdeményezni a betegnél.
+- A beteget hordággyal bárki odébb tudja vinni.
+3. Vizsgálatok és beavatkozások
+- Ezt megelőzi a várakozás az ellátásra. Addig csak a folyosón fekszik a beteg az ágyon.
+Bevihetik a:
+- sokktalanítóba
+- sebkezelő szobába
+- gipszelőbe
+- vagy CTre.
+4. Felvétel osztályra vagy szabadon engedés
+- A kezelő dönthet arról,
+- hogy a betegnek szüksége van-e arra hogy osztályra felvegyék a kórházba
+- vagy haza lehet engedni.
+
+## CT modul
+A CT egy képalkotó vizsgálat.
+
+Több testrészre is szűrhető.
+- Koponya CT - Fejsérülés, stroke gyanúja
+- Mellkas CT - 	Mellkasi sérülés, tüdőelváltozás
+- Hasi CT - Hasi trauma, belső vérzés gyanúja
+- Gerinc CT - Gerincsérülés
+- Teljes test CT - Polytrauma
+
+A CT gép egy saját modell ami díszként tökéletesen megállja a helyét.
+
+A CT vizsgálat 10 másodpercig tart és egyszerre csak egy beteg vizsgálható.
+
+A CT teremben van egy asztal ami felett egy monitoron meg kéne jeleníteni a CT felvétel eredményét.
+Az monitor a szoba nyugati falán legyen dx felületként. Példát láthatsz rá az avi_monitors-ban.
+A képeket te fogod legenerálni. Minden létező sérüléshez több képet is kell generálni.
+A játékos látni fogja a képet és alatta egy leírást, hogy mi is van a képen. A leírás mindkét nyleven elérhető kell legyen.
+
 
 ## Pozíciók az All Saints General kórházhoz. Egyenlőre csak ez az egy kórház lesz elérhető a munkához.
 work duty: { "x": 1153.84, "y": -1307.44, "z": 14.38 }
@@ -67,3 +111,7 @@ Tervezd meg a rendszert és a működését. Tegyél fel kérdéseket.
 Vizsgáld a tervem hiányosságait.
 Minden kérdésre és hiányosságra javasolj egy megoldást.
 Artifact-ban mutasd be a tervet képekkel együtt.
+
+Javasolj egy listát a kórházi felszerelésekről és mennyiségükről.
+
+Javasolj még ellátási módokat.

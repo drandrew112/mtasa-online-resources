@@ -377,6 +377,9 @@ local function newScript(options)
         speedFactor = tonumber(options.speedFactor) and clamp(tonumber(options.speedFactor), 0.3, 1.5) or nil,
         profile = pursuitDrive and "emergency" or profile,
         pursuitDrive = pursuitDrive or nil,
+        -- emergency driving (sim.lua / lanes.lua): passes the cars that pulled over, keeps to the inner lane.
+        -- Default with the "pursuit" profile; options.emergency true / false overrides it
+        emergency = (options.emergency == true or (pursuitDrive and options.emergency ~= false)) or nil,
         keepDriver = options.keepDriver == true or nil,
         owner = options.owner or (sourceResource and getResourceName(sourceResource) or nil),
     }
@@ -471,6 +474,16 @@ function removeScriptedTarget(veh, id)
         end
     end
     return false
+end
+
+-- emergency driving on / off (see TRAFFIC.EM_* in shared/config.lua): passes the cars that pulled over, stand or
+-- crawl, keeps to the inner lane, does not give way to other emergency vehicles. -> true | false
+function setScriptedEmergency(veh, on)
+    local ag = scripted(veh)
+    if not ag then return false end
+    ag.script.emergency = on ~= false or nil
+    if not ag.script.emergency then ag.emPass = nil end
+    return true
 end
 
 function clearScriptedTargets(veh)
