@@ -61,7 +61,7 @@ local CUSTODY_ITEMS = {
 local TYPES = {
     ped = { "ped", PERSON_ITEMS, { targetInVehicle = false } },          -- persons on foot only
     player = { "player", PERSON_ITEMS, { targetInVehicle = false } },
-    vehicle = { "vehicle", VEHICLE_ITEMS, { title = L.msg("police_system.stop.menu_vehicle") } },
+    vehicle = { "vehicle", VEHICLE_ITEMS, { title = L.msg("police_system.stop.menu_vehicle"), anchorDriver = true } },
     ped_custody = { "ped", CUSTODY_ITEMS, { targetInVehicle = true, dataKey = "pol.custody" } },
     player_custody = { "player", CUSTODY_ITEMS, { targetInVehicle = true, dataKey = "pol.custody" } },
 }

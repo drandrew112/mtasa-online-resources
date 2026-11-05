@@ -482,9 +482,20 @@ end
 
 AR.handover = handover
 
--- the charges an officer can pick at the handover: the arrestable / warrant items of the penal code
+-- "Arrest warrant" charge: not a penal code item (no fine), always the first in the list
+AR.WARRANT_CHARGE = "arrest_warrant"
+
+-- a valid handover charge: the arrest warrant or an arrestable / warrant item of the penal code
+function AR.isCharge(id)
+    if id == AR.WARRANT_CHARGE then return true end
+    local e = POL.btk.get(id)
+    return e and (e.arrestable or e.warrant) and true or false
+end
+
+-- the charges an officer can pick at the handover: the arrest warrant first, then the arrestable / warrant items of
+-- the penal code
 function AR.chargeItems(officer)
-    local out = {}
+    local out = { { id = AR.WARRANT_CHARGE, label = L.forPlayer(officer, btkKey(AR.WARRANT_CHARGE)) } }
     for _, e in ipairs(POL.btk.items) do
         if e.arrestable or e.warrant then
             out[#out + 1] = { id = e.id, label = L.forPlayer(officer, btkKey(e.id)) }
@@ -533,8 +544,7 @@ POL.net("arrest:handover", function(officer, target, charges)
     if not q or q.list[1] ~= target or not isElement(target) or not AR.cuffed[target] then return end
     local valid, seen = {}, {}
     for _, id in ipairs(type(charges) == "table" and charges or {}) do
-        local e = POL.btk.get(id)
-        if e and (e.arrestable or e.warrant) and not seen[id] then seen[id] = true; valid[#valid + 1] = id end
+        if AR.isCharge(id) and not seen[id] then seen[id] = true; valid[#valid + 1] = id end
     end
     if #valid == 0 then return POL.notify(officer, "police_system.arrest.err_no_charges") end
     local h = q.st.handover

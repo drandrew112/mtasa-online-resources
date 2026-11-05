@@ -288,8 +288,7 @@ POL.net("transport:request", function(officer, suspect, charges)
     if not POL.rights.has(officer) or not isElement(suspect) then return end
     local valid, seen = {}, {}
     for _, id in ipairs(type(charges) == "table" and charges or {}) do
-        local e = POL.btk.get(id)
-        if e and (e.arrestable or e.warrant) and not seen[id] then seen[id] = true; valid[#valid + 1] = id end
+        if POL.arrest.isCharge(id) and not seen[id] then seen[id] = true; valid[#valid + 1] = id end
     end
     if #valid == 0 then return POL.notify(officer, "police_system.arrest.err_no_charges") end
     TR.request(officer, suspect, valid)

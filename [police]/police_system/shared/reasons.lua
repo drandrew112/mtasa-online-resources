@@ -61,7 +61,7 @@ POLICE_TEXT_KEYS = {
     "police_system.btk.order.harassment", "police_system.btk.crime.theft", "police_system.btk.crime.vehicle_theft",
     "police_system.btk.crime.robbery", "police_system.btk.crime.burglary", "police_system.btk.crime.assault",
     "police_system.btk.crime.assault_officer", "police_system.btk.vehicle.invalid_licence",
-    "police_system.btk.crime.homicide", "police_system.btk.warning.minor_speeding", "police_system.btk.warning.no_indicator",
+    "police_system.btk.crime.homicide", "police_system.btk.arrest_warrant","police_system.btk.warning.minor_speeding", "police_system.btk.warning.no_indicator",
     "police_system.btk.warning.minor_parking", "police_system.btk.warning.no_seatbelt", "police_system.btk.warning.minor_defect",
     "police_system.btk.warning.minor_disorder", "police_system.btk.warning.minor_pedestrian",
 }
