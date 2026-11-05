@@ -40,8 +40,6 @@ POLICE_WORK = {
           tuning = { engine = 2, turbo = 2, brakes = 2 } },
         { model = 598, name = L.text("work_police.config.skoda_octavia"), paintjob = "hu_pd", elsExtra = 1,
           tuning = { engine = 2, turbo = 2, brakes = 2, driveType = "awd" } },
-        { model = 599, name = L.text("work_police.config.police_ranger"), level = 2,
-          tuning = { engine = 2, turbo = 2, brakes = 2 } },
         { model = 602, name = L.text("work_police.config.audi_a3"),
           tuning = { engine = 3, turbo = 3, brakes = 3, driveType = "awd" } },
         { model = 603, name = L.text("work_police.config.audi_rs6"),
