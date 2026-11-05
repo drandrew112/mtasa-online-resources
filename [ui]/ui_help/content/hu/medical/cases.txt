@@ -32,7 +32,7 @@ Az igazi betegeken nincs címke. Ezek a példák megmutatják, hogyan rakd össz
 4. **Sokk leadva - folytasd a CPR-t, ellenőrizd a ritmust.** Következő CPR kör. Közben a társad bekötöz egy **IV hozzáférés**-t, és **Adrenalin**t ad.
 5. CPR közben ritmusváltás: **Pulseless Ventricular Tachycardia** – újra sokk.
 6. **A pulzus visszatért (ROSC).** Pulzus 118, vérnyomás 78/50, SpO2 60%.
-7. ROSC után: O2 maszk, a folyadék folyik, mérd meg a **vércukrot**. Eszméletlen és horkol: **RSI** (Ketamine, várj, Rocuronium, várj 15 mp-et, Intubálás).
+7. ROSC után: O2 maszk, a folyadék folyik, mérd meg a **vércukrot**. Eszméletlen és gaspol: **RSI** (Ketamine, várj, Rocuronium, várj 15 mp-et, Intubálás).
 8. A monitor hirtelen **Ventricular Tachycardia with Pulse**-t mutat, esik a vérnyomás: **SYNC**, CHARGE, SHOCK – kardioverzió. SYNC nélkül a sokk visszaviheti VF-be.
 9. Stabil ritmus, a szisztolés 90 felett: szállítás.
 
@@ -52,7 +52,7 @@ Az igazi betegeken nincs címke. Ezek a példák megmutatják, hogyan rakd össz
 4. Tűhegynyi pupillák + lassú légzés + tűnyomok = **opioid túladagolás**. **Naloxone** (orrspray, nem kell IV).
 5. Rövidesen magához tér, a légzése normális lesz, nő az SpO2.
 
-**Ha a pupillák „normál méretűek, renyhék”, és üres tablettatartók vannak a közelben:** altató. A Naloxone nem hatna: tartsd oxigénen, intubáld, ha horkolni kezd, és vidd kórházba.
+**Ha a pupillák „normál méretűek, renyhék”, és üres tablettatartók vannak a közelben:** altató. A Naloxone nem hatna: tartsd oxigénen, intubáld, ha gaspolni kezd, és vidd kórházba.
 **Ha tágak, nagyon gyors pulzussal és izzadással:** stimuláns – Midazolam.
 
 ## 4. A zavart cukorbeteg – túl alacsony és túl magas
@@ -95,7 +95,7 @@ Az igazi betegeken nincs címke. Ezek a példák megmutatják, hogyan rakd össz
 2. **Vércukormérő** – az alacsony cukor is utánozhatja a stroke-ot. 105: normális.
 3. NE adj Captoprilt: a 130 és 220 közötti szisztolés kell az agyának. Túl alacsony vagy túl magas vérnyomásnál 2,5-szer gyorsabban romlik.
 4. O2 maszk, ha alacsony az SpO2. Az agyvérzés 8 percenként romlik: nincs vesztegetni való idő, azonnal szállítsd.
-5. Ha eszméletlenné válik és horkol: veszélyben a légút – RSI.
+5. Ha eszméletlenné válik és gaspol: veszélyben a légút – RSI.
 
 ## 7. Asztmás roham
 

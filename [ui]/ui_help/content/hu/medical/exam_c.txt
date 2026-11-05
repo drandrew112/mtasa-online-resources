@@ -10,7 +10,7 @@ Előfeltétel: B+ és RSI vizsga. Rövid áttekintés a korábbiakból (gyógysz
 - **Szörcsölő, duzzadt boka, rózsaszín habos köpet:** tüdőödéma – ültetés, Nitroglicerin, oxigén.
 - **Mély, szapora, acetonszag (Kussmaul):** nagyon magas vércukor.
 - **Lassú, felületes:** ópiát- vagy altatószer-mérgezés.
-- **Horkoló** eszméletlen betegnél: részleges légúti elzáródás.
+- **Gaspoló** eszméletlen betegnél: részleges légúti elzáródás.
 - **Hörgő, kapkodó (agonális):** keringésmegállás, kezdd az újraélesztést.
 - **COPD** (csücsörített ajak, előredőlve ül): az oxigén segít leginkább.
 

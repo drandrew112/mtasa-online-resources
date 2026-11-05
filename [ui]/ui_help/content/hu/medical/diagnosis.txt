@@ -1,5 +1,5 @@
 # Diagnózis: neuro vizsgálat, vércukor, bőr, légzés
-@keywords: diagnózis, neuro vizsgálat, AVPU, pupilla, FAST, agyvérzés, stroke, vércukormérő, vércukor, cukor, mg/dL, mmol/L, hipoglikémia, hiperglikémia, bőr, cianotikus, sápadt, verítékes, légzés, sípoló, horkolás, ropogó, Kussmaul, aceton, D, neurológiai állapot
+@keywords: diagnózis, neuro vizsgálat, AVPU, pupilla, FAST, agyvérzés, stroke, vércukormérő, vércukor, cukor, mg/dL, mmol/L, hipoglikémia, hiperglikémia, bőr, cianotikus, sápadt, verítékes, légzés, sípoló, gaspolás, ropogó, Kussmaul, aceton, D, neurológiai állapot
 @related: medical_exam, medical_monitor, medical_injuries, medical_drugs, medical_cases
 
 A betegségek (mérgezés, agyvérzés, alacsony cukor, asztma...) nincsenek kiírva a panelre. A jeleikből ismered fel őket: a neuro vizsgálatból, a vércukorból, a bőrből, a légzésből és a monitoron látható életjelekből. Rakd össze a jeleket, mint egy igazi mentős.
@@ -88,7 +88,7 @@ A vérzés mezőn, mindig látszik (látod és tapintod).
 - **Nehezített** / **Nehezített, ropogó** – alacsony SpO2; ropogó = folyadék a tüdőben (**Nitroglycerin**).
 - **Mély és gyors** – ketoacidózis (nagyon magas cukor).
 - **Lassú, felületes** – opioid vagy nyugtató.
-- **Horkolás** – az eszméletlen beteg nyelve elzárja a légutat. Intubálás.
+- **Gaspolás** – az eszméletlen beteg nyelve elzárja a légutat. Intubálás.
 - **Kapkodó légzés** – agonális légzés, a szív hamarosan megáll.
 - **Nem lélegzik** – szívmegállás, vagy tubus nélküli, relaxált beteg.
 

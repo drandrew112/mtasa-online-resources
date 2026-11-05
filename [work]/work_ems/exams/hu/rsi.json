@@ -10,7 +10,7 @@
       "id": "rsi_01",
       "q": "Mikor indokolt az intubáció?",
       "answers": [
-        "Ha a beteg nem tudja megvédeni a légútját (GCS ≤ 8, horkoló légzés), vagy oxigénnel sem javul",
+        "Ha a beteg nem tudja megvédeni a légútját (GCS ≤ 8, gaspoló légzés), vagy oxigénnel sem javul",
         "Minden eszméletlen betegnél, akkor is, ha jól lélegzik és oxigénnel normál az SpO2",
         "Ha a beteg izgatott és lerángatja a maszkot, hogy biztonságosan kapjon oxigént",
         "Fentanilra sem szűnő erős fájdalomnál, hogy a beteget mélyen altatni lehessen"
@@ -153,7 +153,7 @@
       "id": "rsi_14",
       "q": "Melyik légzés jelzi, hogy az eszméletlen beteg nem védi a légútját?",
       "answers": [
-        "Horkoló légzés",
+        "Gaspoló légzés",
         "Mély, szapora légzés",
         "Sípoló légzés",
         "Lassú, de szabályos légzés"
