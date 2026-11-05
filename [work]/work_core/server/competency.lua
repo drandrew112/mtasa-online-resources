@@ -44,6 +44,18 @@ local SCHEMA = {
         PRIMARY KEY (id),
         KEY idx_acc_exam (account, work_id, exam_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
+    -- payWork calls held back while the player is not loaded yet (server/payment.lua)
+    [[CREATE TABLE IF NOT EXISTS work_pending_pay (
+        id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+        account VARCHAR(64) NOT NULL,
+        work_id VARCHAR(32) NOT NULL,
+        items TEXT NOT NULL,
+        reason TEXT NULL,
+        opts TEXT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        KEY idx_account (account)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4]],
 }
 
 function compExec(sql, ...)
@@ -303,6 +315,7 @@ local function runSchema(i)
         COMP_DB.ready = true
         loadAll()
         if loadAllExamResults then loadAllExamResults() end
+        if flushAllPendingPay then flushAllPendingPay() end
         return
     end
     MYSQL.query(function(ok, err)

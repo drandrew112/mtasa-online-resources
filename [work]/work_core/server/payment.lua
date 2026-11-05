@@ -81,11 +81,76 @@ end
 --   negative total is taken from the player (work.deduction, may go into debt) and goes to the
 --   payer. workId does not have to be a currently registered work (only used for the
 --   name/colour). reason: optional text shown under the total.
+---------------------------------------------------------------- held back until loaded
+-- A logged in player who has not finished loading (main menu, loading screen) gets nothing booked
+-- yet: the save system's spawn would overwrite the money. The call is stored (work_pending_pay, or
+-- in memory while MySQL is not ready) and replayed on onPlayerLoaded, with its receipt.
+
+addEvent("onPlayerLoaded")
+
+local memPending = {}   -- [account] = { { workId, items, reason, opts }, ... }
+
+--- true when payments can be booked now (v_loading finished, or not running at all)
+local function isLoadedForPay(player)
+    if not isResourceRunning("v_loading") then return true end
+    return getElementData(player, "loaded") == true
+end
+
+local function holdPayment(account, workId, items, reason, opts)
+    if COMP_DB and COMP_DB.ready and compExec(
+        "INSERT INTO work_pending_pay (account, work_id, items, reason, opts) VALUES (?, ?, ?, ?, ?)",
+        account, tostring(workId), toJSON(items, true), reason ~= nil and tostring(reason) or nil,
+        next(opts) and toJSON(opts, true) or nil) then
+        return
+    end
+    memPending[account] = memPending[account] or {}
+    table.insert(memPending[account], { workId, items, reason ~= nil and tostring(reason) or nil, opts })
+end
+
+local function flushPendingPay(player)
+    local account = accountOf(player)
+    if not account or not isLoadedForPay(player) then return end
+    local mem = memPending[account]
+    memPending[account] = nil
+    for _, p in ipairs(mem or {}) do payWork(player, p[1], p[2], p[3], p[4]) end
+    if not (COMP_DB and COMP_DB.ready) then return end
+    MYSQL.query(function(rows)
+        for _, row in ipairs(type(rows) == "table" and rows or {}) do
+            if not isElement(player) or accountOf(player) ~= account then return end
+            -- removed first: a row is never paid twice
+            if compExec("DELETE FROM work_pending_pay WHERE id = ?", row.id) then
+                local items = fromJSON(tostring(row.items or "")) or {}
+                local opts = row.opts and fromJSON(tostring(row.opts)) or nil
+                local ok, err = payWork(player, tostring(row.work_id), items, row.reason, opts)
+                if not ok then
+                    outputDebugString(("[work_core] pending pay #%s for %s failed: %s"):format(
+                        tostring(row.id), account, tostring(err)), 2)
+                end
+            end
+        end
+    end, "SELECT id, work_id, items, reason, opts FROM work_pending_pay WHERE account = ? ORDER BY id", account)
+end
+
+-- competency.lua calls this once the tables exist (resource start)
+function flushAllPendingPay()
+    for _, p in ipairs(getElementsByType("player")) do flushPendingPay(p) end
+end
+
+addEventHandler("onPlayerLoaded", root, function() flushPendingPay(source) end)
+
 function payWork(player, workId, items, reason, opts)
     if not isElement(player) or getElementType(player) ~= "player" then
         return false, "bad player"
     end
     opts = type(opts) == "table" and opts or {}
+
+    -- main menu / loading screen: book it after loading, otherwise the money is lost
+    local account = accountOf(player)
+    if account and not isLoadedForPay(player) then
+        if type(items) ~= "table" or #items == 0 then return false, "no payment items" end
+        holdPayment(account, workId, items, reason, opts)
+        return true, 0
+    end
     local list, total = normaliseItems(items)
     if #list == 0 then return false, "no payment items" end
 
