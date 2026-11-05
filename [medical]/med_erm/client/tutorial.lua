@@ -89,7 +89,7 @@ handlers["erm:caseAction"] = function(action)
     if not u or not State.task then return end
     if action == "start" then
         u.responding, u.responseFrom = true, State.serverNow()
-        if u.status == "available" then u.status = "enroute" end
+        if u.status == "available" or u.status == "assigned" then u.status = "enroute" end
     elseif action == "stop" then
         u.responding = false
     else
@@ -171,6 +171,7 @@ function setTabletTutorialCase(task)
         closedAt    = 0,
         closedLabel = "",
     }
+    if State.unit.status == "available" then State.unit.status = "assigned" end
     syncTaskUnits()
     State.notify(L("med_erm.tutorial.new_case_assigned"), string.format("#%d %s", State.task.id, State.task.title), true)
     TabletTutorial.report("case", State.task.id)

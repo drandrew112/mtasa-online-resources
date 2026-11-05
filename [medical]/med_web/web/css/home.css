@@ -1,6 +1,7 @@
 /* Landing page of the ambulance service (web/index.html) - on top of web_api/osa.css */
 :root {
     --available: #2ea043;
+    --assigned: #ff807a;
     --enroute: #da3633;
     --onscene: #3884f4;
     --handover: #e6be28;
@@ -103,6 +104,7 @@ main { padding: 0 16px; }
 .status-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 12px; color: var(--osa-dim); }
 .status-legend i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; }
 .available { background: var(--available); }
+.assigned  { background: var(--assigned); }
 .enroute   { background: var(--enroute); }
 .onscene   { background: var(--onscene); }
 .handover  { background: var(--handover); }

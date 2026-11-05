@@ -9,6 +9,9 @@ Ha van mentőegység bejelentkezve, akkor jelentősen csökken a lábon érkező
 A kórházi munka során fontos a szinkronizáció.
 Egyszerre több kórházi dolgozó is lehet szolgálatban ezért fontos, hogy ők együtt is tudjanak dolgozni.
 
+A kórházi rendszer a med_hospitals resource kibővítése modulokkal.
+Minden egyes rendszer amit itt felsorolok egy külön modul
+
 ## Meglévő rendszerek használata
 Használni fogjuk a medsys, med_equipments rendszereket.
 A kórházon belül viszont egészen más módon kell ezeket a rendszereket használni.
@@ -17,13 +20,36 @@ A kórházi hordágyakhoz mindig tartozik felszerelés amit nem lehet levenni.
 
 A kórházi hordágy kérő és törlő markerben a mentőszolgálat hordágyai nem törölhetőek.
 
+A mentőszolgálattól átvett betegek:
+Azokban a kórházakban ahol működik kórházi személyzet ott átadásnál az idő lejárta után létrejön egy kórházi ágy és arra átkerül a beteg.
+A beteg paraméterei nem vesznek el.
+Ez csak akkor működhet amikor van szolgálatban kórházi dolgozó az adott kórházban.
+
+## Kórházi számítógép modulja
+Ezen a számítógépen van
+- betegek nyilvántartása: itt láthatók a triage-előtti és triage-utáni betegek is. látható, hogy milyen úton jöttek be a kórházba, melyik mentőegység hozta be, ki a kezelője, itt lehet valamint kezelőként jelentkezni a beteghez. kezelőt bármikor lehessen váltani.
+- triage (egy 1től 4ig terjedő skála amin érkezéskor be kell sorolni a betegeket)
+- Kórházi felszerelések: Itt lehet megnézni, hogy hiányzik-e valami a kórházi felszerelésből. Itt lehet rendelni felszereléseket. A rendelés 30 másodperc után megérkezik a kórházba. A rendelés minden felszerelést feltölt ami a rendelés leadásakor hiányzott.
+
+## Triage
+A triage egy beteg besorolás aszerint, hogy kinek mennyire súlyos az állapota.
+1 és 4 közötti számmal jelöljük.
+Aki még nem kapott triage számot: Az interaction menüben a betegvizsgálat alatt egy triage gombbal meg lehet adni.
+A triage-t a számítógépen a beteg nyilvántartásban is be lehet állítani.
+
+## Beteg UI modul
+Egy egyszerű UI a beteg teste közepén. Kicsi és átlátszó.
+Ezen látható a beteg neve és triage státusza valamint az, hogy ki a kezelője.
+Kezelő: Az a kórházi dolgozó aki felel azért a betegért
+
 ## Pozíciók az All Saints General kórházhoz. Egyenlőre csak ez az egy kórház lesz elérhető a munkához.
 work duty: { "x": 1153.84, "y": -1307.44, "z": 14.38 }
+számítógép: { "x": 1151.93, "y": -1332.21, "z": 15.19, "rot": 180 }
 ct: { "x": 1153.31, "y": -1299.59, "z": 14.38 }
-sokktalanító 1: { "x": 1154.29, "y": -1348.62, "z": 14.39 } -- ágy helye
-sokktalanító 2: { "x": 1167.93, "y": -1348.46, "z": 14.41 } -- ágy helye
-hordágy kérés/törlés: { "x": 1168.86, "y": -1315.92, "z": 14.39 }
-átadás után ide kerülnek hordággyal együtt a betegek:
+sokktalanító 1: { "x": 1154.29, "y": -1348.62, "z": 14.39 } -- ágy helye - ide kell betolni a hordágyon a beteget
+sokktalanító 2: { "x": 1167.93, "y": -1348.46, "z": 14.41 } -- ágy helye - ide kell betolni a hordágyon a beteget
+hordágy kérés/törlés: { "x": 1168.86, "y": -1315.92, "z": 14.39 } -- itt lehet lehívni hordágyat és törölni - törölni csak olyan hordágyat lehet amin nincs beteg
+átadás után ide kerülnek hordággyal együtt a betegek: - Fontos, hogy a kórház saját hordágyára kerülnek és nem a mentős hordágy ugrik át.
 { "x": 1158.81, "y": -1344.55, "z": 14.40, "rot": 180 } -- soki 1 folyosó
 { "x": 1162.21, "y": -1344.70, "z": 14.41, "rot": 180 } -- soki 2 folyosó
 { "x": 1156.31, "y": -1337.02, "z": 14.40, "rot": 180 } -- triage pult mellett
@@ -35,3 +61,9 @@ Lábon érkező betegek spawn helyei:
 { "x": 1169.52, "y": -1332.85, "z": 14.42, "rot": 90 }
 { "x": 1169.65, "y": -1329.95, "z": 14.42, "rot": 90 }
 { "x": 1169.14, "y": -1327.82, "z": 14.41, "rot": 90 }
+
+## Egyéb utasítások
+Tervezd meg a rendszert és a működését. Tegyél fel kérdéseket.
+Vizsgáld a tervem hiányosságait.
+Minden kérdésre és hiányosságra javasolj egy megoldást.
+Artifact-ban mutasd be a tervet képekkel együtt.

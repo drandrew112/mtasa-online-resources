@@ -173,6 +173,12 @@ function Tasks.assign(id, unitId)
 
     u.task, u.taskAssignedAt = t.id, now()
     u.reachedScene, u.leftScene, u.sceneLeg = false, false, 0
+    -- light red "Assigned" until the crew starts the response (or reaches the scene)
+    if u.status == "available" then
+        u.status = "assigned"
+        Units.sync(u)
+        Events.fire("onErmUnitStatusChange", u.id, "assigned", "available")
+    end
     DB.shiftTaskStart(u.shiftId, t.id, u.callsign)
     Tasks.save(t)
     Tasks.syncUnits(t)

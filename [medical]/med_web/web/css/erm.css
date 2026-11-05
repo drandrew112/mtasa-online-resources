@@ -12,6 +12,7 @@
     --accent: var(--osa-accent);
 
     --available: #2ea043;
+    --assigned: #ff807a;
     --enroute: #da3633;
     --onscene: #3884f4;
     --handover: #e6be28;
@@ -193,6 +194,7 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select:
     cursor: default;
 }
 .unit.available { background: #2ea043cc; }
+.unit.assigned  { background: #ff807add; color: #1a1a1a; }
 .unit.enroute   { background: #da3633cc; }
 .unit.onscene   { background: #3884f4cc; }
 .unit.handover  { background: #e6be28dd; color: #1a1a1a; }
@@ -245,6 +247,7 @@ body.is-dragging, body.is-dragging * { cursor: grabbing !important; user-select:
 .unit-label.stacked::after { display: none; }
 .unit-label.drop-ok { outline: 3px solid #fff; }
 .bg-available { background: var(--available); }
+.bg-assigned  { background: var(--assigned); }
 .bg-enroute   { background: var(--enroute); }
 .bg-onscene   { background: var(--onscene); }
 .bg-handover  { background: var(--handover); }

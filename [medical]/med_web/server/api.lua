@@ -24,6 +24,7 @@ end
 for _, fn in ipairs({
     "ermLogin", "ermLogout", "ermGetState", "ermSetPriority", "ermAssign", "ermUnassign",
     "ermCloseTask", "ermCreateTask", "ermSendMessage", "ermBreakApprove", "ermBreakDeny",
+    "ermIssueFine",
     -- unit tablet (web/tablet.html)
     "ermTabletLogin", "ermTabletLogout", "ermTabletState", "ermTabletCaseAction",
     "ermTabletLeaveCase", "ermTabletCloseCase", "ermTabletSendMessage", "ermTabletEndShift",
@@ -42,7 +43,7 @@ local cache, cacheAt = nil, -CACHE_MS
 local function buildPublicState()
     local out = {
         ok = true, time = getRealTime().timestamp, online = running("med_erm"),
-        units = 0, byStatus = { available = 0, enroute = 0, onscene = 0, handover = 0, ["break"] = 0 },
+        units = 0, byStatus = { available = 0, assigned = 0, enroute = 0, onscene = 0, handover = 0, ["break"] = 0 },
         tasks = 0, hospitals = {},
     }
     if out.online then

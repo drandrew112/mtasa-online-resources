@@ -8,7 +8,7 @@
     const api = OSA.api();
 
     const PRIO_COLOR = { 1: '#e5484d', 2: '#f76b15', 3: '#ffc53d', 4: '#3e9bff' };
-    const STATUS_COLOR = { available: '#2ea043', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28' };
+    const STATUS_COLOR = { available: '#2ea043', assigned: '#ff807a', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28' };
     const STATUS_LABEL = ERM.STATUS;
 
     $('tabletUser').focus();

@@ -2,10 +2,55 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Supervisor fines (tablet page "Supervisor"). A SUP unit fines another signed-in unit for one of Config.FINES.
 -- Fines are kept only on the unit (u.fines), so they exist while that unit is on shift; at sign-out they are
 -- deducted from the pay as separate items (server/payment.lua). No database, no history after the shift.
+-- Dispatchers (web console) may issue only the fines marked dispatcher = true (Fines.issueByDispatcher); every
+-- unit's fines are shown to them as a penalty log (Units.public -> Fines.publicList).
 
 Fines = {}
 
 local function isSup(u) return u and u.type == "SUP" end
+
+-- Stores the fine on the unit -> true | false, error
+function Fines.add(target, fine, by)
+    target.fines = target.fines or {}
+    if #target.fines >= Config.FINE_MAX_PER_UNIT then return false, L.msg("med_erm.supervisor.too_many") end
+    target.fines[#target.fines + 1] = { id = fine.id, amount = fine.amount, at = now(), by = by }
+    return true
+end
+
+-- Penalty log of a unit for the dispatcher console: oldest first, label already translated.
+function Fines.publicList(u)
+    local out = {}
+    for _, f in ipairs(u.fines or {}) do
+        local def = Config.FINE_BY_ID[f.id]
+        out[#out + 1] = { id = f.id, label = def and L.msg(def.label) or f.id, amount = f.amount, at = f.at, by = f.by }
+    end
+    return out
+end
+
+-- The fines a dispatcher may issue: { id, label, amount } for the web console unit menu
+function Fines.dispatcherList()
+    local out = {}
+    for _, f in ipairs(Config.FINES) do
+        if f.dispatcher then out[#out + 1] = { id = f.id, label = L.msg(f.label), amount = f.amount } end
+    end
+    return out
+end
+
+-- Fine from a dispatcher (web console): only Config.FINES entries with dispatcher = true -> true | false, error
+function Fines.issueByDispatcher(targetId, fineId, dispatcher)
+    local target = Units.get(targetId)
+    if not target then return false, L.msg("med_erm.supervisor.unit_not_found") end
+    local fine = Config.FINE_BY_ID[fineId]
+    if not fine then return false, L.msg("med_erm.supervisor.unknown_fine") end
+    if not fine.dispatcher then return false, L.msg("med_erm.fine.dispatcher_not_allowed") end
+    local ok, err = Fines.add(target, fine, dispatcher)
+    if not ok then return false, err end
+
+    Units.notify(target, L.msg("med_erm.fine.dispatcher_title"),
+        L.msg("med_erm.fine.dispatcher_received", { dispatcher = dispatcher, reason = L.msg(fine.label), amount = fine.amount }))
+    Units.sync(target)
+    return true
+end
 
 -- Issues a fine from the supervisor unit `sup` to unit id `targetId` -> true | false, error
 function Fines.issue(sup, targetId, fineId)
@@ -15,10 +60,8 @@ function Fines.issue(sup, targetId, fineId)
     if target.id == sup.id then return false, L.msg("med_erm.supervisor.cannot_self") end
     local fine = Config.FINE_BY_ID[fineId]
     if not fine then return false, L.msg("med_erm.supervisor.unknown_fine") end
-    target.fines = target.fines or {}
-    if #target.fines >= Config.FINE_MAX_PER_UNIT then return false, L.msg("med_erm.supervisor.too_many") end
-
-    target.fines[#target.fines + 1] = { id = fine.id, amount = fine.amount, at = now(), by = sup.callsign }
+    local ok, err = Fines.add(target, fine, sup.callsign)
+    if not ok then return false, err end
 
     Units.notify(target, L.msg("med_erm.supervisor.received_title"),
         L.msg("med_erm.supervisor.received", { supervisor = sup.callsign, reason = L.msg(fine.label), amount = fine.amount }))  -- no alert sound: that is only for incoming tasks

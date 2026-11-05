@@ -145,7 +145,7 @@ function getNearestFreeUnit(x, y, z, types)
 end
 
 -- setUnitStatus(unitId, status [, handoverTime]) -> bool, error
--- status: "available" | "enroute" | "onscene" | "handover"
+-- status: "available" | "assigned" | "enroute" | "onscene" | "handover"
 -- Same effect as the tablet's status buttons:
 --   enroute  -> starts the lights & siren log of the unit's task
 --   onscene  -> stops it and marks the scene reached (radar objective removed,

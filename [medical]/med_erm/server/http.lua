@@ -20,6 +20,7 @@ local WEB_FUNCTIONS = {}
 for _, fn in ipairs({
     "ermLogin", "ermLogout", "ermGetState", "ermSetPriority", "ermAssign", "ermUnassign",
     "ermCloseTask", "ermCreateTask", "ermSendMessage", "ermBreakApprove", "ermBreakDeny",
+    "ermIssueFine",
     "ermTabletLogin", "ermTabletLogout", "ermTabletState", "ermTabletCaseAction",
     "ermTabletLeaveCase", "ermTabletCloseCase", "ermTabletSendMessage", "ermTabletEndShift",
     "ermAdminLogin", "ermAdminLogout", "ermAdminQuery", "ermAdminAuto", "ermAdminAutoSet",
@@ -68,6 +69,7 @@ function ermGetState(token, lastMessageId)
         closed      = Tasks.publicClosed(),
         messages    = Chat.since(tonumber(lastMessageId) or 0),
         auto        = AutoDispatch.state(),
+        dispatcherFines = Fines.dispatcherList(),
     }
 end
 
@@ -96,6 +98,13 @@ function ermBreakDeny(token, unitId)
     local s = Dispatchers.check(token)
     if not s then return DENIED end
     return result(Break.deny(unitId, s.display))
+end
+
+-- Penalty from the dispatcher: only the fines marked dispatcher = true in Config.FINES.
+function ermIssueFine(token, unitId, fineId)
+    local s = Dispatchers.check(token)
+    if not s then return DENIED end
+    return result(Fines.issueByDispatcher(tonumber(unitId), tostring(fineId), s.display))
 end
 
 function ermCloseTask(token, taskId, reason)

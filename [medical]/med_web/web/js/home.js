@@ -6,7 +6,7 @@
     const $ = id => document.getElementById(id);
     const { esc, arr } = OSA;
     const api = OSA.api();
-    const STATUSES = ['available', 'enroute', 'onscene', 'handover'];
+    const STATUSES = ['available', 'assigned', 'enroute', 'onscene', 'handover'];
 
     const map = new OSA.Map($('map'), { maxZoom: 2 });
     let hospKey = '';

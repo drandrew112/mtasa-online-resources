@@ -449,6 +449,7 @@ function Units.public(u)
         breakEnds    = u.breakEnds or 0,
         breakRequest = u.breakRequest and true or false,
         closedTasks  = #u.closedTasks,
+        fines        = Fines.publicList(u),
     }
 end
 

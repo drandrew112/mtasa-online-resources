@@ -48,6 +48,7 @@
     <export function="ermSendMessage" type="server" http="true" />
     <export function="ermBreakApprove" type="server" http="true" />
     <export function="ermBreakDeny"   type="server" http="true" />
+    <export function="ermIssueFine"   type="server" http="true" />
 
     <!-- unit tablet -->
     <export function="ermTabletLogin"       type="server" http="true" />

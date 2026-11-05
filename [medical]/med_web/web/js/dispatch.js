@@ -17,7 +17,9 @@
     };
 
     const PRIO_COLOR = { 1: '#e5484d', 2: '#f76b15', 3: '#ffc53d', 4: '#3e9bff' };
-    const STATUS_COLOR = { available: '#2ea043', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28', break: '#f58c1e' };
+    // the only penalties a dispatcher may issue (med_erm Config.FINES with dispatcher = true, sent in ermGetState)
+    let DISPATCH_FINES = [];
+    const STATUS_COLOR = { available: '#2ea043', assigned: '#ff807a', enroute: '#da3633', onscene: '#3884f4', handover: '#e6be28', break: '#f58c1e' };
 
     // texts of the safe scene / police fields (v_scenemanager, police_system) in English and Hungarian; the rest of
     // the console is English for now
@@ -79,6 +81,7 @@
                 return lock();
             } else if (r && r.ok) {
                 OSA.time.sync(r.time);
+                DISPATCH_FINES = arr(r.dispatcherFines);
                 S.units = arr(r.units).map(u => (u.members = arr(u.members), u.accounts = arr(u.accounts), u));
                 S.tasks = arr(r.tasks).map(normaliseTask);
                 S.closed = arr(r.closed).map(normaliseTask);
@@ -197,6 +200,8 @@
                 if (u.status === 'handover' && u.handoverEnds) status += ` ${Math.max(0, u.handoverEnds - ERM.now())}s`;
                 if (u.status === 'break' && u.breakEnds) status += ` ${Math.max(0, Math.ceil((u.breakEnds - ERM.now()) / 60))} min`;
                 if (u.breakRequest) status += ' · break requested';
+                const fines = ERM.arr(u.fines);
+                if (fines.length) status += ` · ${fines.length} fine${fines.length > 1 ? 's' : ''}`;
                 const task = u.task ? `#${u.task} ${esc(u.taskTitle)}` : 'No task';
                 return `<li class="unit ${u.status}" data-id="${u.id}">
                     <span class="unit-name">${esc(u.callsign)}<small>${esc(u.type)} · ${esc(u.plate)}${u.competency ? ' · ' + esc(u.competency) : ''}${u.unqualified ? ' · not qualified' : ''}</small></span>
@@ -232,6 +237,7 @@
         $('stats').innerHTML =
             stat('Units', S.units.length) +
             stat('Available', count('available'), STATUS_COLOR.available) +
+            stat('Assigned', count('assigned'), STATUS_COLOR.assigned) +
             stat('En Route', count('enroute'), STATUS_COLOR.enroute) +
             stat('On Scene', count('onscene'), STATUS_COLOR.onscene) +
             stat('Handover', count('handover'), STATUS_COLOR.handover) +
@@ -275,6 +281,15 @@
             <p style="color:var(--faint)">Right-click for actions</p>`;
     }
 
+    // penalty log of a unit (tooltip): every fine of this shift, newest first
+    function fineLines(u) {
+        const fines = ERM.arr(u.fines);
+        if (!fines.length) return '<p>Penalties: <b>none</b></p>';
+        const total = fines.reduce((s, f) => s + (f.amount || 0), 0);
+        return `<p>Penalties: <b>${fines.length}</b> · total <b>${total} EUR</b></p>` +
+            fines.slice().reverse().map(f => `<p style="color:var(--dim)">${ERM.clock(f.at)} · ${esc(f.label)} · ${f.amount} EUR · ${esc(f.by)}</p>`).join('');
+    }
+
     function unitTip(id) {
         const u = unitById(id);
         if (!u) return '';
@@ -286,6 +301,7 @@
             <p>Task: <b>${u.task ? '#' + u.task + ' ' + esc(u.taskTitle) : 'None'}</b></p>
             <p>Location: <b>${esc(u.zone)}</b></p>
             <p>On duty since: <b>${ERM.clock(u.startedAt)}</b> · closed cases: <b>${u.closedTasks}</b></p>
+            ${fineLines(u)}
             <p style="color:var(--faint)">Right-click for actions</p>`;
     }
 
@@ -317,6 +333,13 @@
     async function breakAnswer(fn, unitId, text) {
         const u = unitById(unitId);
         if (await ERM.act(fn, unitId)) ERM.toast(`${text} ${u ? u.callsign : 'unit'}`, true);
+    }
+
+    async function issueFine(unitId, fine) {
+        const u = unitById(unitId);
+        if (!u) return;
+        const ok = await ERM.ui.confirm(`Fine ${u.callsign}`, `${fine.label}: ${fine.amount} EUR will be deducted from the unit's pay.`, 'Fine');
+        if (ok && await ERM.act('ermIssueFine', unitId, fine.id)) ERM.toast(`${u.callsign} fined: ${fine.label}`, true);
     }
 
     async function closeTask(id) {
@@ -403,6 +426,14 @@
                 action: () => assign(t.id, id),
             }));
         }
+
+        const fines = ERM.arr(u.fines);
+        items.push('sep', { header: 'Issue penalty' });
+        if (!DISPATCH_FINES.length) items.push({ label: 'Not available', disabled: true });
+        DISPATCH_FINES.forEach(f => items.push({ label: `${f.label} (${f.amount} EUR)`, danger: true, action: () => issueFine(id, f) }));
+        items.push({ header: `Penalty log (${fines.length})` });
+        if (!fines.length) items.push({ label: 'No penalties this shift', disabled: true });
+        fines.slice().reverse().forEach(f => items.push({ label: `${ERM.clock(f.at)} ${f.label} - ${f.amount} EUR (${f.by})`, disabled: true }));
 
         items.push('sep',
             { label: 'Message unit', action: () => ERM.chat.open('unit:' + id) },

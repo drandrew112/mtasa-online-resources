@@ -54,7 +54,8 @@ end
 
 -- Supervisor (SUP unit) fines (server/fines.lua, tablet page "Supervisor"): a SUP unit fines any other signed-in
 -- unit. Fines live only on the unit (gone after its shift) and are deducted from the shift-end pay as separate
--- items (server/payment.lua). label = v_locals key.
+-- items (server/payment.lua). label = v_locals key. dispatcher = true: a dispatcher may issue it too (web console
+-- unit menu, ermIssueFine) - only these.
 Config.FINES = {
     { id = "harm",      amount = 1500, label = "med_erm.fine.harm" },
     { id = "neglect",   amount = 1000, label = "med_erm.fine.neglect" },
@@ -62,7 +63,8 @@ Config.FINES = {
     { id = "drugs",     amount = 700,  label = "med_erm.fine.drugs" },
     { id = "equipment", amount = 800,  label = "med_erm.fine.equipment" },
     { id = "vehicle",   amount = 500,  label = "med_erm.fine.vehicle" },
-    { id = "handover",  amount = 900,  label = "med_erm.fine.handover" },
+    { id = "handover",  amount = 900,  label = "med_erm.fine.handover",  dispatcher = true },
+    { id = "departure", amount = 700,  label = "med_erm.fine.departure", dispatcher = true },
     { id = "response",  amount = 900,  label = "med_erm.fine.response" },
 }
 Config.FINE_BY_ID = {}
@@ -134,6 +136,7 @@ Config.RECENT_CLOSED = 30
 -- Unit statuses.
 Config.STATUS = {
     available = { label = L.text("med_erm.config.available"), color = { 46, 160, 67 } },   -- green
+    assigned  = { label = L.text("med_erm.config.assigned"),  color = { 255, 128, 122 } }, -- light red: has a case, not started yet
     enroute   = { label = L.text("med_erm.config.en_route"),  color = { 218, 54, 51 } },   -- red
     onscene   = { label = L.text("med_erm.config.on_scene"),  color = { 56, 132, 244 } },  -- blue
     handover  = { label = L.text("med_erm.config.handover"),  color = { 230, 190, 40 } },  -- yellow

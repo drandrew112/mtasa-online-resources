@@ -22,6 +22,7 @@
 
     ERM.STATUS = {
         available: 'Available',
+        assigned: 'Assigned',
         enroute: 'En Route',
         onscene: 'On Scene',
         handover: 'Handover',
