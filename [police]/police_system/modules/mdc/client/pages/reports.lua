@@ -53,12 +53,25 @@ MDC.pages.reports = {
         end
         local rows = {}
         for _, r in ipairs(MDC.data.reports or {}) do
+            -- a draft can be accepted as it is and submitted from the list (the button is hit before the row)
+            local action = ""
+            if r.status == "draft" then
+                local id = r.id
+                action = function(cx, cy, cw, ch)
+                    local bh = ch - POL.px(6)
+                    W.button("rp:accept:" .. tostring(id), cx, cy + POL.px(3), cw, bh, L("police_system.mdc.accept_submit"), function()
+                        if S.sending then return end
+                        S.sending = id
+                        MDC.call("reportSave", { id = id, submit = true }, function() S.sending = nil; MDC.load() end)
+                    end, "primary", S.sending ~= nil)
+                end
+            end
             rows[#rows + 1] = { cells = { r.status == "draft" and "DRAFT" or "", r.title, (r.unit or "") .. " " .. tostring(r.author or ""),
-                L.upper(r.lang or ""), POL.date(r.at) }, colors = { C.orange, r.status == "draft" and C.white or C.text, C.dim, C.dim, C.dim }, id = r.id }
+                L.upper(r.lang or ""), POL.date(r.at), action }, colors = { C.orange, r.status == "draft" and C.white or C.text, C.dim, C.dim, C.dim }, id = r.id }
         end
         local ty = y + POL.px(76)
         W.table("reports", x, ty, w, y + h - ty, { { "", 0.8 }, { L("police_system.mdc.col_title"), 5 }, { L("police_system.mdc.col_author"), 1.6 },
-            { L("police_system.mdc.col_lang"), 0.6 }, { L("police_system.mdc.col_date"), 1.4 } }, rows, function(r) MDC.openReport(r.id) end, POL.px(30))
+            { L("police_system.mdc.col_lang"), 0.6 }, { L("police_system.mdc.col_date"), 1.4 }, { "", 1.6 } }, rows, function(r) MDC.openReport(r.id) end, POL.px(30))
     end,
     drawEditor = function(x, y, w, h)
         local e = S.edit

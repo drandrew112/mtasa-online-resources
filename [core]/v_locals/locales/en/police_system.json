@@ -382,6 +382,7 @@
   "police_system.mdc.status_revoked": "revoked",
   "police_system.mdc.status_served": "served",
   "police_system.mdc.submit": "Submit",
+  "police_system.mdc.accept_submit": "Accept & submit",
   "police_system.mdc.tab_records": "Fines & warnings",
   "police_system.mdc.tab_reports": "Reports",
   "police_system.mdc.tab_vehicles": "Vehicles",

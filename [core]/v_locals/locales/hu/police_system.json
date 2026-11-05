@@ -382,6 +382,7 @@
   "police_system.mdc.status_revoked": "visszavonva",
   "police_system.mdc.status_served": "végrehajtva",
   "police_system.mdc.submit": "Beadás",
+  "police_system.mdc.accept_submit": "Elfogadás és beadás",
   "police_system.mdc.tab_records": "Bírságok és figyelmeztetések",
   "police_system.mdc.tab_reports": "Jelentések",
   "police_system.mdc.tab_vehicles": "Járművek",
