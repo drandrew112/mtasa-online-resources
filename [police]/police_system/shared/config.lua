@@ -13,8 +13,8 @@ POLICE = {
         [596] = { name = "Ford Crown Victoria", ai = { weight = 5, zones = { city = true } } },
         [598] = { name = "Skoda Octavia MK3", paintjob = "hu_pd", elsExtra = 1, ai = { weight = 5, zones = { city = true } } },
         -- [597] = { name = "GTA5 police car" },   -- later
-        [602] = { name = "Audi A3 Sedan", ai = { weight = 5, zones = { city = true } } },
-        [603] = { name = "Audi RS6 C7", ai = { weight = 5, zones = { city = true } } },
+        [546] = { name = "Audi A3 Sedan", ai = { weight = 5, zones = { city = true } } },
+        [445] = { name = "Audi RS6 C7", ai = { weight = 5, zones = { city = true } } },
         [599] = { name = "Police Ranger", ai = { weight = 6, zones = { rural = true } } },
         [432] = { name = "Rhino", aiOnly = true, ai = { minLevel = 5 } },
     },
