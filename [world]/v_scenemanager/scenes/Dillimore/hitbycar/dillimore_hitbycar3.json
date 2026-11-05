@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Struck by a speeding car",
+                    "description": "A speeding car hit a pedestrian on the road shoulder in Dillimore and crashed into a pole. One vehicle is involved, one person is injured. Secure the scene, take the driver's and the witnesses' statements and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Száguldó autó ütötte el",
+                    "description": "Egy száguldó autó elütött egy gyalogost Dillimore-ban, az útpadkánál, majd oszlopnak ütközött. Egy jármű érintett, egy sérült. Biztosítsátok a helyszínt, hallgassátok meg a vezetőt és a szemtanúkat, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

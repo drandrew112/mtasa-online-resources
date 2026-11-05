@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Four-car pileup, several injured",
+                    "description": "Four cars crashed into each other at a junction in El Castillo del Diablo after one braked suddenly for a deer. Four vehicles are involved, four people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Négy autó ütközött, többen megsérültek",
+                    "description": "Négy autó ütközött egy El Castillo del Diablo területén lévő kereszteződésben, miután az egyik hirtelen fékezett egy szarvas miatt. Négy jármű érintett, négy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

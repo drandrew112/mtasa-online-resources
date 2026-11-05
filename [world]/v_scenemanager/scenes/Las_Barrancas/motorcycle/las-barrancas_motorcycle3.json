@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Rider slid under a car",
+                    "description": "A motorcyclist braked too late by the dusty roadside in Las Barrancas and slid under the back of a car. Two vehicles are involved, one person is injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – A motoros egy autó alá csúszott",
+                    "description": "Egy motoros túl későn fékezett Las Barrancas poros útja mellett, és egy autó hátulja alá csúszott. Két jármű érintett, egy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

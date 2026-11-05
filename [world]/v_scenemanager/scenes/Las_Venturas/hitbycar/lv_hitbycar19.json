@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Road worker struck",
+                    "description": "A road worker was hit by a car that ignored the cones by the roadside near the Emerald Isle. One vehicle is involved, one person is injured. Secure the scene, take the driver's and the witnesses' statements and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Elütött útkarbantartó",
+                    "description": "Egy autó elütött egy útkarbantartót, miután figyelmen kívül hagyta az Emerald Isle közelében az út mellett kihelyezett bójákat. Egy jármű érintett, egy sérült. Biztosítsátok a helyszínt, hallgassátok meg a vezetőt és a szemtanúkat, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

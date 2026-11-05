@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Car ploughed into pedestrians",
+                    "description": "A car lost control and mounted the sidewalk in front of an apartment block in Downtown, hitting several people. One vehicle is involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Autó hajtott a gyalogosok közé",
+                    "description": "Downtown egyik lakóháza előtt egy irányíthatatlanná vált autó felhajtott a járdára, és több embert elütött. Egy jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

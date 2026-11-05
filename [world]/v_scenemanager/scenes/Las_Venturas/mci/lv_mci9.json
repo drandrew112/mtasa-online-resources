@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Head-on collision, drivers hurt",
+                    "description": "Two cars hit head-on at a busy crossroads at Las Venturas Airport. Two vehicles are involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Frontális ütközés, sérült sofőrök",
+                    "description": "Két autó frontálisan ütközött a Las Venturas Airport forgalmas kereszteződésénél. Két jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

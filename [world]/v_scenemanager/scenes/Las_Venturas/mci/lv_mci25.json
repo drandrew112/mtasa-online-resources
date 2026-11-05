@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Head-on collision, drivers hurt",
+                    "description": "Two cars hit head-on at a busy crossroads near the Yellow Bell Golf Course. Two vehicles are involved, four people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Frontális ütközés, sérült sofőrök",
+                    "description": "Két autó frontálisan ütközött a Yellow Bell Golf Course közelében lévő forgalmas kereszteződésnél. Két jármű érintett, négy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

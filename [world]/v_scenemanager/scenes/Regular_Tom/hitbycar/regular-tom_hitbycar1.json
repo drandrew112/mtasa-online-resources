@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Skateboarder hit by a car",
+                    "description": "A teenager on a skateboard shot off the curb and into the side of a car outside a house just outside Regular Tom. One vehicle is involved, one person is injured. Secure the scene, take the driver's and the witnesses' statements and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Autó ütött el egy gördeszkást",
+                    "description": "Egy gördeszkázó tinédzser nagy sebességgel lehajtott a járdaszegélyről, és nekicsapódott egy autónak a Regular Tom melletti ház előtt. Egy jármű érintett, egy sérült. Biztosítsátok a helyszínt, hallgassátok meg a vezetőt és a szemtanúkat, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Rider hit an opening car door",
+                    "description": "A driver parked by the sidewalk near the LVA Freight Depot opened his door without looking and a motorcyclist slammed into it. Two vehicles are involved, one person is injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Motoros nyitott autóajtónak ütközött",
+                    "description": "Egy sofőr leparkolt az LVA Freight Depot közelében, a járda mellett, majd körülnézés nélkül kinyitotta az ajtaját. Két jármű érintett, egy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

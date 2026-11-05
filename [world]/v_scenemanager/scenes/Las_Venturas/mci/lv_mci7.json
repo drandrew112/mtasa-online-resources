@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – SUV spun out, passengers thrown",
+                    "description": "An SUV clipped another car and spun out of control at a junction in Redsands West. Three vehicles are involved, three people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – SUV megpördült, utasok repültek ki",
+                    "description": "Egy SUV súrolt egy másik autót, majd irányíthatatlanná vált és megpördült Redsands West egyik csomópontjában. Három jármű érintett, három sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

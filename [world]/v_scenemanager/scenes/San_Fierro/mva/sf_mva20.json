@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car spun out",
+                    "description": "A grey car lost control and spun out in Ocean Flats. One vehicle is involved, two people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Kisodródott az autó",
+                    "description": "Ocean Flats területén egy szürke autó vezetője elvesztette az uralmát, és az autó megpördült. Egy jármű érintett, két sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

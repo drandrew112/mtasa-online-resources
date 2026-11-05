@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Rear-end collision",
+                    "description": "A grey SUV ran into the back of a dark grey van in Verdant Bluffs. Two vehicles are involved, two people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Ráfutásos baleset",
+                    "description": "Egy szürke SUV hátulról nekiment egy sötétszürke furgonnak Verdant Bluffs területén. Két jármű érintett, két sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

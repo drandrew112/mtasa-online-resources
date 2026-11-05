@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Bike rear-ended a car",
+                    "description": "A motorcycle ran into the back of a car stopping at the lights in Ganton. Two vehicles are involved, one person is injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – A motoros hátulról autóba ütközött",
+                    "description": "Egy motorkerékpár hátulról nekiment egy lámpánál megálló autónak Gantonban. Két jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

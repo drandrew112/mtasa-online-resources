@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Pizza scooter crash",
+                    "description": "A pizza delivery rider skidded on sand blown across the road outside a souvenir shop in Blackfield. One vehicle is involved, one person is injured. Protect the scene from passing traffic, find out how the crash happened and arrange the towing of the motorcycle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Pizzafutár-robogó balesete",
+                    "description": "Egy pizzafutár robogója megcsúszott az útra fújt homokon a Blackfield egyik ajándékboltja előtt. Egy jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, derítsétek ki, hogyan történt a baleset, és intézkedjetek a motor elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

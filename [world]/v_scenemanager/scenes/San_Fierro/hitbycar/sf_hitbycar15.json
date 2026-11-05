@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Struck by a speeding car",
+                    "description": "A speeding car hit a pedestrian at a busy crossroads in Easter Bay Airport. One vehicle is involved, one person is injured. Secure the scene, take the driver's and the witnesses' statements and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Elütötte egy száguldó autó",
+                    "description": "Easter Bay Airport forgalmas kereszteződésében egy száguldó autó elütött egy gyalogost. Egy jármű érintett, egy sérült. Biztosítsátok a helyszínt, hallgassátok meg a vezetőt és a szemtanúkat, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

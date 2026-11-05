@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Rider hit an opening car door",
+                    "description": "A driver opened his door without looking next to the country road near Montgomery and a motorcyclist slammed into it. Two vehicles are involved, one person is injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Motoros nyitott autóajtónak ütközött",
+                    "description": "Egy sofőr körülnézés nélkül kinyitotta az ajtaját a Montgomery közelében lévő országút mellett, és egy motoros nekiütközött. Két jármű érintett, egy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

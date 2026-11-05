@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Road worker struck",
+                    "description": "A road worker was hit by a car that ignored the cones on the road in Easter Bay Airport. One vehicle is involved, one person is injured. Secure the scene, take the driver's and the witnesses' statements and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Elütöttek egy útkarbantartót",
+                    "description": "Easter Bay Airport útján egy autó elütött egy útkarbantartót, mert a sofőr figyelmen kívül hagyta a bójákat. Egy jármű érintett, egy sérült. Biztosítsátok a helyszínt, hallgassátok meg a vezetőt és a szemtanúkat, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

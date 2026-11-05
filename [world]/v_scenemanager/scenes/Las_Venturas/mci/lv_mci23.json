@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Street race crashed into traffic",
+                    "description": "Two racing cars crashed into normal traffic in the middle of an intersection near the Julius Thruway West. Three vehicles are involved, four people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Illegális utcai verseny karambolja",
+                    "description": "Két versenyautó ütközött a rendes forgalommal a Julius Thruway West közelében lévő kereszteződés közepén. Három jármű érintett, négy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

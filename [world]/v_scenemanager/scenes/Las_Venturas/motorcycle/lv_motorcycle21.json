@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – No helmet, head injury",
+                    "description": "A young rider without a helmet crashed outside the Starfish Casino while doing a wheelie. One vehicle is involved, one person is injured. Protect the scene from passing traffic, find out how the crash happened and arrange the towing of the motorcycle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Bukósisak nélkül, fejsérüléssel",
+                    "description": "Egy bukósisak nélküli fiatal motoros balesetet szenvedett a Starfish Casino előtt, miközben egykerekezett. Egy jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, derítsétek ki, hogyan történt a baleset, és intézkedjetek a motor elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

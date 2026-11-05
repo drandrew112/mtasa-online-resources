@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Taxi and car collision",
+                    "description": "A taxi ran a red light at a junction in Downtown and was hit by another car. Two vehicles are involved, three people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Taxi és személyautó ütközött",
+                    "description": "Downtown egyik kereszteződésében egy taxi áthajtott a piroson, és egy másik autó eltalálta. Két jármű érintett, három sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

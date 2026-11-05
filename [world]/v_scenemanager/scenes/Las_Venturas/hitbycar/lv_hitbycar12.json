@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Old man knocked down by a taxi",
+                    "description": "A taxi knocked down an old man at a bus stop near the Julius Thruway East. One vehicle is involved, one person is injured. Identify the driver, check their documents and sobriety, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Idős férfit ütött el egy taxi",
+                    "description": "Egy taxi elütött egy idős férfit a Julius Thruway East közelében lévő buszmegállónál. Egy jármű érintett, egy sérült. Azonosítsátok a vezetőt, ellenőrizzétek az okmányait és józanságát, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

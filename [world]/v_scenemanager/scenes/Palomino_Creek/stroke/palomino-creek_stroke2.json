@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Vehicle left by the road – Driver seeing double",
+                    "description": "A delivery driver stopped his van on the main street in Palomino Creek because he suddenly started seeing double and could not walk straight. The vehicle was left by the road. Secure it and have it towed so that it does not block traffic. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Út mellett hagyott jármű – Kettős látás a sofőrnél",
+                    "description": "Egy kiszállító sofőr megállt a furgonjával Palomino Creek főutcáján, mert hirtelen kettősen kezdett látni, és nem tudott egyenesen járni. A jármű az út mellett maradt. Biztosítsátok, és szállíttassátok el, hogy ne akadályozza a forgalmat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

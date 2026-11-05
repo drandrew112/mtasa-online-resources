@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Chain collision, four cars",
+                    "description": "A chain collision involving four cars in Conference Center. Four vehicles are involved, four people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Négyautós láncütközés",
+                    "description": "Négy autó ütközött egymásnak a Conference Center területén. Négy jármű érintett, négy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

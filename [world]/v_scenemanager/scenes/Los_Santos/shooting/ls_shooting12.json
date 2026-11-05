@@ -18,11 +18,11 @@
             "locales": {
                 "en": {
                     "title": "Robbery, victim shot",
-                    "description": "A man was shot during a robbery outside a shop in Temple. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way."
+                    "description": "A man was shot during a robbery outside a shop in Temple. He is sitting against a wall holding his stomach, conscious but very pale."
                 },
                 "hu": {
                     "title": "Rablás, meglőtt áldozat",
-                    "description": "Egy férfit meglőttek egy rablás során Temple egyik üzlete előtt. A falnak támaszkodva ül, hasát fogja, eszméleténél van, de nagyon sápadt. A rendőrség úton van."
+                    "description": "Egy férfit meglőttek egy rablás során Temple egyik üzlete előtt. A falnak támaszkodva ül, hasát fogja, eszméleténél van, de nagyon sápadt."
                 }
             }
         },

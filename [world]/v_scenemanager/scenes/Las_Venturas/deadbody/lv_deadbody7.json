@@ -18,11 +18,11 @@
             "locales": {
                 "en": {
                     "title": "Shot, no signs of life",
-                    "description": "Police at the scene by the roadside near the Randolph Industrial Estate report a man with several gunshot wounds. He has no pulse and is not breathing."
+                    "description": "A passer-by by the roadside near the Randolph Industrial Estate reports a man with several gunshot wounds. He has no pulse and is not breathing."
                 },
                 "hu": {
                     "title": "Lőtt sérülések, életjelek nélkül",
-                    "description": "A rendőrök több lőtt sebbel találtak egy férfit az út mellett, a Randolph Industrial Estate közelében. Nincs pulzusa, és nem lélegzik."
+                    "description": "Egy járókelő több lőtt sebbel talált egy férfit az út mellett, a Randolph Industrial Estate közelében. Nincs pulzusa, és nem lélegzik."
                 }
             }
         },

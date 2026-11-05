@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Road rash and broken leg",
+                    "description": "A rider lost the back wheel while braking at a junction in Doherty and slid along the road. One vehicle is involved, one person is injured. Secure the lane, check the rider's licence and sobriety, record the accident and have the motorcycle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Útmarás és lábtörés",
+                    "description": "Doherty egyik kereszteződésében egy motoros fékezés közben elvesztette a hátsó kerék tapadását, majd végigcsúszott az úton. Egy jármű érintett, egy sérült. Biztosítsátok a sávot, ellenőrizzétek a motoros jogosítványát és józanságát, vegyétek fel a balesetet és szállíttassátok el a motort. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

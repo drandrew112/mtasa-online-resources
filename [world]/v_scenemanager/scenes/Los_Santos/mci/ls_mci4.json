@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Car drove onto the sidewalk",
+                    "description": "A driver lost control in Downtown Los Santos and drove onto a crowded sidewalk, hitting several pedestrians. One vehicle is involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Autó hajtott fel a járdára",
+                    "description": "Egy sofőr elvesztette az irányítást Downtown Los Santos területén, és egy zsúfolt járdára hajtott, több gyalogost elütve. Egy jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

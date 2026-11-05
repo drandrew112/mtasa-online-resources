@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Teenager ran out between cars",
+                    "description": "A teenager chasing a ball ran out between parked cars in Market and was hit at low speed. One vehicle is involved, one person is injured. Identify the driver, check their documents and sobriety, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Tinédzser futott az autók közé",
+                    "description": "Egy labdát kergető tinédzser kiszaladt a parkoló autók közül Marketben, és kis sebességgel elütötték. Egy jármű érintett, egy sérült. Azonosítsátok a vezetőt, ellenőrizzétek az okmányait és józanságát, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

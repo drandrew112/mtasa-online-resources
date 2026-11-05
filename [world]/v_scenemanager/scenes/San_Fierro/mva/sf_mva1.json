@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car ran off the road",
+                    "description": "A blue car left the road and hit the curb in King's. One vehicle is involved, one person is injured. Close the affected lane, find out how the accident happened and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Letért az útról az autó",
+                    "description": "King's területén egy kék autó letért az útról és a járdaszegélynek ütközött. Egy jármű érintett, egy sérült. Zárjátok le az érintett sávot, derítsétek ki, hogyan történt a baleset, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

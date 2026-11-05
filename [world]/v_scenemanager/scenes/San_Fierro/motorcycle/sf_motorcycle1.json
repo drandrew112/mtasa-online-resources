@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Lost control on a wet road",
+                    "description": "A motorcyclist lost control on the wet road at a junction in Avispa Country Club and hit the curb. One vehicle is involved, one person is injured. Secure the lane, check the rider's licence and sobriety, record the accident and have the motorcycle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Megcsúszott a nedves úton",
+                    "description": "Avispa Country Club egyik kereszteződésében egy motoros megcsúszott a nedves úton, és a járdaszegélynek ütközött. Egy jármű érintett, egy sérült. Biztosítsátok a sávot, ellenőrizzétek a motoros jogosítványát és józanságát, vegyétek fel a balesetet és szállíttassátok el a motort. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

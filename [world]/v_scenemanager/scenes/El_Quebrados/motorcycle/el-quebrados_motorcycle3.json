@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Scooter slipped on spilled oil",
+                    "description": "A woman on a scooter slipped on a patch of spilled oil next to the country road in El Quebrados and fell hard on her shoulder. One vehicle is involved, one person is injured. Secure the lane, check the rider's licence and sobriety, record the accident and have the motorcycle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – A robogó megcsúszott a kiömlött olajon",
+                    "description": "Egy robogóval közlekedő nő megcsúszott az országút melletti kiömlött olajon El Quebradosban, és nagyot esett a vállára. Egy jármű érintett, egy sérült. Biztosítsátok a sávot, ellenőrizzétek a motoros jogosítványát és józanságát, vegyétek fel a balesetet és szállíttassátok el a motort. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

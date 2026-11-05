@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car ran off the road",
+                    "description": "A brown car left the road and hit the curb in Paradiso. One vehicle is involved, one person is injured. Protect the scene from passing traffic, check the driver's documents and sobriety, then have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Letért az útról az autó",
+                    "description": "Paradiso területén egy barna autó letért az útról és a járdaszegélynek ütközött. Egy jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezető okmányait és józanságát, majd szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

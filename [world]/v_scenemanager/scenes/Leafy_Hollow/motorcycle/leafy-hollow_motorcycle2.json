@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Lost control in the bend",
+                    "description": "A motorcyclist came over the hill far too fast, lost control at the side of the road near Leafy Hollow and slid into the ditch. One vehicle is involved, one person is injured. Protect the scene from passing traffic, find out how the crash happened and arrange the towing of the motorcycle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Elvesztette az uralmát a kanyarban",
+                    "description": "Egy motoros túl nagy sebességgel ért fel a dombtetőre, majd elvesztette az irányítást Leafy Hollow közelében az út mellett, és az árokba csúszott. Egy jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, derítsétek ki, hogyan történt a baleset, és intézkedjetek a motor elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

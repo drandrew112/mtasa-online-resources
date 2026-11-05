@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Motorcyclist not moving",
+                    "description": "Drivers outside a small store just outside Regular Tom saw a motorcycle hit the barrier at high speed. One vehicle is involved, one person is injured. Protect the scene from passing traffic, find out how the crash happened and arrange the towing of the motorcycle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Mozdulatlan motoros",
+                    "description": "A Regular Tom melletti kis bolt előtt álló sofőrök látták, ahogy egy motorkerékpár nagy sebességgel a korlátnak csapódik. Egy jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, derítsétek ki, hogyan történt a baleset, és intézkedjetek a motor elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

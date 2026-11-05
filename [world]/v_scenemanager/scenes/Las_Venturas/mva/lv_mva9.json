@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car spun out",
+                    "description": "A black car lost control and spun out near the Julius Thruway. One vehicle is involved, two people are injured. Protect the scene from passing traffic, check the driver's documents and sobriety, then have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Megpördült az autó",
+                    "description": "Egy fekete autó elvesztette az irányítást és megpördült a Julius Thruway közelében. Egy jármű érintett, két sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezető okmányait és józanságát, majd szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

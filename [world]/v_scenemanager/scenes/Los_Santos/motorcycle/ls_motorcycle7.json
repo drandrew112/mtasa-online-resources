@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – No helmet, head injury",
+                    "description": "A young rider without a helmet crashed near the docks while doing a wheelie. One vehicle is involved, one person is injured. Secure the lane, check the rider's licence and sobriety, record the accident and have the motorcycle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Bukósisak nélkül, fejsérüléssel",
+                    "description": "Egy bukósisak nélküli fiatal motoros balesetet szenvedett a dokkok közelében, miközben egykerekezett. Egy jármű érintett, egy sérült. Biztosítsátok a sávot, ellenőrizzétek a motoros jogosítványát és józanságát, vegyétek fel a balesetet és szállíttassátok el a motort. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

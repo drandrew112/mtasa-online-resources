@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Thrown over a car",
+                    "description": "A car turned in front of a motorcycle on the road in Easter Basin. Two vehicles are involved, one person is injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Átrepült az autó felett",
+                    "description": "Easter Basin útján egy autó egy motor elé kanyarodott. Két jármű érintett, egy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

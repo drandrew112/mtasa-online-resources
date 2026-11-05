@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Street race crashed into traffic",
+                    "description": "Two racing cars crashed into normal traffic at a busy crossroads in Foster Valley. Three vehicles are involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Utcai versenyautók ütköztek a forgalommal",
+                    "description": "Foster Valley forgalmas kereszteződésében két versenyautó ütközött a normál forgalommal. Három jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

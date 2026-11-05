@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Rider slid under a car",
+                    "description": "A motorcyclist braked too late at a junction in Angel Pine and slid under the back of a car. Two vehicles are involved, one person is injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – A motoros egy autó alá csúszott",
+                    "description": "Egy motoros túl későn fékezett egy Angel Pine-i kereszteződésben, és egy autó hátulja alá csúszott. Két jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – SUV crash, passengers thrown out",
+                    "description": "An SUV swerved and crashed into another car at a busy crossroads in Paradiso. Three vehicles are involved, three people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – SUV-baleset, utasok repültek ki",
+                    "description": "Paradiso forgalmas kereszteződésében egy SUV kitért, és összeütközött egy másik autóval. Három jármű érintett, három sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

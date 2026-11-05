@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Lost control in the bend",
+                    "description": "A motorcyclist came over the hill far too fast, lost control at the crossroads in Las Payasadas and slid into the ditch. One vehicle is involved, one person is injured. Secure the lane, check the rider's licence and sobriety, record the accident and have the motorcycle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – A kanyarban elvesztette az uralmát",
+                    "description": "Egy motoros túl nagy sebességgel jött le a dombról, elvesztette az uralmát a motor felett egy Las Payasadas-i kereszteződésben, majd az árokba csúszott. Egy jármű érintett, egy sérült. Biztosítsátok a sávot, ellenőrizzétek a motoros jogosítványát és józanságát, vegyétek fel a balesetet és szállíttassátok el a motort. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

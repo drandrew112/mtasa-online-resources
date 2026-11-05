@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Head-on collision",
+                    "description": "A red car and an orange car collided head-on in Palisades. Two vehicles are involved, two people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Frontális ütközés",
+                    "description": "Palisades területén egy piros és egy narancssárga autó frontálisan ütközött. Két jármű érintett, két sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

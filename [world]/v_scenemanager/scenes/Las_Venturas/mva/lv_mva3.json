@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car spun out",
+                    "description": "A blue car lost control and spun out by the LVA Freight Depot. One vehicle is involved, two people are injured. Close the affected lane, find out how the accident happened and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Megpördült az autó",
+                    "description": "Egy kék autó elvesztette az irányítást és megpördült az LVA Freight Depot közelében. Egy jármű érintett, két sérült. Zárjátok le az érintett sávot, derítsétek ki, hogyan történt a baleset, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

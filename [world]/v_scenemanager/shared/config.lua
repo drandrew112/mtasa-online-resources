@@ -176,7 +176,10 @@ VSM_ANIMS = {
 VSM_CATEGORIES = {}
 for _, id in ipairs({ "heartattack", "mva", "hypertension", "stroke", "diabetes", "hypoglycemia", "overdose",
         "breathing", "fall", "shooting", "hitbycar", "motorcycle", "drowning", "mci", "airport", "false", "deadbody",
-        "brawl", "armed", "wanted" }) do
+        "brawl", "armed", "wanted",
+        -- police scene types (2026-11-05)
+        "dui", "hitandrun", "stolenvehicle", "abandoned", "robbery", "burglary",
+        "shoplifting", "domestic", "disturbance", "drugs", "vandalism", "suspicious" }) do
     VSM_CATEGORIES[#VSM_CATEGORIES + 1] = { id = id, label = "v_scenemanager.cat." .. id }
 end
 

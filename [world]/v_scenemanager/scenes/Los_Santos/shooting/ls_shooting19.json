@@ -18,11 +18,11 @@
             "locales": {
                 "en": {
                     "title": "Robbery, victim shot",
-                    "description": "A man was shot during a robbery at a bus stop in Ocean Docks. He is sitting against a wall holding his stomach, conscious but very pale. Police are on the way."
+                    "description": "A man was shot during a robbery at a bus stop in Ocean Docks. He is sitting against a wall holding his stomach, conscious but very pale."
                 },
                 "hu": {
                     "title": "Rablás, meglőtt áldozat",
-                    "description": "Egy férfit meglőttek egy rablás során Ocean Docks egyik buszmegállójában. A falnak támaszkodva ül, hasát fogja, eszméleténél van, de nagyon sápadt. A rendőrség úton van."
+                    "description": "Egy férfit meglőttek egy rablás során Ocean Docks egyik buszmegállójában. A falnak támaszkodva ül, hasát fogja, eszméleténél van, de nagyon sápadt."
                 }
             }
         },

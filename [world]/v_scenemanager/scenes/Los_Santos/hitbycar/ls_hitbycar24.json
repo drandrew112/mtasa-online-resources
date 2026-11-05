@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cyclist struck – Cyclist hit by a car",
+                    "description": "A car turned into a cyclist at Los Santos International. Two vehicles are involved, one person is injured. Secure the scene, take the driver's and the witnesses' statements and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Kerékpárost ért baleset – Autó ütött el egy kerékpárost",
+                    "description": "Egy autó bekanyarodott egy kerékpáros elé a Los Santos International területén. Két jármű érintett, egy sérült. Biztosítsátok a helyszínt, hallgassátok meg a vezetőt és a szemtanúkat, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {
@@ -68,8 +83,7 @@
             "doors": [0, 0, 0, 0, 0, 0],
             "panels": [0, 0, 0, 0, 0, 0, 0],
             "lights": [0, 0, 0, 0],
-            "wheels": [0, 0, 0, 0],
-            "tow": true
+            "wheels": [0, 0, 0, 0]
         }
     ],
     "peds": [

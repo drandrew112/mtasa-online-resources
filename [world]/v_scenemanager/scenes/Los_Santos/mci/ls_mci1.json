@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Multi-vehicle crash, several injured",
+                    "description": "Four cars crashed into each other at the Glen Park intersection after one ran a red light. Four vehicles are involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Többjárműves baleset, több sérült",
+                    "description": "Négy autó ütközött össze Glen Park kereszteződésében, miután az egyik áthajtott a piroson. Négy jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

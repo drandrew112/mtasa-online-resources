@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Hit on the crosswalk",
+                    "description": "A driver looking at his phone hit a young woman on a crosswalk on the road in Foster Valley. One vehicle is involved, one person is injured. Identify the driver, check their documents and sobriety, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Elütötték a zebrán",
+                    "description": "Foster Valley útján egy telefonját néző sofőr elütött egy fiatal nőt a gyalogátkelőn. Egy jármű érintett, egy sérült. Azonosítsátok a vezetőt, ellenőrizzétek az okmányait és józanságát, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

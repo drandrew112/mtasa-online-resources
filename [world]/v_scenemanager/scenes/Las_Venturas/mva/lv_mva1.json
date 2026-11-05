@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car hit a parked car",
+                    "description": "A white car swerved into a yellow car parked at the curb in Rockshore West. Two vehicles are involved, two people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Autó ütközött egy parkoló kocsinak",
+                    "description": "Egy fehér autó Rockshore Westben nekicsapódott a járdaszegélynél parkoló sárga autónak. Két jármű érintett, két sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

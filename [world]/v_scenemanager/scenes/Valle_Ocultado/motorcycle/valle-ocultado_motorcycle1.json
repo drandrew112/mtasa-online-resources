@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Thrown off at a junction",
+                    "description": "A woman riding a motorcycle was hit from the side at a junction in Valle Ocultado. Two vehicles are involved, one person is injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Motorost lökött le egy autó",
+                    "description": "Valle Ocultado egyik kereszteződésében egy autó oldalról elütött egy motorozó nőt. Két jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

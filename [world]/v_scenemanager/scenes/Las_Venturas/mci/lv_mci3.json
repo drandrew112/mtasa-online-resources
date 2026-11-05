@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Chain collision in a dust storm",
+                    "description": "A sudden dust storm blew in from the desert and several cars ran into each other in the middle of an intersection near the Camel's Toe. Four vehicles are involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Tömeges karambol porviharban",
+                    "description": "Hirtelen porvihar érkezett a sivatag felől, és több autó ütközött össze a Camel's Toe közelében lévő kereszteződés közepén. Négy jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

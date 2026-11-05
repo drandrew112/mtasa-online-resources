@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – SUV rolled over, passengers out",
+                    "description": "An SUV clipped another car and rolled over at a junction in Angel Pine. Three vehicles are involved, three people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Felborult terepjáró, kirepült utasok",
+                    "description": "Egy terepjáró oldalról eltalált egy másik autót, majd felborult egy angel pine-i kereszteződésben. Három jármű érintett, három sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

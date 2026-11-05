@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Head-on collision",
+                    "description": "A red car and a black pickup collided head-on in Redsands East. Two vehicles are involved, one person is injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Frontális ütközés",
+                    "description": "Egy piros autó és egy fekete pickup frontálisan ütközött Redsands Eastben. Két jármű érintett, egy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

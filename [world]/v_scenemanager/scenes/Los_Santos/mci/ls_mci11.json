@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Four-car pileup, several injured",
+                    "description": "Four cars crashed into each other in Richman after one braked suddenly. Four vehicles are involved, four people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Négyautós tömegbaleset, több sérült",
+                    "description": "Négy autó ütközött össze Richmanben, miután az egyik hirtelen fékezett. Négy jármű érintett, négy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

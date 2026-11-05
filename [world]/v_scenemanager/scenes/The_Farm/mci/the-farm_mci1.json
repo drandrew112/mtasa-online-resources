@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Head-on collision, drivers hurt",
+                    "description": "Two cars hit head-on by the road at the edge of the woods in The Farm. Two vehicles are involved, four people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Frontális ütközés, sérült sofőrök",
+                    "description": "The Farm erdőszéli útján két autó frontálisan ütközött. Két jármű érintett, négy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

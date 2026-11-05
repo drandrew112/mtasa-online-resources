@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Chain collision in thick smoke",
+                    "description": "Thick smoke from a field fire blew across the road and several cars ran into each other at a junction in Palomino Creek. Four vehicles are involved, four people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Tömeges karambol sűrű füstben",
+                    "description": "Egy mezőtűzből származó sűrű füst sodródott át az úton, és több autó összeütközött Palomino Creek egyik csomópontjában. Négy jármű érintett, négy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

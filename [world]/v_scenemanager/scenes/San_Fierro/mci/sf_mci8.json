@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Chain collision in thick fog",
+                    "description": "Thick fog rolled in from the bay and several cars ran into each other at a junction in Juniper Hollow. Four vehicles are involved, four people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Láncreakciós ütközés sűrű ködben",
+                    "description": "Juniper Hollow egyik kereszteződésében sűrű köd ereszkedett az öböl felől, és több autó egymásnak ütközött. Négy jármű érintett, négy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

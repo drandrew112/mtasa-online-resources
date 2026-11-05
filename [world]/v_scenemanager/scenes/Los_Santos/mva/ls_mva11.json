@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Sideswipe collision",
+                    "description": "A yellow car and a black car sideswiped each other in Temple and one of them lost control. Two vehicles are involved, one person is injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Oldalirányú súrlódásos ütközés",
+                    "description": "Egy sárga és egy fekete autó oldalról súrolta egymást Temple területén, és az egyik jármű vezetője elvesztette az irányítást. Két jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

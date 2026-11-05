@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Chain collision in a dust storm",
+                    "description": "A sudden dust storm blew in from the desert and several cars ran into each other at a junction near Caligula's Palace. Four vehicles are involved, four people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Tömeges karambol porviharban",
+                    "description": "Hirtelen porvihar érkezett a sivatag felől, és több autó ütközött össze a Caligula's Palace közelében lévő csomópontban. Négy jármű érintett, négy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

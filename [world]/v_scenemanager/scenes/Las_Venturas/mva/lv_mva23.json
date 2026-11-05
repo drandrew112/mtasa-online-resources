@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – T-bone collision at intersection",
+                    "description": "A brown car ran into the side of an orange car at an intersection near Las Venturas Airport. Two vehicles are involved, two people are injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Oldalirányú ütközés kereszteződésben",
+                    "description": "Egy barna autó oldalról nekiütközött egy narancssárga autónak a Las Venturas Airport közelében lévő kereszteződésben. Két jármű érintett, két sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

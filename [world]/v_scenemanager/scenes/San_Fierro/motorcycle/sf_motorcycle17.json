@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Wheelie gone wrong",
+                    "description": "A teenager tried a wheelie at the side of the road in Easter Bay Airport to impress his friends and fell backwards. One vehicle is involved, one person is injured. Protect the scene from passing traffic, find out how the crash happened and arrange the towing of the motorcycle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Félresikerült a motoros egykerekezés",
+                    "description": "Easter Bay Airport útja mellett egy tinédzser a barátai lenyűgözésére egykerekezni próbált a motorral, de hátraesett. Egy jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, derítsétek ki, hogyan történt a baleset, és intézkedjetek a motor elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

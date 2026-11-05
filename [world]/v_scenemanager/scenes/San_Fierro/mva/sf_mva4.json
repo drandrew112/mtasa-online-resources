@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – T-bone collision at intersection",
+                    "description": "A grey car ran into the side of a blue car at an intersection in downtown San Fierro. Two vehicles are involved, one person is injured. Protect the scene from passing traffic, check the drivers' documents and sobriety, then have the wrecks towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Oldalütközés a kereszteződésben",
+                    "description": "San Fierro belvárosának egyik kereszteződésében egy szürke autó nekiment egy kék autó oldalának. Két jármű érintett, egy sérült. Védjétek a helyszínt az elhaladó forgalomtól, ellenőrizzétek a vezetők okmányait és józanságát, majd szállíttassátok el a roncsokat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

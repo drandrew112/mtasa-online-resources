@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Bus and car collision",
+                    "description": "An intercity coach and a car collided on the road shoulder near Montgomery. Two vehicles are involved, five people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Távolsági busz és autó ütközése",
+                    "description": "Egy távolsági busz és egy autó ütközött Montgomery közelében, az útpadkánál. Két jármű érintett, öt sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

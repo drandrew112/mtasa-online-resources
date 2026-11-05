@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Rear-end collision",
+                    "description": "An orange car ran into the back of a white car by the Avispa Country Club. Two vehicles are involved, one person is injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Ráfutásos ütközés",
+                    "description": "Avispa Country Club közelében egy narancssárga autó hátulról nekiütközött egy fehér autónak. Két jármű érintett, egy sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

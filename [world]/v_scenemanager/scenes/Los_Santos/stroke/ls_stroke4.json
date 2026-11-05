@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Vehicle left by the road – Driver stopped, cannot speak",
+                    "description": "A driver stopped in the middle of the lane in Downtown Los Santos with hazard lights on. The vehicle was left by the road. Secure it and have it towed so that it does not block traffic. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Út mellett hagyott jármű – A sofőr megállt, nem tud beszélni",
+                    "description": "Egy sofőr megállt az úttest közepén Downtown Los Santos területén, és bekapcsolta a vészvillogót. A jármű az út mellett maradt. Biztosítsátok, és szállíttassátok el, hogy ne akadályozza a forgalmat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

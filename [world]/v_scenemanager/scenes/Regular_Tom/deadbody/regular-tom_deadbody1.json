@@ -18,11 +18,11 @@
             "locales": {
                 "en": {
                     "title": "Shot, no signs of life",
-                    "description": "Police at the scene on the dusty ground near Regular Tom report a man with several gunshot wounds. He has no pulse and is not breathing."
+                    "description": "A passer-by on the dusty ground near Regular Tom reports a man with several gunshot wounds. He has no pulse and is not breathing."
                 },
                 "hu": {
                     "title": "Lövés, nincs életjel",
-                    "description": "A Regular Tom közelében lévő poros talajon a helyszínre érkező rendőrök egy férfiról számolnak be, akinek több lőtt sebe van. Nincs pulzusa, és nem lélegzik."
+                    "description": "A Regular Tom közelében lévő poros talajon egy járókelő egy férfiról számol be, akinek több lőtt sebe van. Nincs pulzusa, és nem lélegzik."
                 }
             }
         },

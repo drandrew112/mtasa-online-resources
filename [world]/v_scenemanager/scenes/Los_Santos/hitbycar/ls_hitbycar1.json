@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Cyclist struck – Kid hit by a reversing car",
+                    "description": "A car reversing out of a driveway on Grove Street hit a boy on a bicycle. Two vehicles are involved, one person is injured. Identify the driver, check their documents and sobriety, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Kerékpárost ért baleset – Hátramenetben elütött kerékpáros gyermek",
+                    "description": "Egy Grove Street-i felhajtóról kitolató autó elütött egy kerékpározó fiút. Két jármű érintett, egy sérült. Azonosítsátok a vezetőt, ellenőrizzétek az okmányait és józanságát, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {
@@ -47,8 +62,7 @@
             "doors": [0, 0, 0, 0, 0, 0],
             "panels": [1, 0, 0, 0, 0, 1, 0],
             "lights": [1, 0, 0, 0],
-            "wheels": [0, 0, 0, 0],
-            "tow": true
+            "wheels": [0, 0, 0, 0]
         },
         {
             "id": "v2",

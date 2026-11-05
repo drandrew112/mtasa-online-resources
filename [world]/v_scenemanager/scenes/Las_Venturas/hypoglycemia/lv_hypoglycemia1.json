@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Vehicle left by the road – Driver staring at nothing",
+                    "description": "A driver stopped his car next to the road at Blackfield Intersection and is staring straight ahead. The vehicle was left by the road. Secure it and have it towed so that it does not block traffic. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Út mellett hagyott jármű – A sofőr maga elé mered",
+                    "description": "Egy sofőr megállt az autójával a Blackfield Intersection közelében, és maga elé mered. A jármű az út mellett maradt. Biztosítsátok, és szállíttassátok el, hogy ne akadályozza a forgalmat. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

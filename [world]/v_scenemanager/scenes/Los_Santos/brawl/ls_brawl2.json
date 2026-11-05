@@ -89,7 +89,7 @@
                 "weapon": 0,
                 "start": "unit_near",
                 "startRadius": 150,
-                "onPolice": "flee"
+                "onPolice": "stop"
             }
         }
     ]

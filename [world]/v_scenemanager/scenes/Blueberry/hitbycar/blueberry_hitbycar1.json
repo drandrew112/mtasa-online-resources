@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Pedestrian struck – Clipped by a car mirror",
+                    "description": "A man outside a house in Blueberry was clipped by a car's mirror. One vehicle is involved, one person is injured. Identify the driver, check their documents and sobriety, record the accident and have the vehicle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Gázolás – Autó visszapillantó tükre sodorta el",
+                    "description": "Egy autó visszapillantó tükre elsodort egy férfit egy blueberry-i ház előtt. Egy jármű érintett, egy sérült. Azonosítsátok a vezetőt, ellenőrizzétek az okmányait és józanságát, vegyétek fel a balesetet és szállíttassátok el a járművet. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

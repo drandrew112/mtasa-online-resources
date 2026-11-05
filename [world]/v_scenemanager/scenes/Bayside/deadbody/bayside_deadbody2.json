@@ -18,11 +18,11 @@
             "locales": {
                 "en": {
                     "title": "Shot, no signs of life",
-                    "description": "Police at the scene in a yard in Bayside report a man with several gunshot wounds. He has no pulse and is not breathing."
+                    "description": "A passer-by in a yard in Bayside reports a man with several gunshot wounds. He has no pulse and is not breathing."
                 },
                 "hu": {
                     "title": "Lőtt sérülések, életjelek nélkül",
-                    "description": "A helyszínre érkező rendőrök egy Bayside-i udvaron több lőtt sebbel találtak egy férfit. Nincs pulzusa, és nem lélegzik."
+                    "description": "Egy járókelő egy Bayside-i udvaron több lőtt sebbel talált egy férfit. Nincs pulzusa, és nem lélegzik."
                 }
             }
         },

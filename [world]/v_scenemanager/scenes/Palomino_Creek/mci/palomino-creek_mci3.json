@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – SUV rolled over, passengers out",
+                    "description": "An SUV clipped another car and rolled over at a junction in Palomino Creek. Three vehicles are involved, three people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – SUV felborult, utasok kirepültek",
+                    "description": "Egy SUV súrolt egy másik autót, majd felborult Palomino Creek egyik csomópontjában. Három jármű érintett, három sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Traffic accident – Car hit a parked car",
+                    "description": "A brown car swerved into a black car parked at the curb in Ocean Flats. Two vehicles are involved, two people are injured. Secure the scene, direct traffic around it, record the accident and have the vehicles towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Közúti baleset – Autó ütközött egy parkoló autóval",
+                    "description": "Ocean Flats területén egy barna autó kitért, és nekiment a járdaszegélynél parkoló fekete autónak. Két jármű érintett, két sérült. Biztosítsátok a helyszínt, tereljétek el a forgalmat, vegyétek fel a balesetet és szállíttassátok el a járműveket. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

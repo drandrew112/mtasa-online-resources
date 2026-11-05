@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Lost control in the bend",
+                    "description": "A motorcyclist came off the freeway far too fast, lost control at a busy crossroads near the Camel's Toe and hit the curb. One vehicle is involved, one person is injured. Secure the lane, check the rider's licence and sobriety, record the accident and have the motorcycle towed. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – Elvesztette az uralmát a kanyarban",
+                    "description": "Egy motoros túl nagy sebességgel hajtott le az autópályáról, majd elvesztette az uralmát a jármű felett a Camel's Toe közelében lévő forgalmas kereszteződésben, és a járdaszegélynek ütközött. Egy jármű érintett, egy sérült. Biztosítsátok a sávot, ellenőrizzétek a motoros jogosítványát és józanságát, vegyétek fel a balesetet és szállíttassátok el a motort. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

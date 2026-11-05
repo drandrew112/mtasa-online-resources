@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Car ploughed into pedestrians",
+                    "description": "A car lost control and mounted the sidewalk at the side of the road near Leafy Hollow, hitting several people. One vehicle is involved, four people are injured. Close the affected lane, find out how the accident happened and arrange the towing of the vehicle. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Autó hajtott a gyalogosok közé",
+                    "description": "Egy autó elvesztette az irányítását, és felhajtott a járdára Leafy Hollow közelében, az út mellett, több embert elütve. Egy jármű érintett, négy sérült. Zárjátok le az érintett sávot, derítsétek ki, hogyan történt a baleset, és intézkedjetek a jármű elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

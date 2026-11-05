@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Multi-vehicle crash – Street race crashed into traffic",
+                    "description": "Two street racers on the country road crashed into normal traffic at a junction in El Quebrados. Three vehicles are involved, four people are injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Tömeges közúti baleset – Utcai versenyből tömeges baleset lett",
+                    "description": "Két utcai versenyző összeütközött a normál forgalommal egy el quebradosi kereszteződésben. Három jármű érintett, négy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {

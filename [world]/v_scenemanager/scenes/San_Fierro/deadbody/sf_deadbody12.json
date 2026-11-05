@@ -18,11 +18,11 @@
             "locales": {
                 "en": {
                     "title": "Shot, no signs of life",
-                    "description": "Police at the scene in a small park in Avispa Country Club report a man with several gunshot wounds. He has no pulse and is not breathing."
+                    "description": "A passer-by in a small park in Avispa Country Club reports a man with several gunshot wounds. He has no pulse and is not breathing."
                 },
                 "hu": {
                     "title": "Lövés, nincs életjel",
-                    "description": "A helyszínre érkező rendőrök az Avispa Country Club egyik kis parkjában egy férfiról számolnak be, akinek több lőtt sebe van. Nincs pulzusa, és nem lélegzik."
+                    "description": "Egy járókelő az Avispa Country Club egyik kis parkjában egy férfiról számol be, akinek több lőtt sebe van. Nincs pulzusa, és nem lélegzik."
                 }
             }
         },

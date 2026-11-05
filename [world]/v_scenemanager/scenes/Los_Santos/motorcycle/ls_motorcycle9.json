@@ -26,7 +26,22 @@
                 }
             }
         },
-        "pd": { "need": 0 }
+        "pd": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Motorcycle crash – Bike rear-ended a car",
+                    "description": "A motorcycle ran into the back of a car stopping at the lights in Mulholland. Two vehicles are involved, one person is injured. Close the affected lane, take statements from the people involved and arrange the towing of the vehicles. EMS has been notified."
+                },
+                "hu": {
+                    "title": "Motoros baleset – A motoros hátulról autóba ütközött",
+                    "description": "Egy motorkerékpár hátulról nekiment egy Mulholland területén a lámpánál megálló autónak. Két jármű érintett, egy sérült. Zárjátok le az érintett sávot, hallgassátok meg az érintetteket, és intézkedjetek a járművek elszállításáról. Mentőszolgálat értesítve."
+                }
+            },
+            "close": { "towed": true }
+        }
     },
     "vehicles": [
         {
