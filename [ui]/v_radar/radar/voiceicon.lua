@@ -35,8 +35,6 @@ function renderVoiceIcon(mx, my, mw, mh)
 	local x = mx + mw
 	local y = my + mh - speedoSize - box - 2
 
-	dxDrawRectangle(x, y, box, box, tocolor(0, 0, 0, 165))
-
 	local r = MIC_IDLE[1] + (MIC_TALKING[1] - MIC_IDLE[1]) * blend
 	local g = MIC_IDLE[2] + (MIC_TALKING[2] - MIC_IDLE[2]) * blend
 	local b = MIC_IDLE[3] + (MIC_TALKING[3] - MIC_IDLE[3]) * blend
