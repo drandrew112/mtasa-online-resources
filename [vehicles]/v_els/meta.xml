@@ -28,6 +28,9 @@
     <export function="getElsState" type="server" />
     <export function="setElsSirenType" type="server" />
     <export function="getElsSirenTypes" type="server" />
+    <!-- környezeti fény módja ("dynamic" | "native"), ui_pause gfx_elslights -->
+    <export function="getEnvLightMode" type="client" />
+    <export function="setEnvLightMode" type="client" />
 
     <!-- lights.json: read and written by the server only (not downloaded) -->
 

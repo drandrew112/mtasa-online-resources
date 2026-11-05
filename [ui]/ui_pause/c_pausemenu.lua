@@ -141,6 +141,11 @@ local function vehLightsAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function elsAvailable()
+    local res = getResourceFromName("v_els")
+    return res and getResourceState(res) == "running"
+end
+
 local function localsAvailable()
     local res = getResourceFromName("v_locals")
     return res and getResourceState(res) == "running"
@@ -370,6 +375,20 @@ SETTINGS_TREE = {
                 available = vehLightsAvailable,
                 get = function() return vehLightsAvailable() and exports.dynamic_lighting_vehicles:isVehicleLightsEnabled() end,
                 set = function(v) if vehLightsAvailable() then exports.dynamic_lighting_vehicles:setVehicleLightsEnabled(v) end end,
+            },
+            {
+                -- "dynamic" by default (v_els ELS_ENV.defaultMode)
+                id = "gfx_elslights", label = L("ui_pause.pausemenu.emergency_lights"), type = "choice",
+                desc = L("ui_pause.pausemenu.emergency_lights_desc"),
+                available = elsAvailable,
+                options = function()
+                    return {
+                        { id = "dynamic", label = L("ui_pause.pausemenu.emergency_lights_dynamic") },
+                        { id = "native",  label = L("ui_pause.pausemenu.emergency_lights_native") },
+                    }
+                end,
+                get = function() return elsAvailable() and exports.v_els:getEnvLightMode() end,
+                set = function(v) if elsAvailable() then exports.v_els:setEnvLightMode(v) end end,
             },
         },
     },

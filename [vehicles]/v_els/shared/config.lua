@@ -18,8 +18,8 @@ sirenVehicles = {
     [415] = "soundoff",   -- Skoda Octavia Blood Transporter
     [582] = "dal",        -- Toyota Hiace
     [483] = "fsvas320",    -- Mercedes Sprinter 2018
-    [602] = "hella_rtk7",  -- Audi A3 Police
-    [603] = "hella_rtk7",  -- Audi RS6 C7 Police
+    [546] = "hella_rtk7",  -- Audi A3 Police
+    [445] = "hella_rtk7",  -- Audi RS6 C7 Police
 }
 
 -- Kapcsolható extrás modellek: a fényhíd a modell egyik extra komponense, amit
@@ -231,6 +231,17 @@ ELS_ENV = {
     intensity      = 1.0,
     sideOffset     = 0.8,  -- a fényforrás ennyivel kijjebb kerül a jármű oldalán (m)
     heightOffset   = 0.3,
+
+    -- megjelenítési mód (játékosonként, ui_pause "gfx_elslights"):
+    --   "dynamic" = dynamic_lighting shader-fények (út, falak, járművek)
+    --   "native"  = GTA createLight pontfények (csak járművek/pedek + földi fényfolt)
+    -- ha a dynamic_lighting nem fut, a "dynamic" mód is a natív fényeket használja
+    defaultMode    = "dynamic",
+    native = {
+        maxVehicles = 3,    -- a natív fény olcsó, több jármű is világíthat
+        radius      = 12,
+        shadow      = true, -- színes fényfolt a földön (az utat a createLight nem világítja meg)
+    },
 }
 
 ------------------------------------------------------------
