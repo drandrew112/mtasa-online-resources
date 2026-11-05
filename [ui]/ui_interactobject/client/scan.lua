@@ -60,6 +60,13 @@ function getAnchor(element, menu)
     if elementType == "ped" or elementType == "player" then
         x, y, z = getPedBonePosition(element, 8)
         if x then z = z + 0.35 end
+    elseif elementType == "vehicle" and menu and menu.def.anchorDriver then
+        -- def.anchorDriver: above the driver's head (tall vehicles: the top of the box is out of view)
+        local driver = getVehicleController(element)
+        if driver and isElementStreamedIn(driver) then
+            x, y, z = getPedBonePosition(driver, 8)
+            if x then z = z + 0.35 end
+        end
     end
     if not x then
         x, y, z = getElementPosition(element)

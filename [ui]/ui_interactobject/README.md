@@ -73,6 +73,8 @@ client/render.lua     markers, prompt, panel
   it in its `onInteractMenuSelect` handler. For elements whose server position lags behind the
   client (simulated traffic vehicles and their drivers).
 - The anchor is above the head for peds/players and on top of the bounding box for everything else.
+  `anchorDriver = true` (vehicle menus): above the driver's head while the vehicle has one (the
+  target stays the vehicle); without a driver the top of the bounding box.
 
 ## Server exports (menus every / the listed players see)
 

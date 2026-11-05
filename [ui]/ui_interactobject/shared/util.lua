@@ -69,6 +69,7 @@ function ioSanitizeDef(def)
         selfDataKey = type(def.selfDataKey) == "string" and def.selfDataKey or nil,
     }
     if type(def.targetInVehicle) == "boolean" then clean.targetInVehicle = def.targetInVehicle end
+    if def.anchorDriver == true then clean.anchorDriver = true end
     return clean
 end
 
