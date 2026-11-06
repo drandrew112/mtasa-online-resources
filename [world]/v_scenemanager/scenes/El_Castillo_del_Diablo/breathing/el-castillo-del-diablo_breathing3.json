@@ -38,7 +38,7 @@
             "anim": "cough",
             "role": "patient",
             "injuries": [
-                { "type": "copd", "severity": 2 }
+                { "type": "copd", "severity": 2, "part": "chest", "side": "left" }
             ],
             "state": { "spo2": 88 }
         }

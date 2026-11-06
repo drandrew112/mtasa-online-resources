@@ -1,0 +1,10 @@
+{
+  "mg_suture.client.accuracy": "Accuracy",
+  "mg_suture.client.hint": "Press the left mouse button on one wound edge, drag the needle across and release it on the other edge. Even bites, even spacing.",
+  "mg_suture.client.hint_tremor": "No local anaesthesia: the patient moves. Drag the needle from one wound edge to the other.",
+  "mg_suture.client.misses": "Missed stitches: {n|int}",
+  "mg_suture.client.stitch_count": "Stitch {n|int}/{total|int}",
+  "mg_suture.client.title": "Suture{part}, {length} cm",
+  "mg_suture.kit.failed": "FAILED",
+  "mg_suture.kit.success": "SUCCESS"
+}

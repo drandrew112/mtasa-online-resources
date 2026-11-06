@@ -1,0 +1,7 @@
+# Resident exam
+@keywords: resident exam, questions, triage, lab, tube order, wound care
+@related: hospital_exams, hospital_triage, hospital_lab, hospital_wound, hospital_cast
+
+Requirement: nurse rank and 2 hours on duty as a nurse. 25 questions, 75%.
+
+Topics: triage and ABCDE, order indications (e.g. when a head CT is needed), X-ray before a cast, tube order and blood draw errors, basic lab values, wound care and tetanus, fracture care, hospital drug doses, documentation rules (ICD, versions).

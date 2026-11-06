@@ -1,0 +1,23 @@
+# Hospital – overview
+@keywords: hospital, er, emergency, all saints, hospital work, his
+@related: hospital_exams, hospital_pathway, hospital_triage, hospital_panel
+
+In the hospital work you treat patients in the **All Saints** emergency department (ER): the ones brought by the ambulance, the walk-ins and the ones carried in. Every intervention gives **points**, paid at the end of your duty.
+
+## The key places
+
+- **Duty:** the lobby duty marker (`E`). On your first duty the **hospital tutorial** starts.
+- **Trolley marker:** `E` gives you a trolley to push at once; with an empty hospital trolley `E` returns it (shown on the marker card).
+- **Corridor F1–F5:** the ambulance patients go here.
+- **PCs:** by the desk; patient registry, department, supplies, communication, documents.
+- **Shock room, wound room, cast room, CT, X-ray, theatre, ICU, ward, morgue.**
+
+## The tablet and the PC
+
+The **tablet** (`J` or `/sbo`) has the **page picker** (☰) at the top right and the **back** button (`Backspace`) at the top left; there is no documentation on the tablet.
+
+The **hospital computer** (`E` at a computer) opens on most of the screen with an empty desktop: the desktop icons or the Start menu open the applications: **ER Patient Management**, **Patient chart** (with the documentation), **Document archive**. Switch windows on the taskbar; `ESC` closes the top window.
+
+**Examine patient** in the patient's menu opens the detailed patient panel.
+
+![220](content/images/hospital/ct_edh.jpg)

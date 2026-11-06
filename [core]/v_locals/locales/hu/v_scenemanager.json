@@ -513,5 +513,9 @@
   "v_scenemanager.web.too_many": "Túl sok sikertelen próbálkozás. Próbáld újra egy perc múlva.",
   "v_scenemanager.web.units": "egységek: {count}",
   "v_scenemanager.web.unreachable": "A szerver nem érhető el:",
-  "v_scenemanager.web.username": "Felhasználónév"
+  "v_scenemanager.web.username": "Felhasználónév",
+  "v_scenemanager.ped.part_none": "nincs testrész",
+  "v_scenemanager.ped.part": "Testrész: {part}",
+  "v_scenemanager.ped.remove": "Törlés",
+  "v_scenemanager.ped.injury_entry": "{injury} ({severity}) · {part}"
 }

@@ -38,7 +38,7 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                { "type": "stroke", "severity": 3, "part": "head", "side": "right" }
             ],
             "state": { "systolic": 201, "consciousness": "dazed" }
         }

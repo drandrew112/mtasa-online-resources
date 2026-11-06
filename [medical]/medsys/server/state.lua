@@ -446,6 +446,8 @@ function buildSnapshot(state)
             treated = injury.treated,
             treatedLabel = injury.treated and (def.treatedLabel or L.msg("medsys.state.treated")) or nil,
             hospital = not def.treat and not def.treatDrugs or nil, -- no prehospital treatment
+            part = injury.part, side = injury.side, cause = injury.cause, -- shared/body.lua
+            partLabel = injury.part and medicPartLabel(injury.part, injury.side) or nil,
         }
         local list = def.hidden and conditions or injuries
         list[#list + 1] = entry

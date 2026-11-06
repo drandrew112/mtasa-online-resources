@@ -1,0 +1,12 @@
+# Rendelések és indikációk
+@keywords: rendelés, indikáció, pont, limit, rezidens, ápoló, gyógyszer-rendelés
+@related: hospital_lab, hospital_ct, hospital_xray, hospital_pay
+
+A rendelést Rezidens vagy magasabb rang adja ki; a végrehajtás az adott beavatkozás rangjától engedélyezett.
+
+- A rendelések listáján a **✓** indokolt, a **!** indikáció nélküli rendelés.
+- **Indikáció nélkül** csak a pont fele jár.
+- Kódonként **esetenkénti limit** van (pl. CT koponya 2×, labor-panelek 3×).
+- **Gyógyszer-rendelés:** az Ápoló a rendelt szert adhatja be; a beadással a rendelés lezárul.
+
+> Példák indikációra: fejsérülés eszméletvesztéssel vagy véralvadásgátlóval → CT koponya; törés gyanúja → röntgen a gipsz előtt.

@@ -1,0 +1,16 @@
+# Vizsgálati panel
+@keywords: betegpanel, vizsgálat, testtérkép, fülek, státusz, betegvizsgálat
+@related: hospital_orders, hospital_docs, hospital_shock
+
+A beteg menüjéből a **Betegvizsgálat** (ágy mellett) vagy a PC / tablet betegsorából nyílik.
+
+- **Fejléc:** triage, név, kor, nem, testsúly, esetszám, kezelő, hely, vércsoport, allergia.
+- **Testtérkép:** a leletek és az ellátott részek színnel.
+- **Vitális sáv:** csak monitorról vagy mérésből látszik.
+- **Fülek:** Vizsgálat (10 testtáj, kikérdezés, GCS / NIHSS / NRS), Rendelések, Beavatkozások, Gyógyszerek, Transzfúzió, Dokumentáció (csak a PC-n), Elhelyezés (kimenet: hazabocsátás, osztály, intenzív, műtő, áthelyezés, exitus), Napló.
+- **Bezárás:** a jobb felső **X** gomb (vagy `ESC`).
+- **Lelet:** a rendelésre kattintva csak a lelet látszik; az **X** visszahozza a panelt.
+
+> Anamnézist, státuszt, epikrízist és BNO-diagnózist **csak a kórházi számítógépen** rögzíthetsz, a tableten nem.
+
+> Távolról (PC, tablet) a fizikális vizsgálat és a beavatkozások tiltva vannak: ezekhez a beteg mellett kell állnod.

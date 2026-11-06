@@ -137,6 +137,9 @@ local function normalise(workId, def)
     c.passPercent = tonumber(e.passPercent) or WORK.EXAM_PASS_PERCENT
     c.retryCooldown = tonumber(e.retryCooldown) or WORK.EXAM_RETRY_COOLDOWN
     c.helpTopic = type(e.help) == "string" and e.help or nil
+    -- exams.check: a server export of the work resource, (player, examId) -> true | false, reason text
+    -- (requirements besides the ranks, e.g. hours on duty: work_hospital Ú11)
+    c.examCheck = type(e.check) == "string" and e.check:match("^[%w_]+$") and e.check or nil
     c.minigames = type(def.minigames) == "table" and def.minigames or {}
     return c
 end

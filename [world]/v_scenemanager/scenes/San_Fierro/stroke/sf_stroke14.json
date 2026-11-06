@@ -38,7 +38,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "stroke", "severity": 3 }
+                { "type": "stroke", "severity": 3, "part": "head", "side": "left" }
             ],
             "state": { "systolic": 192, "diastolic": 108, "consciousness": "dazed" }
         }

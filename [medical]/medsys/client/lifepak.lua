@@ -83,6 +83,8 @@ local function getButtons(lx, ly)
         { op = "sync", x = bx, y = ly + s(262), w = bw, h = s(32), kind = "sync" },
         -- ECG beep + alarm on / off for this patient (the defibrillator sounds always play)
         { op = "sound", x = bx, y = ly + s(304), w = bw, h = s(32), kind = "sound" },
+        -- 12-lead ECG (ecg12/client/render.lua): the viewer with PRINT
+        { op = "ecg12", x = bx, y = ly + s(346), w = bw, h = s(32), kind = "ecg12" },
     }
     return list, kx, kw
 end
@@ -100,6 +102,7 @@ end
 
 local function isButtonEnabled(button, defib)
     if not button.op then return false end
+    if button.kind == "ecg12" then return not (medicDeniedReason and medicDeniedReason("action.ecg12")) end
     if medicDeniedReason and medicDeniedReason("defib." .. button.op) then return false end
     if button.kind == "charge" then return not defib.charging and not defib.charged and not defib.analyzing end
     if button.kind == "shock" then return defib.charged end
@@ -136,7 +139,9 @@ local function drawKeypad(lx, ly, data, defib, cx, cy, busy)
                 "center", "center")
         else
             dxDrawRectangle(b.x, b.y, b.w, b.h, hovered and C.buttonHover or C.button)
-            if not b.op then
+            if b.kind == "ecg12" then
+                dxDrawText("12-LEAD", b.x, b.y, b.x + b.w, b.y + b.h, enabled and C.white or C.muted, 1, fonts.bold, "center", "center")
+            elseif not b.op then
                 drawTriangle(b.x + b.w / 2, b.y + b.h / 2, s(14), b.kind == "up", C.muted)
             else -- toggles with a LED: SYNC, SOUND
                 local on = b.kind == "sync" and data.monitor.sync or b.kind == "sound" and data.monitor.sound ~= false
@@ -362,6 +367,7 @@ function clickLifepak(panelX, panelY, target, data, elapsed, cx, cy, busy)
     local defib = getDefibState(data.monitor, elapsed)
     for _, b in ipairs((getButtons(lx, ly))) do
         if isInside(b.x, b.y, b.w, b.h, cx, cy) and isButtonEnabled(b, defib) then
+            if b.kind == "ecg12" then ECG12.request(target) break end
             triggerServerEvent("medic:defib", resourceRoot, target, b.op, b.value)
             break
         end

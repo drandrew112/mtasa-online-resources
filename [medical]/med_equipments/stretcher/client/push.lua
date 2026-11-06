@@ -103,7 +103,21 @@ updatePushers = function()
         if not isElement(ped) then
             pushers[ped] = nil
         elseif isElementStreamedIn(ped) and not isPedDead(ped) then
-            if ped == localPlayer then setPedControlState(localPlayer, "walk", not wantsToSprint()) end
+            if ped == localPlayer and local_ then
+                setPedControlState(localPlayer, "walk", not wantsToSprint())
+                -- a menu closing meanwhile (e.g. the elevator's ui_inac menu: toggleMoveControls(true))
+                -- turns the locked controls back on: lock them again, and give them back at the end
+                for _, control in ipairs(STRETCHER.PUSH_LOCKED_CONTROLS) do
+                    if isControlEnabled(control) then
+                        toggleControl(control, false)
+                        local known = false
+                        for _, c in ipairs(local_.lockedControls) do
+                            if c == control then known = true break end
+                        end
+                        if not known then local_.lockedControls[#local_.lockedControls + 1] = control end
+                    end
+                end
+            end
             local moving = isMoving(ped, p)
             if moving and p.anim then
                 p.anim = false

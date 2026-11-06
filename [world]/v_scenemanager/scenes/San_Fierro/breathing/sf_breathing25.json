@@ -38,7 +38,7 @@
             "anim": "tired",
             "role": "patient",
             "injuries": [
-                { "type": "asthma", "severity": 3 }
+                { "type": "asthma", "severity": 3, "part": "chest", "side": "left" }
             ],
             "state": { "spo2": 85, "heartRate": 135 }
         }

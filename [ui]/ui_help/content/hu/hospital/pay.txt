@@ -1,0 +1,9 @@
+# Fizetés
+@keywords: fizetés, pont, bónusz, gov_health, állami számla
+@related: hospital_orders, hospital_exams
+
+- Minden beavatkozás pontot ér: a kódtábla értékének **ötszörösét** (pl. triage 20, CT mellkas 40, mellkasi drain 75 pont). **1 pont = $40** dolgozói fizetés (heti szorzóval), a szolgálat végén.
+- **Rosszul elvégzett minigame** (vérvétel, EKG, FAST, varrat, gipsz, drain…): nincs eredmény és nincs pont, de újra megcsinálhatod; az anyag csak sikeres elvégzéskor fogy.
+- A **kezelő esetbónusza:** a lezárt, dokumentált eset pontjainak **15%-a**.
+- A beavatkozások értékét (a kódtábla szerinti alappont × $60) az állam fizeti a /gov Egészségügy oldalon kiválasztott számláról; a felszerelés-rendelést is.
+- Ha az állami számla nem fedezi, a rendszer fizet, és a /gov oldal figyelmeztet.

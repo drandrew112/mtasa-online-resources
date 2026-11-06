@@ -127,6 +127,27 @@ STRETCHER = {
     SCAN_INTERVAL = 3000,          -- ms, fallback scan for ambulances the hooks missed
 }
 
+-- Per object model settings: a key here overrides the STRETCHER value above for stretchers of that model.
+-- 1997 = GTA hos_trolley (hospital stretchers and beds): origin on the floor, long axis along its y
+-- axis like the custom model, the mattress about 0.8 m high (measured with screenshots 2026-11-06).
+STRETCHER.PROFILES = {
+    [1997] = {
+        SCALE = 1.0,
+        GROUND_Z = 0.0,
+        YAW = 0,                                   -- object rz = logical heading + YAW
+        PATIENT_OFFSET = { 0, 0, 1.78, 0, 0, 180 },
+        PUSH_OFFSET = { 0, 1.55, -1.0, 0, 0, 0 },
+    },
+}
+
+-- a setting of a stretcher object (or object model): its profile's value or the STRETCHER default
+function stretcherSetting(element, key)
+    local model = type(element) == "number" and element or (isElement(element) and getElementModel(element))
+    local p = model and STRETCHER.PROFILES[model]
+    if p and p[key] ~= nil then return p[key] end
+    return STRETCHER[key]
+end
+
 -- Element data (synced, read by the client and other resources)
 STRETCHER_DATA = {
     STATE = "stretcher.state",     -- on the object: "stowed" | "moving" | "ground" | "pushing"
@@ -135,4 +156,13 @@ STRETCHER_DATA = {
     ON = "stretcher.on",           -- on the patient: the stretcher they lie on
     PUSHING = "stretcher.pushing", -- on the medic: the stretcher they push
     LOCKED = "stretcher.locked",   -- on the patient: the ambulance they are locked into
+    HOSPITAL = "stretcher.hospital", -- on the object: hospital stretcher (hospital id), no vehicle
+}
+
+-- Hospital stretchers (server/hospital.lua): no vehicle, requested at a hospital's stretcher point
+HOSPITAL_STRETCHER = {
+    OBJECT_MODEL = 1997,           -- GTA hos_trolley (differs from the ambulance stretcher 2146)
+    MAX_PER_HOSPITAL = 15,         -- active hospital stretchers per hospital
+    IDLE_REMOVE = 600,             -- s: an empty stretcher not touched this long is removed
+    CLEANUP_INTERVAL = 30,         -- s
 }

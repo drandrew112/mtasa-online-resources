@@ -16,7 +16,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 addEvent("onHospitalHandoverStart", false)    -- (unitId, hospitalId)
 addEvent("onHospitalHandoverLeft", false)     -- (unitId, hospitalId)
-addEvent("onHospitalPatientHandover", false)  -- (hospitalId, unitId, patient, medic, taskId)
+addEvent("onHospitalPatientHandover", false)  -- (hospitalId, unitId, patient, medic, taskId, handoverText)
 
 local active = {}     -- [unitId] = { bay, vehicle, hospital }
 local procs = {}      -- [player] = { point, obj, patient, unitId, ends }   running stretcher handovers
@@ -204,9 +204,13 @@ local function checkHandover(player, point)
     if a.hospital ~= point.hospital then
         return false, L.msg("med_hospitals.handover.your_ambulance_is_parked_at", { name = a.hospital.name })
     end
-    if (a.bay.heli == true) ~= (point.heli == true) then
-        return false, a.bay.heli and L.msg("med_hospitals.handover.your_helicopter_is_on_the_helipad")
-            or L.msg("med_hospitals.handover.your_ambulance_is_in_a_ground_bay")
+    -- an ambulance never uses the heli marker; a helicopter uses the heli marker if the hospital
+    -- has one, else the ground markers (All Saints: roof helipad -> elevator -> ground floor)
+    if point.heli and not a.bay.heli then
+        return false, L.msg("med_hospitals.handover.your_ambulance_is_in_a_ground_bay")
+    end
+    if a.bay.heli and not point.heli and a.hospital.heliHandover then
+        return false, L.msg("med_hospitals.handover.your_helicopter_is_on_the_helipad")
     end
     return true, { obj = obj, patient = patient, unitId = unit.id }
 end
@@ -238,15 +242,20 @@ local function completeProc(player)
     local taskId = unit and unit.task ~= 0 and unit.task or false
 
     -- listeners can still read the patient (medsys state etc.)
-    triggerEvent("onHospitalPatientHandover", resourceRoot, h.id, p.unitId, patient, player, taskId)
+    -- text: the handover description (ER with staff), med_docs puts it on the EMS case sheet
+    triggerEvent("onHospitalPatientHandover", resourceRoot, h.id, p.unitId, patient, player, taskId, p.text or "")
 
-    -- healthcare: the hospital's payer (gov_health /gov Healthcare page) pays the treatment (player or NPC)
-    if isElement(patient) and isResourceRunning("gov_health") then
+    -- ER with staff: the patient goes onto a hospital stretcher in the corridor (er/server/arrival.lua)
+    local erTook = ER and ER.receivePatient and ER.receivePatient(h, player, patient, p.obj, unit, taskId)
+
+    -- healthcare: the hospital's payer (gov_health /gov Healthcare page) pays the treatment (player or NPC);
+    -- with ER staff the interventions are paid instead
+    if not erTook and isElement(patient) and isResourceRunning("gov_health") then
         local ok, amount, paid = exports.gov_health:chargeHealthcare(patient, h.name, taskId or nil, h.id)
         if ok and paid and amount > 0 then notify(patient, L.msg("med_hospitals.heal.you_paid_for_treatment", { amount = amount })) end
     end
 
-    if isElement(patient) then
+    if isElement(patient) and not erTook then
         if getElementType(patient) == "player" then
             exports.med_equipments:takePatientOff(p.obj)
             if isResourceRunning("medsys") then exports.medsys:healCompletely(patient) end
@@ -277,14 +286,17 @@ local function updateHandoverMarkers()
             seen[player] = point
             if not procs[player] and not isPedDead(player) and not getPedOccupiedVehicle(player) then
                 local ok, data = checkHandover(player, point)
+                -- ER with staff: description + free corridor spot first (er/server/arrival.lua);
+                -- data = nil means it is waiting for the description, nothing to show
+                if ok and ER and ER.gateHandover then ok, data = ER.gateHandover(player, point, data) end
                 if ok then
                     refused[player] = nil
                     procs[player] = {
                         point = point, obj = data.obj, patient = data.patient, unitId = data.unitId,
-                        ends = now + HOSP.HANDOVER_TIME,
+                        ends = now + HOSP.HANDOVER_TIME, text = data.text,
                     }
                     startProgress(player, point.marker, HOSP.HANDOVER_TIME, L.msg("med_hospitals.handover.handing_over_patient"))
-                elseif refused[player] ~= point then
+                elseif data ~= nil and refused[player] ~= point then
                     refused[player] = point
                     notify(player, data)
                 end

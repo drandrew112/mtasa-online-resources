@@ -1,0 +1,670 @@
+{
+  "id": "resident",
+  "title": "Resident exam",
+  "description": "Triage, ABCDE, order indications, blood draw and tube order, basic lab values, wound care, fractures, hospital drug doses, documentation.",
+  "questionCount": 25,
+  "passPercent": 75,
+  "help": "hospital_exams",
+  "questions": [
+    {
+      "id": "res_01",
+      "q": "Which triage level does a patient arriving in cardiac arrest get?",
+      "answers": [
+        "Level 1 (immediate)",
+        "Level 2 (urgent)",
+        "Level 3 (deferrable)",
+        "Level 4 (non-urgent)"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_02",
+      "q": "What is the right order of the ABCDE survey?",
+      "answers": [
+        "Airway, breathing, circulation, disability, exposure",
+        "Circulation, airway, breathing, exposure, disability",
+        "Breathing, airway, disability, circulation, exposure",
+        "Airway, circulation, breathing, exposure, disability"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_03",
+      "q": "What may be done in the hospital before triage (rule K10)?",
+      "answers": [
+        "Only life-saving interventions and exams",
+        "Any medicine may be given when ordered",
+        "Only the treating doctor may be chosen",
+        "Only the patient's details are recorded"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_04",
+      "q": "When is a head CT indicated after a head injury?",
+      "answers": [
+        "Loss of consciousness, GCS < 15 or anticoagulant",
+        "Always, whatever the way the injury happened",
+        "Only when the patient complains of a headache",
+        "Only when a bleeding scalp wound is also seen"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_05",
+      "q": "What is needed before a cast is put on?",
+      "answers": [
+        "An X-ray of the injured limb",
+        "A full lab with all the tubes",
+        "A head CT to rule out injury",
+        "A twelve-lead ECG recording"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_06",
+      "q": "What is the right order of the blood tubes?",
+      "answers": [
+        "Citrate, serum, heparin, EDTA, fluoride",
+        "EDTA, citrate, serum, fluoride, heparin",
+        "Serum, EDTA, citrate, heparin, fluoride",
+        "Fluoride, heparin, EDTA, serum, citrate"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_07",
+      "q": "What happens when the EDTA tube is drawn before the serum tube?",
+      "answers": [
+        "False high potassium and false low calcium",
+        "False high haemoglobin and false low sodium",
+        "False low glucose and false high troponin",
+        "Long INR and a false low white cell count"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_08",
+      "q": "What is the typical error of a haemolysed sample?",
+      "answers": [
+        "False high potassium",
+        "False low sodium",
+        "False high glucose",
+        "False low INR"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_09",
+      "q": "What does an underfilled citrate tube cause?",
+      "answers": [
+        "Falsely long clotting times",
+        "A falsely low haemoglobin",
+        "A falsely high potassium",
+        "A falsely low blood glucose"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_10",
+      "q": "What is the normal haemoglobin range of an adult man?",
+      "answers": [
+        "About 140–180 g/l",
+        "About 80–110 g/l",
+        "About 200–240 g/l",
+        "About 50–70 g/l"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_11",
+      "q": "What is the normal serum potassium range?",
+      "answers": [
+        "3.5–5.1 mmol/l",
+        "1.5–2.5 mmol/l",
+        "6.5–8.0 mmol/l",
+        "135–145 mmol/l"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_12",
+      "q": "What do a high lactate and a low pH together point to?",
+      "answers": [
+        "Tissue hypoxia, shock",
+        "Mild dehydration, thirst",
+        "Alcohol in the past day",
+        "Compensated kidney disease"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_13",
+      "q": "What does a high troponin point to?",
+      "answers": [
+        "Heart muscle damage",
+        "Liver cell damage",
+        "A kidney stone",
+        "An overactive thyroid"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_14",
+      "q": "What is the first step of treating a dirty cut in the wound room?",
+      "answers": [
+        "Thorough irrigation",
+        "Immediate skin suture",
+        "A tight pressure bandage",
+        "A plaster splint"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_15",
+      "q": "When is tetanus prophylaxis needed in wound care?",
+      "answers": [
+        "When the last shot was over 10 years ago or unknown",
+        "Only when the wound is visibly infected with pus",
+        "Only for injured patients over the age of sixty",
+        "Never, when the wound has been washed out well"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_16",
+      "q": "What happens when you suture without local anaesthesia?",
+      "answers": [
+        "The patient moves, the suture gets worse",
+        "The wound heals faster, with less scarring",
+        "The patient's blood pressure drops sharply",
+        "The suture fails automatically every time"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_17",
+      "q": "In a displaced forearm fracture, what is the order in the cast room?",
+      "answers": [
+        "X-ray, reduction, cast, control X-ray",
+        "Cast, X-ray, reduction, control X-ray",
+        "Reduction, cast, X-ray, pain relief",
+        "Control X-ray, cast, reduction, X-ray"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_18",
+      "q": "What must be checked after the cast is on?",
+      "answers": [
+        "Circulation, movement and sensation",
+        "Glucose, lactate and the pH value",
+        "Pupils, the GCS and the speech",
+        "Temperature, breathing rate, EtCO₂"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_19",
+      "q": "What does a cast that is too tight show?",
+      "answers": [
+        "Rising pain, pale and cold fingers",
+        "Mild itching under the cast's edge",
+        "Slightly warm skin around the cast",
+        "The surface of the cast dries fast"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_20",
+      "q": "Why is pain relief needed before a reduction?",
+      "answers": [
+        "In pain the patient resists and the reduction is worse",
+        "Because the painkiller speeds up the bone's healing",
+        "Because without it the X-ray cannot be read later",
+        "Because the cast only sets with a painkiller given"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_21",
+      "q": "How many diagnoses (ICD) can a case have?",
+      "answers": [
+        "At most 5, there is no main one",
+        "Exactly 1 main and 1 secondary",
+        "At most 10, the first is the main",
+        "Any number, all of equal rank"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_22",
+      "q": "What happens when you order a test without an indication?",
+      "answers": [
+        "Only half of the points are given",
+        "The test is never carried out",
+        "The order is cancelled at once",
+        "Double points are given for it"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_23",
+      "q": "When may a star (*) ICD code be given?",
+      "answers": [
+        "Only next to a dagger (+) code",
+        "Any time, as a diagnosis alone",
+        "Only on a death certificate",
+        "Only for patients under eighteen"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_24",
+      "q": "In whose language is the Ambulatory sheet stored?",
+      "answers": [
+        "The author's; coded parts show in the reader's language",
+        "Always Hungarian, translated when it is opened",
+        "Always English, as the hospital is international",
+        "The patient's, which must be set at admission"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_25",
+      "q": "What happens to the Ambulatory sheet when a patient is taken back?",
+      "answers": [
+        "A new version is made at closing",
+        "The old sheet is deleted for good",
+        "The sheet can never be changed",
+        "The patient gets a new case number"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_26",
+      "q": "How long is a ward stay when the patient is stable?",
+      "answers": [
+        "20 minutes",
+        "5 minutes",
+        "60 minutes",
+        "2 minutes"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_27",
+      "q": "What happens when a ward patient deteriorates?",
+      "answers": [
+        "The timer stops and the treating doctor is alerted",
+        "The patient moves to the ICU automatically",
+        "The patient goes home, the case closes with an error",
+        "Nothing, the timer keeps running to the end"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_28",
+      "q": "Within what time must an S2 transfer happen (in game time)?",
+      "answers": [
+        "Within 30 minutes",
+        "Within 3 minutes",
+        "Within 2 hours",
+        "Within 24 hours"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_29",
+      "q": "Who may request an S2 transfer?",
+      "answers": [
+        "Resident or a higher rank",
+        "Only an appointed chief",
+        "Any nurse on the shift",
+        "Only the ambulance leader"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_30",
+      "q": "Which need makes the transfer an ALS-only job?",
+      "answers": [
+        "Oxygen, a syringe pump, ventilation or a monitor",
+        "When the patient is male and over sixty years",
+        "When the target hospital is more than 2 km away",
+        "When the patient asked to be transferred"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_31",
+      "q": "Where in the hospital may RSI and intubation be done (conscious patient)?",
+      "answers": [
+        "In the shock room or the ICU",
+        "Anywhere in the corridor on a trolley",
+        "Only in the wound room",
+        "Only behind the X-ray control desk"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_32",
+      "q": "Where must you stand when the X-ray is taken?",
+      "answers": [
+        "At the control desk behind the lead wall",
+        "Next to the patient, at the foot end",
+        "Outside in the corridor by the door",
+        "In front of the wall viewer, centred"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_33",
+      "q": "What happens with a limb X-ray when the wrong side is ordered?",
+      "answers": [
+        "A negative image is made and the test is not indicated",
+        "The system corrects it to the right side by itself",
+        "Both sides are imaged with no extra cost at all",
+        "The image is made but never goes into the pathway"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_34",
+      "q": "What is the FAST exam for?",
+      "answers": [
+        "Looking for free fluid and pneumothorax",
+        "Showing the exact course of a fracture",
+        "Ruling out an intracranial bleed",
+        "Measuring the blood glucose quickly"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_35",
+      "q": "What do you do when a FAST window is not evaluable?",
+      "answers": [
+        "Repeat the exam or order a CT",
+        "Treat the window as negative",
+        "Treat the window as positive",
+        "Send the patient home at once"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_36",
+      "q": "Where in the hospital can a 12-lead ECG be taken?",
+      "answers": [
+        "In the shock room, where the ECG machine is",
+        "At any ward bed from the bedside monitor",
+        "In the corridor without any monitor",
+        "In the X-ray room during the exposure"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_37",
+      "q": "What does a negative lead I with a positive aVR show?",
+      "answers": [
+        "Swapped right and left arm electrodes",
+        "An extensive anterior infarction",
+        "A complete atrioventricular block",
+        "Severe hypokalaemia and a long QT"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_38",
+      "q": "What is the usual adult dose of metamizole?",
+      "answers": [
+        "1000 mg",
+        "100 mg",
+        "5000 mg",
+        "10 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_39",
+      "q": "What is the usual first dose of morphine for an adult?",
+      "answers": [
+        "2–5 mg IV, titrated",
+        "20–50 mg IV at once",
+        "0.1 mg IV, once only",
+        "100 mg by mouth"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_40",
+      "q": "What is the usual dose of ondansetron?",
+      "answers": [
+        "4 mg IV",
+        "40 mg IV",
+        "0.4 mg IV",
+        "400 mg IV"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_41",
+      "q": "What is the dose of tranexamic acid in a bleeding trauma patient?",
+      "answers": [
+        "1 g IV over 10 minutes",
+        "10 g IV as one bolus",
+        "100 mg IV every hour",
+        "1 mg IV over 1 minute"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_42",
+      "q": "What does a nurse need before giving a medicine?",
+      "answers": [
+        "A drug order on the patient panel",
+        "An EMS bag from the ambulance station",
+        "A chief appointment through /appoint",
+        "Nothing, nurses give anything unordered"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_43",
+      "q": "How does the triage helper work?",
+      "answers": [
+        "It suggests from the measured values, you decide",
+        "It sets the level for the patient by itself",
+        "It reads the level from the EMS handover text",
+        "At random, it was only made for practice"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_44",
+      "q": "What do you do with an unregistered patient brought into the ER zone?",
+      "answers": [
+        "\"Register\" in the patient's menu",
+        "Push the patient to the morgue at once",
+        "Wait until an ambulance also arrives",
+        "Nothing, the system takes them in later"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_45",
+      "q": "What happens when you push an empty hospital trolley into the trolley marker and press E?",
+      "answers": [
+        "The trolley is returned (removed)",
+        "You get a second trolley next to it",
+        "The trolley jumps to the shock room",
+        "Nothing, the marker does not work then"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_46",
+      "q": "When is the patient connected to the wall monitor in the shock room?",
+      "answers": [
+        "By itself, when the trolley is in the shock bay",
+        "Only when the EMS monitor was left on",
+        "Only with the chief's approval on the PC",
+        "Only after the blood draw and the lab"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_47",
+      "q": "What must be recorded before a discharge?",
+      "answers": [
+        "At least one diagnosis (ICD)",
+        "At least three lab panels",
+        "The result of a CT scan",
+        "The patient's blood group"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_48",
+      "q": "What does a risky discharge on the Ambulatory sheet mean?",
+      "answers": [
+        "Sent home with unstable values (e.g. low BP)",
+        "The patient did not pay the full care fee",
+        "Brought by ambulance but left on their own",
+        "The patient did not give a citizen ID"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_49",
+      "q": "Who can be the treating doctor of a case?",
+      "answers": [
+        "A resident or higher, after triage",
+        "Any nurse, even before triage",
+        "Only the ambulance unit leader",
+        "Only the appointed chief"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_50",
+      "q": "How big is the treating doctor's case bonus?",
+      "answers": [
+        "15% of the points of the closed, documented case",
+        "A fixed 100 points after every closed case",
+        "Exactly half of all the points of the case",
+        "No bonus, only the points of interventions"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_51",
+      "q": "How long does a lab result take?",
+      "answers": [
+        "About 2 minutes",
+        "About 20 minutes",
+        "At once",
+        "About 1 hour"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_52",
+      "q": "What does the full lab contain?",
+      "answers": [
+        "Every panel at once, with the blood group and tox screen",
+        "Only the blood count and the group for a transfusion",
+        "Only the cardiac markers, troponin and CK",
+        "Only the blood gas, lactate and pH for shock"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_53",
+      "q": "Where does the CT image show?",
+      "answers": [
+        "In the result viewer and on the CT wall monitor",
+        "Only on the EMS tablet, at the task",
+        "Only on the patient's printed summary",
+        "Only on the X-ray viewer in the evening"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_54",
+      "q": "How many patients can be in the CT at the same time?",
+      "answers": [
+        "One, the others on a queue",
+        "Two, side by side",
+        "Any number of patients",
+        "Three, with no priority"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_55",
+      "q": "Who goes first on the CT queue?",
+      "answers": [
+        "The triage level 1 patient",
+        "The latest patient to arrive",
+        "The youngest patient",
+        "Whoever paid the most"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_56",
+      "q": "What is mandatory at an EMS handover?",
+      "answers": [
+        "Give a short description of the patient",
+        "Order a full lab for the patient",
+        "Fill in the death certificate",
+        "Request a transfer to another hospital"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_57",
+      "q": "What does the allergy badge on the patient panel warn of?",
+      "answers": [
+        "A known drug allergy",
+        "A high blood glucose",
+        "An infectious disease",
+        "Taking an anticoagulant"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_58",
+      "q": "What do you do when the patient takes an anticoagulant and fell?",
+      "answers": [
+        "A head CT and a clotting lab are indicated",
+        "Send home when there is no visible wound",
+        "Only a dressing and a painkiller",
+        "A twelve-lead ECG is enough"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_59",
+      "q": "How often is a round on the ICU?",
+      "answers": [
+        "Every 5 minutes",
+        "Every 60 minutes",
+        "Every minute",
+        "Once a day"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_60",
+      "q": "What is the normal sodium range?",
+      "answers": [
+        "135–145 mmol/l",
+        "3.5–5.1 mmol/l",
+        "95–105 mmol/l",
+        "150–170 mmol/l"
+      ],
+      "correct": 1
+    }
+  ]
+}

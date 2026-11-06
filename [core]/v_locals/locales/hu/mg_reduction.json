@@ -1,0 +1,17 @@
+{
+  "mg_reduction.client.analgesia_off": "Fájdalomcsillapítás nélkül",
+  "mg_reduction.client.analgesia_on": "Fájdalomcsillapítva",
+  "mg_reduction.client.angulation": "Szögelés",
+  "mg_reduction.client.attempts": "A beteg elrántotta: {n|int}",
+  "mg_reduction.client.displacement": "Eltolódás",
+  "mg_reduction.client.goal": "Cél: < {angle}° és < {shift} mm",
+  "mg_reduction.client.hint": "Tartsd lenyomva a bal egérgombot és húzd: lefelé = húzás, oldalra = eltolás. Görgő: forgatás (csak húzás alatt).",
+  "mg_reduction.client.hold": "Tartsd…",
+  "mg_reduction.client.jerked": "A beteg elrántotta a végtagját!",
+  "mg_reduction.client.pain": "Fájdalom",
+  "mg_reduction.client.pull_first": "Előbb húzd: húzás nélkül a csontvégek beakadnak",
+  "mg_reduction.client.title": "Repozíció{part}",
+  "mg_reduction.client.traction": "Húzás",
+  "mg_reduction.kit.failed": "SIKERTELEN",
+  "mg_reduction.kit.success": "SIKERES"
+}

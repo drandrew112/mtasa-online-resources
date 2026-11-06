@@ -1,0 +1,11 @@
+# CT
+@keywords: ct, queue, gantry, head ct, chest, abdomen, wall monitor
+@related: hospital_xray, hospital_orders
+
+- **One patient** at a time; the others wait on a **queue**, triage 1 goes first.
+- Push the trolley to the spot next to the CT table: the patient **slides** into the gantry on the trolley.
+- The image shows in the result viewer and on the CT **wall monitor**.
+
+![220](content/images/hospital/ct_edh.jpg)
+
+Epidural haematoma (biconvex hyperdense collection): an urgent craniotomy is needed.

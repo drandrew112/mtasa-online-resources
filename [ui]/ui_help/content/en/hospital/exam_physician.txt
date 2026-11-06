@@ -1,0 +1,7 @@
+# Physician exam
+@keywords: physician exam, stemi, stroke, transfusion, antidote, ventilation
+@related: hospital_exams, hospital_stemi, hospital_stroke, hospital_transfusion, hospital_poison
+
+Requirement: resident rank, 4 hours on duty as a resident and 20 closed cases as the treating doctor. 25 questions, 75%.
+
+Topics: STEMI pathway, stroke lysis criteria, transfusion compatibility (red cells and plasma), massive transfusion, chest drain site, FAST windows, ventilation basics, antidotes, surgical indications, death and examination.

@@ -30,6 +30,7 @@ HELP_INDEX = {
         { id = "atc", order = 35, title = { en = "Air traffic control", hu = "Légiforgalmi irányítás" } },
         { id = "medical", order = 40, title = { en = "Medical system", hu = "Orvosi rendszer" } },
         { id = "police", order = 45, title = { en = "Police", hu = "Rendőrség" } },
+        { id = "hospital", order = 42, title = { en = "Hospital", hu = "Kórház" } },
     },
     topics = {
         -- features: one page per menu / app
@@ -97,6 +98,35 @@ HELP_INDEX = {
         { id = "medical_exam_c",     category = "medical", order = 135, file = "medical/exam_c.txt" },
         { id = "medical_exam_d",     category = "medical", order = 140, file = "medical/exam_d.txt" },
         
+        -- hospital (med_hospitals er/, work_hospital)
+        { id = "hospital", category = "hospital", order = 10, file = "hospital/overview.txt" },
+        { id = "hospital_exams", category = "hospital", order = 20, file = "hospital/exams.txt" },
+        { id = "hospital_pathway", category = "hospital", order = 30, file = "hospital/pathway.txt" },
+        { id = "hospital_triage", category = "hospital", order = 40, file = "hospital/triage.txt" },
+        { id = "hospital_panel", category = "hospital", order = 50, file = "hospital/panel.txt" },
+        { id = "hospital_orders", category = "hospital", order = 60, file = "hospital/orders.txt" },
+        { id = "hospital_lab", category = "hospital", order = 70, file = "hospital/lab.txt" },
+        { id = "hospital_ct", category = "hospital", order = 80, file = "hospital/ct.txt" },
+        { id = "hospital_xray", category = "hospital", order = 90, file = "hospital/xray.txt" },
+        { id = "hospital_fast", category = "hospital", order = 100, file = "hospital/fast.txt" },
+        { id = "hospital_ecg", category = "hospital", order = 110, file = "hospital/ecg.txt" },
+        { id = "hospital_shock", category = "hospital", order = 120, file = "hospital/shock.txt" },
+        { id = "hospital_wound", category = "hospital", order = 130, file = "hospital/wound.txt" },
+        { id = "hospital_cast", category = "hospital", order = 140, file = "hospital/cast.txt" },
+        { id = "hospital_surgery", category = "hospital", order = 150, file = "hospital/surgery.txt" },
+        { id = "hospital_icu", category = "hospital", order = 160, file = "hospital/icu.txt" },
+        { id = "hospital_ward", category = "hospital", order = 170, file = "hospital/ward.txt" },
+        { id = "hospital_transfusion", category = "hospital", order = 180, file = "hospital/transfusion.txt" },
+        { id = "hospital_stemi", category = "hospital", order = 190, file = "hospital/stemi.txt" },
+        { id = "hospital_stroke", category = "hospital", order = 200, file = "hospital/stroke.txt" },
+        { id = "hospital_poison", category = "hospital", order = 210, file = "hospital/poison.txt" },
+        { id = "hospital_transfer", category = "hospital", order = 220, file = "hospital/transfer.txt" },
+        { id = "hospital_death", category = "hospital", order = 230, file = "hospital/death.txt" },
+        { id = "hospital_docs", category = "hospital", order = 240, file = "hospital/docs.txt" },
+        { id = "hospital_pay", category = "hospital", order = 250, file = "hospital/pay.txt" },
+        { id = "hospital_exam_resident", category = "hospital", order = 260, file = "hospital/exam_resident.txt" },
+        { id = "hospital_exam_physician", category = "hospital", order = 270, file = "hospital/exam_physician.txt" },
+
         -- police (police_system, work_police)
         { id = "police", category = "police", order = 10, file = "police/police.txt" },
         { id = "police_duty", category = "police", order = 20, file = "police/police_duty.txt" },

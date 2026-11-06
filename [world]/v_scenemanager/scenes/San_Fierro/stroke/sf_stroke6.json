@@ -75,7 +75,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "stroke", "severity": 1 }
+                { "type": "stroke", "severity": 1, "part": "head", "side": "left" }
             ],
             "state": { "systolic": 189 }
         }

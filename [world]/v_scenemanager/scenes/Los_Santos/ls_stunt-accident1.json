@@ -59,8 +59,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "leg", "side": "left" },
+                { "type": "fracture", "severity": 1, "part": "arm", "side": "left" }
             ],
             "state": {}
         }

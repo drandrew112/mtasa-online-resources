@@ -96,7 +96,7 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "left" }
             ],
             "state": {}
         },
@@ -108,7 +108,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "consciousness": "confused" }
         },
@@ -122,7 +122,7 @@
             "vehicle": "v1",
             "seat": 1,
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "consciousness": "confused" }
         }

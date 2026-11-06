@@ -1,0 +1,17 @@
+# Duty and ranks
+@keywords: rank, nurse, resident, physician, chief, exam, tutorial, appoint
+@related: hospital_exam_resident, hospital_exam_physician, hospital_pay
+
+## Ranks
+
+- **Nurse (N):** given at the end of the hospital tutorial. Triage, vital signs, monitor, recording an ECG, blood draw, cannula, infusion, giving medicines **when ordered**, wound cleaning, dressings, casts (after an X-ray), CPR, trolleys, taking a body to the morgue.
+- **Resident (R):** exam. Can be the treating doctor, orders (lab, imaging, ECG, FAST), sutures, reductions, records diagnoses (ICD), discharges, admits to a ward, asks for S2 transfers, may **request** an operation.
+- **Physician (P):** exam. RSI, intubation, chest drain, thrombolysis, massive transfusion, vasopressors, sending to and approving the theatre, ICU, recording a death, S1 transfer.
+- **Chief (C):** only by appointment (`/appoint`, admin 3+), from physician.
+
+## Exam requirements (besides knowledge)
+
+- **Resident:** at least **2 hours** on duty as a nurse.
+- **Physician:** at least **4 hours** on duty as a resident and **20 closed cases** as the treating doctor.
+
+The exam centre is the same as the EMS one (next to the duty marker). 25 questions from a bank of 60, 75% to pass, retry after 5 minutes.

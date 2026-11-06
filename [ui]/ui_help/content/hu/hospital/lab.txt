@@ -1,0 +1,16 @@
+# Labor és vérvétel
+@keywords: labor, vérvétel, csősorrend, hemolízis, EDTA, citrát, teljes labor
+@related: hospital_orders, hospital_transfusion
+
+A labor panelenként rendelhető (alap, trauma, kardiális, alvadás, vérgáz, tox, gyulladás, vércsoport, keresztpróba) vagy **teljes laborként** (minden egyben). A lelet kb. **2 perc** múlva érkezik.
+
+## Vérvétel (minigame)
+
+A csövek helyes sorrendje: **citrát → szérum → heparin → EDTA → fluorid**.
+
+- **Hemolízis:** álmagas kálium.
+- **EDTA a szérum előtt:** álmagas kálium, álalacsony kalcium.
+- **Alultöltött citrát:** hamisan megnyúlt alvadás.
+- **Infúziós kar:** hígult minta.
+
+> A labor lelet „Mit jelentenek az eltérések?” dobozában minden kóros érték magyarázatot kap.

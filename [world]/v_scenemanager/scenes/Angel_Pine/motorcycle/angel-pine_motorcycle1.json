@@ -96,8 +96,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                { "type": "fracture", "severity": 3, "part": "spine_l" },
+                { "type": "gunshot", "severity": 2, "part": "leg", "side": "left" }
             ],
             "state": { "bloodVolume": 3790, "consciousness": "dazed" }
         }

@@ -38,8 +38,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
-                { "type": "head_injury", "severity": 2 }
+                { "type": "suffocation", "severity": 2, "part": "neck" },
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" }
             ],
             "state": { "spo2": 86, "consciousness": "dazed" }
         }

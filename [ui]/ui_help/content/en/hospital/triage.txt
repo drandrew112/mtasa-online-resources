@@ -1,0 +1,16 @@
+# Triage and life-saving care
+@keywords: triage, life saving, K10, urgency, triage helper
+@related: hospital_pathway, hospital_panel
+
+## Levels
+
+- **1 – immediate:** cardiac arrest, airway obstruction, severe shock.
+- **2 – urgent:** unstable values, severe pain, suspicious chest pain.
+- **3 – deferrable:** stable but needs care.
+- **4 – non-urgent:** minor injury.
+
+## Before triage (K10)
+
+Before triage only **life-saving** care is allowed: CPR, airway, bleeding control, oxygen, monitor and examinations. In cardiac arrest everything.
+
+> The **triage helper** in the right column of the patient panel suggests a level from the measured values. You decide.

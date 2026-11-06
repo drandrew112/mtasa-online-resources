@@ -1,0 +1,10 @@
+# Transzfúzió
+@keywords: transzfúzió, vér, vércsoport, keresztpróba, 0 rh negatív, ab plazma, masszív
+@related: hospital_lab, hospital_shock
+
+- Vércsoport-labor nélkül csak **0 Rh− vvt** és **AB plazma** adható (a sokk vérhűtőjéből).
+- Vércsoport után **keresztpróba** (60 s), azután a csoportazonos egységek.
+- **Vvt:** a donor ABO-antigénjei legyenek meg a fogadóban, Rh+ csak Rh+ fogadónak. **Plazma:** fordítva (AB mindenkinek).
+- Egy egység 5 perc; **masszív transzfúzió** (4+ egység 10 percen belül) Orvosnak, nyomózsákkal 2 perc.
+- Inkompatibilis vér → **akut hemolitikus reakció**. Túl sok, túl gyors → volumenterhelés.
+- Ha a vér elfogy, 10 perc múlva sürgősségi szállítmány érkezik.

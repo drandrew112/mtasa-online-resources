@@ -1,0 +1,244 @@
+# 1. Terv kiegészítés
+
+## Műtők modul
+A műtétet igénylő sérülteket be kell vinni a műtőbe.
+A műtéteket nem a játékos végzi.
+
+Minden műtétnek van egy idő kerete. Ez alapján dől el, hogy egy beteg mennyi időt tölt bent a műtőben.
+Ez 3-10 perc lehet.
+A műtőben egyszerre csak egy beteg lehet.
+
+A mététek is az betegút beavatkozásaihoz kerülnek és pénz összeget adnak.
+
+All Saints:
+Leadás a műtőnek: { "x": 1154.07, "y": -1366.60, "z": 14.39 }
+műtét után ide kerül a beteg hordágyon: { "x": 1158.67, "y": -1368.38, "z": 14.40, "rot": 180 }
+
+## Hulla kezelés modul
+A hullák maradnak a hordágyon. Fontos, hogy szállítani lehessen őket.
+Leadási pont All Saints-ben: { "x": 1169.88, "y": -1300.71, "z": 14.39 }
+Itt tudják a kórházi dolgozók leadni a halottakat.
+
+## Érkezés a kórházba
+A lábon érkező betegek száma függ a környéken lévő szolgálatos mentőegységek számától és attól, hogy hányan dolgoznak a kórházban.
+Ha a mentők folyamatosan hozzák a betegeket akkor egyáltalán nincs szükség lábon érkező betegekre vagy csak nagyon nagyon kis mennyiségben.
+
+## Beavatkozások
+Tervezd meg a kórházon belüli betegvizsgálati panelt.
+Itt azért lényegesen több adat és beavatkozás van mint a mentő ellátásban.
+
+## Kórházi PC
+Tapasztalataim alapján stabialbbak a DX felületek. Ezért jó lenne azt használni mind a tabletnél mind a számítógépnél.
+
+## Tablet
+Súgó oldal
+Ez a súgó oldal kiírja, hogy melyik betegnek mire van szüksége.
+Milyen vizsgálatokat kell elvégezni, milyen beavatkozásokra van szükség, stb...
+
+## Kommunikáció
+A mentőegység egy tagja el kell tudja küldeni a beteg paramétereit egy gombbal.
+Ez külön látszik. Pulzus, véroxigén, vérnyomás, ha mértek cukrot akkor azt is, sérülések.
+Minden elem külön csatolható és kiválasztható. A pulzus, oxigén és vérnyomás alapértelmezetten ki van jelölve.
+Az EMS tableten látszódnia kell ha van vagy nincs elérhető kórházi dolgozó
+
+## Dokumentumok
+Feltölöttem egy mentős esetlapot.
+Bővítsuk a med_docs-t az esetlappal.
+A szövegek és a tartalom mennyisége eltérő lesz, de a formátum és a design ugyanaz kell legyen.
+A minta mentési_lap_with_ecg.pdf-ben van.
+Tervezd meg az artifactban ezt is.
+Az átadáskor beírt leírás bekerül a Bejelntés: Mi történt részbe.
+
+Fontos, hogy maga a dokumentum mindig a mentős/kórházi dolgozó nyelvén legyen elmentve és kapjon nyelv kódot.
+A BNO kódok és a beavatkozások viszont automatikusan lefordulnak angol és magyar nyelvre.
+
+## Minigamek
+Képekkel együtt tervezd meg a javasolt minigameket.
+- varrás
+- seb tiszítás
+- gipszelés
+- repozíció: csont a helyére tétele gipsz előtt
+- vérvétel
+- FAST UH
+- mellkasi drain
+- 12 elvezetéses EKG
+
+## ECG-12 modul
+Külön modul kell a 12 elvezetéses ekg-hoz.
+
+Ehhez töltöttem le még képeket a source mappában. + mentési_lap_with_ecg
+Generáld le a görbéket a képek alapján minden ritmushoz.
+
+A monitor alján kell egy külön Print gomb amivel nyomtatható a 12 elvezetéses ekg.
+
+## Röntgen modul
+Gipszelés előtt meg lehessen nézni a töréseket.
+Ki kell választani a testrészt.
+All saints pozíció: { "x": 1162.60, "y": -1294.74, "z": 14.39 }
+Képeket is generálj hozzá és mutaasd be.
+
+## FAST Ultrahang
+Sokktalanítóban használható eszköz.
+Gyorsan megállapítható belső vérzés, stb..
+Dolgozd ki a működését és generálj képeket is.
+
+## STEMI
+Használjuk a 12-es ecg-t és részletes szimulációt használunk a STEMIhez is.
+Ez nem külön modul csak egy szimulációs viselkedés.
+A STEMI mellkasi fájdalommal jár.
+Letöltöttem még erről is dokumentumokat.
+
+## Transzfúziós modul
+Használjuk a bt_stock-ot.
+Fogyjon a vér amikor használjuk.
+
+Legyen lehetőség vért adni a betegeknek.
+
+Mérd fel, hogy hol szükséges ez.
+
+Ha már megvan egy beteg laborja akkor kaphat a vércsoport kompatibilitás alapján is vért.
+A kompatbilitásról töltöttem fel még egy képet.
+
+## Trombózis stroke-ban
+Tervezd meg
+
+## Intenzív osztály
+Itt lehetnek lélegeztetett betegek és egyéb eszméletlen, stb...
+
+Szoba: { "x": 1167.64, "y": -1367.40, "z": 14.41 }
+A koordináta egyben az átadó hely is.
+
+## Mérgezések
+Igen, de tervezd meg mi hogyan működik és hogyan segíthetünk rajta.
+
+## Szállíáts az ERM-ben.
+Létre kell hozni egy külön feladat tipust.
+Ez a szállítás.
+
+Két tipusú szállítási kérés van.
+- S1: Azonnali szállítás
+- S2: 3 órán belüli szállítás - játékon belül 30 perces.
+
+A szállításoknál a kórház meg tudja adni, hogy oxigén igényes-e a beteg vagy szüksége van-e gyógyszerekre a szállítás közben.
+Ha ilyen igények felmerülnek akkor csak ALS egység végezheti a szállítást.
+
+Ha van megfelelő mentőegység bejelentkezve akkor a feladat létrejön.
+Ha éppen nincs elérhető autó akkor előbb-utóbb úgyis ki lesz osztva
+
+ERM auto-ban az S1 a P2 után jön, S2 a P3 után.
+
+Ha nincs elérhető mentő akkor a szállítás automatikusan történik.
+Vagyis x idő után magától eltűnik a beteg.
+Ha a másik kórházban van személyzet akkor ők megkapják.
+Ha nincs személyzet akkor nem kapnak semmit.
+
+## Hazaengedett betegek
+Egyszerűen eltűnnek a kórházból.
+Később majd ha a navmesh elkészül a kórházban is akkor ki tudnak majd sétálni.
+
+## Hely korlát
+Ha elfogy a kórházi átadási hely tehát egy szabad hordágy hely sincs akkor a mentőszolgálat nem tud beteget átadni.
+Ilyenkor másik kórházba kell menniük.
+Erről a mentős értesítést kap ui_core-on keresztül.
+
+## Triage és életmentés
+Aki triage előtt bekerül a sokktalanítóba az automatikusan T1-et kap és felvesszük a kórházba.
+A kezelője az lesz aki betolta.
+
+Életmentő beavatkozások amiket el lehet végezni triage előtt: CPR, defibrilátor, légút, vérzés csillapítás.
+
+## Kezelő és rendelés
+A kezelő orvos rendelhet feladatokat és el is végezheti azt.
+Viszont más dolgozók is elvégezhetik a feladatokat.
+
+## Mentős átadás, leírás
+A mentőknek átadáskor egy rövid leírást kell adniuk a betegről.
+Ez kötelező.
+Bekerül az anamnézisbe és a mentős esetlapba is.
+
+## Restart
+A pedek eltűnnek, a játékosok nem.
+Az elementdata-ban tárolt adatok megmaradnak.
+
+## További PC-k
+{ "x": 1154.81, "y": -1333.93, "z": 15.19, "rot": 90 }
+{ "x": 1154.41, "y": -1339.04, "z": 15.18, "rot": 75 }
+
+## CPR a hordágyon
+Hozz létre egy saját álló CPR animációt és készítsd el a betöltést is.
+
+## Játékos betegek
+Ki kell legyen kapcsolva.
+Később bekapcsolható.
+
+A játékosok most sem szerezhetnek sérüléseket szóval nem kell az ellátó rendszerbe felvenni őket.
+
+## Medsys bővítés a "A medsys-ben nincs ACS, appendicitis, vesekólika, így a troponin és a CRP üres lenne." javaslat alapján
+Új kórképek, részletesebb szerver szimuláció, stb..
+
+## Romló elfekvő betegek
+Megáll a 20 perces számláló és riasztást kap a kezelő orvos.
+
+## Indikáció nélküli vizsgáaltok
+50%-os pont.
+
+## Kompetenciák és vizsgák
+- Ápoló
+- Rezidens
+- Orvos
+- Főorvos - csak kinevezéssel
+
+A vizsgákat is tervezd meg a kórházi rendszer alapján.
+
+Vizsgaközpont ugyanott helyezkedik el mint EMS-nek.
+Nem fog egymásba lógni, mivel csak munka félvétele után látható mindegyik és egyszerre nem lehet több munkája valakinek.
+
+ui_help-ben kell egy külön Kórházi kategória ahol mindkét nyelven részletesen leírjuk képekkel együtt hogy mi mire való, hogyan működik, mikor mit kell csinálni és hogy mik kellenek a vizsgákhoz.
+
+## Soktalanító
+Már eleve triageolt betegnek nem ugrik T1-re a triage száma.
+Csak a nem-triageolt betegek kapnak T1-et.
+
+## Beavatások kódjai
+Saját lista, de nagyon sok beavatkozás legyen lehetséges.
+Ide tartozik a Triageolás, felvétel kórházba, CT vizsgálat, teljes test vizsgálat, röntgen, gipszelés, stb stb...
+
+## Milyen nyelvű legyen a dokumentum
+Struktúrált tárolást támogatom.
+Nyilvána szövegesen megadott változókat nem tudjuk lefordítani ezért mindig kap a dokumentum egy nyelvi kulcsot.
+
+## Képek a dokumentumokban
+Kép ID-k tárolása
+
+## Ki látja a dokumentumokat
+Kórházi dolgozók láthatják a kórházi dokumentumokat és a mentési lapokat is tehát kb mindent.
+
+A mentők a kórházi számítógépeken keresztül megnézhetik az általuk leadott esetlapokat is.
+Mentő főorvos szinttől már láthatja a mások által leadott esetlapokat is.
+
+## Pénzbe kerül a felszerelés
+Igen. A kormány be tudja állítani, hogy melyik állami számláról legyenek levonva az összegek.
+
+Az ellátásért is fizet az állam, de nem úgy mint eddig.
+Ha nincs kórházi dolgozó a kórházban akkor marad az eddigi fizetés.
+Ha van kórházi dolgozó akkor az államnak ki kell fizetnie a beavatkozások értékét (ez a pénz elveszik) és ki kell fizetnie a kórházi dolgozókat is.
+
+## Hordágy takarítás
+A 10 percig nem használt ágyaakat töröljük.
+Maximum 15 hordágy lehet aktív.
+
+## Hány diagnózis adható meg
+Nincs fő diagnózis.
+Maximum 5 diagnózis adható meg.
+
+## Elfekvő ágyak
+Ezeket MCP-vel te fogok elhelyezni.
+Javaslom már a tervezés alatt kérj le minden pozíciót az MCP-vel. Adok hozzá probe klienseket.
+
+## Egyéb
+Elfogadom a többi kérdésnél a javaslatokat.
+Nem cél, hogy minden betegen tudjunk segíteni. Vannak menthetetlenek.
+
+## Mi történik a beteggel ha a kórházban nincs dolgozó aktívan
+Játékos a release pontra kerül az idő letelte után.
+NPC ugyanúgy eltűnik mint eddig.

@@ -1,0 +1,10 @@
+{
+  "mg_suture.client.accuracy": "Pontosság",
+  "mg_suture.client.hint": "Nyomd le a bal egérgombot a seb egyik szélénél, húzd át a tűt, és engedd fel a másik szélén. Egyforma mélység, egyenletes távolság.",
+  "mg_suture.client.hint_tremor": "Nincs helyi érzéstelenítés: a beteg mozog. Húzd át a tűt a seb egyik szélétől a másikig.",
+  "mg_suture.client.misses": "Hibás öltés: {n|int}",
+  "mg_suture.client.stitch_count": "Öltés {n|int}/{total|int}",
+  "mg_suture.client.title": "Varrás{part}, {length} cm",
+  "mg_suture.kit.failed": "SIKERTELEN",
+  "mg_suture.kit.success": "SIKERES"
+}

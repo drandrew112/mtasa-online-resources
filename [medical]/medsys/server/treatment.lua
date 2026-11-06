@@ -927,6 +927,8 @@ function startTreatment(medic, target, action, option, dose)
     local allowed, why = checkMedicPermission(medic, "action." .. action)
     if allowed and action == "medication" then
         allowed, why = checkMedicPermission(medic, "drug." .. tostring(option))
+        -- a drug ordered by a doctor may be given by a nurse too (med_hospitals ER orders, K8)
+        if not allowed and hostAllowsAction(medic, target, "drug." .. tostring(option)) then allowed, why = true, nil end
         local drug = MEDIC_DRUGS[option]
         local chosen = allowed and drug and drug.dosing and medicDrugDose(drug, dose)
         if chosen and chosen.high then allowed, why = checkMedicPermission(medic, "dose.high") end
@@ -953,6 +955,8 @@ function startTreatment(medic, target, action, option, dose)
         if not ok then return false, reason end
     end
     ok, reason = onEquipmentTreatmentCheck(medic, target, action, option, state)
+    if not ok then return false, reason end
+    ok, reason = onHostTreatmentCheck(medic, target, action, option, state)
     if not ok then return false, reason end
 
     -- one medic per wound (pick) or per procedure

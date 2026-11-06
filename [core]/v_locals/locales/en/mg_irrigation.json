@@ -1,0 +1,12 @@
+{
+  "mg_irrigation.client.clean": "Clean {n|int}%",
+  "mg_irrigation.client.damage": "Tissue damage {n|int}%",
+  "mg_irrigation.client.good": "good",
+  "mg_irrigation.client.hint": "Hold the left mouse button to spray, keep the stream on the debris. Mouse wheel: pressure (keep it in the green band).",
+  "mg_irrigation.client.pressure": "Pressure",
+  "mg_irrigation.client.title": "Wound irrigation{part}",
+  "mg_irrigation.client.too_high": "too high",
+  "mg_irrigation.client.too_low": "too low",
+  "mg_irrigation.kit.failed": "FAILED",
+  "mg_irrigation.kit.success": "SUCCESS"
+}

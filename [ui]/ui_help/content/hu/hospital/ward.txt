@@ -1,0 +1,8 @@
+# Elfekvő
+@keywords: elfekvő, osztály, felvétel, romlás, visszavétel, riasztás
+@related: hospital_icu, hospital_pathway
+
+- **Osztályra felvétel:** Rezidenstől; osztály választása (sebészet, traumatológia, belgyógyászat, neurológia, kardiológia). A hordággyal beállsz az elfekvő átadó markerébe: **3 mp** múlva a rendszer átveszi a beteget, nem kell elengedned az ágyat. (Ugyanígy az intenzíven, a műtőnél és a hullaleadónál.)
+- Tartózkodás **20 perc**.
+- **Romlás** (alacsony SpO₂ / RR, szélsőséges pulzus, eszméletlenség): a számláló megáll, a kezelőorvos riasztást kap; ha nincs, minden dolgozó.
+- **Visszavétel:** a beteg hordágyon visszakerül az ellátásba, a következő lezárás az Ambuláns lap új verzióját írja.

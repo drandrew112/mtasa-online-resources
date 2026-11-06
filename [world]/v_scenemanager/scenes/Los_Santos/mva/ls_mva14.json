@@ -96,7 +96,7 @@
             "anim": "hold_side",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "chest", "side": "right" }
             ],
             "state": {}
         },
@@ -108,8 +108,8 @@
             "anim": "hold_side",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "chest", "side": "right" },
+                { "type": "gunshot", "severity": 1, "part": "chest", "side": "right" }
             ],
             "state": {}
         }

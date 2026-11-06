@@ -1,0 +1,13 @@
+# Patient pathway
+@keywords: pathway, arrival, ambulance, walk-in, register, treating doctor, outcome
+@related: hospital_triage, hospital_panel, hospital_docs
+
+1. **Arrival:** by ambulance (onto a corridor spot F1–F5), on foot (waiting room) or carried in ("Register" in the patient's menu inside the ER zone).
+2. **Triage** (1–4) – before it only life-saving care (see Triage).
+3. **Treating doctor:** a resident or higher takes the patient.
+4. **Examination and orders:** patient panel, lab, imaging, ECG.
+5. **Treatment:** in the rooms (shock room, wound room, cast room).
+6. **Diagnosis** (ICD, at most 5).
+7. **Outcome:** home, ward, ICU, theatre, transfer (S1/S2) or death. At closing the **Ambulatory sheet** is written.
+
+> Every step goes into the pathway (Pathway tab) with the time and who did it.

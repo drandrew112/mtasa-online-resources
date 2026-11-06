@@ -38,7 +38,7 @@
             "anim": "cough",
             "role": "patient",
             "injuries": [
-                { "type": "suffocation", "severity": 1 }
+                { "type": "suffocation", "severity": 1, "part": "neck" }
             ],
             "state": { "spo2": 90 }
         }

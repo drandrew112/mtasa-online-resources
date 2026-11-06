@@ -87,6 +87,7 @@ EMS = {
         activities = {
             ["action.oxygen"] = "a", ["action.splint"] = "a", ["action.neuro"] = "a", ["action.glucometer"] = "a",
             ["action.monitor"] = "a",
+            ["action.ecg12"] = "bplus",                                -- 12-lead ECG on the Lifepak (Ú8)
             ["defib.analyze"] = "b", ["defib.shock"] = "b",            -- AED mode: ANALYZE charges by itself
             ["defib.charge"] = "c", ["defib.sync"] = "c",              -- manual charge, cardioversion
             ["action.iv"] = "b", ["action.infusion"] = "b",

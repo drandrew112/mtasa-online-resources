@@ -96,7 +96,7 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "consciousness": "confused" }
         },
@@ -108,7 +108,7 @@
             "anim": "hold_side",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "arm", "side": "left" }
             ],
             "state": {}
         }

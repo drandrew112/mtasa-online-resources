@@ -1,0 +1,10 @@
+# X-ray
+@keywords: x-ray, side, lead wall, control desk, cast, control image, viewer
+@related: hospital_cast, hospital_ct
+
+- 14 body parts; for limbs you pick the **side**. Wrong side = negative image and the test is not indicated.
+- For the exposure you stand **at the control desk behind the lead wall** (3 s).
+- The image also shows on the **wall viewer** (north wall).
+- A **control image** can be taken in a cast.
+
+![220](content/images/hospital/xr_ptx.jpg)

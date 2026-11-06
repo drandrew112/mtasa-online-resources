@@ -38,7 +38,7 @@
             "anim": "cough",
             "role": "patient",
             "injuries": [
-                { "type": "asthma", "severity": 2 }
+                { "type": "asthma", "severity": 2, "part": "chest", "side": "left" }
             ],
             "state": { "spo2": 90, "systolic": 92, "heartRate": 128 }
         }

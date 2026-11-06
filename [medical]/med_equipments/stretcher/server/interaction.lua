@@ -53,6 +53,20 @@ end
 local LOAD_ITEM = { label = L.msg("med_stretcher.interaction.load_into_ambulance"), value = "load", desc = L.msg("med_stretcher.interaction.at_rear_doors_of_its_ambulance") }
 
 local function stretcherItems(s)
+    if s.fixed then return {} end
+    if s.hospital then
+        if s.state == "pushing" then
+            return { { label = L.msg("med_stretcher.interaction.release_stretcher"), value = "release", desc = L.msg("med_stretcher.interaction.put_it_down_in_front_of") } }
+        end
+        local items = { { label = L.msg("med_stretcher.interaction.push_stretcher"), value = "push", desc = L.msg("med_stretcher.interaction.walk_with_stretcher_in_front_of") } }
+        if s.patient then
+            items[#items + 1] = { label = L.msg("med_stretcher.interaction.take_patient_off"), value = "unload" }
+        else
+            items[#items + 1] = { label = L.msg("med_stretcher.interaction.place_patient_on_stretcher"), value = "place",
+                desc = L.msg("med_stretcher.interaction.injured_nearest_person_next_to_stretcher") }
+        end
+        return items
+    end
     if s.state == "stowed" then
         return { { label = (s.seated or s.patient) and L.msg("med_stretcher.interaction.take_out_stretcher_with_patient") or L.msg("med_stretcher.interaction.take_out_stretcher"),
             value = "take", desc = L.msg("med_stretcher.interaction.stand_at_rear_doors") } }
@@ -75,11 +89,12 @@ end
 
 local function stretcherDef(s)
     return {
-        title = s.state == "stowed" and L.msg("med_stretcher.interaction.ambulance_stretcher") or (s.patient and L.msg("med_stretcher.interaction.stretcher_patient") or L.msg("med_stretcher.interaction.stretcher")),
+        title = s.hospital and L.msg("med_stretcher.interaction.hospital_stretcher")
+            or s.state == "stowed" and L.msg("med_stretcher.interaction.ambulance_stretcher") or (s.patient and L.msg("med_stretcher.interaction.stretcher_patient") or L.msg("med_stretcher.interaction.stretcher")),
         range = s.state == "stowed" and STRETCHER.STOWED_MENU_RANGE or STRETCHER.MENU_RANGE,
         priority = 20,
         lineOfSight = false,          -- inside the vehicle / collisions off while pushed
-        enabled = s.state ~= "moving",
+        enabled = s.state ~= "moving" and not s.fixed,
         selfDataKey = STRETCHER.SELF_DATA_KEY,
         items = stretcherItems(s),
     }
@@ -201,6 +216,7 @@ function actions.unload(s, player)
 end
 
 function actions.load(s, player)
+    if s.hospital then return end
     if s.state ~= "ground" and s.state ~= "pushing" then return end
     if s.state == "pushing" and s.pusher ~= player then return end
     local ok, reason = loadStretcher(s, player)
@@ -210,7 +226,7 @@ end
 addEventHandler("onInteractMenuSelect", root, function(menuId, value, target)
     local s = menuOwner[menuId]
     local action = s and actions[value]
-    if not action or not Stretchers[s.object] then return end
+    if not action or not Stretchers[s.object] or s.fixed then return end
     -- the patient cannot move their own stretcher
     if getPatientStretcher(source) then return end
     if not hasStretcherAccess(source) then return stretcherNotify(source, L.msg("med_stretcher.interaction.only_medics_can_handle_stretcher")) end

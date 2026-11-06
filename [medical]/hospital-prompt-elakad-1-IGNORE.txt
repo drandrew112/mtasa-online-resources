@@ -1,0 +1,46 @@
+Töltsd be a Kórházi rendszer artifact tervét.
+https://claude.ai/artifact/DhTja6KHwrZuoTQnZU2udF
+
+A markerek alpha-ja túl kicsi és alig láthatóak.
+
+A hordágy marker működése:
+Nem kell temp menu.
+Ha a játékos nem tol éppen hordágyat akkor E-t megnyomva kérhet egyet és azt tolni fogja.
+Ha üres hordágyat tolva érkezik a markerbe akkor E-vel törölheti azt.
+
+Számítógépek:
+Az alsó részül az asztal alatt van. Kicsit magasabbra kell tenni.
+A pult keleti végén lévő két számítógépet kicsit nyugatabbra kell húzni.
+A maradék egyet délebbre kicsit.
+A Laptop112 előtt lévő számítógépet rotációban kicsit jobbra kell forgatni.
+
+A számítógépek továbbra sem nyithatóak meg.
+
+A sokktalanító, CT és röntgen továbbra sincs kész.
+
+Az osztályra felvételnél ha a beteggel történik valami akkor nem tudjuk levenni az ágyról.
+
+A 12 elvezetéses ekg-t csak sokktalanítóban lenne szabad működnie, mert ott van hozzá EKG gép.
+
+A tablet átláthatatlan.
+Itt is kell jobb felül egy oldal választó.
+Szükség van vissza gombokra.
+Az SBO tablet használata közben többször felugrik az EMS tablet értesítése is miszerint mentőben tudom csak használni a tabletet. Feltételezem ez azért van mert nem választottad külön az EMS és kórházi jogokat.
+
+A kórházon belüli betegvizsgálati panel még mindig nem elérhető.
+A tervben egy részletesen kidolgozott panelt mutattál be.
+
+Legyen lehetőség teljes labort is kérni.
+
+Rengeteg dolgot nem csináltál még meg.
+
+Azt szeretném, ha nem állnál meg fázisonként.
+
+Mérd fel és listázd a hibákat, be nem fejezett és el nem kezdett részleteket a tervvel kapcsolatban.
+Tehát vizsgáld felül az eddig elkészült elemeket is.
+
+Ezután fogok engedélyt adni a folytatásra.
+Utána hajtsd végre a terv megmaradt részeit és javítsd a be nem fejezett részeket is.
+
+Rengeteg hibát hagytál és egy félkész rendszert adtál át.
+Ez ne forduljon elő a későbbiekben.

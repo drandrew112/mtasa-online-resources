@@ -41,6 +41,20 @@ local function priorityOf(task)
     return p
 end
 
+-- Hospital transfers (med_hospitals er/): S1 comes right after P2, S2 right after P3
+local TRANSFER_KEY = { S1 = 2.5, S2 = 3.5 }
+local ALS_TYPES = { ALS = true, DOC = true, HELI = true }
+
+local function sortKey(task)
+    local meta = type(task.meta) == "table" and task.meta or {}
+    return TRANSFER_KEY[meta.transferClass] or task.priority
+end
+
+local function needsALS(task)
+    local meta = type(task.meta) == "table" and task.meta or {}
+    return meta.needsALS == true
+end
+
 local function nearestIndex(units, x, y)
     local best, bestDist
     for i, u in ipairs(units) do
@@ -75,7 +89,8 @@ local function dispatch()
     end
     if #queue == 0 then return end
     table.sort(queue, function(a, b)
-        if a.priority ~= b.priority then return a.priority < b.priority end
+        local ka, kb = sortKey(a), sortKey(b)
+        if ka ~= kb then return ka < kb end
         if a.createdAt ~= b.createdAt then return a.createdAt < b.createdAt end
         return a.id < b.id
     end)
@@ -84,14 +99,23 @@ local function dispatch()
     local free = getFreeUnits() or {}
     for _, t in ipairs(queue) do
         if #free == 0 then break end
-        local i, dist = nearestIndex(free, t.x, t.y)
-        local u = free[i]
-        local ok, err = assignUnit(t.id, u.id)
-        if ok then
-            table.remove(free, i)
-            log("task #%d (P%d) -> %s (%.0f m)", t.id, t.priority, u.callsign, dist)
-        else
-            log("could not assign %s to task #%d: %s", u.callsign, t.id, tostring(err))
+        local pool = free
+        if needsALS(t) then
+            pool = {}
+            for _, u in ipairs(free) do if ALS_TYPES[u.type] then pool[#pool + 1] = u end end
+        end
+        local j, dist = nearestIndex(pool, t.x, t.y)
+        local u = j and pool[j]
+        local i
+        for k, fu in ipairs(free) do if fu == u then i = k end end
+        if u then
+            local ok, err = assignUnit(t.id, u.id)
+            if ok then
+                table.remove(free, i)
+                log("task #%d (P%d) -> %s (%.0f m)", t.id, t.priority, u.callsign, dist)
+            else
+                log("could not assign %s to task #%d: %s", u.callsign, t.id, tostring(err))
+            end
         end
     end
 end

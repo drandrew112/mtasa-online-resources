@@ -1,0 +1,10 @@
+# Sebkezelő
+@keywords: seb, varrat, irrigálás, fertőtlenítés, érzéstelenítés, tetanusz, kötés
+@related: hospital_cast, hospital_orders
+
+1. **Irrigálás** (minigame) – a szennyezett seb bő öblítése.
+2. **Helyi érzéstelenítés** – nélküle a beteg mozog, a varrat rosszabb.
+3. **Varrat** (minigame).
+4. **Fertőtlenítés**, **végleges kötés**. Égésnél égési kötés.
+
+Tetanusz-profilaxis: ha az oltás 10 évnél régebbi vagy ismeretlen. Rossz minőségű ellátás fertőzés-kockázatot jelent.

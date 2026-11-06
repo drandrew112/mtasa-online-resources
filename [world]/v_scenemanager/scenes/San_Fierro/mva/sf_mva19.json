@@ -96,9 +96,9 @@
             "anim": "ko_front",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" },
+                { "type": "gunshot", "severity": 3, "part": "chest", "side": "right" },
+                { "type": "fracture", "severity": 2, "part": "chest", "side": "right" }
             ],
             "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
         },
@@ -112,8 +112,8 @@
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "chest", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": {}
         }

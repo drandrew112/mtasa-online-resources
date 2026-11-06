@@ -98,7 +98,7 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" }
             ],
             "state": { "pain": 60, "consciousness": "dazed" }
         }

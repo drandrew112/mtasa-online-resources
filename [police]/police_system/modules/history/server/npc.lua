@@ -190,6 +190,26 @@ function H.npc(ped, cb)
     makeCitizen(skin, prof, done)
 end
 
+-- export (med_hospitals ER): the name / birth date of an NPC patient. The citizen row is made or loaded
+-- now; when ready the ped gets the server element data "pol.identity" = { name, gender, birth, cid } and
+-- the event onNPCIdentityReady (source = ped, arg = that table) fires.
+addEvent("onNPCIdentityReady")
+function requestNPCIdentity(ped)
+    if not isElement(ped) or getElementType(ped) ~= "ped" then return false end
+    H.npc(ped, function(row)
+        if not row or not isElement(ped) then return end
+        local id = { name = row.name, gender = row.gender, birth = row.birth_date, cid = row.id }
+        setElementData(ped, "pol.identity", id, false)
+        triggerEvent("onNPCIdentityReady", ped, id)
+    end)
+    return true
+end
+
+-- export: "male" | "female" of a ped skin (the gender of generated names)
+function getSkinGender(skin)
+    return policeSkinGender(tonumber(skin) or 0)
+end
+
 -- export (v_scenemanager, profile.announce): the citizen row of a scene ped is made now (MDC search, warrants listed)
 function registerNPC(ped)
     if not isElement(ped) or getElementType(ped) ~= "ped" then return false end

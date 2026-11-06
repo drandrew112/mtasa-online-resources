@@ -233,6 +233,9 @@ MEDIC_RHYTHMS = {
     PEA = { label = L.text("medsys.config.pulseless_electrical_activity_continue_cpr"), wave = "pea" },
     ASYSTOLE = { label = L.text("medsys.config.asystole"), wave = "flat" },
     ADENOSINE_PAUSE = { label = L.text("medsys.config.adenosine_pause"), wave = "flat", transient = true },
+    -- hospital conditions (medsys/shared/conditions.lua): atrial fibrillation, complete AV block
+    AFIB = { label = L.text("medsys.config.atrial_fibrillation"), pulse = true, wave = "afib" },
+    AVB3 = { label = L.text("medsys.config.complete_av_block"), pulse = true, wave = "avb3" },
 }
 
 -- Rhythm a cardiac arrest starts with, by its cause (weights). default: a forced arrest

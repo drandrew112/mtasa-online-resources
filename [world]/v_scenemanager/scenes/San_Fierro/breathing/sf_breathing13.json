@@ -38,7 +38,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "copd", "severity": 3 }
+                { "type": "copd", "severity": 3, "part": "chest", "side": "right" }
             ],
             "state": { "spo2": 78, "consciousness": "dazed" }
         }

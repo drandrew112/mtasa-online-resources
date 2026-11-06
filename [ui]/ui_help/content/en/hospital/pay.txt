@@ -1,0 +1,9 @@
+# Pay
+@keywords: pay, points, bonus, gov_health, state account
+@related: hospital_orders, hospital_exams
+
+- Every intervention gives points: **five times** its code table value (e.g. triage 20, chest CT 40, chest drain 75 points). **1 point = $40** staff pay (with the weekly multiplier), at the end of the duty.
+- **A badly done minigame** (blood draw, ECG, FAST, suture, cast, drain…): no result and no points, but you can do it again; the supplies are used only when it succeeds.
+- **Case bonus** of the treating doctor: **15%** of the points of the closed, documented case.
+- The value of the interventions (the code table base points × $60) is paid by the state from the account chosen on the /gov Healthcare page; the supply orders too.
+- If the state account cannot cover it, the system pays and the /gov page shows a warning.

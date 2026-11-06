@@ -96,7 +96,7 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": { "consciousness": "dazed" }
         }

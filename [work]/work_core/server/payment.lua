@@ -79,7 +79,8 @@ end
 --   the tax as tax.income to the state account set on the /gov Taxes page (none = disappears). total returned = what the player got.
 --   A total <= 0 still shows the receipt but pays nothing; with opts.chargeNegative = true a
 --   negative total is taken from the player (work.deduction, may go into debt) and goes to the
---   payer. workId does not have to be a currently registered work (only used for the
+--   payer. opts.payer = "system" | v_bank account id overrides the work's /gov payer (work_hospital:
+--   the hospital's salary payer, gov_health). workId does not have to be a currently registered work (only used for the
 --   name/colour). reason: optional text shown under the total.
 ---------------------------------------------------------------- held back until loaded
 -- A logged in player who has not finished loading (main menu, loading screen) gets nothing booked
@@ -185,7 +186,9 @@ function payWork(player, workId, items, reason, opts)
     local paid = total
     if total > 0 then
         if not isResourceRunning("v_bank") then return false, "v_bank is not running" end
-        local ok = exports.v_bank:giveBankMoney(player, total, "work.pay", { work = workName }, payerOf(workId))
+        local payer = payerOf(workId)
+        if opts.payer == "system" then payer = nil elseif tonumber(opts.payer) then payer = tonumber(opts.payer) end
+        local ok = exports.v_bank:giveBankMoney(player, total, "work.pay", { work = workName }, payer)
         if ok ~= true then return false, "payment failed: " .. tostring(ok) end
         if tax > 0 then
             exports.v_bank:forceTakeMoney(player, tax, "tax.income",

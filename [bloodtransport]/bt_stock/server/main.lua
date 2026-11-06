@@ -147,7 +147,13 @@ local function tick()
 
     -- hospitals: consumption
     for _, inst in ipairs(Cfg.INSTITUTIONS) do
-        if inst.kind == "hospital" then
+        -- a hospital with ER staff on duty (med_hospitals): the real transfusions use the blood (K16)
+        local staffed = false
+        if inst.kind == "hospital" and isRunning("med_hospitals") then
+            local ok, st = pcall(function() return exports.med_hospitals:getERState(inst.id) end)
+            staffed = ok and type(st) == "table" and (st.staff or 0) > 0
+        end
+        if inst.kind == "hospital" and not staffed then
             if not nextConsume[inst.id] then nextConsume[inst.id] = now + rnd(BTS.CONSUME_INTERVAL[1], BTS.CONSUME_INTERVAL[2]) * 1000 end
             if now >= nextConsume[inst.id] then
                 nextConsume[inst.id] = now + rnd(BTS.CONSUME_INTERVAL[1], BTS.CONSUME_INTERVAL[2]) * 1000
@@ -212,6 +218,16 @@ function allocate(product, group, units, toInst, partial)
     end
     markDirty()
     return legs
+end
+
+-- A hospital uses units (med_hospitals transfusion). -> true | false (not enough)
+function consume(instId, product, group, units, reason)
+    if not State or not Cfg or not Cfg.byId[instId] then return false end
+    units = math.floor(tonumber(units) or 1)
+    if units < 1 or StockModel.get(State, instId, product, group) < units then return false end
+    StockModel.add(Cfg, BTS, State, Cfg.byId[instId], product, group, -units)
+    markDirty()
+    return true
 end
 
 -- Gives units back to a center (a task that was not picked up was cancelled)

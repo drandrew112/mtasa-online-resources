@@ -96,8 +96,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "spine_l" },
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "bloodVolume": 4250, "consciousness": "confused" }
         },
@@ -109,7 +109,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "consciousness": "confused" }
         },
@@ -123,7 +123,7 @@
             "vehicle": "v1",
             "seat": 1,
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "left" }
             ],
             "state": {}
         }

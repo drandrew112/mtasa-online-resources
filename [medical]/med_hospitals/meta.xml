@@ -7,6 +7,10 @@
     <include resource="v_locals" />
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
+    <script src="er/shared/catalog.lua" type="shared" />
+    <script src="er/shared/codes.lua" type="shared" />
+    <script src="er/shared/stock.lua" type="shared" />
+    <script src="er/shared/conditions.lua" type="shared" /> <!-- findings of the medsys hospital conditions -->
 
     <!-- ================= SERVER ================= -->
     <script src="server/hospitals.lua"  type="server" />
@@ -18,9 +22,146 @@
     <script src="server/tutorial.lua"   type="server" />
     <script src="server/exports.lua"    type="server" />
 
+    <!-- ER module (sürgősségi osztály): hospitals.json "er" block, work_hospital staff -->
+    <script src="er/server/db.lua"      type="server" /> <!-- hosp_cases / hosp_events / hosp_stock (v_mysql) -->
+    <script src="er/server/core.lua"    type="server" />
+    <script src="er/server/arrival.lua" type="server" />
+    <script src="er/server/menus.lua"   type="server" />
+    <script src="er/server/his.lua"     type="server" />
+    <script src="er/server/exam.lua"    type="server" /> <!-- bedside exam steps (Vizsgálat tab) -->
+    <script src="er/server/outcome.lua" type="server" />
+    <script src="er/server/icu.lua" type="server" />
+    <script src="er/server/pay.lua" type="server" /> <!-- gov_health care / supplies payments -->
+    <script src="er/server/transfer.lua" type="server" />
+    <script src="er/server/docs.lua"    type="server" />
+    <script src="er/server/comms.lua"   type="server" />
+    <script src="er/server/walkin.lua"  type="server" />
+    <script src="er/server/stock.lua"   type="server" />
+    <script src="er/server/zone.lua"    type="server" />
+    <script src="er/server/devtest.lua" type="server" />
+    <script src="er/server/minigames.lua" type="server" /> <!-- mg_* bridge -->
+    <script src="er/server/wall.lua"    type="server" />
+    <script src="er/server/procedures.lua" type="server" />
+    <script src="er/server/transfusion.lua" type="server" /> <!-- bt_stock blood, compatibility, reactions, Ú6 --> <!-- room procedures, room rule, shock monitor, triage suggestion --> <!-- CT / X-ray wall monitors --> <!-- /ertest (admin 5+): test patients --> <!-- ER zone: not registered patients (K6) -->
+
     <!-- ================= CLIENT ================= -->
     <script src="client/clipboard.lua" type="client" />
     <script src="client/subtitle.lua"  type="client" />
+    <script src="er/client/er.lua"     type="client" />
+    <script src="er/client/gfx.lua"    type="client" />
+    <script src="er/client/his.lua"    type="client" />
+    <script src="er/client/exam.lua"   type="client" />
+    <script src="er/client/w7.lua"     type="client" /> <!-- the hospital PC: dark Windows 7 style monitor (desktop, taskbar, windows) -->
+    <script src="er/client/wall.lua"   type="client" /> <!-- CT / X-ray wall monitors --> <!-- the patient panel (bedside / PC / tablet) -->
+    <!-- ER imaging library: downloaded by the staff clients on demand (downloadFile) -->
+    <file src="er/img/ct/abd_liver.jpg" download="false" />
+    <file src="er/img/ct/abd_normal.jpg" download="false" />
+    <file src="er/img/ct/abd_spleen.jpg" download="false" />
+    <file src="er/img/ct/chest_contusion_lung.jpg" download="false" />
+    <file src="er/img/ct/chest_htx_med.jpg" download="false" />
+    <file src="er/img/ct/chest_normal_lung.jpg" download="false" />
+    <file src="er/img/ct/chest_ptx_lung.jpg" download="false" />
+    <file src="er/img/ct/chest_ribfx_bone.jpg" download="false" />
+    <file src="er/img/ct/head_contusion.jpg" download="false" />
+    <file src="er/img/ct/head_edh.jpg" download="false" />
+    <file src="er/img/ct/head_fracture.jpg" download="false" />
+    <file src="er/img/ct/head_ich.jpg" download="false" />
+    <file src="er/img/ct/head_normal.jpg" download="false" />
+    <file src="er/img/ct/head_sah.jpg" download="false" />
+    <file src="er/img/ct/head_sdh.jpg" download="false" />
+    <file src="er/img/ct/spine_compression.jpg" download="false" />
+    <file src="er/img/ct/spine_normal.jpg" download="false" />
+    <file src="er/img/xr/xr_ankle_fx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_ankle_fx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_ankle_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_ankle_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_contusion_left.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_contusion_right.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_edema.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_htx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_htx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_normal.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_ptx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_ptx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_ribfx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_chest_ribfx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_elbow_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_elbow_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_femur_fx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_femur_fx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_femur_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_femur_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_foot_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_foot_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_forearm_cast_left.jpg" download="false" />
+    <file src="er/img/xr/xr_forearm_cast_right.jpg" download="false" />
+    <file src="er/img/xr/xr_forearm_colles_left.jpg" download="false" />
+    <file src="er/img/xr/xr_forearm_colles_right.jpg" download="false" />
+    <file src="er/img/xr/xr_forearm_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_forearm_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_hand_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_hand_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_humerus_fx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_humerus_fx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_humerus_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_humerus_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_knee_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_knee_normal_right.jpg" download="false" />
+    <file src="er/img/xr/xr_pelvis_fx.jpg" download="false" />
+    <file src="er/img/xr/xr_pelvis_neckfx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_pelvis_neckfx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_pelvis_normal.jpg" download="false" />
+    <file src="er/img/xr/xr_spine_c_fx.jpg" download="false" />
+    <file src="er/img/xr/xr_spine_c_normal.jpg" download="false" />
+    <file src="er/img/xr/xr_spine_l_fx.jpg" download="false" />
+    <file src="er/img/xr/xr_spine_l_normal.jpg" download="false" />
+    <file src="er/img/xr/xr_spine_t_fx.jpg" download="false" />
+    <file src="er/img/xr/xr_spine_t_normal.jpg" download="false" />
+    <file src="er/img/xr/xr_tibia_cast_left.jpg" download="false" />
+    <file src="er/img/xr/xr_tibia_cast_right.jpg" download="false" />
+    <file src="er/img/xr/xr_tibia_fx_left.jpg" download="false" />
+    <file src="er/img/xr/xr_tibia_fx_right.jpg" download="false" />
+    <file src="er/img/xr/xr_tibia_normal_left.jpg" download="false" />
+    <file src="er/img/xr/xr_tibia_normal_right.jpg" download="false" />
+    <file src="er/img/ct/chest_contusion_lung_r.jpg" download="false" />
+    <file src="er/img/ct/chest_htx_med_r.jpg" download="false" />
+    <file src="er/img/ct/chest_ptx_lung_r.jpg" download="false" />
+    <file src="er/img/ct/chest_ribfx_bone_r.jpg" download="false" />
+    <file src="er/img/ct/head_contusion_r.jpg" download="false" />
+    <file src="er/img/ct/head_edh_r.jpg" download="false" />
+    <file src="er/img/ct/head_fracture_r.jpg" download="false" />
+    <file src="er/img/ct/head_ich_r.jpg" download="false" />
+    <file src="er/img/ct/head_sdh_r.jpg" download="false" />
+    <file src="er/img/us/us_cardiac_neg.jpg" download="false" />
+    <file src="er/img/us/us_cardiac_pos.jpg" download="false" />
+    <file src="er/img/us/us_lung_norm.jpg" download="false" />
+    <file src="er/img/us/us_lung_ptx.jpg" download="false" />
+    <file src="er/img/us/us_luq_neg.jpg" download="false" />
+    <file src="er/img/us/us_luq_pos.jpg" download="false" />
+    <file src="er/img/us/us_pelvis_neg.jpg" download="false" />
+    <file src="er/img/us/us_pelvis_pos.jpg" download="false" />
+    <file src="er/img/us/us_ruq_neg.jpg" download="false" />
+    <file src="er/img/us/us_ruq_pos.jpg" download="false" />
+    <file src="er/img/ecg/ecg_afib.jpg" download="false" />
+    <file src="er/img/ecg/ecg_alternans.jpg" download="false" />
+    <file src="er/img/ecg/ecg_asystole.jpg" download="false" />
+    <file src="er/img/ecg/ecg_avb3.jpg" download="false" />
+    <file src="er/img/ecg/ecg_brady.jpg" download="false" />
+    <file src="er/img/ecg/ecg_evolution.jpg" download="false" />
+    <file src="er/img/ecg/ecg_hyperk.jpg" download="false" />
+    <file src="er/img/ecg/ecg_pea.jpg" download="false" />
+    <file src="er/img/ecg/ecg_sine.jpg" download="false" />
+    <file src="er/img/ecg/ecg_sinus.jpg" download="false" />
+    <file src="er/img/ecg/ecg_stemi_ant.jpg" download="false" />
+    <file src="er/img/ecg/ecg_stemi_inf.jpg" download="false" />
+    <file src="er/img/ecg/ecg_stemi_lat.jpg" download="false" />
+    <file src="er/img/ecg/ecg_stemi_lm.jpg" download="false" />
+    <file src="er/img/ecg/ecg_svt.jpg" download="false" />
+    <file src="er/img/ecg/ecg_tachy.jpg" download="false" />
+    <file src="er/img/ecg/ecg_vf.jpg" download="false" />
+    <file src="er/img/ecg/ecg_vt.jpg" download="false" />
+    <file src="client/fonts/Roboto.ttf" />
+    <file src="client/fonts/RobotoB.ttf" />
 
     <!-- hospitals.json is read by the server only (not downloaded) -->
 
@@ -35,6 +176,18 @@
     <export function="getUnitHospitalHandover"       type="server" />
     <export function="isPlayerHealing"               type="server" />
     <export function="reloadHospitals"               type="server" />
+    <export function="requestImage"                  type="client" />
+    <!-- ER: hospital status + EMS parameter cards (med_erm tablet) -->
+    <export function="getHospitalStatus"             type="server" />
+    <export function="receiveParams"                 type="server" />
+    <export function="sendHospitalMessage"           type="server" />
+    <export function="getHospitalThreads"            type="server" />
+    <!-- ER supplies for medsys (the staff treat with the room stock, no EMS bag) -->
+    <export function="getHospitalEquipment"          type="server" />
+    <export function="consumeHospitalStock"          type="server" />
+    <export function="canTreatPatient"               type="server" />
+    <export function="allowsByOrder"                 type="server" />
+    <export function="getERState"                    type="server" />
     <!-- tutorial handover (work_ems tutorial): private markers in another dimension, no ERM -->
     <export function="createTutorialHandover"        type="server" />
     <export function="destroyTutorialHandover"       type="server" />
@@ -43,5 +196,6 @@
     <include resource="med_erm" />
     <include resource="med_equipments" />
     <include resource="medsys" />
+    <include resource="v_mysql" />
     <include resource="v_radar" />
 </meta>

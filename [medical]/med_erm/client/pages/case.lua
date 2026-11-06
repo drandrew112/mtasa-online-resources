@@ -221,10 +221,16 @@ function Pages.case.draw(x, y, w, h)
     local cy = y + s(14)
 
     -- title
-    Gfx.priorityBadge(ix, cy + s(2), s(40), s(26), t.priority)
+    Gfx.priorityBadge(ix, cy + s(2), s(40), s(26), t.priority, t.meta)
     Gfx.text(Gfx.fit(string.format("#%d  %s", t.id, t.title), iw - s(52), Gfx.font(14, true)),
         ix + s(52), cy, iw - s(52), s(30), Theme.text, Gfx.font(14, true))
-    Gfx.text(Gfx.fit(t.zone .. "   ·   " .. distanceText(t), iw, Gfx.font(9)), ix, cy + s(32), iw, s(18), Theme.dim, Gfx.font(9))
+    Gfx.text(Gfx.fit(t.zone .. "   ·   " .. distanceText(t), iw * 0.5, Gfx.font(9)), ix, cy + s(32), iw * 0.5, s(18), Theme.dim, Gfx.font(9))
+    -- the nearest hospital: kórházi dolgozó / szabad hely (med_hospitals ER)
+    local hs, hsp = HospitalParams.nearestStatus()
+    if hs then
+        Gfx.text(Gfx.fit(hs, iw * 0.5, Gfx.font(9, true)), ix + iw * 0.5, cy + s(32), iw * 0.5, s(18),
+            (hsp and hsp.er and hsp.staff > 0) and tocolor(120, 200, 140) or Theme.faint, Gfx.font(9, true), "right")
+    end
 
     -- info grid
     cy = cy + s(60)
@@ -297,6 +303,11 @@ function Pages.case.draw(x, y, w, h)
     Gfx.button(ix + iw - rbw * 2 - s(8), ly + s(2), rbw, s(30), L("med_erm.agency.request"),
         { color = { 124, 92, 230 }, disabled = linked or u.status == "handover" or TabletTutorial.active, font = Gfx.font(9, true) },
         function() agencyPick.reason = nil; Tablet.picker = drawAgencyPicker end)
+
+    -- one-button parameter card to the hospital, left of the agency button
+    Gfx.button(ix + iw - rbw * 3 - s(16), ly + s(2), rbw, s(30), L("med_erm.hospital.send_params"),
+        { color = { 46, 160, 67 }, disabled = TabletTutorial.active, font = Gfx.font(9, true) },
+        function() HospitalParams.open() end)
 
     -- buttons
     local by = y + h - btnH - s(16)

@@ -1,0 +1,10 @@
+{
+  "mg_ecg.client.hint": "Húzd az elektródákat a betegre. V1-V2: 4. bordaköz a szegycsont mellett, V4: 5. bordaköz medioclavicularis, V3 a kettő között, V5-V6 oldalt. Aztán Felvétel (ENTER).",
+  "mg_ecg.client.patient_left": "beteg bal oldala",
+  "mg_ecg.client.patient_right": "beteg jobb oldala",
+  "mg_ecg.client.placed": "{n|int}/{total|int} a helyén",
+  "mg_ecg.client.record": "Felvétel",
+  "mg_ecg.client.title": "EKG-12 · elektródák",
+  "mg_ecg.kit.failed": "SIKERTELEN",
+  "mg_ecg.kit.success": "SIKERES"
+}

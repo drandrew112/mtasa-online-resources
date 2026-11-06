@@ -1,0 +1,10 @@
+# Halottkezelés
+@keywords: halott, exitus, hullaleadó, halottvizsgálati, bno, halottszállító
+@related: hospital_docs, hospital_surgery
+
+1. Az **Orvos** rögzíti az exitust: időpont, **ok BNO-val** (pl. R9600, I4610), a halál körülményei.
+2. A halott a hordágyon marad és tolható; told a **hullaleadóhoz**.
+3. Leadáskor elkészül a **Halottvizsgálati bizonyítvány**.
+
+- Mentő által hozott, érkezéskor halott beteg: a kórházi hordágyon „halott” esetként.
+- Ha 20 percen belül senki nem viszi le, az NPC halottszállító elviszi, pont nélkül.

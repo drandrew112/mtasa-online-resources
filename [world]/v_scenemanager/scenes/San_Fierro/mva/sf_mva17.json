@@ -96,7 +96,7 @@
             "anim": "injured",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" }
             ],
             "state": { "pain": 60, "consciousness": "dazed" }
         }

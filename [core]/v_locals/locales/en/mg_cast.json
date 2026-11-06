@@ -1,0 +1,15 @@
+{
+  "mg_cast.client.hint": "Mouse left / right: overlap (green, about 50%). Press {key} when the dot is in the green window.",
+  "mg_cast.client.layer": "Layer {n|int}/{total|int}",
+  "mg_cast.client.overlap": "Overlap",
+  "mg_cast.client.rhythm": "Rhythm",
+  "mg_cast.client.tight_count": "Tight turns: {n|int}/{max|int}",
+  "mg_cast.client.title": "Plaster cast{part}",
+  "mg_cast.client.turn_gap": "Gap",
+  "mg_cast.client.turn_good": "Smooth",
+  "mg_cast.client.turn_ok": "Uneven overlap",
+  "mg_cast.client.turn_tight": "Too tight",
+  "mg_cast.client.turn_wrinkle": "Wrinkle",
+  "mg_cast.kit.failed": "FAILED",
+  "mg_cast.kit.success": "SUCCESS"
+}

@@ -1,0 +1,13 @@
+# Intensive care
+@keywords: icu, intensive care, ventilator, peep, fio2, noradrenaline, sedation, rounds, blood gas
+@related: hospital_surgery, hospital_ward
+
+Admission: a physician, a free bed and a diagnosis. Stay **30 minutes**; the timer stops when the patient worsens.
+
+The ICU block on the **Procedures** tab of the patient panel:
+
+- **Rounds** every 5 minutes (points).
+- **Ventilator:** VC / PC, FiO₂, PEEP, rate, tidal volume. FiO₂ and PEEP set the SpO₂, the minute volume sets the EtCO₂. Too much PEEP → the blood pressure falls.
+- **Noradrenaline** in steps, target MAP ≥ 65.
+- **Sedation:** none / light / deep. Without sedation the patient fights the ventilator.
+- **Blood gas** in 30 s.

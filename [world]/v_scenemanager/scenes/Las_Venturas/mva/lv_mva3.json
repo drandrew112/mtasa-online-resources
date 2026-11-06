@@ -75,8 +75,8 @@
             "anim": "injured",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" },
+                { "type": "fracture", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": { "consciousness": "dazed" }
         },
@@ -88,8 +88,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "spine_l" },
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": { "consciousness": "dazed" }
         }

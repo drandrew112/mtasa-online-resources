@@ -1,0 +1,15 @@
+{
+  "mg_cast.client.hint": "Egér balra / jobbra: átfedés (zöld, kb. 50%). Nyomd a(z) {key} gombot, amikor a pötty a zöld ablakban van.",
+  "mg_cast.client.layer": "Réteg {n|int}/{total|int}",
+  "mg_cast.client.overlap": "Átfedés",
+  "mg_cast.client.rhythm": "Ritmus",
+  "mg_cast.client.tight_count": "Szoros fordulat: {n|int}/{max|int}",
+  "mg_cast.client.title": "Gipszelés{part}",
+  "mg_cast.client.turn_gap": "Rés",
+  "mg_cast.client.turn_good": "Sima",
+  "mg_cast.client.turn_ok": "Egyenetlen átfedés",
+  "mg_cast.client.turn_tight": "Túl szoros",
+  "mg_cast.client.turn_wrinkle": "Gyűrődés",
+  "mg_cast.kit.failed": "SIKERTELEN",
+  "mg_cast.kit.success": "SIKERES"
+}

@@ -1,0 +1,23 @@
+# Kórház – áttekintés
+@keywords: kórház, sbo, sürgősségi, all saints, kórházi munka, his
+@related: hospital_exams, hospital_pathway, hospital_triage, hospital_panel
+
+A kórházi munkában az **All Saints** sürgősségi osztályán (SBO) látod el a betegeket: a mentők által hozottakat, a lábon érkezőket és a behozottakat. Minden elvégzett beavatkozás **pontot** ér, a pontokat a szolgálat végén fizetik ki.
+
+## A legfontosabb helyek
+
+- **Szolgálat:** az aula, a duty marker (`E`). Első szolgálatkor elindul a **kórházi bemutató**.
+- **Hordágy-marker:** `E` hordágyat kér, és azonnal tolod; üres kórházi hordággyal `E` visszaadja (a marker kártyája mutatja).
+- **Folyosó F1–F5:** ide kerülnek a mentős betegek.
+- **PC-k:** a pult mellett; a betegnyilvántartás, osztály, felszerelés, kommunikáció, dokumentumok.
+- **Sokktalanító, sebkezelő, gipszelő, CT, röntgen, műtő, intenzív, elfekvő, hullaleadó.**
+
+## A tablet és a PC
+
+A **tablet** (`J` vagy `/sbo`) jobb felső sarkában az **oldalválasztó** (☰), bal felső sarkában a **vissza** gomb (`Backspace`); a tableten nincs dokumentáció.
+
+A **kórházi számítógép** (a gép előtt `E`) a képernyő nagy részén nyílik, üres asztallal: az asztali ikonok vagy a Start menü nyitják az alkalmazásokat: **SBO Betegirányítás**, **Beteglap** (dokumentációval), **Dokumentumtár**. Az ablakok között a tálcán váltasz; `ESC` a felső ablakot zárja.
+
+A beteg menüjéből a **Betegvizsgálat** nyitja a részletes betegpanelt.
+
+![220](content/images/hospital/ct_edh.jpg)

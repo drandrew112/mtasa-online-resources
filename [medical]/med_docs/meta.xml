@@ -1,0 +1,39 @@
+<meta>
+    <info author="DrAndrew112" name="med_docs" version="1.0.0" type="script"
+          description="Medical documents (MySQL med_docs): Ambuláns lap, Labor / CT / Röntgen / UH / EKG lelet, Mentési lap, Műtéti leírás, Halottvizsgálati bizonyítvány; structured storage with a language code, DX paper viewer" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/bno.lua" type="server" />
+    <script src="server/docs.lua" type="server" />
+    <script src="server/ems.lua" type="server" />
+
+    <script src="client/bno.lua" type="client" />
+    <script src="client/viewer.lua" type="client" />
+    <file src="client/fonts/Roboto.ttf" />
+    <file src="client/fonts/RobotoB.ttf" />
+    <file src="client/fonts/Tinos-Regular.ttf" />
+    <file src="client/fonts/Tinos-Bold.ttf" />
+    <!-- bno/bno.db: server only (dbConnect), built offline by bno/build_bno.py -->
+
+    <export function="createDocument"     type="server" />
+    <export function="canReadDocuments"   type="server" />
+    <export function="getPatientCareLog"  type="server" />
+    <export function="searchBNO"          type="server" />
+    <export function="getBNO"             type="server" />
+    <export function="getBNOName"         type="server" />
+    <export function="checkDiagnosis"     type="server" />
+    <export function="openDocuments"       type="client" />
+    <export function="getBNOName"          type="client" />
+    <export function="getBNOCode"          type="client" />
+    <export function="getBNOFlag"          type="client" />
+    <export function="searchBNO"           type="client" />
+    <export function="closeDocuments"      type="client" />
+    <export function="setDocumentsRect"    type="client" />
+    <export function="setDocumentsFilter"  type="client" />
+    <export function="isDocumentViewerOpen" type="client" />
+</meta>

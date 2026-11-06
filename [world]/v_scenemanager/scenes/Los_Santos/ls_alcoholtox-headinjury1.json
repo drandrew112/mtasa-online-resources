@@ -39,7 +39,7 @@
             "role": "patient",
             "injuries": [
                 { "type": "alcohol", "severity": 2 },
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" }
             ],
             "state": { "consciousness": "dazed" }
         }

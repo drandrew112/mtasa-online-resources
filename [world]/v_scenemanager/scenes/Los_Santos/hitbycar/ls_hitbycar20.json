@@ -75,7 +75,7 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 3 }
+                { "type": "fracture", "severity": 3, "part": "pelvis", "side": "left" }
             ],
             "state": { "bloodVolume": 4300, "pain": 30 }
         }

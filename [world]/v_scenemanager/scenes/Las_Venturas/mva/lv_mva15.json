@@ -77,8 +77,8 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "arm", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": { "consciousness": "dazed" }
         },
@@ -90,8 +90,8 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "arm", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "right" }
             ],
             "state": {}
         }

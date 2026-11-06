@@ -193,7 +193,7 @@ local KEY_ORDER = {
     "id", "model", "skin", "pos", "rot", "anim", "role", "frozen", "vehicle", "seat",
     "locked", "engine", "lightsOn", "sirens", "health", "colors", "paintjob", "plate", "variant",
     "upgrades", "doors", "panels", "lights", "wheels", "tow",
-    "injuries", "type", "severity", "state", "ai", "record",
+    "injuries", "type", "severity", "part", "state", "ai", "record",
     "side", "targets", "weapon", "ammo", "accuracy", "start", "startRadius", "onPolice", "aggroRadius", "leash",
     "task", "surrenderHealth", "flee",
     "age", "birth", "flags", "licence", "bac", "drug", "past", "btk", "daysAgo", "warrants", "reasons",

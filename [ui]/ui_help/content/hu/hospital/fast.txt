@@ -1,0 +1,10 @@
+# FAST ultrahang
+@keywords: fast, efast, ultrahang, szabad folyadék, légmell, tamponád
+@related: hospital_shock, hospital_surgery
+
+Az eFAST 6 ablaka: **jobb felhas (RUQ)**, **bal felhas (LUQ)**, **kismedence**, **szívburok**, **jobb és bal tüdő**.
+
+- Májsérülés → RUQ, lépsérülés → LUQ, medencetörés → kismedence, tamponád → szívburok, légmell → hiányzó pleuracsúszás.
+- Ablakonként pozitív / negatív / nem értékelhető. Nem értékelhető ablaknál ismételj, vagy kérj CT-t.
+
+![220](content/images/hospital/us_luq_pos.jpg)

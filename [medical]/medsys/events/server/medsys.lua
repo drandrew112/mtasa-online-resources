@@ -44,7 +44,7 @@ function medApplyInjury(element, injuryType, severity, part, cause)
     if not canHurt(state) or #state.injuries >= MEDEV.MAX_INJURIES then return false end
 
     creating = { part = part, cause = cause }
-    local id = ms:applyInjury(element, injuryType, severity)
+    local id = ms:applyInjury(element, injuryType, severity, part, nil, cause)
     creating = nil
     if not id then return false end
 

@@ -38,8 +38,8 @@
             "anim": "cough",
             "role": "patient",
             "injuries": [
-                { "type": "suffocation", "severity": 1 },
-                { "type": "asthma", "severity": 1 }
+                { "type": "suffocation", "severity": 1, "part": "neck" },
+                { "type": "asthma", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": { "spo2": 91 }
         }

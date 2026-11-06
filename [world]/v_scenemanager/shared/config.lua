@@ -192,6 +192,21 @@ for _, id in ipairs({ "gunshot", "fracture", "burn", "suffocation", "head_injury
 end
 VSM_SEVERITY = { "v_scenemanager.severity.1", "v_scenemanager.severity.2", "v_scenemanager.severity.3" }
 
+-- Body parts of an injury (medsys shared/body.lua). Every injury in the scene files has one (the
+-- systemic conditions excepted); labels are medsys.body.* keys. sided = it has a left / right.
+VSM_PARTS = {
+    { id = "head", sided = true }, { id = "face" }, { id = "neck" }, { id = "chest", sided = true },
+    { id = "abdomen", sided = true }, { id = "pelvis", sided = true }, { id = "spine_c" }, { id = "spine_t" },
+    { id = "spine_l" }, { id = "arm", sided = true }, { id = "leg", sided = true }, { id = "skin" },
+}
+VSM_PART_BY_ID = {}
+for _, p in ipairs(VSM_PARTS) do p.label = "medsys.body." .. p.id VSM_PART_BY_ID[p.id] = p end
+-- injury types that have no body part (systemic conditions)
+VSM_SYSTEMIC = { opioid = true, sedative = true, stimulant = true, alcohol = true, postictal = true }
+-- scene category -> the medsys injury cause (the default body part odds when an injury has none)
+VSM_CATEGORY_CAUSE = { fall = "fall", hitbycar = "vehicle_hit", mva = "crash", motorcycle = "crash", mci = "crash",
+    brawl = "fist", shooting = "gun", drowning = "drown" }
+
 -- Ped roles (editor, validation, safety). A threat is what can make a scene unsafe.
 VSM_ROLES = {
     { id = "patient",   label = "v_scenemanager.role.patient" },

@@ -1,0 +1,10 @@
+{
+  "mg_ecg.client.hint": "Drag the electrodes onto the patient. V1-V2: 4th ICS at the sternum, V4: 5th ICS mid-clavicular, V3 between, V5-V6 laterally. Then Record (ENTER).",
+  "mg_ecg.client.patient_left": "patient's left",
+  "mg_ecg.client.patient_right": "patient's right",
+  "mg_ecg.client.placed": "{n|int}/{total|int} placed",
+  "mg_ecg.client.record": "Record",
+  "mg_ecg.client.title": "12-lead ECG · electrodes",
+  "mg_ecg.kit.failed": "FAILED",
+  "mg_ecg.kit.success": "SUCCESS"
+}

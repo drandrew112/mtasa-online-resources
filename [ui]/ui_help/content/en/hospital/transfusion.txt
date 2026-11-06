@@ -1,0 +1,10 @@
+# Transfusion
+@keywords: transfusion, blood, blood group, crossmatch, 0 negative, ab plasma, massive
+@related: hospital_lab, hospital_shock
+
+- Without a blood group lab only **0 Rh− red cells** and **AB plasma** (from the shock room fridge).
+- After the group a **crossmatch** (60 s), then group-specific units.
+- **Red cells:** the donor's ABO antigens must be in the recipient, Rh+ only for Rh+. **Plasma:** the reverse (AB for everyone).
+- One unit takes 5 minutes; a **massive transfusion** (4+ units in 10 minutes) is for physicians, with the pressure bag 2 minutes.
+- Incompatible blood → **acute haemolytic reaction**. Too much, too fast → fluid overload.
+- When the blood runs out, an emergency shipment arrives after 10 minutes.

@@ -117,8 +117,8 @@
             "anim": "ko_front",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "head_injury", "severity": 3, "part": "head", "side": "left" },
+                { "type": "fracture", "severity": 2, "part": "head", "side": "right" }
             ],
             "state": { "consciousness": "unconscious" }
         },
@@ -132,7 +132,7 @@
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 2, "part": "head", "side": "right" }
             ],
             "state": { "pain": 30 }
         },
@@ -144,7 +144,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": {}
         },
@@ -156,7 +156,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": { "systolic": 168 }
         }

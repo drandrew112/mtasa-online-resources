@@ -32,17 +32,38 @@ local STOCK_EMPTY = {
     glucometers = L.msg("medsys.equipment.no_glucometer"), airwayKits = L.msg("medsys.equipment.no_airway_kit"),
 }
 
+-- A hospital ER patient treated by the hospital staff: the hospital's room stock is the equipment
+-- (med_hospitals er/server/stock.lua), no EMS bag. -> equipment table | nil
+local function hospitalEquipment(target, medic)
+    if not isElement(target) or not isElement(medic) or not getElementData(target, "er.case") then return nil end
+    if not getElementData(medic, "hosp.staff") or not isRunning("med_hospitals") then return nil end
+    local ok, result = pcall(function() return exports.med_hospitals:getHospitalEquipment(target, medic) end)
+    return ok and type(result) == "table" and result or nil
+end
+
 -- What reaches the patient (med_equipments getEquipmentNear) or nil when the equipment is not checked.
 -- One call per panel snapshot / treatment start.
 function getPatientEquipment(target, medic)
     if not isEquipmentActive() or isExempt(target) then return nil end
+    local hosp = hospitalEquipment(target, medic)
+    if hosp then return hosp end
     local ok, result = pcall(function() return bagResource():getEquipmentNear(target, medic) end)
     return ok and result or nil
+end
+
+-- a used piece from the hospital stock
+local function hospitalConsume(target, category, key)
+    pcall(function() exports.med_hospitals:consumeHospitalStock(target, category, key) end)
 end
 
 -- Can the action be done with the equipment at hand? -> true | false, reason
 -- equipment: the result of getPatientEquipment (nil = not checked)
 function checkActionEquipment(equipment, action, state, option)
+    -- the hospital medicines exist only in the hospital's stock (med_hospitals er/server/stock.lua)
+    if action == "medication" and option and MEDIC_DRUGS[option] and MEDIC_DRUGS[option].hospital
+        and isEquipmentActive() and not (equipment and equipment.hospital) then
+        return false, L.msg("medsys.equipment.hospital_only")
+    end
     if not equipment then return true end
     local need = MEDIC_EQUIPMENT[action]
     if not need then return true end
@@ -106,6 +127,10 @@ end
 -- The procedure started (minigame / timer running)
 function onEquipmentTreatmentStart(medic, target, action)
     if isExempt(target) then return end
+    if isEquipmentActive() and hospitalEquipment(target, medic) then
+        if action == "iv" then hospitalConsume(target, "ivKits") end
+        return
+    end
     call("onTreatmentStart", medic, target)
     -- an IV attempt uses a kit whatever the result
     if action == "iv" and getPatientEquipment(target, medic) then
@@ -117,6 +142,15 @@ end
 -- The procedure finished with success (state already updated by apply)
 function onEquipmentTreatmentDone(medic, target, action, option, state)
     if not isEquipmentActive() or isExempt(target) then return end
+    -- hospital: wall oxygen and the room's monitor need nothing; consumables come from the room stock
+    if hospitalEquipment(target, medic) then
+        if action == "medication" then hospitalConsume(target, "drugs", option)
+        elseif action == "infusion" and option == "hang" then hospitalConsume(target, "fluids")
+        elseif action == "airway" then hospitalConsume(target, "airwayKits") end
+        local need = MEDIC_EQUIPMENT[action]
+        if need and need.consume == "done" and need.stock then hospitalConsume(target, need.stock) end
+        return
+    end
     if action == "medication" then
         local item = call("findStockItem", target, medic, "drugs", option)
         if item then call("consumeStock", item, "drugs", option) end
@@ -139,6 +173,22 @@ function onEquipmentTreatmentDone(medic, target, action, option, state)
         local item = call("findStockItem", target, medic, need.stock)
         if item then call("consumeStock", item, need.stock) end
     end
+end
+
+-- The place the patient is in may restrict procedures (med_hospitals ER: before triage only life-saving,
+-- K10; room-bound procedures). -> true | false, reason (already in the medic's language)
+function onHostTreatmentCheck(medic, target, action, option, state)
+    if not isElement(target) or not getElementData(target, "er.case") or not isRunning("med_hospitals") then return true end
+    local ok, allowed, reason = pcall(function() return exports.med_hospitals:canTreatPatient(target, medic, action, option) end)
+    if not ok or allowed ~= false then return true end
+    return false, reason
+end
+
+-- The place may allow what the medic's competency does not (an ER drug order: the nurse gives it)
+function hostAllowsAction(medic, target, key)
+    if not isElement(target) or not getElementData(target, "er.case") or not isRunning("med_hospitals") then return false end
+    local ok, yes = pcall(function() return exports.med_hospitals:allowsByOrder(target, medic, key) end)
+    return ok and yes == true
 end
 
 -- Glucometer reading (no stock): only the bag must be there

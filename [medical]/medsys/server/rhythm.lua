@@ -62,6 +62,14 @@ function pickArrestRhythm(cause)
     return last
 end
 
+-- the rhythm an untreated condition forces (MEDIC_INJURIES[type].rhythm), or nil
+function conditionRhythm(state)
+    for _, injury in ipairs(state.injuries) do
+        local def = MEDIC_INJURIES[injury.type]
+        if def and def.rhythm and not injury.treated then return def.rhythm end
+    end
+end
+
 -- Names the rhythm of a beating heart from its rate (half a beat of hysteresis around the limits)
 function refreshPulseRhythm(state, now)
     local hr, current = state.heartRate, state.rhythm
@@ -72,6 +80,9 @@ function refreshPulseRhythm(state, now)
         rhythm = "SVT"
     elseif hr >= MEDIC.VT_HEART_RATE then
         rhythm = "VT_WITH_PULSE"
+    elseif conditionRhythm(state) then
+        -- an untreated condition with its own rhythm (atrial fibrillation, complete AV block)
+        rhythm = conditionRhythm(state)
     elseif hr < MEDIC.BRADY_RATE + (current == "SINUS_BRADY" and 0.5 or -0.5) then
         rhythm = "SINUS_BRADY"
     elseif hr > MEDIC.TACHY_RATE + (current == "SINUS_TACHY" and -0.5 or 0.5) then

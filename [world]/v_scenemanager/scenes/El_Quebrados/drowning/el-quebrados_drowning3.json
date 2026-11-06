@@ -38,7 +38,7 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "suffocation", "severity": 2 },
+                { "type": "suffocation", "severity": 2, "part": "neck" },
                 { "type": "alcohol", "severity": 2 }
             ],
             "state": { "spo2": 76, "consciousness": "unconscious" }

@@ -75,8 +75,8 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "arm", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "left" }
             ],
             "state": {}
         }

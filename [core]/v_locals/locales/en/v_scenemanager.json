@@ -513,5 +513,9 @@
   "v_scenemanager.web.too_many": "Too many failed attempts. Try again in a minute.",
   "v_scenemanager.web.units": "units: {count}",
   "v_scenemanager.web.unreachable": "Server unreachable:",
-  "v_scenemanager.web.username": "Username"
+  "v_scenemanager.web.username": "Username",
+  "v_scenemanager.ped.part_none": "no body part",
+  "v_scenemanager.ped.part": "Body part: {part}",
+  "v_scenemanager.ped.remove": "Remove",
+  "v_scenemanager.ped.injury_entry": "{injury} ({severity}) · {part}"
 }

@@ -96,8 +96,8 @@
             "anim": "injured",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "leg", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": { "consciousness": "dazed" }
         },
@@ -109,7 +109,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "leg", "side": "left" }
             ],
             "state": {}
         }

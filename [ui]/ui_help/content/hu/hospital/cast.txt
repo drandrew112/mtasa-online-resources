@@ -1,0 +1,9 @@
+# Gipszelő
+@keywords: gipsz, repozíció, törés, mitella, keringés, röntgen
+@related: hospital_xray, hospital_wound
+
+1. **Röntgen** (kötelező).
+2. **Repozíció** elmozdult törésnél (minigame) – előtte fájdalomcsillapítás.
+3. **Gipsz** (minigame). A túl szoros gipszet újra kell rakni.
+4. **Keringés-mozgás-érzés** vizsgálat, felső végtagon **mitella**.
+5. **Kontrollröntgen** gipszben.

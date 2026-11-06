@@ -1,0 +1,670 @@
+{
+  "id": "physician",
+  "title": "Physician exam",
+  "description": "STEMI, stroke lysis, transfusion, massive transfusion, chest drain, FAST, ventilation, antidotes, surgery indications, death.",
+  "questionCount": 25,
+  "passPercent": 75,
+  "help": "hospital_exams",
+  "questions": [
+    {
+      "id": "phy_01",
+      "q": "What is the alteplase dose in ischaemic stroke?",
+      "answers": [
+        "0.9 mg/kg, at most 90 mg, 10% as a bolus",
+        "0.6 mg/kg, at most 60 mg, 20% as a bolus",
+        "1.0 mg/kg, at most 100 mg, 15% as a bolus",
+        "0.9 mg/kg, at most 70 mg, 25% as a bolus"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_02",
+      "q": "Up to when can thrombolysis be given in stroke from the onset (clinical time)?",
+      "answers": [
+        "Within 4.5 hours",
+        "Within 12 hours",
+        "Within 24 hours",
+        "Within 30 minutes"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_03",
+      "q": "What is always needed before stroke thrombolysis?",
+      "answers": [
+        "A head CT to rule out bleeding",
+        "A chest X-ray for the lungs",
+        "A blood group and a crossmatch",
+        "A FAST to rule out belly bleeding"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_04",
+      "q": "What happens when a haemorrhagic stroke is lysed?",
+      "answers": [
+        "Severe worsening, the bleed grows",
+        "The patient recovers faster",
+        "Nothing, the drug has no effect",
+        "Only a mild headache appears"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_05",
+      "q": "Which red cells are safe for a B Rh− recipient?",
+      "answers": [
+        "B Rh− and 0 Rh− units",
+        "B Rh+ and 0 Rh+ units",
+        "AB Rh− and B Rh− units",
+        "0 Rh+ and B Rh− units"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_06",
+      "q": "Which plasma can be given to anyone with an unknown group?",
+      "answers": [
+        "AB plasma",
+        "0 plasma",
+        "A plasma",
+        "B plasma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_07",
+      "q": "What may be given before the blood group is known in urgent bleeding?",
+      "answers": [
+        "0 Rh− red cells and AB plasma",
+        "AB Rh+ red cells and 0 plasma",
+        "A Rh+ red cells and B plasma",
+        "Only platelets and crystalloid"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_08",
+      "q": "What is the most dangerous complication of an incompatible transfusion?",
+      "answers": [
+        "An acute haemolytic reaction",
+        "A mild urticarial rash",
+        "A short bout of chills",
+        "A slow iron deficiency"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_09",
+      "q": "When is it a massive transfusion in the system?",
+      "answers": [
+        "4 or more units within 10 minutes",
+        "1 unit within 60 minutes",
+        "2 units over a whole day",
+        "10 units over a whole week"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_10",
+      "q": "What must be done first to give group-specific, crossmatched blood?",
+      "answers": [
+        "A blood group lab, then a crossmatch",
+        "A chest CT, then an ECG",
+        "A glucose, then a urine test",
+        "A FAST, then a control X-ray"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_11",
+      "q": "What does too much blood, given too fast, cause after a small loss?",
+      "answers": [
+        "Fluid overload, a falling SpO₂",
+        "Hypoglycaemia and confusion",
+        "Hypokalaemia and cramps",
+        "Bradycardia and AV block"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_12",
+      "q": "Where is the chest drain inserted?",
+      "answers": [
+        "4th–5th intercostal space, anterior-mid axillary line",
+        "2nd intercostal space in the mid-clavicular line",
+        "7th–8th intercostal space in the scapular line",
+        "Below the sternum at the xiphoid process"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_13",
+      "q": "Where is needle decompression done in tension pneumothorax?",
+      "answers": [
+        "2nd intercostal space, mid-clavicular",
+        "6th intercostal space, posterior axillary",
+        "Directly next to the sternum",
+        "Two fingers above the navel"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_14",
+      "q": "When is a thoracotomy needed for a haemothorax?",
+      "answers": [
+        "When more than 1500 ml comes from the drain",
+        "When less than 200 ml comes from the drain",
+        "For every haemothorax, before any drain",
+        "Only when the patient gets no oxygen"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_15",
+      "q": "Which FAST window shows the fluid of a splenic injury?",
+      "answers": [
+        "Left upper quadrant",
+        "Right upper quadrant",
+        "Pericardial (cardiac)",
+        "Right lung window"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_16",
+      "q": "Which FAST window shows the fluid of a liver injury?",
+      "answers": [
+        "Right upper quadrant",
+        "Left upper quadrant",
+        "Pelvic window",
+        "Left lung window"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_17",
+      "q": "What does missing lung sliding in the lung window show?",
+      "answers": [
+        "Pneumothorax",
+        "Liver laceration",
+        "Tamponade",
+        "Pelvic fracture"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_18",
+      "q": "What is the urgent treatment of cardiac tamponade?",
+      "answers": [
+        "Pericardiocentesis or pericardiotomy",
+        "A high IV dose of furosemide",
+        "Immediate ventilation with PEEP 20",
+        "A chest drain on the right side"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_19",
+      "q": "What is the first-line treatment of STEMI when available?",
+      "answers": [
+        "Primary PCI (cath lab programme)",
+        "Only morphine and oxygen",
+        "Discharge at once with aspirin",
+        "A chest drain and a needle"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_20",
+      "q": "When is nitroglycerin contraindicated in STEMI?",
+      "answers": [
+        "When a right ventricular (inferior) infarct is suspected",
+        "When the systolic BP is above 140 mmHg",
+        "When the patient already took aspirin that day",
+        "When the SpO₂ falls below 95% on the reading"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_21",
+      "q": "Which complication is typical of an inferior STEMI?",
+      "answers": [
+        "AV block, bradycardia",
+        "Atrial fibrillation always",
+        "Ventricular aneurysm at once",
+        "A pulmonary embolism"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_22",
+      "q": "What are the ECG signs of an inferior STEMI?",
+      "answers": [
+        "ST elevation in II, III, aVF, reciprocal in I, aVL",
+        "ST elevation in V1–V4, reciprocal in II and III",
+        "ST depression in every lead in the same way",
+        "A wide QRS and peaked T waves in every lead"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_23",
+      "q": "What is the first step in NSTEMI instead of PCI?",
+      "answers": [
+        "Antiplatelet, anticoagulant, monitor, repeat troponin",
+        "Immediate thrombolysis with alteplase, 90 mg",
+        "Discharge and a GP check-up after one week",
+        "A chest drain and a FAST to rule out shock"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_24",
+      "q": "At what potassium level is hyperkalaemia treatment urgent?",
+      "answers": [
+        "Above 6.5 mmol/l or with ECG changes",
+        "Above 4.0 mmol/l in every case",
+        "Below 3.0 mmol/l without symptoms",
+        "Only above 10 mmol/l, not before"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_25",
+      "q": "What protects the heart at once in hyperkalaemia?",
+      "answers": [
+        "IV calcium",
+        "IV potassium",
+        "Oral iron",
+        "IV morphine"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_26",
+      "q": "What is the antidote of paracetamol poisoning?",
+      "answers": [
+        "N-acetylcysteine",
+        "Hydroxocobalamin",
+        "Digoxin Fab",
+        "Flumazenil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_27",
+      "q": "What treats organophosphate poisoning?",
+      "answers": [
+        "Atropine and pralidoxime",
+        "Naloxone and glucose",
+        "Flumazenil and thiamine",
+        "Digoxin Fab and calcium"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_28",
+      "q": "What is the antidote of beta-blocker poisoning?",
+      "answers": [
+        "Glucagon",
+        "Naloxone",
+        "Fomepizole",
+        "Flumazenil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_29",
+      "q": "What is the antidote of methanol poisoning?",
+      "answers": [
+        "Fomepizole",
+        "Atropine",
+        "Glucagon",
+        "Naloxone"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_30",
+      "q": "What is the antidote of cyanide poisoning?",
+      "answers": [
+        "Hydroxocobalamin",
+        "N-acetylcysteine",
+        "Pralidoxime",
+        "Flumazenil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_31",
+      "q": "What is the specific treatment of digoxin poisoning?",
+      "answers": [
+        "Digoxin-specific Fab fragments",
+        "A high dose of IV calcium",
+        "Oral activated charcoal alone",
+        "Repeated IV naloxone"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_32",
+      "q": "What is the basic treatment of carbon monoxide poisoning?",
+      "answers": [
+        "100% oxygen by a mask",
+        "High-dose IV naloxone",
+        "IV calcium injection",
+        "Oral activated charcoal"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_33",
+      "q": "What is given in TCA poisoning with a wide QRS?",
+      "answers": [
+        "Sodium bicarbonate",
+        "IV potassium",
+        "Adenosine as a fast bolus",
+        "Amiodarone 300 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_34",
+      "q": "On the ventilator, what improves oxygenation most?",
+      "answers": [
+        "Raising the FiO₂ and the PEEP",
+        "Lowering the breathing rate",
+        "Halving the tidal volume",
+        "Stopping all of the sedation"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_35",
+      "q": "What mainly sets the EtCO₂ on a ventilator?",
+      "answers": [
+        "The minute volume (rate × tidal volume)",
+        "The inspired oxygen fraction (FiO₂)",
+        "The patient's body temperature alone",
+        "The dose and rate of the noradrenaline"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_36",
+      "q": "What is the downside of a PEEP that is too high?",
+      "answers": [
+        "It reduces venous return, the blood pressure falls",
+        "It suddenly raises the glucose and the lactate",
+        "It takes away the patient's pain and anxiety",
+        "It speeds up the kidneys and the urine output"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_37",
+      "q": "What happens when a ventilated patient is not sedated?",
+      "answers": [
+        "They fight the machine, SpO₂ falls, heart rate rises",
+        "They wake faster and can be extubated at once",
+        "Nothing, the ventilation works just the same",
+        "The machine stops by itself and alarms"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_38",
+      "q": "What is the target of noradrenaline titration in septic shock?",
+      "answers": [
+        "A mean arterial pressure of at least 65 mmHg",
+        "A systolic blood pressure of at least 180 mmHg",
+        "A heart rate of exactly under 60 per minute",
+        "A blood glucose under 3 mmol/l"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_39",
+      "q": "Who may record a death in the hospital?",
+      "answers": [
+        "A physician or the chief",
+        "Any nurse on duty",
+        "Only the EMS leader",
+        "Only an admin on duty"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_40",
+      "q": "What must be given when a death is recorded?",
+      "answers": [
+        "The time, the cause with an ICD code, the circumstances",
+        "Only the patient's name and the hospital's name",
+        "The patient's blood group and the lab results",
+        "The last medicine's dose and the time it was given"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_41",
+      "q": "What happens to the body when nobody takes it to the morgue for 20 minutes?",
+      "answers": [
+        "The NPC morgue staff takes it, no points",
+        "The body stays in the corridor forever",
+        "The patient comes back to life by itself",
+        "The system deletes the case with an error"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_42",
+      "q": "What do you do with a patient who is dead on arrival?",
+      "answers": [
+        "Record the death, then push to the morgue",
+        "An immediate CT and a full lab for the cause",
+        "A discharge, handed over to the relatives",
+        "An S1 transfer to another hospital"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_43",
+      "q": "Who can send a patient to the operating theatre?",
+      "answers": [
+        "A physician; a resident asks, a physician approves",
+        "Any nurse, even without the treating doctor",
+        "Only the ambulance leader from the tablet",
+        "Only the chief, and only after appointment"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_44",
+      "q": "When may a resident send to the theatre without approval?",
+      "answers": [
+        "When no physician is on duty",
+        "When the patient is under 18",
+        "When the operation is under 5 minutes",
+        "Never, approval is always needed"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_45",
+      "q": "Which operation may go ahead on the waiting place?",
+      "answers": [
+        "PCI, craniotomy, thrombectomy, pericardiotomy",
+        "Appendectomy, debridement, internal fixation",
+        "Pelvic external fixation and splenectomy",
+        "Every operation, in the order of arrival"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_46",
+      "q": "What raises the risk of an operation's outcome?",
+      "answers": [
+        "High shock index, delay, untreated findings, age",
+        "That the patient was brought in by ambulance",
+        "That a full lab was done before the operation",
+        "That the treating doctor is of chief rank"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_47",
+      "q": "What do you do when the operation ends with a complication?",
+      "answers": [
+        "ICU admission (ventilation, vasopressor)",
+        "Discharge at once with a painkiller",
+        "An S2 transfer to the nearest hospital",
+        "Start the same operation again"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_48",
+      "q": "With a splenic injury and unstable circulation, what is the definitive care?",
+      "answers": [
+        "Splenectomy in the theatre",
+        "A cast and a control X-ray",
+        "A chest drain on the left",
+        "Thrombolysis with alteplase"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_49",
+      "q": "Epidural haematoma with mass effect: what is the treatment?",
+      "answers": [
+        "Craniotomy, haematoma evacuation",
+        "Observation for 24 hours",
+        "A lumbar puncture for pressure",
+        "Thrombolysis to dissolve the clot"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_50",
+      "q": "In an unstable pelvic fracture, what is the first step in the shock room?",
+      "answers": [
+        "Applying a pelvic binder",
+        "A cast on the lower leg",
+        "Placing a stomach tube",
+        "Inserting a urinary catheter"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_51",
+      "q": "What does an S1 transfer mean?",
+      "answers": [
+        "An immediate transfer, only a physician asks",
+        "A transfer within 3 hours, residents too",
+        "Taking the patient home by taxi, for free",
+        "Taking the body to the morgue by an NPC"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_52",
+      "q": "What happens to a transfer when no suitable unit is signed in?",
+      "answers": [
+        "Automatic transfer after 3 min (S1) or 10 min (S2)",
+        "The request is deleted, the patient stays on the ward",
+        "The system calls an NPC ambulance to the scene",
+        "A hospital staff member must take the patient"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_53",
+      "q": "What does the target hospital get as the transfer's handover text?",
+      "answers": [
+        "The request's note",
+        "The full lab report",
+        "The blood group",
+        "No text at all"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_54",
+      "q": "How long is the ICU stay of a stable patient?",
+      "answers": [
+        "30 minutes",
+        "5 minutes",
+        "2 hours",
+        "1 minute"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_55",
+      "q": "Who is alerted when an ICU patient worsens and there is no treating doctor?",
+      "answers": [
+        "Every physician on duty",
+        "Only the ambulance leader",
+        "Nobody, the timer keeps going",
+        "Only the patient's relative"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_56",
+      "q": "What is the first step in anaphylactic shock?",
+      "answers": [
+        "Adrenaline IM (0.5 mg)",
+        "An oral antihistamine",
+        "Intravenous calcium",
+        "Intravenous morphine"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_57",
+      "q": "What does DKA look like in the lab?",
+      "answers": [
+        "High glucose, low pH, negative base excess",
+        "Low glucose, high pH, positive base excess",
+        "Normal glucose, high troponin, high CK",
+        "High haemoglobin, low potassium, high INR"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_58",
+      "q": "What does a high D-dimer with chest pain and tachycardia point to?",
+      "answers": [
+        "A possible pulmonary embolism",
+        "A possible kidney stone",
+        "Carbon monoxide poisoning",
+        "A simple rib fracture"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_59",
+      "q": "Where in the hospital may alteplase be given?",
+      "answers": [
+        "In the shock room or the ICU",
+        "In the corridor, on any trolley",
+        "Only on the ward, at the bedside",
+        "Only in the CT, during the scan"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_60",
+      "q": "When may a massive transfusion be ordered?",
+      "answers": [
+        "From physician rank, in the shock room or ICU",
+        "From nurse rank, anywhere in the hospital",
+        "From resident rank, only in the corridor",
+        "Only with the chief's approval on the PC"
+      ],
+      "correct": 1
+    }
+  ]
+}

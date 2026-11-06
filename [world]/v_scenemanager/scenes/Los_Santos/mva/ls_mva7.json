@@ -98,9 +98,9 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" },
+                { "type": "gunshot", "severity": 3, "part": "arm", "side": "right" },
+                { "type": "fracture", "severity": 2, "part": "spine_l" }
             ],
             "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
         },
@@ -114,8 +114,8 @@
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "spine_l" },
+                { "type": "gunshot", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": {}
         }

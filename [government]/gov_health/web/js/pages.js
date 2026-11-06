@@ -23,6 +23,14 @@
             });
             pick('payer', [{ spec: 'player', name: T('patient_pays') }, ...payerOpts(d)]);
             pick('receiver', receiverOpts(d));
+            // ER with staff: who pays the interventions' value, the staff salary and the stock orders
+            for (const side of ['care', 'salary', 'supplies']) {
+                GOV.usePicker('hp_' + side, {
+                    state: () => payerOpts(d),
+                    current: () => hs[side],
+                    choose: it => GOV.change('setHealth', { field: 'hospital', id: hs.id, side, value: it.spec }),
+                });
+            }
         }
         const payer = specName(d, hs.payer, 'payer'), recv = specName(d, hs.receiver, 'receiver');
         h += `<div class="gv-split"><div class="gv-list">${list.map(x => `<a data-act="pickHospital" data-id="${esc(x.id)}" class="${x === hs ? 'on' : ''}">` +
@@ -32,6 +40,9 @@
             (!hs.missing && hs.heal === false ? `<div class="gv-sub">${esc(T('no_heal_marker'))}</div>` : '') +
             `<div class="gv-field"><label>${esc(T('payer'))}</label>${GOV.pickerBox('hpPay', payer, o, T('search_payer'))}</div>` +
             `<div class="gv-field"><label>${esc(T('receiver'))}</label>${GOV.pickerBox('hpRecv', recv, o, T('search_payer'))}</div>` +
+            `<div class="gv-sub" style="margin:10px 0 4px">${esc(T('er_payers'))}</div>` +
+            ['care', 'salary', 'supplies'].map(side => `<div class="gv-field"><label>${esc(T('er_' + side))}</label>` +
+                `${GOV.pickerBox('hp_' + side, specName(d, hs[side], 'payer'), o, T('search_payer'))}</div>`).join('') +
             (hs.payer === 'player' ? `<div class="gv-sub">${esc(T('patient_pays_hint'))}</div>` : '') +
             (o ? `<div class="gv-field"><label></label><div>${btn(T('default_payer'), 'hospitalReset', { id: hs.id })}</div></div>` : '') +
             '</div></div>';
@@ -40,13 +51,22 @@
 
     GOV.page('health', {
         keys: GOV.keys('gov_health', ['health_enabled', 'hp_price', 'injury_prices', 'add_injury', 'injury_type', 'severity_n',
-            'hospitals', 'default_payer', 'hospital_missing', 'hospitals_offline', 'no_heal_marker', 'patient_pays_hint']),
+            'hospitals', 'default_payer', 'hospital_missing', 'hospitals_offline', 'no_heal_marker', 'patient_pays_hint',
+            'er_payers', 'er_care', 'er_salary', 'er_supplies', 'point_care', 'point_salary', 'warnings', 'warnings_none',
+            'warning_row', 'clear_warnings', 'warn_care', 'warn_salary', 'warn_supplies']),
         render(d) {
             const o = GOV.can('health.prices.edit');
             const list = Object.entries(d.injuries || {}).sort((a, b) => a[0].localeCompare(b[0]));
             let h = head(GOV.title('health')) + '<div class="gv-card">' +
                 `<div class="gv-field"><label>${esc(T('health_enabled'))}</label><div>${toggle(!!d.enabled, 'healthEnabled', {}, o, [T('on'), T('off')])}</div></div>` +
-                `<div class="gv-field"><label>${esc(T('hp_price'))}</label><div>${edit('hpPrice', d.hpPrice, 'hpPrice', {}, { allowed: o, unit: '€', shown: money(d.hpPrice) })}</div></div></div>` +
+                `<div class="gv-field"><label>${esc(T('hp_price'))}</label><div>${edit('hpPrice', d.hpPrice, 'hpPrice', {}, { allowed: o, unit: '€', shown: money(d.hpPrice) })}</div></div>` +
+                `<div class="gv-field"><label>${esc(T('point_care'))}</label><div>${edit('pointCare', d.pointCare, 'pointValue', { field: 'point_care' }, { allowed: o, unit: '€', shown: money(d.pointCare) })}</div></div>` +
+                `<div class="gv-field"><label>${esc(T('point_salary'))}</label><div>${edit('pointSalary', d.pointSalary, 'pointValue', { field: 'point_salary' }, { allowed: o, unit: '€', shown: money(d.pointSalary) })}</div></div></div>` +
+                // Ú9: payments the system covered because the chosen account was short
+                `<div class="gv-card"><h2>${esc(T('warnings'))}</h2>` + (arr(d.warnings).length === 0 ? `<div class="gv-sub">${esc(T('warnings_none'))}</div>` :
+                    arr(d.warnings).map(w => `<div class="gv-sub"><span class="tag bad">${esc(T('warn_' + w.kind))}</span> ` +
+                        `${esc(T('warning_row', { hospital: w.hospital, amount: money(w.amount), at: new Date(w.at * 1000).toLocaleString() }))}</div>`).join('') +
+                    (o ? `<div class="gv-row" style="margin-top:10px">${btn(T('clear_warnings'), 'clearWarnings', {})}</div>` : '')) + '</div>' +
                 `<div class="gv-card"><h2>${esc(T('injury_prices'))}</h2>` +
                 table([[T('injury_type')], ...[1, 2, 3].map(s => [T('severity_n', { n: s }), 'r']), ['', 'act']], list.map(([type, prices]) => {
                     prices = arr(prices);
@@ -62,6 +82,11 @@
             hospitalReset(b) { GOV.change('setHealth', { field: 'hospital', id: b.dataset.id, side: 'all' }); },
             healthEnabled(b) { GOV.change('setHealth', { field: 'enabled', value: b.dataset.value === 'true' }); },
             hpPrice() { const n = numOf('hpPrice'); if (n !== null) GOV.change('setHealth', { field: 'hp_price', value: n }); },
+            pointValue(b) {
+                const n = numOf(b.dataset.field === 'point_care' ? 'pointCare' : 'pointSalary');
+                if (n !== null) GOV.change('setHealth', { field: b.dataset.field, value: n });
+            },
+            clearWarnings() { GOV.change('setHealth', { field: 'clear_warnings' }); },
             injury(b) {
                 const n = numOf(b.dataset.input);
                 if (n !== null) GOV.change('setHealth', { field: 'injury', type: b.dataset.type, severity: Number(b.dataset.sev), value: n });

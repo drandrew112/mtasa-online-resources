@@ -38,7 +38,7 @@
             "anim": "lean",
             "role": "patient",
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                { "type": "stroke", "severity": 2, "part": "head", "side": "right" }
             ],
             "state": { "systolic": 182 }
         }

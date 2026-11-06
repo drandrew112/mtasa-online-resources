@@ -202,9 +202,28 @@ local function pedItems(session, entry)
     end
     local injuries = { { label = T(session, "v_scenemanager.ped.add_injury"), items = addInjury } }
     for i, inj in ipairs(entry.injuries) do
+        -- one submenu per injury: body part, side, remove
+        local partDef = inj.part and VSM_PART_BY_ID[inj.part]
+        local where = partDef and T(session, partDef.label) or T(session, "v_scenemanager.ped.part_none")
+        if partDef and inj.side then where = T(session, "medsys.body." .. inj.side) .. " " .. where end
+        local sub = {}
+        if not VSM_SYSTEMIC[inj.type] then
+            local parts = {}
+            for _, p in ipairs(VSM_PARTS) do
+                parts[#parts + 1] = { label = mark(inj.part == p.id, T(session, p.label)), value = { a = "injpart", i = i, p = p.id }, closeOnSelect = false }
+            end
+            sub[#sub + 1] = { label = T(session, "v_scenemanager.ped.part", { part = where }), items = parts }
+            if partDef and partDef.sided then
+                for _, sd in ipairs({ "left", "right" }) do
+                    sub[#sub + 1] = { label = mark(inj.side == sd, T(session, "medsys.body." .. sd)), value = { a = "injside", i = i, s = sd }, closeOnSelect = false }
+                end
+            end
+        end
+        sub[#sub + 1] = { label = T(session, "v_scenemanager.ped.remove"), value = { a = "uninjure", i = i }, closeOnSelect = false }
         injuries[#injuries + 1] = {
-            label = T(session, "v_scenemanager.ped.remove_injury", { injury = T(session, vsmInjuryLabel(inj.type)), severity = T(session, VSM_SEVERITY[inj.severity] or "?") }),
-            value = { a = "uninjure", i = i }, closeOnSelect = false,
+            label = T(session, "v_scenemanager.ped.injury_entry", { injury = T(session, vsmInjuryLabel(inj.type)),
+                severity = T(session, VSM_SEVERITY[inj.severity] or "?"), part = VSM_SYSTEMIC[inj.type] and "-" or where }),
+            items = sub,
         }
     end
     if #entry.injuries > 0 then
@@ -682,7 +701,27 @@ local PED = {
     injury = function(session, entry, ped, value)
         local sev = tonumber(value.s)
         if not sev or sev < 1 or sev > 3 then return true end
-        entry.injuries[#entry.injuries + 1] = { type = tostring(value.t), severity = sev }
+        local inj = { type = tostring(value.t), severity = sev }
+        -- a body part right away (medsys picks it by type and the scene category); editable after
+        if not VSM_SYSTEMIC[inj.type] and vsmResourceRunning(VSM.MEDSYS) then
+            local ok, part, side = pcall(function()
+                return exports[VSM.MEDSYS]:resolveInjuryPart(inj.type, nil, nil, VSM_CATEGORY_CAUSE[session.scene and session.scene.data and session.scene.data.category or ""])
+            end)
+            if ok and VSM_PART_BY_ID[part] then inj.part, inj.side = part, side end
+        end
+        entry.injuries[#entry.injuries + 1] = inj
+    end,
+    injpart = function(session, entry, ped, value)
+        local inj = entry.injuries[tonumber(value.i) or 0]
+        local p = VSM_PART_BY_ID[value.p]
+        if not inj or not p then return true end
+        inj.part = p.id
+        if not p.sided then inj.side = nil elseif inj.side ~= "left" and inj.side ~= "right" then inj.side = "left" end
+    end,
+    injside = function(session, entry, ped, value)
+        local inj = entry.injuries[tonumber(value.i) or 0]
+        if not inj or not VSM_PART_BY_ID[inj.part] or not VSM_PART_BY_ID[inj.part].sided then return true end
+        if value.s == "left" or value.s == "right" then inj.side = value.s end
     end,
     uninjure = function(session, entry, ped, value)
         local i = tonumber(value.i)

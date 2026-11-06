@@ -38,8 +38,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "spine_l" },
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "pain": 52 }
         }

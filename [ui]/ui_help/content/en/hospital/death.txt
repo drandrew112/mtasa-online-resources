@@ -1,0 +1,10 @@
+# Death and the morgue
+@keywords: dead, death, morgue, death certificate, icd, morgue staff
+@related: hospital_docs, hospital_surgery
+
+1. A **physician** records the death: the time, the **cause with an ICD code** (e.g. R9600, I4610), the circumstances.
+2. The body stays on the trolley and can be pushed; take it to the **morgue drop point**.
+3. At the drop the **death certificate** is written.
+
+- Dead on arrival by ambulance: a "dead" case on the hospital trolley.
+- Nobody takes it to the morgue for 20 minutes: the NPC morgue staff takes it, no points.

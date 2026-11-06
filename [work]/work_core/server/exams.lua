@@ -139,6 +139,13 @@ local function examState(player, c, examId)
     local def = target.kind == "rank" and c.rankById[target.comp] or c.certById[target.comp]
     local ok, missing = I.hasAll(player, c, def.requires)
     if not ok then return "locked", L.forPlayer(player, "work_core.exam.needs", { need = compDisplayName(c, missing) }) end
+    if c.examCheck and c.owner then
+        local res = getResourceFromName(c.owner)
+        if res and getResourceState(res) == "running" then
+            local okCall, okExam, why = pcall(function() return exports[c.owner][c.examCheck](exports[c.owner], player, examId) end)
+            if okCall and okExam == false then return "locked", tostring(why or L.forPlayer(player, "work_core.exam.not_available")) end
+        end
+    end
     if def.exactRank then
         local top = I.topRank(player, c)
         if not top or top.id ~= def.exactRank then

@@ -38,7 +38,7 @@
             "anim": "ko_front",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                { "type": "gunshot", "severity": 2, "part": "abdomen", "side": "right" }
             ],
             "state": { "bloodVolume": 4304, "pain": 33 }
         }

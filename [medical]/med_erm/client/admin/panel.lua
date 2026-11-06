@@ -186,7 +186,7 @@ local function drawTaskRow(r, x, y, w, h)
     local c = TASK_COLS
     local cx, cw
     cx, cw = col(c, 1); Gfx.text("#" .. r.id, x + cx, y, cw, h, Theme.faint, Gfx.font(9, true))
-    cx, cw = col(c, 2); Gfx.priorityBadge(x + cx, y + (h - s(18)) / 2, s(30), s(18), r.priority > 0 and r.priority or nil)
+    cx, cw = col(c, 2); Gfx.priorityBadge(x + cx, y + (h - s(18)) / 2, s(30), s(18), r.priority > 0 and r.priority or nil, r.meta)
     cx, cw = col(c, 3); Gfx.text(Gfx.fit(r.title, cw - s(8), Gfx.font(10)), x + cx, y, cw, h, Theme.text, Gfx.font(10))
     cx, cw = col(c, 4)
     pill(AdminStatusLabel[r.status] or r.status, x + cx, y + (h - s(18)) / 2, s(92), s(18), AdminStatusColor[r.status] or { 110, 118, 130 })

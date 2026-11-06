@@ -75,7 +75,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" }
             ],
             "state": { "pain": 60, "consciousness": "dazed" }
         },
@@ -89,8 +89,8 @@
             "vehicle": "v1",
             "seat": 1,
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "leg", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "abdomen", "side": "right" }
             ],
             "state": {}
         }

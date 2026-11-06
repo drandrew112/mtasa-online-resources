@@ -1,0 +1,12 @@
+# 12-lead ECG
+@keywords: ecg, 12 lead, stemi, electrode, rhythm, eMedia
+@related: hospital_stemi, hospital_shock
+
+The 12-lead ECG is taken in the **shock room** (the ECG machine is there); in an ALS ambulance from B+ competence too.
+
+- Drag the electrodes from the tray onto the patient. As a **nurse or resident** their spots are labelled, and the spot of the electrode in your hand is highlighted.
+- Swapped arm electrodes: negative lead I.
+- A wrong chest electrode: a distorted R progression.
+- The report gives the machine reading, the measured values (PR, QRS, QT, axis) and the 12 leads.
+
+![220](content/images/hospital/ecg_stemi_inf.jpg)

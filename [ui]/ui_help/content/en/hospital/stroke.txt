@@ -1,0 +1,10 @@
+# Stroke
+@keywords: stroke, lysis, alteplase, nihss, ct, last seen well, thrombectomy
+@related: hospital_ct, hospital_surgery
+
+1. **Last seen well** in the history, **NIHSS** in the examination.
+2. **Head CT** to rule out bleeding.
+3. **Alteplase:** 0.9 mg/kg (max 90 mg, 10% bolus) **within 4.5 clinical hours (45 minutes)**, physician, shock room.
+4. Large vessel occlusion: **mechanical thrombectomy** (theatre).
+
+>! Lysing a haemorrhagic stroke makes the patient much worse.

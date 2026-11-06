@@ -1,0 +1,9 @@
+# Cast room
+@keywords: cast, reduction, fracture, sling, circulation, x-ray
+@related: hospital_xray, hospital_wound
+
+1. **X-ray** (mandatory).
+2. **Reduction** of a displaced fracture (minigame) – pain relief first.
+3. **Cast** (minigame). A cast that is too tight must be redone.
+4. Check **circulation, movement, sensation**; a **sling** for the arm.
+5. **Control X-ray** in the cast.

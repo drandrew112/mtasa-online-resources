@@ -1,0 +1,9 @@
+# Transfer (S1/S2)
+@keywords: transfer, s1, s2, transport, als, patient pickup, erm
+@related: hospital_pathway, hospital_docs
+
+- **S1:** immediate (a physician asks). **S2:** within 30 minutes (from resident).
+- Needs: oxygen, syringe pump, ventilation, monitor → only an **ALS / DOC / HELI** unit.
+- Target hospital and a **note**: the target's handover text is made from it.
+- **A suitable unit is signed in:** an ERM task (S1 purple, S2 light purple badge). The crew pushes its empty trolley next to the hospital one at the **"Patient pickup"** marker (5 s).
+- **No unit:** an automatic transfer after 3 minutes (S1) or 10 minutes (S2).

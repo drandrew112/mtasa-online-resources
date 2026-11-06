@@ -123,6 +123,8 @@ end
 -- medsys medic role (work_ems gives it on duty): with the role required only medics can be
 -- unit members. Without medsys nothing is required.
 local function hasMedicAccess(player)
+    -- hospital staff (work_hospital) have the medsys medic role too, but they are not EMS crew
+    if getElementData(player, "hosp.staff") then return false end
     local res = getResourceFromName("medsys")
     if not res or getResourceState(res) ~= "running" then return true end
     return exports.medsys:hasMedicAccess(player) == true

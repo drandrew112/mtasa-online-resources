@@ -38,9 +38,9 @@
             "anim": "ko_front",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 3, "part": "chest", "side": "left" },
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": { "bloodVolume": 4300, "consciousness": "dazed" }
         }

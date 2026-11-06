@@ -1,0 +1,9 @@
+# STEMI
+@keywords: stemi, nstemi, acs, infarction, pci, lysis, nitrate, troponin
+@related: hospital_ecg, hospital_surgery
+
+- **12-lead ECG** at once; troponin in the cardiac lab.
+- **Inferior STEMI:** ST elevation in II, III, aVF; risk of AV block; **no nitrate** (the BP falls).
+- **Anterior STEMI:** V1–V4; risk of ventricular fibrillation.
+- Treatment: aspirin, clopidogrel, heparin, then **primary PCI** (theatre, goes first) or lysis.
+- The heart muscle dies until reperfusion: every minute counts.

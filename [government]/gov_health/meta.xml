@@ -17,6 +17,10 @@
     <!-- med_hospitals -->
     <export function="healthcareCost" type="server" />
     <export function="chargeHealthcare" type="server" />
+    <export function="payHospitalCare" type="server" />
+    <export function="payHospitalSupplies" type="server" />
+    <export function="getHospitalSalaryPayer" type="server" />
+    <export function="getHospitalPointValues" type="server" />
     <export function="getHealthcarePayer" type="server" />
     <export function="isHealthcarePaidByPatient" type="server" />
 

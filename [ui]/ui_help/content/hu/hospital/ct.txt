@@ -1,0 +1,11 @@
+# CT
+@keywords: ct, várólista, gantry, koponya ct, mellkas, has, fali monitor
+@related: hospital_xray, hospital_orders
+
+- Egyszerre **egy beteg**; a többiek **várólistán**, az 1-es triage előre kerül.
+- A hordágyat a CT-asztal melletti helyre tolod, a beteg a hordággyal **becsúszik** a gantryba.
+- A kép a lelet-nézőben és a CT **fali monitorán** jelenik meg.
+
+![220](content/images/hospital/ct_edh.jpg)
+
+Epidurális vérzés (bikonvex, hiperdenz gyülem): sürgős craniotomia kell.

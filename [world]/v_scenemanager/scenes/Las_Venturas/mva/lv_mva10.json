@@ -77,7 +77,7 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": {}
         }

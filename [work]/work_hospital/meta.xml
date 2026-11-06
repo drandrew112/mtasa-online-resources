@@ -1,0 +1,31 @@
+<meta>
+    <info author="DrAndrew112" name="work_hospital" version="1.0.0" type="script"
+          description="Hospital (ER) work on work_core: duty = medsys medic role + hosp.staff, ranks Ápoló / Rezidens / Orvos / Főorvos, exams, intervention points paid at duty end" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/tutorial.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/main.lua" type="server" />
+    <script src="server/tutorial.lua" type="server" /> <!-- first duty: walk through the ER, Ápoló rank at the end -->
+    <script src="client/tutorial.lua" type="client" />
+    <!-- exam files exams/<lang>/<id>.json are read by the server -->
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="isHospitalStaff"   type="server" />
+    <export function="getHospitalStaff"  type="server" />
+    <export function="addHospitalPoints" type="server" />
+    <export function="checkHospitalExam" type="server" />
+    <export function="addHospitalTreatedCase" type="server" />
+    <export function="getHospitalPoints" type="server" />
+    <export function="canStaffPerform"   type="server" />
+    <export function="getHospitalWorkId" type="server" />
+
+    <!-- ================= DEPENDENCIES ================= -->
+    <include resource="work_core" />
+    <include resource="medsys" />
+</meta>

@@ -164,7 +164,15 @@ function Gfx.button(x, y, w, h, label, opt, onClick)
     return hov
 end
 
-function Gfx.priorityBadge(x, y, w, h, priority)
+-- meta: the task meta; a hospital transfer (meta.transferClass) shows S1 (purple) / S2 (light purple)
+local TRANSFER_COLORS = { S1 = { 150, 80, 220 }, S2 = { 195, 165, 240 } }
+function Gfx.priorityBadge(x, y, w, h, priority, meta)
+    local tc = type(meta) == "table" and meta.transferClass
+    if tc and TRANSFER_COLORS[tc] then
+        Gfx.round(x, y, w, h, Gfx.s(4), Gfx.rgb(TRANSFER_COLORS[tc]))
+        Gfx.text(tc, x, y, w, h, tocolor(15, 15, 15), Gfx.font(10, true), "center")
+        return
+    end
     local c = Config.PRIORITY_COLORS[priority]
     if c then
         Gfx.round(x, y, w, h, Gfx.s(4), Gfx.rgb(c))

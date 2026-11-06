@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="mg_chestdrain" version="1.0" type="script" description="Chest drain insertion minigame (safe triangle, incision, dissection, tube), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared.lua" type="shared" />
+    <script src="kit/client.lua" type="client" />
+    <script src="client.lua" type="client" />
+    <script src="kit/server.lua" type="server" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onChestDrainGameFinish -->
+    <export function="startChestDrainGame" type="server" />
+    <export function="stopChestDrainGame" type="server" />
+    <export function="isChestDrainGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientChestDrainGameFinish -->
+    <export function="startChestDrainGame" type="client" />
+    <export function="stopChestDrainGame" type="client" />
+    <export function="isChestDrainGameActive" type="client" />
+</meta>

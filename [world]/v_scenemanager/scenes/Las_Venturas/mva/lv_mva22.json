@@ -75,8 +75,8 @@
             "anim": "injured",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "head_injury", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "leg", "side": "right" },
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "bloodVolume": 4250, "consciousness": "confused" }
         }

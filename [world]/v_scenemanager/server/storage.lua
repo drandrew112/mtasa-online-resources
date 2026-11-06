@@ -292,7 +292,10 @@ function Storage.normalize(data, name)
                 local sev = math.floor(num(inj.severity or inj[2], 0))
                 local typ = inj.type or inj[1]
                 if typ and sev >= 1 and sev <= 3 then
-                    entry.injuries[#entry.injuries + 1] = { type = tostring(typ), severity = sev }
+                    -- body part + side (medsys shared/body.lua), kept when valid
+                    local part = VSM_PART_BY_ID[inj.part] and inj.part or nil
+                    local side = part and VSM_PART_BY_ID[part].sided and (inj.side == "left" or inj.side == "right") and inj.side or nil
+                    entry.injuries[#entry.injuries + 1] = { type = tostring(typ), severity = sev, part = part, side = side }
                 end
             end
             entry.state = type(p.state) == "table" and p.state or {}

@@ -16,6 +16,7 @@ addEvent("onStretcherPushStop")      -- (player)
 addEvent("onStretcherTakeOut")       -- (player, vehicle, patient|false)  the slide out begins
 addEvent("onStretcherLoadStart")     -- (player, vehicle, patient|false)  the slide in begins
 addEvent("onStretcherLoaded")        -- (player, vehicle, patient|false)  stowed, the patient seated
+addEvent("onStretcherSettled")       -- (player|false)  put down on the ground (released, created, parked)
 
 local D = STRETCHER_DATA
 
@@ -58,7 +59,7 @@ end
 -- server-side position of an attached element is not reliable.
 local function stretcherPosition(s)
     if s.state == "pushing" and isElement(s.pusher) then
-        local o = STRETCHER.PUSH_OFFSET
+        local o = stretcherSetting(s.object, "PUSH_OFFSET")
         return offsetOf(s.pusher, o[1], o[2], o[3])
     end
     return getElementPosition(s.object)
@@ -76,7 +77,7 @@ end
 local function stretcherYaw(s)
     if s.state == "pushing" and isElement(s.pusher) then
         local _, _, rz = getElementRotation(s.pusher)
-        return rz + STRETCHER.PUSH_OFFSET[6]
+        return rz + stretcherSetting(s.object, "PUSH_OFFSET")[6]
     end
     local _, _, rz = getElementRotation(s.object)
     return rz
@@ -118,6 +119,7 @@ end
 
 local function setState(s, state)
     s.state = state
+    s.lastUsed = getTickCount()
     setElementData(s.object, D.STATE, state)
     onStretcherChanged(s)
 end
@@ -190,11 +192,12 @@ function putPatient(s, ped)
     setElementDimension(ped, getElementDimension(s.object))
     setElementInterior(ped, getElementInterior(s.object))
 
-    local o = STRETCHER.PATIENT_OFFSET
+    local o = stretcherSetting(s.object, "PATIENT_OFFSET")
     attachElements(ped, s.object, o[1], o[2], o[3], o[4], o[5], o[6])
     playPatientAnim(ped)
 
     s.patient = ped
+    s.lastUsed = getTickCount()
     patientOf[ped] = s.object
     setElementData(s.object, D.PATIENT, ped)
     setElementData(ped, D.ON, s.object)
@@ -206,6 +209,7 @@ function removePatient(s, place)
     local ped = s.patient
     if not ped then return end
     s.patient = nil
+    s.lastUsed = getTickCount()
     patientOf[ped] = nil
     if isElement(s.object) then removeElementData(s.object, D.PATIENT) end
     if isElement(ped) then
@@ -288,6 +292,7 @@ local function settle(s, snapper)
     setElementFrozen(obj, true)
     setState(s, "ground")
     if isElement(snapper) then triggerClientEvent(snapper, "stretcher:snap", resourceRoot, obj) end
+    triggerEvent("onStretcherSettled", obj, isElement(snapper) and snapper or false)
 end
 
 addEventHandler("stretcher:snapResult", resourceRoot, function(obj, z)
@@ -441,7 +446,7 @@ function startPushing(s, player)
     local obj = s.object
     setElementFrozen(obj, false)
     setElementCollisionsEnabled(obj, false)
-    local o = STRETCHER.PUSH_OFFSET
+    local o = stretcherSetting(obj, "PUSH_OFFSET")
     attachElements(obj, player, o[1], o[2], o[3], o[4], o[5], o[6])
 
     s.pusher = player
@@ -460,8 +465,8 @@ function releaseStretcher(s)
     local _, _, rz = getElementRotation(isElement(pusher) and pusher or obj)
     clearPusher(s)
     if isElementAttached(obj) then detachElements(obj) end
-    setElementPosition(obj, x, y, z - STRETCHER.PUSH_OFFSET[3] - STRETCHER.PED_HEIGHT + STRETCHER.GROUND_Z)
-    setElementRotation(obj, 0, 0, (rz + STRETCHER.GROUND_ROT_Z) % 360)
+    setElementPosition(obj, x, y, z - stretcherSetting(obj, "PUSH_OFFSET")[3] - STRETCHER.PED_HEIGHT + stretcherSetting(obj, "GROUND_Z"))
+    setElementRotation(obj, 0, 0, (rz + stretcherSetting(obj, "GROUND_ROT_Z")) % 360)
     settle(s, pusher)
     return true
 end
@@ -497,6 +502,43 @@ local function destroyStretcher(obj, destroying)
     unlockSeated(s)
     onStretcherDestroyed(s)
     if not destroying and isElement(obj) then destroyElement(obj) end
+end
+
+-- A stretcher without a vehicle (hospital stretcher, server/hospital.lua): stands on the ground at
+-- floorZ, can be pushed and carry a patient, never stowed / loaded. info = { hospital = id }
+function createFreeStretcher(x, y, floorZ, rz, dim, int, info)
+    local model = info and info.model or STRETCHER.OBJECT_MODEL
+    local obj = createObject(model, x, y, floorZ + stretcherSetting(model, "GROUND_Z"), 0, 0, ((rz or 0) + (stretcherSetting(model, "YAW") or 0)) % 360)
+    if not obj then return false end
+    setElementDimension(obj, dim or 0)
+    setElementInterior(obj, int or 0)
+    local s = { object = obj, state = "ground", hospital = info and info.hospital or true, lastUsed = getTickCount(),
+                fixed = info and info.fixed or nil }   -- fixed: a ward / ICU bed (never pushed, never removed)
+    Stretchers[obj] = s
+    setElementData(obj, D.HOSPITAL, s.hospital)
+    if s.fixed then setElementData(obj, "stretcher.fixed", true) end
+    onStretcherCreated(s)
+    settle(s, nil)
+    return obj
+end
+
+function destroyFreeStretcher(obj)
+    local s = Stretchers[obj]
+    if not s or not s.hospital then return false end
+    destroyStretcher(obj)
+    return true
+end
+
+-- Puts a free stretcher down at an exact spot (bay, ward); a pusher lets go first.
+function parkFreeStretcher(obj, x, y, floorZ, rz)
+    local s = Stretchers[obj]
+    if not s or not s.hospital or s.state == "moving" then return false end
+    clearPusher(s)
+    if isElementAttached(obj) then detachElements(obj) end
+    setElementPosition(obj, x, y, floorZ + stretcherSetting(obj, "GROUND_Z"))
+    setElementRotation(obj, 0, 0, ((rz or 0) + (stretcherSetting(obj, "YAW") or 0)) % 360)
+    settle(s, nil)
+    return true
 end
 
 -- A stretcher model with an equipment level (work_ems vehicles only, shared/equipment.lua)

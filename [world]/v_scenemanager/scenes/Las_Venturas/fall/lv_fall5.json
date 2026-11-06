@@ -38,9 +38,9 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" },
                 { "type": "alcohol", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "right" }
             ],
             "state": { "consciousness": "confused" }
         }

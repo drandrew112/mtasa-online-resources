@@ -180,13 +180,20 @@ end
 -- Injuries + preset vitals through medsys. Only for live scenes (the editor never
 -- starts a simulation). rolled: the ped's rolled record values (Npc.roll): its alcohol / drug becomes the
 -- matching medsys condition too, so the medic finds what the police find. Returns false when medsys is not running.
-function Builder.applyMedical(ped, entry, rolled)
+-- category: the scene category (its cause decides the body part of an injury without a stored part)
+function Builder.applyMedical(ped, entry, rolled, category)
     if not isElement(ped) or not vsmResourceRunning(VSM.MEDSYS) then return false end
     local medsys = exports[VSM.MEDSYS]
     local has = {}
+    local cause = category and VSM_CATEGORY_CAUSE[category] or nil
     for _, injury in ipairs(entry.injuries or {}) do
-        medsys:applyInjury(ped, injury.type, injury.severity)
+        medsys:applyInjury(ped, injury.type, injury.severity, injury.part, injury.side, cause)
         has[injury.type] = true
+    end
+    -- the medical scene categories that have a hospital condition now (medsys conditions)
+    if category == "heartattack" and not has.acs then medsys:applyInjury(ped, "acs", 2) has.acs = true end
+    if category == "diabetes" and not has.dka and type(entry.state) == "table" and (tonumber(entry.state.glucose) or 0) > 300 then
+        medsys:applyInjury(ped, "dka", 2) has.dka = true
     end
     if rolled then
         local sev = bacSeverity(rolled.bac)

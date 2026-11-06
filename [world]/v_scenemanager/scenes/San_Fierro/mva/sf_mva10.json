@@ -98,8 +98,8 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "arm", "side": "left" },
+                { "type": "gunshot", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": { "consciousness": "dazed" }
         },
@@ -113,7 +113,7 @@
             "vehicle": "v2",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" }
             ],
             "state": { "pain": 60, "consciousness": "dazed" }
         }

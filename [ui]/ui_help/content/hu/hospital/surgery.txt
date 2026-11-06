@@ -1,0 +1,12 @@
+# Műtő
+@keywords: műtő, műtét, npc sebész, jóváhagyás, várakozó hely, pci, craniotomia, szövődmény
+@related: hospital_icu, hospital_death, hospital_stemi
+
+A műtétet NPC sebész végzi (3–10 perc), egyszerre egy beteget.
+
+- **Ki küldhet:** Orvos. A Rezidens **kérheti**, egy Orvos jóváhagyja (betegpanel vagy PC Osztály oldal). Ha nincs Orvos szolgálatban, a Rezidens is küldhet.
+- **Indikáció:** megerősített sebészeti lelet (CT, FAST, röntgen). Thoracotomia: drénen több mint 1500 ml.
+- A hordágyat a **műtő átadó pontjára** tolod → 5 s. Ha foglalt, a beteg a **várakozó helyen** marad; a PCI, craniotomia, trombectomia és pericardiotomia előre sorolódik.
+- A marker és a PC mutatja a hátralévő időt.
+- **Kimenetel** (a kezdetkor dől el): siker, **szövődmény** (intenzív kell) vagy halál. Számít a sokk-index, a késés, a transzfúzió, a kezeletlen leletek és az életkor.
+- A beteg a „műtét után” ponton jön ki egy új hordágyon. Műtéti leírás készül.

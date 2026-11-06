@@ -1,0 +1,12 @@
+# Documents
+@keywords: document, ambulatory sheet, report, case sheet, operative note, death certificate, version
+@related: hospital_pathway, hospital_death
+
+The **Document archive** window of the hospital computer (desktop icon, Start menu or the "Patient documents" button of the chart) shows the documents. Scrolling: mouse wheel, dragging the scrollbar, `PgUp` / `PgDn`, `Home` / `End`.
+
+- **Ambulatory sheet:** header, number, patient, arrival, history, status, interventions (code, qty, points), diagnoses with dates, epicrisis, related documents, outcome, signature. A new version after a take-back.
+- **Reports:** lab (with an explanation box), CT, X-ray, ultrasound, ECG.
+- **EMS case sheet:** the leader may edit it for **15 minutes**, later only the EMS chief.
+- **Operative note**, **death certificate**.
+
+> A document is stored in its author's language; the coded parts show in the reader's language.

@@ -200,6 +200,12 @@ local SETTERS = {
 -- ends it), a sinus one moves the resting pulse into its
 -- range (bradycardia < 60, tachycardia > 100) when it is outside. A patient already in cardiac
 -- arrest only takes a pulseless rhythm: a rhythm with a pulse sets ASYSTOLE instead.
+-- the patient takes an anticoagulant (labs: high INR / APTT; bleeds longer). true / false
+SETTERS.anticoagulant = function(state, value)
+    state.anticoagulant = value == true or nil
+    return true
+end
+
 SETTERS.rhythm = function(state, value)
     local def = MEDIC_RHYTHMS[value]
     if not def then return false end
@@ -254,7 +260,9 @@ end
 -- "burn", "suffocation", "head_injury", "stroke", "opioid", "sedative", "stimulant", "alcohol",
 -- "postictal", "asthma", "copd", "pulmonary_edema"),
 -- severity: 1-3 or "minor" | "serious" | "critical". Returns the injury id, or false.
-function applyInjury(element, injuryType, severity)
+-- part / side / cause are optional (shared/body.lua): a missing part is picked by the injury type
+-- (and the cause), a missing side at random. -> injury id | false
+function applyInjury(element, injuryType, severity, part, side, cause)
     local def = MEDIC_INJURIES[injuryType]
     severity = medicNormalizeSeverity(severity)
     if not def or not severity or not isValidPatient(element) or isPedDead(element) then return false end
@@ -271,14 +279,22 @@ function applyInjury(element, injuryType, severity)
         bleeding = def.bleed[severity],
         treated = false,
         tick = getTickCount(),
-        side = injuryType == "stroke" and (math.random() < 0.5 and "left" or "right") or nil,
     }
+    local injury = state.injuries[#state.injuries]
+    injury.part, injury.side = medicResolvePart(injuryType, part, side, cause)
+    injury.cause = type(cause) == "string" and cause or nil
+    if injuryType == "stroke" and not injury.side then injury.side = math.random() < 0.5 and "left" or "right" end
     -- an airway that is already secured covers a new suffocation cause
     if injuryType == "suffocation" and state.intubated then
         state.injuries[#state.injuries].treated = true
     end
     triggerEvent("onMedicalInjury", element, injuryType, severity, id)
     return id
+end
+
+-- The body part an injury would get (editors: v_scenemanager). -> part, side (nil = systemic)
+function resolveInjuryPart(injuryType, part, side, cause)
+    return medicResolvePart(injuryType, part, side, cause)
 end
 
 -- Resets every parameter to the baseline and drops the element from the registry.

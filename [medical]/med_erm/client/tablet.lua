@@ -105,6 +105,7 @@ local function drawMenu(screen)
             { L("med_erm.home.home"),        function() Tablet.setPage("home") end,     "home" },
             { L("med_erm.case.active_case"), function() Tablet.setPage("case") end,     "case" },
             { L("med_erm.messages.messages"),    function() Tablet.setPage("messages") end, "messages", State.unread },
+            { L("med_erm.hospital.page_title"), function() Tablet.setPage("hospital") end, "hospital" },
             false,
             { L("med_erm.tablet.end_shift"), function()
                 Tablet.menu = false
@@ -276,6 +277,9 @@ end)
 -- medsys medic role: with the role required, only medics can open the tablet and be added
 -- to a crew. Without medsys nothing is required. UI only, the server checks it on sign-in.
 function Tablet.hasMedicRole(player)
+    -- hospital staff (work_hospital, element data hosp.staff) use the hospital tablet (med_hospitals)
+    -- on the same J key: the EMS tablet stays silent for them
+    if getElementData(player or localPlayer, "hosp.staff") then return false end
     local res = getResourceFromName("medsys")
     if not res or getResourceState(res) ~= "running" then return true end
     return exports.medsys:hasMedicAccess(player or localPlayer) == true

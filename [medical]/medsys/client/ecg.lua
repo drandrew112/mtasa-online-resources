@@ -83,6 +83,25 @@ local function vfWave(t)
     return v * (0.55 + 0.45 * math.sin(TWO_PI * 0.31 * t)) * 0.75 + (math.random() - 0.5) * 0.06
 end
 
+-- atrial fibrillation: no P wave, a fine irregular baseline (the RR is irregular, see generateSample)
+local function afibWave(tb, rr, t)
+    local base = 0.035 * math.sin(TWO_PI * 6.3 * t) + 0.025 * math.sin(TWO_PI * 8.7 * t + 1.1)
+    if tb < 0.09 then return sinusWave(tb, rr) + base end
+    local tStart, tLength = 0.09 + math.min(0.13, rr * 0.15), math.min(0.18, rr * 0.3)
+    if tb >= tStart and tb < tStart + tLength then return 0.25 * math.sin(math.pi * (tb - tStart) / tLength) + base end
+    return base
+end
+
+-- complete AV block: a slow, broad escape complex and P waves marching through on their own (80 / min)
+local function avb3Wave(tb, rr, t)
+    local v = 0
+    if tb < 0.16 then v = 0.8 * math.sin(math.pi * tb / 0.16)
+    elseif tb < 0.42 then v = -0.25 * math.sin(math.pi * (tb - 0.16) / 0.26) end
+    local pt = t % 0.75
+    if pt < 0.09 then v = v + 0.13 * math.sin(math.pi * pt / 0.09) end
+    return v
+end
+
 local function flatWave(t)
     return 0.025 * math.sin(TWO_PI * 0.25 * t) + (math.random() - 0.5) * 0.02
 end
@@ -102,8 +121,9 @@ end
 -- Generator
 ---------------------------------------------------------------------------
 
-local BEATING = { sinus = true, svt = true, vt = true, pea = true }
-local BEEPING = { sinus = true, svt = true, vt = true } -- the monitor detects these as QRS complexes (PEA: no)
+local BEATING = { sinus = true, svt = true, vt = true, pea = true, afib = true, avb3 = true }
+local BEEPING = { sinus = true, svt = true, vt = true, afib = true, avb3 = true } -- the monitor detects these as QRS complexes (PEA: no)
+local irregular = 1   -- AFIB: the length factor of the current beat
 local PLETH_GAIN = { svt = 0.7, vt = 0.4 } -- a too fast heart pumps less per beat
 
 local function onBeat()
@@ -119,9 +139,11 @@ local function generateSample()
     local ecg, pleth = 0, 0
     if BEATING[wave] and rate > 0 then
         local rr = 60 / rate
+        if wave == "afib" then rr = rr * irregular end
         beatTime = beatTime + DT
         if beatTime >= rr - DT / 2 then
             beatTime = 0 -- a new beat starts on this sample: same shape for every complex
+            if wave == "afib" then irregular = 0.62 + math.random() * 0.76 end
             if BEEPING[wave] then onBeat() end
         end
         if wave == "sinus" then
@@ -130,6 +152,10 @@ local function generateSample()
             ecg = svtWave(beatTime, rr)
         elseif wave == "vt" then
             ecg = vtWave(beatTime, rr)
+        elseif wave == "afib" then
+            ecg = afibWave(beatTime, rr, signalTime)
+        elseif wave == "avb3" then
+            ecg = avb3Wave(beatTime, rr, signalTime)
         else
             ecg = peaWave(beatTime)
         end

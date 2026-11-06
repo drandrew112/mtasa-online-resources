@@ -96,8 +96,8 @@
             "anim": "ko_front",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 }
+                { "type": "fracture", "severity": 3, "part": "chest", "side": "left" },
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" }
             ],
             "state": { "consciousness": "unconscious" }
         }

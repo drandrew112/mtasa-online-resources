@@ -96,7 +96,7 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" }
             ],
             "state": { "pain": 60, "consciousness": "dazed" }
         }

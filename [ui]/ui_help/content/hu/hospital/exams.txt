@@ -1,0 +1,17 @@
+# Szolgálat és rangok
+@keywords: rang, ápoló, rezidens, orvos, főorvos, vizsga, bemutató, appoint
+@related: hospital_exam_resident, hospital_exam_physician, hospital_pay
+
+## Rangok
+
+- **Ápoló (Á):** a kórházi bemutató végén kapod. Triage, vitális értékek, monitor, EKG felvétele, vérvétel, kanül, infúzió, gyógyszer beadása **rendelésre**, sebtisztítás, kötés, gipsz (röntgen után), CPR, hordágy, halott leadása.
+- **Rezidens (R):** vizsga. Kezelő lehet, rendel (labor, képalkotás, EKG, FAST), varr, repozíciót végez, diagnózist (BNO) rögzít, hazabocsát, osztályra vesz fel, S2 áthelyezést kér, műtétet **kérhet**.
+- **Orvos (O):** vizsga. RSI, intubáció, mellkasi drén, trombolízis, masszív transzfúzió, vazopresszor, műtőbe küldés és jóváhagyás, intenzív, exitus rögzítése, S1 áthelyezés.
+- **Főorvos (F):** csak kinevezéssel (`/appoint`, admin 3+), Orvos rangból.
+
+## Vizsgafeltételek (a tudáson kívül)
+
+- **Rezidens:** legalább **2 óra** szolgálat Ápolóként.
+- **Orvos:** legalább **4 óra** szolgálat Rezidensként és **20 lezárt eset** kezelőként.
+
+A vizsgaközpont ugyanaz, mint az EMS-é (a duty marker mellett). 25 kérdés egy 60-as bankból, 75% kell, bukás után 5 perc múlva újra próbálhatod.

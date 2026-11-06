@@ -117,5 +117,7 @@
     <export function="isOfficerOnDuty" type="server" />
     <!-- scene NPC records (history/npc.lua), penal code (btk.lua) -->
     <export function="registerNPC" type="server" />
+    <export function="requestNPCIdentity" type="server" />
+    <export function="getSkinGender" type="server" />
     <export function="getPenalItems" type="server" />
 </meta>

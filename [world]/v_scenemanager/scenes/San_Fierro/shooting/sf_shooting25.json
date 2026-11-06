@@ -38,7 +38,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                { "type": "gunshot", "severity": 2, "part": "arm", "side": "left" }
             ],
             "state": { "bloodVolume": 4435 }
         }

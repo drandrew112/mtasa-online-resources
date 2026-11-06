@@ -38,8 +38,8 @@
             "anim": "hold_side",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 2, "part": "leg", "side": "right" },
+                { "type": "gunshot", "severity": 1, "part": "chest", "side": "right" }
             ],
             "state": { "bloodVolume": 4241, "spo2": 89 }
         }

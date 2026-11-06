@@ -1,6 +1,6 @@
 {
     "format": 1,
-    "seq": 1,
+    "seq": 2,
     "issues": [
         {
             "id": 1,
@@ -17,6 +17,23 @@
             "scene": "ls_hypertension23",
             "server": "FreeV | HU/EN | Light Roleplay, Minigames | MTA Online - Beta | SynHosting:22095",
             "source": "command",
+            "status": "resolved"
+        },
+        {
+            "id": 2,
+            "pos": false,
+            "at": 1793911823,
+            "by": "drandrew112",
+            "byName": "DrAndres",
+            "comment": "nem található helyszín",
+            "instance": 112,
+            "lang": "hu",
+            "path": "Los_Santos/heartattack/ls_heartattack25",
+            "resolvedAt": 1793933672,
+            "resolvedBy": "drandrew112",
+            "scene": "ls_heartattack25",
+            "server": "FreeV | HU/EN | Light Roleplay, Minigames | MTA Online - Beta | SynHosting:22095",
+            "source": "web",
             "status": "resolved"
         }
     ]

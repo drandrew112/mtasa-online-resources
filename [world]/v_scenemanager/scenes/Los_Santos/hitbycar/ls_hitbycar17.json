@@ -95,8 +95,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 1 }
+                { "type": "fracture", "severity": 3, "part": "leg", "side": "left" },
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": { "bloodVolume": 4400, "consciousness": "confused" }
         }

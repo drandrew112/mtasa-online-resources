@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="mg_suture" version="1.0" type="script" description="Wound suturing minigame (drag the needle across the wound edges), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared.lua" type="shared" />
+    <script src="kit/client.lua" type="client" />
+    <script src="client.lua" type="client" />
+    <script src="kit/server.lua" type="server" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onSutureGameFinish -->
+    <export function="startSutureGame" type="server" />
+    <export function="stopSutureGame" type="server" />
+    <export function="isSutureGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientSutureGameFinish -->
+    <export function="startSutureGame" type="client" />
+    <export function="stopSutureGame" type="client" />
+    <export function="isSutureGameActive" type="client" />
+</meta>

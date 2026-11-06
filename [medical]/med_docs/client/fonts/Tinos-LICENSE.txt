@@ -1,0 +1,4 @@
+Tinos-Regular.ttf, Tinos-Bold.ttf
+Copyright 2026 The Tinos Project Authors (https://github.com/googlefonts/tinos)
+Licensed under the SIL Open Font License, Version 1.1 (https://openfontlicense.org)
+Source: https://github.com/google/fonts/tree/main/ofl/tinos

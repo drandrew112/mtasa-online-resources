@@ -13,7 +13,8 @@ local D = STRETCHER_DATA
 local fitScale -- computed once from the first stretcher's unscaled bounding box
 
 local function getFitScale(obj)
-    if STRETCHER.SCALE then return STRETCHER.SCALE end
+    local scale = stretcherSetting(obj, "SCALE")
+    if scale then return scale end
     if fitScale then return fitScale end
     local x0, y0, _, x1, y1 = getElementBoundingBox(obj)
     local length = x0 and math.max(x1 - x0, y1 - y0)
@@ -102,11 +103,11 @@ end
 -- attachElements moves an attached ped with its parent but never turns it, so the heading is set
 -- here every frame: stretcher yaw + PATIENT_OFFSET rz
 turnPatients = function()
-    local offset = STRETCHER.PATIENT_OFFSET[6]
     for ped, stretcher in pairs(patients) do
         if not isElement(ped) or not isElement(stretcher) then
             patients[ped] = nil
         elseif isElementStreamedIn(ped) then
+            local offset = stretcherSetting(stretcher, "PATIENT_OFFSET")[6]
             local _, _, rz = getElementRotation(stretcher)
             setElementRotation(ped, 0, 0, (rz + offset) % 360, "default", true)
         end
@@ -160,5 +161,5 @@ addEventHandler("stretcher:snap", resourceRoot, function(obj)
         groundZ = getGroundPosition(x, y, z + 1.5)
         if not groundZ or groundZ == 0 then return end
     end
-    triggerServerEvent("stretcher:snapResult", resourceRoot, obj, groundZ + STRETCHER.GROUND_Z)
+    triggerServerEvent("stretcher:snapResult", resourceRoot, obj, groundZ + stretcherSetting(obj, "GROUND_Z"))
 end)

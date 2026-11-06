@@ -138,8 +138,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "head_injury", "severity": 3, "part": "head", "side": "right" },
+                { "type": "fracture", "severity": 2, "part": "chest", "side": "left" }
             ],
             "state": { "consciousness": "unconscious" }
         },
@@ -151,7 +151,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 2, "part": "arm", "side": "right" }
             ],
             "state": {}
         },
@@ -163,7 +163,7 @@
             "anim": "hold_side",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "chest", "side": "right" }
             ],
             "state": { "pain": 42 }
         },
@@ -175,7 +175,7 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "left" }
             ],
             "state": {}
         }

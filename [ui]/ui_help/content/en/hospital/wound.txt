@@ -1,0 +1,10 @@
+# Wound room
+@keywords: wound, suture, irrigation, disinfection, local anaesthesia, tetanus, dressing
+@related: hospital_cast, hospital_orders
+
+1. **Irrigation** (minigame) – wash a dirty wound thoroughly.
+2. **Local anaesthesia** – without it the patient moves and the suture is worse.
+3. **Suture** (minigame).
+4. **Disinfection**, **final dressing**. For burns a burn dressing.
+
+Tetanus prophylaxis: when the last shot was over 10 years ago or is unknown. Poor care means a risk of infection.

@@ -61,7 +61,7 @@ while `med_erm` is stopped (on-duty units cannot be told apart).
             "handover": [ { "x": 0, "y": 0, "z": 0 } ],
             "heli": {                                  // optional: helicopter handover
                 "landing":  { "x": 0, "y": 0, "z": 0, "size": 12.0 },
-                "handover": { "x": 0, "y": 0, "z": 0 }
+                "handover": { "x": 0, "y": 0, "z": 0 }   // optional: else the ground handover markers
             },
             "heal":       { "x": 0, "y": 0, "z": 0 },  // optional
             "release":    { "x": 0, "y": 0, "z": 0, "rot": 90 }  // optional: handed-over players
@@ -71,9 +71,12 @@ while `med_erm` is stopped (on-duty units cannot be told apart).
 ```
 
 - `z` is the ground (where the cylinder marker stands). `size` is optional and falls back to `HOSP.*_SIZE`.
-- `heli` (no hospital uses it at the moment; All Saints hands over via the elevator and the ground bays since 2026-11-02): a helicopter lands on `landing` with a patient aboard (Maverick, helicopters only)
-  and the unit becomes Handover; the medic pushes the stretcher into the `handover` marker of the helipad
-  (a ground ambulance uses the ordinary bays / markers, never the heli ones). Not copied into the tutorial.
+- `heli`: a helicopter lands on `landing` with a patient aboard (Maverick, helicopters only) and the
+  unit becomes Handover. With a `handover` point the medic pushes the stretcher into that heli marker
+  (then the ground markers refuse the helicopter); without one the patient goes to the hospital's
+  ordinary handover markers. All Saints: helipad on the roof, no heli marker, the stretcher goes down
+  in the elevator (world_elevators) to the ground-floor handover marker. A ground ambulance never uses
+  the heli marker. Not copied into the tutorial.
 - The objective point is the first bay, or the heal / handover marker if there is no bay.
 - The All Saints coordinates in the sample are **approximate**; check them in game.
 

@@ -1,0 +1,8 @@
+# Ward
+@keywords: ward, admission, deterioration, take back, alert
+@related: hospital_icu, hospital_pathway
+
+- **Ward admission:** from resident; pick the department (surgery, trauma, internal, neurology, cardiology). Push the trolley into the ward's handover marker: after **3 s** the patient is taken over, you do not have to let go. (The same at the ICU, the theatre and the morgue.)
+- Stay **20 minutes**.
+- **Deterioration** (low SpO₂ / BP, extreme pulse, unconscious): the timer stops and the treating doctor is alerted; without one every staff member.
+- **Take back:** the patient goes back into care on a trolley; the next closing writes a new version of the Ambulatory sheet.

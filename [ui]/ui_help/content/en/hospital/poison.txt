@@ -1,0 +1,13 @@
+# Poisoning
+@keywords: poisoning, antidote, tox, paracetamol, organophosphate, co, cyanide, methanol
+@related: hospital_lab
+
+The **tox lab** (or the full lab) finds the substance.
+
+- **Paracetamol:** N-acetylcysteine.
+- **TCA:** wide QRS → sodium bicarbonate.
+- **Organophosphate:** atropine + pralidoxime (low cholinesterase).
+- **Carbon monoxide:** 100% oxygen (high COHb).
+- **Beta blocker:** glucagon. **Digoxin:** digoxin Fab.
+- **Methanol:** fomepizole. **Cyanide:** hydroxocobalamin.
+- **Opioid:** naloxone. **Benzodiazepine:** flumazenil (carefully).

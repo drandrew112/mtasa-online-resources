@@ -1,0 +1,9 @@
+# Áthelyezés (S1/S2)
+@keywords: áthelyezés, s1, s2, szállítás, als, beteg átvétele, erm
+@related: hospital_pathway, hospital_docs
+
+- **S1:** azonnali (Orvos kéri). **S2:** 30 percen belül (Rezidenstől).
+- Igények: oxigén, perfúzor, lélegeztetés, monitor → csak **ALS / DOC / HELI** egység.
+- Cél kórház és **megjegyzés**: a célkórház átadási szövege ebből lesz.
+- **Van megfelelő egység:** ERM feladat (S1 lila, S2 halványlila jelvény). A mentő a **„Beteg átvétele”** markernél tolja az üres hordágyát a kórházi mellé (5 s).
+- **Nincs egység:** automatikus szállítás S1-nél 3, S2-nél 10 perc után.

@@ -11,5 +11,18 @@
   "gov_health.ui.hospital_missing": "Már nincs benne a hospitals.json-ban",
   "gov_health.ui.hospitals_offline": "A med_hospitals nem fut: csak a mentett kórházak látszanak",
   "gov_health.ui.no_heal_marker": "Ennek a kórháznak nincs kezelési markere, itt csak a mentős átadás számlázódik.",
-  "gov_health.ui.patient_pays_hint": "A beteg a bankszámlájáról fizet (mínuszba is mehet). A kezelési markeren nem szerepel, hogy ingyenes. NPC betegek nem fizetnek."
+  "gov_health.ui.patient_pays_hint": "A beteg a bankszámlájáról fizet (mínuszba is mehet). A kezelési markeren nem szerepel, hogy ingyenes. NPC betegek nem fizetnek.",
+  "gov_health.ui.er_payers": "Sürgősségi osztály dolgozókkal (kórházi munka)",
+  "gov_health.ui.er_care": "Beavatkozások értéke",
+  "gov_health.ui.er_salary": "Dolgozói fizetés",
+  "gov_health.ui.er_supplies": "Felszerelés-rendelés",
+  "gov_health.ui.point_care": "1 beavatkozás-pont értéke (az állam fizeti, elnyelődik)",
+  "gov_health.ui.point_salary": "1 pont dolgozói fizetése (heti szorzóval)",
+  "gov_health.ui.warnings": "Fedezethiány (a rendszer fizetett)",
+  "gov_health.ui.warnings_none": "Nincs fedezethiány.",
+  "gov_health.ui.warning_row": "{hospital}: {amount} · {at}",
+  "gov_health.ui.clear_warnings": "Figyelmeztetések törlése",
+  "gov_health.ui.warn_care": "Beavatkozások",
+  "gov_health.ui.warn_salary": "Fizetés",
+  "gov_health.ui.warn_supplies": "Felszerelés"
 }

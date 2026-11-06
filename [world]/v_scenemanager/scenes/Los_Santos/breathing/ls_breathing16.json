@@ -38,7 +38,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 3 }
+                { "type": "pulmonary_edema", "severity": 3, "part": "chest", "side": "left" }
             ],
             "state": { "spo2": 76, "systolic": 206, "heartRate": 134, "consciousness": "confused" }
         }

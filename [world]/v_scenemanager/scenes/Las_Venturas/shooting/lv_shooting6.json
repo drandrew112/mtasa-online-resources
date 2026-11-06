@@ -38,8 +38,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "gunshot", "severity": 2, "part": "arm", "side": "left" },
+                { "type": "fracture", "severity": 1, "part": "arm", "side": "right" }
             ],
             "state": { "bloodVolume": 3990 }
         },
@@ -51,7 +51,7 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "right" }
             ],
             "state": {}
         }

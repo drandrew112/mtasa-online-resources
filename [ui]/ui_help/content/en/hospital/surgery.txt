@@ -1,0 +1,12 @@
+# Operating theatre
+@keywords: theatre, operation, npc surgeon, approval, waiting place, pci, craniotomy, complication
+@related: hospital_icu, hospital_death, hospital_stemi
+
+An NPC surgeon operates (3–10 minutes), one patient at a time.
+
+- **Who sends:** a physician. A resident may **request** it and a physician approves (patient panel or the PC Department page). With no physician on duty the resident may send.
+- **Indication:** a confirmed surgical finding (CT, FAST, X-ray). Thoracotomy: more than 1500 ml from the drain.
+- Push the trolley to the **theatre handover point** → 5 s. When busy the patient stays on the **waiting place**; PCI, craniotomy, thrombectomy and pericardiotomy go first.
+- The marker and the PC show the time left.
+- **Outcome** (decided at the start): success, **complication** (ICU needed) or death. Shock index, delay, transfusion, untreated findings and age count.
+- The patient comes out on a new trolley at the post-op point. An operative note is written.

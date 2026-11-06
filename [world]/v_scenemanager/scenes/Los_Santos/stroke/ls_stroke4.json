@@ -77,7 +77,7 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "stroke", "severity": 2 }
+                { "type": "stroke", "severity": 2, "part": "head", "side": "left" }
             ],
             "state": { "systolic": 196, "diastolic": 108, "consciousness": "dazed" }
         }

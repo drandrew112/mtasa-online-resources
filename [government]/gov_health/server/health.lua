@@ -20,6 +20,11 @@ GOV_DEFAULTS = {
     -- without a row: the treasury pays, nobody receives)
     ["health.hospitals"] = {},
     -- injury / condition type -> price by severity 1 / 2 / 3 ("default" for types not listed)
+    -- ER with staff (med_hospitals er/): 1 intervention point = care value (the state pays it, the money
+    -- disappears) and staff salary (work_hospital -> work_core payWork); Ú9 warnings when a payer is short
+    ["health.point_care"] = 60,
+    ["health.point_salary"] = 40,
+    ["health.warnings"] = {},
     ["health.injuries"] = {
         gunshot = { 800, 2000, 4500 },
         fracture = { 500, 1200, 2500 },
@@ -30,6 +35,7 @@ GOV_DEFAULTS = {
 }
 
 GOV_RANGE = {
+    pointValue = { 0, 10000 },
     hpPrice = { 0, 100000 },
     injuryPrice = { 0, 1000000 },
 }
@@ -42,12 +48,15 @@ local function patientName(patient, taskId)
     return "Unidentified patient", ""
 end
 
---- { payer, receiver } of a hospital (the default for a hospital without its own row)
+--- { payer, receiver, care, salary, supplies } of a hospital (the defaults for a hospital without its own row)
+--- care / salary / supplies: who pays the ER interventions' value, the hospital staff, the stock orders
 function GOV.hospitalPayment(hospitalId)
     local row = (GOV.get("health.hospitals") or {})[tostring(hospitalId or "")]
     row = type(row) == "table" and row or {}
-    return { payer = type(row.payer) == "string" and row.payer or GOV.HEALTH_DEFAULT.payer,
-             receiver = type(row.receiver) == "string" and row.receiver or GOV.HEALTH_DEFAULT.receiver }
+    local function spec(k, def) return type(row[k]) == "string" and row[k] or def end
+    return { payer = spec("payer", GOV.HEALTH_DEFAULT.payer), receiver = spec("receiver", GOV.HEALTH_DEFAULT.receiver),
+             care = spec("care", GOV.HEALTH_DEFAULT.payer), salary = spec("salary", GOV.HEALTH_DEFAULT.payer),
+             supplies = spec("supplies", GOV.HEALTH_DEFAULT.payer) }
 end
 
 --- the payer spec of a hospital's treatment: "system" | "player" | "state:<code>" | "company:<id>"
@@ -125,6 +134,81 @@ function chargeHealthcare(patient, hospitalName, taskId, hospitalId)
     }, "v_gov")
     if not ok then return false, err end
     return true, cost, false
+end
+
+---------------------------------------------------------------- ER with staff (med_hospitals er/, work_hospital)
+
+local MAX_WARNINGS = 20
+
+--- Ú9: a payer could not cover a payment: the "system" paid it, the /gov Healthcare page shows it
+local function warn(hospitalId, kind, amount, spec)
+    local list = GOV.get("health.warnings") or {}
+    table.insert(list, 1, { at = getRealTime().timestamp, hospital = tostring(hospitalId or ""), kind = kind, amount = amount, payer = spec })
+    while #list > MAX_WARNINGS do table.remove(list) end
+    GOV.set("health.warnings", list, "system")
+end
+
+--- the account id that pays `amount` for a hospital side (care / salary / supplies), or nil = system
+--- (system set, the account is gone, or it cannot cover the amount -> warning)
+local function payerFor(hospitalId, side, amount)
+    local spec = GOV.hospitalPayment(hospitalId)[side]
+    if spec == "system" then return nil end
+    local id = GOV.specAccount(spec)
+    if not tonumber(id) then
+        warn(hospitalId, side, amount, spec)
+        return nil
+    end
+    local bank = GOV.bank()
+    local info = bank and bank:getAccountInfo(tonumber(id))
+    if not info or (tonumber(info.balance) or 0) < amount then
+        warn(hospitalId, side, amount, spec)
+        return nil
+    end
+    return tonumber(id)
+end
+
+--- care value of a closed ER case: points * health.point_care from the hospital's care payer, the
+--- money disappears -> true, amount
+function payHospitalCare(hospitalId, points, info)
+    points = tonumber(points) or 0
+    if points <= 0 or GOV.get("health.enabled") == false then return true, 0 end
+    local amount = math.floor(points * (tonumber(GOV.get("health.point_care")) or 0))
+    if amount <= 0 then return true, 0 end
+    local payer = payerFor(hospitalId, "care", amount)
+    if not payer then return true, amount end   -- system: nothing to book
+    local bank = GOV.bank()
+    info = type(info) == "table" and info or {}
+    local ok, err = bank:transfer(payer, nil, amount, "health.care", {
+        patient = tostring(info.patient or ("ER #" .. tostring(info.case or "?"))), account = "", hospital = tostring(info.hospital or hospitalId),
+        hp = 0, injuries = points, task = info.case and tostring(info.case) or nil,
+    }, "v_gov")
+    if not ok then return false, err end
+    return true, amount
+end
+
+--- a stock order of the hospital (supplies payer) -> true, amount
+function payHospitalSupplies(hospitalId, amount, info)
+    amount = math.floor(tonumber(amount) or 0)
+    if amount <= 0 then return true, 0 end
+    local payer = payerFor(hospitalId, "supplies", amount)
+    if not payer then return true, amount end
+    info = type(info) == "table" and info or {}
+    local ok, err = GOV.bank():transfer(payer, nil, amount, "health.care", {
+        patient = "Supplies", account = "", hospital = tostring(info.hospital or hospitalId), hp = 0, injuries = 0,
+    }, "v_gov")
+    if not ok then return false, err end
+    return true, amount
+end
+
+--- the salary of the hospital staff: payer for work_core payWork ("system" or an account id) and the
+--- $ value of one point
+function getHospitalSalaryPayer(hospitalId, amount)
+    local id = payerFor(hospitalId, "salary", tonumber(amount) or 0)
+    return id or "system"
+end
+
+function getHospitalPointValues()
+    return tonumber(GOV.get("health.point_care")) or 60, tonumber(GOV.get("health.point_salary")) or 40
 end
 
 --- a closed private company payer / receiver of a hospital goes back to the default (checked

@@ -38,7 +38,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 2 }
+                { "type": "gunshot", "severity": 2, "part": "arm", "side": "right" }
             ],
             "state": {}
         },
@@ -50,7 +50,7 @@
             "anim": "injured",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "right" }
             ],
             "state": {}
         }

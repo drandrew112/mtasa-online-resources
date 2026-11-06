@@ -80,8 +80,8 @@
             "anim": "ko_back",
             "role": "fighter",
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 1, "part": "arm", "side": "left" },
+                { "type": "fracture", "severity": 2, "part": "arm", "side": "left" }
             ],
             "state": { "consciousness": "confused" },
             "ai": {

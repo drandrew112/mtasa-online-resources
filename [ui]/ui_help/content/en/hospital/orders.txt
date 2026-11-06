@@ -1,0 +1,12 @@
+# Orders and indications
+@keywords: order, indication, points, limit, resident, nurse, drug order
+@related: hospital_lab, hospital_ct, hospital_xray, hospital_pay
+
+Orders are given by a resident or higher; carrying them out is allowed from the intervention's own rank.
+
+- On the order list **✓** is indicated, **!** is an order without indication.
+- **Without indication** only half of the points are given.
+- Every code has a **per-case limit** (e.g. head CT 2×, lab panels 3×).
+- **Drug order:** a nurse may give the ordered medicine; giving it closes the order.
+
+> Indication examples: head injury with loss of consciousness or an anticoagulant → head CT; suspected fracture → X-ray before the cast.

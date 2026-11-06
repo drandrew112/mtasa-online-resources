@@ -12,6 +12,7 @@
     <script src="server/main.lua" type="server" />
 
     <export function="getStock" type="server" />
+    <export function="consume" type="server" />
     <export function="getAllStock" type="server" />
     <export function="allocate" type="server" />
     <export function="release" type="server" />

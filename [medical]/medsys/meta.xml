@@ -14,6 +14,8 @@
 
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
+    <script src="shared/body.lua" type="shared" />
+    <script src="shared/conditions.lua" type="shared" /> <!-- hospital conditions + hospital drugs -->
 
     <script src="server/state.lua" type="server" />
     <script src="server/rhythm.lua" type="server" />
@@ -22,11 +24,15 @@
     <script src="server/transport.lua" type="server" />
     <script src="server/equipment.lua" type="server" /> <!-- med_equipments: bag / monitor near the patient -->
     <script src="server/exports.lua" type="server" />
+    <script src="server/labs.lua" type="server" />
+    <script src="ecg12/server/spec.lua" type="server" />
+    <script src="server/conditions.lua" type="server" /> <!-- STEMI, stroke lysis, poisons, transfusion effects --> <!-- 12-lead ECG spec, Lifepak 12-LEAD + PRINT --> <!-- lab values (hospital), patient log, clinical time -->
     <script src="server/interaction.lua" type="server" />
     <script src="server/test.lua" type="server" /> <!-- only runs when MEDIC_TEST.ENABLED -->
 
     <script src="client/ecg.lua" type="client" />
     <script src="client/lifepak.lua" type="client" />
+    <script src="ecg12/client/render.lua" type="client" /> <!-- 12-lead ECG renderer + viewer -->
     <script src="client/glucometer.lua" type="client" />
     <script src="client/panel.lua" type="client" />
     <script src="client/interaction.lua" type="client" />
@@ -63,6 +69,18 @@
     <export function="getMedicalState" type="server" />
     <export function="setMedicalState" type="server" />
     <export function="applyInjury" type="server" />
+    <export function="resolveInjuryPart" type="server" />
+    <export function="getLabValues" type="server" />
+    <export function="getBloodGroup" type="server" />
+    <export function="getPatientLog" type="server" />
+    <export function="startTreatmentFor" type="server" />
+    <export function="getDrugCatalog" type="server" />
+    <export function="getECGSpec" type="server" />
+    <export function="reperfuseACS" type="server" />
+    <export function="treatInjuries" type="server" />
+    <export function="drawECG12" type="client" />
+    <export function="getECG12Sheet" type="client" />
+    <export function="getECG12Text" type="client" />
     <export function="healCompletely" type="server" />
     <export function="setPatientPersistent" type="server" />
     <export function="isPatientPersistent" type="server" />

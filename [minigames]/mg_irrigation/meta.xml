@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="mg_irrigation" version="1.0" type="script" description="Wound irrigation minigame (spray the debris away at the right pressure), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared.lua" type="shared" />
+    <script src="kit/client.lua" type="client" />
+    <script src="client.lua" type="client" />
+    <script src="kit/server.lua" type="server" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onIrrigationGameFinish -->
+    <export function="startIrrigationGame" type="server" />
+    <export function="stopIrrigationGame" type="server" />
+    <export function="isIrrigationGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientIrrigationGameFinish -->
+    <export function="startIrrigationGame" type="client" />
+    <export function="stopIrrigationGame" type="client" />
+    <export function="isIrrigationGameActive" type="client" />
+</meta>

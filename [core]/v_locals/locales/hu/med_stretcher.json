@@ -1,6 +1,7 @@
 {
   "med_stretcher.interaction.ambulance_stretcher": "Mentő hordágy",
   "med_stretcher.interaction.at_rear_doors_of_its_ambulance": "A mentőautó hátsó ajtajánál",
+  "med_stretcher.interaction.hospital_stretcher": "Kórházi hordágy",
   "med_stretcher.interaction.injured_nearest_person_next_to_stretcher": "A sérült / a hordágy melletti legközelebbi személy",
   "med_stretcher.interaction.load_into_ambulance": "Berakás a mentőbe",
   "med_stretcher.interaction.only_medics_can_handle_stretcher": "A hordágyat csak mentősök kezelhetik.",

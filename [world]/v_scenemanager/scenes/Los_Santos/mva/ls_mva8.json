@@ -98,8 +98,8 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 1 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 1, "part": "spine_l" },
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "right" }
             ],
             "state": {}
         },
@@ -111,7 +111,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "left" }
             ],
             "state": {}
         },
@@ -123,8 +123,8 @@
             "anim": "hold_side",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "spine_l" },
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "left" }
             ],
             "state": { "consciousness": "dazed" }
         }

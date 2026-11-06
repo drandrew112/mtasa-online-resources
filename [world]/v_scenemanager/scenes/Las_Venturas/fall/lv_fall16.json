@@ -38,9 +38,9 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 1 }
+                { "type": "fracture", "severity": 3, "part": "leg", "side": "left" },
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" },
+                { "type": "gunshot", "severity": 1, "part": "leg", "side": "left" }
             ],
             "state": { "bloodVolume": 4311 }
         }

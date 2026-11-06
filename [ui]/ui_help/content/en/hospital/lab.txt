@@ -1,0 +1,16 @@
+# Lab and blood draw
+@keywords: lab, blood draw, tube order, haemolysis, EDTA, citrate, full lab
+@related: hospital_orders, hospital_transfusion
+
+Order by panel (basic, trauma, cardiac, clotting, blood gas, tox, inflammation, blood group, crossmatch) or the **full lab** (everything at once). The result comes in about **2 minutes**.
+
+## Blood draw (minigame)
+
+The right tube order: **citrate → serum → heparin → EDTA → fluoride**.
+
+- **Haemolysis:** false high potassium.
+- **EDTA before serum:** false high potassium, false low calcium.
+- **Underfilled citrate:** falsely long clotting.
+- **Infusion arm:** diluted sample.
+
+> The "What do the abnormal values mean?" box of the lab report explains every abnormal value.

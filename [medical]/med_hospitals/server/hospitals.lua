@@ -18,6 +18,8 @@ local elements = {} -- every element created for the hospitals (destroyed on rel
 
 -- Functions run before the hospitals are rebuilt (running processes reference the old points)
 UnloadHandlers = {}
+-- Functions run after the hospitals were (re)built (the er/ module builds its markers)
+LoadHandlers = {}
 
 function isResourceRunning(name)
     local res = getResourceFromName(name)
@@ -119,15 +121,22 @@ local function parseHospital(raw, index)
             x = (min.x + max.x) / 2, y = (min.y + max.y) / 2, z = min.z,
         }
     end
-    -- helicopter handover: a landing point (like a bay, helicopters only) + its own handover marker
+    -- helicopter handover: a landing point (like a bay, helicopters only) + optionally its own
+    -- handover marker; without one the patient is taken to the ground handover markers (elevator)
+    -- sürgősségi osztály (er/ module): kept raw, er/server/core.lua reads it
+    if type(raw.er) == "table" then h.er = raw.er end
     if raw.heli ~= nil then
         local heli = type(raw.heli) == "table" and raw.heli or {}
         local landing = parsePoint(heli.landing, HOSP.HELI_SIZE)
-        local handover = parsePoint(heli.handover, HOSP.HANDOVER_SIZE)
-        if not landing or not handover then return nil, L.msg("med_hospitals.hospitals.heli_needs_landing_and_handover", { id = id }) end
-        landing.heli, handover.heli = true, true
+        local handover = heli.handover ~= nil and parsePoint(heli.handover, HOSP.HANDOVER_SIZE)
+        if not landing or handover == nil then return nil, L.msg("med_hospitals.hospitals.heli_needs_landing_and_handover", { id = id }) end
+        landing.heli = true
         h.bays[#h.bays + 1] = landing
-        h.handover[#h.handover + 1] = handover
+        if handover then
+            handover.heli = true
+            h.heliHandover = true
+            h.handover[#h.handover + 1] = handover
+        end
     end
     if raw.heal ~= nil then
         h.heal = parsePoint(raw.heal, HOSP.HEAL_SIZE)
@@ -274,6 +283,7 @@ function loadHospitals()
     Hospitals.list, Hospitals.byId = list, byId
     for _, h in ipairs(list) do buildHospital(h) end
     refreshHealPayment()
+    for _, fn in ipairs(LoadHandlers) do fn() end
     return #list
 end
 

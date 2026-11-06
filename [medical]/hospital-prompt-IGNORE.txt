@@ -14,9 +14,14 @@ Minden egyes rendszer amit itt felsorolok egy külön modul
 
 ## Meglévő rendszerek használata
 Használni fogjuk a medsys, med_equipments rendszereket.
+
 A kórházon belül viszont egészen más módon kell ezeket a rendszereket használni.
-Az említett resourceökben új modulokat fogunk felvenni amiket a hospitális ellátás során fogunk használni. Ilyen lesz a kórházi hordágy rendszer, beteg nyilvántartás, külön kórházi betegvizsgáló panel, CT vizsgálat, stb...
-A kórházi hordágyakhoz mindig tartozik felszerelés amit nem lehet levenni.
+Az biztos, hogy a medsys szimulációt jelentősen bővíteni kell.
+
+Az említett resourceökben új modulokat fogunk felvenni amiket a hospitális ellátás során fogunk használni.
+Ilyen lesz a kórházi hordágy rendszer, beteg nyilvántartás, külön kórházi betegvizsgáló panel, CT vizsgálat, stb...
+
+A kórházban nincsenek mozgatható felszerelések. A felszerelések helyiséghez vannak kötve.
 
 A kórházi hordágy kérő és törlő markerben a mentőszolgálat hordágyai nem törölhetőek.
 
@@ -25,17 +30,37 @@ Azokban a kórházakban ahol működik kórházi személyzet ott átadásnál az
 A beteg paraméterei nem vesznek el.
 Ez csak akkor működhet amikor van szolgálatban kórházi dolgozó az adott kórházban.
 
+A medsys-t és v_scenemanager-t bővíteni kell.
+Meg kell határozni, hogy melyik sérülés mely testrészét érinti a betegnek.
+Ez fog segíteni később a CTben is és az ellátás további részeiben.
+
+## Hordágy modul
+A hordágy kéréseket és törléseket kezeli a markernél.
+A med_equipments-en keresztül kér hordágyat és törli azokat.
+
+## Kommunikációs modul
+Ez a modul biztosítja a mentőegységekkel való kommunikációt és a kórházon belüli kommunikációt.
+Exportokon keresztül beépül az EMS tabletbe ahol a mentőegységnek lehetősége van a kórháznak üzenetet küldeni.
+A kórházi tableten minden mentőegység üzenetei külön tabon vannak. Így elkülönülnek egymástól. Az ERM feladat végén a chat törlődik.
+
 ## Kórházi számítógép modulja
 Ezen a számítógépen van
 - betegek nyilvántartása: itt láthatók a triage-előtti és triage-utáni betegek is. látható, hogy milyen úton jöttek be a kórházba, melyik mentőegység hozta be, ki a kezelője, itt lehet valamint kezelőként jelentkezni a beteghez. kezelőt bármikor lehessen váltani.
 - triage (egy 1től 4ig terjedő skála amin érkezéskor be kell sorolni a betegeket)
 - Kórházi felszerelések: Itt lehet megnézni, hogy hiányzik-e valami a kórházi felszerelésből. Itt lehet rendelni felszereléseket. A rendelés 30 másodperc után megérkezik a kórházba. A rendelés minden felszerelést feltölt ami a rendelés leadásakor hiányzott.
+- Kommunikáció
+
+## Tablet modul
+J betűvel megnyitható tablet ami pont akkora és olyan dizájnal rendelkezik mint az EMS tablet, csak ez másra való.
+- Saját betegek megtekintése
+- Kommunikáció a mentőegységekkel és a kórházon belül
 
 ## Triage modul
 A triage egy beteg besorolás aszerint, hogy kinek mennyire súlyos az állapota.
 1 és 4 közötti számmal jelöljük.
 Aki még nem kapott triage számot: Az interaction menüben a betegvizsgálat alatt egy triage gombbal meg lehet adni.
 A triage-t a számítógépen a beteg nyilvántartásban is be lehet állítani.
+Ha a kórházi dolgozó beviszi a beteget a sokktalanítóba akkor automatikus ő lesz a kezelője és triage 1es számot kap a beteg.
 
 ## Beteg UI modul
 Egy egyszerű UI a beteg teste közepén. Kicsi és átlátszó.
@@ -62,6 +87,7 @@ Bevihetik a:
 - gipszelőbe
 - vagy CTre.
 4. Felvétel osztályra vagy szabadon engedés
+- Fontos: A kórházi számítógépen kötelező diagnózist megadni az ambuláns lapon mielőtt tovább lehetne küldeni osztályra vagy szabadon lehetne engedni egy beteget.
 - A kezelő dönthet arról,
 - hogy a betegnek szüksége van-e arra hogy osztályra felvegyék a kórházba
 - vagy haza lehet engedni.
@@ -85,17 +111,151 @@ Az monitor a szoba nyugati falán legyen dx felületként. Példát láthatsz r�
 A képeket te fogod legenerálni. Minden létező sérüléshez több képet is kell generálni.
 A játékos látni fogja a képet és alatta egy leírást, hogy mi is van a képen. A leírás mindkét nyleven elérhető kell legyen.
 
+## Labor modul
+Minden betegnél lehet vért venni. Ez nem helyiséghez kötött.
+Részletes szimulációt kérek a vérvételhez.
+A vérvétel után a labor 2 perc után küldi az eredményt.
+Az eredményt dokumentumként kapja meg a kórházi dolgozó.
+Ezen rajta vannak a vérben talált anyagok és értékek.
+A labor dokumentum legalján kötelező egy leírást adni, hogy egyes értékek mire utalnak, mert az átlagos játékos nem fogja érteni.
+
+## Seb kezelő szoba modul
+A sebkezelőben lehet tisztítani/fertőtleníteni és véglegesen bekötözni a sebeket.
+
+## Gipszelő modul
+A gipszelőben lehet gipszelni a betegek töréseit. Ez végleges megoldást ad.
+
+## Sokktalanító modul
+Ide kerülnek a súlyos sérültek.
+Itt lehet elvégezni a legtöbb beavatkozást.
+
+## Discalaimer a helyiségekről
+A beteg ellátás bizonyos beavatkozási csak bizonyos helyiségekben megoldhatóak.
+Tehát seb fertőtlenítést és kötözést csak a sebkezelőben lehet.
+Gipszelni csak a gipszelőben lehet.
+CPR-t bárhol lehet végezni.
+Fontos: A kórházban a beteg mindig hordágyon van. Ehhez kell igazítani a CPR-t és egyéb beavatkozásokat.
+
+## Stock modul
+Ez a modul fogja kezelni a kórházi felszereléseket.
+Ez a modul fogja kezelni a rendeléseket, készlet fogyást és készlet ellenőrzést.
+
+## Betegút követő modul
+A betegút követése nagyon fontos.
+Ez alapján fogjuk tudni kiállítani később az ambuláns lapot is a későbbiekben.
+A betegút követés egyenlőre csak a hospitális ellátást követi le.
+Naplózza az időpontokat, kórházba érkezés módját, mentőegységet, vizsgálatokat és beavatkozásokat, elfekvő elhelyezést vagy szabadon engedést.
+
+## Medical dokumentumok resource
+A betegút modul által gyűjtött adatok alapján dokumentumokat készít a rendszer.
+Ezeket a kórházi számítógépben vissza lehet nézni.
+
+A dokumentumokat adatbázisban tároljuk.
+Erre külön létre kell hozni egy med_docs táblát.
+Fontos, hogy később több dokumentumot is tudjon kezelni és akár képeket is.
+
+Később ez a resource fog a mentőszolgálatnál is Esetlapokat generálni.
+
+### Ambuláns lap
+A betegút végén generálunk egy Ambuláns lapot.
+Ezen feltüntetjük a kórházat, kezelő orvosokat és minden eseményt ami történt a beteggel.
+
+Formátum:
+A címek mindig félkövérrel vannak jelölve.
+A címek alatti bekezdések be vannak húzva.
+
+- Kórház neve a cím sorban
+- Kórházi osztály (jelenleg csak SÜRGŐSSÉGI BETEGELLÁTÓ OSZTÁLY / EMERGENCY ROOM)
+- Ambuláns lap felirat középre húzva
+
+Beteg adatai
+- Beteg neve
+- beteg születési dátuma - random generált / ha rendőrségi rendszer tárolja akkor azt húzzuk be
+- Felvételi dátum: a kórházba kerülés időpontja
+- Ambuláns lap sorszáma
+
+A kezelőnek lehetősége van a kórházi számítógépen szöveges leírásokat adni.
+Amennyiben ezek a szövegek nem kerülnek rögzítésre akkor "Nincs megadva" szöveggel jelennek meg.
+- Anamnézis
+- Státusz
+- Epikrízis: Ez a diagnózis alatt van.
+
+- Beavatkozások:
+    Ide kerülnek a vizsgálatok nevei és egy érték összeg ami a kórháznak jár az adott beavatkozásért/vizsgálatért - ez alapján jár a fizetés is.
+    A triage is beavatkozásnak lesz felvéve.
+
+Diagnózist is meg tud adni a játékos.
+Ezt egy előre meghatározott BNO adatbázisból tudja kiválasztani a kezelő orvos.
+- Diagnózis
+
+- Kapcsolódó dokumentumok
+    Amikor készül egy labor annak a számát itt meg kell jeleníteni.
+
+### Labor lelet
+A labor lelet dokumentum vérvétel után jön létre.
+Ez tartalmazza a vérvétel során feltárt dolgokat.
+
+Hasonló a felépítése mint az ambuláns lapnak.
+Itt is fel van tüntetve a
+- kórház neve
+- osztály
+- Középre húzott Labor lelet felirat
+- beteg adatok
+- dokumentum sorszáma
+Utána pedig a mért eredmények és a leírás.
+
+## BNO Adatbázis modul
+Ez a modul olvassa a DBF adatbázist.
+Betölti a szerveroldali memóriába az adatbázist és kereshetővé teszi a többi modul számára.
+A BNO kódok a diagnózishoz szükségesek.
+
+Jelenleg a [medical] mappában van a BNO adatbázis. Azt szeretném ha kicsomagolnád és készítnél hozzá angol fordítást is.
+A magyar szövegeket ne változtasd meg.
+Az angol fordítás esetében törekedj a szakmai pontosságra. Használj internetes forrásokat és hivatalos BNO10 adatbázisokat.
+Segítségként feltöltöttem egy icd102019en.xml fájlt amiben az ICD10 2019-es angol nyelvű adatbázisa van.
+Utána készíts egy sqlite adatbázist amit később a modul fog használni.
+A script már csak olvasni fogja ezt az adatbázist és elérhető lesz neki magyar és angol nyelven is a kódokhoz tartozó szöveg.
+
+Magyar adatbázis: BNOTORZS.DBF
+A mérvadó a magyar BNO adatbázis. Ne emelj át az angol adatbázisból kódokat. Az angol adatbázist csak a fordításhoz használd.
+
+## [work]/work_hospital
+Ez a munka resource.
+Ez fog hozzáférést adni szolgálat kezdéskor a kórházon belüli ellátáshoz.
+Amíg nincs joga a játékosnak addig nem férhez hozzá a kórházi számítógéphez, kórházi beavatkozásokhoz és nem láthatja a beteg ui-t sem.
+
+## Fizetések
+A work duty végén kapja a játékos a fizetését.
+Szerverről kilépés esetén a rendszer automatikusan jóváírja a fizetést a játékos bankszámlájára.
+A fizetés a kezelt betegeken végzett vizsgálatok és beavatkozásokon múlik.
+
+## Minigamek
+Javasolj új minigameket a kórházi beavatkozásokhoz.
+
+## Osztályra felvétel
+Az osztályra felvétel csak akkor lehetséges ha van szabad ágy az egyik elfekvő szobában.
+Az elfekvő szobákban MCP-vel gyűjtsd össze a kórházi ágyak helyeit.
+Az elfekvő ágyak fixáltak és nem mozgathatóak. Ezek külön modellt is kapnak.
+A betegek az elfekvőben 20 percig maradnak és utána eltűnnek, hogy legyen hely a következőknek.
+Az elfekvő betegeket is lehet monitorozni és ha szükséges vissza lehet őket hozni az ellátó rendszerbe.
 
 ## Pozíciók az All Saints General kórházhoz. Egyenlőre csak ez az egy kórház lesz elérhető a munkához.
 work duty: { "x": 1153.84, "y": -1307.44, "z": 14.38 }
 számítógép: { "x": 1151.93, "y": -1332.21, "z": 15.19, "rot": 180 }
+hordágy kérés/törlés: { "x": 1168.86, "y": -1315.92, "z": 14.39 } -- itt lehet lehívni hordágyat és törölni - törölni csak olyan hordágyat lehet amin nincs beteg
 ct: { "x": 1153.31, "y": -1299.59, "z": 14.38 }
+ct monitor fala: { "x": 1150.55, "y": -1302.41, "z": 15.19 }
 sokktalanító 1: { "x": 1154.29, "y": -1348.62, "z": 14.39 } -- ágy helye - ide kell betolni a hordágyon a beteget
 sokktalanító 2: { "x": 1167.93, "y": -1348.46, "z": 14.41 } -- ágy helye - ide kell betolni a hordágyon a beteget
-hordágy kérés/törlés: { "x": 1168.86, "y": -1315.92, "z": 14.39 } -- itt lehet lehívni hordágyat és törölni - törölni csak olyan hordágyat lehet amin nincs beteg
+sebkezelő: { "x": 1154.40, "y": -1359.69, "z": 14.39 }
+gipszelő: { "x": 1167.54, "y": -1359.30, "z": 14.41 }
+elfekvő szoba 1: { "x": 1153.80, "y": -1380.54, "z": 14.40 } -- átadó hely - 6 ágyas szoba
+elfekvő szoba 2: { "x": 1167.17, "y": -1380.14, "z": 14.41 } -- átadó hely - 6 ágyas szoba
 átadás után ide kerülnek hordággyal együtt a betegek: - Fontos, hogy a kórház saját hordágyára kerülnek és nem a mentős hordágy ugrik át.
 { "x": 1158.81, "y": -1344.55, "z": 14.40, "rot": 180 } -- soki 1 folyosó
+{ "x": 1158.58, "y": -1351.84, "z": 14.39, "rot": 180 } -- soki 1 folyosó másik oldal
 { "x": 1162.21, "y": -1344.70, "z": 14.41, "rot": 180 } -- soki 2 folyosó
+{ "x": 1162.14, "y": -1351.83, "z": 14.41, "rot": 180 } -- soki 2 folyosó másik oldal
 { "x": 1156.31, "y": -1337.02, "z": 14.40, "rot": 180 } -- triage pult mellett
 Lábon érkező betegek spawn helyei:
 { "x": 1167.87, "y": -1339.53, "z": 14.41, "rot": 0 }
@@ -106,7 +266,14 @@ Lábon érkező betegek spawn helyei:
 { "x": 1169.65, "y": -1329.95, "z": 14.42, "rot": 90 }
 { "x": 1169.14, "y": -1327.82, "z": 14.41, "rot": 90 }
 
-## Egyéb utasítások
+## Egyéb
+Minden fájlt amire hivatkoztam megtalálsz a [medical]/source mappában.
+Itt vannak a BNO adatbázisok és néhány tananyag dokumentáció.
+Ezeket a dokumentumokat használd!
+Nagyon hasznos lesz a CT-hez, ambuláns és labor lapokhoz.
+A dokumentumok képeit is olvasd be!
+Természetesen a labor leleteknek közel sem kell olyan részletesnek lennie mint a valóságban.
+
 Tervezd meg a rendszert és a működését. Tegyél fel kérdéseket.
 Vizsgáld a tervem hiányosságait.
 Minden kérdésre és hiányosságra javasolj egy megoldást.
@@ -115,3 +282,5 @@ Artifact-ban mutasd be a tervet képekkel együtt.
 Javasolj egy listát a kórházi felszerelésekről és mennyiségükről.
 
 Javasolj még ellátási módokat.
+
+A végrehajtáshoz külön írásos engedélyt fogok adni. NE tegyél fel kérdés ablakot a végrehajtásról. Előszőr minden kérdést részletesen meg fogok válaszolni és csak utána csináljuk meg.

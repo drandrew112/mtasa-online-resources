@@ -1,0 +1,12 @@
+{
+  "mg_irrigation.client.clean": "Tisztaság {n|int}%",
+  "mg_irrigation.client.damage": "Szövetkárosodás {n|int}%",
+  "mg_irrigation.client.good": "jó",
+  "mg_irrigation.client.hint": "Tartsd lenyomva a bal egérgombot a permetezéshez, a sugarat tartsd a szennyeződésen. Görgő: nyomás (maradjon a zöld sávban).",
+  "mg_irrigation.client.pressure": "Nyomás",
+  "mg_irrigation.client.title": "Sebtisztítás{part}",
+  "mg_irrigation.client.too_high": "túl nagy",
+  "mg_irrigation.client.too_low": "túl kicsi",
+  "mg_irrigation.kit.failed": "SIKERTELEN",
+  "mg_irrigation.kit.success": "SIKERES"
+}

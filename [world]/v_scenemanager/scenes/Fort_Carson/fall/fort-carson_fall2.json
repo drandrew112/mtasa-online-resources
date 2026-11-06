@@ -38,8 +38,8 @@
             "anim": "injured",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 2, "part": "leg", "side": "right" },
+                { "type": "fracture", "severity": 2, "part": "leg", "side": "left" }
             ],
             "state": {}
         }

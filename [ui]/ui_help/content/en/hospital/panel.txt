@@ -1,0 +1,16 @@
+# Patient panel
+@keywords: patient panel, examination, body map, tabs, status
+@related: hospital_orders, hospital_docs, hospital_shock
+
+Opened with **Examine patient** in the patient's menu (at the bedside) or from a patient row on the PC / tablet.
+
+- **Header:** triage, name, age, sex, weight, case number, treating doctor, place, blood group, allergy.
+- **Body map:** findings and treated parts by colour.
+- **Vital signs bar:** only from the monitor or a measurement.
+- **Tabs:** Examination (10 body regions, history, GCS / NIHSS / NRS), Orders, Procedures, Drugs, Transfusion, Documentation (PC only), Disposition (outcome: discharge, ward, ICU, theatre, transfer, death), Pathway.
+- **Close:** the **X** button at the top right (or `ESC`).
+- **Result:** clicking an order shows only the result; **X** brings the panel back.
+
+> History, status, epicrisis and BNO diagnoses can be recorded **only at a hospital computer**, not on the tablet.
+
+> From a distance (PC, tablet) the physical exam and the procedures are blocked: stand next to the patient.

@@ -1,0 +1,12 @@
+# Dokumentumok
+@keywords: dokumentum, ambuláns lap, lelet, mentési lap, műtéti leírás, halottvizsgálati, verzió
+@related: hospital_pathway, hospital_death
+
+A kórházi számítógép **Dokumentumtár** ablaka (asztali ikon, Start menü vagy a Beteglap „A beteg dokumentumai” gombja) mutatja a dokumentumokat. Görgetés: egérgörgő, a görgetősáv húzása, `PgUp` / `PgDn`, `Home` / `End`.
+
+- **Ambuláns lap:** fejléc, sorszám, beteg, felvétel jellege, anamnézis, státusz, beavatkozások (kód, db, pont), diagnózisok dátummal, epikrízis, kapcsolódó dokumentumok, kimenet, aláírás. Visszavételkor új verzió.
+- **Leletek:** labor (magyarázó doboz), CT, röntgen, UH, EKG.
+- **Mentési lap:** a mentős esetlap; a vezető **15 percig** szerkesztheti, utána csak a mentős főorvos.
+- **Műtéti leírás**, **Halottvizsgálati bizonyítvány**.
+
+> A dokumentum a szerző nyelvén mentődik; a kódolt részek a néző nyelvén jelennek meg.

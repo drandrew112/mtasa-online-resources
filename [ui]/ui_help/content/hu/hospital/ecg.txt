@@ -1,0 +1,12 @@
+# EKG-12
+@keywords: ekg, 12 elvezetés, stemi, elektróda, ritmus, eMedia
+@related: hospital_stemi, hospital_shock
+
+A 12 elvezetéses EKG a **sokktalanítóban** készül (ott van az EKG-gép); ALS mentőben B+ kompetenciától is.
+
+- Az elektródákat a tálcáról húzod a betegre. **Ápolóként és rezidensként** a helyük felirattal látszik, és a megfogott elektróda helye kiemelődik.
+- Felcserélt kar-elektródák: negatív I. elvezetés.
+- Rossz mellkasi elektróda: torz R-progresszió.
+- A lelet gépi értelmezést, mért értékeket (PR, QRS, QT, tengely) és a 12 elvezetés képét adja.
+
+![220](content/images/hospital/ecg_stemi_inf.jpg)

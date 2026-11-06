@@ -1,0 +1,670 @@
+{
+  "id": "physician",
+  "title": "Orvosi vizsga",
+  "description": "STEMI, stroke-lízis, transzfúzió, masszív transzfúzió, mellkasi drén, FAST, lélegeztetés, antidótumok, műtéti indikációk, exitus.",
+  "questionCount": 25,
+  "passPercent": 75,
+  "help": "hospital_exams",
+  "questions": [
+    {
+      "id": "phy_01",
+      "q": "Mennyi az alteplase adagja ischaemiás stroke-ban?",
+      "answers": [
+        "0,9 mg/kg, legfeljebb 90 mg, 10% bólusban",
+        "0,6 mg/kg, legfeljebb 60 mg, 20% bólusban",
+        "1,0 mg/kg, legfeljebb 100 mg, 15% bólusban",
+        "0,9 mg/kg, legfeljebb 70 mg, 25% bólusban"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_02",
+      "q": "Meddig adható trombolízis stroke-ban a tünetek kezdetétől (klinikai idő)?",
+      "answers": [
+        "4,5 órán belül",
+        "12 órán belül",
+        "24 órán belül",
+        "30 percen belül"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_03",
+      "q": "Mi kell a stroke-lízis előtt mindenképpen?",
+      "answers": [
+        "Koponya CT a vérzés kizárására",
+        "Mellkasröntgen a tüdő miatt",
+        "Teljes vércsoport és keresztpróba",
+        "FAST a hasi vérzés kizárására"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_04",
+      "q": "Mi történik, ha vérzéses stroke-ot lizálnak?",
+      "answers": [
+        "Súlyos állapotromlás, a vérzés nő",
+        "A beteg gyorsabban felépül",
+        "Semmi, a gyógyszer hatástalan",
+        "Csak enyhe fejfájás jelentkezik"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_05",
+      "q": "Melyik vörösvértest adható biztonsággal egy B Rh− fogadónak?",
+      "answers": [
+        "B Rh− és 0 Rh− egység",
+        "B Rh+ és 0 Rh+ egység",
+        "AB Rh− és B Rh− egység",
+        "0 Rh+ és B Rh− egység"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_06",
+      "q": "Melyik plazma adható bárkinek vércsoport ismerete nélkül?",
+      "answers": [
+        "AB plazma",
+        "0 plazma",
+        "A plazma",
+        "B plazma"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_07",
+      "q": "Mi adható a vércsoport ismerete előtt sürgős vérzésnél?",
+      "answers": [
+        "0 Rh− vörösvértest és AB plazma",
+        "AB Rh+ vörösvértest és 0 plazma",
+        "A Rh+ vörösvértest és B plazma",
+        "Csak vérlemezke és krisztalloid"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_08",
+      "q": "Mi az inkompatibilis transzfúzió legveszélyesebb szövődménye?",
+      "answers": [
+        "Akut hemolitikus reakció",
+        "Enyhe csalánkiütés",
+        "Átmeneti hidegrázás",
+        "Lassú vashiány"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_09",
+      "q": "Mikor beszélünk masszív transzfúzióról a rendszerben?",
+      "answers": [
+        "4 vagy több egység 10 percen belül",
+        "1 egység 60 percen belül",
+        "2 egység egy teljes nap alatt",
+        "10 egység egy héten keresztül"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_10",
+      "q": "Mit kell előbb elvégezni, hogy csoportazonos, keresztpróbázott vért adhasson?",
+      "answers": [
+        "Vércsoport-labort, majd keresztpróbát",
+        "Mellkasi CT-t, majd EKG-t",
+        "Vércukrot, majd vizeletvizsgálatot",
+        "FAST-ot, majd kontrollröntgent"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_11",
+      "q": "Mit okoz a túl sok, túl gyorsan adott vér kis vérvesztésnél?",
+      "answers": [
+        "Volumenterhelést, SpO₂-esést",
+        "Hipoglikémiát, zavartságot",
+        "Hypokalaemiát, izomgörcsöt",
+        "Bradycardiát, AV-blokkot"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_12",
+      "q": "Hol helyezzük be a mellkasi drént?",
+      "answers": [
+        "4–5. bordaköz, elülső-középső hónaljvonal",
+        "2. bordaköz, a középső kulcscsontvonalban",
+        "7–8. bordaköz, a hátsó lapockavonalban",
+        "A szegycsont alatt, a processus xiphoideusnál"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_13",
+      "q": "Hol végezzük a tűdekompressziót feszülő légmellnél?",
+      "answers": [
+        "2. bordaköz, középső kulcscsontvonal",
+        "6. bordaköz, hátsó hónaljvonal",
+        "Közvetlenül a szegycsont mellett",
+        "A köldök felett két ujjnyival"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_14",
+      "q": "Mikor kell thoracotomia haemothoraxnál?",
+      "answers": [
+        "Ha a drénen több mint 1500 ml ürül",
+        "Ha a drénen 200 ml-nél kevesebb jön",
+        "Minden haemothoraxnál, a drén előtt",
+        "Csak ha a beteg nem kap oxigént"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_15",
+      "q": "Melyik FAST-ablak mutatja a lépsérülés folyadékát?",
+      "answers": [
+        "Bal felhasi (LUQ)",
+        "Jobb felhasi (RUQ)",
+        "Szívburok (cardiac)",
+        "Jobb tüdőablak"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_16",
+      "q": "Melyik FAST-ablak mutatja a májsérülés folyadékát?",
+      "answers": [
+        "Jobb felhasi (RUQ)",
+        "Bal felhasi (LUQ)",
+        "Kismedencei",
+        "Bal tüdőablak"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_17",
+      "q": "Mit jelez a tüdőablakban a hiányzó pleuracsúszás (lung sliding)?",
+      "answers": [
+        "Légmellet",
+        "Májrepedést",
+        "Tamponádot",
+        "Medencetörést"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_18",
+      "q": "Mi a szívtamponád sürgős ellátása?",
+      "answers": [
+        "Pericardiocentesis vagy pericardiotomia",
+        "Nagy dózisú furoszemid intravénásan",
+        "Azonnali gépi lélegeztetés PEEP 20-szal",
+        "Mellkasi drén a jobb oldalra"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_19",
+      "q": "Mi a STEMI elsődleges kezelése, ha elérhető?",
+      "answers": [
+        "Primer PCI (katéteres program)",
+        "Kizárólag morfin és oxigén",
+        "Azonnali hazabocsátás ASA-val",
+        "Mellkasi drén és tűdekompresszió"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_20",
+      "q": "Mikor ellenjavallt a nitroglicerin STEMI-ben?",
+      "answers": [
+        "Jobb kamrai (inferior) infarktus gyanúja esetén",
+        "Ha a szisztolés RR 140 Hgmm felett van",
+        "Ha a beteg ASA-t már bevett aznap",
+        "Ha az SpO₂ 95% alá csökken a mérésnél"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_21",
+      "q": "Melyik szövődmény jellemző inferior STEMI-ben?",
+      "answers": [
+        "AV-blokk, bradycardia",
+        "Pitvarfibrilláció mindig",
+        "Kamrai aneurysma azonnal",
+        "Tüdőembólia a szívből"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_22",
+      "q": "Mit jelentenek az inferior STEMI EKG-jelei?",
+      "answers": [
+        "ST-eleváció II, III, aVF-ben, reciprok I, aVL",
+        "ST-eleváció V1–V4-ben, reciprok II, III",
+        "ST-depresszió minden elvezetésben egyformán",
+        "Széles QRS és csúcsos T-hullám mindenhol"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_23",
+      "q": "Mi a teendő NSTEMI-nél PCI helyett első lépésként?",
+      "answers": [
+        "Trombocitagátló, antikoaguláns, monitor, troponin-kontroll",
+        "Azonnali trombolízis alteplase-zal, 90 mg",
+        "Hazabocsátás és háziorvosi kontroll egy hét múlva",
+        "Mellkasi drén és FAST a sokk kizárására"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_24",
+      "q": "Milyen kálium-szintnél sürgős a hyperkalaemia kezelése?",
+      "answers": [
+        "6,5 mmol/l felett vagy EKG-eltérésnél",
+        "4,0 mmol/l felett minden esetben",
+        "3,0 mmol/l alatt, tünetek nélkül",
+        "Csak 10 mmol/l felett, nem előbb"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_25",
+      "q": "Mi védi azonnal a szívet hyperkalaemiában?",
+      "answers": [
+        "Intravénás kalcium",
+        "Intravénás kálium",
+        "Szájon át adott vas",
+        "Intravénás morfin"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_26",
+      "q": "Mi a paracetamol-mérgezés antidótuma?",
+      "answers": [
+        "N-acetilcisztein",
+        "Hidroxokobalamin",
+        "Digoxin-Fab",
+        "Flumazenil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_27",
+      "q": "Mi a szerves foszfát mérgezés kezelése?",
+      "answers": [
+        "Atropin és pralidoxim",
+        "Naloxon és glükóz",
+        "Flumazenil és tiamin",
+        "Digoxin-Fab és kalcium"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_28",
+      "q": "Mi a béta-blokkoló mérgezés antidótuma?",
+      "answers": [
+        "Glukagon",
+        "Naloxon",
+        "Fomepizol",
+        "Flumazenil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_29",
+      "q": "Mi a metanol-mérgezés antidótuma?",
+      "answers": [
+        "Fomepizol",
+        "Atropin",
+        "Glukagon",
+        "Naloxon"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_30",
+      "q": "Mi a cianidmérgezés antidótuma?",
+      "answers": [
+        "Hidroxokobalamin",
+        "N-acetilcisztein",
+        "Pralidoxim",
+        "Flumazenil"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_31",
+      "q": "Mi a digoxin-mérgezés specifikus kezelése?",
+      "answers": [
+        "Digoxin-specifikus Fab-fragmentum",
+        "Nagy dózisú intravénás kalcium",
+        "Szájon át adott aktív szén egyedül",
+        "Intravénás naloxon ismételten"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_32",
+      "q": "Mi a szén-monoxid mérgezés alapkezelése?",
+      "answers": [
+        "100% oxigén, maszkon át",
+        "Nagy dózisú naloxon iv.",
+        "Intravénás kalcium-adás",
+        "Aktív szén szájon át"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_33",
+      "q": "TCA-mérgezésnél széles QRS-nél mit adunk?",
+      "answers": [
+        "Nátrium-bikarbonátot",
+        "Káliumot intravénásan",
+        "Adenozint gyors bólusban",
+        "Amiodaront 300 mg-ot"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_34",
+      "q": "Gépi lélegeztetésnél mi javítja leginkább az oxigenizációt?",
+      "answers": [
+        "A FiO₂ és a PEEP emelése",
+        "A légzésszám csökkentése",
+        "A légzési térfogat felezése",
+        "A szedáció teljes leállítása"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_35",
+      "q": "Mitől függ elsősorban az EtCO₂ gépi lélegeztetésnél?",
+      "answers": [
+        "A perctérfogattól (légzésszám × térfogat)",
+        "A belélegzett oxigén arányától (FiO₂)",
+        "A beteg testhőmérsékletétől egyedül",
+        "A noradrenalin adagjától és sebességétől"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_36",
+      "q": "Mi a túl magas PEEP hátránya?",
+      "answers": [
+        "Csökkenti a vénás visszaáramlást, esik a vérnyomás",
+        "Hirtelen emeli a vércukorszintet és a laktátot",
+        "Megszünteti a beteg fájdalmát és szorongását",
+        "Gyorsítja a vese kiválasztását és a vizeletet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_37",
+      "q": "Mi történik, ha a lélegeztetett beteg nincs szedálva?",
+      "answers": [
+        "„Küzd a géppel”, romlik az SpO₂, nő a pulzus",
+        "Gyorsabban ébred és azonnal extubálható",
+        "Semmi, a lélegeztetés így is ugyanolyan",
+        "A gép automatikusan leáll és riaszt"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_38",
+      "q": "Mi a noradrenalin-titrálás célja szeptikus sokkban?",
+      "answers": [
+        "Átlagos artériás nyomás legalább 65 Hgmm",
+        "Szisztolés vérnyomás legalább 180 Hgmm",
+        "Pulzusszám pontosan 60/perc alatt",
+        "Vércukorszint 3 mmol/l alatt"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_39",
+      "q": "Ki rögzítheti az exitust a kórházban?",
+      "answers": [
+        "Orvos vagy Főorvos",
+        "Bármelyik Ápoló",
+        "Csak a mentős vezető",
+        "Csak egy admin"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_40",
+      "q": "Mit kell az exitus rögzítésekor megadni?",
+      "answers": [
+        "Időpontot, okot BNO-val és a körülményeket",
+        "Csak a beteg nevét és a kórház nevét",
+        "A beteg vércsoportját és a laborját",
+        "Az utolsó gyógyszer adagját és idejét"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_41",
+      "q": "Mi történik a halottal, ha 20 percig senki nem viszi a hullaleadóba?",
+      "answers": [
+        "Az NPC halottszállító elviszi, pont nélkül",
+        "A holttest örökre a folyosón marad",
+        "A beteg automatikusan újraéled",
+        "Az esetet a rendszer hibával törli"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_42",
+      "q": "Mi a teendő az érkezéskor halott beteggel?",
+      "answers": [
+        "Exitus rögzítése, majd a hullaleadóba tolás",
+        "Azonnali CT és teljes labor a halál okáért",
+        "Hazabocsátás a hozzátartozóknak átadva",
+        "Áthelyezés S1-gyel egy másik kórházba"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_43",
+      "q": "Ki küldhet beteget a műtőbe?",
+      "answers": [
+        "Orvos; Rezidens kérheti, Orvos jóváhagyja",
+        "Bármelyik Ápoló a kezelőorvos nélkül",
+        "Csak a mentőegység vezetője a tabletről",
+        "Csak a Főorvos, és csak kinevezés után"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_44",
+      "q": "Mikor küldhet a Rezidens jóváhagyás nélkül műtőbe?",
+      "answers": [
+        "Ha nincs Orvos szolgálatban",
+        "Ha a beteg 18 év alatti",
+        "Ha a műtét rövid, 5 perc alatti",
+        "Soha, minden esetben jóváhagyás kell"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_45",
+      "q": "Melyik műtét kerülhet előre a várakozó helyen?",
+      "answers": [
+        "PCI, craniotomia, trombectomia, pericardiotomia",
+        "Appendectomia, debridement, belső rögzítés",
+        "Medence külső rögzítés és lépeltávolítás",
+        "Minden műtét, az érkezés sorrendjében"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_46",
+      "q": "Mi növeli a műtéti kimenet kockázatát?",
+      "answers": [
+        "Magas sokk-index, késés, kezeletlen leletek, életkor",
+        "Az, hogy a beteget mentő hozta be a kórházba",
+        "Ha a műtét előtt teljes labor is készült",
+        "Ha a beteg kezelőorvosa Főorvos rangú"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_47",
+      "q": "Mi a teendő, ha a műtét szövődménnyel zárul?",
+      "answers": [
+        "Intenzív felvétel (lélegeztetés, vazopresszor)",
+        "Azonnali hazabocsátás fájdalomcsillapítóval",
+        "Áthelyezés S2-vel a legközelebbi kórházba",
+        "Új műtét indítása ugyanazzal a beavatkozással"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_48",
+      "q": "Lépsérülés és instabil keringés esetén mi a definitív ellátás?",
+      "answers": [
+        "Splenectomia a műtőben",
+        "Gipsz és kontrollröntgen",
+        "Mellkasi drén bal oldalra",
+        "Trombolízis alteplase-zal"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_49",
+      "q": "Epidurális vérzés tömeghatással: mi a teendő?",
+      "answers": [
+        "Craniotomia, haematoma kiürítés",
+        "Megfigyelés 24 órán keresztül",
+        "Lumbálpunkció a nyomás miatt",
+        "Trombolízis a vérrög oldására"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_50",
+      "q": "Instabil medencetörésnél mi az első lépés a sokktalanítóban?",
+      "answers": [
+        "Medenceöv felhelyezése",
+        "Gipsz a lábszárra",
+        "Gyomorszonda levezetése",
+        "Hólyagkatéter behelyezése"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_51",
+      "q": "Mit jelent az S1 áthelyezés?",
+      "answers": [
+        "Azonnali szállítás, csak Orvos kérheti",
+        "Három órán belüli szállítás, Rezidens is",
+        "Hazaszállítás taxival, díjmentesen",
+        "Szállítás a hullaházba, NPC végzi"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_52",
+      "q": "Mi történik az áthelyezéssel, ha nincs megfelelő mentőegység bejelentkezve?",
+      "answers": [
+        "Automatikus szállítás S1-nél 3, S2-nél 10 perc után",
+        "A kérés törlődik, a beteg az osztályon marad",
+        "A rendszer egy NPC mentőt hív a helyszínre",
+        "A beteget a kórházi dolgozónak kell elvinnie"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_53",
+      "q": "Mit kap a célkórház az áthelyezés átadási leírásaként?",
+      "answers": [
+        "A kérés megjegyzését",
+        "A teljes labor leletet",
+        "A beteg vércsoportját",
+        "Semmilyen szöveget"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_54",
+      "q": "Mennyi ideig tart az intenzív tartózkodás stabil betegnél?",
+      "answers": [
+        "30 percig",
+        "5 percig",
+        "2 óráig",
+        "1 percig"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_55",
+      "q": "Ki kap riasztást, ha az intenzíves beteg romlik és nincs kezelőorvos?",
+      "answers": [
+        "Minden szolgálatban lévő Orvos",
+        "Csak a mentőegység vezetője",
+        "Senki, a számláló tovább fut",
+        "Csak a beteg hozzátartozója"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_56",
+      "q": "Mi a teendő anaphylaxiás sokkban elsőként?",
+      "answers": [
+        "Adrenalin im. (0,5 mg)",
+        "Antihisztamin szájon át",
+        "Kalcium intravénásan",
+        "Morfin intravénásan"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_57",
+      "q": "Mi a DKA laboratóriumi képe?",
+      "answers": [
+        "Magas glükóz, alacsony pH, negatív bázistöbblet",
+        "Alacsony glükóz, magas pH, pozitív bázistöbblet",
+        "Normál glükóz, magas troponin, magas CK",
+        "Magas hemoglobin, alacsony kálium, magas INR"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_58",
+      "q": "Mire utal a magas D-dimer mellkasi fájdalommal és tachycardiával?",
+      "answers": [
+        "Tüdőembólia lehetőségére",
+        "Vesekólika lehetőségére",
+        "Szén-monoxid mérgezésre",
+        "Egyszerű bordatörésre"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_59",
+      "q": "Hol adható alteplase a kórházban?",
+      "answers": [
+        "A sokktalanítóban vagy az intenzíven",
+        "A folyosón, bármelyik hordágyon",
+        "Csak az elfekvőn, a beteg ágyánál",
+        "Csak a CT-ben, a vizsgálat közben"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "phy_60",
+      "q": "Mikor rendelhető masszív transzfúzió?",
+      "answers": [
+        "Orvos rangtól, sokktalanítóban vagy intenzíven",
+        "Ápolói rangtól, bárhol a kórházban",
+        "Rezidens rangtól, csak a folyosón",
+        "Csak a Főorvos engedélyével, a PC-n"
+      ],
+      "correct": 1
+    }
+  ]
+}

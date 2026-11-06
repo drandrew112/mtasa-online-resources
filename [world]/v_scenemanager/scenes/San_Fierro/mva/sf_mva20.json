@@ -75,7 +75,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "left" }
             ],
             "state": { "consciousness": "confused" }
         },
@@ -89,9 +89,9 @@
             "vehicle": "v1",
             "seat": 1,
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "gunshot", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" },
+                { "type": "gunshot", "severity": 3, "part": "leg", "side": "left" },
+                { "type": "fracture", "severity": 2, "part": "spine_c" }
             ],
             "state": { "bloodVolume": 3250, "bleeding": 3, "consciousness": "unconscious" }
         }

@@ -98,8 +98,8 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "head_injury", "severity": 3 },
-                { "type": "fracture", "severity": 2 }
+                { "type": "head_injury", "severity": 3, "part": "head", "side": "left" },
+                { "type": "fracture", "severity": 2, "part": "arm", "side": "left" }
             ],
             "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "unconscious" }
         },
@@ -111,7 +111,7 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "gunshot", "severity": 1 }
+                { "type": "gunshot", "severity": 1, "part": "arm", "side": "right" }
             ],
             "state": {}
         }

@@ -1,0 +1,13 @@
+# Mérgezések
+@keywords: mérgezés, antidótum, tox, paracetamol, szerves foszfát, co, cianid, metanol
+@related: hospital_lab
+
+A **tox labor** (vagy a teljes labor) mutatja ki a szert.
+
+- **Paracetamol:** N-acetilcisztein.
+- **TCA:** széles QRS → nátrium-bikarbonát.
+- **Szerves foszfát:** atropin + pralidoxim (alacsony kolinészteráz).
+- **Szén-monoxid:** 100% oxigén (magas COHb).
+- **Béta-blokkoló:** glukagon. **Digoxin:** digoxin-Fab.
+- **Metanol:** fomepizol. **Cianid:** hidroxokobalamin.
+- **Opiát:** naloxon. **Benzodiazepin:** flumazenil (óvatosan).

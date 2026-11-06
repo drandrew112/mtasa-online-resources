@@ -1,0 +1,16 @@
+# Triage és életmentés
+@keywords: triage, életmentés, K10, sürgősség, triage-súgó
+@related: hospital_pathway, hospital_panel
+
+## Szintek
+
+- **1 – azonnali:** keringésleállás, légúti elzáródás, súlyos sokk.
+- **2 – sürgős:** instabil értékek, súlyos fájdalom, gyanús mellkasi fájdalom.
+- **3 – halasztható:** stabil, de ellátást igényel.
+- **4 – nem sürgős:** kisebb sérülés.
+
+## Triage előtt (K10)
+
+Triage előtt csak **életmentő** beavatkozás végezhető: CPR, légút, vérzéscsillapítás, oxigén, monitor és vizsgálatok. Keringésleállásban minden.
+
+> A betegpanel jobb oszlopában a **triage-súgó** a mért értékekből javasol szintet. A döntés a tiéd.

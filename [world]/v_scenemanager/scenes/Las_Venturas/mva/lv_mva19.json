@@ -77,8 +77,8 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                { "type": "fracture", "severity": 3, "part": "leg", "side": "left" },
+                { "type": "gunshot", "severity": 2, "part": "leg", "side": "left" }
             ],
             "state": { "bloodVolume": 3750, "bleeding": 2, "consciousness": "dazed" }
         }

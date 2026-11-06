@@ -1,0 +1,10 @@
+# FAST ultrasound
+@keywords: fast, efast, ultrasound, free fluid, pneumothorax, tamponade
+@related: hospital_shock, hospital_surgery
+
+The 6 windows of the eFAST: **right upper quadrant**, **left upper quadrant**, **pelvis**, **pericardium**, **right and left lung**.
+
+- Liver injury → RUQ, spleen → LUQ, pelvic fracture → pelvis, tamponade → pericardium, pneumothorax → no lung sliding.
+- Each window positive / negative / not evaluable. Repeat a non-evaluable window or order a CT.
+
+![220](content/images/hospital/us_luq_pos.jpg)

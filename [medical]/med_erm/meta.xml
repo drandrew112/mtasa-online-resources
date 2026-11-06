@@ -28,6 +28,7 @@
     <script src="server/webadmin.lua" type="server" />
     <script src="server/autodispatch.lua" type="server" /> <!-- bridge to auto/ -->
     <script src="server/hospitalroute.lua" type="server" />
+    <script src="server/hospitalparams.lua" type="server" /> <!-- parameter card + hospital status (med_hospitals ER) -->
     <script src="server/admin.lua"   type="server" />
     <script src="server/exports.lua" type="server" />
     <script src="server/main.lua"    type="server" />
@@ -42,8 +43,10 @@
     <script src="client/tablet.lua"         type="client" />
     <script src="client/pages/login.lua"    type="client" />
     <script src="client/pages/home.lua"     type="client" />
+    <script src="client/hospitalparams.lua" type="client" />
     <script src="client/pages/case.lua"     type="client" />
     <script src="client/pages/messages.lua" type="client" />
+    <script src="client/pages/hospital.lua" type="client" /> <!-- "Kórház": messages + parameters to the hospital ER -->
     <script src="client/pages/supervisor.lua" type="client" />
     <script src="client/tutorial.lua"       type="client" />
     <script src="client/unitlabel.lua"      type="client" />

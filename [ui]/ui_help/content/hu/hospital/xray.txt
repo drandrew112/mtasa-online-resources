@@ -1,0 +1,10 @@
+# Röntgen
+@keywords: röntgen, oldal, ólomfal, vezérlőpult, gipsz, kontrollfelvétel, negatoszkóp
+@related: hospital_cast, hospital_ct
+
+- 14 testrész; a végtagoknál **oldalt** kell választani. Rossz oldal = negatív kép, és a vizsgálat nem indokolt.
+- Az expozícióhoz a **vezérlőpultnál, az ólomfal mögött** kell állnod (3 s).
+- A kép a **fali negatoszkópon** (északi fal) is megjelenik.
+- Gipszben **kontrollfelvétel** készíthető.
+
+![220](content/images/hospital/xr_ptx.jpg)

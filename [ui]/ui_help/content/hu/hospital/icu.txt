@@ -1,0 +1,13 @@
+# Intenzív
+@keywords: intenzív, icu, lélegeztetőgép, peep, fio2, noradrenalin, szedáció, vizit, vérgáz
+@related: hospital_surgery, hospital_ward
+
+Felvétel: Orvos, szabad ágy és diagnózis kell. Tartózkodás **30 perc**; romláskor a számláló áll.
+
+A betegpanel **Beavatkozások** fülén az intenzív blokk:
+
+- **Vizit** 5 percenként (pont).
+- **Lélegeztetőgép:** VC / PC, FiO₂, PEEP, légzésszám, légzési térfogat. A FiO₂ és a PEEP az SpO₂-t, a perctérfogat az EtCO₂-t állítja. Túl magas PEEP → esik a vérnyomás.
+- **Noradrenalin** lépcsőkben, cél: MAP ≥ 65.
+- **Szedáció:** nincs / felületes / mély. Szedálás nélkül a beteg „küzd a géppel”.
+- **Vérgáz** 30 s alatt.

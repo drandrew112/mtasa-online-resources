@@ -1,0 +1,13 @@
+# Betegút
+@keywords: betegút, érkezés, mentő, lábon, regisztrálás, kezelő, kimenet
+@related: hospital_triage, hospital_panel, hospital_docs
+
+1. **Érkezés:** mentővel (az F1–F5 folyosói helyre kerül), lábon (váróterem) vagy behozva (az SBO-zónában „Felvétel (regisztrálás)” a beteg menüjében).
+2. **Triage** (1–4) – előtte csak életmentés (lásd Triage).
+3. **Kezelő kijelölése:** Rezidens vagy magasabb rang vállalja a beteget.
+4. **Vizsgálat és rendelések:** betegpanel, labor, képalkotás, EKG.
+5. **Ellátás:** a helyiségekben (sokktalanító, sebkezelő, gipszelő).
+6. **Diagnózis** (BNO, legfeljebb 5).
+7. **Kimenet:** haza, osztályra, intenzívre, műtőbe, áthelyezés (S1/S2) vagy exitus. Lezáráskor elkészül az **Ambuláns lap**.
+
+> Minden lépés bekerül a betegútba (Betegút fül), idővel és a végrehajtó nevével.

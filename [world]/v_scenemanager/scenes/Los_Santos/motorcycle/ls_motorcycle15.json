@@ -96,8 +96,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "fracture", "severity": 2, "part": "spine_l" },
+                { "type": "fracture", "severity": 1, "part": "chest", "side": "left" }
             ],
             "state": { "pain": 30, "spo2": 93 }
         }

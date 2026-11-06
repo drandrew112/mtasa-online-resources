@@ -1,0 +1,670 @@
+{
+  "id": "resident",
+  "title": "Rezidens vizsga",
+  "description": "Triage, ABCDE, rendelési indikációk, vérvétel és csősorrend, alap laborértékek, sebellátás, törések, kórházi gyógyszeradagok, dokumentáció.",
+  "questionCount": 25,
+  "passPercent": 75,
+  "help": "hospital_exams",
+  "questions": [
+    {
+      "id": "res_01",
+      "q": "Melyik triage-szint illeti meg a keringésleállásban érkező beteget?",
+      "answers": [
+        "1-es (azonnali)",
+        "2-es (sürgős)",
+        "3-as (halasztható)",
+        "4-es (nem sürgős)"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_02",
+      "q": "Mi az ABCDE vizsgálat helyes sorrendje?",
+      "answers": [
+        "Légút, légzés, keringés, idegrendszer, egész test",
+        "Keringés, légút, légzés, egész test, idegrendszer",
+        "Légzés, légút, idegrendszer, keringés, egész test",
+        "Légút, keringés, légzés, egész test, idegrendszer"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_03",
+      "q": "Mit tehet a triage előtt a kórházban (K10 szabály)?",
+      "answers": [
+        "Csak életmentő beavatkozást és vizsgálatot",
+        "Bármilyen gyógyszert rendelésre beadhat",
+        "Csak a kezelőorvos kijelölését végezheti",
+        "Csak a beteg adatainak rögzítését végzi"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_04",
+      "q": "Fejsérültnél mikor indokolt a koponya CT?",
+      "answers": [
+        "Eszméletvesztés, GCS < 15 vagy véralvadásgátló",
+        "Minden esetben, a sérülés módjától függetlenül",
+        "Csak ha a beteg kifejezetten fejfájást panaszol",
+        "Csak ha a fejbőrön vérző seb is látható"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_05",
+      "q": "Mi kell a gipsz felhelyezése előtt?",
+      "answers": [
+        "Röntgenfelvétel a sérült végtagról",
+        "Teljes labor a vérvételi csövekkel",
+        "Koponya CT a fejsérülés kizárására",
+        "Tizenkét elvezetéses EKG felvétele"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_06",
+      "q": "Mi a vérvételi csövek helyes sorrendje?",
+      "answers": [
+        "Citrát, szérum, heparin, EDTA, fluorid",
+        "EDTA, citrát, szérum, fluorid, heparin",
+        "Szérum, EDTA, citrát, heparin, fluorid",
+        "Fluorid, heparin, EDTA, szérum, citrát"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_07",
+      "q": "Mit okoz, ha az EDTA-cső a szérumcső elé kerül?",
+      "answers": [
+        "Álmagas káliumot és álalacsony kalciumot",
+        "Álmagas hemoglobint és álalacsony nátriumot",
+        "Álalacsony glükózt és álmagas troponint",
+        "Megnyúlt INR-t és álalacsony fehérvérsejtet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_08",
+      "q": "Mi a hemolizált minta tipikus hibája?",
+      "answers": [
+        "Álmagas kálium",
+        "Álalacsony nátrium",
+        "Álmagas glükóz",
+        "Álalacsony INR"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_09",
+      "q": "Mit jelent az alultöltött citrátcső?",
+      "answers": [
+        "Hamisan megnyúlt alvadási időket",
+        "Hamisan alacsony hemoglobinszintet",
+        "Hamisan magas káliumszintet ad",
+        "Hamisan alacsony vércukorszintet"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_10",
+      "q": "Mennyi a hemoglobin normál tartománya felnőtt férfinél?",
+      "answers": [
+        "Kb. 140–180 g/l",
+        "Kb. 80–110 g/l",
+        "Kb. 200–240 g/l",
+        "Kb. 50–70 g/l"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_11",
+      "q": "Mennyi a szérum kálium normál tartománya?",
+      "answers": [
+        "3,5–5,1 mmol/l",
+        "1,5–2,5 mmol/l",
+        "6,5–8,0 mmol/l",
+        "135–145 mmol/l"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_12",
+      "q": "Mire utal a magas laktát és az alacsony pH együtt?",
+      "answers": [
+        "Szöveti oxigénhiányra, sokkra",
+        "Enyhe kiszáradásra, szomjúságra",
+        "Alkoholfogyasztásra az elmúlt napban",
+        "Jól kompenzált krónikus vesebetegségre"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_13",
+      "q": "Mire utal a magas troponin?",
+      "answers": [
+        "Szívizom-károsodásra",
+        "Májsejt-károsodásra",
+        "Vesekő jelenlétére",
+        "Pajzsmirigy-túlműködésre"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_14",
+      "q": "Mi a szennyezett vágott seb ellátásának első lépése a sebkezelőben?",
+      "answers": [
+        "Bő öblítés (irrigálás)",
+        "Azonnali bőrvarrat",
+        "Szoros nyomókötés",
+        "Gipszsín felhelyezése"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_15",
+      "q": "Mikor kell tetanusz-profilaxis a sebellátásnál?",
+      "answers": [
+        "Ha az oltás 10 évnél régebbi vagy ismeretlen",
+        "Csak akkor, ha a seb láthatóan gennyes",
+        "Csak a 60 év feletti sérülteknél kell",
+        "Soha, ha a sebet alaposan kiöblítették"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_16",
+      "q": "Mi történik, ha helyi érzéstelenítés nélkül varr?",
+      "answers": [
+        "A beteg mozog, a varrat minősége romlik",
+        "A seb gyorsabban gyógyul, kevesebb a heg",
+        "A beteg vérnyomása veszélyesen leesik",
+        "A varrat automatikusan sikertelen lesz"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_17",
+      "q": "Elmozdult alkartörésnél mi a sorrend a gipszelőben?",
+      "answers": [
+        "Röntgen, repozíció, gipsz, kontrollröntgen",
+        "Gipsz, röntgen, repozíció, kontrollröntgen",
+        "Repozíció, gipsz, röntgen, fájdalomcsillapítás",
+        "Kontrollröntgen, gipsz, repozíció, röntgen"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_18",
+      "q": "Mit kell ellenőrizni a gipsz felhelyezése után?",
+      "answers": [
+        "A keringést, a mozgást és az érzést",
+        "A vércukrot, a laktátot és a pH-t",
+        "A pupillákat, a GCS-t és a beszédet",
+        "A testhőt, a légzésszámot és az EtCO₂-t"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_19",
+      "q": "Mit jelez a túl szoros gipsz?",
+      "answers": [
+        "Fokozódó fájdalom, sápadt, hideg ujjak",
+        "Enyhe viszketés a gipsz széle alatt",
+        "Kissé meleg bőr a gipsz körül",
+        "A gipsz felülete gyorsan megszárad"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_20",
+      "q": "Miért kell fájdalomcsillapítás a repozíció előtt?",
+      "answers": [
+        "Mert fájdalomban a beteg nem tűri, a repozíció rosszabb",
+        "Mert a fájdalomcsillapító gyorsítja a csont gyógyulását",
+        "Mert enélkül a röntgenkép nem lesz értékelhető utána",
+        "Mert a gipsz csak fájdalomcsillapító mellett köt meg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_21",
+      "q": "Hány diagnózis (BNO) rögzíthető egy esethez?",
+      "answers": [
+        "Legfeljebb 5, nincs fődiagnózis",
+        "Pontosan 1 fődiagnózis és 1 mellék",
+        "Legfeljebb 10, az első a fő",
+        "Korlátlan számú, mind egyenrangú"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_22",
+      "q": "Mi történik, ha indikáció nélkül rendel vizsgálatot?",
+      "answers": [
+        "Csak a pont fele jár érte",
+        "A vizsgálat nem készül el",
+        "A rendelés automatikusan törlődik",
+        "Kétszeres pont jár érte"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_23",
+      "q": "Milyen csillagos (*) BNO-kód adható?",
+      "answers": [
+        "Csak egy kereszt (+) kód mellett",
+        "Bármikor, önálló diagnózisként",
+        "Csak halottvizsgálati bizonyítványon",
+        "Csak a 18 év alatti betegeknél"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_24",
+      "q": "Kinek a nyelvén mentődik az Ambuláns lap?",
+      "answers": [
+        "A szerzőén; a kódolt részek a néző nyelvén jelennek meg",
+        "Mindig magyarul, a fordítás a megnyitáskor készül",
+        "Mindig angolul, mert a kórház nemzetközi intézmény",
+        "A beteg nyelvén, amelyet a felvételkor kell megadni"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_25",
+      "q": "Mi történik visszavételkor az Ambuláns lappal?",
+      "answers": [
+        "Új verzió készül a lezáráskor",
+        "A régi lap végleg törlődik",
+        "A lap nem módosítható többé",
+        "A beteg új esetszámot kap"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_26",
+      "q": "Meddig tart az elfekvős tartózkodás, ha a beteg stabil?",
+      "answers": [
+        "20 percig",
+        "5 percig",
+        "60 percig",
+        "2 percig"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_27",
+      "q": "Mi történik, ha az elfekvőn romlik a beteg?",
+      "answers": [
+        "A számláló megáll, a kezelőorvos riasztást kap",
+        "A beteg automatikusan intenzívre kerül át",
+        "A beteg hazamegy, az eset hibával zárul",
+        "Semmi, a számláló tovább fut a végéig"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_28",
+      "q": "Mennyi idő alatt kell az S2 áthelyezést elvégezni (játékidőben)?",
+      "answers": [
+        "30 percen belül",
+        "3 percen belül",
+        "2 órán belül",
+        "24 órán belül"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_29",
+      "q": "Ki kérhet S2 áthelyezést?",
+      "answers": [
+        "Rezidens vagy magasabb rang",
+        "Csak Főorvos, kinevezéssel",
+        "Bármelyik Ápoló a műszakban",
+        "Csak a mentőegység vezetője"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_30",
+      "q": "Melyik igény esetén csak ALS egység végezheti az áthelyezést?",
+      "answers": [
+        "Oxigén, perfúzor, lélegeztetés vagy monitor",
+        "Ha a beteg 60 évnél idősebb és férfi",
+        "Ha a célkórház 2 km-nél messzebb van",
+        "Ha a beteg kérte a kórházi áthelyezést"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_31",
+      "q": "Hol végezhető RSI és intubáció a kórházban (eszméletén lévő betegnél)?",
+      "answers": [
+        "A sokktalanítóban vagy az intenzíven",
+        "Bárhol a folyosón, egy hordágyon",
+        "Csak a sebkezelőben, helyi érzéstelenítéssel",
+        "Csak a röntgen vezérlőpultja mögött"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_32",
+      "q": "Hol kell állnia a röntgenfelvétel indításakor?",
+      "answers": [
+        "A vezérlőpultnál, az ólomfal mögött",
+        "A beteg mellett, a lába felőli oldalon",
+        "A folyosón, az ajtó előtt kint",
+        "A fali negatoszkóp előtt, középen"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_33",
+      "q": "Végtag röntgennél mi történik, ha rossz oldalt kér?",
+      "answers": [
+        "Negatív kép készül, és nem indokolt a vizsgálat",
+        "A rendszer automatikusan átírja a jó oldalra",
+        "Mindkét oldalról készül felvétel díjmentesen",
+        "A felvétel elkészül, de nem kerül a betegútra"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_34",
+      "q": "Mire szolgál a FAST vizsgálat?",
+      "answers": [
+        "Szabad folyadék és légmell keresésére",
+        "A csonttörések pontos ábrázolására",
+        "A koponyaűri vérzés kizárására",
+        "A vércukorszint gyors mérésére"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_35",
+      "q": "Mi a teendő, ha a FAST egy ablaka nem értékelhető?",
+      "answers": [
+        "A vizsgálatot meg kell ismételni vagy CT kell",
+        "Az ablakot negatívnak kell tekinteni",
+        "Az ablakot pozitívnak kell tekinteni",
+        "A beteget azonnal haza kell engedni"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_36",
+      "q": "Hol vehető fel 12 elvezetéses EKG a kórházban?",
+      "answers": [
+        "A sokktalanítóban, ahol az EKG-gép van",
+        "Bármelyik elfekvő ágynál a monitorról",
+        "A folyosón, a mentős monitor nélkül",
+        "A röntgenben, a felvétel közben"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_37",
+      "q": "Mit mutat, ha az EKG-n az I. elvezetés negatív és az aVR pozitív?",
+      "answers": [
+        "Felcserélt jobb és bal kar elektródát",
+        "Kiterjedt anterior szívinfarktust",
+        "Teljes atrioventricularis blokkot",
+        "Súlyos hypokalaemiát és QT-nyúlást"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_38",
+      "q": "Mennyi a metamizol (Algopyrin) szokásos felnőtt adagja?",
+      "answers": [
+        "1000 mg",
+        "100 mg",
+        "5000 mg",
+        "10 mg"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_39",
+      "q": "Mennyi a morfin szokásos kezdő adagja felnőttnél?",
+      "answers": [
+        "2–5 mg iv., titrálva",
+        "20–50 mg iv., egyszerre",
+        "0,1 mg iv., egyszer",
+        "100 mg szájon át"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_40",
+      "q": "Mennyi az ondansetron szokásos adagja?",
+      "answers": [
+        "4 mg iv.",
+        "40 mg iv.",
+        "0,4 mg iv.",
+        "400 mg iv."
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_41",
+      "q": "Mennyi a tranexámsav (TXA) adagja vérző traumás betegnél?",
+      "answers": [
+        "1 g iv., 10 perc alatt",
+        "10 g iv., egy bólusban",
+        "100 mg iv., óránként",
+        "1 mg iv., 1 perc alatt"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_42",
+      "q": "Mit adunk az ápolói rangú dolgozónak, hogy gyógyszert adhasson?",
+      "answers": [
+        "Gyógyszer-rendelést a betegpanelen",
+        "Saját EMS táskát a mentőállomásról",
+        "Főorvosi kinevezést a /appoint-tal",
+        "Semmit, mindent beadhat rendelés nélkül"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_43",
+      "q": "Hogyan dönt a triage-súgó?",
+      "answers": [
+        "A mért értékekből javasol, a döntés a dolgozóé",
+        "Automatikusan beállítja a szintet a betegnek",
+        "A mentős átadási szövegéből olvassa ki",
+        "Véletlenszerűen, a gyakorláshoz készült"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_44",
+      "q": "Mi a teendő az SBO-zónába behozott, nem regisztrált beteggel?",
+      "answers": [
+        "„Felvétel (regisztrálás)” a beteg menüjében",
+        "Azonnal a hullaleadóba kell tolni a beteget",
+        "Meg kell várni, amíg a mentő is megérkezik",
+        "Semmi, a rendszer később magától felveszi"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_45",
+      "q": "Mi történik, ha üres kórházi hordágyat tol a hordágy-markerbe és megnyomja az E-t?",
+      "answers": [
+        "A hordágy visszakerül (törlődik)",
+        "Egy második hordágyat kap mellé",
+        "A hordágy a sokktalanítóba ugrik",
+        "Semmi, a marker ilyenkor nem működik"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_46",
+      "q": "Mikor kerül a beteg a fali monitorra a sokktalanítóban?",
+      "answers": [
+        "Magától, amikor a hordágy a sokk-helyre kerül",
+        "Csak ha a mentős monitor is rajta maradt",
+        "Csak a Főorvos engedélyével a PC-n",
+        "Csak a vérvétel és a labor után"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_47",
+      "q": "Mit kell rögzíteni hazabocsátás előtt?",
+      "answers": [
+        "Legalább egy diagnózist (BNO)",
+        "Legalább három laborpanelt",
+        "Egy CT-vizsgálat eredményét",
+        "A beteg vércsoportját"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_48",
+      "q": "Mit jelent a kockázatos elbocsátás az Ambuláns lapon?",
+      "answers": [
+        "Instabil értékekkel (pl. alacsony RR) engedték haza",
+        "A beteg nem fizette ki az ellátás teljes díját",
+        "A beteget a mentő hozta, de magától távozott",
+        "A beteg nem adta meg a polgári azonosítóját"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_49",
+      "q": "Ki lehet egy eset kezelőorvosa?",
+      "answers": [
+        "Rezidens vagy magasabb rang, triage után",
+        "Bármelyik Ápoló, a triage előtt is",
+        "Csak a mentőegység vezetője",
+        "Csak a Főorvos, kinevezés után"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_50",
+      "q": "Mekkora a kezelőorvos esetbónusza?",
+      "answers": [
+        "A lezárt, dokumentált eset pontjainak 15%-a",
+        "Fix 100 pont minden lezárt eset után",
+        "Az eset összes pontjának pontosan a fele",
+        "Nincs bónusz, csak a beavatkozások pontja"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_51",
+      "q": "Mennyi idő alatt készül el a labor lelet?",
+      "answers": [
+        "Kb. 2 perc",
+        "Kb. 20 perc",
+        "Azonnal",
+        "Kb. 1 óra"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_52",
+      "q": "Mit tartalmaz a teljes labor?",
+      "answers": [
+        "Minden panelt egyben, a vércsoporttal és a tox-szűréssel",
+        "Csak a vérképet és a vércsoportot a transzfúzióhoz",
+        "Csak a kardiális markereket, troponint és CK-t",
+        "Csak a vérgázt, a laktátot és a pH-t a sokkhoz"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_53",
+      "q": "Hol jelenik meg a CT lelet képe?",
+      "answers": [
+        "A lelet-nézőben és a CT fali monitorán",
+        "Csak a mentős tableten, a feladatnál",
+        "Csak a beteg nyomtatott zárójelentésén",
+        "Csak a röntgen negatoszkópján, este"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_54",
+      "q": "Egyszerre hány beteg lehet a CT-ben?",
+      "answers": [
+        "Egy, a többiek várólistán",
+        "Kettő, egymás mellett",
+        "Korlátlan számú beteg",
+        "Három, prioritás nélkül"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_55",
+      "q": "Ki kerül előre a CT várólistán?",
+      "answers": [
+        "Az 1-es triage-szintű beteg",
+        "A legkésőbb érkezett beteg",
+        "A legfiatalabb beteg",
+        "Aki a legtöbbet fizetett"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_56",
+      "q": "Mit kell tenni a mentős átadáskor kötelezően?",
+      "answers": [
+        "Rövid leírást adni a betegről",
+        "Teljes labort rendelni a betegnek",
+        "Kitölteni a halottvizsgálati lapot",
+        "Áthelyezést kérni egy másik kórházba"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_57",
+      "q": "Mire figyelmeztet a betegpanel allergia-jelvénye?",
+      "answers": [
+        "Ismert gyógyszer-allergiára",
+        "Magas vércukorszintre",
+        "Fertőző betegségre",
+        "Véralvadásgátló szedésére"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_58",
+      "q": "Mit tegyen, ha a beteg véralvadásgátlót szed és elesett?",
+      "answers": [
+        "Koponya CT és alvadási labor indokolt",
+        "Hazaküldés, ha nincs látható seb",
+        "Csak egy kötés és egy fájdalomcsillapító",
+        "Tizenkét elvezetéses EKG elegendő"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_59",
+      "q": "Hány perc egy vizit gyakorisága az intenzíven?",
+      "answers": [
+        "5 percenként",
+        "60 percenként",
+        "Percenként",
+        "Naponta egyszer"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "res_60",
+      "q": "Mennyi a nátrium normál tartománya?",
+      "answers": [
+        "135–145 mmol/l",
+        "3,5–5,1 mmol/l",
+        "95–105 mmol/l",
+        "150–170 mmol/l"
+      ],
+      "correct": 1
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "mg_reduction.client.analgesia_off": "No analgesia",
+  "mg_reduction.client.analgesia_on": "Analgesia given",
+  "mg_reduction.client.angulation": "Angulation",
+  "mg_reduction.client.attempts": "The patient pulled away: {n|int}",
+  "mg_reduction.client.displacement": "Displacement",
+  "mg_reduction.client.goal": "Goal: < {angle}° and < {shift} mm",
+  "mg_reduction.client.hint": "Hold the left mouse button and drag: down = traction, sideways = shift. Mouse wheel: rotation (only under traction).",
+  "mg_reduction.client.hold": "Hold it…",
+  "mg_reduction.client.jerked": "The patient jerked the limb!",
+  "mg_reduction.client.pain": "Pain",
+  "mg_reduction.client.pull_first": "Pull first: the fragments are locked without traction",
+  "mg_reduction.client.title": "Fracture reduction{part}",
+  "mg_reduction.client.traction": "Traction",
+  "mg_reduction.kit.failed": "FAILED",
+  "mg_reduction.kit.success": "SUCCESS"
+}

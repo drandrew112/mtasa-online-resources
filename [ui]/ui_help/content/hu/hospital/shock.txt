@@ -1,0 +1,11 @@
+# Sokktalanító
+@keywords: sokktalanító, rsi, intubáció, drén, medenceöv, lélegeztetés, fali monitor
+@related: hospital_fast, hospital_ecg, hospital_transfusion
+
+A sokk-ágyhelyen a beteg **magától a fali monitorra** kerül. Csak itt (és az intenzíven) végezhető:
+
+- RSI / intubáció és az RSI-szerek, noradrenalin, alteplase,
+- tűdekompresszió, **mellkasi drén** (minigame), medenceöv,
+- gépi lélegeztetés, CPAP, artériás vérgáz, FAST, EKG-12.
+
+> Keringésleállásban és eszméletlen betegnél a légútbiztosítás bárhol végezhető.

@@ -98,8 +98,8 @@
             "vehicle": "v1",
             "seat": 0,
             "injuries": [
-                { "type": "fracture", "severity": 3 },
-                { "type": "gunshot", "severity": 2 }
+                { "type": "fracture", "severity": 3, "part": "leg", "side": "left" },
+                { "type": "gunshot", "severity": 2, "part": "leg", "side": "right" }
             ],
             "state": { "bloodVolume": 3994, "consciousness": "dazed" }
         },
@@ -111,8 +111,8 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "left" },
+                { "type": "fracture", "severity": 1, "part": "leg", "side": "left" }
             ],
             "state": { "consciousness": "dazed" }
         },
@@ -124,7 +124,7 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "fracture", "severity": 2 }
+                { "type": "fracture", "severity": 2, "part": "leg", "side": "left" }
             ],
             "state": {}
         },
@@ -136,7 +136,7 @@
             "anim": "crouch",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 1 }
+                { "type": "head_injury", "severity": 1, "part": "head", "side": "right" }
             ],
             "state": {}
         }

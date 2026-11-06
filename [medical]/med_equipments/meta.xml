@@ -25,6 +25,7 @@
     <!-- stretcher -->
     <script src="stretcher/server/stretcher.lua" type="server" />
     <script src="stretcher/server/interaction.lua" type="server" />
+    <script src="stretcher/server/hospital.lua" type="server" /> <!-- hospital stretchers (no vehicle) -->
 
     <!-- bag -->
     <script src="bag/server/kits.lua" type="server" />
@@ -77,4 +78,18 @@
     <export function="getStretcherPatient" type="server" />
     <export function="getPatientStretcher" type="server" />
     <export function="takePatientOff" type="server" />
+    <!-- hospital stretchers: med_hospitals -->
+    <export function="createHospitalStretcher" type="server" />
+    <export function="destroyHospitalStretcher" type="server" />
+    <export function="getHospitalStretchers" type="server" />
+    <export function="isHospitalStretcher" type="server" />
+    <export function="getStretcherHospital" type="server" />
+    <export function="parkHospitalStretcher" type="server" />
+    <export function="putPatientOnStretcher" type="server" />
+    <export function="getStretcherIdleTime" type="server" />
+    <export function="getPusherStretcher" type="server" />
+    <export function="pushHospitalStretcher" type="server" />
+    <export function="releaseHospitalStretcher" type="server" />
+    <export function="createHospitalBed" type="server" />
+    <export function="destroyHospitalBed" type="server" />
 </meta>

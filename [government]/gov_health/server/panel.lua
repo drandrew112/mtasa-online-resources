@@ -13,14 +13,16 @@ local function hospitalList()
     if isResourceRunning("med_hospitals") then
         for _, h in ipairs(exports.med_hospitals:getHospitals() or {}) do
             local pay = GOV.hospitalPayment(h.id)
-            list[#list + 1] = { id = h.id, name = h.name, payer = pay.payer, receiver = pay.receiver, heal = h.heal }
+            list[#list + 1] = { id = h.id, name = h.name, payer = pay.payer, receiver = pay.receiver, heal = h.heal,
+                                care = pay.care, salary = pay.salary, supplies = pay.supplies }
             seen[h.id] = true
         end
     end
     for id in pairs(GOV.get("health.hospitals") or {}) do
         if not seen[id] then
             local pay = GOV.hospitalPayment(id)
-            list[#list + 1] = { id = id, name = id, payer = pay.payer, receiver = pay.receiver, missing = true }
+            list[#list + 1] = { id = id, name = id, payer = pay.payer, receiver = pay.receiver, missing = true,
+                                care = pay.care, salary = pay.salary, supplies = pay.supplies }
         end
     end
     return list
@@ -30,7 +32,7 @@ function A.health(p, args, reply)
     local hospitals = hospitalList()
     local ids, seen = {}, {}
     for _, h in ipairs(hospitals) do
-        for _, spec in ipairs({ h.payer, h.receiver }) do
+        for _, spec in ipairs({ h.payer, h.receiver, h.care, h.salary, h.supplies }) do
             local id = tonumber(spec:match("^company:(%d+)$"))
             if id and not seen[id] then seen[id] = true; ids[#ids + 1] = id end
         end
@@ -38,6 +40,8 @@ function A.health(p, args, reply)
     GOV.companyNames(ids, function(names)
         reply({ enabled = GOV.get("health.enabled") ~= false, hpPrice = tonumber(GOV.get("health.hp_price")) or 0,
             injuries = GOV.get("health.injuries") or {}, hospitals = hospitals, payers = GOV.payerOptions(), companies = names,
+            pointCare = tonumber(GOV.get("health.point_care")) or 60, pointSalary = tonumber(GOV.get("health.point_salary")) or 40,
+            warnings = GOV.get("health.warnings") or {},
             hospitalsRunning = isResourceRunning("med_hospitals") })
     end)
 end
@@ -51,6 +55,12 @@ function A.setHealth(p, args, reply, actor)
     end
     if args.field == "enabled" then
         GOV.set("health.enabled", args.value == true, actor)
+    elseif args.field == "point_care" or args.field == "point_salary" then
+        local v = tonumber(args.value)
+        if not v then return reply(false, "bad_number") end
+        GOV.set("health." .. args.field, math.floor(clamp(v, GOV_RANGE.pointValue)), actor)
+    elseif args.field == "clear_warnings" then
+        GOV.set("health.warnings", {}, actor)
     elseif args.field == "hp_price" then
         local v = tonumber(args.value)
         if not v then return reply(false, "bad_number") end
@@ -74,7 +84,7 @@ function A.setHealth(p, args, reply, actor)
             GOV.set("health.hospitals", list, actor)
             return reply(true)
         end
-        if side ~= "payer" and side ~= "receiver" then return reply(false, "bad_field") end
+        if side ~= "payer" and side ~= "receiver" and side ~= "care" and side ~= "salary" and side ~= "supplies" then return reply(false, "bad_field") end
         local function store(value)
             local list = GOV.get("health.hospitals") or {}
             local row = type(list[id]) == "table" and list[id] or {}
@@ -84,7 +94,7 @@ function A.setHealth(p, args, reply, actor)
             reply(true)
         end
         if spec == nil then return store(nil) end
-        GOV.checkSpec(spec, side == "payer", function(ok, err)
+        GOV.checkSpec(spec, side ~= "receiver", function(ok, err)
             if not ok then return reply(false, err) end
             store(ok)
         end)

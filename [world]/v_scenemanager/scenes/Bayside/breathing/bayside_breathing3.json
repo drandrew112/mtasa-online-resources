@@ -38,7 +38,7 @@
             "anim": "cough",
             "role": "patient",
             "injuries": [
-                { "type": "pulmonary_edema", "severity": 2 }
+                { "type": "pulmonary_edema", "severity": 2, "part": "chest", "side": "left" }
             ],
             "state": { "spo2": 82, "systolic": 185, "heartRate": 122 }
         }

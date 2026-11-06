@@ -1,0 +1,22 @@
+<meta>
+    <info author="DrAndrew112" name="mg_ecg" version="1.0" type="script" description="12-lead ECG electrode placement minigame (drag and drop, live preview), driven through exports" />
+    <min_mta_version client="1.5.8" />
+
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared.lua" type="shared" />
+    <script src="kit/client.lua" type="client" />
+    <script src="client.lua" type="client" />
+    <script src="kit/server.lua" type="server" />
+    <script src="server.lua" type="server" />
+
+    <!-- server: start/stop the game for a player, result arrives via onEcgGameFinish -->
+    <export function="startEcgGame" type="server" />
+    <export function="stopEcgGame" type="server" />
+    <export function="isEcgGameActive" type="server" />
+
+    <!-- client: local-only game, result arrives via onClientEcgGameFinish -->
+    <export function="startEcgGame" type="client" />
+    <export function="stopEcgGame" type="client" />
+    <export function="isEcgGameActive" type="client" />
+</meta>

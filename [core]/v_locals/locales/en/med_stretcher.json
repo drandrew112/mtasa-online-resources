@@ -1,6 +1,7 @@
 {
   "med_stretcher.interaction.ambulance_stretcher": "Ambulance stretcher",
   "med_stretcher.interaction.at_rear_doors_of_its_ambulance": "At the rear doors of its ambulance",
+  "med_stretcher.interaction.hospital_stretcher": "Hospital stretcher",
   "med_stretcher.interaction.injured_nearest_person_next_to_stretcher": "The injured / nearest person next to the stretcher",
   "med_stretcher.interaction.load_into_ambulance": "Load into ambulance",
   "med_stretcher.interaction.only_medics_can_handle_stretcher": "Only medics can handle the stretcher.",

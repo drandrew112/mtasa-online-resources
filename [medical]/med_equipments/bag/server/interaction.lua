@@ -31,6 +31,9 @@ function isMedicRoleRequired()
 end
 
 function hasEquipmentAccess(player)
+    -- the ambulance bag / Lifepak belong to the EMS crews; hospital staff use the hospital's own
+    -- equipment (med_hospitals er stock)
+    if isElement(player) and getElementData(player, "hosp.staff") then return false end
     if not isMedicRoleRequired() then return true end
     return isRunning(MEDSYS) and exports[MEDSYS]:isPlayerMedic(player) == true
 end

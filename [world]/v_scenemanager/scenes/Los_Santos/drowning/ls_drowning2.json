@@ -38,7 +38,7 @@
             "anim": "ko_back",
             "role": "patient",
             "injuries": [
-                { "type": "suffocation", "severity": 2 }
+                { "type": "suffocation", "severity": 2, "part": "neck" }
             ],
             "state": { "spo2": 78 }
         }

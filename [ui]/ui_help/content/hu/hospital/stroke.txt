@@ -1,0 +1,10 @@
+# Stroke
+@keywords: stroke, lízis, alteplase, nihss, ct, utoljára jól, trombectomia
+@related: hospital_ct, hospital_surgery
+
+1. **Utoljára jól látott idő** a kikérdezésben, **NIHSS** a vizsgálatban.
+2. **Koponya CT** a vérzés kizárására.
+3. **Alteplase:** 0,9 mg/kg (max. 90 mg, 10% bólus) **4,5 klinikai órán (45 perc) belül**, Orvos, sokktalanítóban.
+4. Nagyér-elzáródásnál **mechanikus trombectomia** (műtő).
+
+>! Vérzéses stroke lízise súlyos romlást okoz.

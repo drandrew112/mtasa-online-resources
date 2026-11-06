@@ -1,0 +1,11 @@
+# Shock room
+@keywords: shock room, rsi, intubation, drain, pelvic binder, ventilation, wall monitor
+@related: hospital_fast, hospital_ecg, hospital_transfusion
+
+In a shock bay the patient is **connected to the wall monitor by itself**. Only here (and in the ICU):
+
+- RSI / intubation and the RSI drugs, noradrenaline, alteplase,
+- needle decompression, **chest drain** (minigame), pelvic binder,
+- ventilator, CPAP, arterial blood gas, FAST, 12-lead ECG.
+
+> In cardiac arrest and in an unconscious patient the airway may be secured anywhere.

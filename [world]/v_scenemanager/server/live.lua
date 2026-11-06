@@ -209,7 +209,7 @@ function Live.spawn(name, source, opts)
             Npc.applyRecord(scene, ped, entry, rolled)
             -- let the ped reach the clients first, so medsys' animations sync
             setTimer(function()
-                if isElement(ped) then Builder.applyMedical(ped, entry, rolled) end
+                if isElement(ped) then Builder.applyMedical(ped, entry, rolled, data.category) end
             end, VSM.MEDSYS_DELAY, 1)
         else
             vsmLog("scene '%s': could not create ped %s", name, entry.id)

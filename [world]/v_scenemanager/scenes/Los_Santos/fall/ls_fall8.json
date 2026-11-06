@@ -38,8 +38,8 @@
             "anim": "sit",
             "role": "patient",
             "injuries": [
-                { "type": "head_injury", "severity": 2 },
-                { "type": "fracture", "severity": 1 }
+                { "type": "head_injury", "severity": 2, "part": "head", "side": "right" },
+                { "type": "fracture", "severity": 1, "part": "spine_l" }
             ],
             "state": { "consciousness": "confused" }
         }

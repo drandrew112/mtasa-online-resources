@@ -1,0 +1,9 @@
+# STEMI
+@keywords: stemi, nstemi, acs, infarktus, pci, lízis, nitrát, troponin
+@related: hospital_ecg, hospital_surgery
+
+- **EKG-12** azonnal; troponin a kardiális laborban.
+- **Inferior STEMI:** ST-eleváció II, III, aVF; AV-blokk veszélye; **nitrát nem adható** (RR-esés).
+- **Anterior STEMI:** V1–V4; kamrafibrilláció veszélye.
+- Kezelés: ASA, klopidogrél, heparin, majd **primer PCI** (műtő, előre sorolódik) vagy lízis.
+- A szívizom-elhalás a reperfúzióig nő: minden perc számít.

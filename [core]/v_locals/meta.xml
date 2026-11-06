@@ -153,6 +153,16 @@
     <file src="locales/en/gov_railways.json" />
     <file src="locales/en/gov_perms.json" />
     <file src="locales/en/pt_tickets.json" />
+    <file src="locales/en/work_hospital.json" />
+    <file src="locales/en/med_docs.json" />
+    <file src="locales/en/mg_suture.json" />
+    <file src="locales/en/mg_irrigation.json" />
+    <file src="locales/en/mg_cast.json" />
+    <file src="locales/en/mg_reduction.json" />
+    <file src="locales/en/mg_blooddraw.json" />
+    <file src="locales/en/mg_fast.json" />
+    <file src="locales/en/mg_chestdrain.json" />
+    <file src="locales/en/mg_ecg.json" />
     <file src="locales/hu/ai_land_traffic.json" />
     <file src="locales/hu/ai_peds.json" />
     <file src="locales/hu/avi_core.json" />
@@ -262,6 +272,16 @@
     <file src="locales/hu/gov_railways.json" />
     <file src="locales/hu/gov_perms.json" />
     <file src="locales/hu/pt_tickets.json" />
+    <file src="locales/hu/work_hospital.json" />
+    <file src="locales/hu/med_docs.json" />
+    <file src="locales/hu/mg_suture.json" />
+    <file src="locales/hu/mg_irrigation.json" />
+    <file src="locales/hu/mg_cast.json" />
+    <file src="locales/hu/mg_reduction.json" />
+    <file src="locales/hu/mg_blooddraw.json" />
+    <file src="locales/hu/mg_fast.json" />
+    <file src="locales/hu/mg_chestdrain.json" />
+    <file src="locales/hu/mg_ecg.json" />
 
     <!-- ================= EXPORTS: CLIENT ================= -->
     <export function="import"            type="client" />
