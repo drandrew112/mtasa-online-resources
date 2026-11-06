@@ -589,7 +589,10 @@ end
 
 function renderMinimap(x, y, w, h)
 	local int = getElementInterior(localPlayer)
-	if int == 0 then
+	-- radar/interiors.lua: building plan inside an interior map zone (int 0: zoom + fade over the world map;
+	-- int ~= 0: the plan alone, otherwise the minimap stays hidden in interiors as before)
+	local interiorMap, interiorBlend, interiorMode = updateInteriorMap()
+	if int == 0 or interiorMode then
 
 		if bigmapIsVisible or not minimapIsVisible then
 			return
@@ -648,6 +651,7 @@ function renderMinimap(x, y, w, h)
 			end
 			minimapZoom = minimapZoom - vehicleZoom
 		end
+		minimapZoom = blendInteriorZoom(minimapZoom, interiorMap, interiorBlend)
 
 		local playerPosX, playerPosY, playerPosZ = getElementPosition(localPlayer)
 		local cameraX, cameraY, _, faceTowardX, faceTowardY = getCameraMatrix()
@@ -668,8 +672,20 @@ function renderMinimap(x, y, w, h)
 			-- Opaque base fill: the render target is cleared to transparent black, so
 			-- without this any pixel the map image does not fully cover would let the
 			-- game world bleed through and make the minimap map look washed out / faint.
+			if interiorMode then
+				-- game interior: only the plan (world blips / routes / areas would be meaningless here)
+				drawInteriorMap(interiorMap, interiorBlend, minimapRenderHalfSize, minimapZoom, mapRatio, playerPosX, playerPosY, true)
+			else
+			-- inside a building zone the plan's background fully covers the world map: skip it then
+			if not interiorMap or interiorBlend < 1 then
 			dxDrawRectangle(0, 0, minimapRenderSize, minimapRenderSize, tocolor(84, 112, 126, 255))
 			drawMapSection(0, 0, minimapRenderSize, minimapRenderSize, remapTheSecondWay(playerPosX) - minimapRenderSize / minimapZoom / 2, remapTheFirstWay(playerPosY) - minimapRenderSize / minimapZoom / 2, minimapRenderSize / minimapZoom, minimapRenderSize / minimapZoom, getTexture("minimapMap"), 0, 0, 0, tocolor(255, 255, 255, 255))
+			end
+
+			-- building plan over the world map while inside an exterior zone (fades with the zoom)
+			if interiorMap then
+				drawInteriorMap(interiorMap, interiorBlend, minimapRenderHalfSize, minimapZoom, mapRatio, playerPosX, playerPosY, false)
+			end
 
 			drawCircleAreas(minimapRenderHalfSize, minimapRenderHalfSize, remapPlayerPosX, remapPlayerPosY, minimapZoom, 0, 0, minimapRenderSize, minimapRenderSize)
 
@@ -715,6 +731,7 @@ function renderMinimap(x, y, w, h)
 					defaultBlipsCount = defaultBlipsCount + 1
 				end
 			end
+			end -- not interiorMode
 
 			-- Other players in the same dimension / interior (same toggle as on the bigmap).
 			-- Skipped when a script already attached a blip to them, or when they are invisible.
@@ -740,8 +757,10 @@ function renderMinimap(x, y, w, h)
 			end
 
 			-- Waypoint + objective blips: always far-shown, drawn on top of the rest.
-			for _, b in ipairs(getSpecialBlips()) do
-				renderBlip(b.icon, b.x, b.y, remapPlayerPosX, remapPlayerPosY, 24, 24, 0xFFFFFFFF, cameraRotation, true, b.key)
+			if not interiorMode then
+				for _, b in ipairs(getSpecialBlips()) do
+					renderBlip(b.icon, b.x, b.y, remapPlayerPosX, remapPlayerPosY, 24, 24, 0xFFFFFFFF, cameraRotation, true, b.key)
+				end
 			end
 
 			dxSetRenderTarget()
@@ -767,8 +786,9 @@ function renderMinimap(x, y, w, h)
 			isSignal = true
 		end
 
-		if int == 0 then
-			local playerArrowSize = 60 / (4 - minimapZoom) + 3
+		if int == 0 or interiorMode then
+			-- the size formula is meant for the outdoor zoom range; inside buildings the zoom goes far above it
+			local playerArrowSize = 60 / (4 - min(minimapZoom, 1.2)) + 3
 			local playerArrowHalfSize = playerArrowSize / 2
 			local _, _, playerRotation = getElementRotation(localPlayer)
 

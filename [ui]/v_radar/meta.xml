@@ -92,8 +92,17 @@
 
     <file src="radar/files/cross.png" type="client" />
     <file src="radar/files/route_ribbon.png" type="client" />
+
+    <!-- minimap interior maps: index.json + one image per map (radar/interiors.lua) -->
+    <file src="interiors/index.json" type="client" />
+    <file src="interiors/ls_allsaints.png" type="client" />
+    <file src="interiors/ls_pd.png" type="client" />
+    <file src="interiors/ls_pd_jail.png" type="client" />
+    <file src="interiors/ls_pd_garage.png" type="client" />
+    <file src="interiors/sa_control.png" type="client" />
     <include resource="v_locals" />
     <script src="locals.lua" type="client" />
+    <script src="radar/interiors.lua" type="client" />
     <script src="radar/sourceC.lua" type="client" />
     <script src="radar/speedo.lua" type="client" />
     <script src="radar/voiceicon.lua" type="client" />
@@ -119,6 +128,7 @@
 	<export function="setEnable3DNavigation" type="client" />
 	<export function="getEnable3DNavigation" type="client" />
 	<export function="getMinimapRect" type="client" />
+	<export function="getCurrentInteriorMap" type="client" />
 	<export function="addObjective" type="client" />
 	<export function="updateObjective" type="client" />
 	<export function="removeObjective" type="client" />

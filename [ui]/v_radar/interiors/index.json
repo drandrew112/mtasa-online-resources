@@ -1,0 +1,75 @@
+{
+  "_comment": "Minimap interior maps. x/y = world position of the image's top-left corner (north-west), width/height = metres the image covers. interior = game interior id (0 = free-roam building). zones = boxes (player position, min/max x,y,z) where this map replaces the world minimap; zoom = minimap zoom multiplier inside (1 = default, 2 = twice as close, 0.5 = half; kept when the maps are regenerated). optional dimension.",
+  "maps": [
+    {
+      "id": "ls_allsaints",
+      "name": "All Saints General Hospital",
+      "image": "ls_allsaints.png",
+      "x": 1137,
+      "y": -1288,
+      "width": 39,
+      "height": 100,
+      "interior": 0,
+      "zoom": 1,
+      "zones": [
+        {"min": [1149.6, -1384.5, 13.6], "max": [1172.4, -1290.8, 19.0]}
+      ]
+    },
+    {
+      "id": "ls_pd",
+      "name": "Los Santos Police Department",
+      "image": "ls_pd.png",
+      "x": 1549,
+      "y": -1639,
+      "width": 44,
+      "height": 58,
+      "interior": 0,
+      "zoom": 2,
+      "zones": [
+        {"min": [1551, -1695, 14.8], "max": [1591, -1641, 19.2]}
+      ]
+    },
+    {
+      "id": "ls_pd_jail",
+      "name": "LSPD Jail",
+      "image": "ls_pd_jail.png",
+      "x": 1567,
+      "y": -1687,
+      "width": 40,
+      "height": 19,
+      "interior": 0,
+      "zoom": 2,
+      "zones": [
+        {"min": [1568.5, -1704, 12.2], "max": [1605.5, -1689.5, 14.79]}
+      ]
+    },
+    {
+      "id": "ls_pd_garage",
+      "name": "LSPD Garage",
+      "image": "ls_pd_garage.png",
+      "x": 1523,
+      "y": -1631,
+      "width": 91,
+      "height": 94,
+      "interior": 0,
+      "zoom": 1,
+      "zones": [
+        {"min": [1524, -1724, 3.5], "max": [1613, -1632, 10.0]}
+      ]
+    },
+    {
+      "id": "sa_control",
+      "name": "SA Control",
+      "image": "sa_control.png",
+      "x": 172,
+      "y": 210,
+      "width": 53,
+      "height": 56,
+      "interior": 3,
+      "zoom": 1,
+      "zones": [
+        {"min": [172, 154, 1056.0], "max": [225, 210, 1063.0]}
+      ]
+    }
+  ]
+}
