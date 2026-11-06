@@ -18,7 +18,7 @@ if not MYSQL then loadstring(exports.v_mysql:importAsync())() end -- v_mysql asy
 --  filters / savefilter { name, filter } / delfilter { name } -> the admin's saved filters
 --  edit    { name, what, ... } -> setlevel | money | bank | level | xp | workxp | note | delnote |
 --                                 vehgive | vehdelete | vehrestore | achgive | achreset |
---                                 ban | unban | unmute
+--                                 ban | unban | unmute | jail { minutes, reason } | unjail
 -- ============================================================
 
 local ACC = ADMIN.accounts
@@ -70,7 +70,8 @@ local LIST_SQL = "SELECT id, account_name, email, display_name, admin_level, cre
     .. jsonKey("Online.hours") .. " AS hours, "
     .. jsonKey("Online.minutes") .. " AS minutes, "
     .. jsonKey("last_login") .. " AS last_login, "
-    .. jsonKey("receiveUpdateMails") .. " AS upd "
+    .. jsonKey("receiveUpdateMails") .. " AS upd, "
+    .. jsonKey("adminjail") .. " AS ajail "
     .. "FROM `accounts` WHERE account_name NOT LIKE '#%'" -- "#..." = v_accounts pool rows, not accounts
 
 --------------------------------------------------------------------------------
@@ -104,6 +105,7 @@ local function loadList(cb)
                     lastLogin = tonumber(r.last_login) or tonumber(r.updated_at) or 0,
                     updates = r.upd ~= "false",
                     vehicles = 0, banned = false,
+                    jailed = r.ajail == "true" or r.ajail == true,
                 }
                 list[#list + 1] = e
                 byName[name:lower()] = e
@@ -195,7 +197,7 @@ local function buildRows(actor, args)
             id = e.id, name = e.name, display = e.display, adminLevel = e.adminLevel, created = e.created,
             money = o and o.money or e.money, bank = o and o.bank or e.bank, level = o and o.level or e.level, xp = o and o.xp or e.xp,
             playtime = e.playtime, vehicles = e.vehicles, lastLogin = on and t or e.lastLogin,
-            online = o and o.id or false, onServer = on, banned = e.banned, muted = o and o.muted or false, jailed = o and o.jailed or false,
+            online = o and o.id or false, onServer = on, banned = e.banned, muted = o and o.muted or false, jailed = (o and o.jailed) or e.jailed or false,
             hasEmail = e.email and true or false, updates = e.updates,
         }
         local keep = true
@@ -305,6 +307,9 @@ local function detail(actor, name, reply)
             language = data["locale.language"] or false,
             works = workLevels(actor, acc), notes = notesOf(data), now = now(),
             online = false, onServer = onServerOf(acc, nil),
+            jailed = data.adminjail == true,
+            jailLeft = tonumber(data.adminjail_remTime) or 0,
+            jailAdmin = data.adminjail_admin or false, jailReason = data.adminjail_indok or false,
         }
         if player then
             local muteUntil = tonumber(getElementData(player, "mute_until"))
@@ -316,7 +321,12 @@ local function detail(actor, name, reply)
             d.xp = tonumber(getElementData(player, "xp")) or d.xp
             d.lastSerial, d.lastIp = getPlayerSerial(player), getPlayerIP(player)
             d.muted = muteUntil and muteUntil > now() or false
-            d.jailed = getElementData(player, "adminjail") and true or false
+            if getElementData(player, "loaded") == true then
+                d.jailed = getElementData(player, "adminjail") and true or false
+                d.jailLeft = tonumber(getElementData(player, "adminjail_remTime")) or 0
+                d.jailAdmin = getElementData(player, "adminjail_admin") or false
+                d.jailReason = getElementData(player, "adminjail_indok") or false
+            end
             d.playtimeText = getElementData(player, "Játékidő") or false
         end
         if resourceRunning("biz_core") then
@@ -519,7 +529,7 @@ local EDIT_PERM = {
     setlevel = "setLevel", money = "accountEdit", bank = "accountEdit", level = "accountEdit", xp = "accountEdit", workxp = "accountEdit",
     note = "notes", delnote = "notes", vehgive = "vehicles", vehdelete = "vehicles", vehrestore = "vehicles",
     achgive = "achievements", achreset = "achievements", ban = "ban", unban = "ban", unmute = "mute",
-    email = "email", pwreset = "passwordReset",
+    email = "email", pwreset = "passwordReset", jail = "jail", unjail = "jail",
 }
 
 local function ok(msgKey, params) return true, L.msg(msgKey, params) end
@@ -707,6 +717,20 @@ function EDIT.pwreset(actor, name)
     if not done then return false, L.msg(err or "v_admin.page.request_failed") end
     adminLog(actor, "mailed a password reset code to " .. name, name)
     return ok("v_admin.accounts.pwreset_sent")
+end
+
+-- online here: the normal jail; offline: account data, starts after the next loading (server/jail.lua)
+function EDIT.jail(actor, name, a)
+    local reason = argText(a.reason)
+    if not tonumber(a.minutes) or tonumber(a.minutes) < 1 then return fail("v_admin.page.bad_number") end
+    if reason == "" then return fail("v_admin.players.enter_reason") end
+    local done = adminJailAccount(actor, name, a.minutes, reason)
+    return done and true or false
+end
+
+function EDIT.unjail(actor, name)
+    local done = adminUnjailAccount(actor, name)
+    return done and true or false
 end
 
 function EDIT.unmute(actor, name)

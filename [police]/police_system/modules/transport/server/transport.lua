@@ -7,9 +7,11 @@
 -- The van appears on the road network SPAWN_MIN-MAX m away at a point nobody sees (like the tow truck), drives there
 -- with emergency lights (emergency driving of ai_land_traffic) and stops next to the suspect. The suspect gets in
 -- once it is within LOAD_DIST of the standing van (the officer escorts it there / parks next to it), otherwise the
--- van waits WAIT s and leaves. Loaded: the van is locked, drives to the station (no lights). An NPC is handed over
--- when the van gets there or goes unseen; a player rides RIDE s, then the screen fades out and the handover (jail)
--- happens like at the station marker (warrants served, report line, pay to the requesting officer's unit).
+-- van waits WAIT s and leaves. Loaded: the van is locked, drives to the tow point of the station (like the tow
+-- truck, no lights). An NPC is handed over when the van gets there or as soon as nobody sees it (van and suspect
+-- vanish together; checked here, not by ai_land_traffic's despawn, which would destroy the van first and drop the
+-- suspect on the road); a player rides RIDE s (or until the station), then the screen fades out and the handover
+-- (jail) happens like at the station marker (warrants served, report line, pay to the requesting officer's unit).
 -- Van destroyed / gone before the end: failed, the suspect stays cuffed (out of the wreck), the officer is told.
 
 local TR = POL.module("transport", { jobs = {} })   -- jobs[van] = { suspect, officer, unit, charges, state, ... }
@@ -148,23 +150,39 @@ local function load(job)
         t:setScriptedEmergency(van, false)
         t:continueScriptedVehicle(van)
         t:clearScriptedTargets(van)
-        t:addScriptedTurnPoint(van, st.handover[1], st.handover[2], st.handover[3], { tag = "transport_station", radius = 120 })
-        -- an NPC may go as soon as nobody sees the van (handed over then); a player rides along until RIDE
-        if getElementType(s) ~= "player" then t:setScriptedDespawnUnseen(van, { minDist = 60 }) end
+        local p = st.tow or st.handover
+        t:addScriptedStop(van, p[1], p[2], p[3], { tag = "transport_station", hold = true, radius = 60 })
+        -- an NPC goes as soon as nobody sees the van (tick); a player rides along until RIDE / the station
     end
     if isElement(job.officer) then POL.notify(job.officer, "police_system.transport.loaded", { name = POL.stop.nameOf(s) }) end
     if getElementType(s) == "player" then POL.notify(s, "police_system.transport.you_are_transported") end
 end
 
--- the handover at the station (arrest.lua), the van goes
+-- the van disappears at once (with its driver)
+local function vanish(job)
+    local van = job.van
+    local t = traffic()
+    if isElement(van) and not (t and t:destroyScriptedVehicle(van)) and isElement(van) then destroyElement(van) end
+    if isElement(job.driver) then destroyElement(job.driver) end
+end
+
+-- the handover at the station (arrest.lua); with an NPC suspect the van vanishes with it, with a player it drives
+-- off and goes when unseen
 local function deliver(job)
     if job.done then return end
     job.done = true
     dropBlip(job)
     TR.jobs[job.van] = nil
     local s = job.suspect
-    local st = job.station or POL.nearestStation(POL.pos(job.van))
+    local npc = isElement(s) and getElementType(s) ~= "player"
+    local st = job.station or (isElement(job.van) and POL.nearestStation(POL.pos(job.van))) or POLICE.STATIONS[1]
     if isElement(s) and POL.arrest.isCuffed(s) then
+        if npc then
+            -- hidden before it leaves the seat: the handover (async name lookup) destroys it a moment later
+            setElementAlpha(s, 0)
+            setElementCollisionsEnabled(s, false)
+            setElementFrozen(s, true)
+        end
         POL.arrest.unload(s)
         POL.arrest.handover(job.officer, s, st, job.charges)
         if isElement(job.officer) then POL.notify(job.officer, "police_system.transport.delivered", { name = POL.stop.nameOf(s) }) end
@@ -173,7 +191,7 @@ local function deliver(job)
         setTimer(function() if isElement(s) then fadeCamera(s, true, 1) end end, 2500, 1)
     end
     POL.db.stat("transports", 1)
-    sendAway(job)
+    if npc then vanish(job) else sendAway(job) end
 end
 
 -- a player suspect: the screen fades out, the handover a moment later
@@ -217,6 +235,12 @@ local function tick()
             end
         elseif job.state == "transport" and getElementType(s) == "player" then
             if now - job.loadedAt > C.RIDE * 1000 then deliverPlayer(job) end
+        elseif job.state == "transport" then
+            -- NPC: van and suspect vanish once no camera sees the van and no player is close
+            local x, y, z = getElementPosition(van)
+            if not (t and t:isElementSeenByPlayers(van)) and #getElementsWithinRange(x, y, z, 60, "player") == 0 then
+                deliver(job)
+            end
         elseif job.state == "coming" and now - job.at > 240000 then
             fail(job)   -- never got there (no route)
         end
@@ -256,8 +280,8 @@ addEvent("onTrafficVehicleRemoved")
 addEventHandler("onTrafficVehicleRemoved", root, function(van, reason)
     local job = TR.jobs[van]
     if not job then return end
-    if job.state == "transport" and reason ~= "vehicle_destroyed" and isElement(van) and not isVehicleBlown(van) then
-        -- went unseen with the suspect (NPC) / crashed on the way: handed over now
+    if job.state == "transport" and reason ~= "vehicle_destroyed" and not (isElement(van) and isVehicleBlown(van)) then
+        -- gone with the suspect (the van may already be destroyed) / crashed on the way: handed over now
         if getElementType(job.suspect) == "player" then deliverPlayer(job) else deliver(job) end
     else
         fail(job)

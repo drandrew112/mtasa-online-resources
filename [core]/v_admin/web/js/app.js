@@ -899,7 +899,7 @@
                 ${kv('Last login', d.onServer ? onServerText(d.onServer, true) : fmtDate(d.lastLogin))}
                 ${kv('Last serial', d.lastSerial)}${kv('Last IP', d.lastIp)}
                 ${kv('Achievements', d.achievements ? `${d.achievements.done} / ${d.achievements.total}` : '-')}${kv('Vehicles', d.vehicles)}
-            </div>${d.banned ? `<div class="banbar">Banned by ${esc(d.banned.admin || '?')}: ${esc(d.banned.reason || '?')}</div>` : ''}
+            </div>${d.jailed ? `<div class="banbar warn">Admin jail by ${esc(d.jailAdmin || '?')}: ${esc(d.jailReason || '?')} (${d.jailLeft || 0} min left${d.online ? '' : ', starts after the next login'})</div>` : ''}${d.banned ? `<div class="banbar">Banned by ${esc(d.banned.admin || '?')}: ${esc(d.banned.reason || '?')}</div>` : ''}
             <div class="secttl">Work levels</div>${arr(d.works).map(w => `<div class="row"><span>${esc(w.name)}</span><span class="dim">level ${w.level} / ${w.maxLevel} · ${fmtInt(w.xp)} XP</span>
                 ${can('accountEdit') ? `<button class="osa-btn small" data-workxp="${esc(w.id)}" data-xp="${w.xp}">Set XP</button>` : ''}</div>`).join('') || '<p class="dim">-</p>'}`;
         } else if (A.tab === 'notes') {
@@ -910,6 +910,7 @@
         const actions = A.tab === 'overview' ? `<div class="acc-actions">
             ${can('setLevel') ? '<button class="osa-btn" data-act="setlevel">Set admin level</button>' : ''}
             ${can('mute') && d.muted ? '<button class="osa-btn" data-act="unmute">Unmute</button>' : ''}
+            ${can('jail') ? (d.jailed ? '<button class="osa-btn" data-act="unjail">Release from jail</button>' : '<button class="osa-btn" data-act="jail">Admin jail</button>') : ''}
             ${can('ban') ? (d.banned ? '<button class="osa-btn" data-act="unban">Unban</button>' : '<button class="osa-btn danger" data-act="ban">Ban account</button>') : ''}
         </div>` : A.tab === 'mails' ? `<div class="acc-actions">
             ${can('email') ? '<button class="osa-btn" data-act="email">Set e-mail</button>' : ''}
@@ -993,7 +994,15 @@
         if (act === 'level') return accAsk('level', 'Edit level', 'Level', d.level, null, true);
         if (act === 'xp') return accAsk('xp', 'Edit XP', 'XP', d.xp, null, true);
         if (act === 'ban') return accAsk('ban', `Ban account ${d.name}`, 'Reason');
-        if (act === 'unban' || act === 'unmute') return accEdit(act);
+        if (act === 'jail') {
+            const f = await OSA.ui.form(`Admin jail: ${d.name}`, [{ name: 'minutes', label: 'Minutes', type: 'number', value: '30' }, { name: 'reason', label: 'Reason', type: 'text' }], 'Jail',
+                d.online ? 'The player is online: the jail starts now.' : 'The account is offline: the jail starts right after the next loading and spawn camera.');
+            if (!f) return;
+            if (!(Number(f.minutes) >= 1)) return OSA.toast('Enter the duration in minutes.');
+            if (!f.reason) return OSA.toast('Enter a reason.');
+            return accEdit('jail', { minutes: Number(f.minutes), reason: f.reason });
+        }
+        if (act === 'unban' || act === 'unmute' || act === 'unjail') return accEdit(act);
         if (act === 'email') {
             const f = await OSA.ui.form(`E-mail of ${d.name}`, [{ name: 'v', label: 'New e-mail address (empty = remove)', type: 'text' }], 'Save',
                 'The address must not belong to another account. The player gets no mail about the change.');

@@ -348,6 +348,10 @@
     <export function="getFlagRatio" type="client" />
     <export function="drawFlag" type="client" />
     <export function="drawPlayerFlag" type="client" />
+    <!-- Admin tag card, same as the Y overlay player list (client/yoverlay.lua) -->
+    <export function="getAdminTag" type="client" />
+    <export function="getAdminTagSize" type="client" />
+    <export function="drawAdminTag" type="client" />
     <export function="getPlayerCountry" type="server" />
     <export function="setPlayerCountry" type="server" />
 

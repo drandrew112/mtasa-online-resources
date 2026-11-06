@@ -180,8 +180,8 @@ local function drawOutline(x, y, w, h, color)
 end
 
 -- szolgalatban teli (rang szinu) kartya, egyebkent sotet kartya rang szinu kerettel
-local function drawAdminCard(title, duty, x, cy, w, alpha)
-    local s = ui(CARD_S)
+local function drawAdminCard(title, duty, x, cy, w, alpha, scale)
+    local s = scale or ui(CARD_S)
     local h = dxGetFontHeight(s, CARD_FONT) + ui(2)
     local y = cy - h / 2
     if duty then
@@ -194,6 +194,32 @@ local function drawAdminCard(title, duty, x, cy, w, alpha)
         dxDrawText(title.text, x, y, x + w, y + h,
             tocolor(title.r, title.g, title.b, alpha), s, CARD_FONT, "center", "center")
     end
+end
+
+-- ui_core exportok: ugyanez a kartya mas resource-oknak (pl. v_chat a zaszlo es a nev kozott)
+--   getAdminTag(player) -> { text, r, g, b, duty } vagy false (nincs admin rangja)
+--   getAdminTagSize(tag, scale) -> w, h
+--   drawAdminTag(tag, x, cy, w, alpha, scale) -> w (x = bal szel, cy = fuggoleges kozep; w nil = felirat szelesseg)
+function getAdminTag(player)
+    if not isElement(player) then return false end
+    local title = getAdminTitle(tonumber(getElementData(player, "admin_level")) or 0)
+    if not title then return false end
+    return { text = title.text, r = title.r, g = title.g, b = title.b, duty = getElementData(player, "adminDuty") == true }
+end
+
+function getAdminTagSize(tag, scale)
+    if type(tag) ~= "table" or not tag.text then return 0, 0 end
+    local s = tonumber(scale) or ui(CARD_S)
+    return dxGetTextWidth(tag.text, s, CARD_FONT) + 8 * s, dxGetFontHeight(s, CARD_FONT) + 2 * s
+end
+
+function drawAdminTag(tag, x, cy, w, alpha, scale)
+    if type(tag) ~= "table" or not tag.text then return false end
+    local s = tonumber(scale) or ui(CARD_S)
+    w = tonumber(w) or (getAdminTagSize(tag, s))
+    drawAdminCard({ text = tag.text, r = tonumber(tag.r) or 255, g = tonumber(tag.g) or 255, b = tonumber(tag.b) or 255 },
+        tag.duty == true, x, cy, w, tonumber(alpha) or 255, s)
+    return w
 end
 
 function setBindForYOverlay()

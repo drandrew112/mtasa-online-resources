@@ -197,7 +197,8 @@ POLICE = {
     -- prisoner transport (modules/transport): an AI van (Enforcer) takes a cuffed suspect to the nearest station.
     -- REQUEST_DIST: the officer this close to the suspect; LOAD_DIST: the suspect (on foot / in a car) this close to
     -- the standing van gets in; WAIT s for that, else the van leaves; a player rides RIDE s, then (faded out) the
-    -- handover happens; an NPC is handed over when the van reaches the station or goes unseen
+    -- handover happens; the van drives to the station tow point (like TOW), an NPC is handed over (van + suspect
+    -- vanish) when it gets there or nobody sees it
     TRANSPORT = { MODEL = 427, SKIN = 280, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, LOAD_DIST = 20,
                   WAIT = 120, RIDE = 20, SPEED_FACTOR = 1.2, SEATS = { 2, 3, 1 } },
 

@@ -37,7 +37,7 @@ v_admin/
 │   ├── report.lua          – /report, /reports (report system)
 │   ├── teleport.lua        – /goto, /gethere
 │   ├── vehicle.lua         – /fixveh, /flipveh, /getout
-│   ├── jail.lua            – /ajail, /ajailout + jail timers, escape checks
+│   ├── jail.lua            – /ajail, /ajailout, /oajail, /oajailout (offline) + jail timers, escape checks
 │   ├── ban.lua             – /ban, /unban (account ban → v_accounts), /kick
 │   ├── mute.lua            – /mute, /unmute (chat mute → v_chat)
 │   ├── misc.lua            – /fly (gate), /heal, /setskin, /money, /getid, /listacc
@@ -123,6 +123,8 @@ An admin **only has a level** (no admin name, no admin duty). `ADMIN.maxLevel = 
 | `/flyspd <0.1-20>` | – | NoClip speed (client). |
 | `/ajail <ID> <minutes> <reason>` | 2 | Admin jail. |
 | `/ajailout <ID>` | 2 | Release from the admin jail. |
+| `/oajail <account> <minutes> <reason>` | 2 | Admin jail by account name, also offline (Accounts page: Admin jail button). |
+| `/oajailout <account>` | 2 | Release by account name, also offline. |
 | `/kick <ID> <reason>` | 3 | Kick a player (needs `resource.v_admin` in the Admin ACL group for `kickPlayer`). |
 | `/ban <account> <reason>` | 3 | Account ban (never expires). Also stores the serial for an online player. |
 | `/unban <account>` | 3 | Lift an account ban. |
@@ -296,6 +298,8 @@ recorded with `sender = "SYSTEM"`.
 | `adminjail` | server | whether jailed (bool) |
 | `adminjail_remTime` | server | minutes remaining |
 | `adminjail_admin` / `adminjail_indok` | server | jailing admin / reason |
+| `adminjail_offline` | account data | jailed while offline: told once on onPlayerLoaded |
+| `adminjail_release` | account data | released while offline: moved out of the cell on onPlayerLoaded |
 | `banned` | server (`v_accounts`) | whether banned (bool) |
 | `banned_date` / `banned_admin` / `banned_reason` / `banned_account` | server (`v_accounts`) | ban details |
 | `mute_until` | server (`v_chat`) | mute end (epoch); `mute_reason` / `mute_admin` |

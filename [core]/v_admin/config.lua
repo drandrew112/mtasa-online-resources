@@ -166,6 +166,8 @@ ADMIN.commands = {
     { cmd = "/fly  or  N key",                     perm = "noclip",       desc = L.text("v_admin.config.noclip_on_off_flyspd_0_1") },
     { cmd = "/ajail <ID> <minutes> <reason>",     perm = "jail",         desc = L.text("v_admin.config.put_player_in_admin_jail") },
     { cmd = "/ajailout <ID>",                     perm = "jail",         desc = L.text("v_admin.config.release_player_from_admin_jail") },
+    { cmd = "/oajail <account> <minutes> <reason>", perm = "jail",       desc = L.text("v_admin.config.jail_account") },
+    { cmd = "/oajailout <account>",               perm = "jail",         desc = L.text("v_admin.config.unjail_account") },
     { cmd = "/kick <ID> <reason>",                perm = "kick",         desc = L.text("v_admin.config.kick_player_from_server") },
     { cmd = "/ban <account> <reason>",            perm = "ban",          desc = L.text("v_admin.config.account_ban_v_accounts_never_expires") },
     { cmd = "/unban <account>",                   perm = "ban",          desc = L.text("v_admin.config.lift_account_ban") },

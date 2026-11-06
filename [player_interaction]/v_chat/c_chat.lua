@@ -71,15 +71,23 @@ end
 
 -- flag left of the sender name: the sender's country (ui_core flags, IP based, not the language)
 local FLAG_W, FLAG_H, FLAG_GAP = 24, 16, 6
+-- admin tag between the flag and the name: the ui_core Y overlay card (filled while on admin duty)
+local TAG_SCALE, TAG_GAP = 1.0, 6
 
 function addMessage(sender, text, msg_channel)
     local name = getElementData(sender, "displayName") or getPlayerName(sender)
     local ch = CHANNELS[msg_channel] or CHANNELS.global
     local country = uicore:getPlayerCountry(sender)
     if country then uicore:preloadFlag(country) end
-    local lines = wrapText(ch.colour..L("v_chat.chat.text", { sender = name, text = text }):gsub("#%x%x%x%x%x%x", ""), CHAT_W - PAD*2 - (country and FLAG_W + FLAG_GAP or 0))
+    -- rank and duty as they were when the message was sent
+    local tag = uicore:getAdminTag(sender)
+    local tagW = tag and uicore:getAdminTagSize(tag, TAG_SCALE) or 0
+    local prefixW = (country and FLAG_W + FLAG_GAP or 0) + (tag and tagW + TAG_GAP or 0)
+    local lines = wrapText(ch.colour..L("v_chat.chat.text", { sender = name, text = text }):gsub("#%x%x%x%x%x%x", ""), CHAT_W - PAD*2 - prefixW)
     messages[#messages+1] = {
         flag = country,
+        tag = tag or nil,
+        tagW = tagW,
         -- colour codes of the catalog text are dropped: the whole line is the channel colour
         lines = lines,
         time = getTickCount(),
@@ -112,7 +120,12 @@ function renderChat()
             end
             for l = #message.lines, 1, -1 do
                 if #visible >= max_lines then break end
-                visible[#visible+1] = { text = message.lines[l], alpha = alpha, flag = (l == 1) and message.flag or nil }
+                local first = (l == 1)
+                visible[#visible+1] = {
+                    text = message.lines[l], alpha = alpha,
+                    flag = first and message.flag or nil,
+                    tag = first and message.tag or nil, tagW = message.tagW,
+                }
             end
             if #visible >= max_lines then break end
         end
@@ -131,10 +144,19 @@ function renderChat()
                 FONT_SCALE, "default", "right", "bottom",
                 false, false, false, true
             )
-            if line.flag then
+            -- left of the text: [flag] [admin tag] name: text
+            if line.flag or line.tag then
                 local lineY = messages_bottom-((i-1)*LINE_H)
-                local fx = right - PAD - textWidth(line.text) - FLAG_GAP - FLAG_W
-                uicore:drawFlag(line.flag, fx, lineY - LINE_H/2 - FLAG_H/2 + 2, FLAG_W, FLAG_H, line.alpha)
+                local cy = lineY - LINE_H/2 + 2
+                local fx = right - PAD - textWidth(line.text)
+                if line.tag then
+                    fx = fx - TAG_GAP - line.tagW
+                    uicore:drawAdminTag(line.tag, fx, cy, line.tagW, line.alpha, TAG_SCALE)
+                end
+                if line.flag then
+                    fx = fx - FLAG_GAP - FLAG_W
+                    uicore:drawFlag(line.flag, fx, cy - FLAG_H/2, FLAG_W, FLAG_H, line.alpha)
+                end
             end
         end
 

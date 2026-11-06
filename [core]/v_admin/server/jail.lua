@@ -58,16 +58,39 @@ end
 --  Restore jail state once the player is fully loaded
 --  (onPlayerLoaded fires after the shared MySQL account-data sync)
 -- ------------------------------------------------------------
+-- onPlayerLoaded comes after the loading screen and the v_mapcam spawn camera
+-- (v_loading flow.lua), so a jail given while offline starts right there.
+-- adminjail_offline = jailed while offline (tell them once)
+-- adminjail_release = released while offline (the saved position is still the cell)
 addEvent("onPlayerLoaded")
 addEventHandler("onPlayerLoaded", root, function()
-    if not isLogged(source) or not getData(source, "adminjail") then return end
+    if not isLogged(source) then return end
+    if not getData(source, "adminjail") then
+        if getData(source, "adminjail_release") then
+            setData(source, "adminjail_release", false)
+            if getElementInterior(source) == J.interior then
+                setElementInterior(source, 0)
+                setElementPosition(source, J.release.x, J.release.y, J.release.z)
+            end
+        end
+        return
+    end
 
+    local remTime = tonumber(getData(source, "adminjail_remTime")) or 0
+    local admin, reason = getData(source, "adminjail_admin") or "?", getData(source, "adminjail_indok") or "?"
     setElementData(source, "adminjail", true)
-    setElementData(source, "adminjail_remTime", tonumber(getData(source, "adminjail_remTime")) or 0)
-    setElementData(source, "adminjail_admin", getData(source, "adminjail_admin") or "?")
-    setElementData(source, "adminjail_indok", getData(source, "adminjail_indok") or "?")
+    setElementData(source, "adminjail_remTime", remTime)
+    setElementData(source, "adminjail_admin", admin)
+    setElementData(source, "adminjail_indok", reason)
+    local veh = getPedOccupiedVehicle(source)
+    if veh then removePedFromVehicle(source) end
     setElementInterior(source, J.interior)
     setElementPosition(source, J.inside.x, J.inside.y, J.inside.z)
+
+    if getData(source, "adminjail_offline") then
+        setData(source, "adminjail_offline", false)
+        adminAlert(source, L.msg("v_admin.jail.jailed_by_min_for", { admin_name = admin, minutes = remTime, reason = reason }), 255, 90, 90, 8000)
+    end
 end)
 
 -- ------------------------------------------------------------
@@ -155,6 +178,139 @@ function adminUnjail(player, target)
 end
 
 -- ------------------------------------------------------------
+--  By account name: online here -> adminJail / adminUnjail, offline -> account
+--  data (applied on the next onPlayerLoaded). Online on another instance:
+--  refused (that instance keeps the account data in memory and would save over it).
+--  Returns true, or false + message object (also sent to the actor).
+-- ------------------------------------------------------------
+local function playerOnAccount(accName)
+    if not resourceRunning("v_accounts") then return nil end
+    local needle = tostring(accName):lower()
+    for _, p in ipairs(getElementsByType("player")) do
+        local n = exports.v_accounts:getName(p)
+        if n and n:lower() == needle then return p end
+    end
+end
+
+local function offlineCheck(actor, accName)
+    if type(accName) ~= "string" or accName == "" then
+        return false, L.msg("v_admin.page.no_such_account")
+    end
+    local remote = INSTANCE and INSTANCE.remoteOnline(accName)
+    if remote then
+        return false, L.msg("v_admin.jail.online_on_other_server", { server = remote.server, id = remote.id })
+    end
+    local rows = exports.v_mysql:mysqlQuerySync("SELECT account_name FROM `accounts` WHERE account_name = ? LIMIT 1", accName)
+    if not rows or not rows[1] then return false, L.msg("v_admin.page.no_such_account") end
+    local realName = rows[1].account_name
+    local myLevel = getAdminLevel(actor)
+    if myLevel < ADMIN.maxLevel and (tonumber(exports.v_mysql:getAccData(realName, "admin_level")) or 0) >= myLevel then
+        return false, L.msg("v_admin.core.you_can_t_do_that_to")
+    end
+    return realName
+end
+
+local function failMsg(actor, msg)
+    adminAlert(actor, msg, 255, 90, 90)
+    return false, msg
+end
+
+function adminJailAccount(actor, accName, minutes, reason)
+    if not hasAdminLevel(actor, ADMIN.perms.jail) then
+        return false, denyAccess(actor, ADMIN.perms.jail)
+    end
+    minutes = tonumber(minutes)
+    if not minutes or type(reason) ~= "string" or reason == "" then
+        return failMsg(actor, L.msg("v_admin.jail.usage_oajail"))
+    end
+    minutes = math.max(1, math.floor(minutes))
+
+    local player = playerOnAccount(accName)
+    if player and getElementData(player, "loaded") == true then
+        adminJail(actor, player, minutes, reason)
+        return true
+    end
+
+    -- offline, or logged in but still in the main menu / loading: account data
+    -- only, the jail starts on onPlayerLoaded
+    local name, err
+    if player then
+        if not canPunish(actor, player) then return false end
+        name = exports.v_accounts:getName(player)
+    else
+        name, err = offlineCheck(actor, accName)
+        if not name then return failMsg(actor, err) end
+    end
+    local key = player or name
+
+    local adminName = actorName(actor)
+    local ok = exports.v_mysql:setAccData(key, "adminjail", true)
+    if not ok then return failMsg(actor, L.msg("v_admin.page.save_failed")) end
+    exports.v_mysql:setAccData(key, "adminjail_remTime", minutes)
+    exports.v_mysql:setAccData(key, "adminjail_admin", adminName)
+    exports.v_mysql:setAccData(key, "adminjail_indok", reason)
+    exports.v_mysql:setAccData(key, "adminjail_offline", true)
+    exports.v_mysql:setAccData(key, "adminjail_release", false)
+
+    adminAlert(actor, L.msg("v_admin.jail.you_jailed_offline", { player = name, minutes = minutes, reason = reason }))
+    adminLog(actor, ("jailed offline account %s for %d min (%s)"):format(name, minutes, reason), name)
+    return true
+end
+
+function adminUnjailAccount(actor, accName)
+    if not hasAdminLevel(actor, ADMIN.perms.jail) then
+        return false, denyAccess(actor, ADMIN.perms.jail)
+    end
+    local player = playerOnAccount(accName)
+    if player and getElementData(player, "loaded") == true then
+        if not getElementData(player, "adminjail") then
+            return failMsg(actor, L.msg("v_admin.jail.that_player_is_not_in_admin"))
+        end
+        adminUnjail(actor, player)
+        return true
+    end
+
+    local name
+    if player then
+        name = exports.v_accounts:getName(player)
+    else
+        if type(accName) ~= "string" or accName == "" then return failMsg(actor, L.msg("v_admin.page.no_such_account")) end
+        local remote = INSTANCE and INSTANCE.remoteOnline(accName)
+        if remote then
+            return failMsg(actor, L.msg("v_admin.jail.online_on_other_server", { server = remote.server, id = remote.id }))
+        end
+        local rows = exports.v_mysql:mysqlQuerySync("SELECT account_name FROM `accounts` WHERE account_name = ? LIMIT 1", accName)
+        if not rows or not rows[1] then return failMsg(actor, L.msg("v_admin.page.no_such_account")) end
+        name = rows[1].account_name
+    end
+    local target = player or name
+    if not exports.v_mysql:getAccData(target, "adminjail") then
+        return failMsg(actor, L.msg("v_admin.jail.that_player_is_not_in_admin"))
+    end
+
+    for _, key in ipairs({ "adminjail", "adminjail_remTime", "adminjail_admin", "adminjail_indok", "adminjail_offline" }) do
+        exports.v_mysql:setAccData(target, key, false)
+    end
+    exports.v_mysql:setAccData(target, "adminjail_release", true)
+
+    adminAlert(actor, L.msg("v_admin.jail.you_released_from_admin_jail", { player = name }))
+    adminLog(actor, "released " .. name .. " from admin jail", name)
+    return true
+end
+
+-- ------------------------------------------------------------
+--  /oajail <account> <minutes> <reason...>   (offline or online)
+--  /oajailout <account>
+-- ------------------------------------------------------------
+addCommandHandler("oajail", function(player, cmd, accName, minutesArg, ...)
+    adminJailAccount(player, accName, minutesArg, table.concat({ ... }, " "))
+end)
+
+addCommandHandler("oajailout", function(player, cmd, accName)
+    adminUnjailAccount(player, accName)
+end)
+
+-- ------------------------------------------------------------
 --  /ajail <ID> <minutes> <reason...>
 -- ------------------------------------------------------------
 addCommandHandler("ajail", function(player, cmd, idArg, minutesArg, ...)
@@ -188,3 +344,5 @@ end)
 -- chat command database (v_chat)
 CMD.register("ajail", "<id> <minutes> [reason]", ADMIN.perms.jail, "Put a player in admin jail")
 CMD.register("ajailout", "<id>", ADMIN.perms.jail, "Release a player from admin jail")
+CMD.register("oajail", "<account> <minutes> [reason]", ADMIN.perms.jail, "Admin jail an account (also offline)")
+CMD.register("oajailout", "<account>", ADMIN.perms.jail, "Release an account from admin jail (also offline)")

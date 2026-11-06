@@ -411,7 +411,13 @@ local TABS = {
 local function openForm(what, label, numeric, value, extra)
     st.form = { what = what, label = label, numeric = numeric, extra = extra }
     AP.setField("acc_form", value and tostring(value) or "")
-    AP.setFocus("acc_form")
+    if what == "jail" then
+        -- admin jail: minutes field first, the main field is the reason
+        AP.setField("acc_form_min", "30")
+        AP.setFocus("acc_form_min")
+    else
+        AP.setFocus("acc_form")
+    end
 end
 
 local function submitForm()
@@ -421,7 +427,14 @@ local function submitForm()
     if v == "" and f.what ~= "email" then return AP.notify(L("v_admin.accounts.enter_value")) end
     local extra = {}
     for k, val in pairs(f.extra or {}) do extra[k] = val end
-    if f.what == "ban" then extra.reason = v
+    if f.what == "jail" then
+        local m = tonumber(AP.trim(AP.fieldText("acc_form_min")))
+        if not m or m < 1 then
+            AP.setFocus("acc_form_min")
+            return AP.notify(L("v_admin.accounts.enter_minutes"))
+        end
+        extra.minutes, extra.reason = math.floor(m), v
+    elseif f.what == "ban" then extra.reason = v
     elseif f.what == "note" then extra.text = v
     elseif f.what == "vehgive" then extra.model = v
     else extra.value = v end
@@ -434,8 +447,15 @@ local function drawForm(x, y, w)
     local f = st.form
     dxDrawRectangle(x, y, w, S(104), C.side)
     AP.text(f.label, x + S(14), y + S(6), w - S(28), S(30), C.head, 0.9, "default-bold")
-    AP.field("acc_form", x + S(14), y + S(42), w - S(28) - S(250), S(44), { max = f.what == "note" and ADMIN.accounts.notesMax or 64,
-        numeric = f.numeric, onEnter = submitForm })
+    local fx, fw = x + S(14), w - S(28) - S(250)
+    if f.what == "jail" then
+        -- minutes (numeric) + reason
+        AP.field("acc_form_min", fx, y + S(42), S(90), S(44), { max = 5, numeric = true, placeholder = L("v_admin.accounts.minutes"),
+            onEnter = function() AP.setFocus("acc_form") end })
+        fx, fw = fx + S(100), fw - S(100)
+    end
+    AP.field("acc_form", fx, y + S(42), fw, S(44), { max = f.what == "note" and ADMIN.accounts.notesMax or (f.what == "jail" and 120 or 64),
+        numeric = f.numeric, onEnter = submitForm, placeholder = f.what == "jail" and L("v_admin.players.reason") or nil })
     AP.button(x + w - S(14) - S(240), y + S(42), S(115), S(44), L("common.confirm"), submitForm, f.what == "ban" and "danger" or "active")
     AP.button(x + w - S(14) - S(120), y + S(42), S(120), S(44), L("common.cancel"), function() st.form = nil; AP.setFocus(nil) end)
     return S(114)
@@ -532,6 +552,14 @@ local function drawOverview(d, x, y, w, h)
         end
     end
     local ty = y + math.ceil(#tiles / cols) * (th + gap) + S(6)
+    if d.jailed then
+        dxDrawRectangle(x, ty, w, S(40), C.rowSel)
+        dxDrawRectangle(x, ty, S(4), S(40), C.warn)
+        AP.text(L("v_admin.accounts.jailed_by", { admin = d.jailAdmin or "?", minutes = d.jailLeft or 0, reason = d.jailReason or "?" })
+            .. (d.online and "" or ("  ·  " .. L("v_admin.accounts.jail_on_login"))),
+            x + S(14), ty, w - S(26), S(40), C.warn, 0.85, "default-bold")
+        ty = ty + S(48)
+    end
     if d.banned then
         dxDrawRectangle(x, ty, w, S(40), C.danger)
         AP.text(L("v_admin.accounts.banned_by", { admin = d.banned.admin or "?", reason = d.banned.reason or "?" }),
@@ -773,6 +801,9 @@ local function drawDetail(x, y, w, h)
         buttons = {
             { label = L("v_admin.accounts.set_admin_level"), perm = "setLevel", fn = function(bx, by) levelDropdown(d, bx, by) end },
             { label = L("v_admin.players.unmute"), perm = "mute", hide = not d.muted, fn = function() edit("unmute") end },
+            { label = L("v_admin.players.admin_jail"), perm = "jail", hide = d.jailed and true or false,
+              fn = function() openForm("jail", L("v_admin.accounts.jail_title"), false) end },
+            { label = L("v_admin.players.release_jail"), perm = "jail", hide = not d.jailed, fn = function() edit("unjail") end },
             { label = L("v_admin.players.unban_account"), perm = "ban", hide = not d.banned, fn = function() edit("unban") end },
             { label = L("v_admin.players.ban_account"), perm = "ban", style = "danger", hide = d.banned and true or false,
               fn = function() openForm("ban", L("v_admin.accounts.ban_reason"), false) end },
