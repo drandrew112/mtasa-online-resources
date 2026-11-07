@@ -4,7 +4,7 @@
 -- police car) or with the radio (REQUEST_TRANSPORT: the escorted / nearest cuffed suspect within REQUEST_DIST). The
 -- officer first picks the charges, like at the station handover (client stop.lua "arrest:charges", mode "transport").
 --
--- The van appears on the road network SPAWN_MIN-MAX m away at a point nobody sees (like the tow truck), drives there
+-- The van appears on the road network ARRIVAL s (navmesh travel time) away at a point nobody sees (like the tow truck), drives there
 -- with emergency lights (emergency driving of ai_land_traffic) and stops next to the suspect. The suspect gets in
 -- once it is within LOAD_DIST of the standing van (the officer escorts it there / parks next to it), otherwise the
 -- van waits WAIT s and leaves. Loaded: the van is locked, drives to the tow point of the station (like the tow
@@ -109,7 +109,7 @@ function TR.request(officer, suspect, charges)
     local t = traffic()
     if not t or not POL.inWorld(suspect) then POL.notify(officer, "police_system.transport.unavailable") return false end
     local x, y, z = POL.pos(suspect)
-    local sx, sy, sz, rot = t:findHiddenRoadSpawn(x, y, z, { minDist = C.SPAWN_MIN, maxDist = C.SPAWN_MAX, toward = { x, y } })
+    local sx, sy, sz, rot = POL.arrivalSpawn(t, C, x, y, z, "emergency", { x, y })
     if not sx then POL.notify(officer, "police_system.transport.unavailable") return false end
     local van, driver = t:createScriptedVehicle(C.MODEL, sx, sy, sz, { heading = rot, skin = C.SKIN, profile = "pursuit",
         speedFactor = C.SPEED_FACTOR, keepDriver = true })

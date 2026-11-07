@@ -312,6 +312,101 @@ function Roads.search(starts, goals, prof, maxNodes)
              loop = loopFrom ~= nil }
 end
 
+-- Reverse Dijkstra from the goal lanes: travel time (profile cost, s) from every lane start to the goal, up to
+-- maxTime. goals: { {lane, dist, u}, ... } from nearestLanes.
+-- Returns T0 (lane -> time from the lane's start), goalOf (lane -> goal lane its best way ends on), goalU, expanded;
+-- or nil, reason. T0 also holds the lanes just before the limit (start beyond maxTime, end within it).
+function Roads.reachTimes(goals, prof, maxTime, maxNodes)
+    local heap = Heap.new()
+    local T0, goalOf, closed, goalU = {}, {}, {}, {}
+    for _, s in ipairs(goals) do
+        local id, u = s[1], s[3]
+        if not goalU[id] or u > goalU[id] then goalU[id] = u end
+    end
+    for id, u in pairs(goalU) do
+        local c = laneTime(id, prof, 0, u)
+        if not T0[id] or c < T0[id] then
+            T0[id], goalOf[id] = c, id
+            heap:push(id, c)
+        end
+    end
+    local n, maxN = 0, maxNodes or NAV.ROAD_MAX_NODES
+    while heap.n > 0 do
+        local id, t = heap:pop()
+        if t > maxTime then break end
+        if not closed[id] and t <= T0[id] then
+            closed[id] = true
+            n = n + 1
+            if n > maxN then return nil, "search_limit" end
+            if n % 500 == 0 then Nav.budget() end
+            local goal = goalOf[id]
+            local pv = R.aprev[id]
+            for i = 1, #pv do
+                local c = pv[i]
+                local p = R.cfrom[c]
+                if not closed[p] then
+                    local ng = t + connTime(c, prof) + laneTime(p, prof, 0, 1)
+                    if not T0[p] or ng < T0[p] then
+                        T0[p], goalOf[p] = ng, goal
+                        heap:push(p, ng)
+                    end
+                end
+            end
+            -- lane change: from a neighbour lane onto this one (left / right are mutual within a carriageway)
+            for _, nb in ipairs({ R.aleft[id], R.aright[id] }) do
+                if nb and not closed[nb] then
+                    local ng = t + LANE_CHANGE
+                    if not T0[nb] or ng < T0[nb] then
+                        T0[nb], goalOf[nb] = ng, goal
+                        heap:push(nb, ng)
+                    end
+                end
+            end
+        end
+    end
+    return { T0 = T0, goalOf = goalOf, goalU = goalU, expanded = n }
+end
+
+-- time (s) from fraction u of a lane to the goal, from Roads.reachTimes data: t, goal lane (nil = not reachable).
+-- Ways: straight to the goal on this lane, through the lane end, or a lane change to a neighbour (one level).
+function Roads.timeAt(rt, id, u, prof, noChange)
+    local T0, goalU = rt.T0, rt.goalU
+    local best, goal = huge, nil
+    local gu = goalU[id]
+    if gu and u <= gu then best, goal = laneTime(id, prof, u, gu), id end
+    local tEnd, gEnd = rt.tEnd and rt.tEnd[id], nil
+    if tEnd == nil then
+        tEnd = huge
+        local nx = R.anext[id]
+        for i = 1, #nx do
+            local c = nx[i]
+            local tb = T0[R.cto[c]]
+            if tb then
+                local t = connTime(c, prof) + tb
+                if t < tEnd then tEnd, gEnd = t, rt.goalOf[R.cto[c]] end
+            end
+        end
+        rt.tEnd = rt.tEnd or {}
+        rt.gEnd = rt.gEnd or {}
+        rt.tEnd[id], rt.gEnd[id] = tEnd, gEnd or false
+    else
+        gEnd = rt.gEnd[id]
+    end
+    if tEnd < huge then
+        local t = laneTime(id, prof, u, 1) + tEnd
+        if t < best then best, goal = t, gEnd end
+    end
+    if not noChange then
+        for _, nb in ipairs({ R.aleft[id], R.aright[id] }) do
+            if nb then
+                local t, g = Roads.timeAt(rt, nb, u, prof, true)
+                if g and t + LANE_CHANGE < best then best, goal = t + LANE_CHANGE, g end
+            end
+        end
+    end
+    return best, goal
+end
+
 -- route geometry + instructions
 function Roads.buildResult(r, x1, y1, z1, x2, y2, z2)
     local pts, info = {}, {}

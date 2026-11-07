@@ -63,6 +63,23 @@ function requestRoute(kind, x1, y1, z1, x2, y2, z2, opts)
     return Nav.startJob(target, fn, x1, y1, z1, x2, y2, z2, opts)
 end
 
+-- where to place a scripted vehicle so it reaches (x, y, z) in minTime..maxTime seconds (route time model of the
+-- profile). Result: { points = { {x, y, z, rotation, lane, u, time, distance, class, goalLane, goalU}, ... },
+-- candidates, expanded, goals } or false, reason. Opts: see Nav.vehicleSpawnPoints (router.lua) / README.md.
+-- The route of a point: findVehicleRoute(p.x, p.y, p.z, x, y, z, { startLane = p.lane, startU = p.u,
+-- goalLane = p.goalLane, goalU = p.goalU }).
+function findVehicleSpawnPoints(x, y, z, minTime, maxTime, opts)
+    local r, why = Nav.vehicleSpawnPoints(x, y, z, minTime, maxTime, opts)
+    if not r then return false, why end
+    return r
+end
+
+-- async variant (long maxTime / big search): returns a job id, answer = onNavmeshRouteReady(id, result|false, reason)
+function requestVehicleSpawnPoints(x, y, z, minTime, maxTime, opts)
+    local target = sourceResourceRoot or resourceRoot
+    return Nav.startJob(target, Nav.vehicleSpawnPoints, x, y, z, minTime, maxTime, opts)
+end
+
 ------------------------------------------------------------------------ queries: roads
 
 local function laneInfo(id)

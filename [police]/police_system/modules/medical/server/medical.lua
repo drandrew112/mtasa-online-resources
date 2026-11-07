@@ -72,7 +72,7 @@ function MD.request(player)
     local t = traffic()
     if not t then POL.notify(player, "police_system.medical.unavailable") return false end
     local px, py, pz = getElementPosition(patient)
-    local sx, sy, sz, rot = t:findHiddenRoadSpawn(px, py, pz, { minDist = C.SPAWN_MIN, maxDist = C.SPAWN_MAX, toward = patient })
+    local sx, sy, sz, rot = POL.arrivalSpawn(t, C, px, py, pz, "emergency", patient)
     if not sx then POL.notify(player, "police_system.medical.unavailable") return false end
     local amb = t:createScriptedVehicle(C.MODEL, sx, sy, sz, { heading = rot, skin = C.SKIN, profile = "pursuit", speedFactor = 1.2 })
     if not amb then POL.notify(player, "police_system.medical.unavailable") return false end

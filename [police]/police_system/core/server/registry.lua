@@ -160,6 +160,27 @@ function POL.inWorld(el)
     return isElement(el) and getElementDimension(el) == 0 and getElementInterior(el) == 0
 end
 
+-- road point for an AI service vehicle (tow / ambulance / transport) that should arrive at (x, y, z) in
+-- cfg.ARRIVAL = { min, max } seconds: navmesh travel-time candidates, the first one nobody sees (ai_land_traffic);
+-- else the old distance band cfg.SPAWN_MIN..SPAWN_MAX. t = exports.ai_land_traffic, profile = navmesh profile.
+-- Returns x, y, z, rot or nil.
+function POL.arrivalSpawn(t, cfg, x, y, z, profile, toward)
+    local A = cfg.ARRIVAL
+    if A and POL.running("navmesh") then
+        local ok, r = pcall(function()
+            return exports.navmesh:findVehicleSpawnPoints(x, y, z, A[1], A[2], { profile = profile, count = 25,
+                spacing = 25, minDistance = 80, avoidPlayers = 80, classes = { "highway", "ramp", "road" } })
+        end)
+        if ok and type(r) == "table" and r.points then
+            local sx, sy, sz, rot = t:findHiddenRoadSpawn(x, y, z, { points = r.points, playerDist = 80, priority = true })
+            if sx then return sx, sy, sz, rot end
+        end
+    end
+    local sx, sy, sz, rot = t:findHiddenRoadSpawn(x, y, z, { minDist = cfg.SPAWN_MIN, maxDist = cfg.SPAWN_MAX, toward = toward })
+    if sx then return sx, sy, sz, rot end
+    return nil
+end
+
 function POL.lang(player)
     local ok, l = pcall(L.lang, player)
     return ok and type(l) == "string" and l or "en"

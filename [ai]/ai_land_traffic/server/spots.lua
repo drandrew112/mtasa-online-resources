@@ -37,7 +37,9 @@ function Spots.makeRoom(x, y, now)
 end
 
 -- opts: minDist (180), maxDist (400) from (x, y, z); playerDist (min distance from every player, default 120);
--- toward = element or {x, y}: the lane must lead towards it (default: the given point); priority (make room)
+-- toward = element or {x, y}: the lane must lead towards it (default: the given point); priority (make room);
+-- points = candidate list ({x, y, z, rotation} or {x, y, z, rot}, e.g. navmesh findVehicleSpawnPoints().points):
+-- only these are tried, in order (playerDist + camera check, no min / max / toward), rot = the candidate's rotation
 function findHiddenRoadSpawn(x, y, z, opts)
     x, y, z = tonumber(x), tonumber(y), tonumber(z) or 0
     if not x or not y or not Net.ready then return false end
@@ -48,6 +50,18 @@ function findHiddenRoadSpawn(x, y, z, opts)
     if isElement(opts.toward) then tx, ty = getElementPosition(opts.toward)
     elseif type(opts.toward) == "table" then tx, ty = tonumber(opts.toward[1]) or x, tonumber(opts.toward[2]) or y end
     local now = getTickCount()
+    -- given candidates (e.g. navmesh findVehicleSpawnPoints): the first one no player is near / no camera sees
+    if type(opts.points) == "table" then
+        for _, p in ipairs(opts.points) do
+            local px, py, pz = tonumber(p.x or p[1]), tonumber(p.y or p[2]), tonumber(p.z or p[3])
+            if px and py and pz and nearestPlayer2(px, py) >= pmin2
+                and not Views.anySees(Traffic.players, px, py, pz + 1, now) then
+                if opts.priority then Spots.makeRoom(px, py, now) end
+                return px, py, pz, tonumber(p.rotation or p[4]) or 0
+            end
+        end
+        return false
+    end
     local cells = Net.cellsAround(x, y, maxD)
     if #cells == 0 then return false end
     for _ = 1, T.HIDDEN_SPAWN_TRIES do

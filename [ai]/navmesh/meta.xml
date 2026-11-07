@@ -29,6 +29,8 @@
     <export function="findBoatRoute"      type="server" />
     <export function="findGpsRoute"       type="server" />
     <export function="requestRoute"       type="server" />
+    <export function="findVehicleSpawnPoints"    type="server" />
+    <export function="requestVehicleSpawnPoints" type="server" />
     <export function="getNearestLane"     type="server" />
     <export function="getNearestLanes"    type="server" />
     <export function="getLaneInfo"        type="server" />

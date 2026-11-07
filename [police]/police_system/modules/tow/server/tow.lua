@@ -1,7 +1,7 @@
 -- police_system / modules/tow/server/tow.lua
 -- AI tow truck (525). REQUEST_TOW: the nearest empty vehicle within REQUEST_DIST; a police car only after a
 -- confirmation temp menu ("Tow your police car?"); not with someone inside. The vehicle is locked (nobody gets in),
--- the MDC shows the state. The truck appears on the road network 150-350 m from the vehicle at a point nobody sees,
+-- the MDC shows the state. The truck appears on the road network 20-40 s (navmesh travel time) from the vehicle at a point nobody sees,
 -- drives next to it, hooks it up (attached, tilted, no collision) and drives to the tow point of the nearest
 -- station. It disappears when nobody sees it; at the tow point it goes anyway, with the vehicle (an owned vehicle
 -- is stored back in v_ownveh). Destroyed before the pick-up: failed, everything back, the caller is told.
@@ -65,7 +65,7 @@ function TW.request(player, confirmed, veh)
     local t = traffic()
     if not t then POL.notify(player, "police_system.tow.unavailable") return false end
     local x, y, z = getElementPosition(veh)
-    local sx, sy, sz, rot = t:findHiddenRoadSpawn(x, y, z, { minDist = C.SPAWN_MIN, maxDist = C.SPAWN_MAX, toward = veh })
+    local sx, sy, sz, rot = POL.arrivalSpawn(t, C, x, y, z, "truck", veh)
     if not sx then POL.notify(player, "police_system.tow.unavailable") return false end
     local truck, driver = t:createScriptedVehicle(C.MODEL, sx, sy, sz, { heading = rot, skin = C.SKIN, profile = "truck" })
     if not truck then POL.notify(player, "police_system.tow.unavailable") return false end

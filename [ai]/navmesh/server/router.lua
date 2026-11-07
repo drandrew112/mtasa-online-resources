@@ -106,6 +106,143 @@ function Nav.vehicleRoute(x1, y1, z1, x2, y2, z2, opts)
     return res
 end
 
+------------------------------------------------------------------------ vehicle spawn points by travel time
+
+local function classSet(list)
+    if type(list) ~= "table" then return nil end
+    local set = {}
+    for _, c in ipairs(list) do
+        for id, name in ipairs(NAV_CLASS_NAME) do
+            if name == c or id == tonumber(c) then set[id] = true end
+        end
+    end
+    return set
+end
+
+-- something of `etype` within r metres in dimension dim (nil = any dimension)
+local function occupied(x, y, z, r, etype, dim)
+    if not r or r <= 0 then return false end
+    for _, e in ipairs(getElementsWithinRange(x, y, z, r, etype)) do
+        if not dim or getElementDimension(e) == dim then return true end
+    end
+    return false
+end
+
+-- Lane positions from where a vehicle reaches (x, y, z) in minTime..maxTime seconds (profile time model, the same as
+-- the route cost). opts: profile ("car"), heading (arrival facing at the target, rotZ), radius (target lane radius,
+-- 40), fallback (wider radius without height filter), count (10), spacing (min distance between results, 40),
+-- step (sampling along lanes, 10), junctionMargin (no spawn this close to a junction node, 12), minDistance (straight
+-- 2D distance from the target, 0), classes ({"highway","ramp","road","service"}: allowed spawn classes, all),
+-- unpaved (true), emergencyOnly (default: only for profiles that use those lanes freely), avoidPlayers (metres, 0),
+-- avoidVehicles (metres, 8), dimension (for the avoid checks, 0; false = any), order ("random" | "time" | "far"),
+-- maxNodes. z may be false.
+function Nav.vehicleSpawnPoints(x, y, z, minTime, maxTime, opts)
+    if not Roads.ready then return nil, "not_loaded" end
+    opts = type(opts) == "table" and opts or {}
+    local R = Roads
+    local profName = opts.profile or "car"
+    local prof = NAV.VEHICLE[profName]
+    if not prof then return nil, "unknown_profile" end
+    x, y, z = tonumber(x), tonumber(y), tonumber(z) or false
+    minTime, maxTime = tonumber(minTime) or 0, tonumber(maxTime)
+    if not x or not y or not maxTime or maxTime <= 0 or maxTime < minTime then return nil, "bad_arguments" end
+    local goals = Roads.nearestLanes(x, y, z, { radius = opts.radius or 40, heading = opts.heading, maxZ = 8 })
+    if #goals == 0 and opts.heading then goals = Roads.nearestLanes(x, y, z, { radius = opts.radius or 40, maxZ = 8 }) end
+    if #goals == 0 and opts.fallback then goals = Roads.nearestLanes(x, y, false, { radius = opts.fallback }) end
+    if #goals == 0 then return nil, "no_goal_lane" end
+    for i = #goals, 7, -1 do goals[i] = nil end
+
+    local rt, why = Roads.reachTimes(goals, prof, maxTime, opts.maxNodes)
+    if not rt then return nil, why end
+
+    local classes = classSet(opts.classes)
+    local allowUnpaved = opts.unpaved ~= false
+    local allowEmergency = opts.emergencyOnly
+    if allowEmergency == nil then allowEmergency = prof.emergencyOnly <= 1 end
+    local step = math.max(2, tonumber(opts.step) or 10)
+    local margin = tonumber(opts.junctionMargin) or 12
+    local minDist = tonumber(opts.minDistance) or 0
+    local minDist2 = minDist * minDist
+
+    -- candidates
+    local cand, n = {}, 0
+    for id in pairs(rt.T0) do
+        local k = R.alink[id]
+        local kfl = R.kfl[k]
+        local ok = bitAnd(R.afl[id], NAV_LF.TRAP) == 0
+            and (not classes or classes[R.kclass[k]])
+            and (allowUnpaved or bitAnd(kfl, NAV_KF.UNPAVED) == 0)
+            and (allowEmergency or bitAnd(kfl, NAV_KF.EMERGENCY) == 0)
+        local len = R.alen[id]
+        if ok and len >= 4 then
+            local m0 = bitAnd(R.nfl[R.afrom[id]], NAV_NF.JUNCTION) ~= 0 and margin or 0
+            local m1 = bitAnd(R.nfl[R.ato[id]], NAV_NF.JUNCTION) ~= 0 and margin or 0
+            local s0, s1 = m0, len - m1
+            if s1 < s0 then
+                if len >= 2 * step then s0, s1 = len / 2, len / 2 else s1 = -1 end
+            end
+            local s = s0 + ((s1 - s0) % step) / 2   -- centred samples
+            while s <= s1 do
+                local u = s / len
+                local t, goal = Roads.timeAt(rt, id, u, prof)
+                if goal and t >= minTime and t <= maxTime then
+                    local px, py, pz = Roads.lanePoint(id, u)
+                    local d2 = (px - x) ^ 2 + (py - y) ^ 2
+                    if d2 >= minDist2 then
+                        n = n + 1
+                        cand[n] = { id, u, t, goal, px, py, pz, sqrt(d2) }
+                    end
+                end
+                s = s + step
+            end
+        end
+    end
+
+    -- order + pick with spacing and free-space checks
+    local order = opts.order or "random"
+    if order == "time" then
+        table.sort(cand, function(a, b) return a[3] < b[3] end)
+    elseif order == "far" then
+        table.sort(cand, function(a, b) return a[8] > b[8] end)
+    else
+        for i = n, 2, -1 do
+            local j = math.random(i)
+            cand[i], cand[j] = cand[j], cand[i]
+        end
+    end
+    local count = math.max(1, tonumber(opts.count) or 10)
+    local spacing = tonumber(opts.spacing) or 40
+    local sp2 = spacing * spacing
+    local avoidPlayers, avoidVehicles = tonumber(opts.avoidPlayers) or 0, tonumber(opts.avoidVehicles) or 8
+    local dim = opts.dimension
+    if dim == nil then dim = 0 elseif dim == false then dim = nil end
+    local out = {}
+    for i = 1, n do
+        local c = cand[i]
+        local px, py, pz = c[5], c[6], c[7]
+        local free = true
+        for _, p in ipairs(out) do
+            if (p.x - px) ^ 2 + (p.y - py) ^ 2 < sp2 then free = false; break end
+        end
+        if free and (occupied(px, py, pz, avoidPlayers, "player", dim) or occupied(px, py, pz, avoidVehicles, "vehicle", dim)) then
+            free = false
+        end
+        if free then
+            local id = c[1]
+            local dx, dy = R.ax2[id] - R.ax1[id], R.ay2[id] - R.ay1[id]
+            out[#out + 1] = {
+                x = px, y = py, z = pz, rotation = (math.deg(math.atan2(-dx, dy)) + 360) % 360,
+                lane = id, u = c[2], time = c[3], distance = c[8], class = NAV_CLASS_NAME[R.kclass[R.alink[id]]],
+                goalLane = c[4], goalU = rt.goalU[c[4]],
+            }
+            if #out >= count then break end
+        end
+    end
+    if #out == 0 then return nil, n == 0 and "no_candidates" or "all_blocked" end
+    return { kind = "spawn", profile = profName, points = out, candidates = n, expanded = rt.expanded,
+             goals = (function() local g = {} for id, u in pairs(rt.goalU) do g[#g + 1] = { lane = id, u = u } end return g end)() }
+end
+
 ------------------------------------------------------------------------ peds
 
 local function grabCells(cells, pts, kinds)

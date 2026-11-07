@@ -192,14 +192,16 @@ POLICE = {
         RAY = 25,
     },
 
-    TOW = { MODEL = 525, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, SKIN = 50 },
-    MEDICAL = { MODEL = 416, SPAWN_MIN = 150, SPAWN_MAX = 350, SKIN = 274, PAINTJOB = "hu_omsz" },
+    -- ARRIVAL = { min, max } s: the AI tow truck / ambulance / transport van appears where its navmesh travel time to
+    -- the scene is in this window (POL.arrivalSpawn); SPAWN_MIN-MAX m = fallback when navmesh finds no hidden point
+    TOW = { MODEL = 525, ARRIVAL = { 20, 40 }, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, SKIN = 50 },
+    MEDICAL = { MODEL = 416, ARRIVAL = { 20, 40 }, SPAWN_MIN = 150, SPAWN_MAX = 350, SKIN = 274, PAINTJOB = "hu_omsz" },
     -- prisoner transport (modules/transport): an AI van (Enforcer) takes a cuffed suspect to the nearest station.
     -- REQUEST_DIST: the officer this close to the suspect; LOAD_DIST: the suspect (on foot / in a car) this close to
     -- the standing van gets in; WAIT s for that, else the van leaves; a player rides RIDE s, then (faded out) the
     -- handover happens; the van drives to the station tow point (like TOW), an NPC is handed over (van + suspect
     -- vanish) when it gets there or nobody sees it
-    TRANSPORT = { MODEL = 427, SKIN = 280, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, LOAD_DIST = 20,
+    TRANSPORT = { MODEL = 427, SKIN = 280, ARRIVAL = { 20, 40 }, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, LOAD_DIST = 20,
                   WAIT = 120, RIDE = 20, SPEED_FACTOR = 1.2, SEATS = { 2, 3, 1 } },
 
     -- work_police levels = ranks (police_system decides the rights by them)
