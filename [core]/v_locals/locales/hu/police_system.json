@@ -460,7 +460,7 @@
   "police_system.radio.cat_services": "Erősítés és szolgáltatások",
   "police_system.radio.cat_status": "Státusz",
   "police_system.radio.code_4": "Code 4 (intézkedés vége)",
-  "police_system.radio.help": "←/→ kategória · ↑/↓ üzenet · Enter küld · C bezár",
+  "police_system.radio.help": "←/→ kategória · ↑/↓ üzenet · Enter küld · R bezár",
   "police_system.radio.not_in_unit": "Előbb jelentkezz be egy egységbe az MDC-n (J).",
   "police_system.radio.query_person": "Személy lekérdezése",
   "police_system.radio.query_vehicle": "Jármű lekérdezése",

@@ -460,7 +460,7 @@
   "police_system.radio.cat_services": "Backup & services",
   "police_system.radio.cat_status": "Status",
   "police_system.radio.code_4": "Code 4",
-  "police_system.radio.help": "←/→ category · ↑/↓ message · Enter send · C close",
+  "police_system.radio.help": "←/→ category · ↑/↓ message · Enter send · R close",
   "police_system.radio.not_in_unit": "Sign in to a unit on the MDC first (J).",
   "police_system.radio.query_person": "Check person",
   "police_system.radio.query_vehicle": "Check vehicle",

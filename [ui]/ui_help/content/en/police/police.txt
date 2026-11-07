@@ -7,7 +7,7 @@ The San Andreas Police Department keeps order in the state. As an officer you st
 ## Quick keys
 - `J` – the Mobile Data Computer (MDC), in a police car
 - `F4` pursuit · `F5` available · `F6` responding · `F7` busy – your unit's status
-- `C` – the radio (left side of the screen)
+- `R` – the radio (left side of the screen)
 - `E` (hold) – stop the pedestrian / player in front of you
 - `Left Shift` – stop the vehicle in front of your police car (again: cancel)
 - `Backspace` – hide the query window

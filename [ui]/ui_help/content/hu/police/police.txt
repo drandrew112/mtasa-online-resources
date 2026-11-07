@@ -7,7 +7,7 @@ A San Andreas-i Rendőrség (SAPD) tartja fenn a rendet. Rendőrként járművek
 ## Gyors billentyűk
 - `J` – a rendőrségi számítógép (MDC), rendőrautóban
 - `F4` üldözés · `F5` elérhető · `F6` vonulás · `F7` elfoglalt – az egységed státusza
-- `C` – a rádió (a képernyő bal oldalán)
+- `R` – a rádió (a képernyő bal oldalán)
 - `E` (nyomva tartva) – az előtted álló gyalogos / játékos megállítása
 - `Bal Shift` – a rendőrautó előtti jármű megállítása (újra: megszüntetés)
 - `Backspace` – a lekérdezés ablak elrejtése

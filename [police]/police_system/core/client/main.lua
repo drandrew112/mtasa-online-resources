@@ -1,7 +1,7 @@
 -- police_system / core/client/main.lua
 -- One onClientKey handler for every police key, asked in priority order (MDC > radio > query window > surrender >
 -- stop > F keys). A handler returns true when it used the key; the key is then cancelled (no GTA control, no other
--- bind: C does not crouch while the radio opens, arrows do not steer while it is open). Keys are only handled with
+-- bind: R does not reload while the radio opens, arrows do not steer while it is open). Keys are only handled with
 -- the police right (nothing shows without it, no warning either), except the surrender of a wanted player.
 
 local keyHandlers = {}

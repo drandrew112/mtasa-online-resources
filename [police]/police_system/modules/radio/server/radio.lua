@@ -1,6 +1,6 @@
 -- police_system / modules/radio/server/radio.lua
 -- Radio.handle(player, id, args) is the only entry point of the radio messages (shared/radio.lua). The radio panel
--- (C), the F keys and the MDC call it through pol:radio; the later voice client through the radioCommand export.
+-- (R), the F keys and the MDC call it through pol:radio; the later voice client through the radioCommand export.
 -- args (optional): { target = element } (STATUS_PURSUIT), { confirm = true } (REQUEST_TOW of a police car).
 
 local RD = POL.module("radio", {})

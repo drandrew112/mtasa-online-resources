@@ -1,5 +1,5 @@
 -- police_system / modules/radio/client/radio.lua
--- The radio panel on the left of the screen while on duty: C opens it, left / right = category, up / down = message,
+-- The radio panel on the left of the screen while on duty: R opens it, left / right = category, up / down = message,
 -- Enter sends, C or Backspace closes. While open the arrows and C do not reach GTA (no crouch, no steering).
 -- Every message is a name id (shared/radio.lua); the server's Radio.handle does the rest.
 
@@ -42,11 +42,11 @@ end
 
 POL.on("unit", function(u) if not u and RC.open then setOpen(false) end end)
 
-local NAV = { arrow_l = true, arrow_r = true, arrow_u = true, arrow_d = true, enter = true, num_enter = true, backspace = true, c = true }
+local NAV = { arrow_l = true, arrow_r = true, arrow_u = true, arrow_d = true, enter = true, num_enter = true, backspace = true, r = true }
 
 POL.key("radio", function(button, press)
     if not RC.open then
-        if button == "c" and POL.onDuty() and POL.hasRight() then
+        if button == "r" and POL.onDuty() and POL.hasRight() then
             if press and not (POL.mdc and POL.mdc.isOpen()) then setOpen(true) end
             return true
         end
@@ -70,7 +70,7 @@ POL.key("radio", function(button, press)
         POL.send("radio", id, args)
         setOpen(false)
         return true
-    elseif button == "c" or button == "backspace" then
+    elseif button == "r" or button == "backspace" then
         setOpen(false)
         return true
     end
