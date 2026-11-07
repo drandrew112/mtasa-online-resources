@@ -130,6 +130,7 @@
     <file src="locales/en/bt_dispatch.json" />
     <file src="locales/en/wp_manager.json" />
     <file src="locales/en/wp_selector.json" />
+    <file src="locales/en/v_anims.json" />
     <file src="locales/en/wp_shop.json" />
     <file src="locales/en/biz_casino.json" />
     <file src="locales/en/biz_core.json" />
@@ -249,6 +250,7 @@
     <file src="locales/hu/bt_dispatch.json" />
     <file src="locales/hu/wp_manager.json" />
     <file src="locales/hu/wp_selector.json" />
+    <file src="locales/hu/v_anims.json" />
     <file src="locales/hu/wp_shop.json" />
     <file src="locales/hu/biz_casino.json" />
     <file src="locales/hu/biz_core.json" />

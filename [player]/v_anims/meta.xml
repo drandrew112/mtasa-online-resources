@@ -1,0 +1,40 @@
+<meta>
+    <info author="DrAndrew112" name="v_anims" version="1.0.0" type="script"
+          description="Animation database (477 animations in 78 command groups), /anims panel with 8 favourites, F9 animation wheel." />
+    <min_mta_version server="1.5.8" client="1.5.8" />
+
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="shared/database.lua" type="shared" />
+    <script src="shared/anims.lua" type="shared" />
+
+    <script src="server/main.lua" type="server" />
+
+    <script src="client/core.lua" type="client" />
+    <script src="client/panel.lua" type="client" />
+    <script src="client/wheel.lua" type="client" />
+
+    <file src="client/fonts/Roboto.ttf" type="client" />
+    <file src="client/fonts/RobotoB.ttf" type="client" />
+
+    <!-- EXPORTS: SERVER -->
+    <export function="playAnim" type="server" />
+    <export function="stopAnim" type="server" />
+    <export function="getPlayerAnim" type="server" />
+    <export function="setAnimsBlocked" type="server" />
+    <export function="getAnimList" type="server" />
+    <export function="getPlayerFavouriteAnims" type="server" />
+    <export function="setPlayerFavouriteAnims" type="server" />
+
+    <!-- EXPORTS: CLIENT -->
+    <export function="playAnim" type="client" />
+    <export function="stopAnim" type="client" />
+    <export function="getCurrentAnim" type="client" />
+    <export function="getFavouriteAnims" type="client" />
+    <export function="getAnimLabel" type="client" />
+    <export function="openAnimPanel" type="client" />
+    <export function="closeAnimPanel" type="client" />
+    <export function="isAnimPanelOpen" type="client" />
+</meta>
