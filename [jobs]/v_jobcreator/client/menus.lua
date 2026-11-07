@@ -36,7 +36,8 @@ local function open(kind, title, items)
     if Menus.rootId then inac:closeTempMenu() end
     Menus.kind = kind
     Menus.leaves = indexLeaves(items, "", {})
-    Menus.rootId = inac:createTempMenu({ title = title, items = items })
+    -- mouse1 / mouse2 place and look in the freecam: the menu stays keyboard only
+    Menus.rootId = inac:createTempMenu({ title = title, items = items, mouse = false })
     if not Menus.rootId then Menus.kind = nil end
     return Menus.rootId
 end

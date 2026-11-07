@@ -28,10 +28,18 @@ local function render()
     setCameraMatrix(cx, cy, cz, vx, vy, vz)
 end
 
+local function overMenu()
+    local res = getResourceFromName("ui_inac")
+    return res and getResourceState(res) == "running" and exports.ui_inac:isMouseOverMenu() or false
+end
+
 local lastX, lastY = nil, nil
+local press = nil -- "menu" | "drag": a drag only orbits when it started off the ui_inac menu
 local function onMove(_, _, absX, absY)
     if not CustomsCam.running then return end
-    if not getKeyState("mouse1") then lastX, lastY = absX, absY return end
+    if not getKeyState("mouse1") then lastX, lastY, press = absX, absY, nil return end
+    if not press then press = overMenu() and "menu" or "drag" end
+    if press == "menu" then lastX, lastY = absX, absY return end
     if lastX then
         CustomsCam.yaw   = (CustomsCam.yaw - (absX - lastX) * DRAG_SPEED) % 360
         CustomsCam.pitch = math.max(MIN_PITCH, math.min(MAX_PITCH,
@@ -42,6 +50,7 @@ end
 
 local function onWheel(key)
     if not CustomsCam.running then return end
+    if overMenu() then return end -- the wheel scrolls the menu there
     local step = key == "mouse_wheel_up" and -1 or 1
     CustomsCam.dist = math.max(MIN_DIST, math.min(MAX_DIST, CustomsCam.dist + step))
 end

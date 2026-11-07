@@ -61,6 +61,7 @@ function syncMenuRender()
         removeEventHandler("onClientRender", root, renderMenu)
         if checkTempHover then checkTempHover() end -- resets the hover state
     end
+    if InacMouse then InacMouse.sync() end
 end
 
 renderMenu = function()
@@ -68,6 +69,7 @@ renderMenu = function()
 
     local menu = MenuState:getMenu()
     if not menu then return end
+    InacMouse.beginFrame()
 
     local sw, sh = uicore:getScreenWH()
 
@@ -145,8 +147,20 @@ renderMenu = function()
     local total    = #menu.items
     local firstRow = 1
     if total > maxRows then
-        firstRow = math.min(math.max(1, MenuState.selected - math.floor(maxRows / 2)), total - maxRows + 1)
+        local maxFirst = total - maxRows + 1
+        if MenuState.mouseScroll and MenuState.firstRow then
+            -- the mouse moved the selection: the window stays, rows never slide under the cursor
+            firstRow = math.max(1, math.min(MenuState.firstRow, maxFirst))
+            if MenuState.selected < firstRow then
+                firstRow = MenuState.selected
+            elseif MenuState.selected > firstRow + maxRows - 1 then
+                firstRow = MenuState.selected - maxRows + 1
+            end
+        else
+            firstRow = math.min(math.max(1, MenuState.selected - math.floor(maxRows / 2)), maxFirst)
+        end
     end
+    MenuState.firstRow = firstRow
     local lastRow    = math.min(total, firstRow + maxRows - 1)
     local shownCount = lastRow - firstRow + 1
 
@@ -155,6 +169,35 @@ renderMenu = function()
         local item = menu.items[i]
         local iy = rowsTop + (i - firstRow) * itemH
         local selected = (MenuState.selected == i)
+
+        -- mouse: hover selects, click = ENTER, "<" / ">" of a select row steps it
+        local selOpt = item.type == "select" and item.options and item.options[item.value]
+        local arrowL, arrowR
+        if selOpt then
+            local right = x + w - ui(12)
+            arrowL = right - dxGetTextWidth("< " .. selOpt.label .. " >", itemSize, "default") + dxGetTextWidth("< ", itemSize, "default")
+            arrowR = right - dxGetTextWidth(" >", itemSize, "default")
+        end
+        InacMouse.addZone(x, iy, w, itemH, {
+            hover = function()
+                if MenuState.selected ~= i then
+                    MenuState.selected = i
+                    MenuState.mouseScroll = true
+                    InacNav.playSelect()
+                end
+            end,
+            click = function(cx)
+                MenuState.selected = i
+                MenuState.mouseScroll = true
+                if arrowL and cx <= arrowL + ui(4) and cx >= arrowL - ui(30) then
+                    InacNav.step(-1)
+                elseif arrowR and cx >= arrowR - ui(4) then
+                    InacNav.step(1)
+                else
+                    InacNav.enter()
+                end
+            end,
+        })
 
         if selected then
             dxDrawRectangle(x, iy, w, itemH, tocolor(255, 255, 255, 255))
@@ -236,6 +279,9 @@ renderMenu = function()
     -- 4️⃣ Vertical arrows (2px-el a menü alatt)
     local arrowsY = rowsTop + (shownCount * itemH) + ui(2)
     dxDrawRectangle(x, arrowsY, w, ui(30), tocolor(0,0,0,200))
+    -- mouse: upper half = up, lower half = down
+    InacMouse.addZone(x, arrowsY, w, ui(15), { click = function() MenuState.mouseScroll = false InacNav.move(-1) end })
+    InacMouse.addZone(x, arrowsY + ui(15), w, ui(15), { click = function() MenuState.mouseScroll = false InacNav.move(1) end })
     dxDrawImage(x + (w/2) - ui(7), arrowsY + ui(4), ui(14), ui(22), "vertical_arrows.png")
 
     -- 5️⃣ Leírás sor (5px-el az arrow sor alatt)
@@ -259,4 +305,7 @@ renderMenu = function()
         "left",
         "center"
     )
+
+    InacMouse.setRect(x, y, w, descY + descH - y)
+    InacMouse.endFrame()
 end

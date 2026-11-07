@@ -38,102 +38,112 @@ local function otherPanelOpen()
         or inJobLobby()
 end
 
+--------------------------------------------------------------------------------
+-- navigation actions, shared by the keyboard (below) and the mouse (mouse.lua)
+--------------------------------------------------------------------------------
+
+InacNav = { playSelect = playSelect }
+
+function InacNav.move(delta)
+    if not MenuState.open then return end
+    local items = MenuState:getMenu().items
+    local n = #items
+    if n == 0 then return end
+    MenuState.selected = (MenuState.selected - 1 + delta) % n + 1
+    playSelect()
+end
+
+function InacNav.step(delta)
+    if not MenuState.open then return end
+    local item = MenuState:getMenu().items[MenuState.selected]
+    if item and item.type == "select" and #item.options > 0 then
+        item.value = (item.value - 1 + delta) % #item.options + 1
+        playSelect()
+    end
+end
+
+function InacNav.enter()
+    if not MenuState.open then return end
+    local item = MenuState:getMenu().items[MenuState.selected]
+    if not item then return end
+
+    if item.type == "submenu" then
+        MenuState.current = item.target
+        MenuState:resetSelection()
+        if item.onOpen then item.onOpen() end
+        playClick()
+
+    elseif item.type == "select" then
+        item.options[item.value].action()
+        playClick()
+
+    elseif item.type == "action" and item.action then
+        item.action()
+        playClick()
+        if item.closeOnSelect and isTempMenuOpen() and tempMenuMayClose() then closeTempMenu() end
+
+    elseif item.type == "spawnvehicle" then
+        triggerServerEvent("ui_inac:spawnVehicle", localPlayer, item.model)
+        playClick()
+    end
+end
+
+function InacNav.back()
+    if not MenuState.open then return end
+
+    local menu = MenuState:getMenu()
+
+    -- Ideiglenes menu: submenubol egy szintet vissza, a gyokerrol bezar.
+    if menu and menu.temporary then
+        if menu.back then
+            MenuState.current = menu.back
+            MenuState:resetSelection()
+        elseif tempMenuMayClose() then
+            closeTempMenu()
+        end
+        playSelect()
+        return
+    end
+
+    if menu.back then
+        MenuState.current = menu.back
+        MenuState:resetSelection()
+    else
+        MenuState.open = false
+        syncMenuRender()
+        setElementData(localPlayer, "interactionMenuOpen", false)
+        uicore:toggleMoveControls(not MenuState.open)
+    end
+    playSelect()
+end
+
+-- a keyboard step: the row window follows the selection again (render.lua)
+local function kb(fn)
+    return function()
+        if not MenuState.open then return end
+        MenuState.mouseScroll = false
+        fn()
+    end
+end
+
 function bindAllKeys()
     bindKey("m", "down", function()
         if isTempMenuOpen() then return end
         if not MenuState.open and otherPanelOpen() then return end
         MenuState.open = not MenuState.open
+        MenuState.mouse = true -- the interaction menu always takes the mouse
         syncMenuRender()
         setElementData(localPlayer, "interactionMenuOpen", MenuState.open)
         uicore:toggleMoveControls(not MenuState.open)
         playSelect()
     end)
 
-    bindKey("arrow_u", "down", function()
-        if not MenuState.open then return end
-        local items = MenuState:getMenu().items
-        MenuState.selected = MenuState.selected > 1 and MenuState.selected - 1 or #items
-        playSelect()
-    end)
-
-    bindKey("arrow_d", "down", function()
-        if not MenuState.open then return end
-        local items = MenuState:getMenu().items
-        MenuState.selected = MenuState.selected < #items and MenuState.selected + 1 or 1
-        playSelect()
-    end)
-
-    bindKey("arrow_l", "down", function()
-        if not MenuState.open then return end
-        local item = MenuState:getMenu().items[MenuState.selected]
-        if item.type == "select" then
-            item.value = item.value > 1 and item.value - 1 or #item.options
-            playSelect()
-        end
-    end)
-
-    bindKey("arrow_r", "down", function()
-        if not MenuState.open then return end
-        local item = MenuState:getMenu().items[MenuState.selected]
-        if item.type == "select" then
-            item.value = item.value < #item.options and item.value + 1 or 1
-            playSelect()
-        end
-    end)
-
-    bindKey("enter", "down", function()
-        if not MenuState.open then return end
-        local item = MenuState:getMenu().items[MenuState.selected]
-
-        if item.type == "submenu" then
-            MenuState.current = item.target
-            MenuState:resetSelection()
-            if item.onOpen then item.onOpen() end
-            playClick()
-
-        elseif item.type == "select" then
-            item.options[item.value].action()
-            playClick()
-
-        elseif item.type == "action" and item.action then
-            item.action()
-            playClick()
-            if item.closeOnSelect and isTempMenuOpen() and tempMenuMayClose() then closeTempMenu() end
-
-        elseif item.type == "spawnvehicle" then
-            triggerServerEvent("ui_inac:spawnVehicle", localPlayer, item.model)
-            playClick()
-        end
-    end)
-
-    bindKey("backspace", "down", function()
-        if not MenuState.open then return end
-
-        local menu = MenuState:getMenu()
-
-        -- Ideiglenes menu: submenubol egy szintet vissza, a gyokerrol bezar.
-        if menu and menu.temporary then
-            if menu.back then
-                MenuState.current = menu.back
-                MenuState:resetSelection()
-            elseif tempMenuMayClose() then
-                closeTempMenu()
-            end
-            playSelect()
-            return
-        end
-
-        if menu.back then
-            MenuState.current = menu.back
-            MenuState:resetSelection()
-        else
-            MenuState.open = false
-            syncMenuRender()
-            setElementData(localPlayer, "interactionMenuOpen", false)
-            uicore:toggleMoveControls(not MenuState.open)
-        end
-        playSelect()
-    end)
+    bindKey("arrow_u", "down", kb(function() InacNav.move(-1) end))
+    bindKey("arrow_d", "down", kb(function() InacNav.move(1) end))
+    bindKey("arrow_l", "down", kb(function() InacNav.step(-1) end))
+    bindKey("arrow_r", "down", kb(function() InacNav.step(1) end))
+    bindKey("enter", "down", kb(InacNav.enter))
+    bindKey("backspace", "down", kb(InacNav.back))
 end
 addEvent("onClientPlayerLoaded", true)
 addEventHandler("onClientPlayerLoaded", localPlayer, bindAllKeys)

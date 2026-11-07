@@ -3,9 +3,12 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --
 -- Opens with P or BACKSPACE. Controls: ARROWS navigate, ENTER confirm,
 -- BACKSPACE go back / close. The ESC key is never used by this resource.
+-- Mouse: the cursor is shown while the menu is open; hovering a row selects it,
+-- left click = ENTER (tabs: select, again = enter), right click = back, on a
+-- setting the "<" / ">" arrows (or the mouse wheel) step the value.
 -- The menu is a centred box occupying at most 80% of the screen.
 --
---  * MAP      - live world-map preview, ENTER opens the full-screen bigmap
+--  * MAP      - live world-map preview, ENTER / click opens the full-screen bigmap
 --  * ONLINE   - Quick Job / Join Lobby / Official + Community (Race, Deathmatch) / Arena War / Leave Server
 --  * STATS    - level / XP / played time + v_stats statistics by category
 --  * SETTINGS - category column + settings column (Display > Show 3D Blips)
@@ -32,6 +35,7 @@ local C = {
     tabSel     = tocolor(243, 243, 243, 255),
     tabSelTxt  = tocolor(10, 10, 10, 255),
     tab        = tocolor(36, 34, 30, 235),
+    tabHover   = tocolor(72, 70, 66, 240),
     tabTxt     = tocolor(196, 198, 201, 255),
     colHead    = tocolor(0, 113, 184, 255),
     colHeadTxt = tocolor(255, 255, 255, 255),
@@ -62,6 +66,36 @@ local pauseMenuOpen = false
 local pauseMapOpen  = false
 local focus         = "tabs" -- "tabs" | "content"
 local selectedTab   = 1
+
+-- Mouse hit zones, rebuilt every drawn frame: { x, y, w, h, hover = fn(cx, cy),
+-- click = fn(button, cx, cy), wheel = fn(dir) }. Later zones are on top.
+local zones         = {}
+local lastCursorX, lastCursorY = false, false
+local mapOpenTimer  = nil
+
+local function cursorPos()
+    if not isCursorShowing() then return nil end
+    local rx, ry = getCursorPosition()
+    if not rx then return nil end
+    return rx * screenW, ry * screenH
+end
+
+local function addZone(x, y, w, h, handlers)
+    handlers.x, handlers.y, handlers.w, handlers.h = x, y, w, h
+    zones[#zones + 1] = handlers
+end
+
+local function zoneAt(cx, cy)
+    for i = #zones, 1, -1 do
+        local z = zones[i]
+        if cx >= z.x and cx <= z.x + z.w and cy >= z.y and cy <= z.y + z.h then return z end
+    end
+end
+
+local function isHovered(x, y, w, h)
+    local cx, cy = cursorPos()
+    return cx and cx >= x and cx <= x + w and cy >= y and cy <= y + h
+end
 
 -- JOBS tab: a small 2-level drill-down.
 --   view = "root" | "joinlobby" | "race" | "deathmatch"
@@ -507,7 +541,9 @@ local function closeBigmap()
         exports.v_radar:closePauseBigmap()
     end
     pauseMapOpen = false
-    showCursor(false)
+    -- back on the menu: our own cursor stays (v_radar hides only its own)
+    showCursor(pauseMenuOpen)
+    lastCursorX, lastCursorY = false, false
     setElementData(localPlayer, "hideHUD", pauseMenuOpen)
 end
 
@@ -515,6 +551,18 @@ local function openBigmap()
     if not radarAvailable() then return end
     exports.v_radar:openPauseBigmap()
     pauseMapOpen = true
+end
+
+-- From a mouse click: v_radar sets a waypoint on the left button's "up", so the
+-- bigmap opens a moment after the click that asked for it.
+local function openBigmapDeferred()
+    if mapOpenTimer or pauseMapOpen or not radarAvailable() then return end
+    mapOpenTimer = setTimer(function()
+        mapOpenTimer = nil
+        if pauseMenuOpen and not pauseMapOpen and TABS[selectedTab] == "MAP" then
+            openBigmap()
+        end
+    end, 60, 1)
 end
 
 local renderPause -- onClientRender handler, attached only while the pause menu is open
@@ -538,7 +586,13 @@ local function setPauseMenuOpen(open)
     setElementData(localPlayer, "showChat", not open)
     setElementData(localPlayer, "hideHUD", open)
     uicore:toggleMoveControls(not open)
-    showCursor(false)
+    showCursor(open)
+    zones = {}
+    lastCursorX, lastCursorY = false, false
+    if not open and mapOpenTimer then
+        if isTimer(mapOpenTimer) then killTimer(mapOpenTimer) end
+        mapOpenTimer = nil
+    end
 
     if open then
         -- Always start on the first tab (MAP), on the tab bar.
@@ -856,36 +910,59 @@ local function handleSettingsKey(key)
     end
 end
 
-addEventHandler("onClientKey", root, function(key, press)
-    if not press then return end
-    
-    if not getElementData(localPlayer, "loaded") then return end
+-- true while something else owns the foreground: the pause menu can neither be
+-- opened nor operated (keys / clicks are left for that panel).
+local function inputBlocked()
+    if not getElementData(localPlayer, "loaded") then return true end
 
-    if getElementData(localPlayer, "showChatInput") then return end
-    if getElementData(localPlayer, "textInputOpen") then return end
+    if getElementData(localPlayer, "showChatInput") then return true end
+    if getElementData(localPlayer, "textInputOpen") then return true end
 
     -- While the social panel is open it owns the foreground: the pause menu can
     -- neither be opened nor operated until the social panel is closed. Keys are
     -- left uncancelled so the social panel still receives them.
-    if getElementData(localPlayer, "socialPanelOpen") then return end
+    if getElementData(localPlayer, "socialPanelOpen") then return true end
 
     -- Same for the v_admin report / reports panel.
-    if getElementData(localPlayer, "reportPanelOpen") then return end
-    if getElementData(localPlayer, "adminPanelOpen") then return end
+    if getElementData(localPlayer, "reportPanelOpen") then return true end
+    if getElementData(localPlayer, "adminPanelOpen") then return true end
 
     -- Same while the v_inventory window is open (it closes on ESC itself).
-    if getElementData(localPlayer, "inventoryOpen") then return end
+    if getElementData(localPlayer, "inventoryOpen") then return true end
 
     -- Same while the virtual browser (ui_browser) is open.
-    if getElementData(localPlayer, "browserOpen") then return end
+    if getElementData(localPlayer, "browserOpen") then return true end
 
     -- Same while the ui_help F1 panel (search / AI assistant field) or the F3
     -- donate panel is open: "p" typed there must not open the menu.
-    if getElementData(localPlayer, "helpOpen") then return end
-    if getElementData(localPlayer, "donateOpen") then return end
+    if getElementData(localPlayer, "helpOpen") then return true end
+    if getElementData(localPlayer, "donateOpen") then return true end
 
     -- the download screen (v_modloader models) is up; the menu comes back after it
-    if getElementData(localPlayer, "download_screen") then return end
+    if getElementData(localPlayer, "download_screen") then return true end
+    return false
+end
+
+-- mouse: left = the zone's action, right = back (only inside the content)
+addEventHandler("onClientClick", root, function(button, state, cx, cy)
+    if not pauseMenuOpen or pauseMapOpen or state ~= "up" then return end
+    if inputBlocked() then return end
+    if button == "right" then
+        if focus == "content" then
+            playUI("click")
+            contentBack()
+        end
+        return
+    end
+    if button ~= "left" then return end
+    local z = zoneAt(cx, cy)
+    if z and z.click then z.click(cx, cy) end
+end)
+
+addEventHandler("onClientKey", root, function(key, press)
+    if not press then return end
+
+    if inputBlocked() then return end
 
     if not pauseMenuOpen then
         -- a higher-priority handler (text field, panel) already consumed the key
@@ -915,6 +992,16 @@ addEventHandler("onClientKey", root, function(key, press)
     if key == "p" then
         cancelEvent()
         setPauseMenuOpen(false)
+        return
+    end
+
+    if key == "mouse_wheel_up" or key == "mouse_wheel_down" then
+        local cx, cy = cursorPos()
+        local z = cx and zoneAt(cx, cy)
+        if z and z.wheel then
+            cancelEvent()
+            z.wheel(key == "mouse_wheel_up" and 1 or -1)
+        end
         return
     end
 
@@ -977,10 +1064,32 @@ local function drawColumnHeader(x, y, w, text, right)
 end
 
 -- rows: { {label=, value=, selector=bool, badge=, dim=bool}, ... }
-local function drawRows(x, y, w, rows, selectedIndex, active)
+-- mouse (optional): { hover = fn(i), click = fn(i, side), wheel = fn(i, dir) };
+-- side = "l" / "r" when a selector row was clicked on its "<" / ">" arrow.
+local function drawRows(x, y, w, rows, selectedIndex, active, mouse)
     for i, r in ipairs(rows) do
         local ry = y + (i - 1) * ROW_H
         local sel = active and i == selectedIndex
+        if mouse then
+            local arrowL, arrowR
+            if r.selector and r.value and r.value ~= "" then
+                -- where "< value >" is drawn (right aligned, same font as when selected)
+                local right = x + w - S(12)
+                local tw = L.width("< " .. r.value .. " >", S(1.1), FONT.rowB)
+                arrowL = right - tw + L.width("< ", S(1.1), FONT.rowB)
+                arrowR = right - L.width(" >", S(1.1), FONT.rowB)
+            end
+            addZone(x, ry, w, ROW_H, {
+                hover = mouse.hover and function() mouse.hover(i) end,
+                click = mouse.click and function(cx)
+                    local side
+                    if arrowL and cx <= arrowL + S(4) and cx >= arrowL - S(30) then side = "l"
+                    elseif arrowR and cx >= arrowR - S(4) then side = "r" end
+                    mouse.click(i, side)
+                end,
+                wheel = mouse.wheel and function(dir) mouse.wheel(i, dir) end,
+            })
+        end
         dxDrawRectangle(x, ry, w, ROW_H, sel and C.rowSel or C.row)
         dxDrawRectangle(x, ry + ROW_H - 1, w, 1, C.rowSep)
 
@@ -1007,6 +1116,13 @@ end
 --------------------------------------------------------------------------------
 
 local function drawMapTab(x, y, w, h)
+    addZone(x, y, w, h, {
+        click = function()
+            if not radarAvailable() then return end
+            playUI("select")
+            openBigmapDeferred()
+        end,
+    })
     if radarAvailable() then
         exports.v_radar:renderPausePreview(x, y, w, h)
     else
@@ -1074,7 +1190,20 @@ local function drawJobDetails(x, y, w, h, job)
     end
 end
 
-local function drawJobsRoot(x, y, w, h, items, sel, title)
+-- mouse handlers for a jobs list whose selection lives in jobsMenu[selKey]
+local function jobsMouse(selKey)
+    return {
+        hover = function(i) focus = "content"; jobsMenu[selKey] = i end,
+        click = function(i)
+            focus = "content"
+            jobsMenu[selKey] = i
+            playUI("select")
+            handleJobsKey("enter")
+        end,
+    }
+end
+
+local function drawJobsRoot(x, y, w, h, items, sel, title, selKey)
     local gap = S(6)
     local leftW = math.floor(w * 0.30)
     local rightX = x + leftW + gap
@@ -1088,7 +1217,7 @@ local function drawJobsRoot(x, y, w, h, items, sel, title)
     for i, item in ipairs(items) do
         rows[i] = { label = item.label, value = (item.id == "jobs" or item.id == "lobbies" or item.id == "official" or item.id == "community" or item.id == "race" or item.id == "deathmatch") and ">" or nil }
     end
-    drawRows(x, listY, leftW, rows, sel, focus == "content")
+    drawRows(x, listY, leftW, rows, sel, focus == "content", jobsMouse(selKey))
 
     local item = items[sel]
     dxDrawRectangle(rightX, listY, rightW, y + h - listY, C.row)
@@ -1144,7 +1273,7 @@ local function drawJobsList(x, y, w, h, list)
             }
         end
     end
-    drawRows(x, listY, leftW, rows, jobsMenu.listSel, focus == "content")
+    drawRows(x, listY, leftW, rows, jobsMenu.listSel, focus == "content", jobsMouse("listSel"))
 
     local selected = list[jobsMenu.listSel]
     if jobsMenu.view == "joinlobby" and selected then
@@ -1168,11 +1297,11 @@ local function drawJobsTab(x, y, w, h)
     end
 
     if jobsMenu.view == "root" then
-        drawJobsRoot(x, y, w, h, jobsRoot(), jobsMenu.rootSel, L("ui_pause.pausemenu.online"))
+        drawJobsRoot(x, y, w, h, jobsRoot(), jobsMenu.rootSel, L("ui_pause.pausemenu.online"), "rootSel")
     elseif jobsMenu.view == "jobs" then
-        drawJobsRoot(x, y, w, h, JOBS_SUB, jobsMenu.subSel, L("ui_pause.pausemenu.jobs_title"))
+        drawJobsRoot(x, y, w, h, JOBS_SUB, jobsMenu.subSel, L("ui_pause.pausemenu.jobs_title"), "subSel")
     elseif jobsMenu.view == "cat" then
-        drawJobsRoot(x, y, w, h, JOBS_CATS, jobsMenu.catSel, L.upper(jobsMenu.src == "community" and L("ui_pause.pausemenu.community_label") or L("ui_pause.pausemenu.official")))
+        drawJobsRoot(x, y, w, h, JOBS_CATS, jobsMenu.catSel, L.upper(jobsMenu.src == "community" and L("ui_pause.pausemenu.community_label") or L("ui_pause.pausemenu.official")), "catSel")
     elseif jobsMenu.view == "joinlobby" then
         drawJobsList(x, y, w, h, getLobbyList())
     else
@@ -1196,10 +1325,29 @@ local function drawStatsTab(x, y, w, h)
     local listY = y + HEAD_H
     local catRows = {}
     for i, c in ipairs(cats) do catRows[i] = { label = c.label, value = ">" } end
-    drawRows(x, listY, leftW, catRows, catIndex, focus == "content")
+    drawRows(x, listY, leftW, catRows, catIndex, focus == "content", {
+        hover = function(i)
+            if statsCat == nil then focus = "content"; statsSel = i end
+        end,
+        click = function(i)
+            focus = "content"
+            if statsCat ~= i then
+                playUI("select")
+                statsCat, statsSel = i, 1
+            end
+        end,
+    })
 
     if not cat then return end
-    drawRows(rightX, listY, rightW, cat.rows, statsSel, focus == "content" and statsCat ~= nil)
+    drawRows(rightX, listY, rightW, cat.rows, statsSel, focus == "content" and statsCat ~= nil, {
+        hover = function(i)
+            if statsCat ~= nil then statsSel = i end
+        end,
+        click = function(i)
+            focus = "content"
+            statsCat, statsSel = catIndex, i
+        end,
+    })
 
     if statsData.loaded and not statsData.defs then
         local ty = listY + #cat.rows * ROW_H + S(8)
@@ -1226,7 +1374,18 @@ local function drawSettingsTab(x, y, w, h)
     for i, c in ipairs(SETTINGS_TREE) do
         catRows[i] = { label = c.label, value = ">" }
     end
-    drawRows(x, listY, leftW, catRows, catIndex, focus == "content")
+    drawRows(x, listY, leftW, catRows, catIndex, focus == "content", {
+        hover = function(i)
+            if settingsCat == nil then focus = "content"; settingsSel = i end
+        end,
+        click = function(i)
+            focus = "content"
+            if settingsCat ~= i then
+                playUI("select")
+                settingsCat, settingsSel = i, 1
+            end
+        end,
+    })
 
     if not cat then return end
 
@@ -1254,7 +1413,35 @@ local function drawSettingsTab(x, y, w, h)
         local selector = enabled and (item.type == "toggle" or item.type == "range" or item.type == "choice")
         itemRows[i] = { label = item.label, value = value, selector = selector, dim = not enabled }
     end
-    drawRows(rightX, listY, rightW, itemRows, settingsSel, focus == "content" and settingsCat ~= nil)
+    drawRows(rightX, listY, rightW, itemRows, settingsSel, focus == "content" and settingsCat ~= nil, {
+        hover = function(i)
+            if settingsCat ~= nil then settingsSel = i end
+        end,
+        click = function(i, side)
+            focus = "content"
+            settingsCat, settingsSel = catIndex, i
+            local item = cat.items[i]
+            if not item then return end
+            local key
+            if item.type == "action" or item.type == "toggle" then
+                key = "enter"
+            elseif item.type == "choice" then
+                key = side == "l" and "arrow_l" or "arrow_r"
+            elseif item.type == "range" and side then
+                key = side == "l" and "arrow_l" or "arrow_r"
+            end
+            if not key then return end
+            playUI(key == "enter" and "select" or "click")
+            handleSettingsKey(key)
+        end,
+        wheel = function(i, dir)
+            local item = cat.items[i]
+            if settingsCat ~= catIndex or not item or (item.type ~= "range" and item.type ~= "choice") then return end
+            focus, settingsSel = "content", i
+            playUI("click")
+            handleSettingsKey(dir > 0 and "arrow_r" or "arrow_l")
+        end,
+    })
 end
 
 --------------------------------------------------------------------------------
@@ -1307,6 +1494,7 @@ local function contextHelp()
 end
 
 local function drawPanel()
+    zones = {}
     dxDrawRectangle(0, 0, screenW, screenH, C.wash)
 
     local fw, fh = screenW * MENU_FRACTION, screenH * MENU_FRACTION
@@ -1343,11 +1531,32 @@ local function drawPanel()
     for i, name in ipairs(TABS) do
         local tx = fx + (i - 1) * tabW
         local activeTab = i == selectedTab
-        dxDrawRectangle(tx + (i > 1 and S(1) or 0), tabY, tabW - S(2), tabH, activeTab and C.tabSel or C.tab)
+        addZone(tx, tabY, tabW, tabH, {
+            click = function()
+                if selectedTab == i then
+                    -- clicking the open tab again goes into it (MAP: opens the bigmap)
+                    playUI("select")
+                    if TABS[i] == "MAP" then openBigmapDeferred() else enterContent() end
+                    return
+                end
+                playUI("click")
+                selectedTab, focus = i, "tabs"
+            end,
+        })
+        local tabCol = activeTab and C.tabSel or (isHovered(tx, tabY, tabW, tabH) and C.tabHover or C.tab)
+        dxDrawRectangle(tx + (i > 1 and S(1) or 0), tabY, tabW - S(2), tabH, tabCol)
         dxDrawText(L(TAB_LABEL[name]), tx, tabY, tx + tabW, tabY + tabH,
             activeTab and C.tabSelTxt or C.tabTxt, S(activeTab and 1.35 or 1.2),
             activeTab and FONT.head or FONT.rowB, "center", "center")
     end
+    local function tabArrow(dir)
+        return { click = function()
+            playUI("click")
+            selectedTab, focus = moveSel(selectedTab, dir, #TABS), "tabs"
+        end }
+    end
+    addZone(fx, tabY, S(30), tabH, tabArrow(-1))
+    addZone(fx + fw - S(30), tabY, S(30), tabH, tabArrow(1))
     dxDrawText("<", fx + S(6), tabY, fx + S(26), tabY + tabH, C.tabTxt, S(1.5), FONT.rowB, "center", "center")
     dxDrawText(">", fx + fw - S(26), tabY, fx + fw - S(6), tabY + tabH, C.tabTxt, S(1.5), FONT.rowB, "center", "center")
 
@@ -1380,6 +1589,29 @@ local function drawPanel()
         C.txt, S(0.92), FONT.rowB, "right", "center")
 end
 
+-- hover selects the row under the cursor, but only when the cursor moved
+-- (a resting cursor never fights the keyboard)
+local function navSignature()
+    return table.concat({ focus, selectedTab, jobsMenu.view, jobsMenu.rootSel, jobsMenu.subSel, jobsMenu.catSel,
+        jobsMenu.listSel, statsSel, tostring(statsCat), settingsSel, tostring(settingsCat) }, "|")
+end
+
+local function applyHover()
+    local cx, cy = cursorPos()
+    if not cx then return end
+    if lastCursorX == false then
+        lastCursorX, lastCursorY = cx, cy
+        return
+    end
+    if cx == lastCursorX and cy == lastCursorY then return end
+    lastCursorX, lastCursorY = cx, cy
+    local z = zoneAt(cx, cy)
+    if not (z and z.hover) then return end
+    local before = navSignature()
+    z.hover(cx, cy)
+    if navSignature() ~= before then playUI("click") end
+end
+
 renderPause = function()
     if pauseMapOpen then return end
 
@@ -1403,6 +1635,7 @@ renderPause = function()
     end
 
     drawPanel()
+    applyHover()
 end
 
 --------------------------------------------------------------------------------

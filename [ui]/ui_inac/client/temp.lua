@@ -143,6 +143,8 @@ end
 -- exports.ui_inac:createTempMenu(config)
 --
 --   config.title  - title bar text of the root menu (default "MENU")
+--   config.mouse  - false: no cursor and no mouse control (default true: hover / click /
+--                   wheel / right click = back), e.g. when the caller uses the mouse itself
 --   config.locked - true: the player cannot close it (Backspace stops at the root, a
 --                   closeOnSelect leaf goes back to the root); only closeTempMenu() or
 --                   another createTempMenu closes it (e.g. the v_jobmanager spectator list)
@@ -177,6 +179,7 @@ function createTempMenu(config)
 
     registerNode({ title = config.title, items = config.items }, rootId, nil, "")
     tempLocked = config.locked == true
+    MenuState.mouse = config.mouse ~= false
 
     MenuState.open = true
     MenuState.current = rootId
@@ -192,6 +195,7 @@ function createTempMenu(config)
         end
     end
     syncMenuRender()
+    InacMouse.sync() -- a temp menu replacing another one keeps rendering
     setElementData(localPlayer, "interactionMenuOpen", true)
     uicore:toggleMoveControls(false)
 
