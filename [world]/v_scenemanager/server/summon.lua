@@ -19,7 +19,16 @@ end
 
 addCommandHandler(VSM.CMD_SUMMON, function(player)
     if not vsmIsAllowed(player) then return end
-    triggerClientEvent(player, "vsm:summonOpen", resourceRoot, sceneList(player))
+    -- ~1900 scenes in one event arrived truncated on the client (categories missing), so the list
+    -- goes out in chunks; the client builds the menu when the last one is in.
+    local list = sceneList(player)
+    local size = 150
+    local chunks = math.max(1, math.ceil(#list / size))
+    for c = 1, chunks do
+        local part = {}
+        for i = (c - 1) * size + 1, math.min(#list, c * size) do part[#part + 1] = list[i] end
+        triggerClientEvent(player, "vsm:summonOpen", resourceRoot, part, c, chunks, #list)
+    end
 end)
 
 addEventHandler("vsm:summonPick", resourceRoot, function(name)

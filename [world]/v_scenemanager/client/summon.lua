@@ -67,7 +67,17 @@ local function sceneTree(scenes)
     return build(root)
 end
 
-addEventHandler("vsm:summonOpen", resourceRoot, function(scenes)
+local pending = nil
+
+addEventHandler("vsm:summonOpen", resourceRoot, function(part, chunk, chunks, total)
+    if chunk == 1 or not pending then pending = {} end
+    for _, s in ipairs(part or {}) do pending[#pending + 1] = s end
+    if chunk < chunks then return end
+    local scenes = pending
+    pending = nil
+    if total and #scenes ~= total then
+        outputDebugString(("v_scenemanager: summon list incomplete (%d of %d)"):format(#scenes, total), 2)
+    end
     if menuId and exports.ui_inac:isTempMenuOpen() then exports.ui_inac:closeTempMenu() end
     local items = sceneTree(scenes)
     if #items == 0 then items[1] = { label = L("v_scenemanager.editor.no_scenes") } end
