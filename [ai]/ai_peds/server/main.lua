@@ -30,7 +30,9 @@ local function tick()
             p.x, p.y, p.z = getElementPosition(veh or el)
             -- peds without a syncer stand still: nothing to decide (dead bodies still get cleaned up)
             -- a vehicle task (aiPedEnterVehicle / aiPedExitVehicle) runs first: the behaviour waits for it
-            if p.vt and VehTasks.update(p, now) then
+            if p.stunUntil and AIPedsStun.hold(p, now) then
+                -- stunned (wp_manager stun gun): lies on the ground, the behaviour waits
+            elseif p.vt and VehTasks.update(p, now) then
                 -- busy getting in / out
             elseif p.syncer or p.dead or p.behaviour == "exiting" then
                 local b = Behaviours[p.behaviour]

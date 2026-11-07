@@ -8,7 +8,7 @@ local T = AIPEDS
 local lastShot = {}   -- [shooter] = tick
 
 local function threat(p, kind, src, x, y, z)
-    if p.dead or p.removed then return end
+    if p.dead or p.removed or p.stunUntil then return end
     local b = Behaviours[p.behaviour]
     if b and b.threat then b.threat(p, kind, src, x, y, z) end
 end

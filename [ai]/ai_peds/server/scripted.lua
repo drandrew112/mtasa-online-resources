@@ -275,3 +275,52 @@ function isAIPedProtected(ped)
     local p = getP(ped)
     return p and p.protected or false
 end
+
+-- Stun (wp_manager stun gun): for ms the ped stands still (the caller plays the lying animation), its behaviour
+-- does not run and threats are ignored; then the command it had (or the one a script / behaviour gave it during
+-- the stun) is resumed. ms <= 0 ends it now. Not in a vehicle.
+AIPedsStun = {}
+
+local function stunIdle(p)
+    p.stunIdle = { m = "idle" }
+    Peds.setCmd(p, p.stunIdle)
+end
+
+function AIPedsStun.release(p)
+    local cmd = p.stunCmd
+    p.stunUntil, p.stunCmd, p.stunIdle = nil, nil, nil
+    if cmd and not p.dead and not p.removed and isElement(p.el) then Peds.setCmd(p, cmd) end
+end
+
+-- tick: true while stunned (a command given meanwhile is parked, the ped stays idle)
+function AIPedsStun.hold(p, now)
+    if p.dead or now >= p.stunUntil then
+        AIPedsStun.release(p)
+        return false
+    end
+    if p.cmd ~= p.stunIdle then
+        if p.cmd and p.cmd.m ~= "idle" then p.stunCmd = p.cmd end
+        stunIdle(p)
+    end
+    return true
+end
+
+function setAIPedStunned(ped, ms)
+    local p = getP(ped)
+    if not p or p.dead then return false end
+    ms = tonumber(ms) or 0
+    if ms <= 0 then
+        if p.stunUntil then AIPedsStun.release(p) end
+        return true
+    end
+    if getPedOccupiedVehicle(p.el) or p.vt then return false end
+    if not p.stunUntil and p.cmd and p.cmd.m ~= "idle" then p.stunCmd = p.cmd end
+    p.stunUntil = getTickCount() + ms
+    if p.cmd ~= p.stunIdle then stunIdle(p) end
+    return true
+end
+
+function isAIPedStunned(ped)
+    local p = getP(ped)
+    return p ~= nil and p.stunUntil ~= nil
+end

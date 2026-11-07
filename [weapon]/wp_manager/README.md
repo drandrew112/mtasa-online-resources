@@ -38,6 +38,25 @@ and loads it with `setPlayerWeapons` (the old `weaponN` / `ammoN` keys are read 
 `getWeapons()`, `getCurrentWeapon()`, `isCurrentWeaponEmpty()`, `hasTempLoadout()`, `equipWeapon(id)`,
 `getWeaponDefs()` → `categories, list`.
 
+## Lent weapons (duty weapons)
+
+`lendPlayerWeapon(player, id, ammo, equip)` lends a weapon for a work duty (work_police duty_weapons: 23 + 24).
+The owner is the calling resource. A lent weapon is held like an own one, but it is **not the player's**:
+`getPlayerWeapons(player)` (the save list) leaves it out, and an own weapon of the same id is parked meanwhile
+(ammo bought for it goes to the parked copy). `returnLentWeapons(player [, owner|"*"])` /
+`returnLentWeapon(player, id)` give it back; the owner resource stopping does it too.
+`getPlayerWeapons(player, true)` = the held set with `lent = true`; `isPlayerWeaponLent`, `getPlayerLentWeapons`.
+The client `getWeapons()` rows carry `lent`; wp_selector shows "Duty" next to the category.
+
+## Stun gun (weapon 23)
+
+`shared/stungun.lua` (WP.STUN). Weapon 23 never does damage (cancelled for players, peds, vehicles on every client;
+medsys events / ai_peds ignore it). A hit within 10 units (shooter's client reports, server checks the shooter
+holds 23 + distance) lays the victim down for 30 s: animation CRACK/crckdeth2, a player's weapon is holstered,
+equip refused and movement controls off; an ai_peds ped gets `setAIPedStunned` (behaviour paused, threats
+ignored). Element data `wp.stunned`, events `onElementStunned(shooter, ms)` / `onElementStunEnd`, exports
+`stunElement(el, ms, by)`, `unstunElement`, `isElementStunned`. Not sold in wp_shop.
+
 ## Events
 
 - `onPlayerWeaponEquip(newId, oldId)` (server, source = player, cancelable, 0 = unarmed)

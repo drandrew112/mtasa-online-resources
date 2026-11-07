@@ -7,13 +7,16 @@
     <include resource="v_locals" />
     <script src="locals.lua" type="shared" />
     <script src="shared/weapons.lua" type="shared" />
+    <script src="shared/stungun.lua" type="shared" />
 
     <!-- ================= SERVER ================= -->
     <script src="server/core.lua" type="server" />
     <script src="server/inventory.lua" type="server" />
+    <script src="server/stungun.lua" type="server" />
 
     <!-- ================= CLIENT ================= -->
     <script src="client/main.lua" type="client" />
+    <script src="client/stungun.lua" type="client" />
 
     <!-- ================= EXPORTS ================= -->
     <export function="getPlayerWeapons" type="server" />
@@ -30,6 +33,16 @@
     <export function="clearPlayerTempLoadout" type="server" />
     <export function="hasPlayerTempLoadout" type="server" />
     <export function="getWeaponCategory" type="server" />
+    <!-- lent weapons (duty weapons of a work; never saved) -->
+    <export function="lendPlayerWeapon" type="server" />
+    <export function="returnLentWeapon" type="server" />
+    <export function="returnLentWeapons" type="server" />
+    <export function="isPlayerWeaponLent" type="server" />
+    <export function="getPlayerLentWeapons" type="server" />
+    <!-- stun gun (weapon 23) -->
+    <export function="stunElement" type="server" />
+    <export function="unstunElement" type="server" />
+    <export function="isElementStunned" type="server" />
 
     <export function="getWeapons" type="client" />
     <export function="getCurrentWeapon" type="client" />

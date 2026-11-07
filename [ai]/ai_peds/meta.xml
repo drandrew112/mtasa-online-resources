@@ -69,4 +69,7 @@
     <export function="setAIPedKeep"       type="server" />
     <export function="setAIPedProtected"  type="server" />
     <export function="isAIPedProtected"   type="server" />
+    <!-- wp_manager stun gun -->
+    <export function="setAIPedStunned"    type="server" />
+    <export function="isAIPedStunned"     type="server" />
 </meta>

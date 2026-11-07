@@ -75,7 +75,7 @@ MEDEV_WEAPONS = {
     [2] = "blunt", [3] = "blunt", [5] = "blunt", [6] = "blunt", [7] = "blunt",
     [10] = "blunt", [11] = "blunt", [12] = "blunt", [13] = "blunt", [14] = "blunt", [15] = "blunt",
     [4] = "sharp", [8] = "sharp", [9] = "sharp",
-    [22] = "gun", [23] = "gun", [24] = "gun", [25] = "gun", [26] = "gun", [27] = "gun",
+    [22] = "gun", [24] = "gun", [25] = "gun", [26] = "gun", [27] = "gun",   -- 23 = stun gun: no injury (MEDEV_NO_INJURY)
     [28] = "gun", [29] = "gun", [30] = "gun", [31] = "gun", [32] = "gun", [33] = "gun",
     [34] = "gun", [38] = "gun",
     [16] = "explosion", [19] = "explosion", [35] = "explosion", [36] = "explosion",
@@ -239,3 +239,6 @@ MEDEV_PUNCH = {
     WORLD_FACTOR = 0.6,         -- chance multiplier for walls / objects (MEDEV.PUNCH_WORLD)
 }
 end)
+
+-- Weapons that never injure (wp_manager stun gun: the hit is cancelled, the victim is stunned)
+MEDEV_NO_INJURY = { [23] = true }

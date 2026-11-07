@@ -307,7 +307,9 @@ render = function()
     local item = cat and cat.items[pick[sel]]
     if item then
         local w = (R_IN - 16 * S) * 2
-        dxDrawText(L("wp_selector.category." .. cat.id), CX - w / 2, CY - 50 * S, CX + w / 2, CY - 26 * S, COLOR.textSub, 1, fSmall, "center", "bottom")
+        local head = L("wp_selector.category." .. cat.id)
+        if item.lent then head = head .. " · " .. L("wp_selector.duty") end
+        dxDrawText(L.fit(head, w, 1, fSmall), CX - w / 2, CY - 50 * S, CX + w / 2, CY - 26 * S, COLOR.textSub, 1, fSmall, "center", "bottom")
         dxDrawText(L.fit(weaponName(item.id), w, 1, fName), CX - w / 2, CY - 24 * S, CX + w / 2, CY + 6 * S, COLOR.text, 1, fName, "center", "center")
         local text, color = ammoText(item)
         if text then

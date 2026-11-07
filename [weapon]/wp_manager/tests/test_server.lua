@@ -248,6 +248,40 @@ triggerEvent("onPlayerSpawn", p)
 runTimers()
 check(#getPlayerWeapons(p) == 4 and lastClient("wp:state").args[2] == 0, "after spawn: still owned")
 
+-- lent weapons (work_police duty_weapons)
+do
+    local function has(list, id)
+        for _, w in ipairs(list) do if w.id == id then return w end end
+    end
+    getResourceName = function(r) return r.name end
+    resource = resource or { name = "wp_manager" }
+    local police = { name = "work_police" }
+    sourceResource = police
+    takePlayerWeapon(p, 24); givePlayerWeapon(p, 24, 14)          -- an own deagle
+    check(lendPlayerWeapon(p, 24, 70) and lendPlayerWeapon(p, 23, 50), "lend 23 + 24")
+    check(getPlayerWeaponAmmo(p, 24) == 70, "the lent 24 is held")
+    check(has(getPlayerWeapons(p), 24).ammo == 14 and not has(getPlayerWeapons(p), 23), "save list: own 24, no 23")
+    check(has(getPlayerWeapons(p, true), 23).lent == true, "includeLent marks lent")
+    check(has(lastClient("wp:state").args[1], 23).lent == true, "client state marks lent")
+    givePlayerWeapon(p, 24, 7)
+    check(getPlayerWeaponAmmo(p, 24) == 70 and has(getPlayerWeapons(p), 24).ammo == 21, "ammo bought on duty goes to the own copy")
+    setPlayerWeapons(p, { { id = 31, ammo = 200 }, { id = 24, ammo = 3 } })
+    check(getPlayerWeaponAmmo(p, 24) == 70 and has(getPlayerWeapons(p), 24).ammo == 3 and isPlayerWeaponLent(p, 23), "setPlayerWeapons keeps lent")
+    clearPlayerWeapons(p)
+    check(isPlayerWeaponLent(p, 24) and #getPlayerWeapons(p) == 0, "clear keeps lent, drops own")
+    givePlayerWeapon(p, 24, 5)
+    sourceResource = { name = "other" }
+    check(returnLentWeapons(p) == 0, "another resource returns nothing")
+    sourceResource = police
+    check(returnLentWeapons(p) == 2, "owner returns both")
+    check(getPlayerWeaponAmmo(p, 24) == 5 and not getPlayerWeaponAmmo(p, 23), "own 24 back, 23 gone")
+    lendPlayerWeapon(p, 23, 50)
+    triggerEvent("onResourceStop", root, police)
+    check(not isPlayerWeaponLent(p, 23) and not getPlayerWeaponAmmo(p, 23), "owner stop returns the lent ones")
+    sourceResource = nil
+    setPlayerWeapons(p, { { id = 31, ammo = 200, clip = 50 }, { 29, 120 }, { id = 16, ammo = 2 }, { id = 4, ammo = 0 } })
+end
+
 -- restart keeps the state
 fire("wp:equip", p, 31)
 triggerEvent("onResourceStop", resourceRoot)

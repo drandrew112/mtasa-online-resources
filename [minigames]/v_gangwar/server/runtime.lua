@@ -37,7 +37,7 @@ end
 -- a firearm with ammo (wp_manager owns the weapons; without it the GTA slots are read)
 function isPlayerArmed(player)
     if resourceRunning("wp_manager") then
-        local list = exports.wp_manager:getPlayerWeapons(player)
+        local list = exports.wp_manager:getPlayerWeapons(player, true) -- duty weapons count too
         if type(list) ~= "table" then return false end
         for _, w in ipairs(list) do
             if GW.isFirearm(w.id) and ((tonumber(w.ammo) or 0) + (tonumber(w.clip) or 0)) > 0 then return true end

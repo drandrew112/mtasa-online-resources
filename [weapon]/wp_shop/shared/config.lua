@@ -167,7 +167,7 @@ WS = {
 
     -- Weapons for sale, in browser order
     catalogs = {
-        default = { 22, 23, 24, 25, 26, 27, 28, 29, 32, 30, 31, 33, 34, 16, 18, 4, 5 },
+        default = { 22, 24, 25, 26, 27, 28, 29, 32, 30, 31, 33, 34, 16, 18, 4, 5 },
     },
 
     -- model = weapon object for the preview, price = the weapon,
@@ -177,7 +177,7 @@ WS = {
         [4]  = { model = 335, price = 500 },                                    -- knife
         [5]  = { model = 336, price = 400 },                                    -- baseball bat
         [22] = { model = 346, price = 1500,  mag = 17, magPrice = 80 },          -- colt 45
-        [23] = { model = 347, price = 2000,  mag = 17, magPrice = 90 },          -- silenced pistol
+        -- 23 (stun gun) is not sold: work_police lends it on duty
         [24] = { model = 348, price = 5000,  mag = 7,  magPrice = 120 },         -- desert eagle
         [25] = { model = 349, price = 4000,  mag = 10, magPrice = 150, box = true }, -- shotgun
         [26] = { model = 350, price = 5500,  mag = 10, magPrice = 150, box = true }, -- sawn-off

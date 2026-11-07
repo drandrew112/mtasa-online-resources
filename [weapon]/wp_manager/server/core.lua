@@ -7,6 +7,11 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Two sets per player: `base` is the persistent one (v_accounts saves it through
 -- getPlayerWeapons), `temp` is a temporary loadout of a minigame (Jobs, the job creator) that
 -- hides `base` until it is cleared. Every ammo change goes to the active set.
+--
+-- Lent weapons (duty weapons of a work, lendPlayerWeapon): they sit in `base` like the others, but
+-- `lent[id]` names the resource they belong to. They are never part of getPlayerWeapons (so never
+-- saved); an own weapon of the same id is parked in `own[id]` while the lent one is held, and comes
+-- back when it is returned. The owner resource stopping returns its weapons.
 
 addEvent("wp:equip", true)
 addEvent("wp:ammo", true)
@@ -15,14 +20,15 @@ addEvent("wp:requestState", true)
 addEvent("onPlayerWeaponEquip")        -- source: player; (newId, oldId) cancelable, 0 = unarmed
 addEvent("onPlayerWeaponAmmoChange")   -- source: player; (id, ammo, clip)
 
-Players = {}  -- player -> { base = {}, temp = nil | {}, current = id | nil, empty = bool, loaded = bool }
+Players = {}  -- player -> { base = {}, temp = nil | {}, current = id | nil, empty = bool, loaded = bool,
+              --             lent = { [id] = owner resource name }, own = { [id] = parked own entry } }
 
 local BACKUP_KEY = "wp.backup"
 
 local function state(player)
     local s = Players[player]
     if not s then
-        s = { base = {}, current = nil, empty = false, loaded = false }
+        s = { base = {}, current = nil, empty = false, loaded = false, lent = {}, own = {} }
         Players[player] = s
     end
     return s
@@ -66,9 +72,12 @@ local function buildSet(list)
     return set
 end
 
-local function setToList(set)
+-- lent: the lent table of the player -> the lent entries get `lent = true`
+local function setToList(set, lent)
     local list = {}
-    for id, e in pairs(set) do list[#list + 1] = { id = id, ammo = e.ammo, clip = e.clip } end
+    for id, e in pairs(set) do
+        list[#list + 1] = { id = id, ammo = e.ammo, clip = e.clip, lent = (lent and lent[id]) and true or nil }
+    end
     table.sort(list, function(a, b) return WP.WEAPONS[a.id].order < WP.WEAPONS[b.id].order end)
     return list
 end
@@ -76,7 +85,7 @@ end
 local function sendState(player)
     local s = Players[player]
     if not s or not isPlayer(player) then return end
-    triggerClientEvent(player, "wp:state", resourceRoot, setToList(activeSet(s)), s.current or 0, s.empty, s.temp ~= nil)
+    triggerClientEvent(player, "wp:state", resourceRoot, setToList(activeSet(s), not s.temp and s.lent), s.current or 0, s.empty, s.temp ~= nil)
 end
 
 -- Makes the ped hold exactly what the state says, then tells the client
@@ -214,7 +223,11 @@ end)
 addEventHandler("onResourceStop", resourceRoot, function()
     for player, s in pairs(Players) do
         if isPlayer(player) and s.loaded then
-            setElementData(player, BACKUP_KEY, { base = setToList(s.base), temp = s.temp and setToList(s.temp), current = s.current }, false)
+            local lent, own = {}, {}
+            for id, owner in pairs(s.lent) do lent[tostring(id)] = owner end
+            for id, e in pairs(s.own) do own[#own + 1] = { id = id, ammo = e.ammo, clip = e.clip } end
+            setElementData(player, BACKUP_KEY, { base = setToList(s.base), temp = s.temp and setToList(s.temp), current = s.current,
+                                                 lent = lent, own = own }, false)
         end
     end
 end)
@@ -229,6 +242,11 @@ for _, player in ipairs(getElementsByType("player")) do
         s.base = buildSet(b.base)
         s.temp = b.temp and buildSet(b.temp) or nil
         s.current = tonumber(b.current)
+        s.own = buildSet(b.own)
+        for id, owner in pairs(type(b.lent) == "table" and b.lent or {}) do
+            id = tonumber(id)
+            if id and s.base[id] then s.lent[id] = owner end
+        end
         s.loaded = true
     end
 end
@@ -243,12 +261,25 @@ end)
 -- Exports
 --------------------------------------------------------------------------------
 
+-- The own set: the lent weapons left out, the parked own ones in their place
+local function ownSet(s)
+    if not next(s.lent) then return s.base end
+    local set = {}
+    for id, e in pairs(s.base) do
+        if not s.lent[id] then set[id] = e end
+    end
+    for id, e in pairs(s.own) do set[id] = e end
+    return set
+end
+
 -- The persistent weapons: { {id=, ammo=, clip=}, ... }, or false before setPlayerWeapons
 -- (nothing loaded yet: a caller that saves must not overwrite the stored copy then).
-function getPlayerWeapons(player)
+-- Lent weapons are left out, unless includeLent (then the held set, lent ones with `lent = true`).
+function getPlayerWeapons(player, includeLent)
     local s = Players[player]
     if not s or not s.loaded then return false end
-    return setToList(s.base)
+    if includeLent then return setToList(s.base, s.lent) end
+    return setToList(ownSet(s))
 end
 
 function isPlayerWeaponsLoaded(player)
@@ -260,7 +291,13 @@ end
 function setPlayerWeapons(player, list)
     if not isPlayer(player) then return false end
     local s = state(player)
-    s.base, s.loaded = buildSet(list), true
+    local set = buildSet(list)
+    s.own = {}
+    for id in pairs(s.lent) do   -- the lent ones stay held, an own copy is parked
+        s.own[id] = set[id]
+        set[id] = s.base[id]
+    end
+    s.base, s.loaded = set, true
     if not s.temp then apply(player) end
     return true
 end
@@ -270,6 +307,17 @@ function givePlayerWeapon(player, id, ammo, equipIt)
     if not isPlayer(player) or not id or not WP.WEAPONS[id] then return false end
     local s = state(player)
     s.loaded = true
+    if s.lent[id] then   -- a lent one is held: the parked own copy gets it
+        local own = s.own[id]
+        if own then
+            if WP.WEAPONS[id].kind ~= "melee" then own.ammo = math.min(own.ammo + math.max(0, math.floor(tonumber(ammo) or 0)), WP.MAX_AMMO) end
+        else
+            own = newEntry(id, ammo)
+            if WP.WEAPONS[id].kind == "thrown" and own.ammo <= 0 then return false end
+            s.own[id] = own
+        end
+        return true
+    end
     local e = s.base[id]
     if e then
         if WP.WEAPONS[id].kind ~= "melee" then e.ammo = math.min(e.ammo + math.max(0, math.floor(tonumber(ammo) or 0)), WP.MAX_AMMO) end
@@ -285,10 +333,17 @@ function givePlayerWeapon(player, id, ammo, equipIt)
     return true
 end
 
+-- Takes an own weapon (a lent one of the same id stays: returnLentWeapon takes that back)
 function takePlayerWeapon(player, id)
     local s = Players[player]
     id = tonumber(id)
-    if not s or not id or not s.base[id] then return false end
+    if not s or not id then return false end
+    if s.lent[id] then
+        if not s.own[id] then return false end
+        s.own[id] = nil
+        return true
+    end
+    if not s.base[id] then return false end
     s.base[id] = nil
     if not s.temp then apply(player) end
     return true
@@ -297,7 +352,9 @@ end
 function clearPlayerWeapons(player)
     if not isPlayer(player) then return false end
     local s = state(player)
-    s.base, s.loaded = {}, true
+    local set = {}
+    for id in pairs(s.lent) do set[id] = s.base[id] end   -- the lent ones are not the player's to lose
+    s.base, s.own, s.loaded = set, {}, true
     if not s.temp then apply(player) end
     return true
 end
@@ -367,3 +424,88 @@ function getWeaponCategory(id)
     local def = WP.WEAPONS[tonumber(id)]
     return def and def.cat or false
 end
+
+--------------------------------------------------------------------------------
+-- Lent weapons (duty weapons of a work: work_police duty_weapons)
+--------------------------------------------------------------------------------
+
+local function callerName()
+    return sourceResource and getResourceName(sourceResource) or getResourceName(resource)
+end
+
+-- Lends a weapon (not the player's own: never saved, taken back by returnLentWeapon(s)).
+-- The owner is the calling resource. Lending an id that is already lent refills it.
+function lendPlayerWeapon(player, id, ammo, equipIt)
+    id = tonumber(id)
+    if not isPlayer(player) or not id or not WP.WEAPONS[id] then return false end
+    local s = state(player)
+    local e = newEntry(id, ammo)
+    if WP.WEAPONS[id].kind == "thrown" and e.ammo <= 0 then return false end
+    if not s.lent[id] then s.own[id] = s.base[id] end
+    s.base[id], s.lent[id] = e, callerName()
+    if not s.temp then
+        if equipIt then equip(player, id) else apply(player) end
+    end
+    ammoChanged(player, id, e)
+    return true
+end
+
+local function giveBack(s, id)
+    s.base[id], s.own[id], s.lent[id] = s.own[id], nil, nil
+end
+
+-- Takes one lent weapon back (the parked own one of the same id returns)
+function returnLentWeapon(player, id)
+    local s = Players[player]
+    id = tonumber(id)
+    if not s or not id or not s.lent[id] then return false end
+    giveBack(s, id)
+    if not s.temp then apply(player) end
+    return true
+end
+
+-- Takes back every weapon lent by the calling resource (owner "*" = every lent weapon) -> count
+function returnLentWeapons(player, owner)
+    local s = Players[player]
+    if not s then return 0 end
+    owner = owner or callerName()
+    local n = 0
+    for id, o in pairs(s.lent) do
+        if owner == "*" or o == owner then
+            giveBack(s, id)
+            n = n + 1
+        end
+    end
+    if n > 0 and not s.temp then apply(player) end
+    return n
+end
+
+function isPlayerWeaponLent(player, id)
+    local s = Players[player]
+    return s ~= nil and s.lent[tonumber(id)] ~= nil
+end
+
+-- { {id=, ammo=, clip=, owner=}, ... } the lent weapons the player holds
+function getPlayerLentWeapons(player)
+    local s = Players[player]
+    local out = {}
+    if not s then return out end
+    for id, owner in pairs(s.lent) do
+        local e = s.base[id]
+        if e then out[#out + 1] = { id = id, ammo = e.ammo, clip = e.clip, owner = owner } end
+    end
+    return out
+end
+
+-- The owner of lent weapons stopped: they go back
+addEventHandler("onResourceStop", root, function(res)
+    if not res or res == resource then return end
+    local name = getResourceName(res)
+    for player, s in pairs(Players) do
+        local n = 0
+        for id, o in pairs(s.lent) do
+            if o == name then giveBack(s, id); n = n + 1 end
+        end
+        if n > 0 and not s.temp and isPlayer(player) then apply(player) end
+    end
+end)

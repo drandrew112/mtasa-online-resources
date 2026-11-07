@@ -32,6 +32,12 @@ POLICE_WORK = {
         [13] = L.text("work_police.rank.13"), [14] = L.text("work_police.rank.14"), [15] = L.text("work_police.rank.15"),
     },
 
+    -- duty_weapons module: lent by wp_manager for the duty (not the player's own, never saved)
+    DUTY_WEAPONS = {
+        { id = 23, ammo = 51 },   -- stun gun (Sokkolo)
+        { id = 24, ammo = 70 },   -- Desert Eagle
+    },
+
     -- vehicles (no platePrefix: a unique number plate). 597 (GTA5 police car) later.
     PLATE_PREFIX = "",
     PLATE_DIGITS = 6,

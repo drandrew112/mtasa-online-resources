@@ -106,6 +106,7 @@ function Peds.setBehaviour(p, name, args)
     p.behaviour = name
     p.b = {}
     p.taskActive = false   -- Tasks.run turns it on (late route answers of an old task are ignored)
+    if p.stunUntil then p.stunCmd = nil end
     nb.enter(p, args or {})
     if old ~= name and isElement(p.el) then triggerEvent("onAIPedBehaviourChanged", p.el, name, old or false) end
     return true

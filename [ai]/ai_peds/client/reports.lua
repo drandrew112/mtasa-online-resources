@@ -29,8 +29,9 @@ addEventHandler("onClientResourceStart", resourceRoot, function()
     end, T.VIEW_SEND, 0)
 end)
 
--- gunshots (thrown weapons / tools excluded)
-local function firearm(weapon) return weapon and weapon >= 22 and weapon <= 38 end
+-- gunshots (thrown weapons / tools excluded; 23 = wp_manager stun gun: no alarm, no damage)
+local STUN_GUN = 23
+local function firearm(weapon) return weapon and weapon >= 22 and weapon <= 38 and weapon ~= STUN_GUN end
 
 addEventHandler("onClientPlayerWeaponFire", localPlayer, function(weapon, _, _, hx, hy, hz)
     if firearm(weapon) then reportShot(localPlayer, hx, hy, hz) end
@@ -42,7 +43,7 @@ end)
 
 -- damage to AI peds: reported by the attacker's client (local player, its vehicle, or an AI ped synced here)
 addEventHandler("onClientPedDamage", root, function(attacker, weapon, _, loss)
-    if not isAIPed(source) or not isElement(attacker) then return end
+    if not isAIPed(source) or not isElement(attacker) or weapon == STUN_GUN then return end
     local mine = attacker == localPlayer
     if not mine and getElementType(attacker) == "vehicle" then mine = getVehicleController(attacker) == localPlayer end
     if not mine and isAIPed(attacker) then mine = isElementSyncer(attacker) end

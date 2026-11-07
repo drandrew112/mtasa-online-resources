@@ -106,7 +106,8 @@ end)
 -- Client exports (wp_selector)
 --------------------------------------------------------------------------------
 
--- { {id=, ammo=, clip=}, ... } of the active set; the equipped one with live ammo
+-- { {id=, ammo=, clip=, lent=}, ... } of the active set; the equipped one with live ammo
+-- (lent = true: a duty weapon lent by a work, not the player's own)
 function getWeapons()
     local out = {}
     for i, w in ipairs(weapons) do
@@ -115,7 +116,7 @@ function getWeapons()
             local a, c = liveAmmo(w.id)
             if a then ammo, clip = a, c end
         end
-        out[i] = { id = w.id, ammo = ammo, clip = clip }
+        out[i] = { id = w.id, ammo = ammo, clip = clip, lent = w.lent }
     end
     return out
 end
