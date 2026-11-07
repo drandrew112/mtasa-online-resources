@@ -95,6 +95,11 @@
 
     <!-- minimap interior maps: index.json + one image per map (radar/interiors.lua) -->
     <file src="interiors/index.json" type="client" />
+    <file src="interiors/blips.json" type="client" />
+    <file src="radar/files/blips/door.png" type="client" />
+    <file src="radar/files/blips/computer.png" type="client" />
+    <file src="radar/files/blips/elevator.png" type="client" />
+    <file src="radar/files/blips/jail.png" type="client" />
     <file src="interiors/ls_allsaints.png" type="client" />
     <file src="interiors/ls_pd.png" type="client" />
     <file src="interiors/ls_pd_jail.png" type="client" />
@@ -103,6 +108,7 @@
     <include resource="v_locals" />
     <script src="locals.lua" type="client" />
     <script src="radar/interiors.lua" type="client" />
+    <script src="radar/interiorblips.lua" type="client" />
     <script src="radar/sourceC.lua" type="client" />
     <script src="radar/speedo.lua" type="client" />
     <script src="radar/voiceicon.lua" type="client" />
@@ -129,6 +135,10 @@
 	<export function="getEnable3DNavigation" type="client" />
 	<export function="getMinimapRect" type="client" />
 	<export function="getCurrentInteriorMap" type="client" />
+	<export function="addInteriorBlip" type="client" />
+	<export function="removeInteriorBlip" type="client" />
+	<export function="clearInteriorBlips" type="client" />
+	<export function="getInteriorBlips" type="client" />
 	<export function="addObjective" type="client" />
 	<export function="updateObjective" type="client" />
 	<export function="removeObjective" type="client" />

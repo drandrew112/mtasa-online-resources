@@ -642,7 +642,17 @@ end)
 local PC_RANGE = 1.7
 local nearPC = false
 addEvent("his:pcs", true)
-addEventHandler("his:pcs", resourceRoot, function(list) HIS.pcs = list or {} end)
+-- computer icon of every PC on the minimap of its hospital interior map (v_radar interior blips; the map id = hospital id)
+local function syncPcBlips()
+    local res = getResourceFromName("v_radar")
+    if not res or getResourceState(res) ~= "running" then return end
+    exports.v_radar:clearInteriorBlips()
+    for _, pc in ipairs(HIS.pcs) do
+        if pc.hospital then exports.v_radar:addInteriorBlip(pc.hospital, pc.x, pc.y, pc.z, "computer", "Computer") end
+    end
+end
+addEventHandler("onClientResourceStart", root, function(res) if getResourceName(res) == "v_radar" then syncPcBlips() end end)
+addEventHandler("his:pcs", resourceRoot, function(list) HIS.pcs = list or {} syncPcBlips() end)
 addEventHandler("onClientResourceStart", resourceRoot, function() triggerServerEvent("his:hello", resourceRoot) end)
 
 local function isEms() return getElementData(localPlayer, "work.id") == "ems" end

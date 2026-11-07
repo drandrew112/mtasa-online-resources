@@ -74,6 +74,7 @@
     <script src="modules/plates/client/plates.lua" type="client" />
     <script src="modules/stop/client/stop.lua" type="client" />
     <script src="modules/arrest/client/cuffs.lua" type="client" />
+    <script src="modules/arrest/client/blips.lua" type="client" />
     <script src="modules/jail/client/jail.lua" type="client" />
     <script src="modules/events/client/weapons.lua" type="client" />
     <script src="modules/mdc/client/field.lua" type="client" />

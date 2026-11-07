@@ -704,6 +704,9 @@ function renderMinimap(x, y, w, h)
 				dxDrawImage(minimapRenderSize / 2 + (remapTheFirstWay(playerPosX) - (gpsRouteImageData[1] + gpsRouteImageData[3] / 2)) * minimapZoom - gpsRouteImageData[3] * minimapZoom / 2, minimapRenderSize / 2 - (remapTheFirstWay(playerPosY) - (gpsRouteImageData[2] + gpsRouteImageData[4] / 2)) * minimapZoom + gpsRouteImageData[4] * minimapZoom / 2, gpsRouteImageData[3] * minimapZoom, -(gpsRouteImageData[4] * minimapZoom), gpsRouteImage, 180, 0, 0, gps_color)
 			end
 
+			-- world blips fade out while a building plan is shown; the plan has its own blips
+			minimapBlipFade = interiorMap and (1 - interiorBlend) or 1
+
 			for i = 1, #createdBlips do
 				if createdBlips[i] then
 					renderBlip(createdBlips[i].icon, createdBlips[i].posX, createdBlips[i].posY, remapPlayerPosX, remapPlayerPosY, createdBlips[i].iconSize*12, createdBlips[i].iconSize*12, createdBlips[i].color, cameraRotation, createdBlips[i].farShow, i)
@@ -733,6 +736,18 @@ function renderMinimap(x, y, w, h)
 			end
 			end -- not interiorMode
 
+			-- Waypoint + objective blips: always far-shown, drawn on top of the rest (hidden like the world blips).
+			if not interiorMode then
+				for _, b in ipairs(getSpecialBlips()) do
+					renderBlip(b.icon, b.x, b.y, remapPlayerPosX, remapPlayerPosY, 24, 24, 0xFFFFFFFF, cameraRotation, true, b.key)
+				end
+			end
+			minimapBlipFade = 1
+
+			if interiorMap then
+				drawInteriorBlips(interiorMap, interiorBlend, remapPlayerPosX, remapPlayerPosY, cameraRotation)
+			end
+
 			-- Other players in the same dimension / interior (same toggle as on the bigmap).
 			-- Skipped when a script already attached a blip to them, or when they are invisible.
 			if playerCanSeePlayers then
@@ -753,13 +768,6 @@ function renderMinimap(x, y, w, h)
 							defaultBlipsCount = defaultBlipsCount + 1
 						end
 					end
-				end
-			end
-
-			-- Waypoint + objective blips: always far-shown, drawn on top of the rest.
-			if not interiorMode then
-				for _, b in ipairs(getSpecialBlips()) do
-					renderBlip(b.icon, b.x, b.y, remapPlayerPosX, remapPlayerPosY, 24, 24, 0xFFFFFFFF, cameraRotation, true, b.key)
 				end
 			end
 
@@ -1266,7 +1274,20 @@ function blipTint(blip)
 	return 0xFFFFFFFF
 end
 
+-- 1 = world blips fully visible, < 1 while an interior map fades in (radar/interiors.lua), 0 = hidden
+minimapBlipFade = 1
+
+local function fadeColor(color, f)
+	return bitReplace(color, floor(bitExtract(color, 24, 8) * f), 24, 8)
+end
+
 function renderBlip(icon, blipX, blipY, playerPosX, playerPosY, blipWidth, blipHeight, blipColor, cameraRotation, farShow, blipTableId)
+	if minimapBlipFade <= 0 then
+		return
+	end
+	if minimapBlipFade < 1 then
+		blipColor = fadeColor(blipColor, minimapBlipFade)
+	end
 	local blipPosX = minimapRenderHalfSize + (playerPosX - remapTheFirstWay(blipX)) * minimapZoom
 	local blipPosY = minimapRenderHalfSize - (playerPosY - remapTheFirstWay(blipY)) * minimapZoom
 

@@ -18,6 +18,7 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/fade.lua"    type="client" />
     <script src="client/markers.lua" type="client" />
+    <script src="client/blips.lua"   type="client" />
 
     <!-- data/positions.json: written by /bizpos, read server-side only -->
 

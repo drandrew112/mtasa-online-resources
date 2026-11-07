@@ -177,7 +177,7 @@ local function createProps(inst)
 
     -- exit marker
     local e = t.exit or t.spawn
-    add(makeMarker(e[1], e[2], e[3] - 1, int, dim, BINT.exitColor, "exit", inst.name, { ["bizint:unit"] = inst.unitId }))
+    add(makeMarker(e[1], e[2], e[3] - 1, int, dim, BINT.exitColor, "exit", inst.name, { ["bizint:unit"] = inst.unitId, ["bizint:template"] = inst.templateId }))
 
     -- desk + PC + chair, the PC carries the menu
     local c = t.computer
@@ -189,6 +189,7 @@ local function createProps(inst)
         local cx, cy = rotOffset(c[1], c[2], rot, BINT.chairOffset[1], BINT.chairOffset[2])
         add(createObject(BINT.chairModel, cx, cy, c[3] + BINT.chairOffset[3], 0, 0, rot + 180))
         setElementData(inst.pc, "bizint:computer", inst.unitId)
+        setElementData(inst.pc, "bizint:template", inst.templateId)
         if running("ui_interactobject") then
             inst.menuId = exports.ui_interactobject:addInteractMenu(inst.pc, {
                 title = L.msg("biz_int.computer.title"), range = 2.5, priority = 20,

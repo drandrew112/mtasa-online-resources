@@ -27,7 +27,7 @@ POLICE = {
     -- map_ls_int_pd interior, measured live); release: where the player comes out after the jail time.
     STATIONS = {
         {
-            id = "lspd", name = "LSPD",
+            id = "lspd", name = "LSPD", radarMap = "ls_pd",
             duty = { 1560.83, -1682.97, 15.20 },
             vehicle = { 1560.49, -1694.36, 4.90 },
             handover = { 1581.31, -1684.30, 14.00 },
