@@ -1072,5 +1072,6 @@
   "med_hospitals.pc.wallpaper_sub": "GENERAL HOSPITAL · SÜRGŐSSÉGI OSZTÁLY",
   "med_hospitals.pc.monitor_brand": "SANMED",
   "med_hospitals.pc.docs_unavailable": "A dokumentumtár most nem érhető el.",
-  "med_hospitals.his.out_interrupted": "Megszakadt ellátás"
+  "med_hospitals.his.out_interrupted": "Megszakadt ellátás",
+  "med_hospitals.doors.press_e_to_open": "[E] Ajtó nyitása"
 }

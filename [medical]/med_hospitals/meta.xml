@@ -22,6 +22,7 @@
     <script src="server/objectives.lua" type="server" />
     <script src="server/tutorial.lua"   type="server" />
     <script src="server/exports.lua"    type="server" />
+    <script src="doors/server/doors.lua" type="server" /> <!-- glass doors (model 2678) with trigger areas -->
 
     <!-- ER module (sürgősségi osztály): hospitals.json "er" block, work_hospital staff -->
     <script src="er/server/db.lua"      type="server" /> <!-- hosp_cases / hosp_events / hosp_stock (v_mysql) -->
@@ -48,6 +49,7 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/clipboard.lua" type="client" />
     <script src="client/subtitle.lua"  type="client" />
+    <script src="client/doors.lua"     type="client" /> <!-- staff door: E hint -->
     <script src="roomtitles/client/titles.lua" type="client" /> <!-- room titles above the doors -->
     <script src="er/client/er.lua"     type="client" />
     <script src="er/client/gfx.lua"    type="client" />
