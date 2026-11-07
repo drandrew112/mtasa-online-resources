@@ -181,7 +181,7 @@ addEventHandler("docs:editEms", resourceRoot, function(id, fields)
         end
         body.editedBy = getPlayerName(player)
         createDocument("ems", { author = r.author, hospital = r.hospital, patient = r.patient, unit = r.unit, taskId = tonumber(r.task_id),
-                                caseRef = r.case_ref, lang = r.lang, authorAccount = r.author_account }, body)
+                                caseRef = r.case_ref, lang = r.lang, authorAccount = r.author_account, replaceId = tonumber(r.id) }, body)
         triggerClientEvent(player, "docs:notice", resourceRoot, "edit_saved")
     end, "SELECT * FROM med_docs WHERE id = ? AND type = 'ems' LIMIT 1", tonumber(id) or 0)
 end)

@@ -80,7 +80,12 @@ function createDocument(dtype, meta, body)
         if type(id) ~= "number" then return end
         local no = ("%s-%d-%06d"):format(def.prefix, getRealTime().year + 1900, id)
         sql():mysqlExec("UPDATE med_docs SET doc_no = ? WHERE id = ?", no, id)
+        -- an edit replaces the document it was made from (no leftover old copy)
+        local old = tonumber(meta.replaceId)
+        if old and old ~= id then sql():mysqlExec("DELETE FROM med_docs WHERE id = ?", old) end
         triggerEvent("onMedicalDocumentCreated", resourceRoot, id, no, dtype, meta.caseRef or "", version)
+        -- open viewers / hospital PCs reload their list (and the document that was replaced)
+        triggerClientEvent(root, "docs:changed", resourceRoot, old or false, id)
     end, [[INSERT INTO med_docs (type, lang, hospital, case_ref, patient, citizen_id, author, author_account, unit, task_id, created_at, body, version, parent_id)
            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)]],
         dtype, lang, meta.hospital or "", meta.caseRef or "", meta.patient or "", tonumber(meta.citizenId),

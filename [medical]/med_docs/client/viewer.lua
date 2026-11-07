@@ -120,6 +120,14 @@ addEventHandler("docs:notice", resourceRoot, function(key)
     if key == "edit_saved" then triggerServerEvent("docs:list", resourceRoot, V.filter) end
 end)
 
+-- a document was made / replaced: the list refreshes; the open document follows its replacement
+addEvent("docs:changed", true)
+addEventHandler("docs:changed", resourceRoot, function(oldId, newId)
+    if not V.open then return end
+    triggerServerEvent("docs:list", resourceRoot, V.filter)
+    if V.doc and oldId and V.doc.id == oldId then triggerServerEvent("docs:get", resourceRoot, newId) end
+end)
+
 addEvent("docs:doc", true)
 addEventHandler("docs:doc", resourceRoot, function(doc) V.doc, V.blocks, V.scroll, V.target, V.contentHeight = doc or nil, nil, 0, 0, 0 end)
 
