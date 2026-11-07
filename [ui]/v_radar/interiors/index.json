@@ -12,7 +12,8 @@
       "interior": 0,
       "zoom": 1,
       "zones": [
-        {"min": [1149.6, -1384.5, 13.6], "max": [1172.4, -1290.8, 19.0]}
+        {"min": [1149.6, -1384.5, 13.6], "max": [1172.4, -1290.8, 19.0]},
+        {"min": [1140.3, -1346.3, 13.6], "max": [1149.7, -1314.7, 19.0]}
       ]
     },
     {
@@ -69,6 +70,62 @@
       "zoom": 1,
       "zones": [
         {"min": [172, 154, 1056.0], "max": [225, 210, 1063.0]}
+      ]
+    },
+    {
+      "id": "biz_office_standard",
+      "name": "Office (standard)",
+      "image": "biz_office_standard.png",
+      "x": 335,
+      "y": 169.5,
+      "width": 11,
+      "height": 11.5,
+      "interior": 3,
+      "zoom": 3,
+      "zones": [
+        {"min": [335.5, 159.0, 1018.0], "max": [345.5, 169.0, 1022.5]}
+      ]
+    },
+    {
+      "id": "biz_office_exclusive",
+      "name": "Office (exclusive)",
+      "image": "biz_office_exclusive.png",
+      "x": -2176,
+      "y": 656,
+      "width": 22,
+      "height": 23,
+      "interior": 1,
+      "zoom": 2.5,
+      "zones": [
+        {"min": [-2175.5, 633.5, 1050.5], "max": [-2154.5, 655.5, 1056.5]}
+      ]
+    },
+    {
+      "id": "biz_weed_farm",
+      "name": "Weed farm",
+      "image": "biz_weed_farm.png",
+      "x": 1244,
+      "y": 10,
+      "width": 70,
+      "height": 64,
+      "interior": 18,
+      "zoom": 1,
+      "zones": [
+        {"min": [1247, -52, 999.0], "max": [1312, 9, 1010.0]}
+      ]
+    },
+    {
+      "id": "biz_casino",
+      "name": "Casino",
+      "image": "biz_casino.png",
+      "x": 1112,
+      "y": 15,
+      "width": 36,
+      "height": 35,
+      "interior": 12,
+      "zoom": 1.5,
+      "zones": [
+        {"min": [1113, -19, 998.7], "max": [1147, 14, 1006.0]}
       ]
     }
   ]

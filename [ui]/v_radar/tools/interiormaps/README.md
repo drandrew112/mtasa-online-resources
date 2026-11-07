@@ -25,3 +25,7 @@ transparent (the minimap draws a dark background there). `cut=[...]` removes roo
 `x`, `y` = world position of the image's top-left (north-west) corner, `width`/`height` = metres covered,
 `interior` = game interior (0 = free-roam building), `zones` = boxes of the player position where the map is
 active (z separates floors / roofs), `zoom` = minimap zoom multiplier inside (1 = default ~80 m wide, 2 = twice as close; edit it by hand, render.py keeps the existing values), optional `dimension`.
+
+## Business interiors
+
+`render_biz.py` builds `biz_<template>` maps (office_standard / office_exclusive / weed_farm / casino) from scans `biz_os`, `biz_ox`, `biz_wf`, `biz_ca` and merges them into index.json (other maps untouched). Zones have no dimension, so every unit dimension (30000+) uses the same map. biz_int client/blips.lua adds the exit door + PC blips for map `biz_<template>`.

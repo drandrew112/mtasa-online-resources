@@ -421,6 +421,18 @@
     "medsys.config.side_cap_right": "Right",
     "medsys.config.fast_face_droops_on_s_side": "FAST: face droops on the {side} side",
     "medsys.config.fast_s_arm_drifts_down_weak": "FAST: {side} arm drifts down, weak grip",
-    "medsys.config.s_side_paralysed": "{side} side paralysed"
+    "medsys.config.s_side_paralysed": "{side} side paralysed",
+    "med_hospitals.roomtitles.shock1": "Shock room 1",
+    "med_hospitals.roomtitles.shock2": "Shock room 2",
+    "med_hospitals.roomtitles.wound": "Wound care",
+    "med_hospitals.roomtitles.cast": "Cast room",
+    "med_hospitals.roomtitles.surgery": "Operating theatre",
+    "med_hospitals.roomtitles.icu": "Intensive care",
+    "med_hospitals.roomtitles.ward1": "Ward 1",
+    "med_hospitals.roomtitles.ward2": "Ward 2",
+    "med_hospitals.roomtitles.ct": "CT",
+    "med_hospitals.roomtitles.xray": "X-ray",
+    "med_hospitals.roomtitles.staff": "Staff room",
+    "med_hospitals.roomtitles.exam_centre": "Exam centre"
   }
 }

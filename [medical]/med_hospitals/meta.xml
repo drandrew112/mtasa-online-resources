@@ -7,6 +7,7 @@
     <include resource="v_locals" />
     <script src="locals.lua" type="shared" />
     <script src="shared/config.lua" type="shared" />
+    <script src="roomtitles/shared/config.lua" type="shared" /> <!-- room titles above the doors -->
     <script src="er/shared/catalog.lua" type="shared" />
     <script src="er/shared/codes.lua" type="shared" />
     <script src="er/shared/stock.lua" type="shared" />
@@ -47,6 +48,7 @@
     <!-- ================= CLIENT ================= -->
     <script src="client/clipboard.lua" type="client" />
     <script src="client/subtitle.lua"  type="client" />
+    <script src="roomtitles/client/titles.lua" type="client" /> <!-- room titles above the doors -->
     <script src="er/client/er.lua"     type="client" />
     <script src="er/client/gfx.lua"    type="client" />
     <script src="er/client/his.lua"    type="client" />

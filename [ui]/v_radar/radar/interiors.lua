@@ -48,6 +48,10 @@ local function loadIndex()
 						tonumber(z.min[1]), tonumber(z.min[2]), tonumber(z.min[3]) or -10000,
 						tonumber(z.max[1]), tonumber(z.max[2]), tonumber(z.max[3]) or 10000,
 					}
+					local b = zones[#zones]
+					for i = 1, 3 do -- tolerate swapped min/max
+						if b[i] and b[i + 3] and b[i] > b[i + 3] then b[i], b[i + 3] = b[i + 3], b[i] end
+					end
 				end
 			end
 			interiorMaps[#interiorMaps + 1] = {

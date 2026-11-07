@@ -135,7 +135,8 @@ if __name__ == "__main__":
     entries = []
     e = build("ls_allsaints", ["as_g"], (1137, -1388, 1176, -1288), keep=lambda cx, cy, n: cx > 1136)
     e.update({"id": "ls_allsaints", "name": "All Saints General Hospital", "interior": 0,
-              "zones": [{"min": [1149.6, -1384.5, 13.6], "max": [1172.4, -1290.8, 19.0]}]})
+              "zones": [{"min": [1149.6, -1384.5, 13.6], "max": [1172.4, -1290.8, 19.0]},
+                        {"min": [1140.3, -1346.3, 13.6], "max": [1149.7, -1314.7, 19.0]}]})
     entries.append(e)
     e = build("ls_pd", ["pd_15.2", "pd_16.6", "pd_14.0"], (1549, -1697, 1593, -1639), footprint=None,
               colors=[0, 1, 1], cut=[(1582.6, -1678.6, 1591.0, -1669.0)],  # lift-door room (locked)

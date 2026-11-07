@@ -2,6 +2,7 @@
   "_comment": "Fixed blips that only show on the minimap inside an interior map (interiors/index.json). map = interior map id, icon = door | computer | elevator, x/y/z = world position. Not touched by tools/interiormaps/render.py.",
   "blips": [
     { "map": "ls_allsaints", "icon": "door", "x": 1171.66, "y": -1323.39, "z": 14.41, "label": "Exit" },
+    { "map": "ls_allsaints", "icon": "elevator", "x": 1169.44, "y": -1307.78, "z": 14.39, "label": "Elevator" },
     { "map": "ls_pd", "icon": "door", "x": 1555.89, "y": -1675.60, "z": 15.20, "label": "Exit" },
     { "map": "ls_pd", "icon": "elevator", "x": 1581.65, "y": -1675.08, "z": 15.20, "label": "Elevator" }
   ]

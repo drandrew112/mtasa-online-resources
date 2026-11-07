@@ -105,6 +105,10 @@
     <file src="interiors/ls_pd_jail.png" type="client" />
     <file src="interiors/ls_pd_garage.png" type="client" />
     <file src="interiors/sa_control.png" type="client" />
+    <file src="interiors/biz_office_standard.png" type="client" />
+    <file src="interiors/biz_office_exclusive.png" type="client" />
+    <file src="interiors/biz_weed_farm.png" type="client" />
+    <file src="interiors/biz_casino.png" type="client" />
     <include resource="v_locals" />
     <script src="locals.lua" type="client" />
     <script src="radar/interiors.lua" type="client" />
