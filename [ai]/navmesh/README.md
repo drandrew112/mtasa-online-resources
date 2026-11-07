@@ -47,7 +47,25 @@ Sources and what came from where:
 - **Walk grid**: every placed map model's collision (faces, boxes, spheres; interior 0, no LODs) rasterised
   like Recast: walkable slope 50 deg, 1.75 m clearance, 0.55 m step, water from `water.dat`, islands < 24 cells
   dropped. Cell flags: surface class from the COL material, road lane, ped crossing, GTA ped path, edge
-  (wall / drop next to it), steep. Vanilla map only: removed world models / custom objects are not in it.
+  (wall / drop next to it), steep. Vanilla map only (removed world models / custom objects are not in it), except the probe patches below.
+- **Probe patches** (`data/source/probe_walk/*.json`): boxes measured in game, where the live collision differs from
+  the GTA files (custom maps, enterable replaced models). `walkgrid.js` replaces every rasterised floor inside a patch
+  box with the patch floors before the island / edge / road / ped-path passes. Default material under a roof = class 5
+  (indoor). Patches:
+  - `ls_allsaints` - All Saints General Hospital + grounds, box 1100,-1420 .. 1240,-1260 (map_ls_allsaints, ER
+    interior on the ground floor at z 14.4, ambulance ramp, upper slab 18.4, roofs; helipad / lift cabs are not
+    reachable on foot). Scanned 2026-11-07 with the drandrew112 probe, doors (1491, 1536, 3051, 2911) open.
+  New patch: stand the probe next to the area, then
+  ```
+  node tools/probe_walk/scan.mjs x0 y0 x1 y1 data/build/probe_<name>_raw.json   # ~0.2 s per 4 rows of 140 m
+  python tools/probe_walk/patch.py data/build/probe_<name>_raw.json data/source/probe_walk/<name>.json <name>
+  node tools/walkgrid.js
+  ```
+  The scan (`tools/probe_walk/scan.lua` on the probe client) takes every surface of a vertical column (|normal z|:
+  custom models can have flipped faces), keeps floors with 1.75 m clearance and nothing above step height within
+  0.3 m of the centre, and casts rays between neighbour centres at 0.6 / 1.3 m over the floors; a blocked link
+  removes the cell with more blocked links (the wall, not the doorway). Doors narrower than ~1 m that are off the
+  1 m grid can close; smoothed routes may cut a door jamb by 0.1-0.2 m.
 - `source/` = the old npchlc traffic resources (reference only, not loaded).
 
 ### File formats
@@ -80,6 +98,22 @@ Routes (result tables; `false, reason` when there is none):
 - `requestRoute(kind, x1,y1,z1, x2,y2,z2, opts)` - async (`vehicle` `ped` `boat` `gps`), returns an id; the
   answer is `onNavmeshRouteReady(id, result|false, reason)` on the calling resource's root element. Long ped
   routes over open terrain get their full search budget only here.
+
+Spawn points by travel time (scripted AI vehicles with a destination, e.g. police_system units):
+- `findVehicleSpawnPoints(x,y,z, minTime,maxTime, opts)` - lane positions from where a vehicle reaches (x,y,z) in
+  `minTime`..`maxTime` seconds. Reverse Dijkstra from the target lanes over the lane graph (connections + lane changes),
+  so the time is the same profile time model as the route `cost` (lane length / class speed x profile factors + turn /
+  signal delays; `emergency` = signals x0.25). opts: `profile` (`car`), `heading` (arrival facing, rotZ), `radius`
+  (target lanes, 40), `fallback` (wider radius without height filter), `count` (10), `spacing` (min distance between the
+  results, 40), `step` (sampling along lanes, 10), `junctionMargin` (12), `minDistance` (straight from the target),
+  `classes` (allowed spawn classes, e.g. `{"road","service"}`), `unpaved` (true), `emergencyOnly` (default: profiles
+  that use those lanes freely), `avoidPlayers` (metres, 0: spawn out of sight), `avoidVehicles` (8), `dimension` (0;
+  false = any), `order` (`random` | `time` | `far`), `maxNodes`; z may be false.
+  Result: `points` {{x, y, z (road surface), rotation (rotZ along the lane), lane, u, time, distance (2D), class,
+  goalLane, goalU}...}, `candidates`, `expanded`, `goals`. Route of a point:
+  `findVehicleRoute(p.x,p.y,p.z, x,y,z, {startLane = p.lane, startU = p.u, goalLane = p.goalLane, goalU = p.goalU})`
+  (its `cost` = `p.time`). Measured offline: 30-120 s windows in LS / SF 2-3 ms.
+- `requestVehicleSpawnPoints(...)` - async, same arguments; the answer is `onNavmeshRouteReady(id, result|false, reason)`.
 
 Queries:
 - `getNearestLane(x,y,z, opts)` / `getNearestLanes` (opts radius, heading, headingTolerance, maxZ, skipTrap,

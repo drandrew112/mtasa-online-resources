@@ -4,7 +4,8 @@
 // clearance, under-water, tiny islands removed) in up to MAX_LAYERS levels per cell and marks them with the
 // road lanes (data/runtime/roads.nav), the GTA ped paths and crossings (data/runtime/peds.nav).
 // Output: data/runtime/walk.nav (server only, see README "walk.nav format"), data/build/walk_report.json
-// Limit: vanilla map only (removeWorldModel / custom objects of the server are not in it).
+// Limit: vanilla map only (removeWorldModel / custom objects of the server are not in it), except the probe
+// patches of data/source/probe_walk (live-scanned boxes, tools/probe_walk) that replace the floors inside their box.
 'use strict';
 const fs = require('fs'), path = require('path');
 
@@ -472,6 +473,53 @@ function connectedLayer(t2, c2, z) {   // layer of t2/c2 within STEP of z (dm), 
     }
     return best;
 }
+
+// ---------------------------------------------------------------- probe patches (data/source/probe_walk/*.json)
+// Areas whose live collision differs from the vanilla files (custom maps, replaced / enterable models): the floors
+// were measured in game by the claude-mcp probe client and replace every rasterised floor inside the patch box.
+// cells: [gx (world x of the cell min), gy, z dm, surface material id, |normal z| * 100, roofed]
+stats.probeCells = 0;
+(() => {
+    const dir = path.join(ROOT, 'data', 'source', 'probe_walk');
+    if (!fs.existsSync(dir)) return;
+    for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.json')).sort()) {
+        const p = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+        const [bx0, by0, bx1, by1] = p.box;
+        const per = new Map();
+        for (const c of p.cells) {
+            const k = (c[0] - ORIGIN) * 100000 + (c[1] - ORIGIN);
+            if (!per.has(k)) per.set(k, []);
+            per.get(k).push(c);
+        }
+        let n = 0;
+        for (let wy = by0; wy < by1; wy++) for (let wx = bx0; wx < bx1; wx++) {
+            const gx = wx - ORIGIN, gy = wy - ORIGIN;
+            const tx = Math.floor(gx / TILE), ty = Math.floor(gy / TILE), ci = (gy % TILE) * TILE + (gx % TILE);
+            const list = (per.get(gx * 100000 + gy) || []).sort((a, b) => a[2] - b[2]).slice(-MAX_LAYERS);
+            let t = tileAt(tx, ty);
+            if (!t) {
+                if (!list.length) continue;
+                t = { L: 1, z: new Int16Array(1024).fill(NONE), f: new Uint8Array(1024) };
+                tiles.set(tx * 1000 + ty, t);
+            }
+            if (list.length > t.L) {     // more layers needed in this tile
+                const L = list.length, z = new Int16Array(L * 1024).fill(NONE), fl = new Uint8Array(L * 1024);
+                z.set(t.z); fl.set(t.f);
+                t.L = L; t.z = z; t.f = fl;
+            }
+            for (let l = 0; l < t.L; l++) { t.z[l * 1024 + ci] = NONE; t.f[l * 1024 + ci] = 0; }
+            list.forEach((c, l) => {
+                let cls = matClass[c[3]] || 0;
+                if (cls === 0 && c[5]) cls = 5;                  // default material under a roof = indoor floor
+                t.z[l * 1024 + ci] = c[2];
+                t.f[l * 1024 + ci] = cls | (c[4] < STEEP_NZ * 100 ? F_STEEP : 0);
+                n++;
+            });
+        }
+        stats.probeCells += n;
+        console.log(`probe patch ${f}: ${n} floors in ${bx1 - bx0}x${by1 - by0} m`);
+    }
+})();
 
 // ---------------------------------------------------------------- remove small islands (roof tops, wall tops, props)
 (() => {
