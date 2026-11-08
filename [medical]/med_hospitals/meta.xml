@@ -39,6 +39,8 @@
     <script src="er/server/comms.lua"   type="server" />
     <script src="er/server/walkin.lua"  type="server" />
     <script src="er/server/stock.lua"   type="server" />
+    <script src="er/server/oxygen.lua"  type="server" /> <!-- stretcher oxygen tank, wall oxygen refill -->
+
     <script src="er/server/zone.lua"    type="server" />
     <script src="er/server/devtest.lua" type="server" />
     <script src="er/server/minigames.lua" type="server" /> <!-- mg_* bridge -->

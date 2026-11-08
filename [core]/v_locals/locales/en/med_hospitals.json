@@ -1073,5 +1073,9 @@
   "med_hospitals.pc.monitor_brand": "SANMED",
   "med_hospitals.pc.docs_unavailable": "The document archive is not available right now.",
   "med_hospitals.his.out_interrupted": "Care interrupted",
-  "med_hospitals.doors.press_e_to_open": "[E] Open door"
+  "med_hospitals.doors.press_e_to_open": "[E] Open door",
+  "med_hospitals.oxygen.connected": "Oxygen connected, the tube works.",
+  "med_hospitals.oxygen.tank_empty": "The stretcher's oxygen tank is empty, the patient has no oxygen. Take them to a wall-oxygen room (shock room, ICU, ward).",
+  "med_hospitals.oxygen.no_source": "The patient has no oxygen source.",
+  "med_hospitals.oxygen.low": "{name}: the stretcher's oxygen tank is running low. Take the patient to a wall-oxygen room."
 }

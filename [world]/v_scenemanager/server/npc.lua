@@ -166,6 +166,8 @@ function Npc.cleanup(scene)
 end
 
 function Npc.destroy(ped)
+    -- a patient admitted to a hospital (med_hospitals ER) belongs to the hospital now: never cleaned up here
+    if isElement(ped) and getElementData(ped, "hosp.admitted") then return end
     local A = ai()
     if A and isElement(ped) then
         local ok = pcall(function() A:setAIPedProtected(ped, false) end)

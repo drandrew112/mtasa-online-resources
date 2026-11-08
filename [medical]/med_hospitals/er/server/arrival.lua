@@ -114,6 +114,8 @@ function ER.receivePatient(h, player, patient, emsStretcher, unit, taskId)
 
     m:takePatientOff(emsStretcher)
     m:putPatientOnStretcher(obj, patient)
+    -- admitted: from now on the hospital owns the patient; the scene manager cleanup must not remove it
+    setElementData(patient, "hosp.admitted", true, false)
 
     local t = texts[player]
     texts[player] = nil

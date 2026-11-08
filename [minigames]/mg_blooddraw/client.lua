@@ -54,7 +54,7 @@ GAME = {
         g.angle, g.attempts, g.palp = BLOOD.START_ANGLE, 0, 0
         g.fill, g.underfill, g.orderErrors = {}, 0, 0
         g.hematomas = {}
-        -- the rack shows the needed tubes in a random order: the player has to know the order of draw
+        -- the rack shows the needed tubes in a random order (any order is fine)
         g.rackOrder = {}
         for _, id in ipairs(g.options.tubes) do table.insert(g.rackOrder, math.random(1, #g.rackOrder + 1), id) end
     end,
@@ -94,15 +94,7 @@ GAME = {
             for i, id in ipairs(g.rackOrder) do
                 local x, y, w, h = rackPos(g, i)
                 if MGK.inRect(cx, cy, x, y, w, h) and not (g.fill[id] and g.fill[id].done) then
-                    -- order of draw: an EDTA tube before a needed citrate / serum / heparin tube carries K-EDTA over
-                    for _, other in ipairs(BLOOD.ORDER) do
-                        if other == id then break end
-                        for _, need in ipairs(g.options.tubes) do
-                            if need == other and not (g.fill[other] and g.fill[other].done) then
-                                if id == "edta" then g.edta = true else g.orderErrors = g.orderErrors + 1 end
-                            end
-                        end
-                    end
+                    -- the order of the tubes does not matter (no EDTA carry-over / order penalty)
                     g.current = id
                     g.fill[id] = { level = 0 }
                     return

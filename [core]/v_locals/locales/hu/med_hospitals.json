@@ -1073,5 +1073,9 @@
   "med_hospitals.pc.monitor_brand": "SANMED",
   "med_hospitals.pc.docs_unavailable": "A dokumentumtár most nem érhető el.",
   "med_hospitals.his.out_interrupted": "Megszakadt ellátás",
-  "med_hospitals.doors.press_e_to_open": "[E] Ajtó nyitása"
+  "med_hospitals.doors.press_e_to_open": "[E] Ajtó nyitása",
+  "med_hospitals.oxygen.connected": "Oxigén csatlakoztatva, a tubus működik.",
+  "med_hospitals.oxygen.tank_empty": "A hordágy oxigénpalackja kiürült, a beteg oxigén nélkül maradt. Vidd fali oxigénes terembe (sokktalanító, intenzív, elfekvő).",
+  "med_hospitals.oxygen.no_source": "Nincs oxigénforrás a betegnél.",
+  "med_hospitals.oxygen.low": "{name}: a hordágy oxigénpalackja fogyóban van. Vidd fali oxigénes terembe."
 }

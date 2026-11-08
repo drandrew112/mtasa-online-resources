@@ -101,9 +101,10 @@ function ER.useStock(c, itemId, n, pool)
 end
 
 -- medsys stock category totals of a pool (+ the nurses' station for anything the room does not have)
-local function categoryTotals(hid, pool)
+local function categoryTotals(hid, pool, c)
     local s = stockOf(hid)
     local out = { drugs = {}, oxygen = 100, glucometers = 1 }
+    if c and ER.oxygenAvailable then out.oxygen = ER.oxygenAvailable(c) end
     local function addPool(name, onlyMissing)
         for _, it in ipairs(ERC.STOCK[name] or {}) do
             if it.cat and it.cat ~= "hosp" and it.cat ~= "blood" and not it.device then
@@ -127,7 +128,7 @@ function getHospitalEquipment(target, medic)
     if not c or not isElement(medic) or not ER.isStaff(medic, c.hospital) then return false end
     local pool = ERC.stockPool(c.location)
     return { bag = "hosp:" .. c.hospital .. ":" .. pool, monitor = "hosp:" .. c.hospital .. ":monitor",
-             stock = categoryTotals(c.hospital, pool), hospital = true }
+             stock = categoryTotals(c.hospital, pool, c), hospital = true }
 end
 
 -- export (medsys): one piece of a medsys category (drugs + id) used on a hospital patient

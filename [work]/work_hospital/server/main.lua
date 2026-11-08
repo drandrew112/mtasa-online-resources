@@ -130,9 +130,10 @@ local function payPoints(player, reason)
         local _, salary = gh:getHospitalPointValues()
         value = tonumber(salary) or value
     end
+    value = value * (HOSPW.PAY_FACTOR or 1)
     for i, code in ipairs(p.order) do
         local it = p.items[code]
-        local amount = it.points * value
+        local amount = math.floor(it.points * value)
         if i <= HOSPW.MAX_RECEIPT_LINES then
             items[#items + 1] = { label = it.count > 1 and ("%s ×%d"):format(it.label, it.count) or it.label, amount = amount }
         else

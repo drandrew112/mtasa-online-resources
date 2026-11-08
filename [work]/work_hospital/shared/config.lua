@@ -34,7 +34,8 @@ HOSPW = {
     -- points are paid through work_core payWork (the work's /gov payer = the state account chosen by
     -- the government), one receipt line per intervention code.
     POINT_VALUE = 40,                  -- $ per point
-    MAX_RECEIPT_LINES = 12,            -- the rest is summed into one "Other" line
+    PAY_FACTOR = 0.5,                  -- scales the $ value of a point (also the gov_health salary value)
+    MAX_RECEIPT_LINES = 12,           -- the rest is summed into one "Other" line
 
     -- Competencies (work_core registerCompetencies). Ápoló (nurse) is the base rank; Rezidens and
     -- Orvos need an exam; Főorvos only by appointment (/appoint, admin 3+, from Orvos).

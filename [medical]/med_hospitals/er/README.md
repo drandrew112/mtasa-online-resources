@@ -42,3 +42,6 @@ Related: `med_equipments/stretcher/server/hospital.lua` (hospital stretchers + f
   3 s countdown on the marker card, then `med_equipments:releaseHospitalStretcher` and the handover. Putting the
   stretcher down still works.
 - 12-lead ECG (mg_ecg): bigger electrodes, `options.guide` for Nurses / Residents (`ER.ecgGuide`).
+
+## Oxygen
+`server/oxygen.lua`: wall oxygen (shock room, ICU, ward beds) is unlimited and refills the stretcher tank (empty to full in 90 s). Elsewhere the patient breathes from the tank of the hospital stretcher (element data `er.o2`, 20 min of mask time); empty = mask off / tube without effect (medsys noOxygen) until a wall-oxygen room. medsys sees the level as `stock.oxygen` (stock.lua getHospitalEquipment).
