@@ -43,8 +43,8 @@
 # (the other files - core, scripts, config.example.lua, database.sql - are versioned)
 /\[core\]/v_mysql/config.lua
 
-# AI API Key
-/\[ui\]/ui_help/meta.xml
+# AI API key: ai_llm/meta.xml holds the Gemini key; metachange.xml is the versioned template
+/\[ai\]/ai_llm/meta.xml
 
 # --- medsys: reference materials, not to be versioned ---
 /\[medical\]/medsys/reference/
