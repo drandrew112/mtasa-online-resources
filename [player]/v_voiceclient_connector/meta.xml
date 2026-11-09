@@ -1,0 +1,28 @@
+<meta>
+    <info author="DrAndrew112" name="Voice client connector" version="1.0.0" type="script"
+          description="HTTP gateway of the external voice client: speech-to-text radio messages -> ai_llm -> radio codes of the works (med_erm, police_system), ui_core subtitle feedback" />
+    <min_mta_version server="1.5.9" client="1.5.9" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <include resource="ai_llm" />
+    <script src="locals.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="config.lua"        type="server" />
+    <script src="server/codes.lua"  type="server" /> <!-- radio code database (codes, Q_ questions, RAD_ERROR) -->
+    <script src="server/voice.lua"  type="server" /> <!-- pipeline: check -> ai_llm -> execute -> subtitle -->
+    <script src="server/http.lua"   type="server" /> <!-- HTTP API of the voice client -->
+    <script src="server/main.lua"   type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/subtitle.lua" type="client" />
+
+    <!-- ================= EXPORTS ================= -->
+    <!-- HTTP (voice client): POST /v_voiceclient_connector/call/<fn>, body = JSON array; token = v_accounts webLogin -->
+    <export function="voiceRadio"  type="server" http="true" />
+    <export function="voiceResult" type="server" http="true" />
+    <export function="voiceStatus" type="server" http="true" />
+    <!-- server: submitRadioText(player, text) -> same answer as voiceRadio (no token) -->
+    <export function="submitRadioText" type="server" />
+</meta>
