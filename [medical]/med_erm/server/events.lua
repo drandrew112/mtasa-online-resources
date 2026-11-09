@@ -24,6 +24,7 @@
 --   onErmAgencyRequested      (taskId, requesterUnitId, agency, reason, callId)   Request agency (server/agency.lua)
 --   onErmUnitBreakRequest     (unitId)   a unit waits for a dispatcher to approve its break (server/breaks.lua)
 --   onErmUnitBreakStart       (unitId)   20 minute break started (status "break")
+--   onErmRadioCommand         (player, radioId, unitId)   a radio message ran (server/radio.lua, voice radio)
 
 Events = {}
 
@@ -33,7 +34,7 @@ local NAMES = {
     "onErmUnitSignIn", "onErmUnitSignOut", "onErmUnitStatusChange",
     "onErmUnitHandoverStart", "onErmUnitHandoverComplete", "onErmMessage",
     "onErmUnitHandoverRequest", "onErmBackupRequested", "onErmAgencyRequested",
-    "onErmUnitBreakRequest", "onErmUnitBreakStart",
+    "onErmUnitBreakRequest", "onErmUnitBreakStart", "onErmRadioCommand",
 }
 
 for _, name in ipairs(NAMES) do

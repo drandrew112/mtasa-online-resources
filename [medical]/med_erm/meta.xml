@@ -22,6 +22,7 @@
     <script src="server/breaks.lua"  type="server" /> <!-- break request -->
     <script src="server/agency.lua"  type="server" /> <!-- police link, safe scene, inter-agency chat -->
     <script src="server/tablet.lua"  type="server" />
+    <script src="server/radio.lua"   type="server" /> <!-- radio messages (voice radio): radioCommand export -->
     <script src="server/dispatchers.lua" type="server" />
     <script src="server/http.lua"    type="server" />
     <script src="server/webtablet.lua" type="server" />
@@ -79,6 +80,11 @@
     <export function="setTaskMetaField"   type="server" />
     <export function="postAgencyMessage"  type="server" />
     <export function="removePlayerFromUnit" type="server" />
+
+    <!-- radio messages (server/radio.lua): radioCommand(player, id, args) -> true | false, errorText, errorCode;
+         getRadioCodes() -> { { id, category, label, args } }. Used by v_voiceclient_connector (voice radio). -->
+    <export function="radioCommand"       type="server" />
+    <export function="getRadioCodes"      type="server" />
 
     <!-- auto dispatch module on/off (also toggled from /ermadmin and the web console) -->
     <export function="getAutoDispatch"    type="server" />

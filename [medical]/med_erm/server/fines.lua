@@ -78,7 +78,7 @@ function Fines.list(sup)
         if u.id ~= sup.id then
             local crew = {}
             for _, p in ipairs(u.members) do
-                if isElement(p) then crew[#crew + 1] = (getPlayerName(p):gsub("#%x%x%x%x%x%x", "")) end
+                if isElement(p) then crew[#crew + 1] = ((getElementData(p, "displayName") or getPlayerName(p)):gsub("#%x%x%x%x%x%x", "")) end
             end
             local fines, total = {}, 0
             for _, f in ipairs(u.fines or {}) do

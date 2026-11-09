@@ -206,7 +206,7 @@ end
 -- channel: "dispatch" (unit <-> dispatchers) or "case" (every unit on the task + dispatch)
 function ermTabletSendMessage(token, text, channel)
     return withUnit(token, function(u, player)
-        local from = u.callsign .. " (" .. getPlayerName(player) .. ")"
+        local from = u.callsign .. " (" .. (getElementData(player, "displayName") or getPlayerName(player)) .. ")"
         local id, err
         if channel == "case" then
             if not u.task then return result(false, "No active case.") end
@@ -220,7 +220,7 @@ end
 
 function ermTabletEndShift(token)
     return withUnit(token, function(u, player)
-        Units.signOut(u, "Shift ended by " .. getPlayerName(player) .. " (web tablet).")
+        Units.signOut(u, "Shift ended by " .. (getElementData(player, "displayName") or getPlayerName(player)) .. " (web tablet).")
         return { ok = true }
     end)
 end

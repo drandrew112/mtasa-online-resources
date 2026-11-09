@@ -96,7 +96,7 @@ addEventHandler("erm:paramsSend", resourceRoot, function(hospitalId, keys)
         if want[it.key] and it.measured then items[#items + 1] = { key = it.key, value = it.value } end
     end
     if #items == 0 then return end
-    exports.med_hospitals:receiveParams(hospitalId, { unit = u.callsign, medic = getPlayerName(player), items = items, taskId = u.task ~= 0 and u.task or nil })
+    exports.med_hospitals:receiveParams(hospitalId, { unit = u.callsign, medic = (getElementData(player, "displayName") or getPlayerName(player)), items = items, taskId = u.task ~= 0 and u.task or nil })
     triggerClientEvent(player, "erm:notify", resourceRoot, "ERM", L.forPlayer(player, "med_erm.hospital.params_sent"), false)
 end)
 

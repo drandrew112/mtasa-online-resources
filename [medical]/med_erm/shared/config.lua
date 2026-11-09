@@ -162,6 +162,9 @@ Config.PRIORITY_COLORS = {
 -- work_core running; WORK_ID only has to resolve a name/colour for the receipt.
 Config.PAY = {
     WORK_ID = "ems",
+    -- competency bonus: one extra receipt line per shift payout, by the player's top EMS rank
+    -- (work_core competency id); "bplus_rsi" = B+ rank holding the RSI cert. Not split among the crew.
+    COMPETENCY_BONUS = { t = 0, a = 500, b = 1000, bplus = 2500, bplus_rsi = 3500, c = 4500, d = 5500, e = 6000 },
     -- base money per minute spent on the task, by closedTasks outcome.
     -- "default" covers any outcome not listed here; base = perMinute = 0
     -- credits the task (it still counts on the unit's Home page) without

@@ -278,6 +278,7 @@
   "med_erm.panel.unit": "UNIT",
   "med_erm.panel.zone": "ZONE",
   "med_erm.payment.fine": "Fine: {reason} ({supervisor})",
+  "med_erm.payment.competency": "Competency bonus: {rank}",
   "med_erm.payment.m": "#{id|int} {title} ({outcome}, {mins|int}m)",
   "med_erm.payment.shift_ended": "{callsign} - shift ended",
   "med_erm.safety.alert_title": "⚠  SCENE NOT SAFE",
@@ -390,5 +391,7 @@
   "med_erm.hospital.write": "Message to the hospital…",
   "med_erm.hospital.write_title": "Message: {name}",
   "med_erm.hospital.no_er": "There is no hospital staff in this hospital now.",
-  "med_erm.hospital.new_message": "Hospital ({from}): {text}"
+  "med_erm.hospital.new_message": "Hospital ({from}): {text}",
+  "med_erm.radio.unknown_code": "Unknown radio message.",
+  "med_erm.radio.failed": "The radio request failed."
 }

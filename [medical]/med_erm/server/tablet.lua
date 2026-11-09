@@ -24,7 +24,7 @@ end)
 handle("erm:signOut", function(player)
     local u = Units.ofPlayer(player)
     if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
-    Units.signOut(u, L.msg("med_erm.tablet.shift_ended_by", { player = getPlayerName(player) }))
+    Units.signOut(u, L.msg("med_erm.tablet.shift_ended_by", { player = (getElementData(player, "displayName") or getPlayerName(player)) }))
     return true
 end)
 
@@ -93,7 +93,7 @@ handle("erm:sendMessage", function(player, text, channel)
     local u = Units.ofPlayer(player)
     if not u then return false, L.msg("med_erm.tablet.you_are_not_signed_in") end
     if channel == "agency" then return Agency.post(u, player, text) end
-    local from = u.callsign .. " (" .. getPlayerName(player) .. ")"
+    local from = u.callsign .. " (" .. (getElementData(player, "displayName") or getPlayerName(player)) .. ")"
     local id, err
     if channel == "case" then
         if not u.task then return false, L.msg("med_erm.tablet.no_active_case") end

@@ -42,7 +42,7 @@ end
 function Units.payload(u)
     local members = {}
     for _, p in ipairs(u.members) do
-        members[#members + 1] = { player = p, name = getPlayerName(p), account = accountName(p) }
+        members[#members + 1] = { player = p, name = (getElementData(p, "displayName") or getPlayerName(p)), account = accountName(p) }
     end
     local t = u.task and Tasks.get(u.task)
     local fines = {}
@@ -161,13 +161,13 @@ local function signInCheck(player, unitType, candidates, unitNumber)
         if isElement(p) and getElementType(p) == "player" and p ~= player and not hasValue(members, p) then
             local x, y, z = getElementPosition(p)
             if Units.byPlayer[p] then
-                return false, L.msg("med_erm.units.is_already_in_another_unit", { player = getPlayerName(p) })
+                return false, L.msg("med_erm.units.is_already_in_another_unit", { player = (getElementData(p, "displayName") or getPlayerName(p)) })
             elseif not isAccountLoggedIn(p) then
-                return false, L.msg("med_erm.units.is_not_logged_in", { player = getPlayerName(p) })
+                return false, L.msg("med_erm.units.is_not_logged_in", { player = (getElementData(p, "displayName") or getPlayerName(p)) })
             elseif not hasMedicAccess(p) then
-                return false, L.msg("med_erm.units.is_not_on_duty_medic", { player = getPlayerName(p) })
+                return false, L.msg("med_erm.units.is_not_on_duty_medic", { player = (getElementData(p, "displayName") or getPlayerName(p)) })
             elseif getDistanceBetweenPoints3D(px, py, pz, x, y, z) > Config.ADD_MEMBER_RADIUS + 5 then
-                return false, L.msg("med_erm.units.is_too_far_away", { player = getPlayerName(p) })
+                return false, L.msg("med_erm.units.is_too_far_away", { player = (getElementData(p, "displayName") or getPlayerName(p)) })
             end
             members[#members + 1] = p
         end

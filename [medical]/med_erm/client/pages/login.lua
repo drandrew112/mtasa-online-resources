@@ -172,7 +172,7 @@ function Login.draw(x, y, w, h)
         elseif hov then
             Gfx.round(rx + s(4), ry, rw - s(8), rowH, s(4), Theme.panel2)
         end
-        local name = getPlayerName(p):gsub("#%x%x%x%x%x%x", "")
+        local name = (getElementData(p, "displayName") or getPlayerName(p)):gsub("#%x%x%x%x%x%x", "")
         local youW = p == localPlayer and s(40) or 0
         local compW = Competency.draw(p, rx + s(14), ry, rw - s(24) - youW, rowH)
         local nameW = rw - s(40) - youW - compW
@@ -234,7 +234,7 @@ function Login.drawPicker(sx, sy, sw, sh)
     for i = 1 + offset, math.min(#list, offset + visible) do
         local e = list[i]
         local ry = ly + (i - 1 - offset) * rowH
-        local name = getPlayerName(e.player):gsub("#%x%x%x%x%x%x", "")
+        local name = (getElementData(e.player, "displayName") or getPlayerName(e.player)):gsub("#%x%x%x%x%x%x", "")
         local compW = Competency.of(e.player) and s(90) or 0
         Gfx.button(x + s(12), ry + s(2), w - s(24), rowH - s(4), Gfx.fit(name, w - s(110) - compW, Gfx.font(10)),
             { color = { 39, 46, 55 }, align = "left", font = Gfx.font(10) }, function()

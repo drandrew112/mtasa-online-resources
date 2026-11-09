@@ -75,6 +75,16 @@ local function taskLabel(c)
     return L.msg("med_erm.payment.m", { id = c.id, title = c.title, outcome = L.msg(OUTCOME_LABEL[c.outcome or "released"] or "med_erm.outcome.released"), mins = mins })
 end
 
+-- competency bonus of a player -> amount, rank name
+function Payment.competencyBonus(player)
+    local bonuses = Config.PAY.COMPETENCY_BONUS
+    local info = exports.work_core:getPlayerCompetencies(player, Config.PAY.WORK_ID)
+    if not info or not info.rank then return 0 end
+    local key = info.rank
+    if key == "bplus" and info.certs and info.certs.rsi then key = "bplus_rsi" end
+    return tonumber(bonuses[key]) or 0, info.name or key
+end
+
 function Payment.payUnit(u)
     local fines = u.fines or {}
     if (#u.closedTasks == 0 and #fines == 0) or not workCoreRunning() then return end
@@ -99,8 +109,15 @@ function Payment.payUnit(u)
 
     for _, player in ipairs(u.roster) do
         if isElement(player) and getElementType(player) == "player" then
+            local list = items
+            local bonus, rankName = Payment.competencyBonus(player)
+            if bonus > 0 then
+                list = {}
+                for i, it in ipairs(items) do list[i] = it end
+                list[#list + 1] = { label = L.msg("med_erm.payment.competency", { rank = rankName }), amount = bonus }
+            end
             -- chargeNegative: a net negative total (fines above the earnings) is still taken from the account
-            exports.work_core:payWork(player, Config.PAY.WORK_ID, items, L.msg("med_erm.payment.shift_ended", { callsign = u.callsign }), { chargeNegative = true })
+            exports.work_core:payWork(player, Config.PAY.WORK_ID, list, L.msg("med_erm.payment.shift_ended", { callsign = u.callsign }), { chargeNegative = true })
         end
     end
 end

@@ -278,6 +278,7 @@
   "med_erm.panel.unit": "EGYSÉG",
   "med_erm.panel.zone": "ZÓNA",
   "med_erm.payment.fine": "Büntetés: {reason} ({supervisor})",
+  "med_erm.payment.competency": "Kompetencia bónusz: {rank}",
   "med_erm.payment.m": "#{id|int} {title} ({outcome}, {mins|int} p)",
   "med_erm.payment.shift_ended": "{callsign} - műszak vége",
   "med_erm.safety.alert_title": "⚠  A HELYSZÍN NEM BIZTONSÁGOS",
@@ -390,5 +391,7 @@
   "med_erm.hospital.write": "Üzenet a kórháznak…",
   "med_erm.hospital.write_title": "Üzenet: {name}",
   "med_erm.hospital.no_er": "Ebben a kórházban most nincs kórházi dolgozó.",
-  "med_erm.hospital.new_message": "Kórház ({from}): {text}"
+  "med_erm.hospital.new_message": "Kórház ({from}): {text}",
+  "med_erm.radio.unknown_code": "Ismeretlen rádióüzenet.",
+  "med_erm.radio.failed": "A rádiós kérés nem sikerült."
 }

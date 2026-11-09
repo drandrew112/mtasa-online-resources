@@ -33,7 +33,7 @@ local function clock()
 end
 
 local function plainName(player)
-    return (getPlayerName(player):gsub("#%x%x%x%x%x%x", ""))
+    return ((getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", ""))
 end
 
 local function resetState()
@@ -69,7 +69,7 @@ handlers["erm:signIn"] = function(unitType, members, unitNumber)
         reachedScene = false,
         handoverEnds = 0,
         startedAt    = State.serverNow(),
-        members      = { { player = localPlayer, name = getPlayerName(localPlayer) } },
+        members      = { { player = localPlayer, name = (getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)) } },
         closedTasks  = {},
     }
     Tablet.setPage("home")
