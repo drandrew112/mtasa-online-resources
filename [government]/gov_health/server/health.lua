@@ -42,7 +42,7 @@ GOV_RANGE = {
 
 local function patientName(patient, taskId)
     if getElementType(patient) == "player" then
-        return (getPlayerName(patient):gsub("#%x%x%x%x%x%x", "")), GOV.accountOf(patient) or ""
+        return ((getElementData(patient, "displayName") or getPlayerName(patient)):gsub("#%x%x%x%x%x%x", "")), GOV.accountOf(patient) or ""
     end
     if taskId then return ("Unidentified patient (task %s)"):format(tostring(taskId)), "" end
     return "Unidentified patient", ""
