@@ -69,7 +69,7 @@ local function notify(player, text)
     triggerClientEvent(player, "avi:notify", root, "ATC", text)
 end
 
-local function playerName(p) return (getPlayerName(p):gsub("#%x%x%x%x%x%x", "")) end
+local function playerName(p) return ((getElementData(p, "displayName") or getPlayerName(p)):gsub("#%x%x%x%x%x%x", "")) end
 
 -- ---------------------------------------------------------------- positions
 function getPositions()
