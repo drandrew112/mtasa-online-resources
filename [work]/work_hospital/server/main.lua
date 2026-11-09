@@ -14,7 +14,7 @@ end
 
 local function setMedic(player, enabled)
     if enabled then Granted[player] = true else Granted[player] = nil end
-    if isElement(player) and isRunning("medsys") then exports.medsys:setPlayerMedic(player, enabled) end
+    if isElement(player) and isRunning("medsys") then exports.medsys:setPlayerMedic(player, enabled, "hospital") end
 end
 
 ---------------------------------------------------------------- exams
@@ -111,7 +111,7 @@ addEventHandler("onResourceStart", root, function(res)
     if getResourceName(res) ~= "medsys" then return end
     for player in pairs(Granted) do
         if isElement(player) then
-            exports.medsys:setPlayerMedic(player, true)
+            exports.medsys:setPlayerMedic(player, true, "hospital")
             syncMedicPermissions(player)
         end
     end
@@ -141,8 +141,13 @@ local function payPoints(player, reason)
         end
     end
     if other > 0 then items[#items + 1] = { label = L.forPlayer(player, "work_hospital.pay.other"), amount = other } end
+    local bonus = tonumber(HOSPW.COMPETENCY_BONUS[topRank(player)]) or 0
+    if bonus > 0 then
+        local rank = topRank(player)
+        items[#items + 1] = { label = L.forPlayer(player, "work_hospital.pay.competency", { rank = L.forPlayer(player, "work_hospital.comp." .. rank) }), amount = bonus }
+    end
     local opts
-    if gh and p.hospital then opts = { payer = gh:getHospitalSalaryPayer(p.hospital, p.total * value) } end
+    if gh and p.hospital then opts = { payer = gh:getHospitalSalaryPayer(p.hospital, p.total * value + bonus) } end
     exports.work_core:payWork(player, HOSPW.WORK_ID, items, reason, opts)
     exports.work_core:giveWorkXp(player, HOSPW.WORK_ID, math.floor(p.total * HOSPW.XP_PER_POINT))
 end
@@ -175,7 +180,9 @@ end
 -- med_hospitals: a case closed with this player as the treating doctor
 function addHospitalTreatedCase(player)
     if not isElement(player) or not isRunning("v_mysql") then return false end
-    exports.v_mysql:setAccData(player, "hosp.cases", (tonumber(accData(player, "hosp.cases")) or 0) + 1)
+    local n = (tonumber(accData(player, "hosp.cases")) or 0) + 1
+    exports.v_mysql:setAccData(player, "hosp.cases", n)
+    setElementData(player, "hosp.cases", n) -- the hospital PC status bar
     return true
 end
 
@@ -208,6 +215,7 @@ addEventHandler("onPlayerWorkDutyStart", root, function(workId)
         if not bestD or d < bestD then best, bestD = st, d end
     end
     setElementData(source, "hosp.staff", best and best.hospital or HOSPW.STATIONS[1].hospital)
+    setElementData(source, "hosp.cases", tonumber(accData(source, "hosp.cases")) or 0)
     setMedic(source, true)
     syncMedicPermissions(source)
 end)
@@ -217,6 +225,7 @@ addEventHandler("onPlayerWorkDutyEnd", root, function(workId, reason)
     bookDuty(source)
     removeElementData(source, "hosp.staff")
     removeElementData(source, "hosp.points")
+    removeElementData(source, "hosp.cases")
     setMedic(source, false)
     if isRunning("medsys") then exports.medsys:setMedicPermissions(source, nil) end
     payPoints(source, L.forPlayer(source, reason == "quit" and "work_hospital.pay.reason_quit" or "work_hospital.pay.reason_duty_end"))

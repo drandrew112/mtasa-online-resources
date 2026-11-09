@@ -9,6 +9,7 @@
   "work_hospital.config.skin_nurse_female": "Female nurse",
   "work_hospital.config.skin_nurse_male": "Male nurse",
   "work_hospital.pay.other": "Other interventions",
+  "work_hospital.pay.competency": "Competency bonus: {rank}",
   "work_hospital.pay.reason_duty_end": "Hospital shift ended",
   "work_hospital.pay.reason_quit": "Hospital shift ended (left the game)",
   "work_hospital.minigames.suture": "Suturing",

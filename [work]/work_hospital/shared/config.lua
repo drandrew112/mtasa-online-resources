@@ -36,6 +36,9 @@ HOSPW = {
     POINT_VALUE = 40,                  -- $ per point
     PAY_FACTOR = 0.5,                  -- scales the $ value of a point (also the gov_health salary value)
     MAX_RECEIPT_LINES = 12,           -- the rest is summed into one "Other" line
+    -- competency bonus: one extra receipt line per duty payout, by top rank (not scaled by PAY_FACTOR);
+    -- only paid when the shift had interventions (points > 0). Főorvos gets the Orvos amount.
+    COMPETENCY_BONUS = { nurse = 1000, resident = 3500, physician = 6000, chief = 6000 },
 
     -- Competencies (work_core registerCompetencies). Ápoló (nurse) is the base rank; Rezidens and
     -- Orvos need an exam; Főorvos only by appointment (/appoint, admin 3+, from Orvos).

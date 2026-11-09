@@ -9,6 +9,7 @@
   "work_hospital.config.skin_nurse_female": "Ápoló (nő)",
   "work_hospital.config.skin_nurse_male": "Ápoló (férfi)",
   "work_hospital.pay.other": "Egyéb beavatkozások",
+  "work_hospital.pay.competency": "Kompetencia bónusz: {rank}",
   "work_hospital.pay.reason_duty_end": "Kórházi szolgálat vége",
   "work_hospital.pay.reason_quit": "Kórházi szolgálat vége (kilépés)",
   "work_hospital.minigames.suture": "Sebvarrás",
