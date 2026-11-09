@@ -18,7 +18,7 @@ exports.mg_fast:isFastGameActive(player)
 
 - `ped` - optional patient: the player is placed next to it (standing at a stretcher / bed, kneeling
   at a patient on the ground; `options.stand` forces it) and the animation is synced
-- `options` - { efast = false, positives = { ruq = true, luq = false, pelvis, cardiac, lung_r, lung_l }, time = 50 (efast 70), passPercent = 75, stand = nil }
+- `options` - { efast = false, positives = { ruq = true, luq = false, pelvis, cardiac, lung_r, lung_l }, time = 150 (efast 210), passPercent = 75, stand = nil }
 
 Result:
 

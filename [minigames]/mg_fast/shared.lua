@@ -22,7 +22,7 @@ MGDEF = {
 
 local function clamp(v, a, b) return math.max(a, math.min(b, v)) end
 
--- options: { efast = false, positives = { luq = true, ... }, time = 50, passPercent = 75, stand = nil }
+-- options: { efast = false, positives = { luq = true, ... }, time = 150 (efast 210), passPercent = 75, stand = nil }
 function MGDEF.normalize(o)
     o = type(o) == "table" and o or {}
     local pos = {}
@@ -33,7 +33,7 @@ function MGDEF.normalize(o)
     return {
         efast = o.efast == true,
         positives = pos,
-        time = clamp(tonumber(o.time) or (o.efast and 70 or 50), 20, 150),
+        time = clamp(tonumber(o.time) or (o.efast and 210 or 150), 20, 450),
         passPercent = clamp(tonumber(o.passPercent) or 75, 0, 100),
         stand = (o.stand == true or o.stand == false) and o.stand or nil,
     }
