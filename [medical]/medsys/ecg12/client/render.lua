@@ -219,6 +219,16 @@ end
 ---------------------------------------------------------------- viewer (Lifepak 12-LEAD) with PRINT
 
 local view = nil
+local closedTick = 0
+local function closeView()
+    view = nil
+    closedTick = getTickCount()
+    if not (isExaminationOpen and isExaminationOpen()) then showCursor(false) end
+end
+
+-- the viewer is open (or this very click closed it): nothing under it takes the click / hover
+function ECG12.isOpen() return view ~= nil or getTickCount() - closedTick < 150 end
+
 addEvent("medic:ecg12", true)
 addEventHandler("medic:ecg12", resourceRoot, function(target, spec) view = { target = target, spec = spec } showCursor(true) end)
 
@@ -248,7 +258,7 @@ addEventHandler("onClientRender", root, function()
         dxDrawRectangle(bx, y + 6, bw, 34, tocolor(b[2][1] + (hov and 25 or 0), b[2][2] + (hov and 25 or 0), b[2][3] + (hov and 25 or 0)))
         dxDrawText(b[1], bx, y + 6, bx + bw, y + 40, tocolor(255, 255, 255), 1, "default-bold", "center", "center")
     end
-end)
+end, true, "low-10") -- last: over the medsys panel, the host Lifepak ("low-5") and the hospital patient panel
 
 addEventHandler("onClientClick", root, function(button, state, cx, cy)
     if not view or button ~= "left" or state ~= "down" then return end
@@ -258,8 +268,7 @@ addEventHandler("onClientClick", root, function(button, state, cx, cy)
         local bx = x + w - (bw + 8) * (3 - i)
         if cx >= bx and cx <= bx + bw and cy >= y + 6 and cy <= y + 40 then
             if i == 1 then triggerServerEvent("medic:ecg12Print", resourceRoot, view.target, view.spec) end
-            view = nil
-            if not (isExaminationOpen and isExaminationOpen()) then showCursor(false) end
+            closeView()
             return
         end
     end
@@ -268,7 +277,6 @@ end)
 addEventHandler("onClientKey", root, function(key, press)
     if view and press and key == "escape" then
         cancelEvent()
-        view = nil
-        if not (isExaminationOpen and isExaminationOpen()) then showCursor(false) end
+        closeView()
     end
 end)

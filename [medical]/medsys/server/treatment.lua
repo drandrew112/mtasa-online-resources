@@ -664,10 +664,11 @@ local function getAvailability(state, target, equipment)
 end
 
 -- Snapshot for the examination panel: the medical data + which buttons are usable
-local function getPanelSnapshot(target)
+-- medic: who looks at it (hospital staff work from the hospital's room stock, not an EMS bag)
+local function getPanelSnapshot(target, medic)
     local state = getLivePatient(target)
     local snapshot = state and buildSnapshot(state) or buildDefaultSnapshot(target)
-    local equipment = getPatientEquipment(target)
+    local equipment = getPatientEquipment(target, medic)
     snapshot.actions = getAvailability(state, target, equipment)
     snapshot.equipment = getEquipmentSnapshot(equipment)
     -- the panel shows what the medic sees: the glucose only comes from the glucometer, the hidden
@@ -727,7 +728,7 @@ function openExamination(medic, target, message, isError)
     if Examining[medic] == target and (HostMode[medic] == true) ~= host then
         closeExamination(medic, false)
     end
-    local snapshot = getPanelSnapshot(target)
+    local snapshot = getPanelSnapshot(target, medic)
     Examining[medic] = target
     HostMode[medic] = host or nil
     Watchers[target] = Watchers[target] or {}
@@ -753,11 +754,9 @@ function sendPanelUpdates(state)
             closeExamination(medic)
         end
     end
-    if #list > 0 or #hosts > 0 then
-        local snapshot = getPanelSnapshot(target)
-        if #list > 0 then triggerClientEvent(list, "medic:panelUpdate", resourceRoot, target, snapshot) end
-        if #hosts > 0 then triggerClientEvent(hosts, "medic:hostUpdate", resourceRoot, target, snapshot) end
-    end
+    -- one snapshot per kind: the EMS panels see the bag, the hospital staff the hospital's room stock
+    if #list > 0 then triggerClientEvent(list, "medic:panelUpdate", resourceRoot, target, getPanelSnapshot(target, list[1])) end
+    if #hosts > 0 then triggerClientEvent(hosts, "medic:hostUpdate", resourceRoot, target, getPanelSnapshot(target, hosts[1])) end
 end
 
 -- Re-sends the panel to everyone examining the target (after a reset)

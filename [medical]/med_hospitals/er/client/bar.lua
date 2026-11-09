@@ -81,8 +81,28 @@ addEventHandler("onClientMedicHostBusy", localPlayer, function(busy)
 end)
 
 -- a click on a medsys device window (Lifepak, glucometer) is not the panel's
+-- (the 12-lead ECG viewer of the Lifepak too: it covers the whole screen)
 function BAR.blocksClick(cx, cy)
-    return BAR.model and medsysRunning() and exports.medsys:isHostWindowAt(cx, cy) == true
+    return EXAM.bedside and medsysRunning() and exports.medsys:isHostWindowAt(cx, cy) == true or false
+end
+
+-- a device window (Lifepak with the monitor on, glucometer) is out next to the bedside panel
+function BAR.devicesShown()
+    local model = BAR.model
+    if not EXAM.bedside or not model or model.dead or model.target ~= (EXAM.case and EXAM.case.ped) then return false end
+    for _, g in ipairs(model.groups or {}) do
+        for _, b in ipairs(g.buttons) do
+            if (b.id == "defib" and b.active and model.monitor) or (b.id == "glucometer" and b.active) then return true end
+        end
+    end
+    return false
+end
+
+-- the cursor is over a device window / the 12-lead viewer: no hover, no tooltip on the panel under it
+function BAR.cursorBlocked()
+    if not EXAM.bedside or not isCursorShowing() then return false end
+    local cx, cy = HGfx.cursor()
+    return BAR.blocksClick(cx, cy)
 end
 
 ---------------------------------------------------------------- drawing
@@ -105,12 +125,13 @@ local function press(b)
     exports.medsys:hostAction(b.id == "defib" and "defib" or b.action)
 end
 
+-- lx, ty: left / top edge of the device windows (right of the panel)
 local lastAnchor
-local function setAnchor(rx, by)
-    local key = rx and (math.floor(rx) .. ":" .. math.floor(by)) or "off"
+local function setAnchor(lx, ty)
+    local key = lx and (math.floor(lx) .. ":" .. math.floor(ty)) or "off"
     if key == lastAnchor then return end
     lastAnchor = key
-    if medsysRunning() then exports.medsys:setHostAnchor(rx or false, by or false) end
+    if medsysRunning() then exports.medsys:setHostAnchor(lx or false, ty or false) end
 end
 
 -- The infusion menu above the bar: the bag, the drip rates, hang / remove
@@ -137,8 +158,9 @@ local function drawInfusion(inf, x, y, w)
     end
 end
 
--- x, y, w: the strip at the bottom of the panel (BAR.HEIGHT tall, scaled)
-function BAR.draw(x, y, w)
+-- x, y, w: the strip at the bottom of the panel (BAR.HEIGHT tall, scaled);
+-- ax, ay: where the device windows (Lifepak, glucometer) go: right of the panel, top aligned
+function BAR.draw(x, y, w, ax, ay)
     local h = s(BAR.HEIGHT)
     HGfx.round(x, y, w, h, s(6), T.panel)
     local model = BAR.model
@@ -157,8 +179,8 @@ function BAR.draw(x, y, w)
         HGfx.text(t("patient_dead"), x, y, w, h, T.faint, HGfx.font(9), "center")
         return
     end
-    -- the device windows sit above the bar, at its right end
-    setAnchor(x + w, y - s(8))
+    -- the device windows sit right of the panel
+    setAnchor(ax or (x + w + s(20)), ay or y)
 
     -- button widths: groups side by side, a tag column each
     local count, groups = 0, model.groups or {}

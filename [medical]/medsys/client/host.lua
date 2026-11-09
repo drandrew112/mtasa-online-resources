@@ -1,11 +1,12 @@
 -- Host mode: hospital staff (medsys role kind "hospital") never get the medsys examination panel. The
 -- hospital patient panel (med_hospitals er/client) drives medsys through the client exports below:
 --   hostWatch(target, on)        the bedside panel is open on this patient (server: Examining in host mode)
---   setHostAnchor(rx, by)        right / bottom edge the device windows (Lifepak, glucometer) sit against,
---                                false = the hospital panel is hidden (nothing drawn)
+--   setHostAnchor(lx, ty)        left / top edge of the device windows (Lifepak, glucometer under it): the
+--                                right side of the hospital panel; false = the panel is hidden (nothing drawn)
 --   hostAction(action, option)   a procedure (medic:requestTreatment), "defib" / "glucometer" toggle the
 --                                device windows
---   isHostWindowAt(x, y)         a click there belongs to a device window (the hospital panel ignores it)
+--   isHostWindowAt(x, y)         a click there belongs to a device window or the 12-lead viewer (the
+--                                hospital panel ignores it, no hover either)
 -- The hospital panel gets the state of its action bar as the client event onClientMedicHostState
 -- (localPlayer; model or false) and the result lines as onClientMedicHostMessage (text, isError).
 
@@ -134,27 +135,31 @@ end
 
 ---------------------------------------------------------------- device windows
 
--- Lifepak: bottom right of the anchor; the glucometer left of it (or in its place).
--- The medsys window functions take the rectangle of the panel they sit next to: the Lifepak goes left of
--- "panelX", the glucometer right of "panelX + panelW". -> the Lifepak's panelX, y and its rectangle
+-- Lifepak: right of the hospital panel, top aligned with it (kept on the screen); the glucometer under it
+-- (or in its place). The medsys window functions take the rectangle of the panel they sit next to: the
+-- Lifepak goes left of "panelX", the glucometer right of "panelX + panelW".
+-- -> the Lifepak's panelX, y, its left edge and height
 local function lifepakPlace()
     local r = getLifepakRect(screenW, 0)
     local lw, lh = r[3], r[4]
     local gap = screenW - lw - r[1]
-    local lx, ly = anchor[1] - lw, anchor[2] - lh
-    return lx + lw + gap, ly, lx
+    local lx = math.max(s(4), math.min(anchor[1], screenW - lw - s(4)))
+    local ly = math.max(s(4), math.min(anchor[2], screenH - lh - s(4)))
+    return lx + lw + gap, ly, lx, lh
 end
 
 -- -> glucometer panelX, panelY, panelW
 local function glucometerPlace()
     local probe = getGlucometerRect(0, 0, 0)
     local gw, gh, gap = probe[3], probe[4], probe[1]
-    local right = anchor[1]
+    local gx = math.max(s(4), math.min(anchor[1], screenW - gw - s(4)))
+    local gy = anchor[2]
     if host.lifepak and host.data.monitor then
-        local _, _, lx = lifepakPlace()
-        right = lx - s(10)
+        local _, ly, _, lh = lifepakPlace()
+        gy = ly + lh + s(10)
     end
-    return right - gw - gap, anchor[2] - gh, 0
+    gy = math.max(s(4), math.min(gy, screenH - gh - s(4)))
+    return gx - gap, gy, 0
 end
 
 local function render()
@@ -194,6 +199,7 @@ local function refreshRendering()
 end
 
 function isHostWindowAt(cx, cy)
+    if ECG12 and ECG12.isOpen() then return true end -- the 12-lead viewer covers everything
     if not host or not anchor or not rendering then return false end
     if host.lifepak and host.data.monitor then
         local px, py = lifepakPlace()
@@ -210,6 +216,7 @@ end
 
 addEventHandler("onClientClick", root, function(button, state, ax, ay)
     if button ~= "left" or state ~= "down" or not host or not anchor or not rendering then return end
+    if ECG12 and ECG12.isOpen() then return end -- the click is the 12-lead viewer's
     local data = host.data
     if host.lifepak and data.monitor then
         local px, py = lifepakPlace()
@@ -247,9 +254,9 @@ function hostWatch(target, on)
     return true
 end
 
-function setHostAnchor(rx, by)
-    if rx and by then
-        if not anchor or anchor[1] ~= rx or anchor[2] ~= by then anchor = { rx, by } end
+function setHostAnchor(lx, ty)
+    if lx and ty then
+        if not anchor or anchor[1] ~= lx or anchor[2] ~= ty then anchor = { lx, ty } end
     else
         anchor = nil
     end

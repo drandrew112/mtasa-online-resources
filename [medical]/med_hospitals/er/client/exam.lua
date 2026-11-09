@@ -82,7 +82,10 @@ end, 1000, 0)
 local function frame()
     local sc = math.min((HGfx.screenW - s(30)) / s(DESIGN_W), (HGfx.screenH - s(30)) / s(DESIGN_H), 1)
     local w, h = s(DESIGN_W) * sc, s(DESIGN_H) * sc
-    return (HGfx.screenW - w) / 2, (HGfx.screenH - h) / 2, w, h
+    -- centred; on the left while a medsys device window (Lifepak / glucometer) is out: it goes right of
+    -- the panel (bar.lua anchor)
+    local x = BAR.devicesShown() and s(16) or (HGfx.screenW - w) / 2
+    return x, (HGfx.screenH - h) / 2, w, h
 end
 
 ---------------------------------------------------------------- header
@@ -218,6 +221,9 @@ end
 
 ---------------------------------------------------------------- tab: exam
 
+local lineSeverity, worse   -- defined below (result line colours)
+local DONE_RGB = { crit = { 128, 42, 42 }, warn = { 128, 84, 26 }, ok = { 31, 77, 54 } }
+
 local function method(c, region, mth, x, y)
     local key = region .. ":" .. mth
     local done = c.exam and c.exam[key]
@@ -225,7 +231,12 @@ local function method(c, region, mth, x, y)
     local w = L.width(label, 1, HGfx.font(8, true)) + s(16)
     local prog = EXAM.progress[key]
     local busy = prog and getTickCount() < prog.ends
-    local col = done and { 31, 77, 54 } or { 45, 53, 63 }
+    local col = { 45, 53, 63 }
+    if done then
+        local sev
+        for _, ln in ipairs(done.lines or {}) do sev = worse(sev, lineSeverity(ln)) end
+        col = DONE_RGB[sev or "ok"]
+    end
     HGfx.button(x, y, w, s(20), label, { color = col, disabled = not EXAM.bedside or busy, font = HGfx.font(8, true) }, function() act("exam", region, mth) end)
     if busy then
         local f = 1 - (prog.ends - getTickCount()) / prog.total
@@ -252,27 +263,87 @@ local function lineText(ln)
     return x_(ln[1], p)
 end
 
+-- severity of a result line: "crit" (red), "warn" (orange), "ok" (green), nil = neutral information
+local SEV_RGB = { crit = { 235, 87, 87 }, warn = { 229, 160, 58 }, ok = { 70, 211, 122 } }
+local SEV_RANK = { ok = 1, warn = 2, crit = 3 }
+local SEV_KEYS = {
+    crit = { "chest_absent", "chest_hyperresonant", "chest_dull", "chest_emphysema", "chest_reduced", "chest_wound", "chest_crackles",
+             "heart_muffled", "abd_wound", "abd_guarding", "abd_diffuse", "pelvis_unstable", "skull_step", "head_haematoma",
+             "pupil_blown", "pupils_fixed", "hemiparesis", "tetraparesis", "befast_positive", "skin_cyanotic", "burn_major", "cms_cast_tight" },
+    warn = { "head_wound", "head_bruise", "face_deformity", "face_crepitus", "chest_painful_breathing", "chest_accessory_muscles",
+             "chest_rib_tender", "chest_wheeze", "abd_bruise", "abd_palp_unconscious", "abd_mcburney", "abd_flank", "abd_sounds_quiet",
+             "limb_wound", "limb_deformity", "leg_short_rotated", "limb_crepitus", "hip_pain", "cms_ok_pain", "spine_bruise", "spine_tender",
+             "pupils_pinpoint", "pupils_dilated", "strength_untestable", "skin_pale", "skin_sweaty", "skin_dry", "burn_minor",
+             "nrs_untestable", "hx_not_possible", "meds_anticoagulant", "meds_insulin" },
+    ok = { "head_normal", "skull_normal", "chest_normal", "chest_palp_normal", "chest_ausc_normal", "chest_perc_normal", "abd_normal",
+           "abd_soft", "abd_sounds_normal", "limbs_normal", "limbs_palp_normal", "limb_cast", "cms_normal", "spine_normal", "spine_palp_normal",
+           "pupils_normal", "befast_negative", "strength_normal", "skin_normal", "allergy_none", "meds_none" },
+}
+local SEV = {}
+for sev, keys in pairs(SEV_KEYS) do for _, k in ipairs(keys) do SEV[k] = sev end end
+
+local function band(v, critLo, warnLo, warnHi, critHi)
+    v = tonumber(v)
+    if not v then return nil end
+    if (critLo and v < critLo) or (critHi and v > critHi) then return "crit" end
+    if (warnLo and v < warnLo) or (warnHi and v > warnHi) then return "warn" end
+    return "ok"
+end
+
+function worse(a, b)
+    if not a then return b end
+    if not b then return a end
+    return SEV_RANK[a] >= SEV_RANK[b] and a or b
+end
+
+function lineSeverity(ln)
+    local key, p = ln[1], ln[2] or {}
+    if SEV[key] then return SEV[key] end
+    if key == "vitals_line" then
+        local sys = tonumber(tostring(p.bp or ""):match("^(%d+)"))
+        local sev = band(p.hr, 40, 50, 110, 140)
+        sev = worse(sev, band(sys, 90, 100, 180, nil))
+        sev = worse(sev, band(p.spo2, 90, 95, nil, nil))
+        sev = worse(sev, band(p.rr, 8, 10, 22, 30))
+        return sev
+    elseif key == "gcs" then return band(p.total, 9, 15, nil, nil)
+    elseif key == "nihss" then return band(p.score, nil, nil, 0, 4)
+    elseif key == "temperature" then return band(p.t, 35, 36, 37.4, 38.4)
+    elseif key == "nrs" then return band(p.n, nil, nil, 3, 6)
+    elseif key:find("^allergy_") then return "warn"
+    elseif key:find("^meds_") then return "ok"
+    end
+    return nil
+end
+
 local function drawExam(c, x, y, w, h)
     local colW = (w - s(10)) / 2
     local cols = { y, y }
     local off = HGfx.getScroll("exam", 30)
     HGfx.scrollArea("exam", x, y, w, h)
     local skip = off * s(20)
+    local indent = s(14)
     for i, region in ipairs(REGIONS) do
         local col = (i % 2 == 1) and 1 or 2
         local cx = x + (col - 1) * (colW + s(10))
-        -- card height from the result lines
-        local resLines = {}
+        -- card height from the result lines; each wrapped line keeps the severity of its finding
+        local resLines, worst = {}, nil
         for _, mth in ipairs(REGION_METHODS[region]) do
             local e = c.exam and c.exam[region .. ":" .. mth]
             for _, ln in ipairs(e and e.lines or {}) do
-                for _, wl in ipairs(HGfx.wrap("• " .. lineText(ln), colW - s(20), HGfx.font(9))) do resLines[#resLines + 1] = wl end
+                local sev = lineSeverity(ln)
+                worst = worse(worst, sev)
+                for wi, wl in ipairs(HGfx.wrap(lineText(ln), colW - s(20) - indent, HGfx.font(9))) do
+                    resLines[#resLines + 1] = { text = wl, sev = sev, first = wi == 1 }
+                end
             end
         end
         local ch = s(52) + math.max(1, #resLines) * s(15)
         local cy = cols[col] - skip
         if cy + ch > y and cy < y + h then
             HGfx.round(cx, cy, colW, ch, s(6), T.panel)
+            -- the worst finding of the region as a stripe on the card's left edge
+            if worst then dxDrawRectangle(cx, cy + s(4), s(3), ch - s(8), HGfx.rgb(SEV_RGB[worst])) end
             HGfx.text(x_("r_" .. region), cx + s(10), cy + s(4), colW, s(18), T.text, HGfx.font(10, true))
             local mx = cx + s(10)
             for _, mth in ipairs(REGION_METHODS[region]) do
@@ -282,7 +353,14 @@ local function drawExam(c, x, y, w, h)
             if #resLines == 0 then HGfx.text(t("not_examined"), cx + s(10), cy + s(48), colW, s(15), T.faint, HGfx.font(9)) end
             for li, ln in ipairs(resLines) do
                 local ly = cy + s(48) + (li - 1) * s(15)
-                if ly > y and ly < y + h - s(10) then HGfx.text(ln, cx + s(10), ly, colW - s(16), s(15), T.text, HGfx.font(9)) end
+                if ly > y and ly < y + h - s(10) then
+                    local rgb = ln.sev and SEV_RGB[ln.sev]
+                    if ln.first then
+                        local d = s(7)
+                        HGfx.round(cx + s(10), ly + (s(15) - d) / 2, d, d, d / 2, rgb and HGfx.rgb(rgb) or T.faint)
+                    end
+                    HGfx.text(ln.text, cx + s(10) + indent, ly, colW - s(16) - indent, s(15), rgb and HGfx.rgb(rgb) or T.text, HGfx.font(9))
+                end
             end
         end
         cols[col] = cols[col] + ch + s(8)
@@ -945,7 +1023,7 @@ function EXAM.draw(x, y, w, h)
         return
     end
     local modal = EXAM.bno or EXAM.transfer or EXAM.death
-    HGfx.blockHover = modal and true or false
+    HGfx.blockHover = (modal or BAR.cursorBlocked()) and true or false
     local hh = drawHeader(c, x, y, w)
     -- the intervention bar (bar.lua: medsys in host mode) takes the bottom strip
     local fullH = h
@@ -974,7 +1052,8 @@ function EXAM.draw(x, y, w, h)
     local body = ty + s(34)
     DRAW[EXAM.tab](c, mx, body, mw, y + h - s(12) - body)
     drawRight(c, x + w - rightW - s(12), top, rightW, h - hh - s(22))
-    BAR.draw(x + s(12), y + h - s(2), w - s(24))
+    -- device windows: right of the panel's bezel (frame: 6 px), top aligned with it
+    BAR.draw(x + s(12), y + h - s(2), w - s(24), x + w + s(16), y - s(6))
     h = fullH
     HGfx.blockHover = false
     if modal then
@@ -1014,6 +1093,8 @@ end)
 
 addEventHandler("onClientKey", root, function(key, press)
     if not EXAM.open or EXAM.inPC() or not press then return end
+    -- the 12-lead ECG viewer of the Lifepak is open: its ESC, the wheel is not the panel's
+    if (key == "escape" or key:find("^mouse_wheel")) and BAR.blocksClick(-1, -1) then return end
     if key == "mouse_wheel_up" then HGfx.wheel(-1)
     elseif key == "mouse_wheel_down" then HGfx.wheel(1)
     elseif key == "escape" then
