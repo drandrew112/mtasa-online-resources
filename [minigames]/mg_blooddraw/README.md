@@ -1,6 +1,6 @@
 # mg_blooddraw
 
-Venous blood sampling (HK-L01). T = tourniquet, hold the left mouse button on the arm to palpate the vein, mouse wheel = needle angle (15-30 degrees), click on the vein, click a tube in the rack to attach it, hold SPACE to fill it to the mark, T to release the tourniquet. The rack shows the needed tubes in a random order: order of draw citrate, serum, heparin, EDTA, fluoride. Mistakes: hemolysis (tourniquet > 60 s or 2+ punctures), EDTA contamination (EDTA before a needed citrate / serum / heparin tube), underfilled citrate.
+Venous blood sampling (HK-L01). T = tourniquet, hold the left mouse button on the arm to palpate the vein, mouse wheel = needle angle (10-40 degrees), click on the vein, click a tube in the rack to attach it, hold SPACE to fill it to the mark, T to release the tourniquet. The rack shows the needed tubes in a random order: order of draw citrate, serum, heparin, EDTA, fluoride. Mistakes: hemolysis (tourniquet > 60 s or 2+ punctures), EDTA contamination (EDTA before a needed citrate / serum / heparin tube), underfilled citrate.
 
 One of the hospital minigames (`med_hospitals` ER treatments, work_hospital Minigames tab). The frame
 (panel, countdown, timer, result, placing the player next to the patient, synced animation, server

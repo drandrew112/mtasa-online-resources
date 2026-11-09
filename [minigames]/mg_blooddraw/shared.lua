@@ -1,5 +1,5 @@
 -- mg_blooddraw: venous blood sampling (HK-L01). Tourniquet on (T), palpate the vein (hold the left
--- mouse button on the arm until it shows), set the needle angle with the wheel (15-30 degrees) and
+-- mouse button on the arm until it shows), set the needle angle with the wheel (10-40 degrees) and
 -- click on the vein, then attach the tubes in the right order (click one in the rack) and fill each
 -- one to the mark (hold SPACE), finally tourniquet off (T).
 -- The mistakes have lab consequences (details): hemolysis (tourniquet > 60 s, several punctures),
@@ -10,8 +10,8 @@ BLOOD = {
     ORDER = { "citrate", "serum", "heparin", "edta", "fluoride" },   -- order of draw
     COLORS = { citrate = { 42, 111, 209 }, serum = { 212, 160, 23 }, heparin = { 47, 158, 90 },
                edta = { 142, 91, 198 }, fluoride = { 140, 148, 155 } },
-    ANGLE = { 15, 30 },          -- good needle angle
-    START_ANGLE = 40,
+    ANGLE = { 10, 40 },          -- good needle angle
+    START_ANGLE = 55,            -- outside the band: it still has to be set
     WHEEL_DEG = 2.5,
     TOURNIQUET_MAX = 60,         -- s: longer -> hemolysis / haemoconcentration
     FILL_RATE = 0.42,            -- tube fill per second while SPACE is held

@@ -7,7 +7,7 @@
   "mg_blooddraw.client.too_steep": "Túl meredek: átszúrtad a vénát",
   "mg_blooddraw.client.tubes": "Cső {n|int}/{total|int}",
   "mg_blooddraw.hint.palpate": "Tartsd lenyomva a bal egérgombot a karon, és keresd meg a vénát.",
-  "mg_blooddraw.hint.puncture": "Görgő: a tű szöge (15-30°). Kattints a vénára.",
+  "mg_blooddraw.hint.puncture": "Görgő: a tű szöge (10-40°). Kattints a vénára.",
   "mg_blooddraw.hint.release": "Nyomd meg a T-t: érszorító le.",
   "mg_blooddraw.hint.tourniquet": "Nyomd meg a T-t: érszorító fel (legfeljebb 1 percig maradhat fent).",
   "mg_blooddraw.hint.tubes": "Kattints a következő csőre, tartsd lenyomva a SZÓKÖZT, és a jelnél engedd fel.",
