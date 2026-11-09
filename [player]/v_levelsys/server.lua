@@ -150,7 +150,7 @@ addCommandHandler("givexp", function(playerSource, cmd, targetName, add_xp)
     end
 
     if giveXp(target, add_xp) then
-        outputChatBox(L.msg("v_levelsys.server.you_received_xp_from", { prefix = prefix, add_xp = add_xp, player = getPlayerName(player) }), target, 255,255,255, true)
+        outputChatBox(L.msg("v_levelsys.server.you_received_xp_from", { prefix = prefix, add_xp = add_xp, player = (getElementData(player, "displayName") or getPlayerName(player)) }), target, 255,255,255, true)
         outputChatBox(L.msg("v_levelsys.server.you_gave_xp_to", { prefix = prefix, add_xp = add_xp, target_name = targetName }), player, 255,255,255, true)
     else
         outputChatBox(L.msg("v_levelsys.server.this_player_cannot_receive_xp_right", { prefix = prefix }), player, 255,50,50, true)
