@@ -8,8 +8,8 @@ local function screens()
     for hid, e in pairs(ER.byHospital) do
         local ct = e.cfg.ct and e.cfg.ct.monitor
         local xr = e.cfg.xray and e.cfg.xray.viewer
-        if ct then out[#out + 1] = { hid = hid, room = "ct", x = ct.x, y = ct.y, z = ct.z, rot = ct.rot or 0, w = ct.w or 1.6, h = ct.h or 0.9, dim = e.h.dimension, int = e.h.interior } end
-        if xr then out[#out + 1] = { hid = hid, room = "xray", x = xr.x, y = xr.y, z = xr.z, rot = xr.rot or 0, w = xr.w or 1.4, h = xr.h or 0.8, dim = e.h.dimension, int = e.h.interior } end
+        if ct then out[#out + 1] = { hid = hid, room = "ct", x = ct.x, y = ct.y, z = ct.z, rot = ct.rot or 0, w = ct.w or 3.2, h = ct.h or 1.8, dim = e.h.dimension, int = e.h.interior } end
+        if xr then out[#out + 1] = { hid = hid, room = "xray", x = xr.x, y = xr.y, z = xr.z, rot = xr.rot or 0, w = xr.w or 2.8, h = xr.h or 1.6, dim = e.h.dimension, int = e.h.interior } end
     end
     return out
 end

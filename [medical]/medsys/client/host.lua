@@ -32,7 +32,7 @@ local rendering = false
 local BAR_GROUPS = {
     { tag = "AB", actions = { "airway", "oxygen" } },
     { tag = "C", actions = { "bandage", "splint", "cpr", "iv", "medication" } },
-    { tag = "D", actions = { "neuro", "glucometer" } },
+    { tag = "D", actions = { "glucometer" } },   -- neuro: the hospital panel has its own neurology exam
     { tag = "MON", actions = { "monitor", "defib" } },
 }
 

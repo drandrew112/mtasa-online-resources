@@ -563,13 +563,16 @@ local function drawDrugs(c, x, y, w, h)
     for _, d in ipairs(drugs) do if d.id == EXAM.drugPick then pick = d end end
     local ry = y
     if pick then
-        HGfx.round(rx, ry, rw, s(150), s(6), T.panel)
-        HGfx.text(pick.name, rx + s(10), ry + s(4), rw, s(22), T.text, HGfx.font(11, true))
+        -- the whole description (what the drug is for): the box grows, the buttons move down with it
         local lines = HGfx.wrap(pick.desc and L(pick.desc) or "", rw - s(20), HGfx.font(8))
-        for i = 1, math.min(2, #lines) do HGfx.text(lines[i], rx + s(10), ry + s(24) + (i - 1) * s(14), rw, s(14), T.dim, HGfx.font(8)) end
+        local extra = math.max(0, #lines - 2) * s(14)
+        HGfx.round(rx, ry, rw, s(150) + extra, s(6), T.panel)
+        HGfx.text(pick.name, rx + s(10), ry + s(4), rw, s(22), T.text, HGfx.font(11, true))
+        for i = 1, #lines do HGfx.text(lines[i], rx + s(10), ry + s(24) + (i - 1) * s(14), rw, s(14), T.dim, HGfx.font(8)) end
         if c.allergy and c.allergy ~= "none" and x_("allergy_drugs_" .. c.allergy):find(pick.id, 1, true) then
-            HGfx.text(t("allergy_warning"), rx + s(10), ry + s(54), rw, s(16), tocolor(255, 120, 110), HGfx.font(9, true))
+            HGfx.text(t("allergy_warning"), rx + s(10), ry + s(54) + extra, rw, s(16), tocolor(255, 120, 110), HGfx.font(9, true))
         end
+        ry = ry + extra
         local by = ry + s(72)
         local bx = rx + s(10)
         local opts = pick.dosing and pick.dosing.options or { false }
