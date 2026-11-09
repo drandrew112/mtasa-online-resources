@@ -259,7 +259,7 @@ function loadGame(player, session, id)
     if not entry then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.that_game_does_not_exist")) return false end
     if not canEdit(player, entry) then notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.you_cannot_edit_this_game")) return false end
     if locks[id] and locks[id] ~= player then
-        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.is_editing_this_game_right_now", { player = getPlayerName(locks[id]) }))
+        notify(player, L.msg("v_jobcreator.core.job_creator"), L.msg("v_jobcreator.main.is_editing_this_game_right_now", { player = (getElementData(locks[id], "displayName") or getPlayerName(locks[id])) }))
         return false
     end
     local game = jm:jobmanagerGameLoad(id)
