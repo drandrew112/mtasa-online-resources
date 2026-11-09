@@ -28,6 +28,13 @@ local function distanceVolume(dist)
 end
 
 local function updateSpeaker(player, myVeh, mx, my, mz, rx, ry)
+	-- radio (radio/client.lua): full volume in the middle, wherever the speaker is
+	if Radio and Radio.isLive(player) then
+		setSoundVolume(player, VOICE.GAIN * RADIO.VOICE_VOLUME)
+		setSoundPan(player, 0)
+		return
+	end
+
 	if getElementDimension(player) ~= getElementDimension(localPlayer)
 		or getElementInterior(player) ~= getElementInterior(localPlayer) then
 		setSoundVolume(player, 0)
@@ -81,6 +88,14 @@ local function updateAll()
 	end
 end
 setTimer(updateAll, VOICE.CLIENT_UPDATE_MS, 0)
+
+Voice = {}
+
+-- radio/client.lua: a radio transmission went live, hear it even if no voice start came yet
+function Voice.radioSpeakerStart(player)
+	speaking[player] = true
+	updateAll()
+end
 
 addEventHandler("onClientPlayerVoiceStart", root, function()
 	if source == localPlayer then

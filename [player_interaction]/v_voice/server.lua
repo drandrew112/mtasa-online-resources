@@ -35,6 +35,9 @@ local function buildListeners(player, players, range)
 	local set = {}
 	if isMuted(player) then return set end
 
+	-- radio (radio/server.lua): everybody on the frequency while the transmission is live
+	if Radio then Radio.addListeners(player, set) end
+
 	local x, y, z = getElementPosition(player)
 	local dim, int = getElementDimension(player), getElementInterior(player)
 	local veh = getPedOccupiedVehicle(player)
@@ -51,6 +54,12 @@ local function buildListeners(player, players, range)
 		end
 	end
 	return set
+end
+
+-- Rebuild one player's listeners now (the radio calls it when a transmission goes live / ends).
+function refreshVoiceListeners(player)
+	if not isElement(player) then return end
+	applyListeners(player, buildListeners(player, getElementsByType("player"), VOICE.RANGE + VOICE.BROADCAST_MARGIN))
 end
 
 local function updateAll()

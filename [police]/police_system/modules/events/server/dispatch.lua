@@ -10,6 +10,12 @@ function isOfficerOnDuty(player)
     return isElement(player) and POL.units.isOnDuty(player) or false
 end
 
+-- Exported: the callsign of the unit the officer is signed in to, or false (v_voice radio)
+function getOfficerUnit(player)
+    local u = isElement(player) and POL.units.of(player)
+    return u and (u.callsign or u.id) or false
+end
+
 -- on-duty officers are in the ai_peds group "police" (the AI cops too): scene NPCs hostile only to the police
 -- (v_scenemanager) attack them and nobody else
 local function setAIGroup(player, on)

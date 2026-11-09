@@ -1,9 +1,19 @@
 <meta>
-	<info author="DrAndrew112" type="script" name="v_voice" version="1.0.0" description="Proximity voice chat: only nearby players hear each other" />
+	<info author="DrAndrew112" type="script" name="v_voice" version="1.1.0" description="Proximity voice chat + push-to-talk radio frequencies" />
 
 	<script src="config.lua" type="shared" />
 	<script src="server.lua" type="server" />
 	<script src="client.lua" type="client" />
+
+	<!-- radio module -->
+	<script src="radio/server.lua" type="server" />
+	<script src="radio/agencies.lua" type="server" />
+	<script src="radio/client.lua" type="client" />
+	<file src="sounds/push.wav" />
+	<file src="sounds/release.wav" />
+	<file src="sounds/intro.wav" />
+	<file src="sounds/outro.wav" />
+	<file src="sounds/static.wav" />
 
 	<!-- server: isPlayerTalking(player), getPlayerVoiceListeners(player) -> { player, ... } -->
 	<export function="isPlayerTalking" type="server" />
@@ -11,6 +21,28 @@
 	<!-- client: isPlayerTalking(player), isLocalTalking() -->
 	<export function="isPlayerTalking" type="client" />
 	<export function="isLocalTalking" type="client" />
+
+	<!-- radio, server:
+	     setPlayerRadioFrequency(player, freq | false), getPlayerRadioFrequency(player) -> freq | false
+	     setPlayerRadioUnit(player, label | false), getPlayerRadioUnit(player) -> label | false
+	     getRadioFrequencyPlayers(freq) -> { player, ... }, getRadioSpeakers(freq) -> { player, ... }
+	     isPlayerRadioTalking(player) -> live transmission (after the intro) -->
+	<export function="setPlayerRadioFrequency" type="server" />
+	<export function="getPlayerRadioFrequency" type="server" />
+	<export function="setPlayerRadioUnit" type="server" />
+	<export function="getPlayerRadioUnit" type="server" />
+	<export function="getRadioFrequencyPlayers" type="server" />
+	<export function="getRadioSpeakers" type="server" />
+	<export function="isPlayerRadioTalking" type="server" />
+	<!-- radio, client:
+	     getRadioFrequency() -> freq | false, getRadioUnit() -> own unit label | false
+	     isRadioTalking() -> own transmission live, getRadioState() -> "off" | "keying" | "live"
+	     getRadioSpeaker() -> { player, name, unit, live } | false (other speaker on our frequency) -->
+	<export function="getRadioFrequency" type="client" />
+	<export function="getRadioUnit" type="client" />
+	<export function="isRadioTalking" type="client" />
+	<export function="getRadioState" type="client" />
+	<export function="getRadioSpeaker" type="client" />
 
 	<min_mta_version client="1.5.6" server="1.5.6" />
 </meta>
