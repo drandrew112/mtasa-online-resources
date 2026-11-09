@@ -17,10 +17,11 @@ local MENU = {
     },
 }
 
--- nil = everyone; with the role requirement only the flagged medics see the menu
+-- nil = everyone; with the role requirement only the EMS medics see the menu (hospital staff
+-- examine from the hospital patient panel, med_hospitals er/)
 local function getVisibleTo()
     if not MEDIC.REQUIRE_MEDIC_ROLE then return nil end
-    return getMedicPlayers()
+    return getMedicPlayers("ems")
 end
 
 local function isIORunning()
@@ -48,7 +49,7 @@ function updateInteractVisibility()
 end
 
 addEventHandler("onInteractMenuSelect", root, function(menuId, value, target)
-    if not menuIds[menuId] or value ~= "examine" then return end
+    if not menuIds[menuId] or value ~= "examine" or isHostMedic(source) then return end
     openExamination(source, target)
 end)
 

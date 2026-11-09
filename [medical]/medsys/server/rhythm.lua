@@ -459,7 +459,7 @@ addEventHandler("medic:defib", resourceRoot, function(target, op, value)
     if message and everyone then
         notifyExaminers(target, message, isError)
     elseif message then
-        triggerClientEvent(medic, "medic:panelMessage", resourceRoot, message, isError == true)
+        sendPanelMessage(medic, message, isError)
     end
     if Patients[target] == state then sendPanelUpdates(state) end
 end)

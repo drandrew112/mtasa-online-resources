@@ -540,5 +540,11 @@
   "medsys.drug.note_stroke": "stroke",
   "medsys.drug.note_stemi": "STEMI",
   "medsys.drug.note_lysis": "lízis előtt",
-  "medsys.drug.note_pci": "PCI előtt"
+  "medsys.drug.note_pci": "PCI előtt",
+  "medsys.host.defibrillator": "Defibrillátor",
+  "medsys.host.attach_monitor_first": "Előbb csatlakoztasd a monitort",
+  "medsys.host.monitor_on": "Monitor fent",
+  "medsys.host.attach_monitor": "Monitor fel",
+  "medsys.host.wait": "Várj…",
+  "medsys.treatment.in_hospital_care": "A beteg a kórház ellátásában van: a sürgősségi személyzet kezeli"
 }

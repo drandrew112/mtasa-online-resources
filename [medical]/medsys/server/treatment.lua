@@ -2,6 +2,9 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 -- Examination sessions (who has the panel open on whom) and treatments (minigames).
 --
 -- Examining[medic] = target                      -- open examination panels
+-- HostMode[medic] = true                         -- that "panel" is the hospital patient panel (med_hospitals
+--                                                   er/): hospital staff never get the medsys panel, the
+--                                                   client gets medic:host* events instead of medic:panel*
 -- Watchers[target] = { [medic] = true }          -- reverse index for the per-tick panel updates
 -- Treatments[medic] = { target, action, option, dose, sessionId, timer, aborted }
 -- Locks[target] = { [key] = medic }              -- one medic per procedure per patient; the key is
@@ -21,6 +24,7 @@ addEvent("medic:requestTransport", true)
 addEvent("medic:measureGlucose", true)
 
 local Examining = {}
+local HostMode = {}
 local Watchers = {}
 local Treatments = {}
 local Locks = {}
@@ -35,7 +39,7 @@ local LOCK_CONTROLS = { "forwards", "backwards", "left", "right", "jump", "sprin
 
 local function getDisplayName(element)
     if getElementType(element) == "player" then
-        return (getPlayerName(element):gsub("#%x%x%x%x%x%x", ""))
+        return ((getElementData(element, "displayName") or getPlayerName(element)):gsub("#%x%x%x%x%x%x", ""))
     end
     local name = getElementData(element, MEDIC.DATA_NAME)
     return type(name) == "string" and name ~= "" and name or L.msg("medsys.treatment.unknown_patient")
@@ -60,6 +64,8 @@ end
 
 -- Medic role. The server table is the authority; the element data copy (MEDIC.DATA_ROLE) only
 -- lets clients (e.g. the EMS tablet) know it, and client-side changes to it are reverted.
+-- Medics[player] = kind: "ems" (the medsys examination panel) or "hospital" (hospital staff: they
+-- work from the hospital patient panel of med_hospitals, the medsys panel never opens for them)
 local Medics = {}
 
 addEvent("onPlayerMedicChange") -- source: player, arg: enabled
@@ -72,12 +78,22 @@ end
 
 -- Does the player hold the medic role (the bare flag, whether or not the role is required)
 function isPlayerMedic(player)
-    return Medics[player] == true
+    return Medics[player] ~= nil
+end
+
+-- "ems" | "hospital" | false
+function getMedicKind(player)
+    return Medics[player] or false
+end
+
+-- Hospital staff: medsys runs in host mode for them (no medsys panel)
+function isHostMedic(player)
+    return Medics[player] == "hospital"
 end
 
 -- May the player work as a medic: always when the role is not required, otherwise with the role
 function hasMedicAccess(player)
-    return not MEDIC.REQUIRE_MEDIC_ROLE or Medics[player] == true
+    return not MEDIC.REQUIRE_MEDIC_ROLE or Medics[player] ~= nil
 end
 
 local function syncMedicData(player)
@@ -88,22 +104,27 @@ local function syncMedicData(player)
     end
 end
 
--- Gives (true) or takes (false) the medic role
-function setPlayerMedic(player, enabled)
+-- Gives (true) or takes (false) the medic role. kind: "ems" (default) or "hospital"
+function setPlayerMedic(player, enabled, kind)
     if not isElement(player) or getElementType(player) ~= "player" then return false end
     enabled = enabled and true or false
-    if (Medics[player] == true) == enabled then return true end
-    Medics[player] = enabled or nil
+    kind = enabled and (kind == "hospital" and "hospital" or "ems") or nil
+    if Medics[player] == kind then return true end
+    -- the role or its kind changes: the open panel (medsys or hospital host) goes
+    if Examining[player] then closeExamination(player) end
+    Medics[player] = kind
     syncMedicData(player)
-    if not enabled and MEDIC.REQUIRE_MEDIC_ROLE and Examining[player] then closeExamination(player) end
     updateInteractVisibility()
     triggerEvent("onPlayerMedicChange", player, enabled)
     return true
 end
 
-function getMedicPlayers()
+-- kind: nil = every medic, "ems" / "hospital" = only that kind
+function getMedicPlayers(kind)
     local list = {}
-    for player in pairs(Medics) do list[#list + 1] = player end
+    for player, k in pairs(Medics) do
+        if not kind or k == kind then list[#list + 1] = player end
+    end
     return list
 end
 
@@ -671,7 +692,9 @@ end
 function closeExamination(medic, notifyClient)
     local target = Examining[medic]
     if not target then return false end
+    local host = HostMode[medic]
     Examining[medic] = nil
+    HostMode[medic] = nil
 
     local watchers = Watchers[target]
     if watchers then
@@ -680,12 +703,19 @@ function closeExamination(medic, notifyClient)
     end
     refreshSubscription(medic, target)
     if notifyClient ~= false and isElement(medic) then
-        triggerClientEvent(medic, "medic:panelClose", resourceRoot)
+        triggerClientEvent(medic, host and "medic:hostClose" or "medic:panelClose", resourceRoot)
     end
     return true
 end
 
--- message: optional result line shown on the panel (e.g. after a procedure), isError colours it red
+-- A line for the medic's panel (the medsys panel, or the hospital panel in host mode)
+function sendPanelMessage(medic, message, isError)
+    if not isElement(medic) then return end
+    triggerClientEvent(medic, isHostMedic(medic) and "medic:hostMessage" or "medic:panelMessage", resourceRoot, message, isError == true)
+end
+
+-- message: optional result line shown on the panel (e.g. after a procedure), isError colours it red.
+-- Hospital staff (isHostMedic) get the host mode: the snapshot goes to the hospital patient panel.
 function openExamination(medic, target, message, isError)
     if not canAttend(medic, target, MEDIC.PANEL_RANGE) then return false end
     if Treatments[medic] then return false end
@@ -693,13 +723,18 @@ function openExamination(medic, target, message, isError)
         closeExamination(medic, false)
     end
 
+    local host = isHostMedic(medic)
+    if Examining[medic] == target and (HostMode[medic] == true) ~= host then
+        closeExamination(medic, false)
+    end
     local snapshot = getPanelSnapshot(target)
     Examining[medic] = target
+    HostMode[medic] = host or nil
     Watchers[target] = Watchers[target] or {}
     Watchers[target][medic] = true
     refreshSubscription(medic, target)
 
-    triggerClientEvent(medic, "medic:panelOpen", resourceRoot, target, getDisplayName(target),
+    triggerClientEvent(medic, host and "medic:hostOpen" or "medic:panelOpen", resourceRoot, target, getDisplayName(target),
         snapshot, message, isError == true)
     return true
 end
@@ -710,16 +745,18 @@ function sendPanelUpdates(state)
     local watchers = Watchers[target]
     if not watchers then return end
 
-    local list = {}
+    local list, hosts = {}, {}
     for medic in pairs(watchers) do
         if isElement(medic) and isNear(medic, target, MEDIC.PANEL_RANGE) then
-            list[#list + 1] = medic
+            if HostMode[medic] then hosts[#hosts + 1] = medic else list[#list + 1] = medic end
         else
             closeExamination(medic)
         end
     end
-    if #list > 0 then
-        triggerClientEvent(list, "medic:panelUpdate", resourceRoot, target, getPanelSnapshot(target))
+    if #list > 0 or #hosts > 0 then
+        local snapshot = getPanelSnapshot(target)
+        if #list > 0 then triggerClientEvent(list, "medic:panelUpdate", resourceRoot, target, snapshot) end
+        if #hosts > 0 then triggerClientEvent(hosts, "medic:hostUpdate", resourceRoot, target, snapshot) end
     end
 end
 
@@ -734,7 +771,7 @@ end
 
 addEventHandler("medic:requestExamine", resourceRoot, function(target)
     if not openExamination(client, target) then
-        triggerClientEvent(client, "medic:panelClose", resourceRoot)
+        triggerClientEvent(client, isHostMedic(client) and "medic:hostClose" or "medic:panelClose", resourceRoot)
     end
 end)
 
@@ -745,7 +782,7 @@ end)
 -- spot = { x, y, z, rotation, canDrive } picked by the client next to the body, or nil
 addEventHandler("medic:requestTransport", resourceRoot, function(target, spot)
     local medic = client
-    if Examining[medic] ~= target then return end
+    if Examining[medic] ~= target or HostMode[medic] then return end -- no transport from the hospital
     local ok, reason
     if not canAttend(medic, target, MEDIC.PANEL_RANGE) then
         ok, reason = false, L.msg("medsys.rhythm.too_far_from_patient")
@@ -755,7 +792,7 @@ addEventHandler("medic:requestTransport", resourceRoot, function(target, spot)
     if ok then
         openExamination(medic, target, L.msg("medsys.treatment.transport_requested_arrives_in_s", { transport_delay = MEDIC.TRANSPORT_DELAY }))
     else
-        triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
+        sendPanelMessage(medic, reason, true)
     end
 end)
 
@@ -896,11 +933,14 @@ end
 function notifyExaminers(target, message, isError)
     local watchers = Watchers[target]
     if not watchers then return end
-    local list = {}
+    local list, hosts = {}, {}
     for medic in pairs(watchers) do
-        if isElement(medic) then list[#list + 1] = medic end
+        if isElement(medic) then
+            if HostMode[medic] then hosts[#hosts + 1] = medic else list[#list + 1] = medic end
+        end
     end
     if #list > 0 then triggerClientEvent(list, "medic:panelMessage", resourceRoot, message, isError == true) end
+    if #hosts > 0 then triggerClientEvent(hosts, "medic:hostMessage", resourceRoot, message, isError == true) end
 end
 
 function isExaminingPatient(medic, target)
@@ -938,6 +978,10 @@ function startTreatment(medic, target, action, option, dose)
         if rate and rate.perm then allowed, why = checkMedicPermission(medic, rate.perm) end
     end
     if not allowed then return false, why end
+    -- a patient handed over to the ER (med_hospitals er.case) is the hospital staff's, not the EMS crew's
+    if not isHostMedic(medic) and isElement(target) and getElementData(target, "er.case") then
+        return false, L.msg("medsys.treatment.in_hospital_care")
+    end
     if Treatments[medic] then return false, L.msg("medsys.treatment.you_are_busy") end
     if not canAttend(medic, target, MEDIC.INTERACT_RANGE) then return false, L.msg("medsys.rhythm.too_far_from_patient") end
     if procedure.resource and not isResourceRunning(procedure.resource) then return false, L.msg("medsys.treatment.equipment_unavailable") end
@@ -1019,7 +1063,7 @@ addEventHandler("medic:requestTreatment", resourceRoot, function(target, action,
     if Examining[medic] ~= target then return end
     local ok, reason = startTreatment(medic, target, action, option, dose)
     if not ok then
-        triggerClientEvent(medic, "medic:panelMessage", resourceRoot, reason, true)
+        sendPanelMessage(medic, reason, true)
     end
 end)
 

@@ -35,6 +35,7 @@
     <script src="ecg12/client/render.lua" type="client" /> <!-- 12-lead ECG renderer + viewer -->
     <script src="client/glucometer.lua" type="client" />
     <script src="client/panel.lua" type="client" />
+    <script src="client/host.lua" type="client" /> <!-- hospital staff: medsys driven by the med_hospitals patient panel -->
     <script src="client/interaction.lua" type="client" />
     <script src="client/progress.lua" type="client" />
     <script src="client/role.lua" type="client" />
@@ -93,9 +94,17 @@
     <export function="hasMedicAccess" type="server" />
     <export function="isMedicRoleRequired" type="server" />
     <export function="getMedicPlayers" type="server" />
+    <export function="getMedicKind" type="server" />
+    <export function="isHostMedic" type="server" />
     <export function="isPlayerMedic" type="client" />
     <export function="hasMedicAccess" type="client" />
     <export function="isMedicRoleRequired" type="client" />
+    <!-- host mode: the hospital patient panel (med_hospitals er/) drives medsys for hospital staff -->
+    <export function="hostWatch" type="client" />
+    <export function="setHostAnchor" type="client" />
+    <export function="hostAction" type="client" />
+    <export function="isHostWindowAt" type="client" />
+    <export function="getHostState" type="client" />
 
     <!-- examination (for the EMS job script) -->
     <export function="openExamination" type="server" />
