@@ -48,7 +48,7 @@ function getNetworkTrains()
             id = c.id, number = c.number, label = c.label, x = r1(c.x), y = r1(c.y), rz = math.floor(rz), track = c.track,
             trackName = RW.TRACK_NAMES[c.track] or tostring(c.track),
             speed = math.floor(c.speed + 0.5), moving = c.moveDir ~= 0,
-            driver = c.auto and "Automatic" or (c.driver and clean(getPlayerName(c.driver)) or false),
+            driver = c.auto and "Automatic" or (c.driver and clean((getElementData(c.driver, "displayName") or getPlayerName(c.driver))) or false),
             auto = c.auto,
             loco = RW.VEHICLES[c.loco] and RW.VEHICLES[c.loco].name or c.loco,
             vehicles = types, carriages = c.carriages, seats = c.seats,

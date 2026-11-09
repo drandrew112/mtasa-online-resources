@@ -116,7 +116,7 @@ local function content(veh, info)
         rows[#rows + 1] = { text = L("rw_core.trainlabel.not_in_service"), color = C.muted, font = font(13, true) }
     end
     local driver = getVehicleOccupant(veh, 0)
-    local who = auto and L("rw_core.trainlabel.automatic") or (driver and getElementType(driver) == "player" and clean(getPlayerName(driver))) or L("rw_core.trainlabel.no_driver")
+    local who = auto and L("rw_core.trainlabel.automatic") or (driver and getElementType(driver) == "player" and clean((getElementData(driver, "displayName") or getPlayerName(driver)))) or L("rw_core.trainlabel.no_driver")
     local cars = tonumber(getElementData(veh, "rw.cars")) or 0
     rows[#rows + 1] = { text = who, color = C.muted, font = font(11),
         right = { cars > 0 and (cars .. (cars == 1 and " coach" or " coaches")) or L("rw_core.trainlabel.light_engine"), C.muted } }

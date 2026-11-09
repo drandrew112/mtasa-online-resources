@@ -74,7 +74,8 @@ addCommandHandler("rwrole", function(player, _, name, state)
         if not target then
             local q = name:lower()
             for _, p in ipairs(getElementsByType("player")) do
-                if getPlayerName(p):gsub("#%x%x%x%x%x%x", ""):lower():find(q, 1, true) then target = p break end
+                if getPlayerName(p):gsub("#%x%x%x%x%x%x", ""):lower():find(q, 1, true)
+                    or tostring(getElementData(p, "displayName") or ""):lower():find(q, 1, true) then target = p break end
             end
         end
     end
@@ -86,7 +87,7 @@ addCommandHandler("rwrole", function(player, _, name, state)
     if state == "on" then enable = true elseif state == "off" then enable = false
     else enable = not isPlayerRailway(target) end
     setPlayerRailway(target, enable)
-    local who = getPlayerName(target):gsub("#%x%x%x%x%x%x", "")
+    local who = (getElementData(target, "displayName") or getPlayerName(target)):gsub("#%x%x%x%x%x%x", "")
     outputChatBox(L.msg("rw_core.role.vasutas_jog", { company_short = RW.COMPANY_SHORT, enable = enable and L.msg("rw_core.role.granted") or L.msg("rw_core.role.revoked"), who = who }), player, 120, 200, 255)
     if target ~= player then
         outputChatBox(L.msg("rw_core.role.your_railway_rights_were", { company_short = RW.COMPANY_SHORT, enable = enable and L.msg("rw_core.role.granted") or L.msg("rw_core.role.revoked") }), target, 120, 200, 255)

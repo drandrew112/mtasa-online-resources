@@ -68,7 +68,7 @@ local function nearbyConsists(d)
 end
 
 local function describe(info)
-    local driver = info.driver and getPlayerName(info.driver):gsub("#%x%x%x%x%x%x", "") or L.msg("rw_core.depot.no_driver")
+    local driver = info.driver and (getElementData(info.driver, "displayName") or getPlayerName(info.driver)):gsub("#%x%x%x%x%x%x", "") or L.msg("rw_core.depot.no_driver")
     return L.msg("rw_core.depot.car_s", { label = info.label, carriages = info.carriages, driver = driver })
 end
 
@@ -161,7 +161,7 @@ addEventHandler("rw:depot:action", resourceRoot, function(action, a, b)
         local info = getConsist(a)
         if tt("getConsistService", a) then err = L.msg("rw_core.depot.it_runs_service")
         elseif info and info.driver and info.driver ~= player then err = L.msg("rw_core.depot.somebody_is_driving_it")
-        else done = destroyConsist(a, L.msg("rw_core.depot.sent_to_shed_by", { player = getPlayerName(player):gsub("#%x%x%x%x%x%x", "") })) end
+        else done = destroyConsist(a, L.msg("rw_core.depot.sent_to_shed_by", { player = (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "") })) end
     end
     if done then notify(player, "Done.", true) else notify(player, L.msg("rw_core.depot.cannot_do_it", { err = tostring(err) })) end
 end)
