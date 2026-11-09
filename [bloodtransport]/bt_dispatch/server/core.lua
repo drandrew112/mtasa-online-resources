@@ -355,7 +355,7 @@ function signOn(player)
     local unit = (getVehiclePlateText(vehicle) or ""):gsub("^%s+", ""):gsub("%s+$", "")
     local account = isRunning("v_accounts") and exports.v_accounts:getName(player) or nil
     local shift = {
-        player = player, vehicle = vehicle, unit = unit, name = getPlayerName(player):gsub("#%x%x%x%x%x%x", ""),
+        player = player, vehicle = vehicle, unit = unit, name = (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", ""),
         account = account or getPlayerName(player), windDown = false, order = {}, delivered = 0, startedTick = getTickCount(),
         startedAt = getRealTime().timestamp, tutorial = tutorial and true or nil,
     }
