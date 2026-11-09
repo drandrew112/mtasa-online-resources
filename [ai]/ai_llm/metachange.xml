@@ -1,0 +1,42 @@
+<meta>
+    <info author="DrAndrew112" name="AI LLM" version="1.0.0" type="script"
+          description="Shared LLM gateway (Gemini): queued requests with system prompt, named contexts, JSON / schema answers; results as events" />
+    <min_mta_version server="1.5.9" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="config.lua"          type="server" />
+    <script src="server/json.lua"     type="server" />
+    <script src="server/contexts.lua" type="server" />
+    <script src="server/gemini.lua"   type="server" />
+    <script src="server/main.lua"     type="server" />
+
+    <!-- Settings - the Gemini API key. meta.xml is gitignored (it holds the real key); this metachange.xml
+         is the versioned template: copy it to meta.xml and paste the key. Never put the key in a client file. -->
+    <settings>
+        <setting name="#gemini_api_key"
+                 value="PASTE_YOUR_API_KEY_HERE"
+                 friendlyname="Gemini API Key"
+                 accept="*"
+                 desc="A Gemini AI eléréséhez szükséges API kulcs." />
+        <setting name="#gemini_model"
+                 value="gemini-3.5-flash-lite"
+                 friendlyname="Gemini model"
+                 accept="*"
+                 desc="Alapértelmezett Gemini modell (a kérés model mezője felülírja)." />
+    </settings>
+
+    <!-- ================= EXPORTS: SERVER ================= -->
+    <!-- request(options) -> requestId | false, error. The answer arrives as the event
+         onAiLlmResponse(requestId, ok, text, error, info) on the calling resource's root element. -->
+    <export function="request"       type="server" />
+    <export function="cancelRequest" type="server" />
+    <!-- named contexts: setContext(name, text), getContext(name), removeContext(name), getContexts() -->
+    <export function="setContext"    type="server" />
+    <export function="getContext"    type="server" />
+    <export function="removeContext" type="server" />
+    <export function="getContexts"   type="server" />
+    <export function="isConfigured"  type="server" />
+    <export function="getQueueInfo"  type="server" />
+    <!-- getErrorKind(error, info) -> overloaded | timeout | network | not_configured | auth | blocked | invalid_answer | cooldown | error -->
+    <export function="getErrorKind"  type="server" />
+</meta>
