@@ -57,6 +57,30 @@ end
 local LOCAL_RANGE = 30
 
 -- channel: "global" (default) | "local"
+-- Discord sender: "[ADMIN] :flag: **DisplayName** (accountname)" (admin tag only with an admin level,
+-- flag = the ui_core country code as a regional-indicator emoji)
+local ADMIN_TAGS = { "Trial Mod", "Mod", "Admin", "Superadmin", "Dev", "Owner" }
+
+local function flagEmoji(code)
+    if type(code) ~= "string" or not code:match("^%a%a$") then return nil end
+    code = code:upper()
+    return utf8.char(0x1F1E6 + code:byte(1) - 65, 0x1F1E6 + code:byte(2) - 65)
+end
+
+function discordSender(player)
+    local acc = tostring(getElementData(player, "accName") or getPlayerName(player))
+    local display = tostring(getElementData(player, "displayName") or acc)
+    local clean = function(s) return (s:gsub("#%x%x%x%x%x%x", ""):gsub("[*_`~|]", "")) end
+    local parts = {}
+    local level = tonumber(getElementData(player, "admin_level")) or 0
+    if ADMIN_TAGS[level] then parts[#parts + 1] = "**[" .. ADMIN_TAGS[level] .. "]**" end
+    local flag = flagEmoji(getElementData(player, "country"))
+    if flag then parts[#parts + 1] = flag end
+    parts[#parts + 1] = "**" .. clean(display) .. "**"
+    parts[#parts + 1] = "(" .. clean(acc) .. ")"
+    return table.concat(parts, " ")
+end
+
 function sendMessageToAll(sender, text, channel)
     channel = (channel == "local") and "local" or "global"
     local x, y, z, dim, int
@@ -105,7 +129,7 @@ addEventHandler("sendMessageToAll", getRootElement(), function(_, text, channel)
     channel = (channel == "local") and "local" or "global"
     sendMessageToAll(player, text, channel)
     local tag = (channel == "local") and "[Local] " or ""
-    exports.v_discordmanager:sendWebhook("chat", tag.."**"..getPlayerName(player).."**: "..text)
+    exports.v_discordmanager:sendWebhook("chat", tag..discordSender(player)..": "..text)
     triggerEvent("onPlayerChatMessage", player, text, channel)
 end)
 
