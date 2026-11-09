@@ -112,7 +112,7 @@ addCommandHandler("atcright", function(player, _, a, b, c)
         aviNotify(player, L.msg("avi_core.role.usage_atcright_player_twr_app_radar"))
         return
     end
-    local who = getPlayerName(target):gsub("#%x%x%x%x%x%x", "")
+    local who = (getElementData(target, "displayName") or getPlayerName(target)):gsub("#%x%x%x%x%x%x", "")
     if right == "reset" then
         setPlayerATCRights(target, false)
         aviNotify(player, L.msg("avi_core.role.atc_rights_reset", { who = who }))
