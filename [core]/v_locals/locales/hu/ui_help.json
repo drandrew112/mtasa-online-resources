@@ -59,5 +59,20 @@
   "ui_help.donate.cmd.running": "Futó támogatási event: x{mult}, {time}-ig. {label}",
   "ui_help.donate.cmd.usage": "Használat: /donateevent <szorzó {min}-{max}> <óra, max {hours}> [név]  vagy  /donateevent stop",
   "ui_help.donate.cmd.started": "Támogatási event elindítva: x{mult}, {hours} órára.",
-  "ui_help.donate.cmd.stopped": "A támogatási event leállítva."
+  "ui_help.donate.cmd.stopped": "A támogatási event leállítva.",
+  "ui_help.ai.err_invalid": "Érvénytelen kérdés.",
+  "ui_help.ai.err_empty": "A kérdés nem lehet üres.",
+  "ui_help.ai.err_too_long": "A kérdés legfeljebb {max} karakter lehet.",
+  "ui_help.ai.err_busy": "Már feldolgozás alatt van egy kérdésed.",
+  "ui_help.ai.err_per_minute": "Percenként csak egy kérdést tehetsz fel.",
+  "ui_help.ai.err_offline": "Az AI asszisztens most nem elérhető.",
+  "ui_help.ai.err_overloaded": "Az AI most túlterhelt. Próbáld újra pár másodperc múlva.",
+  "ui_help.ai.err_timeout": "Az AI nem válaszolt időben. Próbáld újra.",
+  "ui_help.ai.err_network": "Az AI szolgáltatás most nem érhető el.",
+  "ui_help.ai.err_not_configured": "Az AI nincs beállítva a szerveren.",
+  "ui_help.ai.err_auth": "Az AI szolgáltatás elutasította a kérést (API kulcs).",
+  "ui_help.ai.err_blocked": "Az AI nem válaszolt erre a kérdésre.",
+  "ui_help.ai.err_invalid_answer": "Az AI nem adott használható választ. Próbáld újra.",
+  "ui_help.ai.err_cooldown": "Túl sok kérdés. Várj egy kicsit.",
+  "ui_help.ai.err_error": "Az AI hibát adott vissza. Próbáld újra később."
 }

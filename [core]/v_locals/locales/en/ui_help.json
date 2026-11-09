@@ -59,5 +59,20 @@
   "ui_help.donate.cmd.running": "Donate event running: x{mult} until {time}. {label}",
   "ui_help.donate.cmd.usage": "Usage: /donateevent <multiplier {min}-{max}> <hours, max {hours}> [label]  or  /donateevent stop",
   "ui_help.donate.cmd.started": "Donate event started: x{mult} for {hours} hours.",
-  "ui_help.donate.cmd.stopped": "The donate event was stopped."
+  "ui_help.donate.cmd.stopped": "The donate event was stopped.",
+  "ui_help.ai.err_invalid": "Invalid question.",
+  "ui_help.ai.err_empty": "The question cannot be empty.",
+  "ui_help.ai.err_too_long": "The question can be at most {max} characters long.",
+  "ui_help.ai.err_busy": "Your previous question is still being answered.",
+  "ui_help.ai.err_per_minute": "You can ask one question per minute.",
+  "ui_help.ai.err_offline": "The AI assistant is not available now.",
+  "ui_help.ai.err_overloaded": "The AI is overloaded right now. Try again in a few seconds.",
+  "ui_help.ai.err_timeout": "The AI did not answer in time. Try again.",
+  "ui_help.ai.err_network": "The AI service cannot be reached now.",
+  "ui_help.ai.err_not_configured": "The AI is not set up on the server.",
+  "ui_help.ai.err_auth": "The AI service refused the request (API key).",
+  "ui_help.ai.err_blocked": "The AI refused to answer this question.",
+  "ui_help.ai.err_invalid_answer": "The AI gave no usable answer. Try again.",
+  "ui_help.ai.err_cooldown": "Too many questions. Wait a moment.",
+  "ui_help.ai.err_error": "The AI returned an error. Try again later."
 }

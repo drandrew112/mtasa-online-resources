@@ -1,26 +1,16 @@
--- MTA:SA Gemini AI súgó - szerveroldali script
--- API-kulcs: https://aistudio.google.com/apikey
--- A kulcsot itt add meg, és soha ne tedd kliensoldali fájlba.
-
-local GEMINI_API_KEY = get(getResourceName(getThisResource()) .. ".gemini_api_key")
--- Ellenőrzés, hogy a kulcs be van-e állítva
-if not GEMINI_API_KEY or GEMINI_API_KEY == "PASTE_YOUR_API_KEY_HERE" or GEMINI_API_KEY == "" then
-    outputDebugString("[Help AI] WARNING: Gemini API Key not set correctly in meta.xml!", 2)
-else
-    outputDebugString("[Help AI] API Key loaded.", 3)
-end
-
-local GEMINI_MODEL = "gemini-3.5-flash-lite"
-
-local API_URL = "https://generativelanguage.googleapis.com/v1beta/models/"
-    .. GEMINI_MODEL .. ":generateContent"
+if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
+-- Help AI assistant - server side. The AI call goes through [ai]/ai_llm (API key, model, queue);
+-- this resource has no key of its own any more.
+--   client helpAI:ask(requestId, question, context, language)
+--   -> exports.ai_llm:request(...) -> onAiLlmResponse -> client helpAI:response(requestId, answer, err)
 
 local MAX_QUESTION_LENGTH = 1500
 local MAX_CONTEXT_LENGTH = 18000
 local REQUEST_COOLDOWN_MS = 60000
 
 local lastRequestAt = {}
-local requestBusy = {}
+local requestBusy = {}    -- [player] = ai_llm request id
+local pending = {}        -- [ai_llm request id] = { player, requestId }
 
 local SYSTEM_INSTRUCTION = [[
 Te egy MTA:SA játékszerver súgóasszisztense vagy.
@@ -34,208 +24,103 @@ Ne állítsd, hogy műveletet hajtottál végre a játékban, vagy hogy hozzáf�
 a játékos környezetében lévő objektumok, NPC-k vagy járművek adataihoz.
 ]]
 
+-- error kinds of ai_llm (overloaded, timeout, network, not_configured, auth, blocked, invalid_answer, cooldown, error)
+local AI_KINDS = { overloaded = true, timeout = true, network = true, not_configured = true, auth = true,
+    blocked = true, invalid_answer = true, cooldown = true, error = true }
+
 local function sendResult(player, requestId, answer, err)
     if not isElement(player) then return end
-
-    triggerClientEvent(
-        player,
-        "helpAI:response",
-        resourceRoot,
-        tostring(requestId or ""),
-        tostring(answer or ""),
-        err or false
-    )
+    triggerClientEvent(player, "helpAI:response", resourceRoot,
+        tostring(requestId or ""), tostring(answer or ""), err or false)
 end
 
-local function requestGemini(player, requestId, question, context, language)
+local function aiRunning()
+    local res = getResourceFromName("ai_llm")
+    return res and getResourceState(res) == "running"
+end
+
+local function kindText(player, kind)
+    if not AI_KINDS[kind] then kind = "error" end
+    return L.forPlayer(player, "ui_help.ai.err_" .. kind)
+end
+
+local function askAI(player, requestId, question, context, language)
     if not isElement(player) then return end
 
-    if not GEMINI_API_KEY or GEMINI_API_KEY == ""
-        or GEMINI_API_KEY == "IDE_IRD_AZ_UJ_GEMINI_API_KULCSOD" then
-        sendResult(player, requestId, "", "Nincs beállítva a Gemini API-kulcs a server_ai.lua fájlban.")
-        return
-    end
-
     if type(question) ~= "string" then
-        sendResult(player, requestId, "", "Érvénytelen kérdés.")
-        return
+        return sendResult(player, requestId, "", L.forPlayer(player, "ui_help.ai.err_invalid"))
     end
-
     question = question:gsub("^%s+", ""):gsub("%s+$", "")
     if question == "" then
-        sendResult(player, requestId, "", "A kérdés nem lehet üres.")
-        return
+        return sendResult(player, requestId, "", L.forPlayer(player, "ui_help.ai.err_empty"))
     end
     if #question > MAX_QUESTION_LENGTH then
-        sendResult(player, requestId, "", "A kérdés legfeljebb 1500 karakter lehet.")
-        return
+        return sendResult(player, requestId, "", L.forPlayer(player, "ui_help.ai.err_too_long", { max = MAX_QUESTION_LENGTH }))
     end
-
     if type(context) ~= "string" then context = "" end
-    if #context > MAX_CONTEXT_LENGTH then
-        context = context:sub(1, MAX_CONTEXT_LENGTH)
-    end
+    if #context > MAX_CONTEXT_LENGTH then context = context:sub(1, MAX_CONTEXT_LENGTH) end
 
     local now = getTickCount()
     if requestBusy[player] then
-        sendResult(player, requestId, "", "Már feldolgozás alatt van egy kérdésed.")
-        return
+        return sendResult(player, requestId, "", L.forPlayer(player, "ui_help.ai.err_busy"))
     end
     if lastRequestAt[player] and now - lastRequestAt[player] < REQUEST_COOLDOWN_MS then
-        sendResult(player, requestId, "", "Percenként csak egy kérdést tehetsz fel.")
-        return
+        return sendResult(player, requestId, "", L.forPlayer(player, "ui_help.ai.err_per_minute"))
+    end
+    if not aiRunning() then
+        return sendResult(player, requestId, "", L.forPlayer(player, "ui_help.ai.err_offline"))
     end
 
     local languageName = language == "en" and "English" or "Hungarian"
-    local prompt = "Válasz nyelve: " .. languageName .. ".\n\n"
-        .. "A szerver súgódokumentációjának releváns részletei:\n"
-        .. (context ~= "" and context or "(Nem érkezett dokumentációs részlet.)")
-        .. "\n\nJátékos kérdése:\n" .. question
-
-    local payload = {
-        systemInstruction = {
-            parts = { { text = SYSTEM_INSTRUCTION } }
-        },
-        contents = {
-            {
-                role = "user",
-                parts = { { text = prompt } }
-            }
-        },
-        generationConfig = {
-            temperature = 0.2,
-            maxOutputTokens = 700
-        }
-    }
-
-    local postData = toJSON(payload, true)
-    if not postData then
-        sendResult(player, requestId, "", "Nem sikerült JSON-kérést készíteni.")
-        return
-    end
-
-    -- Az MTA toJSON() a táblát a legfelső szinten szögletes zárójelek közé teszi.
-    -- A Gemini egy JSON objektumot vár gyökérelemként, ezért az első/utolsó
-    -- tömbzárójelet eltávolítjuk. A belső tömbök változatlanok maradnak.
-    if postData:sub(1, 1) == "[" and postData:sub(-1) == "]" then
-        postData = postData:sub(2, -2)
+    local aiId, err, kind = exports.ai_llm:request({
+        system = SYSTEM_INSTRUCTION,
+        context = context ~= "" and ("A szerver súgódokumentációjának releváns részletei:\n" .. context)
+            or "(Nem érkezett dokumentációs részlet.)",
+        prompt = "Válasz nyelve: " .. languageName .. ".\n\nJátékos kérdése:\n" .. question,
+        temperature = 0.2,
+        maxTokens = 700,
+    })
+    if not aiId then
+        outputDebugString("[Help AI] ai_llm refused the request: " .. tostring(err), 2)
+        return sendResult(player, requestId, "", kindText(player, kind))
     end
 
     lastRequestAt[player] = now
-    requestBusy[player] = true
-
-    local queued = fetchRemote(API_URL, {
-        method = "POST",
-        headers = {
-            ["Content-Type"] = "application/json",
-            ["x-goog-api-key"] = GEMINI_API_KEY
-        },
-        postData = postData,
-        queueName = "gemini-help",
-        connectionAttempts = 2,
-        connectTimeout = 20000
-    }, function(responseData, responseInfo)
-        requestBusy[player] = nil
-
-        if not isElement(player) then return end
-
-        -- Az options táblás fetchRemote második callback-paramétere tábla.
-        if type(responseInfo) ~= "table" then
-            outputDebugString("[Gemini Help] Ismeretlen fetchRemote callback-formátum: "
-                .. tostring(responseInfo), 1)
-            sendResult(player, requestId, "", "Ismeretlen HTTP callback-válasz.")
-            return
-        end
-
-        local statusCode = tonumber(responseInfo.statusCode) or 0
-        if not responseInfo.success then
-            outputDebugString("[Gemini Help] HTTP/fetchRemote hiba, statusCode="
-                .. statusCode .. ", body=" .. tostring(responseData), 1)
-
-            local body = fromJSON(responseData or "")
-            local detail = type(body) == "table" and body.error
-                and body.error.message or nil
-
-            sendResult(
-                player,
-                requestId,
-                "",
-                "Gemini-kérés sikertelen (HTTP/kód " .. statusCode .. ")."
-                    .. (detail and (" " .. tostring(detail)) or "")
-            )
-            return
-        end
-
-        local response = fromJSON(responseData or "")
-        if type(response) ~= "table" then
-            outputDebugString("[Gemini Help] Nem JSON-válasz: " .. tostring(responseData), 1)
-            sendResult(player, requestId, "", "A Gemini érvénytelen JSON-választ küldött.")
-            return
-        end
-
-        if response.error then
-            local apiError = response.error
-            outputDebugString("[Gemini Help] API hiba "
-                .. tostring(apiError.code) .. ": "
-                .. tostring(apiError.message), 1)
-
-            sendResult(
-                player,
-                requestId,
-                "",
-                "Gemini API hiba (" .. tostring(apiError.code or "?")
-                    .. "): " .. tostring(apiError.message or "ismeretlen hiba")
-            )
-            return
-        end
-
-        local parts = response.candidates
-            and response.candidates[1]
-            and response.candidates[1].content
-            and response.candidates[1].content.parts
-
-        local answerParts = {}
-        if type(parts) == "table" then
-            for _, part in ipairs(parts) do
-                if type(part.text) == "string" then
-                    answerParts[#answerParts + 1] = part.text
-                end
-            end
-        end
-
-        local answer = table.concat(answerParts, "\n")
-        if answer == "" then
-            local reason = response.candidates and response.candidates[1]
-                and response.candidates[1].finishReason
-            outputDebugString("[Gemini Help] Üres válasz, finishReason="
-                .. tostring(reason), 2)
-            sendResult(player, requestId, "", "A Gemini nem adott szöveges választ.")
-            return
-        end
-
-        sendResult(player, requestId, answer, false)
-    end)
-
-    if not queued then
-        requestBusy[player] = nil
-        outputDebugString("[Gemini Help] A fetchRemote nem tudta sorba állítani a kérést.", 1)
-        sendResult(player, requestId, "", "Nem sikerült elindítani a Gemini-kérést.")
-    end
+    requestBusy[player] = aiId
+    pending[aiId] = { player = player, requestId = requestId }
 end
+
+addEvent("onAiLlmResponse")
+addEventHandler("onAiLlmResponse", resourceRoot, function(aiId, ok, text, err, info)
+    local p = pending[aiId]
+    if not p then return end
+    pending[aiId] = nil
+    local player = p.player
+    if not isElement(player) then return end
+    if requestBusy[player] == aiId then requestBusy[player] = nil end
+    if ok then return sendResult(player, p.requestId, text, false) end
+
+    local kind = type(info) == "table" and info.errorKind or "error"
+    outputDebugString("[Help AI] AI error (" .. tostring(kind) .. "): " .. tostring(err), 2)
+    -- the question did not get an answer: it does not use up the per-minute question
+    lastRequestAt[player] = nil
+    sendResult(player, p.requestId, "", kindText(player, kind))
+end)
 
 addEvent("helpAI:ask", true)
 addEventHandler("helpAI:ask", resourceRoot, function(requestId, question, context, language)
     local player = client
     if not player then return end
-
-    if type(requestId) ~= "string" and type(requestId) ~= "number" then
-        requestId = ""
-    end
-
-    requestGemini(player, tostring(requestId), question, context, language)
+    if type(requestId) ~= "string" and type(requestId) ~= "number" then requestId = "" end
+    askAI(player, tostring(requestId), question, context, language)
 end)
 
 addEventHandler("onPlayerQuit", root, function()
+    local aiId = requestBusy[source]
+    if aiId then
+        pending[aiId] = nil
+        if aiRunning() then exports.ai_llm:cancelRequest(aiId) end
+    end
     lastRequestAt[source] = nil
     requestBusy[source] = nil
 end)

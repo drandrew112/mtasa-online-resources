@@ -118,7 +118,8 @@ addEventHandler("helpAI:response", resourceRoot, function(requestId, answer, err
     if AI.state ~= "waiting" or requestId ~= AI.reqId then return end
     AI.reqId = nil
     if err then
-        AI.state, AI.err = "error", tostring(err)
+        -- no answer (AI overloaded, timeout, ...): the question does not use up the minute
+        AI.state, AI.err, AI.lastAskAt = "error", tostring(err), nil
     else
         AI.state, AI.answer = "done", AI.clean(tostring(answer))
     end
