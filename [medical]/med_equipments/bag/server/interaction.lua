@@ -40,7 +40,7 @@ end
 
 function getMenuVisibility()
     if not isMedicRoleRequired() then return nil end
-    return isRunning(MEDSYS) and exports[MEDSYS]:getMedicPlayers() or {}
+    return isRunning(MEDSYS) and exports[MEDSYS]:getMedicPlayers("ems") or {}
 end
 
 -- ---------------------------------------------------------------------------------------------
