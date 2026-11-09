@@ -60,6 +60,10 @@ local function loadMod(category, id, codes, errors)
             end
         end
     end
+    local lodDist = MODLOADER.MODEL_LOD and MODLOADER.MODEL_LOD[id]
+    if lodDist and #elements > 0 then
+        pcall(engineSetModelLODDistance, id, lodDist)
+    end
     local place = MODLOADER.AS_OBJECT and MODLOADER.AS_OBJECT[id]
     if place and #elements > 0 then
         local created = pcall(function()
@@ -94,6 +98,9 @@ local function unloadMod(category, id)
         if place.lod then pcall(restoreWorldModel, place.lod, 1, place.x, place.y, place.z) end
     end
     if MODLOADER.MODEL_FLAGS and MODLOADER.MODEL_FLAGS[id] then pcall(engineResetModelFlags, id) end
+    if MODLOADER.MODEL_LOD and MODLOADER.MODEL_LOD[id] and engineResetModelLODDistance then
+        pcall(engineResetModelLODDistance, id)
+    end
     for _, element in ipairs(elements) do
         if isElement(element) then pcall(destroyElement, element) end
     end

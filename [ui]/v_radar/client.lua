@@ -380,7 +380,7 @@ end
 
 local hudhely = {(x/2*1.60), (y/2*0.111)}
 local flickerStrength = 0
-local myScreenSource = dxCreateScreenSource(x, y)
+-- (an unused full-screen screen source used to be created here; removed: VRAM only, never drawn)
 local Roboto2 = dxCreateFont("files/Roboto.ttf", 22)
 local handfont = dxCreateFont("files/hand.ttf", 16)
 local gtaFont = dxCreateFont("files/gtaFont.ttf", 20)
@@ -408,25 +408,16 @@ local kijeloles = {(x/2), (y/2), 200, 200}
 local stat = dxGetStatus()
 local bit = nil
 
-fontawesomeSheet = createBrowser(128, 256, true, true)
-iconPOTSizes = {32, 32, 32, 32, 32, 32}
-iconSizes = {14, 14, 14, 14, 14, 20}
-iconList = {"heart", "shield", "cutlery", "bolt", "life-ring", "arrows-alt"}
+-- PERF (2026-11-09): a hidden CEF browser used to be created here for a Font Awesome icon sheet
+-- (files/html/font-awesome/index.html). That file does not exist and the sheet was never drawn, so
+-- the browser failed to load and sheetLoadFail retried every second forever. Removed.
 
 local traf1 = nil
 local detectedTraffipax = false
 
-addEventHandler("onClientBrowserCreated", fontawesomeSheet,
-	function ()
-		loadBrowserURL(source, "http://mta/local/files/html/font-awesome/index.html?fa=" .. table.concat(iconList, ",") .. "&ps=" .. table.concat(iconPOTSizes, ",") .. "&s=" .. table.concat(iconSizes, ","))
-	end
-)
-
 addEventHandler("onClientResourceStart", getResourceRootElement(),
     function()
         checkJSON_File()
-		addEventHandler("onClientBrowserCreated", fontawesomeSheet, processFontAwesomeSheet)
-		addEventHandler("onClientBrowserLoadingFailed", fontawesomeSheet, sheetLoadFail)
 		setPlayerHudComponentVisible("all", false)
 		setPlayerHudComponentVisible("crosshair", true)
     end
@@ -476,10 +467,15 @@ end
 
 local plusYforUZI = 0
 local plusX = 0
+local lastSentValaszto = nil
 function hudrajzol ()
 	if not getElementData(localPlayer, "enableall") then return end
 
-	setElementData(localPlayer, "valaszto", valaszto)
+	-- only on change and not synced (was: a synced setElementData every frame); only this file reads it
+	if valaszto ~= lastSentValaszto then
+		lastSentValaszto = valaszto
+		setElementData(localPlayer, "valaszto", valaszto, false)
+	end
 	setPlayerHudComponentVisible("crosshair", true)
 
 	if szerkesztesmod then
@@ -728,22 +724,6 @@ function checkJSON_File()
 	end
 end
 
-
-function processFontAwesomeSheet()
-	loadBrowserURL(source, "http://mta/local/files/html/font-awesome/index.html?fa=" .. table.concat(iconList, ",") .. "&ps=" .. table.concat(iconPOTSizes, ",") .. "&s=" .. table.concat(iconSizes, ","))
-end
-
-function sheetLoadFail(url, errorCode, errorDescription)
-	if not isElement(fontawesomeSheet) then
-		fontawesomeSheet = createBrowser(128, 256, true, true)
-	end
-
-	setTimer(
-		function()
-			loadBrowserURL(fontawesomeSheet, "http://mta/local/files/html/font-awesome/index.html?fa=" .. table.concat(iconList, ",") .. "&ps=" .. table.concat(iconPOTSizes, ",") .. "&s=" .. table.concat(iconSizes, ","))
-		end,
-	1000, 1)
-end
 
 function getNode(id, node)
 	if mySavedConfig[id] and mySavedConfig[id][node] then

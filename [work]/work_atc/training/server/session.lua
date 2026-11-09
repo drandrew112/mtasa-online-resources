@@ -322,8 +322,8 @@ function Training.start(player, id)
     fadeCamera(player, false, TRAINING.FADE_TIME)
     later(s, fadeMs() + 200, function()
         if getPedOccupiedVehicle(player) then removePedFromVehicle(player) end
-        -- the SA Control room itself (map_int_sacontrol objects) in the session's dimension
-        s.mapCopy = call(TRAINING.MAP_RESOURCE, "createDimensionCopy", s.dimension) == true
+        -- the SA Control room itself (maps_loader map int_sacontrol, interior objects) in the session's dimension
+        s.mapCopy = call(TRAINING.MAP_RESOURCE, "loadMapInDimension", TRAINING.MAP_NAME, s.dimension, { interiorOnly = true }) == true
         if not s.mapCopy then outputDebugString("[work_atc] training: " .. TRAINING.MAP_RESOURCE .. " copy failed", 2) end
         s.marker = call("avi_core", "createTutorialMarker", player, s.dimension, s.position)
         if not s.marker then
@@ -372,7 +372,7 @@ local function destroySessionWorld(s)
     s.scale = 1
     if s.marker then call("avi_core", "destroyTutorialMarker", s.marker) end
     s.marker = nil
-    if s.mapCopy then call(TRAINING.MAP_RESOURCE, "destroyDimensionCopy", s.dimension) end
+    if s.mapCopy then call(TRAINING.MAP_RESOURCE, "unloadMapFromDimension", TRAINING.MAP_NAME, s.dimension) end
     s.mapCopy = nil
 end
 

@@ -88,14 +88,35 @@ end)
 
 addEventHandler("rw:net:onClientNetworkReady", resourceRoot, function() syncFrames() end)
 
--- read every frame, not cached per model: a mod loader (v_modloader streak.dff) can replace the
--- model after the train streamed in, and a stale value from the original model left the
--- BR 232 floating above the rails until reconnect
-local function baseOf(el, def)
+-- Not cached per model: a mod loader (v_modloader streak.dff) can replace the model after the
+-- train streamed in, and a stale value from the original model left the BR 232 floating above the
+-- rails until reconnect. PERF: re-read once a second per car instead of every frame.
+local BASE_REFRESH = 1000
+local baseCache = {}       -- [element] = { value, tick }
+local function baseOf(el, def, now)
+    local c = baseCache[el]
+    if c and now - c[2] < BASE_REFRESH then return c[1] end
     local b = getElementDistanceFromCentreOfMassToBaseOfModel(el)
-    if b and b > 0.05 then return b end
-    return def.base
+    if not (b and b > 0.05) then b = def.base end
+    if c then c[1], c[2] = b, now else baseCache[el] = { b, now } end
+    return b
 end
+
+-- one matrix table per car, reused every frame (PERF: no new tables per car per frame)
+local matrices = {}        -- [element] = 4x4 table
+local function matrixOf(el)
+    local m = matrices[el]
+    if not m then
+        m = { { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 1 } }
+        matrices[el] = m
+    end
+    return m
+end
+
+addEventHandler("onClientElementDestroy", root, function()
+    if baseCache[source] then baseCache[source] = nil end
+    if matrices[source] then matrices[source] = nil end
+end)
 
 -- ------------------------------------------------------------------ placement
 
@@ -119,14 +140,107 @@ TrainsClient.onFrame("onClientPreRender", function()
                 if rl < 1e-4 then rl = 1 end
                 local rx, ry = fy / rl, -fx / rl
                 local ux, uy, uz = ry * fz, -rx * fz, rx * fy - ry * fx
-                local cz = z + baseOf(el, car.def) + NET.RAIL_Z
-                setElementMatrix(el, { { rx, ry, 0, 0 }, { fx, fy, fz, 0 }, { ux, uy, uz, 0 }, { x, y, cz, 1 } })
-                t.poses[k] = { x, y, z, fx, fy, fz, rx, ry }
+                local cz = z + baseOf(el, car.def, now) + NET.RAIL_Z
+                local m = matrixOf(el)
+                local m1, m2, m3, m4 = m[1], m[2], m[3], m[4]
+                m1[1], m1[2], m1[3] = rx, ry, 0
+                m2[1], m2[2], m2[3] = fx, fy, fz
+                m3[1], m3[2], m3[3] = ux, uy, uz
+                m4[1], m4[2], m4[3] = x, y, cz
+                setElementMatrix(el, m)
+                local p = t.poses[k]
+                if not p then p = {} t.poses[k] = p end
+                p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8] = x, y, z, fx, fy, fz, rx, ry
             else
                 t.poses[k] = nil
             end
         end
     end
+end)
+
+-- ------------------------------------------------------------------ tunnels (PERF)
+-- A car in a tunnel is drawn (and placed every frame) for everyone above it within streaming range:
+-- the game has no occlusion for vehicles below the street. While the camera is above ground, a car
+-- that is underground (ground well above its rails) and that the camera cannot see (world line of
+-- sight blocked) is moved into HIDE_DIM on this client only: it streams out, nothing is drawn or
+-- placed. It comes back as soon as the camera could see it. The local player's own train is never
+-- hidden. The simulation, sync and the train itself are not touched (server side).
+local HIDE_DIM = 65531
+local HIDE_CHECK = 500         -- ms
+local UNDER_DEPTH = 6          -- metres of ground above the rails = underground
+local CAM_UNDER = 3            -- camera this far below the ground = in a tunnel / underground station
+local HIDE_MIN_DIST = 30       -- never hide a car closer than this to the camera
+local hiddenDim = {}           -- [element] = its own dimension while hidden
+
+local function groundAbove(x, y, z)
+    local g = getGroundPosition(x, y, z + 60)
+    if g and g ~= 0 then return g - z end
+    return nil
+end
+
+local function unhide(el)
+    local dim = hiddenDim[el]
+    hiddenDim[el] = nil
+    if isElement(el) and dim then setElementDimension(el, dim) end
+end
+
+local function ownTrain(t)
+    local veh = getPedOccupiedVehicle(localPlayer)
+    local ride = getElementData(localPlayer, "rwn.ride")
+    if ride and ride[1] == t.id then return true end
+    if veh then
+        for _, car in ipairs(t.cars) do if car.el == veh then return true end end
+    end
+    return false
+end
+
+local function tunnelCheck()
+    local now = getTickCount()
+    local cx, cy, cz = getCameraMatrix()
+    local camDepth = groundAbove(cx, cy, cz)
+    local camUnder = camDepth and camDepth > CAM_UNDER
+    local seen = {}
+    for _, t in pairs(trains) do
+        local own = ownTrain(t)
+        local u = t.uNow or headU(t, now)
+        for _, car in ipairs(t.cars) do
+            local el = car.el
+            if isElement(el) then
+                seen[el] = true
+                local hide = false
+                if not camUnder and not own then
+                    local x, y, z = t.path:carPose(u - car.offset, car.def.bogie)
+                    local dx, dy, dz = x - cx, y - cy, z - cz
+                    if dx * dx + dy * dy + dz * dz > HIDE_MIN_DIST * HIDE_MIN_DIST then
+                        local depth = groundAbove(x, y, z)
+                        hide = depth ~= nil and depth > UNDER_DEPTH
+                            and not isLineOfSightClear(cx, cy, cz, x, y, z + 2, true, false, false, true, false, true, false)
+                    end
+                end
+                if hide and not hiddenDim[el] then
+                    hiddenDim[el] = getElementDimension(el)
+                    setElementDimension(el, HIDE_DIM)
+                elseif not hide and hiddenDim[el] then
+                    unhide(el)
+                end
+            end
+        end
+    end
+    for el in pairs(hiddenDim) do
+        if not seen[el] then unhide(el) end
+    end
+end
+
+setTimer(function()
+    if next(trains) then
+        tunnelCheck()
+    elseif next(hiddenDim) then
+        for el in pairs(hiddenDim) do unhide(el) end
+    end
+end, HIDE_CHECK, 0)
+
+addEventHandler("onClientResourceStop", resourceRoot, function()
+    for el in pairs(hiddenDim) do unhide(el) end
 end)
 
 -- ------------------------------------------------------------------ driver

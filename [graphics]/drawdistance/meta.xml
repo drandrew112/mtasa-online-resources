@@ -16,5 +16,8 @@
     <export function="setVehicleLOD" type="client" />
     <export function="getVehicleLOD" type="client" />
     <export function="resetDrawDistance" type="client" />
+    <!-- maps_loader: low LOD twin for one of its client-side objects (exterior, radius >= 10 m) -->
+    <export function="registerLowLOD" type="client" />
+    <export function="unregisterLowLOD" type="client" />
 
 </meta>

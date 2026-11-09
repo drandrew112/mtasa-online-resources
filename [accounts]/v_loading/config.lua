@@ -13,7 +13,7 @@ LOADING_REQUIRED = {
     "medsys", "med_equipments", "med_hospitals",
     "mg_airway", "mg_cpr", "mg_intravenous",
     "rw_core", "rw_customtracks", "rw_signals", "rw_timetable",
-    "work_atc", "work_traindriver", "world_elevators", "map_int_sacontrol",
+    "work_atc", "work_traindriver", "world_elevators", "maps_loader",
 }
 
 -- no loading progress for this long (ms) -> the loading screen lists what failed and offers a reconnect

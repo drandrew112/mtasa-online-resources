@@ -88,34 +88,27 @@ local function spawnPed(s, offset)
     return ped
 end
 
--- Copies the objects of the TUTORIAL.HOSPITAL.maps resources into the session's dimension
--- (destroyed with the session elements). Low LOD objects are left out.
+-- Loads the TUTORIAL.HOSPITAL.maps maps (maps_loader) in the session's dimension too; released with
+-- the session elements (destroySessionElements).
 local function cloneMaps(s)
+    if not isRunning("maps_loader") then return end
+    s.maps = s.maps or {}
     for _, name in ipairs(TUTORIAL.HOSPITAL.maps or {}) do
-        local res = getResourceFromName(name)
-        if res and getResourceState(res) == "running" then
-            for _, src in ipairs(getElementsByType("object", getResourceRootElement(res))) do
-                if getElementDimension(src) == 0 and not isElementLowLOD(src) then
-                    local x, y, z = getElementPosition(src)
-                    local rx, ry, rz = getElementRotation(src)
-                    local obj = createObject(getElementModel(src), x, y, z, rx, ry, rz)
-                    if obj then
-                        setObjectScale(obj, getObjectScale(src))
-                        setElementInterior(obj, getElementInterior(src))
-                        setElementDimension(obj, s.dimension)
-                        setElementAlpha(obj, getElementAlpha(src))
-                        setElementCollisionsEnabled(obj, getElementCollisionsEnabled(src))
-                        setElementDoubleSided(obj, isElementDoubleSided(src))
-                        setElementFrozen(obj, isElementFrozen(src))
-                        s.elements[#s.elements + 1] = obj
-                    end
-                end
-            end
+        if exports.maps_loader:loadMapInDimension(name, s.dimension) then
+            s.maps[#s.maps + 1] = name
         end
     end
 end
 
+local function releaseMaps(s)
+    if s.maps and isRunning("maps_loader") then
+        for _, name in ipairs(s.maps) do exports.maps_loader:unloadMapFromDimension(name, s.dimension) end
+    end
+    s.maps = nil
+end
+
 local function destroySessionElements(s)
+    releaseMaps(s)
     for _, e in ipairs(s.elements) do
         if isElement(e) then destroyElement(e) end
     end

@@ -66,6 +66,10 @@ local minimapCenterY = minimapPosY + minimapHeight / 2
 local minimapRenderSize = 400
 local minimapRenderHalfSize = minimapRenderSize * 0.5
 local minimapRender = dxCreateRenderTarget(minimapRenderSize, minimapRenderSize)
+-- PERF: the rotated map is drawn into this minimap-sized target, which clips it. It replaces the old
+-- trick of copying the whole screen every frame (dxUpdateScreenSource) and painting it back around
+-- the minimap to hide the overhanging corners.
+local minimapClip, minimapClipW, minimapClipH = false, 0, 0
 local playerMinimapZoom = 0.5
 local minimapZoom = playerMinimapZoom
 local minimapIsVisible = true
@@ -393,6 +397,71 @@ function getTexture(name)
 	return false
 end
 
+-- PERF: blip icons. The renderers used to call fileExists() (a disk check) and dxDrawImage with a
+-- path string for every blip every frame. Now each path is checked once and loaded once as a texture.
+-- Returns the texture, or false when the file does not exist.
+local iconTextures = {}
+function getIconTexture(path)
+	local tex = iconTextures[path]
+	if tex == nil then
+		tex = fileExists(path) and dxCreateTexture(path, "argb", true, "clamp") or false
+		iconTextures[path] = tex
+	elseif tex and not isElement(tex) then
+		tex = dxCreateTexture(path, "argb", true, "clamp") or false
+		iconTextures[path] = tex
+	end
+	return tex
+end
+
+-- "blips/<n>.png" strings per GTA blip icon id, built once
+local blipIconPath = setmetatable({}, { __index = function(t, ico)
+	local s = "blips/" .. tostring(ico) .. ".png"
+	t[ico] = s
+	return s
+end })
+function getBlipIconPath(ico) return blipIconPath[ico] end
+
+-- "radar/files/<icon>" per icon string, built once (no string concatenation per blip per frame)
+iconFullPath = setmetatable({}, { __index = function(t, icon)
+	local s = "radar/files/" .. tostring(icon)
+	t[icon] = s
+	return s
+end })
+
+OTHER_PLAYER_COLOR = tocolor(160, 200, 255)
+
+-- PERF: blip / player lists for the minimap, rebuilt every LIST_REFRESH ms instead of every frame
+-- (getElementsByType + getElementData + getAttachedElements per blip and per player per frame).
+-- Positions are still read every frame, so moving blips stay smooth.
+local LIST_REFRESH = 250
+local listTick = 0
+local cachedBlips = {}      -- { el, farVis }
+local cachedPlayers = {}    -- players without an attached blip
+function refreshRadarLists(now)
+	if now - listTick < LIST_REFRESH then return end
+	listTick = now
+	local blips = getElementsByType("blip")
+	for i = 1, #blips do
+		local b = blips[i]
+		local e = cachedBlips[i]
+		if not e then e = {}; cachedBlips[i] = e end
+		e.el, e.farVis = b, getElementData(b, "isFarVisibility") and true or false
+	end
+	for i = #blips + 1, #cachedBlips do cachedBlips[i] = nil end
+
+	local n = 0
+	for _, v in ipairs(getElementsByType("player")) do
+		if v ~= localPlayer then
+			local hasBlip = false
+			for _, att in ipairs(getAttachedElements(v)) do
+				if getElementType(att) == "blip" then hasBlip = true break end
+			end
+			if not hasBlip then n = n + 1; cachedPlayers[n] = v end
+		end
+	end
+	for i = n + 1, #cachedPlayers do cachedPlayers[i] = nil end
+end
+
 addCommandHandler("showplayers",
 	function ()
 	    playerCanSeePlayers = not playerCanSeePlayers
@@ -513,6 +582,7 @@ addEventHandler("onClientElementDataChange", getRootElement(),
 
 		-- the waypoint belongs to the player, not to the vehicle
 		if source == localPlayer and dataName == "gpsDestination" then
+			if invalidateSpecialBlips then invalidateSpecialBlips() end
 			refreshWaypoint()
 		end
 
@@ -634,7 +704,14 @@ function renderMinimap(x, y, w, h)
 		minimapCenterX = minimapPosX + minimapWidth / 2
 		minimapCenterY = minimapPosY + minimapHeight / 2
 
-		dxUpdateScreenSource(screenSource, true)
+		-- clip target follows the minimap size (rounded up to whole pixels)
+		local clipW, clipH = ceil(minimapWidth), ceil(minimapHeight)
+		if not isElement(minimapClip) or clipW ~= minimapClipW or clipH ~= minimapClipH then
+			if isElement(minimapClip) then destroyElement(minimapClip) end
+			minimapClip = dxCreateRenderTarget(clipW, clipH, true) or false
+			minimapClipW, minimapClipH = clipW, clipH
+		end
+		refreshRadarLists(getTickCount())
 --
 		--if getKeyState("num_add") and playerMinimapZoom < 1.2 then
 		--	playerMinimapZoom = playerMinimapZoom + 0.01
@@ -715,21 +792,16 @@ function renderMinimap(x, y, w, h)
 				end
 			end
 
-			local defaultBlips = getElementsByType("blip")
-			for i = 1, #defaultBlips do
-				if defaultBlips[i] then
+			for i = 1, #cachedBlips do
+				local entry = cachedBlips[i]
+				local blip = entry.el
+				if isElement(blip) then
 					local tableId = farBlipsCount + manualBlipsCount + defaultBlipsCount
 
-					local blipPosX, blipPosY = getElementPosition(defaultBlips[i])
+					local blipPosX, blipPosY = getElementPosition(blip)
+					local blipSize = getBlipSize(blip)*12
 
-					local blipIco = getBlipIcon(defaultBlips[i])
-					local blipDist = getBlipVisibleDistance(defaultBlips[i])
-					local blipSize = getBlipSize(defaultBlips[i])*12
-
-					--local px,py = getElementPosition(localPlayer)
-					--if getDistanceBetweenPoints2D(px,py, blipPosX,blipPosY) <= blipDist then
-						renderBlip("blips/"..blipIco..".png", blipPosX, blipPosY, remapPlayerPosX, remapPlayerPosY, blipSize, blipSize, blipTint(defaultBlips[i]), cameraRotation, getElementData(defaultBlips[i], "isFarVisibility") and true or false, tableId)
-					--end
+					renderBlip(blipIconPath[getBlipIcon(blip)], blipPosX, blipPosY, remapPlayerPosX, remapPlayerPosY, blipSize, blipSize, blipTint(blip), cameraRotation, entry.farVis, tableId)
 
 					defaultBlipsCount = defaultBlipsCount + 1
 				end
@@ -752,33 +824,28 @@ function renderMinimap(x, y, w, h)
 			-- Skipped when a script already attached a blip to them, or when they are invisible.
 			if playerCanSeePlayers then
 				local myDim, myInt = getElementDimension(localPlayer), getElementInterior(localPlayer)
-				for _, v in ipairs(getElementsByType("player")) do
-					if v ~= localPlayer and getElementDimension(v) == myDim and getElementInterior(v) == myInt and getElementAlpha(v) > 0 then
-						local hasBlip = false
-						for _, att in ipairs(getAttachedElements(v)) do
-							if getElementType(att) == "blip" then
-								hasBlip = true
-								break
-							end
-						end
-
-						if not hasBlip then
-							local otherX, otherY = getElementPosition(v)
-							renderBlip("blips/1.png", otherX, otherY, remapPlayerPosX, remapPlayerPosY, 14, 14, tocolor(160, 200, 255), cameraRotation, false, farBlipsCount + manualBlipsCount + defaultBlipsCount)
-							defaultBlipsCount = defaultBlipsCount + 1
-						end
+				for i = 1, #cachedPlayers do
+					local v = cachedPlayers[i]
+					if isElement(v) and getElementDimension(v) == myDim and getElementInterior(v) == myInt and getElementAlpha(v) > 0 then
+						local otherX, otherY = getElementPosition(v)
+						renderBlip("blips/1.png", otherX, otherY, remapPlayerPosX, remapPlayerPosY, 14, 14, OTHER_PLAYER_COLOR, cameraRotation, false, farBlipsCount + manualBlipsCount + defaultBlipsCount)
+						defaultBlipsCount = defaultBlipsCount + 1
 					end
 				end
 			end
 
-			dxSetRenderTarget()
-			dxDrawImage(minimapPosX - minimapRenderSize / 2 + minimapWidth / 2, minimapPosY - minimapRenderSize / 2 + minimapHeight / 2, minimapRenderSize, minimapRenderSize, minimapRender, cameraRotation - 180, 0, 0, tocolor(255, 255, 255, 255))
+			-- rotate into the minimap-sized clip target, then draw that: the corners of the rotated
+			-- square never leave the minimap rectangle
+			if minimapClip then
+				dxSetRenderTarget(minimapClip, true)
+				dxDrawImage(minimapClipW / 2 - minimapRenderSize / 2, minimapClipH / 2 - minimapRenderSize / 2, minimapRenderSize, minimapRenderSize, minimapRender, cameraRotation - 180, 0, 0, tocolor(255, 255, 255, 255))
+				dxSetRenderTarget()
+				dxDrawImage(minimapPosX, minimapPosY, minimapClipW, minimapClipH, minimapClip)
+			else
+				dxSetRenderTarget()
+			end
 		end
 
-		dxDrawImageSection(minimapPosX - minimapRenderSizeOffset, minimapPosY - minimapRenderSizeOffset, minimapWidth + minimapRenderSizeOffset * 2, minimapRenderSizeOffset, minimapPosX - minimapRenderSizeOffset, minimapPosY - minimapRenderSizeOffset, minimapWidth + minimapRenderSizeOffset * 2, minimapRenderSizeOffset, screenSource)
-		dxDrawImageSection(minimapPosX - minimapRenderSizeOffset, minimapPosY + minimapHeight, minimapWidth + minimapRenderSizeOffset * 2, minimapRenderSizeOffset, minimapPosX - minimapRenderSizeOffset, minimapPosY + minimapHeight, minimapWidth + minimapRenderSizeOffset * 2, minimapRenderSizeOffset, screenSource)
-		dxDrawImageSection(minimapPosX - minimapRenderSizeOffset, minimapPosY, minimapRenderSizeOffset, minimapHeight, minimapPosX - minimapRenderSizeOffset, minimapPosY, minimapRenderSizeOffset, minimapHeight, screenSource)
-		dxDrawImageSection(minimapPosX + minimapWidth, minimapPosY, minimapRenderSizeOffset, minimapHeight, minimapPosX + minimapWidth, minimapPosY, minimapRenderSizeOffset, minimapHeight, screenSource)
 		dxDrawOuterBorder(minimapPosX, minimapPosY, minimapWidth, minimapHeight+10, 2, tocolor(0, 0, 0, 200))
 
 		-- Frame-edge direction markers for far blips, on top of the finished frame.
@@ -786,13 +853,8 @@ function renderMinimap(x, y, w, h)
 			drawEdgeIndicator(data)
 		end
 
-		local px,py,pz = getElementPosition(localPlayer)
-		local isSignal = true
-		local gpsPolar = 12
-		local gpsHeight = 500
-		if ( isLineOfSightClear(px,py,pz+2, px,py,pz+gpsHeight, true, false, false) or isLineOfSightClear(px+gpsPolar,py,pz+2, px+gpsPolar,py,pz+gpsHeight, true, false, false) or isLineOfSightClear(px-gpsPolar,py,pz+2, px-gpsPolar,py,pz+gpsHeight, true, false, false) or isLineOfSightClear(px,py+gpsPolar,pz+2, px,py+gpsPolar,pz+gpsHeight, true, false, false) or isLineOfSightClear(px,py-gpsPolar,pz+2, px,py-gpsPolar,pz+gpsHeight, true, false, false) ) then
-			isSignal = true
-		end
+		-- PERF: five 500 m vertical isLineOfSightClear rays ran here every frame; their result
+		-- (isSignal) was never used. Removed.
 
 		if int == 0 or interiorMode then
 			-- the size formula is meant for the outdoor zoom range; inside buildings the zoom goes far above it
@@ -1366,12 +1428,9 @@ function renderBlip(icon, blipX, blipY, playerPosX, playerPosY, blipWidth, blipH
 	end
 
 	if blipIsVisible then
-		local path = "radar/files/"..icon
-		if fileExists(path) then
-			dxDrawImage(blipPosX - blipWidth / 2, blipPosY - blipHeight / 2, blipWidth, blipHeight, path, 180 - cameraRotation, 0, 0, blipColor)
-			--outputDebugString("renderBlip: "..path)
-		else
-			--outputDebugString("File does not exists: "..path)
+		local tex = getIconTexture(iconFullPath[icon])
+		if tex then
+			dxDrawImage(blipPosX - blipWidth / 2, blipPosY - blipHeight / 2, blipWidth, blipHeight, tex, 180 - cameraRotation, 0, 0, blipColor)
 		end
 	end
 end
@@ -1380,9 +1439,9 @@ end
 -- border, plus a small chevron pointing outward towards the real blip. Position
 -- and angle are already smoothed by renderBlip (farshowBlipSmooth).
 function drawEdgeIndicator(data)
-	local path = "radar/files/" .. data.icon
-	if fileExists(path) then
-		dxDrawImage(data.posX, data.posY, data.iconWidth, data.iconHeight, path, 0, 0, 0, data.color)
+	local tex = getIconTexture(iconFullPath[data.icon])
+	if tex then
+		dxDrawImage(data.posX, data.posY, data.iconWidth, data.iconHeight, tex, 0, 0, 0, data.color)
 	end
 
 	local a = data.angle

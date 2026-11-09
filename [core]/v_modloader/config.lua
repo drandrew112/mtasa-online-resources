@@ -13,8 +13,19 @@ MODLOADER = {
         { name = "objects",  min = 615, max = 19999, download = "auto",   setting = "models_objects",  default = true },
     },
 
-    -- object IDs that are always loaded, also with "Custom object models" turned off
+    -- object IDs that are always loaded, also with "Custom object models" turned off.
+    -- The models of the maps (maps_loader) are here: the maps are built for them (bus station, LSPD
+    -- interior, zebra crossings, SF garage), turning them off would break the map.
     ALWAYS_LOAD_OBJECTS = {
+        14802,                  -- volan: LS bus station (ls_busstation)
+        3976, 4230, 14846,      -- int_lspd: LSPD building, its texture set and the interior (ls_int_pd)
+        7557,                   -- zebra: double zebra crossings (ls_zebra)
+        11326, 11387, 11389,    -- sf_garage: garage textures (sf_garage)
+    },
+
+    -- engineSetModelLODDistance while the replacement is loaded (reset when it unloads)
+    MODEL_LOD = {
+        [14802] = 300,          -- volan (was map_ls_busstation/client.lua)
     },
 
     -- engineSetModelFlag flags set while the replacement is loaded (reset when it unloads)

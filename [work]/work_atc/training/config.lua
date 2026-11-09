@@ -26,9 +26,10 @@ TRAINING = {
     START = { 215.20518, 199.86151, 1058.15942, 0, interior = 3 },
     -- every module ends here, in the live room (also the saved position while a module runs)
     FINISH = { 214.51, 196.54, 1057.616, interior = 3, dimension = 0 },
-    -- the map of the room: its interior objects are copied into the session's dimension
-    -- (createDimensionCopy / destroyDimensionCopy), a module does not start without it
-    MAP_RESOURCE = "map_int_sacontrol",
+    -- the map of the room: its interior objects are loaded in the session's dimension too
+    -- (maps_loader loadMapInDimension / unloadMapFromDimension), a module does not start without it
+    MAP_RESOURCE = "maps_loader",
+    MAP_NAME = "int_sacontrol",
     AIRPORT = "SASF",                  -- the airport of the scope, tower and approach modules
 
     -- The modules. right = the avi_core ATC right that unlocks it (work level, see ATC.LEVELS);

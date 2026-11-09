@@ -1,5 +1,5 @@
 -- The player watches the world from their own dimension, where the objects and peds of
--- dimension 0 (custom maps like map_ls_shop_01, script objects, shopkeepers) do not exist - and
+-- dimension 0 (custom maps of maps_loader like ls_shop_01, script objects, shopkeepers) do not exist - and
 -- the world models those maps remove are gone everywhere. Mirror copies what is near the camera's
 -- target into the introduction's dimension, client-side only, while the scene shows it.
 

@@ -1,0 +1,34 @@
+<meta>
+    <info author="DrAndrew112" name="maps_loader" type="script" version="1.0.0"
+          description="Loads every .map of maps/ (index.json via /maploader update): client-side objects near the camera, indoor zones, reference counted world removals, drawdistance low LOD for big exterior objects, duplicate check, copies in other dimensions" />
+
+    <download_priority_group>-10</download_priority_group>
+    <min_mta_version server="1.6.0" client="1.6.0" />
+
+    <include resource="v_locals" />
+    <include resource="drawdistance" />
+
+    <script src="locals.lua" type="client" />
+    <script src="config.lua" type="shared" />
+    <script src="server/main.lua" type="server" />
+    <script src="client/main.lua" type="client" />
+
+    <!-- extras of single maps -->
+    <script src="extras/sacontrol/signs_shared.lua" type="client" />
+    <script src="extras/sacontrol/signs_client.lua" type="client" />
+    <script src="extras/technoparty/client.lua" type="client" />
+    <file src="fonts/Roboto.ttf" type="client" />
+    <file src="fonts/RobotoB.ttf" type="client" />
+
+    <!-- server: load a map in another dimension too (reference counted per calling resource)
+         loadMapInDimension(name, dimension [, { interiorOnly = true }]) -> bool
+         unloadMapFromDimension(name, dimension) -> bool (true = the copy is gone)
+         getLoadedMaps() -> { name, ... }   isMapLoaded(name)   getMapDimensions(name) -> { [dim] = mode } -->
+    <export function="loadMapInDimension" type="server" />
+    <export function="unloadMapFromDimension" type="server" />
+    <export function="getLoadedMaps" type="server" />
+    <export function="isMapLoaded" type="server" />
+    <export function="getMapDimensions" type="server" />
+    <!-- client: maps whose objects exist right now (near the camera) -->
+    <export function="getActiveMaps" type="client" />
+</meta>

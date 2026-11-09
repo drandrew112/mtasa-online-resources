@@ -11,7 +11,9 @@
 --
 --   2. Low-LOD clones for mapped objects. Objects that come from .map files
 --      (loaded by other resources) do not have LOD models, so GTA stops
---      drawing them at a short distance. For every such object we create a
+--      drawing them at a short distance. For every such object that is exterior
+--      and big (MIN_CLONE_RADIUS) - and for the objects maps_loader registers
+--      with registerLowLOD - we create a
 --      low-LOD twin with createObject(..., true) and link it with
 --      setLowLODElement, then push the model's LOD switch distance out with
 --      engineSetModelLODDistance. The clone is what you see from far away.
@@ -145,10 +147,24 @@ applyAll()
 -- object cloning
 --------------------------------------------------------------------------------
 
+-- PERF (2026-11-09): only exterior objects of at least this bounding radius (x scale) get a low LOD
+-- twin. The twin uses the same full model and is drawn up to the far clip, and the model's LOD
+-- distance is raised for every instance of that model in the world - worth it for buildings, not
+-- for furniture and street props (those keep the game's own draw distance).
+local MIN_CLONE_RADIUS = 10
+
+local function worthCloning(object)
+    if getElementInterior(object) ~= 0 then return false end
+    local r = getElementRadius(object)
+    return r and r * (getObjectScale(object) or 1) >= MIN_CLONE_RADIUS
+end
+
 -- Create the low-LOD twin for one mapped object.
 local function cloneObject(object, parent)
     if not isElement(object) or getElementType(object) ~= "object" then return end
     if getElementAlpha(object) ~= 255 then return end
+    if getLowLODElement(object) then return end
+    if not worthCloning(object) then return end
 
     local model = getElementModel(object)
     local x, y, z = getElementPosition(object)
@@ -183,7 +199,46 @@ local function cloneObject(object, parent)
         attachElements(clone, object)
         setObjectBreakable(clone, false)
     end
+    return clone
 end
+
+--------------------------------------------------------------------------------
+-- objects of other resources (maps_loader): registerLowLOD / unregisterLowLOD
+--------------------------------------------------------------------------------
+
+-- client-side objects created by scripts are no map elements; maps_loader decides which of its
+-- objects deserve a low LOD twin and asks for it here. The twin follows the object: it is removed
+-- when the object is destroyed or unregistered.
+local registered = {}          -- object -> clone
+local registeredParent = nil
+
+function registerLowLOD(object)
+    if not isElement(object) or getElementType(object) ~= "object" then return false end
+    if registered[object] and isElement(registered[object]) then return true end
+    if not isElement(registeredParent) then
+        registeredParent = createElement("lowLODParent")
+        parentOwner[registeredParent] = "registered"
+    end
+    local clone = cloneObject(object, registeredParent)
+    if not clone then return false end
+    registered[object] = clone
+    return true
+end
+
+function unregisterLowLOD(object)
+    local clone = registered[object]
+    registered[object] = nil
+    if clone and isElement(clone) then destroyElement(clone) end
+    return true
+end
+
+addEventHandler("onClientElementDestroy", root, function()
+    local clone = registered[source]
+    if clone then
+        registered[source] = nil
+        if isElement(clone) then destroyElement(clone) end
+    end
+end)
 
 local function processQueue()
     local deadline = getTickCount() + CLONE_BUDGET_MS
@@ -268,7 +323,7 @@ addEventHandler("onClientObjectBreak", root, function()
 end)
 
 addEventHandler("onClientElementStreamOut", root, function()
-    if getElementType(source) == "object" and isObjectBreakable(source) then
+    if getElementType(source) == "object" and getLowLODElement(source) and isObjectBreakable(source) then
         local clone = getLowLODElement(source)
         if clone and parentOwner[getElementParent(clone)] then
             setElementAlpha(clone, 255)
@@ -322,6 +377,15 @@ addEventHandler("onClientResourceStop", root, function(res)
         end
     else
         unloadResource(res)
+        -- twins of registered objects whose resource stopped (its elements go after this event)
+        setTimer(function()
+            for object, clone in pairs(registered) do
+                if not isElement(object) then
+                    registered[object] = nil
+                    if isElement(clone) then destroyElement(clone) end
+                end
+            end
+        end, 50, 1)
     end
 end)
 

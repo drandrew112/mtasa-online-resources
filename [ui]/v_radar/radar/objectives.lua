@@ -124,8 +124,21 @@ local function getWaypointZ(x, y)
 	return playerZ
 end
 
+-- PERF: the list is rebuilt only when an objective / the waypoint changed (or at most once a second for
+-- the language of the labels), not on every frame of every renderer.
+local specialCache, specialTick, specialDirty = {}, 0, true
+function invalidateSpecialBlips()
+	specialDirty = true
+end
+
 function getSpecialBlips()
+	local now = getTickCount()
+	if not specialDirty and now - specialTick < 1000 then
+		return specialCache
+	end
+	specialDirty, specialTick = false, now
 	local list = {}
+	specialCache = list
 
 	for _, obj in ipairs(objectives) do
 		list[#list + 1] = {
@@ -178,6 +191,7 @@ local function setObjective(id, x, y, z, label, owner)
 		}
 	end
 
+	invalidateSpecialBlips()
 	updateObjectiveRoute()
 	return true
 end
@@ -189,6 +203,7 @@ local function deleteObjective(id)
 	end
 
 	table.remove(objectives, index)
+	invalidateSpecialBlips()
 	updateObjectiveRoute()
 	return true
 end
@@ -199,6 +214,7 @@ local function deleteObjectivesOwnedBy(owner)
 			table.remove(objectives, i)
 		end
 	end
+	invalidateSpecialBlips()
 	updateObjectiveRoute()
 end
 
