@@ -103,6 +103,7 @@
     <export function="isPoliceVehicle" type="server" />
     <export function="isElementCuffed" type="server" />
     <export function="radioCommand" type="server" />
+    <export function="getRadioCodes" type="server" />
     <export function="getPublicStats" type="server" />
     <export function="getPublicPolice" type="server" />
     <export function="createPoliceCall" type="server" />

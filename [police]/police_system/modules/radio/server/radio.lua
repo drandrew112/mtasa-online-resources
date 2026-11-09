@@ -54,5 +54,18 @@ POL.net("radio", function(player, id, args)
     RD.handle(player, id, args)
 end)
 
--- export (the later voice radio)
+-- exports (voice radio: v_voiceclient_connector)
+-- radioCommand(player, id, args) -> the result of the same handler the radio panel / F keys use
 function radioCommand(player, messageId, args) return RD.handle(player, messageId, args) end
+
+-- getRadioCodes() -> { { id, category, label = v_locals key, status = unit status | nil }, ... } (shared/radio.lua)
+function getRadioCodes()
+    local list = {}
+    for _, cat in ipairs(RADIO_CATEGORIES) do
+        for _, id in ipairs(cat.items) do
+            local def = RADIO_IDS[id] or {}
+            list[#list + 1] = { id = id, category = cat.id, label = "police_system.radio." .. id:lower(), status = def.status }
+        end
+    end
+    return list
+end
