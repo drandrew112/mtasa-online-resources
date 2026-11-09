@@ -44,7 +44,7 @@ end
 
 function vsmAccount(player)
     local a = isElement(player) and getElementData(player, "accName")
-    return type(a) == "string" and a ~= "" and a or (isElement(player) and getPlayerName(player) or "console")
+    return type(a) == "string" and a ~= "" and a or (isElement(player) and (getElementData(player, "displayName") or getPlayerName(player)) or "console")
 end
 
 function vsmRound(value, decimals)
