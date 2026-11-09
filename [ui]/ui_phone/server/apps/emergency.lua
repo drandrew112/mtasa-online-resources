@@ -75,7 +75,7 @@ local function submitEms(player, title, description)
     if not ok then say(player, reason) return end
 
     local x, y, z = getElementPosition(player)
-    local caller = getPlayerName(player):gsub("#%x%x%x%x%x%x", "")
+    local caller = (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "")
     local taskId, err = exports[ERM]:createTask(title, description, x, y, z, caller, nil, {
         phoneCall = true,
         interior = getElementInterior(player),
