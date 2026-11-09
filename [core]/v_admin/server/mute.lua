@@ -23,7 +23,7 @@ function adminMute(player, target, minutes, reason)
     end
 
     -- The muted player is told by v_chat ("Muted by <admin> (<n> min) for <reason>").
-    adminAlert(player, L.msg("v_admin.mute.you_muted_min_for", { player = getPlayerName(target), minutes = minutes, reason = reason }))
+    adminAlert(player, L.msg("v_admin.mute.you_muted_min_for", { player = (getElementData(target, "displayName") or getPlayerName(target)), minutes = minutes, reason = reason }))
     adminLog(player, ("muted %s for %d min (%s)"):format(getPlayerName(target), minutes, reason), target)
 end
 
@@ -39,7 +39,7 @@ function adminUnmute(player, target)
     end
 
     -- The player is told by v_chat ("Unmuted by <admin>").
-    adminAlert(player, L.msg("v_admin.mute.you_unmuted", { player = getPlayerName(target) }))
+    adminAlert(player, L.msg("v_admin.mute.you_unmuted", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
     adminLog(player, "unmuted " .. getPlayerName(target), target)
 end
 

@@ -512,7 +512,7 @@ AP.setTab = AP.setPage
 --------------------------------------------------------------------------------
 
 local function myName()
-    return (getPlayerName(localPlayer):gsub("#%x%x%x%x%x%x", ""))
+    return ((getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)):gsub("#%x%x%x%x%x%x", ""))
 end
 
 local function drawSidebar(sw, sh)

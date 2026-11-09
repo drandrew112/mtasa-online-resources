@@ -52,7 +52,7 @@ local function drawAnnounce(x, y, w, h)
     AP.text(L("v_admin.panel.preview"), ix, iy, iw, S(26), C.dim, 0.9)
     iy = iy + S(30)
     dxDrawRectangle(ix, iy, iw, S(48), C.field)
-    AP.text(L("v_admin.panel.announcement", { player = getPlayerName(localPlayer), text = (text ~= "" and text or "...") }),
+    AP.text(L("v_admin.panel.announcement", { player = (getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)), text = (text ~= "" and text or "...") }),
         ix + S(12), iy, iw - S(24), S(48), C.text, 0.95, "default", "left", "center", true, false, true)
     iy = iy + S(60)
 

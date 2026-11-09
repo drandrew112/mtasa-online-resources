@@ -66,7 +66,7 @@ end
 local function setClaim(r, admin)
     r.claimedBy     = actorPlayer(admin)
     r.claimedAcc    = actorAccount(admin)
-    r.claimedByName = actorName(admin)
+    r.claimedByName = actorDisplay(admin)
     r.status        = "claimed"
 end
 
@@ -265,7 +265,7 @@ addEventHandler(ADMIN.events.reportCreate, root, function(text)
     local r = {
         id            = nextReportId,
         player        = player,
-        playerName    = getPlayerName(player),
+        playerName    = (getElementData(player, "displayName") or getPlayerName(player)),
         playerId      = tonumber(getElementData(player, "ID")) or 0,
         status        = "open",
         claimedBy     = nil,
@@ -305,7 +305,7 @@ function adminReportMessage(sender, id, text)
         end
     end
 
-    addMessage(r, "admin", actorName(sender), text)
+    addMessage(r, "admin", actorDisplay(sender), text)
     ping(r.player)
     syncAll(r)
     return true
@@ -320,7 +320,7 @@ addEventHandler(ADMIN.events.reportMsg, root, function(id, text)
     if sender == r.player then
         text = trim(text)
         if text == "" then return end
-        addMessage(r, "player", getPlayerName(sender), text)
+        addMessage(r, "player", (getElementData(sender, "displayName") or getPlayerName(sender)), text)
         ping(r.claimedBy)
         syncAll(r)
     elseif isReportAdmin(sender) then
@@ -399,7 +399,7 @@ end)
 function adminReportClose(admin, id)
     local r = reports[tonumber(id) or 0]
     if not r then return false end
-    closeReport(r, L.msg("v_admin.report.your_report_was_closed_by", { player = actorName(admin) }))
+    closeReport(r, L.msg("v_admin.report.your_report_was_closed_by", { player = actorDisplay(admin) }))
     return true
 end
 
@@ -424,7 +424,7 @@ function adminReportTP(admin, id)
     setElementInterior(me, getElementInterior(r.player))
     setElementDimension(me, getElementDimension(r.player))
 
-    adminAlert(r.player, L.msg("v_admin.report.teleported_to_you", { player = actorName(admin) }))
+    adminAlert(r.player, L.msg("v_admin.report.teleported_to_you", { player = actorDisplay(admin) }))
     adminAlert(admin, L.msg("v_admin.report.you_teleported_to", { player_name = r.playerName }))
     return true
 end

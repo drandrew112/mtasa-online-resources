@@ -109,7 +109,7 @@ local function actorOf(s)
     return {
         web     = true,
         account = s.account,
-        name    = player and getPlayerName(player):gsub("#%x%x%x%x%x%x", "") or s.account,
+        name    = player and (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "") or s.account,
         level   = s.level,
         player  = player,
         out     = {},

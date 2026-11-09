@@ -66,7 +66,7 @@ local function collectPlayer(player)
 
     local d = {
         id        = tonumber(getElementData(player, "ID")) or 0,
-        name      = stripColors(getPlayerName(player)),
+        name      = stripColors((getElementData(player, "displayName") or getPlayerName(player))),
         -- account
         logged    = accName and true or false,
         account   = accName or false,

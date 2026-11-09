@@ -37,8 +37,8 @@ function adminFixVeh(player, target)
     fixVehicle(veh)
 
     if target and target ~= player then
-        adminAlert(target, L.msg("v_admin.vehicle.repaired_your_vehicle", { player = actorName(player) }))
-        adminAlert(player, L.msg("v_admin.vehicle.you_repaired_s_vehicle", { player = getPlayerName(target) }))
+        adminAlert(target, L.msg("v_admin.vehicle.repaired_your_vehicle", { player = actorDisplay(player) }))
+        adminAlert(player, L.msg("v_admin.vehicle.you_repaired_s_vehicle", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
     else
         adminAlert(player, L.msg("v_admin.vehicle.vehicle_repaired"))
     end
@@ -72,8 +72,8 @@ function adminFlipVeh(player, target)
     setElementRotation(veh, 0, 0, (rx > 90 and rx < 270) and (rz + 180) or rz)
 
     if target and target ~= player then
-        adminAlert(target, L.msg("v_admin.vehicle.flipped_your_vehicle_back", { player = actorName(player) }))
-        adminAlert(player, L.msg("v_admin.vehicle.you_flipped_s_vehicle_back", { player = getPlayerName(target) }))
+        adminAlert(target, L.msg("v_admin.vehicle.flipped_your_vehicle_back", { player = actorDisplay(player) }))
+        adminAlert(player, L.msg("v_admin.vehicle.you_flipped_s_vehicle_back", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
     else
         adminAlert(player, L.msg("v_admin.vehicle.vehicle_flipped_back"))
     end
@@ -99,14 +99,14 @@ function adminGetOut(player, target)
 
     local veh = getPedOccupiedVehicle(target)
     if not veh then
-        return adminAlert(player, L.msg("v_admin.vehicle.is_not_in_vehicle", { player = getPlayerName(target) }), 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.vehicle.is_not_in_vehicle", { player = (getElementData(target, "displayName") or getPlayerName(target)) }), 255, 90, 90)
     end
 
     removePedFromVehicle(target)
 
     if target ~= player then
-        adminAlert(target, L.msg("v_admin.vehicle.pulled_you_out_of_your_vehicle", { player = actorName(player) }))
-        adminAlert(player, L.msg("v_admin.vehicle.you_pulled_out_of_their_vehicle", { player = getPlayerName(target) }))
+        adminAlert(target, L.msg("v_admin.vehicle.pulled_you_out_of_your_vehicle", { player = actorDisplay(player) }))
+        adminAlert(player, L.msg("v_admin.vehicle.you_pulled_out_of_their_vehicle", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
     else
         adminAlert(player, L.msg("v_admin.vehicle.you_left_your_vehicle"))
     end

@@ -25,8 +25,8 @@ function adminGoto(player, target)
     setElementInterior(me, int)
     setElementDimension(me, dim)
 
-    adminAlert(target, L.msg("v_admin.report.teleported_to_you", { player = actorName(player) }))
-    adminAlert(player, L.msg("v_admin.teleport.you_teleported_to", { player = getPlayerName(target) }))
+    adminAlert(target, L.msg("v_admin.report.teleported_to_you", { player = actorDisplay(player) }))
+    adminAlert(player, L.msg("v_admin.teleport.you_teleported_to", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
 end
 
 addCommandHandler("goto", function(player, cmd, idArg)
@@ -66,8 +66,8 @@ function adminGethere(player, target)
     setElementInterior(target, int)
     setElementDimension(target, dim)
 
-    adminAlert(target, L.msg("v_admin.teleport.teleported_you_to_them", { player = actorName(player) }))
-    adminAlert(player, L.msg("v_admin.teleport.you_brought_to_you", { player = getPlayerName(target) }))
+    adminAlert(target, L.msg("v_admin.teleport.teleported_you_to_them", { player = actorDisplay(player) }))
+    adminAlert(player, L.msg("v_admin.teleport.you_brought_to_you", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
 end
 
 addCommandHandler("gethere", function(player, cmd, idArg)

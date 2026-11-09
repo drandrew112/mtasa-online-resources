@@ -26,7 +26,7 @@ function adminHeal(player, target)
     if not isElement(target) then return end
 
     if isPedDead(target) then
-        return adminAlert(player, L.msg("v_admin.misc.is_dead", { player = getPlayerName(target) }), 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.misc.is_dead", { player = (getElementData(target, "displayName") or getPlayerName(target)) }), 255, 90, 90)
     end
 
     setElementHealth(target, 100)
@@ -37,8 +37,8 @@ function adminHeal(player, target)
     end
 
     if target ~= player then
-        adminAlert(target, L.msg("v_admin.misc.healed_you", { player = actorName(player) }))
-        adminAlert(player, L.msg("v_admin.misc.you_healed", { player = getPlayerName(target) }))
+        adminAlert(target, L.msg("v_admin.misc.healed_you", { player = actorDisplay(player) }))
+        adminAlert(player, L.msg("v_admin.misc.you_healed", { player = (getElementData(target, "displayName") or getPlayerName(target)) }))
     else
         adminAlert(player, L.msg("v_admin.misc.you_healed_yourself"))
     end
@@ -71,7 +71,7 @@ function adminSetSkin(player, target, skin)
         return adminAlert(player, L.msg("v_admin.misc.invalid_skin_id"), 255, 90, 90)
     end
     if getElementModel(target) == skin then
-        return adminAlert(player, L.msg("v_admin.misc.already_wears_skin", { player = getPlayerName(target), skin = skin }), 255, 90, 90)
+        return adminAlert(player, L.msg("v_admin.misc.already_wears_skin", { player = (getElementData(target, "displayName") or getPlayerName(target)), skin = skin }), 255, 90, 90)
     end
 
     local workCore = getResourceFromName("work_core")
@@ -85,8 +85,8 @@ function adminSetSkin(player, target, skin)
     adminLog(player, ("set %s skin to %d"):format(getPlayerName(target), skin), target)
 
     if target ~= player then
-        adminAlert(target, L.msg("v_admin.misc.changed_your_skin", { player = actorName(player), skin = skin }))
-        adminAlert(player, L.msg("v_admin.misc.you_changed_skin", { player = getPlayerName(target), skin = skin }))
+        adminAlert(target, L.msg("v_admin.misc.changed_your_skin", { player = actorDisplay(player), skin = skin }))
+        adminAlert(player, L.msg("v_admin.misc.you_changed_skin", { player = (getElementData(target, "displayName") or getPlayerName(target)), skin = skin }))
     else
         adminAlert(player, L.msg("v_admin.misc.you_changed_your_skin", { skin = skin }))
     end
@@ -127,7 +127,8 @@ addCommandHandler("getid", function(player, cmd, name)
     if not target then
         local needle = name:lower()
         for _, p in ipairs(getElementsByType("player")) do
-            if getPlayerName(p):lower():find(needle, 1, true) then
+            if getPlayerName(p):lower():find(needle, 1, true)
+                or tostring(getElementData(p, "displayName") or ""):lower():find(needle, 1, true) then
                 target = p
                 break
             end
@@ -137,7 +138,7 @@ addCommandHandler("getid", function(player, cmd, name)
     if not target then
         return adminAlert(player, L.msg("v_admin.misc.player_not_found"), 255, 90, 90)
     end
-    adminAlert(player, L.msg("v_admin.misc.id", { player = getPlayerName(target), target = tostring(getElementData(target, "ID")) }))
+    adminAlert(player, L.msg("v_admin.misc.id", { player = (getElementData(target, "displayName") or getPlayerName(target)), target = tostring(getElementData(target, "ID")) }))
 end)
 
 -- ------------------------------------------------------------

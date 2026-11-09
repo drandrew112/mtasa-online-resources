@@ -28,6 +28,13 @@ function actorName(actor)
     return getPlayerName(actor)
 end
 
+--- Display name of an admin (player or web actor) for messages players see; actorName stays the
+--- stored identity (ban / mute records).
+function actorDisplay(actor)
+    if isWebActor(actor) then return actor.name end
+    return getElementData(actor, "displayName") or getPlayerName(actor)
+end
+
 --- The in-game player behind an admin (web actor: the one logged in on its account), or nil.
 function actorPlayer(actor)
     if isWebActor(actor) then

@@ -33,7 +33,7 @@ PAGES.register("dashboard", {
                 if muteUntil and muteUntil > d.now then d.muted = d.muted + 1 end
                 if getElementData(p, "adminjail") then d.jailed = d.jailed + 1 end
                 local lvl = getAdminLevel(p)
-                if lvl > 0 then d.admins[#d.admins + 1] = { name = strip(getPlayerName(p)), level = lvl, id = tonumber(getElementData(p, "ID")) } end
+                if lvl > 0 then d.admins[#d.admins + 1] = { name = strip((getElementData(p, "displayName") or getPlayerName(p))), level = lvl, id = tonumber(getElementData(p, "ID")) } end
             end
             table.sort(d.admins, function(a, b) return a.level > b.level end)
             d.maxPlayers = getMaxPlayers()
