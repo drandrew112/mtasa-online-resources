@@ -57,6 +57,7 @@
     <script src="er/client/gfx.lua"    type="client" />
     <script src="er/client/his.lua"    type="client" />
     <script src="er/client/exam.lua"   type="client" />
+    <script src="er/client/bar.lua"    type="client" /> <!-- intervention bar of the patient panel: medsys host mode -->
     <script src="er/client/w7.lua"     type="client" /> <!-- the hospital PC: dark Windows 7 style monitor (desktop, taskbar, windows) -->
     <script src="er/client/wall.lua"   type="client" /> <!-- CT / X-ray wall monitors --> <!-- the patient panel (bedside / PC / tablet) -->
     <!-- ER imaging library: downloaded by the staff clients on demand (downloadFile) -->

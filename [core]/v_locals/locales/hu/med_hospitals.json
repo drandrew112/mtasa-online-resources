@@ -718,7 +718,6 @@
   "med_hospitals.his.no_orders": "Nincs rendelés.",
   "med_hospitals.his.no_procedures": "Nincs elérhető beavatkozás.",
   "med_hospitals.his.not_examined": "Még nem vizsgált",
-  "med_hospitals.his.open_medsys": "Monitor, iv., infúzió, légút, CPR… (ellátó panel)",
   "med_hospitals.his.ord_left": "{s} mp van hátra",
   "med_hospitals.his.outcome": "Kimenet",
   "med_hospitals.his.page_patients": "Betegek",
@@ -1077,5 +1076,11 @@
   "med_hospitals.oxygen.connected": "Oxigén csatlakoztatva, a tubus működik.",
   "med_hospitals.oxygen.tank_empty": "A hordágy oxigénpalackja kiürült, a beteg oxigén nélkül maradt. Vidd fali oxigénes terembe (sokktalanító, intenzív, elfekvő).",
   "med_hospitals.oxygen.no_source": "Nincs oxigénforrás a betegnél.",
-  "med_hospitals.oxygen.low": "{name}: a hordágy oxigénpalackja fogyóban van. Vidd fali oxigénes terembe."
+  "med_hospitals.oxygen.low": "{name}: a hordágy oxigénpalackja fogyóban van. Vidd fali oxigénes terembe.",
+  "med_hospitals.bar.bag": "{name}: {left|int} / {total|int} ml",
+  "med_hospitals.bar.no_bag": "Nincs zacskó a vénás úton",
+  "med_hospitals.bar.bedside_only": "Beavatkozás csak a betegágynál",
+  "med_hospitals.bar.connecting": "Kapcsolódás a beteghez…",
+  "med_hospitals.bar.patient_dead": "A beteg elhunyt",
+  "med_hospitals.his.pc_status_cases": "{n|int} lezárt eset"
 }

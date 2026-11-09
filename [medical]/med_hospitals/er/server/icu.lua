@@ -66,7 +66,7 @@ function ER.icuAction(c, player, what, arg)
         c.lastVisit = now()
         c.visits = (c.visits or 0) + 1
         c.icuRounds = c.icuRounds or {}
-        c.icuRounds[#c.icuRounds + 1] = { at = now(), by = getPlayerName(player), hr = snap.heartRate, bp = snap.bloodPressure, spo2 = snap.spo2,
+        c.icuRounds[#c.icuRounds + 1] = { at = now(), by = (getElementData(player, "displayName") or getPlayerName(player)), hr = snap.heartRate, bp = snap.bloodPressure, spo2 = snap.spo2,
             gcs = c.gcs, vent = c.ventilator and (c.ventilator.mode .. " " .. c.ventilator.fio2 .. "%") or false, norad = c.norad or 0 }
         award(player, c, "HK-I01", "med_docs.code.hk_i01")
         ER.log(c, "icu_visit", tostring(c.visits), player)

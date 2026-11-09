@@ -344,7 +344,7 @@ function ER.order(c, player, key, side)
     for _, x in ipairs(c.orders) do
         if x.key == key and x.side == side and x.status ~= "done" then return ER.notify(player, L.forPlayer(player, "med_hospitals.erc.already_ordered"), true) end
     end
-    local ord = { id = newId(c), key = key, kind = o.kind, side = side, by = getPlayerName(player), at = getRealTime().timestamp,
+    local ord = { id = newId(c), key = key, kind = o.kind, side = side, by = (getElementData(player, "displayName") or getPlayerName(player)), at = getRealTime().timestamp,
                   status = "ordered", indicated = isIndicated(c, o, side) }
     c.orders[#c.orders + 1] = ord
     ER.log(c, "order", key .. (side and (" " .. side) or ""), player)
@@ -410,7 +410,7 @@ local function ctStart(c, ord, player)
     local hid = c.hospital
     ctBusy[hid] = c
     ord.status = "running"
-    ord.performer = getPlayerName(player)
+    ord.performer = (getElementData(player, "displayName") or getPlayerName(player))
     local time = ERC.TIMES.ct
     ord.ends = getRealTime().timestamp + time + 6
     ER.syncCase(c)
@@ -467,7 +467,7 @@ function ER.perform(c, player, orderId)
                 return ER.notify(player, L.forPlayer(player, "med_hospitals.erc.xray_control"), true)
             end
         end
-        ord.status, ord.performer = "running", getPlayerName(player)
+        ord.status, ord.performer = "running", (getElementData(player, "displayName") or getPlayerName(player))
         ord.ends = getRealTime().timestamp + ERC.TIMES.xray
         ER.syncCase(c)
         setPedAnimation(player, "INT_OFFICE", "OFF_Sit_Type_Loop", ERC.TIMES.xray * 1000, true, false, false, false)
@@ -568,7 +568,8 @@ function ER.treat(c, player, kind, findingIndex)
             if d.reduced == true or (success and d.reduced == nil) then f.reduced = true
             else return ER.notify(player, L.forPlayer(player, "med_hospitals.erc.reduction_failed"), true) end
         elseif kind == "cast" then
-            if d.tight then
+            -- mg_cast details.tight = the number of tight turns (0 on a clean cast); 3+ (CAST.TIGHT_FAIL) is too tight
+            if (tonumber(d.tight) or 0) >= 3 then
                 f.castTight = true
                 ER.notify(player, L.forPlayer(player, "med_hospitals.erc.cast_tight"), true)
             else
@@ -642,7 +643,7 @@ function ER.orderDrug(c, player, drug, dose)
     for _, o in ipairs(c.drugOrders) do
         if o.drug == drug and o.status == "ordered" then return ER.notify(player, L.forPlayer(player, "med_hospitals.erc.already_ordered"), true) end
     end
-    c.drugOrders[#c.drugOrders + 1] = { id = newId(c), drug = drug, dose = tonumber(dose), by = getPlayerName(player),
+    c.drugOrders[#c.drugOrders + 1] = { id = newId(c), drug = drug, dose = tonumber(dose), by = (getElementData(player, "displayName") or getPlayerName(player)),
                                         at = getRealTime().timestamp, status = "ordered" }
     ER.log(c, "drug_order", drug .. (dose and (" " .. tostring(dose)) or ""), player)
     ER.syncCase(c)
@@ -788,6 +789,7 @@ local function detail(c, viewer)
     s.timeIn = getRealTime().timestamp - (c.created or getRealTime().timestamp)
     s.docRef = "er:" .. tostring(c.hospital) .. ":" .. tostring(c.id) .. ":" .. tostring(c.created or 0)   -- med_docs case_ref (docs.lua)
     s.birth = c.birth or false
+    s.ped = c.ped   -- the bedside intervention bar (er/client/bar.lua) drives medsys on it
     s.indications = {}
     for key, o in pairs(ERC.ORDER_BY_KEY) do s.indications[key] = isIndicated(c, o) end
     s.procedures = ER.procedureList and ER.procedureList(c, viewer) or {}
@@ -906,9 +908,6 @@ addEventHandler("his:action", resourceRoot, function(caseId, action, a1, a2)
             local ok, why = exports.medsys:startTreatmentFor(player, c.ped, "medication", tostring(a1), tonumber(a2))
             if not ok and why then ER.notify(player, tostring(why), true) end
         end
-    elseif action == "medsys" then
-        -- the medsys panel (monitor, IV, infusion, airway, CPR ...) on this patient
-        if ER.running("medsys") then exports.medsys:openExamination(player, c.ped) end
     elseif action == "procedure" and ER.doProcedure then ER.doProcedure(c, player, a1, a2)
     elseif action == "transfuse" and ER.transfuse then ER.transfuse(c, player, a1, a2)
     elseif action == "icu" and ER.icuAction then ER.icuAction(c, player, a1, a2)

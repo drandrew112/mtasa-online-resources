@@ -154,6 +154,11 @@ function ER.closeCase(c, outcome)
     if not c then return end
     c.status = outcome or "closed"
     ER.log(c, "close", c.status)
+    -- the treating doctor's closed cases (work_hospital hosp.cases: the Physician exam needs them)
+    if c.status ~= "interrupted" and not c.caseCounted and isElement(c.treating) and ER.running("work_hospital") then
+        c.caseCounted = true
+        pcall(function() exports.work_hospital:addHospitalTreatedCase(c.treating) end)
+    end
     if ERDB then ERDB.closeCase(c, outcome) end
     ER.cases[c.ped] = nil
     if isElement(c.ped) then removeElementData(c.ped, ER_DATA) end
@@ -250,7 +255,7 @@ addEventHandler("onMedicalTreatment", root, function(medic, action, success, opt
     if not c or action ~= "medication" or success ~= true then return end
     for _, o in ipairs(c.drugOrders or {}) do
         if o.drug == option and o.status == "ordered" then
-            o.status, o.givenBy, o.givenAt, o.givenDose = "done", isElement(medic) and getPlayerName(medic) or "", getRealTime().timestamp, dose
+            o.status, o.givenBy, o.givenAt, o.givenDose = "done", isElement(medic) and (getElementData(medic, "displayName") or getPlayerName(medic)) or "", getRealTime().timestamp, dose
             ER.log(c, "drug_given", tostring(option) .. (dose and (" " .. tostring(dose)) or ""), medic)
             ER.syncCase(c)
             break

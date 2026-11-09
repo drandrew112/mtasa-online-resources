@@ -39,7 +39,7 @@ function ER.writeResultDoc(c, r, author)
     local body = { patient = patientBlock(c), order = r.key, at = r.at, issued = now(), findings = r.findings, positive = r.positive,
                    values = r.values, images = r.images, image = r.image, rhythm = r.rhythm, spec = r.spec, side = r.side,
                    windows = r.windows, control = r.control, hospitalName = hospitalName(c),
-                   performer = isElement(author) and getPlayerName(author) or false, auto = r.kind == "lab" }
+                   performer = isElement(author) and (getElementData(author, "displayName") or getPlayerName(author)) or false, auto = r.kind == "lab" }
     d:createDocument(kind, baseMeta(c, author), body)
 end
 

@@ -204,7 +204,7 @@ local function requestSurgery(c, player, sid)
     ER.syncCase(c)
     ER.notify(player, L.forPlayer(player, "med_hospitals.erc.surgery_requested"))
     for _, p in ipairs(docs) do
-        ER.notify(p, L.forPlayer(p, "med_hospitals.erc.surgery_request_alert", { name = c.name or "?", by = getPlayerName(player),
+        ER.notify(p, L.forPlayer(p, "med_hospitals.erc.surgery_request_alert", { name = c.name or "?", by = (getElementData(player, "displayName") or getPlayerName(player)),
             what = L.forPlayer(p, "med_hospitals.erc.surgery_" .. sid) }), true)
     end
 end
@@ -241,7 +241,7 @@ local function recordDeath(c, player, arg, snap)
     if snap.clinicalDeath and not snap.dead and ms() then ms():setMedicalState(c.ped, "consciousness", "dead") end
     local o = ERC.OUTCOMES.death
     c.dead, c.status = true, "dead"
-    c.deathAt, c.deathBy = now(), getPlayerName(player)
+    c.deathAt, c.deathBy = now(), (getElementData(player, "displayName") or getPlayerName(player))
     c.deathCause = cause
     c.deathCircumstances = type(arg.text) == "string" and arg.text:gsub("[%c]", " "):sub(1, 300) or ""
     c.pending = { kind = "morgue" }
@@ -807,7 +807,7 @@ function ER.board(hid)
     for _, c in pairs(ER.cases) do
         if c.hospital == hid and c.pending and c.pending.kind == "surgery_request" then
             out.requests[#out.requests + 1] = { id = c.id, name = c.name or false, surgery = c.pending.surgery,
-                by = isElement(c.pending.by) and getPlayerName(c.pending.by) or "?" }
+                by = isElement(c.pending.by) and (getElementData(c.pending.by, "displayName") or getPlayerName(c.pending.by)) or "?" }
         end
     end
     return out

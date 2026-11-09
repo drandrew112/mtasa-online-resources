@@ -718,7 +718,6 @@
   "med_hospitals.his.no_orders": "No orders.",
   "med_hospitals.his.no_procedures": "No procedures available.",
   "med_hospitals.his.not_examined": "Not examined yet",
-  "med_hospitals.his.open_medsys": "Monitor, IV, infusion, airway, CPR… (care panel)",
   "med_hospitals.his.ord_left": "{s} s left",
   "med_hospitals.his.outcome": "Outcome",
   "med_hospitals.his.page_patients": "Patients",
@@ -1077,5 +1076,11 @@
   "med_hospitals.oxygen.connected": "Oxygen connected, the tube works.",
   "med_hospitals.oxygen.tank_empty": "The stretcher's oxygen tank is empty, the patient has no oxygen. Take them to a wall-oxygen room (shock room, ICU, ward).",
   "med_hospitals.oxygen.no_source": "The patient has no oxygen source.",
-  "med_hospitals.oxygen.low": "{name}: the stretcher's oxygen tank is running low. Take the patient to a wall-oxygen room."
+  "med_hospitals.oxygen.low": "{name}: the stretcher's oxygen tank is running low. Take the patient to a wall-oxygen room.",
+  "med_hospitals.bar.bag": "{name}: {left|int} / {total|int} ml",
+  "med_hospitals.bar.no_bag": "No bag on the IV line",
+  "med_hospitals.bar.bedside_only": "Interventions only at the bedside",
+  "med_hospitals.bar.connecting": "Connecting to the patient…",
+  "med_hospitals.bar.patient_dead": "The patient is dead",
+  "med_hospitals.his.pc_status_cases": "{n|int} closed cases"
 }

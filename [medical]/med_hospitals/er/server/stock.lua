@@ -178,7 +178,7 @@ function ER.orderStock(hid, player)
     if #missing == 0 then return false, "nothing" end
     if ER.paySupplies and not ER.paySupplies(hid, cost, player) then return false, "payment" end
     s.order = { ends = getRealTime().timestamp + ERC.STOCK_ORDER_TIME, missing = missing, cost = cost,
-                by = isElement(player) and getPlayerName(player) or "" }
+                by = isElement(player) and (getElementData(player, "displayName") or getPlayerName(player)) or "" }
     setTimer(function()
         local o = s.order
         s.order = nil

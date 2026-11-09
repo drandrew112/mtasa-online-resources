@@ -124,7 +124,7 @@ function ER.receivePatient(h, player, patient, emsStretcher, unit, taskId)
     local tm = t and t.transfer
     local c = ER.createCase(patient, h.id, {
         kind = tm and "transfer" or "ems", from = tm and tm.from or nil, transferClass = tm and tm.transferClass or nil, unit = unit and unit.callsign or false, taskId = taskId or false, medics = medics,
-        medic = getPlayerName(player), text = t and t.text or "", at = getRealTime().timestamp,
+        medic = (getElementData(player, "displayName") or getPlayerName(player)), text = t and t.text or "", at = getRealTime().timestamp,
     })
     c.location = "F" .. idx
     c.anamnesis = t and t.text or ""

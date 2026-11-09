@@ -95,7 +95,7 @@ function ER.transfuse(c, player, product, group)
     local actual = ms() and ms():getBloodGroup(c.ped) or "0+"
     local compatible = ER.bloodCompatible(product, actual, group)
     local dur = mtp and PRESSURE_TIME or UNIT_TIME
-    local run = { product = product, group = group, at = t, ends = t + dur, by = getPlayerName(player) }
+    local run = { product = product, group = group, at = t, ends = t + dur, by = (getElementData(player, "displayName") or getPlayerName(player)) }
     c.transfusions[#c.transfusions + 1] = run
     ER.award(player, c, "HK-C05", 5, "med_docs.code.hk_c05")
     if mtp and not c.mtpDone then c.mtpDone = true ER.award(player, c, "HK-C06", 12, "med_docs.code.hk_c06") end

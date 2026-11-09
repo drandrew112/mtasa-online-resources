@@ -243,7 +243,7 @@ function ER.examine(c, player, region, method)
         if isElement(player) then setPedAnimation(player) end
         local snap = ms() and ms():getMedicalState(c.ped) or {}
         c.exam = c.exam or {}
-        c.exam[key] = { lines = lines(c, region, method, snap), at = getRealTime().timestamp, by = isElement(player) and getPlayerName(player) or "" }
+        c.exam[key] = { lines = lines(c, region, method, snap), at = getRealTime().timestamp, by = isElement(player) and (getElementData(player, "displayName") or getPlayerName(player)) or "" }
         if isElement(player) then
             -- points: the primary survey once, the region's own code, the full exam after six regions
             if not c.primaryDone then c.primaryDone = true ER.award(player, c, "HK-V01", 4, "med_docs.code.hk_v01") end

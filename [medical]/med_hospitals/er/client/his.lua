@@ -251,7 +251,7 @@ local function drawHeader(x, y, w, h)
     HIS.menuAnchor = { selX, y + h - s(4), selW }
     local tm = getRealTime()
     local pts = getElementData(localPlayer, "hosp.points") or 0
-    HGfx.text(("%s · %d %s · %02d:%02d"):format(getPlayerName(localPlayer):gsub("#%x%x%x%x%x%x", ""), pts, t("points"), tm.hour, tm.minute),
+    HGfx.text(("%s · %d %s · %02d:%02d"):format((getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)):gsub("#%x%x%x%x%x%x", ""), pts, t("points"), tm.hour, tm.minute),
         x, y, selX - x - s(12), h, T.dim, HGfx.font(9), "right")
 end
 
@@ -591,8 +591,9 @@ function HIS.drawPC(x, y, w, h)
     dxDrawRectangle(x, y + h - sb, w, sb, tocolor(38, 43, 49))
     dxDrawRectangle(x, y + h - sb, w, 1, tocolor(14, 16, 18))
     local pts = getElementData(localPlayer, "hosp.points") or 0
-    HGfx.text(("%s  ·  %d %s"):format((getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)):gsub("#%x%x%x%x%x%x", ""), pts, t("points")),
-        x + s(10), y + h - sb, w * 0.6, sb, T.dim, HGfx.font(8))
+    local cases = tonumber(getElementData(localPlayer, "hosp.cases")) or 0
+    HGfx.text(("%s  ·  %d %s  ·  %s"):format((getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)):gsub("#%x%x%x%x%x%x", ""), pts, t("points"),
+        t("pc_status_cases", { n = cases })), x + s(10), y + h - sb, w * 0.6, sb, T.dim, HGfx.font(8))
     HGfx.text(t("pc_status_patients", { n = #HIS.list }), x + w * 0.6, y + h - sb, w * 0.4 - s(10), sb, T.dim, HGfx.font(8), "right")
     local fn = DRAW[HIS.page]
     if fn then fn(x + s(10), y + tb + s(8), w - s(20), h - tb - sb - s(16)) end

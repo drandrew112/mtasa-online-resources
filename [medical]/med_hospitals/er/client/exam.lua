@@ -40,6 +40,7 @@ end
 
 function EXAM.close()
     if not EXAM.open then return end
+    if BAR then BAR.hidden() BAR.infusionOpen = false end
     local inPC = EXAM.inPC()
     EXAM.open = false
     if inPC then return PCS.closeWindow("case", true) end
@@ -450,10 +451,6 @@ local function drawTreat(c, x, y, w, h)
         if not ok then HIS.tooltip(px, py, colW, s(30), tostring(p.available)) elseif not EXAM.bedside then HIS.tooltip(px, py, colW, s(30), t("bedside_only")) end
     end
     if #procs == 0 then HGfx.text(t("no_procedures"), x, by, w, s(20), T.faint, HGfx.font(9)) end
-    HGfx.button(x, y + h - s(32), s(260), s(30), t("open_medsys"), { color = { 47, 134, 232 }, disabled = not EXAM.bedside, font = HGfx.font(9, true) }, function()
-        EXAM.close()
-        act("medsys")
-    end)
 end
 
 ---------------------------------------------------------------- tab: drugs
@@ -943,12 +940,16 @@ function EXAM.draw(x, y, w, h)
         return
     end
     if EXAM.viewer then
+        BAR.hidden()
         drawViewer(x, y, w, h)
         return
     end
     local modal = EXAM.bno or EXAM.transfer or EXAM.death
     HGfx.blockHover = modal and true or false
     local hh = drawHeader(c, x, y, w)
+    -- the intervention bar (bar.lua: medsys in host mode) takes the bottom strip
+    local fullH = h
+    h = h - s(BAR.HEIGHT) - s(10)
     local top = y + hh + s(10)
     local leftW, rightW = s(160), s(240)
     drawBodyMap(c, x + s(12), top, leftW, h - hh - s(22))
@@ -973,8 +974,11 @@ function EXAM.draw(x, y, w, h)
     local body = ty + s(34)
     DRAW[EXAM.tab](c, mx, body, mw, y + h - s(12) - body)
     drawRight(c, x + w - rightW - s(12), top, rightW, h - hh - s(22))
+    BAR.draw(x + s(12), y + h - s(2), w - s(24))
+    h = fullH
     HGfx.blockHover = false
     if modal then
+        BAR.hidden()
         HIS.tip = nil
         HGfx.hits = {}
         if EXAM.bno then drawBNO(x + w * 0.2, y + h * 0.1, w * 0.6, h * 0.8)
@@ -1004,6 +1008,7 @@ end)
 
 addEventHandler("onClientClick", root, function(button, state, ax, ay)
     if not EXAM.open or EXAM.inPC() or button ~= "left" or state ~= "down" then return end
+    if BAR.blocksClick(ax, ay) then return end -- the Lifepak / glucometer of medsys over the panel
     HGfx.click(ax, ay)
 end)
 

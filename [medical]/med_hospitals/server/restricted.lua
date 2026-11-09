@@ -53,7 +53,7 @@ local function fine(v, vehicle)
     local amount = bayFine()
     local ok = exports.v_bank:forceTakeMoney(player, amount, "fine.hospital_bay", { hospital = v.hospital.name })
     if ok ~= true then return end
-    local name = getPlayerName(player):gsub("#%x%x%x%x%x%x", "")
+    local name = (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "")
     v.fined = v.fined or {}
     local f = v.fined[name] or { total = 0, count = 0 }
     f.total, f.count = f.total + amount, f.count + 1
