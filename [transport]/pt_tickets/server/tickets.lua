@@ -126,7 +126,7 @@ addEventHandler("pt:sale:buy", resourceRoot, function(i)
             return
         end
         if running("gov_transport") then
-            params.player = getPlayerName(player):gsub("#%x%x%x%x%x%x", "")
+            params.player = (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "")
             pcall(function() exports.gov_transport:bookFareIncome(offer.mode, price, params) end)
         end
     end
