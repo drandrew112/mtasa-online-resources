@@ -55,7 +55,7 @@ function paySaleDelivery(companyId, player, baseValue, units, activity)
     units = math.floor(tonumber(units) or 0)
     local value = math.floor((tonumber(baseValue) or 0) * getSaleMultiplier(activity))
     if value <= 0 then return false end
-    local name = getPlayerName(player):gsub("#%x%x%x%x%x%x", "")
+    local name = (getElementData(player, "displayName") or getPlayerName(player)):gsub("#%x%x%x%x%x%x", "")
     local out = { value = value, toPlayer = 0, toCompany = 0 }
 
     if c.founder == player then

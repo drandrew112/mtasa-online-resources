@@ -34,7 +34,7 @@ end
 BIZ.feeTarget = feeTarget
 
 local function playerName(p)
-    return (getPlayerName(p):gsub("#%x%x%x%x%x%x", ""))
+    return ((getElementData(p, "displayName") or getPlayerName(p)):gsub("#%x%x%x%x%x%x", ""))
 end
 
 --- trimmed name or nil, error
