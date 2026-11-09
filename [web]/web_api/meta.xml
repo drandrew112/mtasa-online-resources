@@ -8,6 +8,7 @@
     <script src="server/bridge.lua" type="server" />
     <script src="server/page.lua"   type="server" />
     <script src="server/demo.lua"   type="server" />
+    <script src="server/players.lua" type="server" /> <!-- player state for external software -->
 
     <!-- ================= CLIENT ================= -->
     <script src="client/sites.lua"  type="client" />
@@ -33,6 +34,11 @@
     <!-- server: who is calling an http="true" export right now -->
     <export function="getCallerId"     type="server" />
     <export function="getCallerPlayer" type="server" />
+    <!-- player state (server/players.lua): HTTP playerState(token) with a v_accounts webLogin token,
+         playerOnline(accountName); server getPlayerState(playerOrAccount) -->
+    <export function="playerState"    type="server" http="true" />
+    <export function="playerOnline"   type="server" http="true" />
+    <export function="getPlayerState" type="server" />
     <!-- demo page API -->
     <export function="osaDemoState" type="server" http="true" />
     <export function="osaDemoEcho"  type="server" http="true" />
