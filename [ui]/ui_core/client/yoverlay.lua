@@ -452,7 +452,7 @@ function UI.yOverlay:draw()
         -- zaszlo a kartya es a nev kozott (amig nincs letoltve / ismeretlen orszag, ures hely)
         drawPlayerFlag(player, nameX - ui(6) - flagW, y + (rowH - flagH) / 2, flagW, flagH, alpha)
 
-        local pName = getPlayerName(player)
+        local pName = getElementData(player, "displayName") or getPlayerName(player)
         dxDrawText(
             pName,
             nameX, y+(rowH/2),
