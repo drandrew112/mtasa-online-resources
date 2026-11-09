@@ -143,6 +143,8 @@ end
 -- Replaces an account's password hash. Returns whether the write was queued.
 function setAccountHash(name, pwHash)
     if not mysqlReady() then return false end
+    -- a new password logs out the web clients (auth/server/websession.lua)
+    if endWebSessions then endWebSessions(name) end
     return exports.v_mysql:mysqlExec(
         "UPDATE `" .. TABLE .. "` SET password = ?, updated_at = ? WHERE account_name = ?",
         pwHash, getRealTime().timestamp, name)

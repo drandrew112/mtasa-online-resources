@@ -27,6 +27,7 @@
     <script src="auth/server/email.lua" type="server" />
     <script src="auth/server/settings.lua" type="server" />
     <script src="auth/server/recovery.lua" type="server" />
+    <script src="auth/server/websession.lua" type="server" /> <!-- web login of external software (voice client) -->
 
     <!-- savesys -->
     <script src="savesys/config.lua" type="server" />
@@ -72,6 +73,15 @@
     <!-- httpLogin(username, password) -> true, accountName | false, error. Credential check
          without a player (web logins); does not log anyone in. -->
     <export function="httpLogin"          type="server" />
+    <!-- web sessions (auth/server/websession.lua): external software logs in over HTTP and gets a token.
+         HTTP: webLogin(username, password, clientName), webLogout(token), webCheck(token).
+         Server: getWebSession(token) -> account | false, getWebSessionInfo(token), endWebSessions(account). -->
+    <export function="webLogin"           type="server" http="true" />
+    <export function="webLogout"          type="server" http="true" />
+    <export function="webCheck"           type="server" http="true" />
+    <export function="getWebSession"      type="server" />
+    <export function="getWebSessionInfo"  type="server" />
+    <export function="endWebSessions"     type="server" />
     <!-- v_admin Accounts page: adminSendPasswordReset(account, adminName), adminSetAccountEmail(account, email | "") -> true | false, errorKey -->
     <export function="adminSendPasswordReset" type="server" />
     <export function="adminSetAccountEmail"   type="server" />
