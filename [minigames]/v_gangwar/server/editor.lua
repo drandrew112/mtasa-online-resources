@@ -28,7 +28,7 @@ local function listFor()
         local copy = {}
         for k, v in pairs(gw) do copy[k] = v end
         copy.state = state
-        copy.starter = isElement(starter) and getPlayerName(starter) or false
+        copy.starter = isElement(starter) and (getElementData(starter, "displayName") or getPlayerName(starter)) or false
         copy.cooldown = GangWars.cooldownLeft(gw, t)
         out[#out + 1] = copy
     end
