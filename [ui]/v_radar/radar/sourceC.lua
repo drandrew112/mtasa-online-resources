@@ -1423,7 +1423,7 @@ function renderBigBlip(icon, blipX, blipY, playerPosX, playerPosY, renderDistanc
 		if isElement(blipElement) then
 			if isCursorWithinArea(cursorX, cursorY, blipX - blipHalfWidth, blipY - blipHalfHeight, blipWidth, blipHeight) then
 				if getElementType(blipElement) == "player" and playerCanSeePlayers then
-					visibleBlipTooltip = getPlayerName(blipElement)
+					visibleBlipTooltip = (getElementData(blipElement, "displayName") or getPlayerName(blipElement))
 				else
 					local tooltip = getBlipName(blipElement) or blipTooltips[icon]
 					if tooltip and tooltip ~= "" then visibleBlipTooltip = tooltip end
