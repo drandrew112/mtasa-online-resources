@@ -187,7 +187,7 @@ addEventHandler("onMedicalTreatment", root, function(medic, action, success, opt
     if not log then log = {} careLog[source] = log end
     if #log >= 80 then return end
     log[#log + 1] = { at = getRealTime().timestamp, action = action, option = option ~= nil and tostring(option) or nil,
-                      medic = getPlayerName(medic), ems = isEms(medic) }
+                      medic = (getElementData(medic, "displayName") or getPlayerName(medic)), ems = isEms(medic) }
 end)
 
 addEventHandler("onElementDestroy", root, function() careLog[source] = nil end)

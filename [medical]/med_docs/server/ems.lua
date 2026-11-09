@@ -88,7 +88,7 @@ local function sheetBody(patient, medic, task, unit, handover)
         reason = meta.kind == "transfer" and "transfer" or "rescue",
         transfer = meta.kind == "transfer" and { class = meta.transferClass, from = meta.from, to = meta.to, note = meta.note } or nil,
         unit = unit and { callsign = unit.callsign, type = unit.type, members = unit.members } or false,
-        leader = isElement(medic) and getPlayerName(medic) or tostring(medic or ""),
+        leader = isElement(medic) and (getElementData(medic, "displayName") or getPlayerName(medic)) or tostring(medic or ""),
         patient = { name = identity.name or false, birth = identity.birth or false, gender = identity.gender or false, cid = identity.cid or false,
                     idChecked = identity.checked == true },
         handover = handover or false,
@@ -132,7 +132,8 @@ addEventHandler("onErmTaskClosed", root, function(taskId, reason)
     for _, u in ipairs(task.units or {}) do
         local unit = exports.med_erm:getUnitData(type(u) == "table" and (u.id or u.unitId) or u)
         for _, m in ipairs(unit and unit.members or {}) do
-            local name = type(m) == "table" and m.name or tostring(m)
+            -- lastPatient is keyed by the nick (identity), m.name is the display name
+            local name = type(m) == "table" and (isElement(m.player) and getPlayerName(m.player) or m.name) or tostring(m)
             local lp = lastPatient[name]
             if lp and isElement(lp.ped) and lp.at >= since then
                 local medic = getPlayerFromName(name) or name
@@ -179,7 +180,7 @@ addEventHandler("docs:editEms", resourceRoot, function(id, fields)
             body.handover = type(body.handover) == "table" and body.handover or {}
             body.handover.text = fields.what:gsub("[%c]", " "):sub(1, 600)
         end
-        body.editedBy = getPlayerName(player)
+        body.editedBy = (getElementData(player, "displayName") or getPlayerName(player))
         createDocument("ems", { author = r.author, hospital = r.hospital, patient = r.patient, unit = r.unit, taskId = tonumber(r.task_id),
                                 caseRef = r.case_ref, lang = r.lang, authorAccount = r.author_account, replaceId = tonumber(r.id) }, body)
         triggerClientEvent(player, "docs:notice", resourceRoot, "edit_saved")
