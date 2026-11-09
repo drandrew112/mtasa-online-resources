@@ -327,7 +327,7 @@ end
 
 local function headerTexts()
     local o = View.other
-    if not o then return L("v_inventory.ui.inventory"), getPlayerName(localPlayer):gsub("#%x%x%x%x%x%x", "") end
+    if not o then return L("v_inventory.ui.inventory"), (getElementData(localPlayer, "displayName") or getPlayerName(localPlayer)):gsub("#%x%x%x%x%x%x", "") end
     if o.kind == "port" then
         local sub = o.sub and L.upper(L.resolve(o.sub)) or ""
         return L.resolve(o.title or L.msg("v_inventory.ui.storage")), L("v_inventory.ui.port_sub", { name = sub })
