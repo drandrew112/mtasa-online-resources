@@ -16,5 +16,8 @@
   "v_loading.fail.custom_models": "Custom models ({done} / {total})",
   "v_loading.fail.reconnect": "Reconnect [ENTER]",
   "v_loading.fail.wait": "Keep waiting [ESC]",
-  "v_loading.fail.hint": "If it keeps happening, report the list above to an admin."
+  "v_loading.fail.hint": "If it keeps happening, report the list above to an admin.",
+  "v_loading.screen.left": "{n} left",
+  "v_loading.screen.waiting_for": "Waiting for: {list}",
+  "v_loading.fail.reconnect_manual": "Automatic reconnect failed: press F8 and type reconnect"
 }

@@ -45,7 +45,31 @@ local CLIENT_WAIT_WARN = 60000 -- ms; log the still-missing resources after this
 local function clearClientWait(player)
     local w = clientWait[player]
     if w and isTimer(w.warnTimer) then killTimer(w.warnTimer) end
+    if w and isTimer(w.sendTimer) then killTimer(w.sendTimer) end
     clientWait[player] = nil
+end
+
+-- The client cannot know which resources it never received (a failed HTTP download
+-- leaves no trace in its getResources()), so the server sends the names it is still
+-- waiting for: the loading screen shows the count and, when stalled, the names.
+local function sendPending(player)
+    local w = clientWait[player]
+    if not w or not isElement(player) then return end
+    local names = {}
+    for res in pairs(w.pending) do names[#names + 1] = getResourceName(res) end
+    table.sort(names)
+    triggerClientEvent(player, "v_loading:pendingResources", player, names)
+end
+
+-- debounced: a joining client starts dozens of resources within a second
+local function schedulePending(player)
+    local w = clientWait[player]
+    if not w or isTimer(w.sendTimer) then return end
+    w.sendTimer = setTimer(function()
+        local cur = clientWait[player]
+        if cur then cur.sendTimer = nil end
+        sendPending(player)
+    end, 500, 1)
 end
 
 local function tryFinishClientWait(player)
@@ -53,6 +77,7 @@ local function tryFinishClientWait(player)
     if not w or next(w.pending) then return end
     clearClientWait(player)
     if isElement(player) then
+        triggerClientEvent(player, "v_loading:pendingResources", player, {})
         w.onReady(player)
     end
 end
@@ -85,6 +110,7 @@ local function waitClientResources(player, onReady)
         end, CLIENT_WAIT_WARN, 0),
     }
 
+    if next(pending) then sendPending(player) end
     tryFinishClientWait(player)
 end
 
@@ -95,6 +121,7 @@ addEventHandler("onPlayerResourceStart", root, function(res)
     local w = clientWait[source]
     if w then
         w.pending[res] = nil
+        schedulePending(source)
         tryFinishClientWait(source)
     end
 end)
@@ -106,6 +133,7 @@ addEventHandler("onResourceStop", root, function(res)
     for player, w in pairs(clientWait) do
         if w.pending[res] then
             w.pending[res] = nil
+            schedulePending(player)
             tryFinishClientWait(player)
         end
     end

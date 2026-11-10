@@ -125,3 +125,22 @@ addEventHandler("onPlayerQuit", root, function()
     killStageTimer(loading[source])
     loading[source] = nil
 end)
+
+-- Reconnect button of the loading failure screen and of ui_download's error screen.
+-- Scripts cannot run the built-in "reconnect" console command (executeCommandHandler
+-- only runs addCommandHandler handlers), so the server redirects the player to this
+-- same server. Needs the ACL right function.redirectPlayer for resource.v_loading.
+addEvent("v_loading:reconnect", true)
+local lastReconnect = {}
+addEventHandler("v_loading:reconnect", root, function()
+    local player = client
+    if not player or source ~= player then return end
+    local now = getTickCount()
+    if lastReconnect[player] and now - lastReconnect[player] < 5000 then return end
+    lastReconnect[player] = now
+    if not redirectPlayer(player, "", 0) then
+        outputServerLog("[v_loading] redirectPlayer failed - give resource.v_loading the ACL right function.redirectPlayer")
+        triggerClientEvent(player, "v_loading:reconnectFailed", player)
+    end
+end)
+addEventHandler("onPlayerQuit", root, function() lastReconnect[source] = nil end)

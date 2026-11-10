@@ -252,7 +252,17 @@ local function publishDims()
     setElementData(resourceRoot, DATA_DIMS, dims)
 end
 
+local occlusionsWereOn = nil
+
+addEventHandler("onResourceStop", resourceRoot, function()
+    if occlusionsWereOn then setOcclusionsEnabled(true) end
+end)
+
 addEventHandler("onResourceStart", resourceRoot, function()
+    if MAPLOADER.DISABLE_OCCLUSIONS then
+        occlusionsWereOn = getOcclusionsEnabled()
+        setOcclusionsEnabled(false)
+    end
     local names = readIndex()
     if not names then
         names = folderMaps() or {}

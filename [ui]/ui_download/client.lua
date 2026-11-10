@@ -98,13 +98,24 @@ local function drawError(top)
         local name = (dlError.res and (dlError.res .. "/") or "") .. dlError.file
         lines[#lines + 1] = { L("ui_download.err.file", { file = name }), tocolor(220, 220, 220), scale, "default" }
     end
-    if dlError.reason then
+    if dlError.missing then
+        -- a letoltes elakadt: ezek a resource-ok nem indultak el (hibauzenet nelkul)
+        local list = dlError.missing
+        if #list > 8 then
+            list = { unpack(list, 1, 8) }
+            list[#list + 1] = "… (+" .. (#dlError.missing - 8) .. ")"
+        end
+        lines[#lines + 1] = { L("ui_download.err.stalled"), tocolor(255, 200, 90), scale, "default" }
+        lines[#lines + 1] = { L("ui_download.err.missing", { list = table.concat(list, ", ") }), tocolor(220, 220, 220), scale, "default" }
+    elseif dlError.reason then
         lines[#lines + 1] = { L("ui_download.err.reason", { reason = dlError.reason }), tocolor(255, 200, 90), scale, "default" }
     else
         lines[#lines + 1] = { L("ui_download.err.console"), tocolor(255, 200, 90), scale, "default" }
     end
     lines[#lines + 1] = { L("ui_download.err.help_title"), tocolor(120, 200, 255), uicore:ui(1.4), "default-bold", uicore:ui(14) }
     lines[#lines + 1] = { L("ui_download.err.help"), tocolor(235, 235, 235), scale, "default" }
+    lines[#lines + 1] = { L(dlError.missing and "ui_download.err.actions_continue" or "ui_download.err.actions"),
+        tocolor(120, 255, 140), scale, "default-bold", uicore:ui(10) }
 
     local pad = uicore:ui(16)
     local heights, total = {}, 0
@@ -219,7 +230,8 @@ syncRender()
 
 -- A letoltesi hiba okat az MTA a konzolra irja; amit el tudunk kapni
 -- (onClientDebugMessage), azt kiirjuk. Egyebkent az F8 konzolra utalunk.
-local REASON_PATTERNS = { "mismatch", "unable to delete", "not readable", "download error", "download failed" }
+local REASON_PATTERNS = { "mismatch", "unable to delete", "not readable", "download error", "download failed",
+    "service unavailable", "http error", "timed out" }
 local lastReason, lastReasonTick
 
 local function matchReason(msg)
@@ -233,7 +245,7 @@ local function matchReason(msg)
 end
 
 local function setDownloadError(resName, file)
-    if dlError then return end
+    if dlError and not dlError.missing then return end -- a konkret fajlhiba felulirja az elakadast
     local reason
     if lastReason and getTickCount() - lastReasonTick < 10000 then reason = lastReason end
     dlError = { res = resName, file = file, reason = reason }
@@ -249,13 +261,16 @@ addEventHandler("onClientDebugMessage", root, function(message)
     if dlError and not dlError.test and not dlError.reason then dlError.reason = reason end
 end)
 
-function on_fileDownload (res, file, size, completed)
+-- 4. parameter: "queued" | "finished" | "failed" (string, nem bool - a korabbi
+-- true/false osszehasonlitas miatt a hibat soha nem vettuk eszre)
+function on_fileDownload (res, file, size, state)
     res_name = getResourceName( res )
     file_name = file
-    file_size = tonumber(string.format("%.2f", tostring(size/1024/1024) ))
-    if completed == false then
+    file_size = tonumber(string.format("%.2f", tostring((size or 0)/1024/1024) ))
+    if state == "failed" or state == false then
+        outputDebugString(("[ui_download] download failed: %s/%s"):format(res_name, tostring(file)), 1)
         setDownloadError(res_name, file)
-    elseif completed == true and dlError and not dlError.test and dlError.res == res_name and dlError.file == file then
+    elseif (state == "finished" or state == true) and dlError and not dlError.test and dlError.res == res_name and dlError.file == file then
         dlError = nil -- az ujraprobalas sikerult
         syncRender()
     end
@@ -303,11 +318,23 @@ local function finishJoin()
     triggerEvent("download:finished", root)
 end
 
+local function clearStallError()
+    if dlError and dlError.missing then
+        dlError = nil
+        syncRender()
+    end
+end
+
 local function checkJoin()
     finishTimer = nil
     if not joinPending or not expected then return end
-    if dlError then return end -- hibas letoltesnel a kepernyo nem allhat le
-    if isTransferBoxActive() then stallKey, stallSince = nil, nil return end
+    -- hibas fajl-letoltesnel a kepernyo nem allhat le (Enter = reconnect, lasd lent)
+    if dlError and not dlError.missing then return end
+    if isTransferBoxActive() then
+        stallKey, stallSince = nil, nil
+        clearStallError() -- ujra halad a letoltes
+        return
+    end
     -- a kulso letoltes (v_modloader) vegen a closeExternal ujra ellenoriz
     if external then return end
 
@@ -316,13 +343,44 @@ local function checkJoin()
         local key = table.concat(missing, ",")
         if key ~= stallKey then
             stallKey, stallSince = key, getTickCount()
+            clearStallError()
             return
         end
         if getTickCount() - stallSince < STALL_MS then return end
-        outputDebugString("[ui_download] join download finished without: " .. key, 2)
+        -- Elakadt: a box mar nem aktiv, de ezek a resource-ok nem indultak el. Ez
+        -- szinte mindig sikertelen HTTP letoltes (pl. a szerver httpdosthreshold-ja
+        -- 503-at ad), amirol az MTA nem mindig szol. Nem lepunk tovabb csendben:
+        -- kiirjuk a listat (Enter = reconnect, Esc = tovabb igy is).
+        if not dlError then
+            outputDebugString("[ui_download] join download stalled, not started: " .. key, 1)
+            dlError = { missing = missing }
+            if MG.isPlaying() then MG.stop() end
+            syncRender()
+        else
+            dlError.missing = missing
+        end
+        return
     end
+    clearStallError()
     finishJoin()
 end
+
+-- Hiba kozben: Enter = reconnect; elakadasnal Esc = tovabb a hianyzo resource-ok nelkul
+addEventHandler("onClientKey", root, function(key, press)
+    if not press or not dlError or dlError.test then return end
+    if key == "enter" or key == "num_enter" then
+        cancelEvent()
+        -- a beepitett "reconnect" parancsot script nem hivhatja (executeCommandHandler
+        -- csak addCommandHandler-eseket futtat): a v_loading szervere redirectPlayer-rel
+        -- csatlakoztat ujra. Ha az nem fut / nincs ACL joga, a kepernyon az F8 utmutato marad.
+        triggerServerEvent("v_loading:reconnect", localPlayer)
+    elseif key == "escape" and dlError.missing and joinPending then
+        cancelEvent()
+        outputDebugString("[ui_download] continuing without: " .. table.concat(dlError.missing, ", "), 2)
+        dlError = nil
+        finishJoin()
+    end
+end)
 
 local function scheduleCheck()
     if not joinPending then return end

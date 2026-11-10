@@ -33,5 +33,9 @@
   "ui_download.err.console": "Az ok nem állapítható meg. Nyisd meg az F8 konzolt a részletekért.",
   "ui_download.err.help_title": "Hibaelhárítás",
   "ui_download.err.help": "Ha a hiba \"HTTP server file mismatch\", \"Unable to delete old file\" vagy \"File not readable\":\n1. Nyisd meg az MTA mappát (általában C:\\Program Files (x86)\\MTA San Andreas 1.6).\n2. A \"mods\" mappa tulajdonságait megnyitva kapcsold ki az írásvédettséget.\n3. Indítsd újra az MTA:SA-t.",
-  "ui_download.err.failed_line": "A letöltés sikertelen"
+  "ui_download.err.failed_line": "A letöltés sikertelen",
+  "ui_download.err.stalled": "A letöltés megállt, de néhány erőforrás nem érkezett meg. Ez általában egy sikertelen letöltés a szerverről, amit az MTA nem jelzett.",
+  "ui_download.err.missing": "Nem indult el: {list}",
+  "ui_download.err.actions": "ENTER: újracsatlakozás   (vagy F8, majd írd be: reconnect)",
+  "ui_download.err.actions_continue": "ENTER: újracsatlakozás   ESC: tovább így is   (vagy F8, majd írd be: reconnect)"
 }

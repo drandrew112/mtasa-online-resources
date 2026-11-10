@@ -33,5 +33,9 @@
   "ui_download.err.console": "The cause could not be determined. Open the F8 console to see the details.",
   "ui_download.err.help_title": "Troubleshooting",
   "ui_download.err.help": "If the error is \"HTTP server file mismatch\", \"Unable to delete old file\" or \"File not readable\":\n1. Open the MTA folder (usually C:\\Program Files (x86)\\MTA San Andreas 1.6).\n2. Open the properties of the \"mods\" folder and turn off the read-only attribute.\n3. Restart MTA:SA.",
-  "ui_download.err.failed_line": "Download failed"
+  "ui_download.err.failed_line": "Download failed",
+  "ui_download.err.stalled": "The download stopped, but some resources never arrived. Usually a failed download from the server that MTA did not report.",
+  "ui_download.err.missing": "Not started: {list}",
+  "ui_download.err.actions": "ENTER: reconnect   (or press F8 and type reconnect)",
+  "ui_download.err.actions_continue": "ENTER: reconnect   ESC: continue anyway   (or press F8 and type reconnect)"
 }

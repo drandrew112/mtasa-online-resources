@@ -16,5 +16,8 @@
   "v_loading.fail.custom_models": "Egyedi modellek ({done} / {total})",
   "v_loading.fail.reconnect": "Újracsatlakozás [ENTER]",
   "v_loading.fail.wait": "Várakozás [ESC]",
-  "v_loading.fail.hint": "Ha ismétlődik, jelezd a fenti listát egy adminnak."
+  "v_loading.fail.hint": "Ha ismétlődik, jelezd a fenti listát egy adminnak.",
+  "v_loading.screen.left": "még {n}",
+  "v_loading.screen.waiting_for": "Erre vár: {list}",
+  "v_loading.fail.reconnect_manual": "Az automatikus újracsatlakozás nem sikerült: nyomd meg az F8-at és írd be: reconnect"
 }

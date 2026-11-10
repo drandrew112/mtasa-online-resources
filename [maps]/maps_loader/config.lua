@@ -36,6 +36,11 @@ MAPLOADER = {
     DUP_ROT = 0.5,               -- degrees
 
     ADMIN_LEVEL = 5,             -- account admin_level for /maploader (console always allowed)
+
+    -- GTA occlusion zones stay in the world after removeWorldModel: inside rebuilt buildings they hide
+    -- objects, players, peds and stretchers from some camera angles (players gone at 10-20 m).
+    -- The old map_ls_int_pd turned them off for the whole server; maps_loader does it now.
+    DISABLE_OCCLUSIONS = true,
 }
 
 -- events

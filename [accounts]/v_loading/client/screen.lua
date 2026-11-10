@@ -28,6 +28,22 @@ local failed = false
 local lastSig, lastProgress = "", 0
 local test = nil -- /loadingtest: { fail = bool, start = tick }
 local C_ERR = tocolor(240, 120, 110, 255)
+-- resources the server still waits to start on this client (gate.lua sendPending);
+-- the client itself cannot see resources whose download failed
+local pendingRes = nil
+local reconnectFailed = false
+local SOFT_STALL = 15000 -- ms without progress -> "Waiting for: ..." under the steps
+local softList, softListTick = nil, 0
+
+addEvent("v_loading:pendingResources", true)
+addEventHandler("v_loading:pendingResources", localPlayer, function(names)
+    pendingRes = type(names) == "table" and names or nil
+end)
+
+addEvent("v_loading:reconnectFailed", true)
+addEventHandler("v_loading:reconnectFailed", localPlayer, function()
+    reconnectFailed = true
+end)
 
 local function failedItems()
     local items = {}
@@ -40,6 +56,8 @@ local function failedItems()
     elseif checking then
         for _, name in ipairs(missingResources()) do items[#items + 1] = name end
         if #items == 0 then items[1] = L("v_loading.fail.setup") end
+    elseif pendingRes and #pendingRes > 0 then
+        for _, name in ipairs(pendingRes) do items[#items + 1] = name end
     else
         for _, res in ipairs(getResources()) do
             local state = getResourceState(res)
@@ -78,7 +96,9 @@ local function reconnect()
         triggerEvent("v_loading:screen", localPlayer, false)
         return
     end
-    executeCommandHandler("reconnect")
+    -- the built-in "reconnect" command cannot be run from a script: the server
+    -- redirects us to the same server (flow.lua); without ACL the F8 hint is shown
+    triggerServerEvent("v_loading:reconnect", localPlayer)
 end
 
 local function keepWaiting()
@@ -119,6 +139,9 @@ local function drawFailure()
     button(btnReconnect, L("v_loading.fail.reconnect"), C_ACC)
     button(btnWait, L("v_loading.fail.wait"), tocolor(255, 255, 255, 70))
     dxDrawText(L("v_loading.fail.hint"), 0, by + bh + 12 * S, sw, by + bh + 36 * S, C_DIM, 1.0 * S, "default", "center", "center")
+    if reconnectFailed then
+        dxDrawText(L("v_loading.fail.reconnect_manual"), 0, by + bh + 40 * S, sw, by + bh + 64 * S, C_ERR, 1.05 * S, "default-bold", "center", "center")
+    end
 end
 
 local function stallCheck(sig)
@@ -179,14 +202,17 @@ local function draw()
             if ok then mDoneSig = tostring(d) end
         end
     end
-    stallCheck(("%s|%d|%d|%s|%s"):format(tostring(checking), done, total, tostring(worldStage), mDoneSig))
+    local pendingCount = pendingRes and #pendingRes or -1
+    stallCheck(("%s|%d|%d|%s|%s|%d"):format(tostring(checking), done, total, tostring(worldStage), mDoneSig, pendingCount))
     local setupDone = (checking == false and worldStage) or (total > 0 and done >= total and checking)
 
     row(y, L("v_loading.screen.account_data"), "✓", C_OK)
     y = y + 28 * S
     local resourcesDone = checking or worldStage
-    row(y, L("v_loading.screen.game_resources"), resourcesDone and "✓" or L("v_loading.screen.waiting"),
-        resourcesDone and C_OK or C_DIM)
+    local resValue = resourcesDone and "✓"
+        or (pendingCount > 0 and L("v_loading.screen.left", { n = pendingCount }) or L("v_loading.screen.waiting"))
+    row(y, L("v_loading.screen.game_resources"), resValue,
+        resourcesDone and C_OK or (pendingCount > 0 and C_TEXT or C_DIM))
     y = y + 28 * S
     row(y, L("v_loading.screen.setting_up"), worldStage and "✓" or ("%d / %d"):format(done, total),
         worldStage and C_OK or C_TEXT, (resourcesDone and not worldStage) and C_TEXT or C_DIM)
@@ -209,6 +235,18 @@ local function draw()
         row(y, L("v_loading.screen.world"), worldStage and L("v_loading.screen.streaming") or L("v_loading.screen.waiting"),
             worldStage and C_TEXT or C_DIM, worldStage and C_TEXT or C_DIM)
     end
+
+    -- no progress for a while: name what it is waiting for, well before the failure screen
+    if not test and getTickCount() - lastProgress > SOFT_STALL then
+        if not softList or getTickCount() - softListTick > 1000 then
+            softList, softListTick = failedItems(), getTickCount()
+        end
+        local shown = {}
+        for i = 1, math.min(5, #softList) do shown[i] = softList[i] end
+        local text = L("v_loading.screen.waiting_for", { list = table.concat(shown, ", ") .. (#softList > 5 and " …" or "") })
+        y = y + 40 * S
+        dxDrawText(text, sw / 2 - 230 * S, y, sw / 2 + 230 * S, y + 44 * S, C_DIM, 1.0 * S, "default", "left", "top", false, true)
+    end
 end
 
 local function setActive(show, info)
@@ -219,6 +257,9 @@ local function setActive(show, info)
         mode = type(info) == "table" and info.mode or "normal"
         worldStage = false
         failed = false
+        pendingRes = nil
+        reconnectFailed = false
+        softList = nil
         lastSig, lastProgress = "", getTickCount()
         addEventHandler("onClientRender", root, draw)
         setElementData(localPlayer, "hideHUD", true)
