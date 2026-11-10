@@ -1,0 +1,15 @@
+{
+  "nodeZ": {
+    "73872": 92.4,
+    "254323": 9.67
+  },
+  "addLinks": [
+    {
+      "nodes": [
+        73872,
+        73883
+      ],
+      "reason": "Flint County road cut (-1003,-1001): the two road halves ended in dead ends 13 m apart (U-turns, and node 73872 sat at z 128 on the terrain cap above the road, so its lane climbed 35 m). Node lowered to the road (probe get_ground 92.35) and joined to 73883. Found with the drandrew112 probe."
+    }
+  ]
+}

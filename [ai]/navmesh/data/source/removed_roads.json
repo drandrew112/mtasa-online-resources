@@ -1,0 +1,12 @@
+[
+  {
+    "name": "stunt park ramp to the freeway (story mission leftover)",
+    "reason": "Mission-only path (node flags 0xf1122) from the stunt park road at node 90746 (1961,-1463, z 12.4) down to the freeway at node 57937 (1977,-1500); ambient cars drove down it onto the freeway and crashed. Found with the drandrew112 probe standing on node 90753.",
+    "nodes": [90750, 90751, 90752, 90753, 90754, 90755]
+  },
+  {
+    "name": "freeway crossover between the two carriageways (same mission)",
+    "reason": "Mission-only cross link (flags 0xf1122) from freeway node 57937 (1977,-1500) over the median to 57832 (1986,-1515).",
+    "nodes": [57938, 57939, 57940]
+  }
+]

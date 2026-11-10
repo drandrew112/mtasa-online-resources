@@ -29,7 +29,17 @@ def r2(x): return round(x, 2)
 # ---------------------------------------------------------------- nodes / links
 ALL = paths['veh']
 V = {g: n for g, n in ALL.items() if not n['flags'] & GP.F_BOATS}
-B = {g: n for g, n in ALL.items() if n['flags'] & GP.F_BOATS}
+# Story-mode leftovers (data/source/removed_roads.json): car nodes that no ambient traffic may use. Dropped before
+# any link / lane is built, the neighbours simply lose that link.
+REMOVED = json.load(open(os.path.join(ROOT, 'data', 'source', 'removed_roads.json')))
+for _r in REMOVED:
+    for _g in _r['nodes']: V.pop(_g, None)
+# Probe-measured corrections (data/source/road_fixes.json): nodeZ = node height override (the surface scan z of the
+# node is dropped too), addLinks = missing links between two car nodes (lanes inherited from the chain next to them)
+FIXES = json.load(open(os.path.join(ROOT, 'data', 'source', 'road_fixes.json')))
+for _g, _z in FIXES['nodeZ'].items():
+    V[int(_g)]['z'] = _z; surf.pop(f"n{int(_g)}", None)
+B ={g: n for g, n in ALL.items() if n['flags'] & GP.F_BOATS}
 for n in V.values(): n['nbs'] = [l[0] for l in n['links'] if l[0] in V]
 
 def flagset(g):
@@ -59,6 +69,12 @@ for a, v in V.items():
         else:
             missing_navi += 1
         links[(a, b)] = lk
+
+for _fx in FIXES['addLinks']:
+    _a, _b = sorted(_fx['nodes'])
+    if _a in V and _b in V and (_a, _b) not in links:
+        links[(_a, _b)] = dict(a=_a, b=_b, len=math.hypot(V[_a]['x'] - V[_b]['x'], V[_a]['y'] - V[_b]['y']))
+        V[_a]['nbs'].append(_b); V[_b]['nbs'].append(_a)
 
 def nb_links(node, exclude):
     for c in V[node]['nbs']:

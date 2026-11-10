@@ -1,16 +1,16 @@
 {
  "counts": {
-  "nodes": 28991,
-  "links": 29810,
-  "lanes": 54408,
-  "connections": 59405,
+  "nodes": 28982,
+  "links": 29800,
+  "lanes": 54399,
+  "connections": 59387,
   "signalGroups": 552,
   "boatNodes": 1596,
   "boatEdges": 1658,
   "trapLanes": 2942,
   "sourceLanes": 3746,
   "missingNavi": 14,
-  "inherited": 14
+  "inherited": 15
  },
  "classes": {
   "highway": {
@@ -18,8 +18,8 @@
    "km": 24.7
   },
   "road": {
-   "links": 27253,
-   "km": 349.4
+   "links": 27243,
+   "km": 349.3
   },
   "ramp": {
    "links": 1172,
@@ -168,6 +168,6 @@
  ],
  "connections": {
   "deadend_no_exit": 223,
-  "uturn": 134
+  "uturn": 132
  }
 }
