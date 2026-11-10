@@ -16,7 +16,7 @@ VOICE = {
 -- Frequencies are set by other resources through exports (setPlayerRadioFrequency); the agency
 -- watcher (radio/agencies.lua) puts EMS / police on duty on their own channel.
 RADIO = {
-	KEY = "x",               -- push to talk (hold)
+	KEY = "ralt",               -- push to talk (hold)
 	INTRO_MS = 1170,         -- length of sounds/intro.wav: listeners hear it first, the voice is routed only after it
 	SFX_VOLUME = 0.6,        -- push / release / intro / outro volume
 	STATIC_VOLUME = 0.1,     -- static loop under an incoming transmission
