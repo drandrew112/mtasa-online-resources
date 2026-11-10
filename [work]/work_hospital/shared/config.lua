@@ -75,10 +75,11 @@ HOSPW = {
             ["defib.charge"] = "physician", ["defib.sync"] = "physician", ["dose.high"] = "physician",
         },
         exams = { passPercent = 75, retryCooldown = 300, help = "hospital_exams", order = { "resident", "physician" }, check = "checkHospitalExam" },
-        -- Ú11: besides the knowledge: Rezidens = 2 h on duty as Ápoló; Orvos = 4 h as Rezidens + 20 closed cases as the treating doctor
+        -- besides the knowledge only patient counts, no duty time:
+        --   patients = closed cases the player worked on (any role), cases = closed cases as the treating doctor
         examRequirements = {
-            resident = { rank = "nurse", hours = 1 },
-            physician = { rank = "resident", hours = 2, cases = 20 },
+            resident = { patients = 10 },
+            physician = { cases = 20 },
         },
         examFiles = { "resident", "physician" },
         -- Minigames tab (practice): client export start<X>Game(ped = nil, options)

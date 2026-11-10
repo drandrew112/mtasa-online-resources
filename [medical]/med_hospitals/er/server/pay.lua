@@ -11,10 +11,6 @@ local function gh() return ER.running("gov_health") and exports.gov_health or ni
 local oldClosed = ER.onCaseClosed
 ER.onCaseClosed = function(c)
     if oldClosed then oldClosed(c) end
-    -- Ú11: a closed, documented case counts for the treating doctor's Physician exam
-    if isElement(c.treating) and #(c.diagnoses or {}) > 0 and ER.running("work_hospital") then
-        exports.work_hospital:addHospitalTreatedCase(c.treating)
-    end
     local points = c.pointsTotal or 0
     if points <= 0 or c.carePaid then return end
     local g = gh()

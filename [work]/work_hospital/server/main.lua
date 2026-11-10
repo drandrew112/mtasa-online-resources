@@ -119,6 +119,15 @@ end)
 
 ---------------------------------------------------------------- pay
 
+-- highest rank the player holds (defined before payPoints: it is a local, payPoints calls it)
+local function topRank(player)
+    for i = #HOSPW.COMPETENCY.ranks, 1, -1 do
+        local r = HOSPW.COMPETENCY.ranks[i]
+        if r.base or exports.work_core:hasCompetency(player, HOSPW.WORK_ID, r.id) then return r.id end
+    end
+    return "nurse"
+end
+
 local function payPoints(player, reason)
     local p = Points[player]
     Points[player] = nil
@@ -148,7 +157,11 @@ local function payPoints(player, reason)
     end
     local opts
     if gh and p.hospital then opts = { payer = gh:getHospitalSalaryPayer(p.hospital, p.total * value + bonus) } end
-    exports.work_core:payWork(player, HOSPW.WORK_ID, items, reason, opts)
+    local ok, err = exports.work_core:payWork(player, HOSPW.WORK_ID, items, reason, opts)
+    if not ok then
+        outputDebugString(("[work_hospital] payWork failed for %s (%d points): %s"):format(
+            getPlayerName(player), p.total, tostring(err)), 1)
+    end
     exports.work_core:giveWorkXp(player, HOSPW.WORK_ID, math.floor(p.total * HOSPW.XP_PER_POINT))
 end
 
@@ -161,13 +174,6 @@ for _, name in ipairs({ "onPlayerWorkDutyStart", "onPlayerWorkDutyEnd" }) do add
 local dutySince = {}   -- player -> { at, rank }
 
 local function accData(player, key) return isRunning("v_mysql") and exports.v_mysql:getAccData(player, key) or nil end
-local function topRank(player)
-    for i = #HOSPW.COMPETENCY.ranks, 1, -1 do
-        local r = HOSPW.COMPETENCY.ranks[i]
-        if r.base or exports.work_core:hasCompetency(player, HOSPW.WORK_ID, r.id) then return r.id end
-    end
-    return "nurse"
-end
 local function bookDuty(player)
     local d = dutySince[player]
     dutySince[player] = nil
@@ -186,16 +192,20 @@ function addHospitalTreatedCase(player)
     return true
 end
 
--- work_core exams.check -> true | false, reason
+-- med_hospitals: a closed case this player worked on (any role: logged an action on it)
+function addHospitalAssistedCase(player)
+    if not isElement(player) or not isRunning("v_mysql") then return false end
+    exports.v_mysql:setAccData(player, "hosp.patients", (tonumber(accData(player, "hosp.patients")) or 0) + 1)
+    return true
+end
+
+-- work_core exams.check -> true | false, reason (patient counts only, no duty time)
 function checkHospitalExam(player, examId)
     local req = HOSPW.COMPETENCY.examRequirements[examId]
     if not req then return true end
-    local sec = tonumber(accData(player, "hosp.duty." .. req.rank)) or 0
-    local d = dutySince[player]
-    if d and d.rank == req.rank then sec = sec + (getRealTime().timestamp - d.at) end
-    if sec < req.hours * 3600 then
-        return false, L.forPlayer(player, "work_hospital.exam.need_hours", { hours = req.hours, rank = L.forPlayer(player, "work_hospital.comp." .. req.rank),
-            have = ("%.1f"):format(sec / 3600) })
+    local patients = tonumber(accData(player, "hosp.patients")) or 0
+    if req.patients and patients < req.patients then
+        return false, L.forPlayer(player, "work_hospital.exam.need_patients", { n = req.patients, have = patients })
     end
     local cases = tonumber(accData(player, "hosp.cases")) or 0
     if req.cases and cases < req.cases then
@@ -231,7 +241,11 @@ addEventHandler("onPlayerWorkDutyEnd", root, function(workId, reason)
     payPoints(source, L.forPlayer(source, reason == "quit" and "work_hospital.pay.reason_quit" or "work_hospital.pay.reason_duty_end"))
 end)
 
+-- work_core ends the duty on quit too (onPlayerWorkDutyEnd "quit"), but the handler order of the two
+-- resources is not fixed: when this one runs first, pay here instead of throwing the points away.
 addEventHandler("onPlayerQuit", root, function()
+    bookDuty(source)
+    if Points[source] then payPoints(source, L.forPlayer(source, "work_hospital.pay.reason_quit")) end
     Granted[source] = nil
     Points[source] = nil
 end)

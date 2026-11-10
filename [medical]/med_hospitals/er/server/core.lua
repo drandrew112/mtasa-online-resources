@@ -94,6 +94,11 @@ end
 -- the patient pathway (betegút): in the case and in hosp_events
 function ER.log(c, kind, text, by)
     local actor = isElement(by) and (getElementData(by, "displayName") or getPlayerName(by)) or by or false
+    -- staff who worked on the case (work_hospital hosp.patients: the Resident exam needs them)
+    if isElement(by) and getElementType(by) == "player" then
+        c.staff = c.staff or {}
+        c.staff[by] = true
+    end
     c.events[#c.events + 1] = { at = getRealTime().timestamp, kind = kind, text = text, by = actor }
     if ERDB then ERDB.event(c, kind, text, actor) end
 end
@@ -158,6 +163,13 @@ function ER.closeCase(c, outcome)
     if c.status ~= "interrupted" and not c.caseCounted and isElement(c.treating) and ER.running("work_hospital") then
         c.caseCounted = true
         pcall(function() exports.work_hospital:addHospitalTreatedCase(c.treating) end)
+    end
+    if c.status ~= "interrupted" and not c.staffCounted and ER.running("work_hospital") then
+        c.staffCounted = true
+        if isElement(c.treating) then c.staff = c.staff or {} c.staff[c.treating] = true end
+        for p in pairs(c.staff or {}) do
+            if isElement(p) then pcall(function() exports.work_hospital:addHospitalAssistedCase(p) end) end
+        end
     end
     if ERDB then ERDB.closeCase(c, outcome) end
     ER.cases[c.ped] = nil

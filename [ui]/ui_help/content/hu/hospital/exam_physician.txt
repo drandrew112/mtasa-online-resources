@@ -2,6 +2,6 @@
 @keywords: orvosi vizsga, stemi, stroke, transzfúzió, antidótum, lélegeztetés
 @related: hospital_exams, hospital_stemi, hospital_stroke, hospital_transfusion, hospital_poison
 
-Feltétel: Rezidens rang, 4 óra szolgálat Rezidensként és 20 lezárt eset kezelőként. 25 kérdés, 75%.
+Feltétel: Rezidens rang és 20 lezárt eset kezelőként. 25 kérdés, 75%.
 
 Témák: STEMI-eljárásrend, stroke-lízis feltételei, transzfúziós kompatibilitás (vvt és plazma), masszív transzfúzió, mellkasi drén helye, FAST-ablakok, lélegeztetés alapjai, antidótumok, műtéti indikációk, exitus és halottvizsgálat.

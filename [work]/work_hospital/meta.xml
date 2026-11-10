@@ -21,6 +21,7 @@
     <export function="addHospitalPoints" type="server" />
     <export function="checkHospitalExam" type="server" />
     <export function="addHospitalTreatedCase" type="server" />
+    <export function="addHospitalAssistedCase" type="server" />
     <export function="getHospitalPoints" type="server" />
     <export function="canStaffPerform"   type="server" />
     <export function="getHospitalWorkId" type="server" />

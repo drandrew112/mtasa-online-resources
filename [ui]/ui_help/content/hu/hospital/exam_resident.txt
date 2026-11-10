@@ -2,6 +2,6 @@
 @keywords: rezidens vizsga, kérdések, triage, labor, csősorrend, sebellátás
 @related: hospital_exams, hospital_triage, hospital_lab, hospital_wound, hospital_cast
 
-Feltétel: Ápoló rang és 2 óra szolgálat Ápolóként. 25 kérdés, 75%.
+Feltétel: Ápoló rang és 10 lezárt eset, amelyen dolgoztál. 25 kérdés, 75%.
 
 Témák: triage és ABCDE, rendelési indikációk (pl. mikor kell CT koponya), röntgen a gipsz előtt, csősorrend és vérvételi hibák, alap laborértékek, sebellátás és tetanusz, törések kezelése, kórházi gyógyszeradagok, dokumentációs szabályok (BNO, verziók).

@@ -6,7 +6,7 @@ VOICE = {
 	SERVER_UPDATE_MS = 500,  -- how often the server rebuilds who hears whom
 	CLIENT_UPDATE_MS = 50,   -- how often the client recalculates volume / pan of speakers
 	OCCLUDED_VOLUME = 0.45,  -- volume multiplier when a building is between us and the speaker
-	GAIN = 10,                -- overall voice loudness multiplier on top of the distance fade (1 = old level)
+	GAIN = 15,                -- overall voice loudness multiplier on top of the distance fade (1 = old level)
 	PAN_STRENGTH = 0.7,      -- 0 = mono, 1 = full left / right panning by direction
 	VEHICLE_SHARED = true,   -- players in the same vehicle always hear each other at full volume
 	BLOCK_MUTED = true,      -- players muted in v_chat (mute_until element data) cannot talk either
