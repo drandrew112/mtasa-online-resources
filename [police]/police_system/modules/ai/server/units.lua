@@ -167,6 +167,7 @@ end
 function AI.retreat(unit)
     if unit.state == "retreat" then return end
     unit.state = "retreat"
+    unit.retreatAt = getTickCount()
     unit.chase = nil
     unit.pendingArgs = nil
     removeBlip(unit)

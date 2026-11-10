@@ -453,10 +453,12 @@ function UI.yOverlay:draw()
         drawPlayerFlag(player, nameX - ui(6) - flagW, y + (rowH - flagH) / 2, flagW, flagH, alpha)
 
         local pName = getElementData(player, "displayName") or getPlayerName(player)
+        -- aki még nincs bejelentkezve (nincs "loaded"), annak szürke a neve
+        local nameColor = (getElementData(player, "loaded") and tocolor(255,255,255,alpha)) or tocolor(150,150,150,alpha)
         dxDrawText(
             pName,
             nameX, y+(rowH/2),
-            _,_, tocolor(255,255,255,alpha),
+            _,_, nameColor,
             ui(1.2), "default", "left", "center"
         )
 

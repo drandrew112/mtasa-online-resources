@@ -107,6 +107,9 @@ POLICE = {
         -- WALK_MIN s); RETREAT_BOARD s to get back in, then they walk too
         WALK_DESPAWN_DIST = 35, WALK_MIN = 5, RETREAT_BOARD = 25,
         DESPAWN_DIST = 150,       -- gone only when unseen and this far from every player
+        -- safety net: a unit / officer that finished its job is removed after FORCE_UNSEEN s as soon as no camera sees
+        -- it (any distance), after FORCE_ALL s whatever happens (never left standing until a restart)
+        FORCE_UNSEEN = 40, FORCE_ALL = 150,
         SPAWN_GAP = 2500,         -- ms between two new units of one chase
         FOOT_DIST = 40,           -- suspect stopped / on foot this close: the crew gets out
         BACK_TO_CAR = 70,         -- suspect drove off this far: the crew gets back in

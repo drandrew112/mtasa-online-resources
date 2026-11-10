@@ -19,7 +19,7 @@ RADIO = {
 	KEY = "x",               -- push to talk (hold)
 	INTRO_MS = 1170,         -- length of sounds/intro.wav: listeners hear it first, the voice is routed only after it
 	SFX_VOLUME = 0.6,        -- push / release / intro / outro volume
-	STATIC_VOLUME = 0.2,     -- static loop under an incoming transmission
+	STATIC_VOLUME = 0.1,     -- static loop under an incoming transmission
 	VOICE_VOLUME = 1,        -- radio voice volume multiplier (on top of VOICE.GAIN), no distance fade or pan
 	SPEAKER_HOLD_MS = 2500,  -- the last speaker's name stays on the radar this long after the transmission ends
 	-- any of these local player element data blocks the radio key (typing in chat / a text field)

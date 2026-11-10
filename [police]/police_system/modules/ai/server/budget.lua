@@ -80,12 +80,29 @@ function B.cleanup(now)
         if (u.manualDespawn or u.dead) and u.state == "retreat" or (u.dead and not u.chase) then
             if unseenFar(u.veh, A.DESPAWN_DIST) then AI.remove(u) end
         end
+        -- safety net: a retreating unit (or one whose chase is gone) never stays on the road
+        if AI.units[u.veh or false] == u then
+            if u.state ~= "retreat" and (not u.chase or POL.chase.list[u.chase.suspect] ~= u.chase) then
+                AI.retreat(u)
+            end
+            if u.state == "retreat" then
+                u.retreatAt = u.retreatAt or now
+                local age = now - u.retreatAt
+                if age > A.FORCE_ALL * 1000 or (age > A.FORCE_UNSEEN * 1000 and unseenFar(u.veh, 0)) then
+                    AI.remove(u)
+                end
+            end
+        elseif u.veh == nil or not isElement(u.veh) then
+            AI.remove(u)
+        end
     end
     for ped, at in pairs(AI.walkers) do
         if not isElement(ped) or isPedDead(ped) and now - at > 60000 then
             AI.walkers[ped] = nil
             AI.peds[ped] = nil
-        elseif now - at > A.WALK_MIN * 1000 and unseenFar(ped, A.WALK_DESPAWN_DIST) then
+        elseif now - at > A.WALK_MIN * 1000 and unseenFar(ped, A.WALK_DESPAWN_DIST)
+            or now - at > A.FORCE_UNSEEN * 1000 and unseenFar(ped, 0)
+            or now - at > A.FORCE_ALL * 1000 then
             AI.walkers[ped] = nil
             AI.peds[ped] = nil
             if POL.running("ai_peds") then pcall(function() exports.ai_peds:destroyAIPed(ped) end) end
