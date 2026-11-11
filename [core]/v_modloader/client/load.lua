@@ -177,16 +177,6 @@ function syncModels()
     slice()
 end
 
---- Files of these models were replaced (download): the loaded old copies go, then the
---- new ones load like any other. changed = { [category] = { [id] = true } }
-function refreshModels(changed)
-    if busy then dirty = true end
-    for catName, ids in pairs(changed or {}) do
-        for id in pairs(ids) do unloadMod(catName, id) end
-    end
-    syncModels()
-end
-
 local function start()
     if started then return end
     started = true

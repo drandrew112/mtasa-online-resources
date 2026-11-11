@@ -205,39 +205,6 @@ local function modelToggle(id, key)
     }
 end
 
-local function mbText(bytes)
-    return ("%.1f MB"):format((tonumber(bytes) or 0) / 1048576)
-end
-
--- "3 new · 24.1 MB" / "Up to date"
-local function modelDownloadValue()
-    if not modloaderAvailable() then return nil end
-    local s = exports.v_modloader:getModelStatus("vehicles")
-    if not s then return nil end
-    if s.checking then return L("ui_pause.settings.models_checking") end
-    if exports.v_modloader:isModelDownloadActive() then return L("ui_pause.settings.models_downloading") end
-    local pending = (s.new or 0) + (s.outdated or 0)
-    if pending == 0 then return L("ui_pause.settings.models_up_to_date") end
-    return L("ui_pause.settings.models_pending", { count = pending, size = mbText(s.bytes) })
-end
-
--- the downloaded count and the names of the models still to download
-local function modelDownloadDesc()
-    local base = L("ui_pause.settings.models_download_desc")
-    if not modloaderAvailable() then return base end
-    local s = exports.v_modloader:getModelStatus("vehicles")
-    if not s then return base end
-    local text = base .. "\n" .. L("ui_pause.settings.models_downloaded", { ok = s.ok or 0, total = s.total or 0, size = mbText(s.totalBytes) })
-    local names = s.names or {}
-    if #names > 0 then
-        local shown = {}
-        for i = 1, math.min(#names, 8) do shown[i] = names[i] end
-        if #names > 8 then shown[#shown + 1] = L("ui_pause.settings.models_more", { count = #names - 8 }) end
-        text = text .. "\n" .. L("ui_pause.settings.models_new", { names = table.concat(shown, ", ") })
-    end
-    return text
-end
-
 -- Language choice options (v_locals: { value, label } -> choice { id, label }).
 -- The list only changes with a v_locals restart, so it is fetched once.
 local languageOptions = nil
@@ -434,17 +401,6 @@ SETTINGS_TREE = {
             modelToggle("models_objects", "ui_pause.settings.models_objects"),
             modelToggle("models_weapons", "ui_pause.settings.models_weapons"),
             modelToggle("models_skins", "ui_pause.settings.models_skins"),
-            modelToggle("models_autoupdate", "ui_pause.settings.models_autoupdate"),
-            {
-                -- an action row: Enter starts the download (the menu hides meanwhile)
-                id = "models_download", label = L("ui_pause.settings.models_download"), type = "action",
-                desc = modelDownloadDesc,
-                available = modloaderAvailable,
-                valueText = modelDownloadValue,
-                run = function()
-                    if modloaderAvailable() then exports.v_modloader:downloadModels("vehicles") end
-                end,
-            },
         },
     },
     {
@@ -938,7 +894,7 @@ local function inputBlocked()
     if getElementData(localPlayer, "helpOpen") then return true end
     if getElementData(localPlayer, "donateOpen") then return true end
 
-    -- the download screen (v_modloader models) is up; the menu comes back after it
+    -- an external download screen (ui_download) is up
     if getElementData(localPlayer, "download_screen") then return true end
     return false
 end
@@ -1664,36 +1620,6 @@ addEventHandler("onClientResourceStop", resourceRoot, function()
     if pauseMenuOpen then
         setPauseMenuOpen(false)
     end
-end)
-
---------------------------------------------------------------------------------
--- Settings > Models download: the menu hides for the download screen and comes
--- back on the same row (v_modloader events)
---------------------------------------------------------------------------------
-
-local reopenAfterDownload = nil -- { tab, cat, sel } while hidden for a download
-
-addEvent("onClientModelDownloadStart")
-addEventHandler("onClientModelDownloadStart", root, function()
-    if not pauseMenuOpen then return end
-    reopenAfterDownload = { tab = selectedTab, cat = settingsCat, sel = settingsSel }
-    setPauseMenuOpen(false)
-    -- no walking around under the download screen
-    uicore:toggleMoveControls(false)
-end)
-
-addEvent("onClientModelDownloadFinish")
-addEventHandler("onClientModelDownloadFinish", root, function()
-    local r = reopenAfterDownload
-    if not r then return end
-    reopenAfterDownload = nil
-    if not getElementData(localPlayer, "loaded") then
-        uicore:toggleMoveControls(true)
-        return
-    end
-    setPauseMenuOpen(true)
-    selectedTab, settingsCat, settingsSel = r.tab, r.cat, r.sel
-    focus = "content"
 end)
 
 --------------------------------------------------------------------------------

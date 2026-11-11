@@ -12,7 +12,6 @@ local pendingCount = 0      -- valid mods on disk that are not in meta.xml yet
 local scanErrors = {}       -- last scan: error lines
 local clientErrors = {}     -- [key] = { count = n, text = "..." }
 local lastServed = {}       -- [player] = tick of last list sent
-local playerStatus = {}     -- [player] = { [category] = { ok = n, total = n } } (client reports)
 
 -- ---------------------------------------------------------------------------
 -- Logging (console + logs/modloader.log)
@@ -309,11 +308,6 @@ local function rebuildMeta()
     for _, path in ipairs(res.files) do
         local node = xmlCreateChild(root, "file")
         xmlNodeSetAttribute(node, "src", path)
-        local cat = modloaderCategory(path:match("^(%a+)/"))
-        if cat and cat.download == "manual" then
-            -- not downloaded on join; the client asks for it (downloadFile)
-            xmlNodeSetAttribute(node, "download", "false")
-        end
         now[path] = true
     end
     xmlSaveFile(root)
@@ -408,7 +402,7 @@ local SETTING_KEY = "uipause.setting."
 
 local function savedOptions(player)
     if getElementData(player, "isLogged") ~= true then return nil end
-    local ids = { MODLOADER.AUTOUPDATE_SETTING }
+    local ids = {}
     for _, cat in ipairs(MODLOADER.categories) do ids[#ids + 1] = cat.setting end
     local out = {}
     for _, id in ipairs(ids) do
@@ -432,32 +426,6 @@ end)
 
 addEventHandler("onPlayerQuit", root, function()
     lastServed[source] = nil
-    playerStatus[source] = nil
-end)
-
--- the client's download state per category (after its check and after every download)
-addEvent("modloader:status", true)
-addEventHandler("modloader:status", resourceRoot, function(status)
-    local player = client
-    if not isElement(player) or type(status) ~= "table" then return end
-    local clean = {}
-    for _, cat in ipairs(MODLOADER.categories) do
-        local s = status[cat.name]
-        if type(s) == "table" then
-            clean[cat.name] = { ok = math.floor(tonumber(s.ok) or 0), total = math.floor(tonumber(s.total) or 0) }
-        end
-    end
-    playerStatus[player] = clean
-end)
-
--- one finished / cancelled download of a client
-addEvent("modloader:downloaded", true)
-addEventHandler("modloader:downloaded", resourceRoot, function(files, bytes, failed, cancelled)
-    local player = client
-    if not isElement(player) then return end
-    log("INFO", ("client %s: download %s, %d file(s), %.1f MB, %d failed"):format(getPlayerName(player),
-        cancelled == true and "cancelled" or "finished", tonumber(files) or 0, (tonumber(bytes) or 0) / 1048576, tonumber(failed) or 0))
-    flushLog()
 end)
 
 addEvent("modloader:report", true)
@@ -507,17 +475,7 @@ addCommandHandler("modloader", function(player, _, sub)
         for _, cat in ipairs(MODLOADER.categories) do
             local n = 0
             for _ in pairs(served[cat.name] or {}) do n = n + 1 end
-            local full, partial, none = 0, 0, 0
-            for _, st in pairs(playerStatus) do
-                local s = st[cat.name]
-                if s then
-                    if s.total > 0 and s.ok >= s.total then full = full + 1
-                    elseif s.ok > 0 then partial = partial + 1
-                    else none = none + 1 end
-                end
-            end
-            say(player, ("%s (%d-%d, %s download): %d active | online players: %d complete, %d partial, %d none"):format(
-                cat.name, cat.min, cat.max, cat.download, n, full, partial, none))
+            say(player, ("%s (%d-%d): %d active"):format(cat.name, cat.min, cat.max, n))
         end
         local ce = 0
         for _ in pairs(clientErrors) do ce = ce + 1 end

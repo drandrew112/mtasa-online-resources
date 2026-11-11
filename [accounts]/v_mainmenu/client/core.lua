@@ -438,7 +438,6 @@ local function hoverFocus()
     local moved = lastMouseX and (mx ~= lastMouseX or my ~= lastMouseY)
     lastMouseX, lastMouseY = mx, my
     if not moved or mx < 0 or dragging or getKeyState("mouse1") then return end
-    if ModelsNotice.open then return ModelsNotice.hover(mx, my) end
     local layers = Menu.view and { "view" } or { "tabs", "page" }
     for _, layer in ipairs(layers) do
         local list = lastRegs[layer]
@@ -485,7 +484,6 @@ local function render()
     end
 
     drawHint()
-    ModelsNotice.draw()
 
     lastRegs = regs
     hoverFocus()
@@ -511,14 +509,6 @@ end
 
 addEventHandler("onClientKey", root, function(key, press)
     if not Menu.open or not press then return end
-    -- the first-entry models warning (pages/models.lua) is on top of everything
-    if ModelsNotice.open then
-        if not key:find("^mouse") then
-            cancelEvent()
-            ModelsNotice.key(key)
-        end
-        return
-    end
     if key == "mouse_wheel_up" or key == "mouse_wheel_down" then
         local mx, my = cursorPos()
         for i = #wheels, 1, -1 do
@@ -584,7 +574,7 @@ addEventHandler("onClientKey", root, function(key, press)
 end)
 
 addEventHandler("onClientCharacter", root, function(ch)
-    if not Menu.open or ModelsNotice.open then return end
+    if not Menu.open then return end
     local r = focusedReg()
     if r and r.field then r.field:insert(ch) end
 end)
@@ -597,7 +587,6 @@ end)
 
 addEventHandler("onClientClick", root, function(btn, state, absX, absY)
     if not Menu.open or btn ~= "left" or state ~= "down" then return end
-    if ModelsNotice.click(absX, absY) then return end
     for _, layer in ipairs({ "tabs", "view", "page" }) do
         local list = lastRegs[layer]
         for i = #list, 1, -1 do
@@ -636,7 +625,6 @@ local function accUi(fn, ...)
     return exports.v_accounts[fn](exports.v_accounts, ...)
 end
 
--- reopened: back after the models download screen (pages/models.lua restores the page)
 function Menu.show(data, reopened)
     Menu.data = type(data) == "table" and data or {}
     if Menu.open then return end
@@ -655,7 +643,6 @@ function Menu.show(data, reopened)
     showCursor(true)
     guiSetInputMode("no_binds")
     accUi("setMusicActive", false) -- no music in the menu (stops the login music too)
-    onMenuShownModels(reopened)
 end
 
 function Menu.hide()

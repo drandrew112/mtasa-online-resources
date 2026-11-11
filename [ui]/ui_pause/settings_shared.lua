@@ -30,7 +30,6 @@ PAUSE_SETTINGS = {
     { id = "models_objects",     type = "boolean" },
     { id = "models_weapons",     type = "boolean" },
     { id = "models_skins",       type = "boolean" },
-    { id = "models_autoupdate",  type = "boolean" },
 }
 
 -- Strings come from the client, so only short identifiers are accepted.

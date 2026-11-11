@@ -31,9 +31,6 @@ end
 PAGES.defs.home = {
     label = "v_mainmenu.page.home",
     draw = function(x, y, w, h)
-        -- not downloaded custom models: a warning strip on top (pages/models.lua)
-        local strip = drawModelsReminder(x, y, w)
-        y, h = y + strip, h - strip
         local at = grid(x, y, w, h, 4, 3)
         local p = Menu.data.profile or {}
 

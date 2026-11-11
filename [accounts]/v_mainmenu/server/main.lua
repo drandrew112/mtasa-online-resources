@@ -8,13 +8,6 @@ addEvent("v_mainmenu:setPreference", true)
 addEvent("v_mainmenu:refresh", true)
 
 local NEWS_COUNT = 8
-local MODELS_NOTICE_KEY = "v_mainmenu.modelsNotice"   -- accData: 1 = the first-entry models warning was closed
-
-addEvent("v_mainmenu:modelsNoticeSeen", true)
-addEventHandler("v_mainmenu:modelsNoticeSeen", root, function()
-    if getElementData(client, "isLogged") ~= true then return end
-    exports.v_mysql:setAccData(client, MODELS_NOTICE_KEY, 1)
-end)
 local inMenu = {}   -- [player] = true while the menu is up
 
 local function resourceRunning(name)
@@ -58,10 +51,6 @@ local function collect(player)
     data.news = news
 
     data.weekly = try("v_weekly", function() return exports.v_weekly:getWeeklyInfo(0) end) or false
-
-    -- first entry: the custom models warning (pages/models.lua), until the player closes it
-    local seen = try("v_mysql", function() return exports.v_mysql:getAccData(player, MODELS_NOTICE_KEY) end)
-    data.modelsNotice = resourceRunning("v_modloader") and not (seen == 1 or seen == "1" or seen == true)
     return data
 end
 
