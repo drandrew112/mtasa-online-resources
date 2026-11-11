@@ -20,6 +20,7 @@ ERC.STOCK = {
         { id = "decompression_needle", cat = "hosp", amount = 4, price = 15 },
         { id = "pelvic_binder", cat = "hosp", amount = 2, price = 80 },
         { id = "sterile_dressing", cat = "bandages", amount = 16, price = 3 },
+        { id = "burn_dressing", cat = "hosp", amount = 4, price = 16 },
         { id = "abg_syringe", cat = "hosp", amount = 8, price = 6 },
         { id = "ecg_electrodes", cat = "hosp", amount = 8, price = 4 },
         { id = "splint", cat = "splints", amount = 6, price = 12 },
@@ -85,11 +86,13 @@ ERC.STOCK = {
         { id = "tube_blue", cat = "hosp", amount = 20, price = 1 }, { id = "tube_red", cat = "hosp", amount = 20, price = 1 },
         { id = "tube_green", cat = "hosp", amount = 10, price = 1 }, { id = "tube_purple", cat = "hosp", amount = 20, price = 1 },
         { id = "tube_grey", cat = "hosp", amount = 10, price = 1 }, { id = "blood_culture", cat = "hosp", amount = 6, price = 8 },
+        { id = "abg_syringe", cat = "hosp", amount = 4, price = 6 },   -- ABG in the ICU
         { id = "draw_needle", cat = "hosp", amount = 20, price = 1 }, { id = "butterfly", cat = "hosp", amount = 10, price = 2 },
         { id = "alcohol_swab", cat = "hosp", amount = 40, price = 0.2 }, { id = "plaster_strip", cat = "hosp", amount = 20, price = 0.2 },
         { id = "cannula", cat = "ivKits", amount = 12, price = 4 },
         { id = "isolyte", cat = "fluids", amount = 10, price = 6 },
         { id = "sterile_dressing", cat = "bandages", amount = 12, price = 3 },
+        { id = "burn_dressing", cat = "hosp", amount = 4, price = 16 },   -- burns are dressed anywhere (no room)
         { id = "splint", cat = "splints", amount = 6, price = 12 },
         { id = "intubation_kit", cat = "airwayKits", amount = 1, price = 40 },
         { id = "epinephrine", cat = "drugs", drug = "epinephrine", amount = 6, price = 5 },
