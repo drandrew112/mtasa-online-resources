@@ -25,8 +25,6 @@ dxSetShaderValue(roundedShader, "sourceTexture", logoTex)
 
 local debug_ds = false
 local TEST_ADMIN_LEVEL = 5
-local SIZE_WARN_MB = 650 -- e felett figyelmeztetes a hibas teljes meretre
-
 -- Kulso letoltes (pl. v_modloader jarmu modellek, downloadFile): a resource maga
 -- adja a haladast, nem a transfer box. { owner, title, done, total, label, cancellable }
 local external = nil
@@ -201,14 +199,8 @@ function render()
             nextY = nextY - h - uicore:ui(4)
         end
 
-        -- a kulso letolto szerver miatt a teljes meret nagy letoltesnel hibas lehet
-        local totalMB
-        if external and not isTransferBoxActive() then
-            totalMB = external.total / 1024 / 1024
-        else
-            totalMB = tonumber(total) or 0
-        end
-        if not dlError and totalMB > SIZE_WARN_MB then
+        -- a kulso letolto szerver miatt a teljes meret hibas lehet: mindig kiirjuk
+        if not dlError then
             drawHint(L("ui_download.client.size_warning"))
         end
 
