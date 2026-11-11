@@ -25,6 +25,7 @@ dxSetShaderValue(roundedShader, "sourceTexture", logoTex)
 
 local debug_ds = false
 local TEST_ADMIN_LEVEL = 5
+local SIZE_WARN_MB = 650 -- e felett figyelmeztetes a hibas teljes meretre
 
 -- Kulso letoltes (pl. v_modloader jarmu modellek, downloadFile): a resource maga
 -- adja a haladast, nem a transfer box. { owner, title, done, total, label, cancellable }
@@ -187,16 +188,33 @@ function render()
         end
         uicore:drawLoadingText(downloadtext)
 
-        -- a megszakitas lehetosege, egy sorral a Downloading sor felett
-        if external and external.cancellable then
-            local hint = playing and L("ui_download.client.cancel_leave_game") or L("ui_download.client.cancel_hint")
-            local scale = uicore:ui(1.4)
-            local rowH = 25 * uicore:ui(1.7)
-            local h = 25 * scale
+        -- figyelmeztetesek a Downloading sor felett (alulrol felfele): meretfigyelmeztetes, megszakitas
+        local scale = uicore:ui(1.4)
+        local rowH = 25 * uicore:ui(1.7)
+        local h = 25 * scale
+        local nextY = sh - safe_y - rowH - uicore:ui(6) - h
+        local function drawHint(hint)
             local w = L.width(hint, scale, "default", true) + 20
-            local x, y = sw - safe_x - w, sh - safe_y - rowH - uicore:ui(6) - h
-            dxDrawRectangle(x, y, w, h, tocolor(0, 0, 0, 160))
-            dxDrawText(hint, x + 10, y, x + w - 10, y + h, tocolor(255, 200, 90), scale, "default", "left", "center", false, false, false, true)
+            local x = sw - safe_x - w
+            dxDrawRectangle(x, nextY, w, h, tocolor(0, 0, 0, 160))
+            dxDrawText(hint, x + 10, nextY, x + w - 10, nextY + h, tocolor(255, 200, 90), scale, "default", "left", "center", false, false, false, true)
+            nextY = nextY - h - uicore:ui(4)
+        end
+
+        -- a kulso letolto szerver miatt a teljes meret nagy letoltesnel hibas lehet
+        local totalMB
+        if external and not isTransferBoxActive() then
+            totalMB = external.total / 1024 / 1024
+        else
+            totalMB = tonumber(total) or 0
+        end
+        if not dlError and totalMB > SIZE_WARN_MB then
+            drawHint(L("ui_download.client.size_warning"))
+        end
+
+        -- a megszakitas lehetosege
+        if external and external.cancellable then
+            drawHint(playing and L("ui_download.client.cancel_leave_game") or L("ui_download.client.cancel_hint"))
         end
 
         if getKeyState("c") then
