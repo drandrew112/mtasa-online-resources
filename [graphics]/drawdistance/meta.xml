@@ -3,7 +3,7 @@
 
     <min_mta_version client="1.5.8" server="1.5.8" />
 
-    <download_priority_group>10</download_priority_group> <!-- Download priority is required to detect resources -->
+    <download_priority_group>101</download_priority_group> <!-- Download priority is required to detect resources -->
 
     <script src="scripts/main_c.lua" type="client" />
 

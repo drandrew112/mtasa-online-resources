@@ -1,6 +1,6 @@
 <meta>
 	<info author="andrasxa" name="download" type="script" />
-	<download_priority_group>998</download_priority_group>
+	<download_priority_group>1500</download_priority_group>
 
 	<include resource="v_locals" />
 	<script src="locals.lua" type="client" />

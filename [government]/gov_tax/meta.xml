@@ -3,7 +3,7 @@
           description="State revenue: hourly company income tax, personal income tax rate keys, VAT (importVat lib for the shops), property tax, where each tax goes, fees and fines + where each fee goes; /gov pages Taxes and Fees" />
     <!-- before every client that imports VAT on load (ui_browser 997, ui_core 999); after v_locals 1001.
          The client side is only shared/vat.lua: it must not call gov_core or v_locals on load. -->
-    <download_priority_group>1000</download_priority_group>
+    <download_priority_group>201</download_priority_group>
 
     <include resource="gov_core" />
     <include resource="v_locals" />

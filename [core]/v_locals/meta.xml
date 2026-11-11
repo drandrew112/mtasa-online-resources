@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="Locals (translator)" type="script" version="1.0.0" />
-    <download_priority_group>1001</download_priority_group>
+    <download_priority_group>2000</download_priority_group>
 
     <!-- Account language is stored in accData "locale.language" (v_mysql).
          v_accounts / v_mainmenu / v_loading are NOT included on purpose: they consume

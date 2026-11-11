@@ -1,6 +1,5 @@
 <meta>
 	<info name="Nametag" author="DookthorAndriss" />
-	<download_priority_group>19</download_priority_group>
 
 	<include resource="v_locals" />
 	<script src="locals.lua" type="client" />
