@@ -1,0 +1,6 @@
+{
+  "_comment": "Job map minimap images (written by v_jobmaps tools/radar_image.py). Same fields as index.json, but a map is only shown after exports.v_radar:setJobMapImage(id, true [, options]) (v_jobmaps does it) and only inside its zones.",
+  "maps": [
+    {"id": "hungaroring", "name": "Hungaroring", "image": "jobmap_hungaroring.png", "x": -416, "y": 389, "width": 844, "height": 793, "zoom": 0.2, "zones": [{"min": [-416, -404, 867], "max": [428, 389, 1072]}]}
+  ]
+}

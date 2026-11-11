@@ -12,6 +12,13 @@ local state = nil           -- { prevCam, prevHideHUD, prevChat, shootIn }
 local preview = nil         -- texture of the last photo
 local previewUntil = 0
 
+-- immortal while taking photos (the character stands still while the camera flies around)
+local function cancelDamage() cancelEvent() end
+local function setImmortal(on)
+    removeEventHandler("onClientPlayerDamage", localPlayer, cancelDamage)
+    if on then addEventHandler("onClientPlayerDamage", localPlayer, cancelDamage) end
+end
+
 local function frameRect()
     local w, h = sw, sw * 9 / 16
     if h > sh then h, w = sh, sh * 16 / 9 end
@@ -29,6 +36,7 @@ function Photo.start()
         prevPos = { getElementPosition(localPlayer) },
     }
     Editor.photo = true
+    setImmortal(true)
     if Editor.camMode ~= "free" then Freecam.start() end
     showCursor(false)
     setElementData(localPlayer, "hideHUD", true, false)
@@ -41,6 +49,7 @@ end
 function Photo.stop(silent)
     if not Editor.photo then return end
     Editor.photo = false
+    setImmortal(false)
     setElementData(localPlayer, "hideHUD", state.prevHideHUD == true, false)
     showChat(state.prevChat)
     View.setHelpersVisible(true)

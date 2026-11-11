@@ -101,6 +101,8 @@ marker:     [x, y, z]  optional - without it (community games) the game has no w
             marker/blip and is reached via the job browser, phone invite or /quickjob
 objects:    optional [{model,x,y,z,rx?,ry?,rz?,scale?,alpha?,collisions?,doublesided?}] -
             created in the match dimension at match start, destroyed at the end (max 1000)
+jobmap:     optional "name" of a v_jobmaps map: loaded for the players behind a loading screen when a lobby
+            starts the match (min 1 s, waits for everybody), unloaded when the match ends or a player leaves
 race:       { vehicles:[model], spawnpoints:[[x,y,z,rot]], checkpoints:[[x,y,z,size]],
               finish:[x,y,z,size], finishCamera?:{pos,lookAt,roll,fov}, offRoute?: m (0 = off) }
 deathmatch: { weapon, ammo, armour?, spawnpoints:[[x,y,z,rot]] }

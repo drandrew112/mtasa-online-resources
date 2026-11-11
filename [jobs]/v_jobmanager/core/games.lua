@@ -7,6 +7,8 @@
 --                                              only reachable from the browser/phone/quickjob
 --   objects    = [{model, x, y, z, rx?, ry?, rz?, scale?, alpha?, collisions?, doublesided?}]  optional,
 --                                              spawned in the match dimension for every match
+--   jobmap     = "name"                        optional - a v_jobmaps map (custom models + objects), loaded for
+--                                              the players of a match behind a loading screen, unloaded at the end
 --   race       = {vehicles, spawnpoints, checkpoints, finish, finishCamera?}   (type "race")
 --   deathmatch = {weapon, ammo, armour?, spawnpoints}                          (type "deathmatch")
 --   mission    = {spawnpoints, stages, ...} (type "mission", mode_mission/README.md)
@@ -63,6 +65,7 @@ local function validateCommon(game, replacing)
     if game.scriptOnly ~= nil and type(game.scriptOnly) ~= "boolean" then return false, "scriptOnly must be a boolean" end
     if game.scriptOnly and game.type ~= JOB_TYPE_MISSION then return false, "only missions can be scriptOnly" end
     if game.scriptOnly and game.community then return false, "scriptOnly missions are official games" end
+    if game.jobmap ~= nil and type(game.jobmap) ~= "string" then return false, "jobmap must be a string" end
     local okObjects, objErr = validateObjects(game.objects, game.community and COMMUNITY_MAX_OBJECTS or MAX_OBJECTS)
     if not okObjects then return false, objErr end
     local mode = JobModes and JobModes[game.type]

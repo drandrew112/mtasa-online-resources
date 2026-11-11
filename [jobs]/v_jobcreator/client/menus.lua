@@ -298,6 +298,15 @@ function Menus.openHub()
         sub("Max Players", numberList("max", range(1, LIM.maxPlayers), doc.maxPlayers), "now: " .. doc.maxPlayers),
     })
 
+    local jobmaps = Editor.info and Editor.info.jobmaps or {}
+    if #jobmaps > 0 then
+        local maps = { leaf(L("v_jobcreator.menus.job_map_none"), { "jobmap", "" }, L("v_jobcreator.menus.job_map_none_desc"), { checked = not doc.jobmap, closeOnSelect = false }) }
+        for _, m in ipairs(jobmaps) do
+            maps[#maps + 1] = leaf(m.title, { "jobmap", m.name }, L("v_jobcreator.menus.job_map_desc"), { checked = doc.jobmap == m.name, closeOnSelect = false })
+        end
+        items[#items + 1] = sub(L("v_jobcreator.menus.job_map"), maps, doc.jobmap or L("v_jobcreator.menus.job_map_none"))
+    end
+
     if isRace then
         items[#items + 1] = sub("Test", {
             leaf(L("v_jobcreator.menus.from_start"), { "test", "start" }, L("v_jobcreator.menus.spawnpoint_1_every_checkpoint")),
@@ -524,6 +533,11 @@ actions.max = function(v)
         if doc.minPlayers > v[2] then doc.minPlayers = v[2] end
     end)
     retick("max", v[2])
+end
+actions.jobmap = function(v)
+    Editor.change(function(doc) doc.jobmap = v[2] ~= "" and v[2] or nil end)
+    Editor.syncJobMap()
+    retick("jobmap", v[2])
 end
 actions.name = function() askText("name", L("v_jobcreator.menus.game_name"), LIM.name, Editor.doc.name) end
 actions.desc = function() askText("desc", L("v_jobcreator.menus.description"), LIM.description, Editor.doc.description) end

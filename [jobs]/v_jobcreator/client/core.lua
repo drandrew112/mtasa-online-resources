@@ -93,7 +93,13 @@ local function swapHistory(from, to)
     Editor.dirty = true
     Editor.selected = nil
     View.sync()
+    Editor.syncJobMap()
     return true
+end
+
+-- the server loads the job map (v_jobmaps) of the open game for this player
+function Editor.syncJobMap()
+    triggerServerEvent("jobcreator:jobmap", resourceRoot, Editor.doc and Editor.doc.jobmap or "")
 end
 
 function Editor.undoStep()

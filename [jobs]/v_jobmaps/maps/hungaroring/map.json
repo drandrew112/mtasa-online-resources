@@ -1,0 +1,156 @@
+{
+  "models": {
+    "hr01": {
+      "col": "col/hr01.col",
+      "dff": "models/hr01.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr02": {
+      "col": "col/hr02.col",
+      "dff": "models/hr02.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr03": {
+      "col": "col/hr03.col",
+      "dff": "models/hr03.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr04": {
+      "col": "col/hr04.col",
+      "dff": "models/hr04.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr05": {
+      "col": "col/hr05.col",
+      "dff": "models/hr05.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr06": {
+      "col": "col/hr06.col",
+      "dff": "models/hr06.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr07": {
+      "col": "col/hr07.col",
+      "dff": "models/hr07.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr08": {
+      "col": "col/hr08.col",
+      "dff": "models/hr08.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr09": {
+      "col": "col/hr09.col",
+      "dff": "models/hr09.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr10": {
+      "col": "col/hr10.col",
+      "dff": "models/hr10.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr11": {
+      "col": "col/hr11.col",
+      "dff": "models/hr11.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr12": {
+      "col": "col/hr12.col",
+      "dff": "models/hr12.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr13": {
+      "col": "col/hr13.col",
+      "dff": "models/hr13.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr14": {
+      "col": "col/hr14.col",
+      "dff": "models/hr14.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr15": {
+      "col": "col/hr15.col",
+      "dff": "models/hr15.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr16": {
+      "col": "col/hr16.col",
+      "dff": "models/hr16.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr17": {
+      "col": "col/hr17.col",
+      "dff": "models/hr17.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr18": {
+      "col": "col/hr18.col",
+      "dff": "models/hr18.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr19": {
+      "col": "col/hr19.col",
+      "dff": "models/hr19.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr20": {
+      "col": "col/hr20.col",
+      "dff": "models/hr20.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    },
+    "hr21": {
+      "col": "col/hr21.col",
+      "dff": "models/hr21.dff",
+      "distance": 299.0,
+      "doublesided": true,
+      "txd": "hr01"
+    }
+  },
+  "name": "hungaroring",
+  "title": "Hungaroring",
+  "txds": {
+    "hr01": "textures/hr01.txd"
+  }
+}

@@ -25,6 +25,7 @@
     <script src="core/client/scoreboard.lua" type="client" />
     <script src="core/client/markers.lua" type="client" />
     <script src="core/client/images.lua" type="client" />
+    <script src="core/client/loading.lua" type="client" />
     <script src="mode_race/client/checkpoints.lua" type="client" />
     <script src="mode_race/client/recover.lua" type="client" />
     <script src="mode_mission/client/hud.lua" type="client" />

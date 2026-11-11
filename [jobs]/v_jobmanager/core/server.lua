@@ -321,7 +321,23 @@ function jobMatchById(id)
     return matches[id]
 end
 
+-- v_jobmaps (soft dependency): the job map of a game is loaded for the players of the match
+local function jobMapsRunning()
+    local res = getResourceFromName("v_jobmaps")
+    return res and getResourceState(res) == "running"
+end
+
+local function unloadJobMapFor(match, player)
+    local name = match.jobmap
+    if not name or not match.jobmapPlayers[player] then return end
+    match.jobmapPlayers[player] = nil
+    if isElement(player) and jobMapsRunning() then
+        pcall(function() exports.v_jobmaps:unloadJobMap(name, player) end)
+    end
+end
+
 -- `aborted` (resource stop, broken job, script abort) skips the payouts (core/rewards.lua).
+local beginLoading
 local function endMatch(match, reason, aborted)
     if not match or match.ended then return end
     match.ended = true
@@ -329,7 +345,13 @@ local function endMatch(match, reason, aborted)
         if isTimer(timer) then killTimer(timer) end
     end
     Spectate.stopAll(match)
-    local mode = JobModes[match.job.type]
+    local mode = not match.loading and JobModes[match.job.type] or nil   -- a match that never started has no mode state
+    if match.loading then
+        match.loading = false
+        for _, player in ipairs(match.players) do
+            if isElement(player) then triggerClientEvent(player, "jobmanager:loadingEnd", resourceRoot) end
+        end
+    end
     if mode and mode.onEnd then mode.onEnd(match, aborted) end
     local stats = buildStats(match)
     local camera = jobCamera(match)
@@ -366,10 +388,88 @@ local function endMatch(match, reason, aborted)
     destroyElements(match.vehicles)
     destroyElements(match.markers)
     destroyElements(match.objects)
+    if match.jobmap then
+        for _, player in ipairs(match.players) do unloadJobMapFor(match, player) end
+    end
     matches[match.id] = nil
     if mode and mode.afterEnd then mode.afterEnd(match, reason, aborted) end
 end
 jobEndMatch = endMatch
+
+-- Loading phase: every match starts behind a loading screen (at least LOADING_MIN ms) that waits until
+-- the job map (v_jobmaps, if the game has one) is built for every player. Only then the mode starts
+-- (a race countdown, spawns...). Creator test runs skip it: the creator owns the map there.
+local LOADING_MIN = 1000
+local LOADING_MAX = 60000
+
+local function loadingDone(match)
+    for _, player in ipairs(match.players) do
+        if isElement(player) and not match.left[player] and not match.jobmapDone[player] then return false end
+    end
+    return true
+end
+
+local function finishLoading(match)
+    if match.ended or not match.loading then return end
+    match.loading = false
+    for _, player in ipairs(match.players) do
+        if isElement(player) then triggerClientEvent(player, "jobmanager:loadingEnd", resourceRoot) end
+    end
+    JobModes[match.job.type].start(match, endMatch)
+end
+
+beginLoading = function(match)
+    local job = match.job
+    if not match.opts.lobby then   -- creator tests and script missions start at once
+        JobModes[job.type].start(match, endMatch)
+        return
+    end
+    match.loading = true
+    match.jobmapDone, match.jobmapPlayers = {}, {}
+    local useMap = job.jobmap and job.jobmap ~= "" and jobMapsRunning()
+    if job.jobmap and not useMap then
+        outputDebugString("[v_jobmanager] " .. job.id .. ": job map " .. job.jobmap .. " cannot be loaded (v_jobmaps is not running)", 2)
+    end
+    if useMap then match.jobmap = job.jobmap end
+    for _, player in ipairs(match.players) do
+        triggerClientEvent(player, "jobmanager:loadingStart", resourceRoot, job.name, useMap and true or false)
+        if useMap then
+            local ok, loaded = pcall(function()
+                return exports.v_jobmaps:loadJobMap(job.jobmap, player, { dimension = match.dimension, interior = 0 })
+            end)
+            if ok and loaded then match.jobmapPlayers[player] = true else match.jobmapDone[player] = true end
+        else
+            match.jobmapDone[player] = true
+        end
+    end
+    -- the map itself reports through onJobMapReady / onJobMapFailed (handlers below); this timer only
+    -- checks the minimum time, the time limit and players who left
+    table.insert(match.timers, setTimer(function()
+        if match.ended or not match.loading then return end
+        local waited = getTickCount() - match.startTick
+        if waited >= LOADING_MIN and (loadingDone(match) or waited >= LOADING_MAX) then finishLoading(match) end
+    end, 200, 0))
+end
+
+local function jobMapPlayerDone(player, name)
+    for _, match in pairs(matches) do
+        if match.loading and match.jobmap == name and match.jobmapPlayers[player] then
+            match.jobmapDone[player] = true
+        end
+    end
+end
+addEvent("onJobMapReady")
+addEvent("onJobMapFailed")
+addEventHandler("onJobMapReady", root, function(name) jobMapPlayerDone(source, name) end)
+addEventHandler("onJobMapFailed", root, function(name, reason)
+    outputDebugString("[v_jobmanager] job map " .. tostring(name) .. " failed for " .. getPlayerName(source) .. ": " .. tostring(reason), 2)
+    for _, match in pairs(matches) do
+        if match.jobmap == name and match.jobmapPlayers[source] then
+            match.jobmapPlayers[source] = nil
+            if match.loading then match.jobmapDone[source] = true end
+        end
+    end
+end)
 
 -- Starts a match without a lobby (lobby start, script missions, creator test runs).
 -- opts: { test, dimension, reward = false | {money, xp}, tag, returnTo = {x, y, z, interior, dimension},
@@ -435,7 +535,7 @@ local function createMatch(job, players, opts)
     table.insert(match.timers, setTimer(function()
         if not match.ended and next(match.spectators) then Spectate.refresh(match) end
     end, 2000, 0))
-    mode.start(match, endMatch)
+    beginLoading(match)
     return match
 end
 
@@ -445,7 +545,7 @@ local function startMatch(lobby)
     lobby.locked = true
     clearLobbyInvites(lobby)
     lobbies[lobby.id] = nil
-    local match, err = createMatch(lobby.job, lobby.players, {})
+    local match, err = createMatch(lobby.job, lobby.players, { lobby = true })
     return match and true or false, err
 end
 
@@ -455,6 +555,14 @@ local function dropFromMatch(player, match, quit)
     if match.ended then return end
     match.left[player] = true
     Spectate.forget(match, player)
+    unloadJobMapFor(match, player)
+    if match.loading then
+        -- never started: no mode state to clean up, just forget the player
+        removeFromList(match.players, player)
+        if isElement(player) then triggerClientEvent(player, "jobmanager:loadingEnd", resourceRoot) end
+        if #match.players == 0 then endMatch(match, "", true) end
+        return
+    end
     local mode = JobModes[match.job.type]
     if mode and mode.onPlayerGone then mode.onPlayerGone(match, player, endMatch, quit) end
     if not match.ended and next(match.spectators) then Spectate.refresh(match) end

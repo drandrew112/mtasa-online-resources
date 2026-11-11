@@ -38,6 +38,8 @@
   "v_jobmanager.jobmenu.spectate_players": "Játékosok nézése",
   "v_jobmanager.jobmenu.stop_test": "Teszt leállítása",
   "v_jobmanager.jobmenu.yes_leave": "Igen, kilépek",
+  "v_jobmanager.loading.title_loading": "Betöltés",
+  "v_jobmanager.loading.waiting": "Várakozás a többi játékosra",
   "v_jobmanager.markers.players": "{title}  -  {min_players}-{max_players} játékos",
   "v_jobmanager.markers.press_e_to_start_lobby": "Nyomd meg az  E  gombot egy lobby indításához",
   "v_jobmanager.markers.step_into_marker_to_start_lobby": "Lépj a markerbe egy lobby indításához",

@@ -5,6 +5,14 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 
 local LIM = CREATOR.LIMITS
 
+-- v_jobmaps is a soft dependency
+function jobMapKnown(name)
+    local res = getResourceFromName("v_jobmaps")
+    if not res or getResourceState(res) ~= "running" then return false end
+    local ok, info = pcall(function() return exports.v_jobmaps:getJobMapInfo(name) end)
+    return ok and info ~= false and info ~= nil
+end
+
 local function num(v, min, max)
     v = tonumber(v)
     if not v or v ~= v or v == math.huge or v == -math.huge then return nil end
@@ -275,6 +283,8 @@ function sanitizeGame(doc, gameType, marker, official, scriptOk)
         maxPlayers = maxPlayers,
         objects = objects(doc.objects, official),
     }
+    -- job map of v_jobmaps (custom models); only a map the server knows
+    if type(doc.jobmap) == "string" and doc.jobmap ~= "" and jobMapKnown(doc.jobmap) then game.jobmap = doc.jobmap end
     if marker == "keep" then
         game.marker = point(doc.marker)
     elseif type(marker) == "table" then

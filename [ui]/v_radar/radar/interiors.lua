@@ -11,6 +11,7 @@
 -- hidden minimap. The bigmap is not affected.
 
 local INDEX_FILE = "interiors/index.json"
+local JOBMAPS_FILE = "interiors/jobmaps.json"   -- track images of job maps (v_jobmaps), shown only on request
 local BASE_ZOOM = 7            -- minimap zoom for "zoom": 1 (rt pixels per map pixel; outside 0.2 .. 0.6), ~80 m wide
 local ANIM_TIME = 700          -- ms, zoom in / out
 local BG_R, BG_G, BG_B = 40, 42, 46   -- behind the plan (outside the rooms)
@@ -23,48 +24,75 @@ local blend = 0                -- 0 = world minimap, 1 = interior map
 local blendFrom, blendTo, blendStart = 0, 0, 0
 local zoomFrom, zoomStart = nil, 0 -- map-to-map swap with different zoom levels: animate between them
 
-local function loadIndex()
-	interiorMaps = {}
-	if not fileExists(INDEX_FILE) then
-		return
+local jobImages = {}          -- id -> parsed entry of interiors/jobmaps.json (inactive until setJobMapImage)
+
+local function readJson(file)
+	if not fileExists(file) then
+		return nil
 	end
-	local f = fileOpen(INDEX_FILE, true)
+	local f = fileOpen(file, true)
 	if not f then
-		return
+		return nil
 	end
 	local raw = fileRead(f, fileGetSize(f))
 	fileClose(f)
 	local data = raw and fromJSON(raw)
 	if type(data) ~= "table" or type(data.maps) ~= "table" then
-		outputDebugString("v_radar: interiors/index.json could not be read", 2)
-		return
+		outputDebugString("v_radar: " .. file .. " could not be read", 2)
+		return nil
 	end
-	for _, m in ipairs(data.maps) do
-		if type(m) == "table" and m.id and m.image and tonumber(m.x) and tonumber(m.y) and tonumber(m.width) and tonumber(m.height) and type(m.zones) == "table" then
-			local zones = {}
-			for _, z in ipairs(m.zones) do
-				if type(z) == "table" and type(z.min) == "table" and type(z.max) == "table" then
-					zones[#zones + 1] = {
-						tonumber(z.min[1]), tonumber(z.min[2]), tonumber(z.min[3]) or -10000,
-						tonumber(z.max[1]), tonumber(z.max[2]), tonumber(z.max[3]) or 10000,
-					}
-					local b = zones[#zones]
-					for i = 1, 3 do -- tolerate swapped min/max
-						if b[i] and b[i + 3] and b[i] > b[i + 3] then b[i], b[i + 3] = b[i + 3], b[i] end
-					end
-				end
-			end
-			interiorMaps[#interiorMaps + 1] = {
-				id = m.id,
-				name = m.name,
-				image = "interiors/" .. m.image,
-				x = tonumber(m.x), y = tonumber(m.y),
-				width = tonumber(m.width), height = tonumber(m.height),
-				interior = tonumber(m.interior) or 0,
-				dimension = tonumber(m.dimension),
-				zoom = BASE_ZOOM * math.max(0.1, math.min(10, tonumber(m.zoom) or 1)),
-				zones = zones,
+	return data
+end
+
+local function parseEntry(m)
+	if not (type(m) == "table" and m.id and m.image and tonumber(m.x) and tonumber(m.y) and tonumber(m.width) and tonumber(m.height) and type(m.zones) == "table") then
+		return nil
+	end
+	local zones = {}
+	for _, z in ipairs(m.zones) do
+		if type(z) == "table" and type(z.min) == "table" and type(z.max) == "table" then
+			zones[#zones + 1] = {
+				tonumber(z.min[1]), tonumber(z.min[2]), tonumber(z.min[3]) or -10000,
+				tonumber(z.max[1]), tonumber(z.max[2]), tonumber(z.max[3]) or 10000,
 			}
+			local b = zones[#zones]
+			for i = 1, 3 do -- tolerate swapped min/max
+				if b[i] and b[i + 3] and b[i] > b[i + 3] then b[i], b[i + 3] = b[i + 3], b[i] end
+			end
+		end
+	end
+	return {
+		id = m.id,
+		name = m.name,
+		image = "interiors/" .. m.image,
+		x = tonumber(m.x), y = tonumber(m.y),
+		width = tonumber(m.width), height = tonumber(m.height),
+		interior = tonumber(m.interior) or 0,
+		dimension = tonumber(m.dimension),
+		zoom = BASE_ZOOM * math.max(0.1, math.min(10, tonumber(m.zoom) or 1)),
+		zones = zones,
+	}
+end
+
+local function loadIndex()
+	interiorMaps = {}
+	jobImages = {}
+	local data = readJson(INDEX_FILE)
+	if data then
+		for _, m in ipairs(data.maps) do
+			local e = parseEntry(m)
+			if e then
+				interiorMaps[#interiorMaps + 1] = e
+			end
+		end
+	end
+	local jobs = readJson(JOBMAPS_FILE)
+	if jobs then
+		for _, m in ipairs(jobs.maps) do
+			local e = parseEntry(m)
+			if e then
+				jobImages[e.id] = e
+			end
 		end
 	end
 end
@@ -92,6 +120,46 @@ local function findMapAt(x, y, z, int, dim)
 		end
 	end
 	return nil
+end
+
+-- Exported (v_jobmaps): switch the minimap image of a job map (interiors/jobmaps.json) on / off. It is only drawn
+-- while on, and then only inside its zones (the map's volume), so a map left on by mistake shows nowhere else.
+-- options (same as v_jobmaps loadJobMap): { dimension = n, interior = n, offset = {x, y, z} } - the map was moved
+-- by offset / lives in that dimension. -> bool (false: no image for this id)
+function setJobMapImage(id, enabled, options)
+	local base = jobImages[tostring(id)]
+	if not base then
+		return false
+	end
+	for i = #interiorMaps, 1, -1 do
+		local m = interiorMaps[i]
+		if m.jobMap == base.id then
+			if m == current then
+				current, blend, blendFrom, blendTo = nil, 0, 0, 0
+			end
+			table.remove(interiorMaps, i)
+		end
+	end
+	if enabled then
+		options = type(options) == "table" and options or {}
+		local off = type(options.offset) == "table" and options.offset or {}
+		local ox, oy, oz = tonumber(off[1]) or 0, tonumber(off[2]) or 0, tonumber(off[3]) or 0
+		local m = {}
+		for k, v in pairs(base) do
+			m[k] = v
+		end
+		m.jobMap = base.id
+		m.x, m.y = base.x + ox, base.y + oy
+		m.interior = tonumber(options.interior) or 0
+		local dim = tonumber(options.dimension)
+		m.dimension = dim and dim ~= 0 and dim or nil
+		m.zones = {}
+		for i, z in ipairs(base.zones) do
+			m.zones[i] = { z[1] + ox, z[2] + oy, z[3] + oz, z[4] + ox, z[5] + oy, z[6] + oz }
+		end
+		interiorMaps[#interiorMaps + 1] = m
+	end
+	return true
 end
 
 -- Exported: the interior map the local player is in (id, name) or false.

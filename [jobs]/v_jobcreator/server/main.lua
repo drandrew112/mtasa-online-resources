@@ -115,6 +115,41 @@ local function vehicleNames()
 end
 
 --------------------------------------------------------------------------------
+-- job map (v_jobmaps): loaded for the editing player in the editor dimension
+--------------------------------------------------------------------------------
+
+local function jobMapsRunning()
+    local res = getResourceFromName("v_jobmaps")
+    return res and getResourceState(res) == "running"
+end
+
+local function jobMapList()
+    local out = {}
+    if not jobMapsRunning() then return out end
+    local ok, maps = pcall(function() return exports.v_jobmaps:getJobMaps() end)
+    if not ok or type(maps) ~= "table" then return out end
+    for name, m in pairs(maps) do out[#out + 1] = { name = name, title = m.title or name } end
+    table.sort(out, function(a, b) return a.name < b.name end)
+    return out
+end
+
+-- name = nil / "": nothing
+local function applyJobMap(player, session, name)
+    if name == "" or not (name and jobMapKnown(name)) then name = nil end
+    if session.jobmap == name then return end
+    if session.jobmap and jobMapsRunning() then
+        pcall(function() exports.v_jobmaps:unloadJobMap(session.jobmap, player) end)
+    end
+    session.jobmap = nil
+    if name and jobMapsRunning() then
+        local ok = pcall(function()
+            exports.v_jobmaps:loadJobMap(name, player, { dimension = session.dimension, interior = 0 })
+        end)
+        if ok then session.jobmap = name end
+    end
+end
+
+--------------------------------------------------------------------------------
 -- tests
 --------------------------------------------------------------------------------
 
@@ -158,6 +193,7 @@ local function closeCreator(player, quiet, immediate)
     if not session then return false end
     stopTest(player, session, true)
     unlock(player, session)
+    applyJobMap(player, session, nil)
     slots[session.slot] = nil
     sessions[player] = nil
     setElementData(player, "jobCreator", false)
@@ -216,7 +252,7 @@ local function openCreator(player, gameId)
     triggerClientEvent(player, "jobcreator:opened", resourceRoot, {
         admin = isCreatorAdmin(player), officialAdmin = isOfficialAdmin(player),
         account = accountName(player), vehicleNames = vehicleNames(),
-        dimension = session.dimension,
+        dimension = session.dimension, jobmaps = jobMapList(),
     })
     if gameId then loadGame(player, session, gameId) end
     return true
@@ -269,6 +305,7 @@ function loadGame(player, session, id)
     session.gameId, session.type, session.image, session.official = id, game.type, nil, entry.official == true
     session.storedMarker = game.marker
     sendGame(player, session, game, entry)
+    applyJobMap(player, session, game.jobmap)
     return true
 end
 
@@ -279,6 +316,15 @@ addEventHandler("jobcreator:new", resourceRoot, function(gameType)
     unlock(client, session)
     session.gameId, session.type, session.image, session.storedMarker, session.official = nil, gameType, nil, nil, nil
     sendGame(client, session, defaultGame(gameType), nil)
+    applyJobMap(client, session, nil)
+end)
+
+-- the editor picked a job map ("" = none)
+addEvent("jobcreator:jobmap", true)
+addEventHandler("jobcreator:jobmap", resourceRoot, function(name)
+    local session = sessions[client]
+    if not session or type(name) ~= "string" then return end
+    applyJobMap(client, session, name)
 end)
 
 -- back to the start menu: the game is free for others again
@@ -288,6 +334,7 @@ addEventHandler("jobcreator:closeGame", resourceRoot, function()
     if not session then return end
     stopTest(client, session, true)
     unlock(client, session)
+    applyJobMap(client, session, nil)
     session.gameId, session.type, session.image, session.storedMarker, session.official = nil, nil, nil, nil, nil
 end)
 

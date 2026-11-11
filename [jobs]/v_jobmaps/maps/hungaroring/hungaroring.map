@@ -1,0 +1,23 @@
+<map edf:definitions="editor_main">
+    <object id="hr01 (1)" model="hr01" interior="0" dimension="0" posX="-379.201" posY="468.289" posZ="942.888" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr02 (2)" model="hr02" interior="0" dimension="0" posX="-35.832" posY="-336.674" posZ="938.767" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr03 (3)" model="hr03" interior="0" dimension="0" posX="-41.1549" posY="-36.6742" posZ="930.914" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr04 (4)" model="hr04" interior="0" dimension="0" posX="-35.832" posY="196.895" posZ="927.578" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr05 (5)" model="hr05" interior="0" dimension="0" posX="264.168" posY="-329.665" posZ="944.548" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr06 (6)" model="hr06" interior="0" dimension="0" posX="283.504" posY="-29.6651" posZ="933.93" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr07 (7)" model="hr07" interior="0" dimension="0" posX="264.168" posY="270.335" posZ="927.453" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr08 (8)" model="hr08" interior="0" dimension="0" posX="441.651" posY="-51.9854" posZ="943.091" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr09 (9)" model="hr09" interior="0" dimension="0" posX="450" posY="248.015" posZ="943.79" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr10 (10)" model="hr10" interior="0" dimension="0" posX="369.411" posY="433.674" posZ="927.155" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr11 (11)" model="hr11" interior="0" dimension="0" posX="-426.86" posY="-294.854" posZ="952.978" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr12 (12)" model="hr12" interior="0" dimension="0" posX="-330.449" posY="-300.097" posZ="948.331" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr13 (13)" model="hr13" interior="0" dimension="0" posX="-234.038" posY="-295.088" posZ="945.753" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr14 (14)" model="hr14" interior="0" dimension="0" posX="-313.734" posY="-0.0969" posZ="940.426" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr15 (15)" model="hr15" interior="0" dimension="0" posX="-228.466" posY="-0.0969" posZ="929.783" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr16 (16)" model="hr16" interior="0" dimension="0" posX="-435.832" posY="299.903" posZ="946.421" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr17 (17)" model="hr17" interior="0" dimension="0" posX="-335.832" posY="299.903" posZ="939.072" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr18 (18)" model="hr18" interior="0" dimension="0" posX="-235.832" posY="299.559" posZ="931.474" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr19 (19)" model="hr19" interior="0" dimension="0" posX="-395.637" posY="-100.097" posZ="948.96" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr20 (20)" model="hr20" interior="0" dimension="0" posX="-394.567" posY="-0.0969" posZ="948.322" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+    <object id="hr21 (21)" model="hr21" interior="0" dimension="0" posX="-399.002" posY="99.9031" posZ="946.904" rotX="0" rotY="0" rotZ="0" scale="1" doublesided="false"></object>
+</map>

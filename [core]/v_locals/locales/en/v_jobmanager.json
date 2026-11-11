@@ -38,6 +38,8 @@
   "v_jobmanager.jobmenu.spectate_players": "Spectate players",
   "v_jobmanager.jobmenu.stop_test": "Stop test",
   "v_jobmanager.jobmenu.yes_leave": "Yes, leave",
+  "v_jobmanager.loading.title_loading": "Loading",
+  "v_jobmanager.loading.waiting": "Waiting for the other players",
   "v_jobmanager.markers.players": "{title}  -  {min_players}-{max_players} players",
   "v_jobmanager.markers.press_e_to_start_lobby": "Press  E  to start a lobby",
   "v_jobmanager.markers.step_into_marker_to_start_lobby": "Step into the marker to start a lobby",

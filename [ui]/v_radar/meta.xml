@@ -95,6 +95,8 @@
 
     <!-- minimap interior maps: index.json + one image per map (radar/interiors.lua) -->
     <file src="interiors/index.json" type="client" />
+    <file src="interiors/jobmaps.json" type="client" />
+    <file src="interiors/jobmap_hungaroring.png" type="client" />
     <file src="interiors/blips.json" type="client" />
     <file src="radar/files/blips/door.png" type="client" />
     <file src="radar/files/blips/computer.png" type="client" />
@@ -128,6 +130,7 @@
     <script src="radar/gps/server.lua" type="server" />
     <script src="radar/areas_server.lua" type="server" />
     <export function="createCustomBlip" type="client" />
+    <export function="setJobMapImage" type="client" />
     <export function="getNode" type="client" />
 	<export function="openPauseBigmap" type="client" />
 	<export function="closePauseBigmap" type="client" />
