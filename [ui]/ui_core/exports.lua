@@ -45,10 +45,78 @@ function setAlert(text, r, g, b, duration)
     UI.alert:set(text, r, g, b, duration)
 end
 
-function addNotification(title, text, silent)
+-- addNotification(title, text [, silent] [, opts]) - opts may also be the 3rd argument:
+--   { silent = bool, bg = colour, titleColor = colour, textColor = colour }
+--   colour = "#RRGGBB" / "#RRGGBBAA" / { r, g, b [, a] }; texts may contain inline #RRGGBB codes.
+-- Shown for 10 s (client/notifications.lua UI.notification.duration).
+function addNotification(title, text, silent, opts)
+    if type(silent) == "table" then opts, silent = silent, silent.silent end
     title, text = txt(title), txt(text)
     uiLog("addNotification: %s | %s", tostring(title), tostring(text))
-    UI:addNotification(title, text, silent == true)
+    UI:addNotification(title, text, silent == true, opts)
+end
+
+-- Pinned notifications (client/notifications.lua): always at the bottom of the notification column, every normal
+-- notification appears above them; several at once. ui_core only draws them - the keys the hint talks about are
+-- handled by the calling resource. A stopping resource takes its own pinned notifications with it.
+--   addPinnedNotification(opts) -> id
+--     opts = {
+--       id          = string   -- optional; an existing id is replaced in place (same slot, timer restarts)
+--       title, subtitle, description, hint = string or v_locals message (each optional; \n and #RRGGBB allowed)
+--       duration    = ms       -- default = 5 x the notification time (50 s), shorter values are raised to that
+--       infinite    = true     -- stays until removePinnedNotification (also duration = false / -1)
+--       countdown   = ms       -- a shrinking bar at the bottom (e.g. an offer that expires); countdownTotal = ms
+--                                 for the full bar width when the countdown started earlier
+--       silent      = true     -- no notify sound
+--       bg, accent, titleColor, subtitleColor, descColor, hintColor, barColor = colour (accent = false: no stripe)
+--     }
+--   updatePinnedNotification(id, opts) -> bool   -- changes only the given fields (duration / countdown restart)
+--   removePinnedNotification(id [, instant]) -> bool
+--   isPinnedNotification(id) -> bool
+--   getPinnedNotifications() -> { id, ... } of the calling resource
+--   clearPinnedNotifications() -> count            -- every pinned notification of the calling resource
+local function caller() return sourceResource and getResourceName(sourceResource) or nil end
+
+local function resolveOpts(opts)
+    if type(opts) ~= "table" then return {} end
+    local o = {}
+    for k, v in pairs(opts) do o[k] = v end
+    for _, f in ipairs({ "title", "subtitle", "description", "hint" }) do
+        if type(o[f]) == "table" then o[f] = txt(o[f]) end
+    end
+    return o
+end
+
+function addPinnedNotification(opts)
+    opts = resolveOpts(opts)
+    local id = UI:addPinned(opts, caller())
+    uiLog("addPinnedNotification [%s]: %s | %s", tostring(id), tostring(opts.title), tostring(opts.subtitle))
+    return id
+end
+
+function updatePinnedNotification(id, opts)
+    if id == nil then return false end
+    return UI:updatePinned(id, resolveOpts(opts))
+end
+
+function removePinnedNotification(id, instant)
+    if id == nil then return false end
+    return UI:removePinned(id, instant == true)
+end
+
+function isPinnedNotification(id)
+    if id == nil then return false end
+    return UI:isPinned(id)
+end
+
+function getPinnedNotifications()
+    return UI:getPinnedIds(caller())
+end
+
+function clearPinnedNotifications()
+    local who = caller()
+    if not who then return 0 end
+    return UI:clearPinned(who)
 end
 
 function drawLoadingText(text)

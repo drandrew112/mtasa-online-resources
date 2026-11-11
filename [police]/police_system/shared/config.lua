@@ -177,7 +177,7 @@ POLICE = {
         PLACE_DIST = 4,
     },
 
-    QUERY = { HIDE_AFTER = 30000 },
+    -- QUERY: the check / search results are ui_core pinned notifications (their lifetime is ui_core's), 2026-11-11
     PLATES = { RANGE = 25, MAX = 8, INTERVAL = 300, CACHE = 60000 },   -- ALPR: only in a police vehicle; CACHE ms (flags)
     MDC = { PAGE_SIZE = 25, FEED_INTERVAL = 2000, CACHE = 10000 },
     -- MDC computers (/mdcpc): the full MDC without a unit, J on foot next to one

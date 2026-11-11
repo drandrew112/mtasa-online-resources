@@ -301,6 +301,13 @@
     <export function="drawSubtitle" type="client" />
     <export function="setAlert" type="client" />
     <export function="addNotification" type="client" />
+    <!-- pinned notifications (client/notifications.lua, API in exports.lua) -->
+    <export function="addPinnedNotification" type="client" />
+    <export function="updatePinnedNotification" type="client" />
+    <export function="removePinnedNotification" type="client" />
+    <export function="isPinnedNotification" type="client" />
+    <export function="getPinnedNotifications" type="client" />
+    <export function="clearPinnedNotifications" type="client" />
     <export function="drawLoadingText" type="client" />
     <export function="drawTimer" type="client" />
     <export function="addStatTracker" type="client" />
