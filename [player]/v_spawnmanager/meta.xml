@@ -7,7 +7,7 @@
     <script src="client.lua" type="client" />
     <script src="shared.lua" type="shared" />
 
-    <file src="wasted.mp3" type="client" cache="false" />
+    <file src="wasted.mp3" type="client" />
 
     <!-- getRandomFreeRespawnPoint([radius = 4]) -> x, y, z, rot | false
          a random respawn point with no player / vehicle / ped near it (v_accounts: Random spawn) -->

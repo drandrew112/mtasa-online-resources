@@ -11,9 +11,9 @@
 	<script src="locals.lua" type="shared" />
 	<script src="shared.lua" type="shared" />
 
-	<script src="c_controls.lua" type="client" cache="false" />
-	<script src="c_ui.lua" type="client" cache="false" />
-	<script src="c_api.lua" type="client" cache="false" />
+	<script src="c_controls.lua" type="client" />
+	<script src="c_ui.lua" type="client"/>
+	<script src="c_api.lua" type="client" />
 
 	<!-- MySQL layer (crews, messages, friend requests) on top of v_mysql's
 	     exports. Schema: database.sql / ../../main.sql. -->

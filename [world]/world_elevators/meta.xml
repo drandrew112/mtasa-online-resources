@@ -6,7 +6,7 @@
 	<include resource="ui_inac" />
 
 	<script src="locals.lua" type="shared" />
-	<script src="c_elevators.lua" type="client" cache="false" />
+	<script src="c_elevators.lua" type="client" />
 	<script src="s_elevators.lua" type="server" />
   	<script src="shared.lua" type="shared" />
 </meta>

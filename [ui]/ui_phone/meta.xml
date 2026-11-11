@@ -11,25 +11,25 @@
     <!-- Shared config, listed explicitly on each side so it is guaranteed to
          run before the scripts that use it at file scope. -->
     <script src="locals.lua" type="shared" />
-    <script src="shared/config.lua" type="client" cache="false" />
+    <script src="shared/config.lua" type="client" />
     <script src="shared/config.lua" type="server" />
 
     <!-- ================= CLIENT ================= -->
-    <script src="client/core/sound.lua"    type="client" cache="false" />
-    <script src="client/core/shader.lua"   type="client" cache="false" />
-    <script src="client/core/ui.lua"       type="client" cache="false" />
-    <script src="client/core/net.lua"      type="client" cache="false" />
-    <script src="client/core/registry.lua" type="client" cache="false" />
-    <script src="client/core/phone.lua"    type="client" cache="false" />
+    <script src="client/core/sound.lua"    type="client" />
+    <script src="client/core/shader.lua"   type="client" />
+    <script src="client/core/ui.lua"       type="client" />
+    <script src="client/core/net.lua"      type="client" />
+    <script src="client/core/registry.lua" type="client" />
+    <script src="client/core/phone.lua"    type="client" />
     <!-- apps (order here = order on the home grid unless `order` is set) -->
-    <script src="client/apps/myveh.lua"    type="client" cache="false" />
-    <script src="client/apps/invites.lua"  type="client" cache="false" />
-    <script src="client/apps/messages.lua" type="client" cache="false" />
-    <script src="client/apps/mail.lua"     type="client" cache="false" />
-    <script src="client/apps/org.lua"      type="client" cache="false" />
-    <script src="client/apps/contacts.lua" type="client" cache="false" />
-    <script src="client/apps/browser.lua"  type="client" cache="false" />
-    <script src="client/apps/settings.lua" type="client" cache="false" />
+    <script src="client/apps/myveh.lua"    type="client" />
+    <script src="client/apps/invites.lua"  type="client" />
+    <script src="client/apps/messages.lua" type="client" />
+    <script src="client/apps/mail.lua"     type="client" />
+    <script src="client/apps/org.lua"      type="client" />
+    <script src="client/apps/contacts.lua" type="client" />
+    <script src="client/apps/browser.lua"  type="client" />
+    <script src="client/apps/settings.lua" type="client" />
 
     <!-- ================= SERVER ================= -->
     <script src="server/core/phone.lua"    type="server" />
