@@ -636,6 +636,8 @@
   "police_system.units.invite_title": "Csatlakozol a(z) {callsign} egységhez ({name})?",
   "police_system.units.pay_pending": "Az egység {count} beadatlan jelentéssel zárt: a többit most megkaptad, a jelentések a beadáskor fizetnek (az MDC bejelentkező képernyőjén is beadhatók).",
   "police_system.units.signed_in": "Bejelentkeztél: {callsign} egység. Státusz: elérhető.",
+  "police_system.voice.dispatch": "Diszpécser",
+  "police_system.voice.test_duty": "Előbb jelentkezz be egy egységbe: a diszpécser csak a szolgálatban lévő rendőröknek szól.",
   "police_system.wanted.evaded": "Leráztad a rendőröket.",
   "police_system.wanted.evaded_xp": "Leráztad a rendőröket. +{xp} XP",
   "police_system.wanted.hold_e_surrender": "Tartsd lenyomva az E-t a megadáshoz",

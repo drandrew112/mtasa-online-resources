@@ -15,6 +15,7 @@ end
 local function send(unit, r)
     keep(unit, r)
     POL.send(POL.units.members(unit), "query:result", r)
+    POL.emit("query.result", unit, r)
 end
 
 function Q.person(officer, el)

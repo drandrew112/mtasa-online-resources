@@ -125,6 +125,7 @@ function TR.request(officer, suspect, charges)
     t:addScriptedStop(van, x, y, z, { tag = "transport_pickup", hold = true, radius = 40 })
     POL.events.logFor(officer, "transport_requested", { name = POL.stop.nameOf(suspect) })
     POL.notify(officer, "police_system.transport.coming")
+    POL.emit("transport.requested", officer, job.unit)
     TR.ensureTimer()
     return true
 end

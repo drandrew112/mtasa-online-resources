@@ -1,0 +1,345 @@
+<title>Rendőrségi update – terv</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: egy hasábos tervdokumentum, bal oldali tartalomjegyzékkel széles kijelzőn; kérdések kártyákon a végén */
+:root{
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#152033; --muted:#5a6880; --line:#d9dfe8;
+  --navy:#1d3a6b; --accent:#c98a12; --accent-soft:#fbf1dc; --code:#eef1f6;
+  --ok:#2f7d4f; --warn:#b5651d; --bad:#b03636;
+  --f-head:"Archivo",system-ui,sans-serif; --f-body:"Inter",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1520; --surface:#172030; --ink:#e4e9f1; --muted:#97a3b8; --line:#2a3548;
+  --navy:#8fb0e6; --accent:#e3a93a; --accent-soft:#2c2416; --code:#1e2a3c;
+  --ok:#6cc08f; --warn:#e39a55; --bad:#e57b7b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1520; --surface:#172030; --ink:#e4e9f1; --muted:#97a3b8; --line:#2a3548;
+  --navy:#8fb0e6; --accent:#e3a93a; --accent-soft:#2c2416; --code:#1e2a3c;
+  --ok:#6cc08f; --warn:#e39a55; --bad:#e57b7b; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:32px 64px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px}
+@media (max-width:860px){.wrap{grid-template-columns:minmax(0,1fr)}nav.toc{position:static!important}}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 20px);align-self:start;font-size:13px}
+nav.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+nav.toc a{color:var(--muted);text-decoration:none;display:block;padding:3px 8px;border-radius:4px}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--ink);background:var(--surface);outline:none}
+main{min-width:0;display:grid;gap:40px}
+header .eyebrow{font:500 12px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font:800 34px/1.15 var(--f-head);margin:6px 0 10px;text-wrap:balance;color:var(--navy)}
+h2{font:700 22px/1.25 var(--f-head);margin:0 0 12px;text-wrap:balance;display:flex;gap:10px;align-items:baseline}
+h2 .n{font:500 13px var(--f-mono);color:var(--accent)}
+h3{font:700 16px var(--f-head);margin:20px 0 6px}
+p,li{max-width:72ch}
+p{margin:0 0 10px}
+ul,ol{margin:0 0 10px;padding-left:20px}
+li{margin:3px 0}
+code{font:13px var(--f-mono);background:var(--code);padding:1px 5px;border-radius:3px;word-break:break-word}
+.lede{color:var(--muted);font-size:16px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{font:500 12px var(--f-mono);border:1px solid var(--line);background:var(--surface);padding:4px 10px;border-radius:999px;color:var(--muted)}
+.chip.lock{border-color:var(--bad);color:var(--bad)}
+.note{border-left:3px solid var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:0 6px 6px 0;margin:10px 0}
+.note p:last-child{margin:0}
+.files{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--surface)}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px var(--f-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+td:first-child{white-space:nowrap;font-family:var(--f-mono);font-size:12.5px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:10px 0;font-size:13px}
+.flow span{background:var(--surface);border:1px solid var(--line);padding:4px 10px;border-radius:4px}
+.flow i{color:var(--muted);font-style:normal}
+.cause{display:grid;gap:8px;margin:10px 0}
+.cause div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 14px}
+.cause b{color:var(--bad);font-family:var(--f-mono);font-size:12px;margin-right:6px}
+.qs{display:grid;gap:14px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.q .id{font:600 12px var(--f-mono);color:var(--accent)}
+.q p{margin:4px 0 8px}
+.q ul{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+.q li{padding:5px 10px;border-radius:4px;border:1px solid var(--line);font-size:14px}
+.q li.rec{border-color:var(--ok);color:var(--ink)}
+.q li.rec::after{content:"javasolt";font:500 11px var(--f-mono);color:var(--ok);margin-left:8px;text-transform:uppercase;letter-spacing:.05em}
+.pct{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:10px 0}
+.pct div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px}
+.pct b{font:800 26px var(--f-head);display:block}
+.pct .hi b{color:var(--bad)} .pct .mid b{color:var(--warn)} .pct .zero b{color:var(--ok)}
+.pct small{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<div class="wrap">
+<nav class="toc" aria-label="Tartalom">
+  <ol>
+    <li><a href="#keret">Keretek</a></li>
+    <li><a href="#rabszallito">1. Rabszállító játékos</a></li>
+    <li><a href="#felreallas">2. Félreállás</a></li>
+    <li><a href="#bizonyitek">3. Bizonyítékok</a></li>
+    <li><a href="#tusz">4. Túsz hívás</a></li>
+    <li><a href="#uldozes">5. NPC üldözés</a></li>
+    <li><a href="#mdc">6. MDC sorrend</a></li>
+    <li><a href="#lekerdezes">7. Lekérdezés késleltetés</a></li>
+    <li><a href="#fajlok">Érintett fájlok</a></li>
+    <li><a href="#teszt">Tesztelés</a></li>
+    <li><a href="#kerdesek">Kérdések</a></li>
+  </ol>
+</nav>
+
+<main>
+<header>
+  <div class="eyebrow">[police] · police_system · terv · 2026-11-12</div>
+  <h1>Rendőrségi update</h1>
+  <p class="lede">Hét változtatás a police_system, ai_land_traffic, ai_peds, v_inventory és v_scenemanager erőforrásokban. A kódhoz csak a kérdések megválaszolása és az írásos engedély után nyúlok; utána az egészet egyben szállítom, fázisonkénti megállás nélkül.</p>
+  <div class="chips">
+    <span class="chip lock">radio_voice modul: nem nyúlok hozzá</span>
+    <span class="chip">nincs commit</span>
+    <span class="chip">UI angol, chat magyar</span>
+    <span class="chip">en + hu szövegek</span>
+  </div>
+</header>
+
+<section id="keret">
+  <h2><span class="n">00</span>Keretek</h2>
+  <ul>
+    <li><b>radio_voice:</b> a <code>modules/radio_voice/</code> mappát és a meta.xml radio_voice sorait nem módosítom. A meglévő <code>POL.emit</code> eseményneveket (pl. <code>transport.requested</code>) nem nevezem át, mert lehet, hogy a voice modul figyel rájuk. Az új eseményeket (<code>transport.offered</code>, <code>transport.accepted</code>, <code>chase.npcFled</code>, <code>evidence.delivered</code>) csak kiadom; ha a voice modulnak kellenek, a másik agent rá tud kötni.</li>
+    <li><b>Locale ütközés:</b> a <code>v_locals/locales/{en,hu}/police_system.json</code> a git szerint most is módosítva van (valószínűleg a voice agent miatt). Az új kulcsokat a munka legvégén, célzott beszúrással adom hozzá, a fájl újraírása nélkül, és előtte újraolvasom.</li>
+    <li>A meglévő szabályok érvényben maradnak: a kocsi- és gyalogos-AI rendőrt csak a chase modul kérheti; scriptből soha nem tűnik el letartóztatott NPC; a police pinned notificationökön csak a hívásajánlat kap billentyűt (Y/N). Ez utóbbihoz egy kivételt kérek: a rabszállító-ajánlat is Y/N lenne (lásd <a href="#kerdesek">K1</a>).</li>
+  </ul>
+</section>
+
+<section id="rabszallito">
+  <h2><span class="n">01</span>Rabszállítóként érkezhet egy másik szabad egység</h2>
+  <p>A mostani folyamat így marad: a vádpontok kiválasztása (<code>arrest:charges</code>, „transport” mód), majd <code>TR.request</code>. Az AI-furgon helyére egy új lépés kerül előre.</p>
+  <div class="flow"><span>Vádpontok kiválasztva</span><i>→</i><span>szabad játékos-egység keresése</span><i>→</i><span>kiemelt ajánlat (Y/N, 25 s)</span><i>→</i><span>Y: objective a gyanúsítotthoz</span><i>/</i><span>N / timeout: AI-furgon</span></div>
+  <h3>Ki kaphat ajánlatot</h3>
+  <ul>
+    <li>Játékos-egység, amely nem a kérő egység, státusza <b>Available</b>, és a <code>unit.vehicle</code> egy rendőrjármű, amelyen van szabad hely a <code>TRANSPORT.SEATS</code> ülések (2, 3, 1) közül.</li>
+    <li>Az egység járműve legfeljebb <code>TRANSPORT.PLAYER_RADIUS</code> (alapból 900 m) távolságra van a gyanúsítottól. A legközelebbi egység kapja az ajánlatot.</li>
+    <li>Az ajánlatot az egység minden tagja látja, és bármelyikük elfogadhatja.</li>
+  </ul>
+  <h3>Az ajánlat</h3>
+  <ul>
+    <li>ui_core kiemelt pinned notification, ugyanazzal a mechanikával, mint a hívásajánlat (<code>callouts/client/popup.lua</code>): id <code>pol.transport.offer</code>, visszaszámláló sáv, Y = elfogad, N = elutasít.</li>
+    <li>Minden játékos a saját nyelvén látja: a kliens a locale kulcsból és a paraméterekből rakja össze a szöveget (kérő egység hívójele, gyanúsított neve, zóna, távolság).</li>
+    <li>Ha a hívásajánlat és a rabszállító-ajánlat egyszerre érkezne, a sorban egymás után jönnek (a callout popup sorát használom), így a Y/N mindig egyértelmű.</li>
+  </ul>
+  <h3>Elfogadás után</h3>
+  <ul>
+    <li>Az elfogadó egység státusza <b>Responding</b> lesz, alstátusza „Transport”. A v_radar objective a <code>POL.callouts.setObjective</code> segítségével a gyanúsított aktuális helyére mutat, és 3 másodpercenként frissül, ha a gyanúsítottat közben elvitték.</li>
+    <li>40 m-en belül az objective eltűnik, és az egység <b>Busy</b> lesz („Transport”). Innen a játékos dolga a beültetés és a beszállítás; a script nem ellenőrzi, hogy beültette-e.</li>
+    <li>A kérő egység értesítést kap: „<i>&lt;hívójel&gt; átveszi a gyanúsítottat</i>”. Ha az elfogadó egység 4 percen belül nem ér oda, a kérő értesítést kap, és újra kérhet szállítást (<a href="#kerdesek">K3</a>).</li>
+    <li>A kiválasztott vádpontokat a gyanúsítottra mentem (<code>pol.charges</code>, csak szerveroldalon). Az állomási átadásnál a vádpontmenü ezekkel előre bejelölve nyílik meg, így a szállító egységnek nem kell újra kiválasztania őket. A jelentéssor és a fizetés kérdése: <a href="#kerdesek">K2</a>.</li>
+  </ul>
+  <p><b>Elutasítás, timeout, vagy nincs jelölt:</b> elindul a mostani AI-furgon, változatlan logikával.</p>
+</section>
+
+<section id="felreallas">
+  <h2><span class="n">02</span>Félreállás / traffic stop javítása</h2>
+  <p>A kódban három okot találtam arra, hogy az ELS-reakció és a traffic stop összeakad, és hogy az NPC az út közepén áll meg:</p>
+  <div class="cause">
+    <div><b>OK-1</b>A <code>signal()</code> felkapcsolja a rendőrautó villogóját, és fél másodpercre a szirénát is. A célautó ezt sima ELS-járműként észleli (<code>Els.update → giveWay</code>), és <code>ELS_STOP_DIST</code>-en belül 0-ra lassít, ahol éppen van. Közben a <code>pullOverTrafficVehicle</code> is ír a saját <code>ag.els</code> mezőjébe. A két reakció ugyanazt a mezőt írja felváltva.</div>
+    <div><b>OK-2</b>A tartott (<code>ag.held</code>) jármű azonnal 0 sebességet kap, és csak oldalra húzódik annyit, amennyi <code>shoulderRoom</code> van. Kereszteződésben, hídon vagy fal mellett ez 0, vagyis a jármű a sáv közepén áll meg.</div>
+    <div><b>OK-3</b>A <code>shoulderRoom</code> csak az <code>ELS_PULL_STEPS</code> lépéseit nézi, és a járdaszegélyt (<code>edge</code>) falnak veszi. Emiatt a járdára soha nem húzódik fel.</div>
+  </div>
+  <h3>Új félreállási logika (ai_land_traffic, új <code>server/pullover.lua</code>)</h3>
+  <p>A traffic stop egy önálló állapotgép lesz, amely nem az ELS kitérő mezőjét használja:</p>
+  <div class="flow"><span>seek: továbbhajt helyet keresve</span><i>→</i><span>pull: kihúzódik a sávból</span><i>→</i><span>parked: áll, tartva</span><i>→</i><span>merge: visszasorol elengedéskor</span></div>
+  <ul>
+    <li><b>Helykeresés:</b> a jármű tervezett útvonalán előre, 15–300 m között, 4 m-es lépésekkel keres helyet. Egy hely akkor jó, ha:
+      <ul>
+        <li>legalább 25 m-re van kereszteződéstől (sáv vége / csomópont), és a sáv elejétől is legalább 15 m-re;</li>
+        <li>nem híd, alagút, parkoló-, útzár- vagy vészsáv (lane flag-ek);</li>
+        <li>a jobb oldalon a walk grid szerint van annyi talaj, hogy a jármű teljesen elhagyja a sávot: sáv fele + autó fele + 0,4 m. Ebbe beleszámít a járda is; a szegély legfeljebb 0,35 m-es lépcsőnek számít, nem falnak;</li>
+        <li>nincs ott másik álló jármű, és nincs ott a rendőrautó sem.</li>
+      </ul>
+      Ha nincs ilyen hely, a jármű az útvonalán (jobbra kanyarodva is) lassan továbbhajt, és tovább keres. <b>Az út közepén soha nem áll meg.</b></li>
+    <li><b>Többsávos út:</b> előbb átsorol a külső sávba (a meglévő <code>tryMerge</code>), és csak utána keres helyet.</li>
+    <li><b>Kihúzódás:</b> a laterális eltolás folyamatosan nő a cél értékig, a jármű lassít, megáll, és a <code>parked</code> állapotban sávon kívüli akadályként tartja magát, így a forgalom elmegy mellette.</li>
+    <li><b>ELS prioritás:</b> amíg egy jármű traffic stopban van (<code>ag.pull</code>), az <code>Els.update</code> teljesen kihagyja: se észlelés, se <code>giveWay</code>. A célautó a saját megállító rendőrautóját soha nem kezeli „elsőbbséget adok” helyzetként. A többi forgalom a rendőrautó villogójára ugyanúgy reagál, mint eddig.</li>
+    <li><b>Elengedéskor</b> (<code>releaseTrafficHold</code>): visszasorol a sávba, ha mögötte van elég hely (gap check), teleport nélkül.</li>
+    <li><b>Új esemény:</b> <code>onTrafficVehiclePulledOver(veh)</code>. A police_system csak ennek a jeleztére tekinti a járművet „félreállt”-nak (<code>s.parked</code>). Addig a tisztnek ez a hint jelenik meg: „<i>The vehicle is looking for a safe place to stop</i>”.</li>
+  </ul>
+  <p>Kereszteződésben vagy közvetlenül előtte indított megállításnál ugyanez történik: a seek fázis átviszi a csomópont után legalább 25 m-re.</p>
+</section>
+
+<section id="bizonyitek">
+  <h2><span class="n">03</span>Bizonyíték rendszer</h2>
+  <h3>Új itemek (v_inventory <code>shared/items.lua</code>)</h3>
+  <ul>
+    <li><code>pol_evidence_box</code>: a <code>bt_blood_box</code> pontos másolata (2969-es modell, offsetek, súly, egy kézben fogható). Saját név és leírás (<code>v_inventory.item.pol_evidence_box.*</code>), saját ikonfájl (a bt ikon másolata). Konténer: <code>accepts = { evidence = true }</code>, kapacitása 30.</li>
+    <li><code>pol_evidence</code>: egyetlen általános bizonyíték-item, új <code>evidence</code> kategóriával, 0,1 kg. A meta tárolja, hogy mi ez és kitől került elő:
+      <code>{ item, class, from, citizenId, plate, officer, unit, inc, at, display }</code>. A HUD a <code>display</code> mezőben mutatja: „<i>Pills · from John Smith · 21:14</i>”. Így nem kell a 44 keresési tárgyhoz külön item-definíció.</li>
+  </ul>
+  <h3>Csomagtartó</h3>
+  <ul>
+    <li>Bejelentkezéskor az egység járműve kap egy v_inventory trunkot (ha még nincs), és benne egy <code>pol_evidence_box</code>-ot <code>meta.unit = hívójel</code> értékkel. A trunk hozzáférése csak az egység tagjainak szól (<code>setTrunkAccess(veh, "pol.unit", callsign)</code>).</li>
+    <li>Ha az egység járművet vált (<code>unit.vehicle</code> változik), a doboz a tartalmával együtt scriptből átkerül az új jármű csomagtartójába.</li>
+    <li>Kijelentkezéskor a le nem adott bizonyítékok sorsa: <a href="#kerdesek">K7</a>.</li>
+  </ul>
+  <h3>Az út az átkutatástól a tárolóig</h3>
+  <p>Cél: egy mozdulat legyen, és ne kelljen tárgyanként húzogatni.</p>
+  <ol>
+    <li>Az átkutatás eredménye (pinned notification) a gyanús és illegális tárgyakat ugyanúgy mutatja, mint eddig.</li>
+    <li>A stop menüben (ui_inac) megjelenik az új <b>„Seize evidence (N)”</b> pont, ahol N a még le nem foglalt gyanús és illegális tárgyak száma. Egy kattintás mindet lefoglalja; almenüben egyenként is lehet.</li>
+    <li>A lefoglalt tárgyak, a javasolt változat szerint (<a href="#kerdesek">K4</a>):
+      <ul>
+        <li>ha az egység járműve 40 m-en belül van, közvetlenül a dobozba kerülnek, és a tiszt értesítést kap: „<i>3 items placed in the evidence box</i>”;</li>
+        <li>ha messzebb van, egy lezárt <code>pol_evidence_bag</code> (kis konténer, egy kézben) kerül a tiszt szabad kezébe. Az autónál a jármű interact menüjében a „<i>Store evidence</i>” pont minden zacskót egyszerre a dobozba tesz. Ha nincs szabad keze, a lefoglalás nem történik meg, és erről hint jelenik meg.</li>
+      </ul></li>
+    <li>Minden lefoglalás jelentéssor lesz (<code>evidence_seized</code>) a stop incidensében, a tárgy nevével és a gyanúsítottal.</li>
+  </ol>
+  <p>Egy tárgyat csak egyszer lehet lefoglalni (<code>S.done[el]</code> mellé jön egy <code>seized</code> lista). Ugyanannak a személynek a második átkutatása már „seized” jelöléssel mutatja.</p>
+  <h3>Bizonyíték leadó</h3>
+  <ul>
+    <li>Minden állomáson egy v_inventory port (<code>createPort</code>), a <code>POLICE.STATIONS[i].evidence</code> koordinátán. A koordinátát élőben mérem, vagy te adod meg (<a href="#kerdesek">K5</a>). Csak szolgálatban lévő rendőrök látják.</li>
+    <li>A portban a tiszt a dobozt vagy annak egyes tárgyait áthúzza a portra. Ilyenkor a tárgy megsemmisül, és egy sor jön létre az új <code>pol_evidence</code> MySQL táblában (<code>id, citizen_id, item, class, officer_acc, unit, inc, seized_at, delivered_at, station</code>, 2 pool sor instance-onként a meglévő szabály szerint).</li>
+    <li>Az MDC állampolgár-adatlapján új „Evidence” fül jelenik meg a leadott bizonyítékokkal. A jelentés <code>evidence_delivered</code> sort kap. Jutalom: <a href="#kerdesek">K6</a>.</li>
+  </ul>
+  <p class="note">A játékosok átkutatása továbbra sem talál semmit (nincs v_inventory → keresés kapcsolat). Ez külön feladat lehet, ebben a körben nem nyúlok hozzá.</p>
+</section>
+
+<section id="tusz">
+  <h2><span class="n">04</span>Túsz hívástípus a v_scenemanagerben</h2>
+  <h3>Scene formátum és editor</h3>
+  <ul>
+    <li>Új ped szerepkör: <code>role: "hostage"</code>, <code>ai: { pose: "kneel" | "handsup" | "cower" }</code>. Az editor X menüjének szerepkör-listájába bekerül.</li>
+    <li>Új kategória: <code>hostage</code> (VSM_CATEGORIES + en/hu kulcsok).</li>
+    <li>Validáció:
+      <ul>
+        <li>hostage csak akkor lehet, ha van legalább egy <code>hostile</code>, PD need = 2, és <code>safe: false</code>;</li>
+        <li><b>szabályváltozás:</b> a <code>safe: false</code> eddig EMS 2 + PD 2 esetén volt engedélyezett, mostantól PD 2 + EMS ≥ 1 esetén is, mert a túszhívás tipikusan PD 2 / EMS 1;</li>
+        <li>figyelmeztetés, ha a túsz járműben ül.</li>
+      </ul></li>
+  </ul>
+  <h3>A túsz viselkedése (ai_peds új <code>hostage</code> behaviour)</h3>
+  <ul>
+    <li>Térdel vagy feltartott kézzel áll (pose), nem menekül, nem harcol. A hostile-ok nem lőnek rá (ai_peds csoport).</li>
+    <li>medsys páciens: enyhe sokk vagy horzsolás, amit a scene adhat meg. Így a mentő át tudja venni.</li>
+    <li>A rendőr az interact menüben „<b>Grab hostage</b>” paranccsal megfogja. Ez a meglévő escort mechanika bilincs nélküli változata: a túsz a tiszt mellett megy.</li>
+  </ul>
+  <h3>Biztonságba helyezés</h3>
+  <ul>
+    <li><b>Rendőrautóhoz viszi:</b> „Place in vehicle” (custody ülés, bilincs nélkül). Ezzel a túsz biztonságban van (<a href="#kerdesek">K10</a>).</li>
+    <li><b>Átadás a mentőknek:</b> ha szolgálatban lévő EMS játékos van 5 m-en belül, megjelenik a „<i>Hand over to EMS</i>” pont. A túsz a med_erm feladathoz kerül, a mentős páciense lesz, és mentővel távozik.</li>
+    <li><b>AI mentő:</b> ha a rendőr a meglévő medical modullal mentőt hív, az AI mentő elviszi a túszt a rendőrautótól vagy a helyszínről.</li>
+    <li><b>Nincs mentő:</b> ha senki nem hívott mentőt, nincs EMS egység a hívásra (EMS 1 senki nem vállalta), és a rendőr sem kért mentőt, akkor a menüben megjelenik a „<i>Release</i>” pont. Ekkor a túsz civil sétáló lesz (<code>civilian / wander</code>), a keep jelzője lekerül, és amint senki nem látja (és nincs játékos 60 m-en belül), eltűnik.</li>
+    <li>A scene akkor zárható le, ha minden hostile semlegesítve van, és minden túsz biztonságban van, át lett adva vagy el lett engedve. A túsz halála jelentéssor, és a scene-ben „failed” jelölés.</li>
+  </ul>
+  <p>Scene fájlokat nem írok tömegesen. Egy teszt túszhelyszínt teszek Los Santosba; a többit te építed az editorban (<a href="#kerdesek">K9</a>).</p>
+</section>
+
+<section id="uldozes">
+  <h2><span class="n">05</span>NPC üldözések</h2>
+  <h3>Mikor menekül</h3>
+  <p>A döntés <b>csak traffic stop kísérletnél</b> születik meg (<code>ST.vehicle</code>, illetve egy NPC sofőrre indított chase-join, ami szintén megállítási kísérlet). Gyalogos megállításnál soha nincs menekülés. A mostani <code>HISTORY.FLEE</code> / <code>FLEE_WARRANT</code> esélyeket törlöm.</p>
+  <div class="pct">
+    <div class="hi"><b>60%</b><small>aktív elfogatóparancs a sofőrön</small></div>
+    <div class="mid"><b>30%</b><small>gyanús vagy illegális tárgy nála vagy a kocsiban (<a href="#kerdesek">K11</a>)</small></div>
+    <div class="zero"><b>0%</b><small>büntetlen, nincs nála semmi: soha</small></div>
+  </div>
+  <ul>
+    <li>Hogy az NPC „tudja”, mi van nála, a keresési tárgyakat a megállítási kísérletkor sorsolom ki a sofőrre és a járműre (<code>S.preroll</code>), és ezeket eltárolom <code>S.done</code>-ban. A későbbi átkutatás pontosan ugyanezeket a tárgyakat találja.</li>
+    <li>A döntés NPC-nként egyszer születik meg, és meg is marad: egy újabb megállítási kísérlet nem sorsol újra.</li>
+    <li>A scene-profilban megadott <code>flee: true/false</code> felülírja a sorsolást, de az ilyen NPC is csak traffic stopnál indul el.</li>
+    <li>Realizmus: a menekülő NPC 1–3 másodpercig lassít, mintha félreállna, aztán gázt ad.</li>
+    <li>A menekülés a meglévő chase-be fut be (<code>CH.npcReaction</code> → <code>c.fleeing</code>). AI rendőrt továbbra is csak a chase modul kérhet.</li>
+  </ul>
+  <h3>Menekülő vezetés (ai_land_traffic)</h3>
+  <ul>
+    <li>Ha játékos van a közelben, a menekülő jármű ugyanazt a kliensoldali fizikai „chase motor”-t kapja, mint az AI rendőrök (<code>client/chase.lua</code>), csak fordított céllal: navmesh útvonalat választ, amely távolodik az üldözőktől, gyors utakat preferál, véletlenszerűen kanyarodik, és 2–3 másodpercenként újratervez.</li>
+    <li>Nem akad el: falsugarak, forgalomkerülés, előzés a szembesávban, járdára felhajtás, ha a sáv blokkolt. Ha elakad, tolat, és felváltva oldalra kormányoz (a meglévő stuck-logika).</li>
+    <li>Ha harmadszor is elakad 20 másodpercen belül, a jármű felborul, vagy nagyon sérült: kiszáll és gyalog menekül (ai_peds <code>scared</code> futás). A chase gyalogos üldözésként folytatódik, és bilinccsel ér véget (<a href="#kerdesek">K12</a>).</li>
+    <li>Ha nincs játékos a közelben, a sim marad a meglévő <code>pursuit</code> profillal, de flee módban a „yield/claim” kapukat kihagyja, mint az emergency sofőr.</li>
+  </ul>
+</section>
+
+<section id="mdc">
+  <h2><span class="n">06</span>MDC: a megállított jármű és állampolgár legfelül</h2>
+  <ul>
+    <li>Az <code>API.citizens</code> és az <code>API.vehicles</code> az első oldalon, keresőszöveg nélkül, a lista elejére teszi az egység aktív stopjainak (<code>POL.stop.list</code>, ahol <code>s.unit == unit</code>) állampolgárát és járművét. Duplikáció nincs, és a Player/NPC szűrő rájuk is érvényes.</li>
+    <li>Ezek a sorok egy „STOPPED” címkét kapnak, és a sor kiemelt háttérrel jelenik meg (<code>mdc/client/pages/records.lua</code>, <code>W.table</code> sor-flag).</li>
+    <li>A stop vége után a következő frissítéskor már a normál sorrendben szerepelnek.</li>
+  </ul>
+</section>
+
+<section id="lekerdezes">
+  <h2><span class="n">07</span>Lekérdezések: 1 másodperc késleltetés</h2>
+  <ul>
+    <li>A <code>Q.person</code> és a <code>Q.vehicle</code> (rádió, stop menü, MDC-ből indított lekérdezés) az eredményt legkorábban 1000 ms-mal a kérés után küldi ki: <code>max(0, 1000 − DB-idő)</code>. A DB ideje tehát beleszámít, nem adódik hozzá.</li>
+    <li>Nincs külön „Querying…” értesítés. Az átkutatás és az ALPR nem kap késleltetést (<a href="#kerdesek">K13</a>).</li>
+    <li>Konfig: <code>POLICE.QUERY.DELAY = 1000</code>.</li>
+  </ul>
+</section>
+
+<section id="fajlok">
+  <h2><span class="n">··</span>Érintett fájlok</h2>
+  <div class="files"><table>
+    <thead><tr><th>Fájl</th><th>Változás</th></tr></thead>
+    <tbody>
+      <tr><td>police_system/modules/transport/server/transport.lua</td><td>játékos-egység ajánlat, elfogadás, objective követés, fallback AI</td></tr>
+      <tr><td>police_system/modules/callouts/client/popup.lua</td><td>a popup sor egy „transport” ajánlattípust is kezel (Y/N)</td></tr>
+      <tr><td>police_system/modules/arrest/server/arrest.lua</td><td><code>pol.charges</code> előtöltés az állomási átadásnál; túsz-escort bilincs nélkül</td></tr>
+      <tr><td>police_system/modules/stop/server/{stop,menu}.lua</td><td>parked állapot, flee döntés, Seize evidence, Store evidence, túsz menüpontok</td></tr>
+      <tr><td>police_system/modules/search/server/search.lua</td><td>preroll, seized lista</td></tr>
+      <tr><td>police_system/modules/evidence/ (új)</td><td>doboz és trunk kezelése, lefoglalás, port leadás, <code>pol_evidence</code> tábla</td></tr>
+      <tr><td>police_system/modules/chase/server/chase.lua</td><td>npcReaction az új esélyekkel, gyalogos folytatás</td></tr>
+      <tr><td>police_system/modules/history/server/npc.lua</td><td>a FLEE esélyek törlése (scene override marad)</td></tr>
+      <tr><td>police_system/modules/query/server/query.lua</td><td>1 s késleltetés</td></tr>
+      <tr><td>police_system/modules/mdc/server/api.lua, client/pages/records.lua</td><td>kitűzött sorok, Evidence fül</td></tr>
+      <tr><td>police_system/modules/db/server/schema.lua, shared/config.lua, meta.xml</td><td>új tábla, konfig, új modul sorok (a radio_voice sorokat nem érintem)</td></tr>
+      <tr><td>ai_land_traffic/server/{pullover (új),els,scripted,sim}.lua</td><td>félreállási állapotgép, ELS kizárás, új esemény</td></tr>
+      <tr><td>ai_land_traffic/server/chase.lua, client/chase.lua</td><td>flee chase motor, kiszállás jelzése</td></tr>
+      <tr><td>ai_peds</td><td><code>hostage</code> behaviour, bilincs nélküli escort, gyalogos menekülés</td></tr>
+      <tr><td>v_inventory/shared/items.lua, icons/</td><td><code>pol_evidence_box</code>, <code>pol_evidence</code>, <code>pol_evidence_bag</code>, evidence kategória</td></tr>
+      <tr><td>v_scenemanager (config, npc, safety, validation, editor)</td><td>hostage szerepkör és kategória, safe-szabály, release/átadás, 1 teszt scene</td></tr>
+      <tr><td>v_locals en/hu: police_system, v_inventory, v_scenemanager</td><td>új kulcsok, célzott beszúrással</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="teszt">
+  <h2><span class="n">··</span>Tesztelés</h2>
+  <ul>
+    <li><b>Offline (lupa):</b> az összes érintett fájl szintaxisa; a menekülési esély táblája; a preroll és a későbbi átkutatás egyezése; az MDC sorrend; a validáció (hostage szabályok, a safe-szabály változása).</li>
+    <li><b>Helykereső offline:</b> az ai_land_traffic runtime navmesh adataival ismert LS kereszteződéseknél (Grove St, Pershing Sq, Mulholland híd) azt ellenőrzöm, hogy a talált hely legalább 25 m-re van a csomóponttól, és teljesen a sávon kívül esik.</li>
+    <li><b>Élőben (claude-mcp):</b> stop kereszteződésben, menekülő NPC, rabszállító-ajánlat két egységgel, lefoglalás és leadás, túsz scene. A bridge nem tud resource-t újraindítani, ezért ehhez szólok, mit kell restartolni.</li>
+    <li>Mindent egyben szállítok le, és a jelentés előtt ezzel a tervvel vetem össze.</li>
+  </ul>
+</section>
+
+<section id="kerdesek">
+  <h2><span class="n">??</span>Kérdések</h2>
+  <div class="qs">
+    <div class="q"><span class="id">K1 · rabszállító ajánlat</span><p>Csak a legközelebbi szabad egység kapjon ajánlatot, vagy elutasításkor menjen tovább a következőhöz?</p>
+      <ul><li class="rec">Legközelebbi, majd a második legközelebbi; egységenként 20 s, utána AI</li><li>Csak a legközelebbi, 25 s, utána AI</li><li>Egyszerre mindenki a körzetben, aki először elfogadja</li></ul></div>
+    <div class="q"><span class="id">K2 · ki kapja a jóváírást</span><p>Ha egy másik egység szállítja be a gyanúsítottat, kié a jelentéssor és a fizetés?</p>
+      <ul><li class="rec">Mindkét egység incidense kap jelentéssort; a fizetés a beszállító egységé</li><li>Minden a kérő egységé, a szállító csak jelentéssort kap</li><li>A fizetés fele-fele</li></ul></div>
+    <div class="q"><span class="id">K3 · nem érkezik meg</span><p>Ha az elfogadó egység 4 percen belül nem ér oda?</p>
+      <ul><li class="rec">A kérő értesítést kap, és újra kérhet</li><li>Automatikusan indul az AI-furgon</li></ul></div>
+    <div class="q"><span class="id">K4 · lefoglalás útja</span><p>Hová kerüljenek a lefoglalt tárgyak?</p>
+      <ul><li class="rec">40 m-en belüli autónál rögtön a dobozba, egyébként zacskó a kézben</li><li>Mindig zacskó a kézben, amit a tiszt a csomagtartóhoz visz</li><li>Mindig rögtön a dobozba, távolságtól függetlenül</li></ul></div>
+    <div class="q"><span class="id">K5 · leadó helye</span><p>Hol legyen a bizonyíték leadó?</p>
+      <ul><li class="rec">Minden állomáson az átadási marker mellett; élőben mérem</li><li>Megadom a koordinátákat (vagy megmutatom élőben)</li></ul></div>
+    <div class="q"><span class="id">K6 · leadás jutalma</span><p>Járjon-e valami a leadott bizonyítékért?</p>
+      <ul><li class="rec">Csak jelentéssor + statisztika (v_stats), pénz nem</li><li>Kis összeg tárgyanként az egység fizetésébe (illegális többet ér)</li></ul></div>
+    <div class="q"><span class="id">K7 · le nem adott bizonyíték kijelentkezéskor</span><p>Mi legyen, ha a dobozban marad valami?</p>
+      <ul><li class="rec">Kijelentkezés blokkolva, mint a draft jelentéseknél</li><li>Automatikusan leadottnak számít</li><li>Elveszik, „lost” jelentéssorral</li></ul></div>
+    <div class="q"><span class="id">K8 · mi foglalható le</span><p>Csak a gyanús és illegális tárgyak, vagy a legálisak is (pl. telefon)?</p>
+      <ul><li class="rec">Csak gyanús + illegális</li><li>Bármi, amit az átkutatás talált</li></ul></div>
+    <div class="q"><span class="id">K9 · túsz scene-ek</span><p>Rendben van a safe-szabály lazítása (PD 2 + EMS ≥ 1), és ki készíti a helyszíneket?</p>
+      <ul><li class="rec">Igen; 1 teszt scene tőlem, a többit te építed az editorban</li><li>Igen, és generálj 10 túszhelyszínt LS-be</li></ul></div>
+    <div class="q"><span class="id">K10 · mikor „biztonságban” a túsz</span><p>Mi számít a rendőrautóhoz vitelnek?</p>
+      <ul><li class="rec">Beültetés a rendőrautóba</li><li>5 m-en belül a rendőrautótól, elengedve</li></ul></div>
+    <div class="q"><span class="id">K11 · 30%-os menekülés oka</span><p>A gyanús/illegális tárgyon kívül számítson-e a lopott jármű, a felfüggesztett jogosítvány és az ittasság?</p>
+      <ul><li class="rec">Igen, ezek is 30%</li><li>Nem, csak a tárgyak</li></ul></div>
+    <div class="q"><span class="id">K12 · elakadt menekülő</span><p>Kiszállhat-e és menekülhet-e gyalog, ha a kocsival végleg elakad?</p>
+      <ul><li class="rec">Igen</li><li>Nem, a kocsiban marad, és megadja magát</li></ul></div>
+    <div class="q"><span class="id">K13 · késleltetés köre</span><p>Az 1 s késleltetés csak a személy- és járműlekérdezésre vonatkozzon?</p>
+      <ul><li class="rec">Igen, csak ezekre</li><li>Az átkutatás eredményére is (pl. 2 s)</li></ul></div>
+  </div>
+</section>
+</main>
+</div>

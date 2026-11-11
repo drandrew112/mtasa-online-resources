@@ -5,7 +5,16 @@
 
 local RD = POL.module("radio", {})
 
+local handle
+
+-- every handled message is told on the bus ("radio.used": player, id, ok, args) - the dispatcher voice answers it
 function RD.handle(player, id, args)
+    local ok, err = handle(player, id, args)
+    if RADIO_IDS[id] and isElement(player) then POL.emit("radio.used", player, id, ok, type(args) == "table" and args or {}) end
+    return ok, err
+end
+
+function handle(player, id, args)
     if not isElement(player) or not POL.rights.has(player) or not RADIO_IDS[id] then return false, "bad" end
     args = type(args) == "table" and args or {}
     local unit = POL.units.of(player)

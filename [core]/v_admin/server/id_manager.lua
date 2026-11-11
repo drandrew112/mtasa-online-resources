@@ -5,7 +5,6 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --  Element data key: "ID"  (number)
 -- ============================================================
 
-local nextId  = 0
 local usedIds = {}   -- [id] = player
 -- The "ID" element data outlives a restart of this resource, so the start
 -- re-registers the kept IDs first; a duplicate (two players, one ID) gets a new one.
@@ -19,13 +18,13 @@ local function assignId(player)
         return
     end
 
-    repeat
-        nextId = nextId + 1
-    until not usedIds[nextId]
+    -- always the smallest free ID (freed IDs are reused first)
+    local id = 1
+    while usedIds[id] do id = id + 1 end
 
-    usedIds[nextId] = player
-    setElementData(player, "ID", nextId)
-    outputServerLog("[v_admin] ID " .. nextId .. " -> " .. getPlayerName(player))
+    usedIds[id] = player
+    setElementData(player, "ID", id)
+    outputServerLog("[v_admin] ID " .. id .. " -> " .. getPlayerName(player))
 end
 
 local function releaseId(player)

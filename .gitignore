@@ -85,3 +85,6 @@ desktop.ini
 
 # --- v_mail: config.lua holds the Brevo API key ---
 /\[core\]/v_mail/config.lua
+
+# --- v_accounts stats: runtime player count history ---
+/\[accounts\]/v_accounts/stats/stats.json

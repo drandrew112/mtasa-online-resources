@@ -37,6 +37,9 @@
     <!-- ui -->
     <script src="ui/server/feed.lua" type="server" />
 
+    <!-- stats: player count history (stats/stats.json is gitignored, written at runtime) -->
+    <script src="stats/server/stats.lua" type="server" />
+
     <!-- ================= CLIENT ================= -->
     <!-- auth -->
     <script src="auth/client/token.lua" type="client" />
@@ -49,6 +52,7 @@
     <script src="ui/client/music.lua" type="client" />
     <script src="ui/client/language.lua" type="client" />
     <script src="ui/client/settings.lua" type="client" />
+    <script src="ui/client/players.lua" type="client" />
     <script src="ui/client/header.lua" type="client" />
     <script src="ui/client/news.lua" type="client" />
     <script src="ui/client/weekly.lua" type="client" />

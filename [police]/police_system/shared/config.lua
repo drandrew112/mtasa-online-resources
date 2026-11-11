@@ -179,6 +179,17 @@ POLICE = {
 
     -- QUERY: the check / search results are ui_core pinned notifications (their lifetime is ui_core's), 2026-11-11
     PLATES = { RANGE = 25, MAX = 8, INTERVAL = 300, CACHE = 60000 },   -- ALPR: only in a police vehicle; CACHE ms (flags)
+    -- dispatcher voice (modules/radio_voice): the database is data/voice.json (tools/build_db.py), 2026-11-12
+    VOICE = {
+        DB = "modules/radio_voice/data/voice.json",
+        SWAT_LEVEL = 5,           -- wanted level of the SWAT call (the AI tank tier, AI.LEVELS[5])
+        START_DELAY = 2000,       -- ms after the first unit joined a chase (an NPC that pulls over gives no call)
+        TICK = 5000,              -- ms, pursuit heading check
+        DEFAULT_VOLUME = 80,      -- 0-100, ui_pause Online > Dispatcher voice
+        ON_FOOT = 0.7,            -- volume factor outside a vehicle (shoulder radio)
+        GAP_MESSAGES = 600,       -- ms between two messages of the queue
+        SUBTITLE_HOLD = 2500,     -- ms the subtitle stays after the message
+    },
     MDC = { PAGE_SIZE = 25, FEED_INTERVAL = 2000, CACHE = 10000 },
     -- MDC computers (/mdcpc): the full MDC without a unit, J on foot next to one
     TERMINALS = {

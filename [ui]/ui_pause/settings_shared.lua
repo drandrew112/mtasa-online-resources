@@ -30,6 +30,8 @@ PAUSE_SETTINGS = {
     { id = "models_objects",     type = "boolean" },
     { id = "models_weapons",     type = "boolean" },
     { id = "models_skins",       type = "boolean" },
+    -- Online > police dispatcher voice volume 0-100 (police_system setDispatchVolume)
+    { id = "dispatch_volume",    type = "number" },
 }
 
 -- Strings come from the client, so only short identifiers are accepted.

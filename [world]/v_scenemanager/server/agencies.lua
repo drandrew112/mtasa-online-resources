@@ -117,7 +117,8 @@ register("pd", {
         return call(VSM.POLICE, "createSceneCall", {
             title = title, description = description, locales = locales,
             x = c[1], y = c[2], z = c[3], priority = block.priority, caller = VSM.DEFAULT_CALLER,
-            meta = { scene = scene.name, instance = scene.id, ermTask = links.ems },
+            meta = { scene = scene.name, instance = scene.id, ermTask = links.ems,
+                     category = scene.data and scene.data.category or nil },   -- police_system radio_voice crime word
             safety = scene.safety and Safety.policeInfo(scene) or nil,
         })
     end,

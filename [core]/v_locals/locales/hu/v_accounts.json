@@ -66,6 +66,8 @@
   "v_accounts.ui.login.username_missing": "Hiányzik a felhasználónév",
   "v_accounts.ui.news.no_news": "Még nincs hír.",
   "v_accounts.ui.news.title": "HÍREK",
+  "v_accounts.ui.players.now": "most",
+  "v_accounts.ui.players.title": "JÁTÉKOSOK",
   "v_accounts.ui.register.confirm_password": "JELSZÓ MEGERŐSÍTÉSE",
   "v_accounts.ui.register.email_note": "Csak a jelszó visszaállításához használjuk.",
   "v_accounts.ui.register.email_optional": "EMAIL (NEM KÖTELEZŐ)",

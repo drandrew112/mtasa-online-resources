@@ -89,6 +89,8 @@
   "ui_pause.pausemenu.xp_to_next_level": "XP to next level",
   "ui_pause.pausemenu.you_left_server": "You left the server.",
   "ui_pause.pausemenu.your_level_xp_played_time_and": "Your level, XP, played time and statistics.",
+  "ui_pause.settings.dispatch_volume": "Police dispatcher voice",
+  "ui_pause.settings.dispatch_volume_desc": "Volume of the police dispatcher on the radio while you are on duty (0 = off).",
   "ui_pause.settings.language": "Language",
   "ui_pause.settings.language_desc": "The language of the game texts. - change the language may require a reconnect",
   "ui_pause.settings.off": "OFF",

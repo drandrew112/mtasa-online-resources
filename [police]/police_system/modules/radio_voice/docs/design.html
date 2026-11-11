@@ -1,0 +1,585 @@
+<meta charset="utf-8">
+<title>radio_voice diszpécser</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~880px) with a wide console band for the live radio; tables scroll in their own box. */
+:root {
+  --bg: #eef1f4; --surface: #ffffff; --sunk: #e3e8ee; --line: #cdd5de;
+  --fg: #15202b; --muted: #556373; --accent: #1f3a68; --accent-fg: #ffffff;
+  --signal: #b86a00; --danger: #b3261e; --ok: #2c7a4b;
+  --t-fx: #8b97a4; --t-open: #1f3a68; --t-crime: #b3261e; --t-char: #0f7a7a; --t-desc: #6b3fa0;
+  --t-dir: #2c7a4b; --t-resp: #b86a00; --t-ack: #3a5a80;
+  --f-display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --f-body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e141b; --surface: #16202a; --sunk: #0b1016; --line: #2a3644;
+  --fg: #dfe6ed; --muted: #8d9bab; --accent: #8fb3ff; --accent-fg: #0e141b;
+  --signal: #f2a33a; --danger: #ff7a6e; --ok: #6fd39a;
+  --t-fx: #6c7987; --t-open: #8fb3ff; --t-crime: #ff7a6e; --t-char: #4fd1c5; --t-desc: #c49cff;
+  --t-dir: #6fd39a; --t-resp: #f2a33a; --t-ack: #9fbbe0; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e141b; --surface: #16202a; --sunk: #0b1016; --line: #2a3644;
+  --fg: #dfe6ed; --muted: #8d9bab; --accent: #8fb3ff; --accent-fg: #0e141b;
+  --signal: #f2a33a; --danger: #ff7a6e; --ok: #6fd39a;
+  --t-fx: #6c7987; --t-open: #8fb3ff; --t-crime: #ff7a6e; --t-char: #4fd1c5; --t-desc: #c49cff;
+  --t-dir: #6fd39a; --t-resp: #f2a33a; --t-ack: #9fbbe0; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font: 15px/1.6 var(--f-body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px }
+.wrap { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; line-height: 1.1; margin: 0 }
+h1 { font-size: clamp(34px, 6vw, 52px); font-weight: 700; letter-spacing: .01em }
+h2 { font-size: 28px; font-weight: 600; letter-spacing: .02em }
+h3 { font-size: 20px; font-weight: 600; letter-spacing: .02em }
+p { margin: 0; max-width: 68ch }
+code, .mono { font-family: var(--f-mono); font-size: .88em }
+section { display: flex; flex-direction: column; gap: 16px }
+.eyebrow { font: 600 12px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.lede { font-size: 17px; color: var(--muted) }
+header { display: flex; flex-direction: column; gap: 14px }
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden }
+.facts div { background: var(--surface); padding: 12px 14px; display: flex; flex-direction: column; gap: 2px }
+.facts b { font: 600 24px/1.1 var(--f-display); font-variant-numeric: tabular-nums }
+.facts span { font-size: 13px; color: var(--muted) }
+.scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface) }
+table { border-collapse: collapse; width: 100%; font-size: 13.5px }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { font: 600 11px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--sunk); white-space: nowrap }
+td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; font-family: var(--f-mono); font-size: 12.5px }
+tr:last-child td { border-bottom: 0 }
+.flag { display: inline-block; font: 500 11px/1.4 var(--f-mono); padding: 1px 6px; border-radius: 3px; border: 1px solid currentColor; white-space: nowrap }
+.flag.warn { color: var(--signal) } .flag.bad { color: var(--danger) } .flag.good { color: var(--ok) }
+ul.plain { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; max-width: 72ch }
+
+/* pipeline diagram */
+.diagram { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); padding: 12px }
+.diagram svg { display: block; min-width: 760px; width: 100% }
+.diagram text { font-family: var(--f-body); fill: var(--fg) }
+.diagram .sub { fill: var(--muted); font-size: 11px; font-family: var(--f-mono) }
+
+/* console */
+.console { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; display: grid; grid-template-columns: 250px 1fr; overflow: hidden }
+@media (max-width: 760px) { .console { grid-template-columns: 1fr } }
+.scen { background: var(--sunk); border-right: 1px solid var(--line); padding: 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.scen .grp { font: 600 11px/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 12px 6px 4px }
+.scen .grp:first-child { padding-top: 2px }
+.scen button { text-align: left; font: 500 14px/1.3 var(--f-body); color: var(--fg); background: transparent; border: 1px solid transparent; border-radius: 5px; padding: 7px 9px; cursor: pointer }
+.scen button:hover { background: var(--surface); border-color: var(--line) }
+.scen button[aria-pressed="true"] { background: var(--accent); color: var(--accent-fg) }
+.scen button:focus-visible, .ctl button:focus-visible, .params input:focus-visible, .params select:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px }
+.main { padding: 16px; display: flex; flex-direction: column; gap: 16px; min-width: 0 }
+.params { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px }
+.params label { display: flex; flex-direction: column; gap: 3px; font: 500 11px/1.2 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); min-width: 0 }
+.params input[type=text], .params select { font: 14px var(--f-mono); color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 5px 7px; width: 100%; min-width: 0 }
+.params input[type=color] { width: 100%; height: 31px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); padding: 2px }
+.checks { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px }
+.checks label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer }
+.ctl { display: flex; flex-wrap: wrap; gap: 8px; align-items: center }
+.ctl button { font: 600 14px/1 var(--f-body); padding: 9px 14px; border-radius: 5px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer }
+.ctl button.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent) }
+.ctl .note { font-size: 12.5px; color: var(--muted) }
+.msg { border: 1px solid var(--line); border-radius: 6px; padding: 12px; display: flex; flex-direction: column; gap: 10px; background: var(--bg) }
+.msg-head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; font-size: 12.5px; color: var(--muted) }
+.msg-head b { font: 600 16px/1.2 var(--f-display); letter-spacing: .03em; color: var(--fg) }
+.prio { font: 600 11px/1.4 var(--f-mono); padding: 0 6px; border-radius: 3px; background: var(--sunk); color: var(--fg) }
+.prio.p3 { background: var(--signal); color: var(--accent-fg) } .prio.p4 { background: var(--danger); color: var(--accent-fg) }
+.say { font-size: 17px; line-height: 1.5 }
+.say span { transition: color .1s }
+.say .fx { color: var(--muted); font: 12px var(--f-mono) }
+.say .drop { color: var(--muted); text-decoration: line-through; font-style: italic }
+.say .now { color: var(--signal); font-weight: 600 }
+.track { display: flex; gap: 2px; height: 30px; align-items: stretch; position: relative; min-width: 0 }
+.seg { border-radius: 2px; min-width: 3px; position: relative; opacity: .85 }
+.seg.gap { background: transparent; border-left: 1px dashed var(--line); opacity: 1 }
+.seg.now { opacity: 1; outline: 2px solid var(--fg); outline-offset: 1px }
+.seg.drop { background: repeating-linear-gradient(135deg, var(--line) 0 4px, transparent 4px 8px) !important }
+.chips { display: flex; flex-wrap: wrap; gap: 4px }
+.chip { font: 11.5px/1.5 var(--f-mono); padding: 1px 6px; border-radius: 3px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: default }
+.chip i { font-style: normal; color: var(--fg) }
+.chip.drop { text-decoration: line-through }
+.chip.now { border-color: var(--signal); color: var(--fg) }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12px; color: var(--muted) }
+.legend span { display: inline-flex; align-items: center; gap: 5px }
+.legend i { width: 12px; height: 12px; border-radius: 2px; display: inline-block }
+.meta-line { font: 12px var(--f-mono); color: var(--muted) }
+pre { margin: 0; font: 12.5px/1.5 var(--f-mono); background: var(--sunk); border: 1px solid var(--line); border-radius: 6px; padding: 12px; overflow-x: auto }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px }
+.two > * { min-width: 0 }
+@media (max-width: 700px) { .two { grid-template-columns: 1fr } }
+.callout { border-left: 3px solid var(--signal); padding: 4px 0 4px 14px; font-size: 14px; color: var(--muted); max-width: 72ch }
+@media (prefers-reduced-motion: reduce) { .say span, .seg { transition: none } }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">police_system · modules/radio_voice · terv</div>
+  <h1>Diszpécser rádióhang</h1>
+  <p class="lede">A rendőrségi rendszer minden fontos eseményére a diszpécser szól a rádióban: lekérdezés eredménye, új hívás, erősítés, üldözés, elfogás, és válasz minden rádiógombra. Az üzenetek szóelemekből (tokenekből) állnak össze egy fix adatbázis alapján, a lejátszó pedig sorban, rádiózajjal és keretező csipogással játssza le őket.</p>
+  <div class="facts" id="facts"></div>
+</header>
+
+<section>
+  <div class="eyebrow">1 · felmérés</div>
+  <h2>Mit tud a hangkészlet</h2>
+  <p>Minden <code>audio/</code> alatti wav-fájl le van mérve: hossz, mintavétel, csend az elején és végén (lejátszáskor levágjuk), beszéd-hangerő. A táblázat a <code>data/voice.json</code>-ból készül, ugyanabból, amit a szerver induláskor betölt.</p>
+  <div class="scroll"><table id="survey"><thead><tr><th>Mappa</th><th>Fájl</th><th>Token</th><th>Átl. hossz</th><th>Beszéd RMS</th><th>Max csend</th><th>Megjegyzés</th></tr></thead><tbody></tbody></table></div>
+  <ul class="plain">
+    <li><b>Hangerő:</b> a <code>PlateCheck</code> mondatai (Target plate, Stolen, Warrant…) kb. 8 dB-lel halkabbak a többinél. Az adatbázis minden klipnél tárolja a −16 dBFS célszinthez szükséges korrekciót (<code>gain</code>), a kódoló lépés ezt beégeti.</li>
+    <li><b>Formátum:</b> vegyes mintavétel (16, 18, 32, 44,1 és 48 kHz), a <code>RESIDENT</code> effektek egy része sztereó. Kódolás után mind mono 22 kHz OGG: <b>18 MB → 3,1 MB</b> letöltés (scratchpadban kipróbálva).</li>
+    <li><b>Duplikátumok:</b> a betűk az LAPD fonetikus ábécé (A = Adam, L = Lincoln), ezért <code>PlateCheck/A.wav</code> és <code>UNIT_TYPE/ADAM.wav</code> ugyanaz a fájl. Ugyanígy <code>GUNFIRE_03</code> = <code>SHOTS_FIRED_01</code>, és a <code>SUSPECT_LAST_SEEN_01</code> két mappában is megvan. 4 duplikátum, 281 egyedi klip.</li>
+    <li><b>Ellenőrizendő szövegek:</b> néhány kötőszó-változat (<code>A_01</code> 2,3 s, <code>NEAR_01</code> 1,7 s) túl hosszú egy szóhoz, valószínűleg több szót mond. Ezeket a builder kerüli (<code>avoid</code>), amíg valaki meg nem hallgatja őket. Lista lent, a hiányoknál.</li>
+    <li><b>AREAS üres:</b> nincs körzetnév-hang (<code>no_audio_here.txt</code>). Addig az „in &lt;körzet&gt;” rész kimarad, a példákban áthúzva látszik.</li>
+  </ul>
+</section>
+
+<section>
+  <div class="eyebrow">2 · működés</div>
+  <h2>Eseménytől a hangszóróig</h2>
+  <div class="diagram">
+    <svg viewBox="0 0 900 210" role="img" aria-label="Folyamat: esemény, trigger, hálózat, builder, sor, lejátszó">
+      <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+      <g stroke="var(--line)" stroke-width="1.5" fill="var(--sunk)">
+        <rect x="8" y="40" width="130" height="110" rx="6"/>
+        <rect x="160" y="40" width="140" height="110" rx="6"/>
+        <rect x="322" y="40" width="120" height="110" rx="6"/>
+        <rect x="464" y="40" width="140" height="110" rx="6"/>
+        <rect x="626" y="40" width="120" height="110" rx="6"/>
+        <rect x="768" y="40" width="124" height="110" rx="6"/>
+      </g>
+      <g stroke="var(--muted)" stroke-width="1.5" marker-end="url(#ar)">
+        <line x1="138" y1="95" x2="157" y2="95"/><line x1="300" y1="95" x2="319" y2="95"/>
+        <line x1="442" y1="95" x2="461" y2="95"/><line x1="604" y1="95" x2="623" y2="95"/>
+        <line x1="746" y1="95" x2="765" y2="95"/>
+      </g>
+      <text x="18" y="24" class="sub">SZERVER</text><text x="472" y="24" class="sub">KLIENS</text>
+      <line x1="453" y1="14" x2="453" y2="196" stroke="var(--line)" stroke-dasharray="4 4"/>
+      <text x="20" y="66" font-weight="600" font-size="14">Esemény</text>
+      <text x="20" y="88" class="sub">RD.handle</text><text x="20" y="104" class="sub">Q.vehicle / person</text><text x="20" y="120" class="sub">POL.on chase.*</text><text x="20" y="136" class="sub">D.requestBackup</text>
+      <text x="172" y="66" font-weight="600" font-size="14">Trigger</text>
+      <text x="172" y="88" class="sub">phrase + args</text><text x="172" y="104" class="sub">audience → játékosok</text><text x="172" y="120" class="sub">cooldown / coalesce</text><text x="172" y="136" class="sub">server/voice.lua</text>
+      <text x="334" y="66" font-weight="600" font-size="14">Hálózat</text>
+      <text x="334" y="88" class="sub">POL.send</text><text x="334" y="104" class="sub">"rv:say"</text><text x="334" y="120" class="sub">{p, a, pri}</text><text x="334" y="136" class="sub">~100 bájt</text>
+      <text x="476" y="66" font-weight="600" font-size="14">Builder</text>
+      <text x="476" y="88" class="sub">phrase → tokenek</text><text x="476" y="104" class="sub">változók kibontása</text><text x="476" y="120" class="sub">variáns sorsolás</text><text x="476" y="136" class="sub">client/builder.lua</text>
+      <text x="638" y="66" font-weight="600" font-size="14">Sor</text>
+      <text x="638" y="88" class="sub">prioritás 0–4</text><text x="638" y="104" class="sub">ttl, max 4</text><text x="638" y="120" class="sub">code 99 megszakít</text><text x="638" y="136" class="sub">client/player.lua</text>
+      <text x="780" y="66" font-weight="600" font-size="14">Lejátszó</text>
+      <text x="780" y="88" class="sub">intro → klipek</text><text x="780" y="104" class="sub">vágás lead/tail</text><text x="780" y="120" class="sub">zajágy + outro</text><text x="780" y="136" class="sub">client/player.lua</text>
+      <text x="8" y="186" class="sub">A szerver csak azt küldi, melyik frázis és milyen adatokkal; a hangsorrendet minden kliens maga rakja össze ugyanabból a voice.json-ból.</text>
+    </svg>
+  </div>
+  <div class="two">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <h3>Adatbázis (fix, induláskor töltődik)</h3>
+      <p><code>data/voice.json</code>, a <code>tools/build_db.py</code> generálja a hangfájlokból. Kézzel nem szerkesztjük, a szabályok a scriptben vannak.</p>
+      <ul class="plain">
+        <li><code>clips</code>: fájlonként hossz, vágás, szint, duplikátum-hivatkozás</li>
+        <li><code>tokens</code>: egy kimondott egység és a változatai (véletlen választás)</li>
+        <li><code>maps</code>: játékadat → token (színek RGB-vel, 185 GTA modell, jelenet-kategóriák, wanted okok, prioritás → code)</li>
+        <li><code>phrases</code> + <code>triggers</code>: az üzenetek sorrendje, és hogy mi indítja, ki hallja</li>
+      </ul>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <h3>Frázis nyelvtan</h3>
+<pre id="grammar"></pre>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">3 · élő rádió</div>
+  <h2>Példák az adatbázisból</h2>
+  <p>Válassz eseményt bal oldalt. A builder ugyanazokkal a szabályokkal rakja össze az üzenetet, mint majd a Lua kód: a sáv minden szelete egy klip a valódi hosszával, a sorsolt változattal. Az adatokat átírhatod (rendszám, szín, modell, irány), az <b>Újrasorsol</b> új változatokat választ.</p>
+  <div class="callout" id="audioNote"></div>
+  <div class="console">
+    <nav class="scen" id="scen" aria-label="Események"></nav>
+    <div class="main">
+      <div class="params">
+        <label>Egység<input type="text" id="p-callsign" value="A-12"></label>
+        <label>Rendszám<input type="text" id="p-plate" value="4GTR218"></label>
+        <label>Szín<input type="color" id="p-color" value="#1c2f6e"></label>
+        <label>Modell<select id="p-model"></select></label>
+        <label>Irány<select id="p-heading"><option value="0">észak</option><option value="270">kelet</option><option value="180">dél</option><option value="90">nyugat</option></select></label>
+        <label>Körzet<input type="text" id="p-zone" value="Idlewood"></label>
+        <label>Jelenet<select id="p-scene"></select></label>
+        <label>Prioritás<select id="p-prio"><option value="1">1 · sürgős</option><option value="2" selected>2 · normál</option><option value="3">3 · alacsony</option></select></label>
+      </div>
+      <div class="checks" id="checks"></div>
+      <div class="ctl">
+        <button class="primary" id="play" type="button">▶ Lejátszás</button>
+        <button id="reroll" type="button">Újrasorsol</button>
+        <span class="note" id="total"></span>
+      </div>
+      <div id="msgs" style="display:flex;flex-direction:column;gap:12px"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="eyebrow">4 · lejátszás</div>
+  <h2>A lejátszó szabályai</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Szabály</th><th>Érték</th><th>Miért</th></tr></thead>
+    <tbody>
+      <tr><td>Vágás</td><td class="mono">start = lead, vége = ms − tail</td><td>A klipek eleji/végi csendje 0–280 ms; levágva folyamatos a mondat.</td></tr>
+      <tr><td>Szóköz</td><td class="mono">gapMs 40 · charGapMs −20 · pause 120</td><td>Rendszámbetűk és egységszám kicsit egymásba csúszik, ahogy a valódi diszpécser hadarja.</td></tr>
+      <tr><td>Ütemezés</td><td class="mono">setTimer a vágott hosszra, következő hang előtöltve</td><td>Az onClientSoundStopped a csend végén jön, késne. A következő playSound(…, false) szünetelve indul, időben csak elindítjuk.</td></tr>
+      <tr><td>Keret</td><td class="mono">short / full / urgent</td><td>Rádiógomb: klikk + „Copy” + outro. Hívás, lekérdezés: diszpécser hang + intro. Code 99: statikus zörej, megszakít.</td></tr>
+      <tr><td>Zajágy</td><td class="mono">NOISE_LOOP, hangerő 0.18, fade 60 ms</td><td>Az üzenet alatt végig szól, a végén elhalkul.</td></tr>
+      <tr><td>Sor</td><td class="mono">max 4 · ttl üzenetenként</td><td>Ami lejárt (pl. 15 s-os lekérdezés), kiesik. Új, magasabb prioritás előre kerül; 4-es (code 99) megszakítja a futót.</td></tr>
+      <tr><td>Összevonás</td><td class="mono">coalesce = "pursuit"</td><td>Üldözés közben mindig csak a legfrissebb irány-jelentés vár, a régi kiesik.</td></tr>
+      <tr><td>Hangerő</td><td class="mono">voiceVolume × gain × beállítás</td><td>Járműben a rádióból, gyalog a vállrádióból halkabban. Saját beállítás (ki/be, hangerő) a v_voice rádió mellett.</td></tr>
+      <tr><td>Felirat</td><td class="mono">tokens[*].text</td><td>Az összerakott angol mondat a rádiónapló sorában is megjelenik, aki nem hallja, olvassa.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <div class="eyebrow">5 · triggerek</div>
+  <h2>Mi szólaltatja meg</h2>
+  <div class="scroll"><table id="triggers"><thead><tr><th>Frázis</th><th>Kapcsolódás</th><th>Ki hallja</th><th>Pri</th><th>Keret</th><th>Cooldown</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section>
+  <div class="eyebrow">6 · hiányok</div>
+  <h2>Amit a hangkészlet még nem fed le</h2>
+  <p>Mindegyiknél van tartalék megoldás, a rendszer ezek nélkül is működik. Ha később jönnek hangok, csak a mappába kell tenni őket és újrafuttatni a buildert.</p>
+  <div class="scroll"><table id="missing"><thead><tr><th>Mi</th><th>Ok</th><th>Addig</th><th>Kellene</th></tr></thead><tbody></tbody></table></div>
+  <h3>Meghallgatandó szövegek</h3>
+  <div class="scroll"><table id="verify"><thead><tr><th>Token</th><th>Feltételezett szöveg</th><th>Kérdés</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<section>
+  <div class="eyebrow">7 · megvalósítás</div>
+  <h2>Fájlok és lépések</h2>
+  <div class="scroll"><table>
+    <thead><tr><th>Fájl</th><th>Állapot</th><th>Feladat</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">tools/build_db.py</td><td><span class="flag good">kész</span></td><td>Mérés, tokenek, térképek, frázisok → data/voice.json + docs/voice_db.js; kódolás: vágás + szintkorrekció + mono 22 kHz OGG → sounds/ (2,3 MB), a meta.xml file-sorait is ez írja</td></tr>
+      <tr><td class="mono">data/voice.json</td><td><span class="flag good">kész</span></td><td>A fix adatbázis (285 klip, 179 token, 18 frázis), mindkét oldal induláskor tölti</td></tr>
+      <tr><td class="mono">shared/db.lua</td><td><span class="flag good">kész</span></td><td>VOICE.load (fileOpen + fromJSON), VOICE.dirIndex</td></tr>
+      <tr><td class="mono">client/builder.lua</td><td><span class="flag good">kész</span></td><td>phrase + args → hanglista (ennek az oldalnak a Lua párja); tools/test_builder.py: 360 build offline</td></tr>
+      <tr><td class="mono">server/voice.lua</td><td><span class="flag good">kész</span></td><td>Triggerek a buszon: radio.used, query.result, callout.offered/announced, backup.requested, transport.requested, chase.*, wanted.*</td></tr>
+      <tr><td class="mono">client/player.lua</td><td><span class="flag good">kész</span></td><td>Sor, keretek, zajágy, időzítés, felirat, /dispatchtest, hangerő export</td></tr>
+      <tr><td class="mono">ui_pause Online</td><td><span class="flag good">kész</span></td><td>„Police dispatcher voice” 0–100 csúszka, fiókra mentve</td></tr>
+      <tr><td class="mono">játékban</td><td><span class="flag warn">teszteletlen</span></td><td>Restart után /dispatchtest &lt;frázis&gt; szolgálatban</td></tr>
+      <tr><td class="mono">audio/AREAS</td><td><span class="flag bad">hiányzik</span></td><td>Körzetnevek hangja (később generálva)</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+</div>
+
+<script src="voice_db.js"></script>
+<script>
+(function () {
+  const DB = window.VOICE_DB;
+  const S = DB.settings;
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, attrs, ...kids) => { const e = document.createElement(tag); for (const k in attrs || {}) { if (k === 'class') e.className = attrs[k]; else if (k === 'style') e.style.cssText = attrs[k]; else e.setAttribute(k, attrs[k]); } for (const c of kids) e.append(c); return e; };
+  const fmt = (ms) => (ms / 1000).toFixed(2).replace('.', ',') + ' s';
+
+  /* ---------------- facts + survey ---------------- */
+  const clips = DB.clips, names = Object.keys(clips);
+  const unique = names.filter(n => !clips[n].same);
+  const totalMs = unique.reduce((a, n) => a + clips[n].ms, 0);
+  const facts = [[names.length, 'wav fájl'], [unique.length, 'egyedi klip'], [Object.keys(DB.tokens).length, 'token'],
+    [Object.keys(DB.phrases).length, 'frázis'], [Object.keys(DB.maps.vehicles).length, 'járműmodell'], [Math.round(totalMs / 1000) + ' s', 'teljes hanganyag']];
+  for (const [b, s] of facts) $('#facts').append(el('div', {}, el('b', {}, String(b)), el('span', {}, s)));
+
+  const byFolder = {};
+  const tokFolder = {};
+  for (const [tok, t] of Object.entries(DB.tokens)) for (const c of t.clips) { const f = c.split('/')[0]; (tokFolder[f] = tokFolder[f] || new Set()).add(tok); }
+  for (const n of names) { const f = n.split('/')[0]; (byFolder[f] = byFolder[f] || []).push(clips[n]); }
+  const notes = { PlateCheck: ['−8 dB mondatok', 'warn'], RESIDENT: ['effektek, vegyes kHz / sztereó', 'warn'], CONJUNCTIVES: ['hosszú változatok', 'warn'],
+    UNIT_TYPE: ['= A / L betű', ''], LAST_SEEN: ['duplikátum', ''], CRIMES: ['3 kód ellenőrizendő', 'warn'] };
+  for (const [f, list] of Object.entries(byFolder).sort()) {
+    const avg = list.reduce((a, c) => a + c.ms, 0) / list.length;
+    const rms = list.reduce((a, c) => a + c.rms, 0) / list.length;
+    const sil = Math.max(...list.map(c => Math.max(c.lead, c.tail)));
+    const nt = notes[f];
+    $('#survey tbody').append(el('tr', {}, el('td', { class: 'mono' }, f), el('td', { class: 'num' }, String(list.length)),
+      el('td', { class: 'num' }, String(tokFolder[f] ? tokFolder[f].size : 0)), el('td', { class: 'num' }, fmt(avg)),
+      el('td', { class: 'num' }, rms.toFixed(1) + ' dB'), el('td', { class: 'num' }, sil + ' ms'),
+      el('td', {}, nt ? el('span', { class: 'flag ' + nt[1] }, nt[0]) : '')));
+  }
+  $('#survey tbody').append(el('tr', {}, el('td', { class: 'mono' }, 'AREAS'), el('td', { class: 'num' }, '0'), el('td', { class: 'num' }, '0'),
+    el('td', { class: 'num' }, '–'), el('td', { class: 'num' }, '–'), el('td', { class: 'num' }, '–'), el('td', {}, el('span', { class: 'flag bad' }, 'nincs hang'))));
+
+  $('#grammar').textContent =
+`"TOKEN"                  egy token (véletlen változat)
+{"var": "plate"}         változó → tokenek
+{"opt": [...], "p": .5}  valószínűséggel
+{"any": [[...], [...]]}  egyik lista, véletlen
+{"if": "stolen",
+ "then": [...],
+ "else": [...]}          feltétel az args-ból
+{"pause": 120}           csend ms
+
+QUERY_VEHICLE:
+` + JSON.stringify(DB.phrases.QUERY_VEHICLE).replace(/\},\{/g, '},\n {').replace(/","/g, '", "').slice(0, 900);
+
+  /* ---------------- triggers / missing / verify ---------------- */
+  const audHu = { officer: 'a megnyomó tiszt', unit: 'az egység', chase: 'az üldözés egységei', onduty: 'minden szolgálatos' };
+  for (const [pid, t] of Object.entries(DB.triggers)) {
+    $('#triggers tbody').append(el('tr', {}, el('td', { class: 'mono' }, pid), el('td', { class: 'mono' }, t.hook),
+      el('td', {}, audHu[t.audience] || t.audience), el('td', { class: 'num' }, String(t.priority)), el('td', { class: 'mono' }, t.frame),
+      el('td', { class: 'num' }, t.cooldown ? (t.cooldown / 1000) + ' s' : '–')));
+  }
+  for (const m of DB.missing) $('#missing tbody').append(el('tr', {}, el('td', {}, m.what), el('td', {}, m.why), el('td', {}, m.fallback), el('td', { class: 'mono' }, m.need)));
+  for (const [tok, t] of Object.entries(DB.tokens)) if (t.verify) $('#verify tbody').append(el('tr', {}, el('td', { class: 'mono' }, tok), el('td', {}, t.text), el('td', {}, t.verify)));
+
+  /* ---------------- builder (Lua twin: shared/builder.lua) ---------------- */
+  const rnd = Math.random;
+  function family(tok) {
+    const p = tok.split('.')[0];
+    return { FX: 'fx', OPEN: 'open', REPORT: 'open', ASSIST: 'crime', CRIME: 'crime', CHAR: 'char', UNIT: 'char', PLATE: 'char',
+      COLOR: 'desc', VEH: 'desc', DIR: 'dir', CONJ: 'dir', SUSPECT: 'dir', SUSPECTS: 'dir', ON_FOOT: 'dir', SEARCH: 'dir',
+      RESPOND: 'resp', ARREST: 'resp', ACK: 'ack', AREA: 'dir' }[p] || 'ack';
+  }
+  function pick(tok) {
+    const t = DB.tokens[tok];
+    let c = t.clips.filter(x => !(t.avoid || []).includes(x));
+    if (!c.length) c = t.clips;
+    return c[Math.floor(rnd() * c.length)];
+  }
+  function push(out, tok, extra) {
+    const clip = pick(tok), c = DB.clips[clip];
+    out.push(Object.assign({ tok, clip, text: DB.tokens[tok].text, ms: Math.max(30, c.ms - c.lead - c.tail), lead: c.lead }, extra || {}));
+  }
+  function nearestColor(hex) {
+    const r = parseInt(hex.substr(1, 2), 16), g = parseInt(hex.substr(3, 2), 16), b = parseInt(hex.substr(5, 2), 16);
+    let best, bd = 1e12;
+    for (const c of DB.maps.colors) {
+      const [R, G, B] = c.rgb, rm = (r + R) / 2;
+      const d = (2 + rm / 256) * (r - R) ** 2 + 4 * (g - G) ** 2 + (2 + (255 - rm) / 256) * (b - B) ** 2;
+      if (d < bd) { bd = d; best = c.token; }
+    }
+    return best;
+  }
+  function dirIndex(h) { return Math.floor((((h + 45) % 360) + 360) % 360 / 90); }
+  function crimeToken(a) {
+    if (!a.crime) return null;
+    if (a.crime.startsWith('CRIME.') || a.crime.startsWith('ASSIST.')) return a.crime;
+    return DB.maps.reasonCrime[a.crime] || DB.maps.sceneCrime[a.crime] || null;
+  }
+  function expandVar(v, a, out) {
+    if (v === 'callsign') {
+      const m = /^([AL])-?(\d+)$/i.exec(a.callsign || '');
+      if (!m) return;
+      push(out, m[1].toUpperCase() === 'A' ? 'UNIT.ADAM' : 'UNIT.LINCOLN');
+      for (const d of m[2]) push(out, 'CHAR.' + d, { char: true });
+    } else if (v === 'plate') {
+      for (const ch of (a.plate || '').toUpperCase().replace(/[^0-9A-Z]/g, '').slice(0, 8)) push(out, 'CHAR.' + ch, { char: true });
+    } else if (v === 'color') { push(out, nearestColor(a.color));
+    } else if (v === 'vehicle') {
+      const t = DB.maps.vehicles[String(a.model)];
+      if (t) push(out, t); else out.push({ drop: true, text: 'aircraft / nincs kategória', tok: 'VEH.?' });
+    } else if (v === 'direction') { push(out, DB.maps.directions.heading[dirIndex(a.heading)]);
+    } else if (v === 'bound') { push(out, DB.maps.directions.bound[dirIndex(a.heading)]);
+    } else if (v === 'crime') { const t = crimeToken(a); if (t) push(out, t);
+    } else if (v === 'code') { push(out, DB.maps.priorityCode[String(a.priority)] || 'RESPOND.CODE_2');
+    } else if (v === 'area') {
+      const t = DB.maps.areas[a.area];
+      if (t) { push(out, t); return; }
+      const prev = out[out.length - 1];
+      let text = a.area;
+      if (prev && prev.tok && prev.tok.startsWith('CONJ.')) { out.pop(); text = prev.text + ' ' + text; }
+      out.push({ drop: true, text, tok: 'AREA.' + a.area });
+    }
+  }
+  function expand(seq, a, out) {
+    for (const it of seq) {
+      if (typeof it === 'string') push(out, it);
+      else if (it.var) expandVar(it.var, a, out);
+      else if (it.opt) { if (rnd() < (it.p == null ? 0.5 : it.p)) expand(it.opt, a, out); }
+      else if (it.any) expand(it.any[Math.floor(rnd() * it.any.length)], a, out);
+      else if (it.if) {
+        const neg = it.if[0] === '!', key = it.if.replace('!', '');
+        if (!!a[key] !== neg) expand(it.then, a, out); else if (it.else) expand(it.else, a, out);
+      } else if (it.pause) out.push({ pause: it.pause, ms: it.pause });
+    }
+  }
+  function build(pid, a) {
+    const trig = DB.triggers[pid], frame = DB.frames[trig.frame], out = [];
+    for (const t of frame.before) push(out, t, { fx: true });
+    expand(DB.phrases[pid], a, out);
+    for (const t of frame.after) push(out, t, { fx: true });
+    // gaps
+    const seq = [];
+    out.forEach((it, i) => {
+      if (i > 0 && !it.pause && !out[i - 1].pause && !it.drop) {
+        const g = it.char && out[i - 1].char ? S.charGapMs : S.gapMs;
+        if (g > 0) seq.push({ pause: g, ms: g, gap: true });
+        else it.overlap = -g;
+      }
+      seq.push(it);
+    });
+    const total = seq.reduce((s, it) => s + (it.drop ? 0 : it.ms - (it.overlap || 0)), 0);
+    return { pid, trig, seq, total };
+  }
+
+  /* ---------------- scenarios ---------------- */
+  const SCENES = Object.keys(DB.maps.sceneCrime);
+  for (const s of SCENES) $('#p-scene').append(el('option', { value: s }, s));
+  $('#p-scene').value = 'robbery';
+  const MODELS = [[560, 'Sultan'], [596, 'Police LS'], [402, 'Buffalo'], [411, 'Infernus'], [400, 'Landstalker'], [422, 'Bobcat'],
+    [482, 'Burrito'], [462, 'Faggio'], [481, 'BMX'], [416, 'Ambulance'], [487, 'Maverick'], [496, 'Blista Compact'], [513, 'Stuntplane']];
+  for (const [id, n] of MODELS) $('#p-model').append(el('option', { value: id }, id + ' · ' + n));
+
+  const FLAGS = [['stolen', 'lopott'], ['warrant', 'körözés (tulaj / személy)'], ['violation', 'lejárt okmány'], ['wanted', 'wanted szint'], ['licence', 'rossz jogsi'], ['onFoot', 'gyalog'], ['shots', 'lövés tisztre']];
+  for (const [k, n] of FLAGS) {
+    const cb = el('input', { type: 'checkbox', id: 'f-' + k });
+    $('#checks').append(el('label', { for: 'f-' + k }, cb, n));
+  }
+
+  function params() {
+    const p = { callsign: $('#p-callsign').value, plate: $('#p-plate').value, color: $('#p-color').value, model: +$('#p-model').value,
+      heading: +$('#p-heading').value, area: $('#p-zone').value.trim(), scene: $('#p-scene').value, priority: +$('#p-prio').value };
+    for (const [k] of FLAGS) p[k] = $('#f-' + k).checked;
+    return p;
+  }
+  const SCEN = [
+    { grp: 'Rádiógomb', id: 'amb', name: 'Mentőt kérek', why: 'R panel → REQUEST_AMBULANCE', msgs: p => [['ACK_AMBULANCE', p]] },
+    { grp: 'Rádiógomb', id: 'code4', name: 'Code 4', why: 'R panel → CODE_4', msgs: p => [['ACK_CODE_4', p]] },
+    { grp: 'Rádiógomb', id: 'status', name: 'Státusz: Responding (F6)', why: 'F6 → STATUS_RESPONDING', msgs: p => [['ACK', p]] },
+    { grp: 'Rádiógomb', id: 'transport', name: 'Fogolyszállítás', why: 'REQUEST_TRANSPORT, vádak megadva', msgs: p => [['ACK_TRANSPORT', p]] },
+    { grp: 'Lekérdezés', id: 'qv', name: 'Jármű lekérdezés', why: 'QUERY_VEHICLE → Q.vehicle eredmény', set: { stolen: false, warrant: false, violation: false },
+      msgs: p => [['QUERY_VEHICLE', Object.assign({}, p, { vehicle: true, caution: p.stolen || p.warrant, felony: p.stolen && p.warrant })]] },
+    { grp: 'Lekérdezés', id: 'qvs', name: 'Jármű: lopott', why: 'QUERY_VEHICLE, prof.stolen', set: { stolen: true, warrant: false, violation: false },
+      msgs: p => [['QUERY_VEHICLE', Object.assign({}, p, { vehicle: true, caution: p.stolen || p.warrant, felony: p.stolen && p.warrant })]] },
+    { grp: 'Lekérdezés', id: 'qp', name: 'Személy: körözött', why: 'QUERY_PERSON, warrants > 0', set: { warrant: true, wanted: false, licence: false },
+      msgs: p => [['QUERY_PERSON', p]] },
+    { grp: 'Hívás', id: 'call', name: 'Hívás felajánlása', why: 'CalloutManager: jelenet → egység popup', msgs: p => [['CALL_OFFER', Object.assign({}, p, { crime: p.scene })]] },
+    { grp: 'Hívás', id: 'callall', name: 'Senki nem vette fel (P1)', why: 'prioritás 1, OFFER_TIME lejárt', set: { prio: 1 },
+      msgs: p => [['CALL_ALL_UNITS', Object.assign({}, p, { crime: p.scene })]] },
+    { grp: 'Erősítés', id: 'backup', name: 'Erősítést kérek', why: 'REQUEST_BACKUP → D.requestBackup', msgs: p => [['ACK', p], ['BACKUP_REQUESTED', p], ['BACKUP_ASSIGNED', Object.assign({}, p, { callsign: 'L-3' })]] },
+    { grp: 'Erősítés', id: 'panic', name: 'Lövés tisztre (code 99)', why: 'evt:shots tiszt közelében', set: { shots: true }, msgs: p => [['PANIC', p]] },
+    { grp: 'Üldözés', id: 'chase', name: 'Üldözés indul', why: "POL.on('chase.started')", msgs: p => [['PURSUIT_START', Object.assign({}, p, { crime: p.stolen ? 'vehicle_theft' : 'evading_police', vehicle: !p.onFoot, direction: true })]] },
+    { grp: 'Üldözés', id: 'upd', name: 'Irány jelentés', why: 'chase tick, irány változott', msgs: p => [['PURSUIT_UPDATE', p]] },
+    { grp: 'Üldözés', id: 'lost', name: 'Gyanúsított elveszett', why: "wanted.phase → search", msgs: p => [['PURSUIT_LOST', Object.assign({}, p, { direction: true })]] },
+    { grp: 'Üldözés', id: 'swat', name: 'SWAT szint', why: 'wanted heat SWAT', msgs: p => [['SWAT', Object.assign({}, p, { crime: 'shots_at_police' })]] },
+    { grp: 'Üldözés', id: 'arrest', name: 'Elfogva', why: "POL.on('arrest.cuffed')", msgs: p => [['SUSPECT_ARRESTED', p]] },
+  ];
+  let cur = SCEN[4], built = [];
+  let lastGrp = '';
+  for (const s of SCEN) {
+    if (s.grp !== lastGrp) { $('#scen').append(el('div', { class: 'grp' }, s.grp)); lastGrp = s.grp; }
+    const b = el('button', { type: 'button', 'aria-pressed': 'false', 'data-id': s.id }, s.name);
+    b.addEventListener('click', () => select(s));
+    $('#scen').append(b);
+  }
+  const FAM = [['fx', 'effekt'], ['open', 'nyitó / jelentés'], ['crime', 'bűncselekmény'], ['char', 'egység / rendszám'], ['desc', 'szín / jármű'], ['dir', 'irány / kötőszó'], ['resp', 'válasz / code'], ['ack', 'nyugta']];
+  for (const [f, n] of FAM) $('#legend').append(el('span', {}, el('i', { style: 'background:var(--t-' + f + ')' }), n));
+  $('#legend').append(el('span', {}, el('i', { style: 'background:repeating-linear-gradient(135deg,var(--line) 0 3px,transparent 3px 6px);border:1px solid var(--line)' }), 'nincs hang, kimarad'));
+
+  function select(s) {
+    cur = s;
+    for (const b of document.querySelectorAll('#scen button')) b.setAttribute('aria-pressed', b.dataset.id === s.id ? 'true' : 'false');
+    if (s.set) for (const k in s.set) { if (k === 'prio') $('#p-prio').value = s.set[k]; else if ($('#f-' + k)) $('#f-' + k).checked = s.set[k]; }
+    render();
+  }
+  function render() {
+    stop();
+    const p = params();
+    built = cur.msgs(p).map(([pid, a]) => build(pid, a));
+    const box = $('#msgs'); box.textContent = '';
+    let sum = 0;
+    built.forEach((m, mi) => {
+      sum += m.total;
+      const say = el('div', { class: 'say' });
+      const track = el('div', { class: 'track' });
+      const chips = el('div', { class: 'chips' });
+      m.seq.forEach((it, i) => {
+        it.idx = i;
+        if (it.gap) { track.append(el('div', { class: 'seg gap', style: 'flex:' + it.ms + ' 0 0' })); return; }
+        if (it.pause) { track.append(el('div', { class: 'seg gap', style: 'flex:' + it.ms + ' 0 0', title: 'szünet ' + it.ms + ' ms' })); return; }
+        const fam = it.drop ? 'fx' : family(it.tok);
+        const seg = el('div', { class: 'seg' + (it.drop ? ' drop' : ''), style: 'flex:' + (it.drop ? 300 : it.ms) + ' 0 0;background:var(--t-' + fam + ')',
+          title: it.drop ? it.text + ' (nincs hang)' : it.tok + ' · ' + it.clip + ' · ' + it.ms + ' ms' });
+        it.segEl = seg; track.append(seg);
+        const w = el('span', { class: it.fx ? 'fx' : it.drop ? 'drop' : '' }, (it.fx ? it.text : it.text) + ' ');
+        it.sayEl = w; say.append(w);
+        const chip = el('span', { class: 'chip' + (it.drop ? ' drop' : ''), title: it.clip || '' }, it.drop ? it.tok : el('i', {}, it.tok), it.clip ? ' ' + it.clip.split('/')[1].replace('.wav', '') : '');
+        it.chipEl = chip; chips.append(chip);
+      });
+      const aud = { officer: 'a megnyomó tiszt', unit: 'az egység tagjai', chase: 'az üldözés egységei', onduty: 'minden szolgálatos' }[m.trig.audience];
+      box.append(el('div', { class: 'msg' },
+        el('div', { class: 'msg-head' }, el('b', {}, (built.length > 1 ? (mi + 1) + '. ' : '') + m.pid), el('span', { class: 'prio p' + m.trig.priority }, 'P' + m.trig.priority),
+          el('span', {}, 'hallja: ' + aud), el('span', {}, 'keret: ' + m.trig.frame), el('span', {}, fmt(m.total))),
+        say, track, chips,
+        el('div', { class: 'meta-line' }, 'trigger: ' + cur.why)));
+    });
+    $('#total').textContent = built.length + ' üzenet · ' + fmt(sum);
+  }
+
+  /* ---------------- playback (real audio when opened from the module folder) ---------------- */
+  const LOCAL = location.protocol === 'file:';
+  $('#audioNote').textContent = LOCAL
+    ? 'Helyi megnyitás: a Lejátszás a valódi wav-fájlokat játssza le (../audio/), vágással, zajággyal.'
+    : 'A hangfájlok nincsenek feltöltve (GTA V / LSPDFR hanganyag), itt a Lejátszás a valós időzítéssel mutatja a sorrendet. Hanggal: nyisd meg a police_system/modules/radio_voice/docs/design.html fájlt a böngészőben.';
+  let timers = [], playing = [], noise = null;
+  function stop() {
+    timers.forEach(clearTimeout); timers = [];
+    playing.forEach(a => { try { a.pause(); } catch (e) {} }); playing = [];
+    if (noise) { try { noise.pause(); } catch (e) {} noise = null; }
+    document.querySelectorAll('.now').forEach(e => e.classList.remove('now'));
+    $('#play').textContent = '▶ Lejátszás';
+  }
+  function play() {
+    if (timers.length) { stop(); return; }
+    $('#play').textContent = '■ Állj';
+    let t = 0;
+    if (LOCAL) {
+      const nc = DB.tokens['FX.NOISE'].clips[0];
+      noise = new Audio('../audio/' + nc); noise.loop = true; noise.volume = S.noiseVolume;
+      noise.play().catch(() => {});
+    }
+    built.forEach((m, mi) => {
+      if (mi > 0) t += 700;
+      for (const it of m.seq) {
+        if (it.drop) continue;
+        const start = t - (it.overlap || 0);
+        if (!it.pause) {
+          timers.push(setTimeout(() => {
+            document.querySelectorAll('.now').forEach(e => e.classList.remove('now'));
+            for (const e of [it.segEl, it.sayEl, it.chipEl]) if (e) e.classList.add('now');
+            if (LOCAL) {
+              const a = new Audio('../audio/' + it.clip);
+              const c = DB.clips[it.clip];
+              a.volume = Math.min(1, Math.pow(10, Math.min(0, c.gain) / 20));
+              a.currentTime = it.lead / 1000;
+              a.play().catch(() => {});
+              playing.push(a);
+              setTimeout(() => { try { a.pause(); } catch (e) {} }, it.ms + 20);
+            }
+          }, Math.max(0, start)));
+        }
+        t = start + it.ms;
+      }
+    });
+    timers.push(setTimeout(stop, t + 300));
+  }
+  $('#play').addEventListener('click', play);
+  $('#reroll').addEventListener('click', () => {
+    const L = 'ABCDEFGHJKLMNPRSTVWXYZ', D = '0123456789';
+    const r = (s) => s[Math.floor(Math.random() * s.length)];
+    $('#p-plate').value = r(D) + r(L) + r(L) + r(L) + r(D) + r(D) + r(D);
+    $('#p-color').value = '#' + [0, 0, 0].map(() => Math.floor(Math.random() * 256).toString(16).padStart(2, '0')).join('');
+    $('#p-model').selectedIndex = Math.floor(Math.random() * MODELS.length);
+    $('#p-heading').selectedIndex = Math.floor(Math.random() * 4);
+    $('#p-callsign').value = (Math.random() < .5 ? 'A-' : 'L-') + (1 + Math.floor(Math.random() * 24));
+    render();
+  });
+  for (const id of ['#p-callsign', '#p-plate', '#p-color', '#p-model', '#p-heading', '#p-zone', '#p-scene', '#p-prio']) $(id).addEventListener('input', render);
+  for (const [k] of FLAGS) $('#f-' + k).addEventListener('change', render);
+  select(cur);
+})();
+</script>

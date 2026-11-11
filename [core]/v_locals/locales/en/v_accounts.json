@@ -66,6 +66,8 @@
   "v_accounts.ui.login.username_missing": "Username missing",
   "v_accounts.ui.news.no_news": "No news yet.",
   "v_accounts.ui.news.title": "NEWS",
+  "v_accounts.ui.players.now": "now",
+  "v_accounts.ui.players.title": "PLAYERS",
   "v_accounts.ui.register.confirm_password": "CONFIRM PASSWORD",
   "v_accounts.ui.register.email_note": "Only used to reset your password.",
   "v_accounts.ui.register.email_optional": "EMAIL (OPTIONAL)",

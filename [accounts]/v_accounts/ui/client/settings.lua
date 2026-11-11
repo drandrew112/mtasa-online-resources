@@ -28,4 +28,5 @@ function Settings.draw(anchor)
 
     if Music then Music.drawToggle(x + pad, ctrlY, colW, btnH) end
     if Lang then Lang.draw(x + pad + colW + colGap, ctrlY, colW, btnH) end -- last: its list opens over everything
+    return { X = x, Y = y, W = w, H = h }
 end

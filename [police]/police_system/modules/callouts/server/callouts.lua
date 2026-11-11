@@ -178,6 +178,7 @@ function nextOffer(unit)
         if offerable(unit, c) then
             CO.offers[unit.id] = { call = c.id, expires = getTickCount() + C.OFFER_TIME * 1000 }
             pushOffer(unit)
+            POL.emit("callout.offered", unit, c)
             return
         end
     end
@@ -198,6 +199,7 @@ local function offer(unit, c)
     end
     CO.offers[unit.id] = { call = c.id, expires = getTickCount() + C.OFFER_TIME * 1000 }
     pushOffer(unit)
+    POL.emit("callout.offered", unit, c)
     return true
 end
 
@@ -238,6 +240,7 @@ local function announce(c)
             POL.notify(p, "police_system.callouts.new_call", { id = c.id, title = (CO.textFor(c, p)), zone = c.zone })
         end
     end
+    POL.emit("callout.announced", c, next(offered) ~= nil)
 end
 
 -- a unit Available again: the nearest open call around it that it has not declined

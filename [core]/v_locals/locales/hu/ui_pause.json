@@ -89,6 +89,8 @@
   "ui_pause.pausemenu.xp_to_next_level": "XP a következő szintig",
   "ui_pause.pausemenu.you_left_server": "Kiléptél a szerverről.",
   "ui_pause.pausemenu.your_level_xp_played_time_and": "A szinted, XP-d, játszott időd és statisztikáid.",
+  "ui_pause.settings.dispatch_volume": "Rendőrségi diszpécser hang",
+  "ui_pause.settings.dispatch_volume_desc": "A rendőrségi diszpécser hangereje a rádióban, amíg szolgálatban vagy (0 = kikapcsolva).",
   "ui_pause.settings.language": "Nyelv",
   "ui_pause.settings.language_desc": "A játék szövegeinek nyelve. - a nyelv megváltoztatása újracsatlakozást igényelhet",
   "ui_pause.settings.off": "KI",

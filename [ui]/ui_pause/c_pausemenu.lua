@@ -180,6 +180,11 @@ local function elsAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function policeAvailable()
+    local res = getResourceFromName("police_system")
+    return res and getResourceState(res) == "running"
+end
+
 local function localsAvailable()
     local res = getResourceFromName("v_locals")
     return res and getResourceState(res) == "running"
@@ -460,6 +465,15 @@ SETTINGS_TREE = {
                 available = mailAvailable,
                 get = function() return mailAvailable() and exports.v_mail:getReceiveUpdateMails() end,
                 set = function(v) if mailAvailable() then exports.v_mail:setReceiveUpdateMails(v) end end,
+            },
+            {
+                -- police_system radio_voice: the dispatcher on the radio while on duty (0 = off)
+                id = "dispatch_volume", label = L("ui_pause.settings.dispatch_volume"), type = "range",
+                min = 0, max = 100, step = 10, default = 80,
+                desc = L("ui_pause.settings.dispatch_volume_desc"),
+                available = policeAvailable,
+                get = function() return policeAvailable() and exports.police_system:getDispatchVolume() end,
+                set = function(v) if policeAvailable() then exports.police_system:setDispatchVolume(v) end end,
             },
         },
     },

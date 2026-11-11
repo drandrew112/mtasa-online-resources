@@ -62,6 +62,7 @@ function D.requestBackup(player)
     POL.notify(POL.units.members(unit), "police_system.dispatch.backup_coming", { callsign = best.callsign })
     POL.events.log(unit, player, "backup_requested", { to = best.callsign })
     POL.db.stat("backups", 1)
+    POL.emit("backup.requested", unit, best, x, y, z)
     return true
 end
 

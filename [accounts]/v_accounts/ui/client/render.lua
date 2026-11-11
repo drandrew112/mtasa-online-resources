@@ -23,7 +23,10 @@ local function renderPanels()
 
     -- Settings card (music + language) under the panel; last, so the language
     -- list opens over everything else.
-    if Settings then Settings.draw(panel) end
+    local settingsRect = Settings and Settings.draw(panel)
+    -- Players card under the Settings card (drawn before it would hide the
+    -- language list, so it goes first in z-order only visually: it does not overlap)
+    if Players and settingsRect then Players.draw(settingsRect) end
 end
 
 -- attached only while a panel is up (setPanel calls this)
