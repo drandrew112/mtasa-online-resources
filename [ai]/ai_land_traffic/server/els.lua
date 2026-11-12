@@ -373,7 +373,8 @@ function Els.update(now)
         local P = e.path
         for _, ag in ipairs(near) do
             -- an emergency driver (scripted, sim.lua) does not give way to the others: it passes them
-            if ag.veh ~= e.el and not ag.held and not (ag.script and ag.script.emergency) and (abs(ag.z - e.z) < 6 or P) then
+            if ag.veh ~= e.el and not ag.held and not ag.pull and not ag.merge and not (ag.script and ag.script.emergency)
+                and (abs(ag.z - e.z) < 6 or P) then
                 local rx, ry = ag.x - e.x, ag.y - e.y
                 local level = noticed(ag, e, sqrt(rx * rx + ry * ry), now)
                 if level > 0 then
@@ -412,13 +413,9 @@ function Els.update(now)
             end
         end
     end
-    -- vehicles held by a traffic stop (pullOverTrafficVehicle): aside as far as there is room, then standing
-    for _, ag in pairs(Agents.list) do
-        if ag.held then
-            local lat, right = pullOver(ag, nil, false, 100, now)
-            setYield(ag, 0, lat, now, true, right)
-        end
-    end
+    -- vehicles held by a traffic stop (pullOverTrafficVehicle) are not handled here any more: server/pullover.lua
+    -- owns them (it looks for a place off the road; the old "aside as far as there is room, standing" stopped them
+    -- in the road and fought with the yield of the police car's lights), 2026-11-12
 end
 
 -- is a moving emergency vehicle the agent noticed about to cross junction connection c at (x, y)? With a known

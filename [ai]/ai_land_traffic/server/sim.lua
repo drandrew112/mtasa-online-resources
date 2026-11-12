@@ -517,6 +517,15 @@ local function accelOf(ag, now)
             end
         end
 
+        -- traffic stop spot on this segment (server/pullover.lua): the front bumper stops there
+        if sc and sc.pullLane == code then
+            local d = dist + sc.pullS - ag.half
+            if d > -T.SCRIPTED_ARRIVE_GAP then
+                local a = idm(v, v0, max(d + T.IDM_GAP - 0.4, 0.05), 0)
+                if a < aMin then aMin, limit = a, "stop" end
+            end
+        end
+
         -- leaders on this segment
         local o = Agents.occ[code]
         if o then
@@ -526,8 +535,10 @@ local function accelOf(ag, now)
                     local bs = b.s
                     if i > 1 or bs > ag.s or (bs == ag.s and b.id > ag.id) then
                         local d = dist + bs
-                        -- an emergency driver beside it (passing) does not follow it
-                        if d > 0 and (not bestD or d < bestD) and not (em and emBeside(ag, b, d - ag.half - b.half)) then
+                        -- an emergency driver beside it (passing) does not follow it; a car standing beside the lane
+                        -- after a traffic stop (pullover.lua) is no leader at all
+                        if d > 0 and (not bestD or d < bestD) and not (em and emBeside(ag, b, d - ag.half - b.half))
+                            and not Pull.isAside(b) then
                             best, bestD = b, d
                         end
                     end

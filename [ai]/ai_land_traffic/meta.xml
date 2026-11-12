@@ -21,6 +21,7 @@
     <script src="server/obstacles.lua" type="server" />
     <script src="server/lanes.lua"     type="server" />
     <script src="server/els.lua"       type="server" />
+    <script src="server/pullover.lua"  type="server" />
     <script src="server/views.lua"     type="server" />
     <script src="server/route.lua"     type="server" />
     <script src="server/sim.lua"       type="server" />
@@ -57,6 +58,7 @@
     <export function="clearScriptedTargets"    type="server" />
     <export function="continueScriptedVehicle" type="server" />
     <export function="destroyScriptedVehicle"  type="server" />
+    <export function="relocateScriptedVehicle" type="server" />
     <export function="isScriptedVehicle"       type="server" />
     <export function="getScriptedVehicles"     type="server" />
     <export function="getScriptedTargets"      type="server" />

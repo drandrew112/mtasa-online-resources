@@ -81,10 +81,14 @@ local function snap(x, y, z, heading, radius)
             if d <= radius then
                 local pz = Geo.lz1[id] + (Geo.lz2[id] - Geo.lz1[id]) * t
                 local dz = z and abs(z - pz) or 0
-                local dirOk = true
-                if hx and l2 > 0 then dirOk = (dx * hx + dy * hy) / sqrt(l2) >= 0 end
+                local dirOk, dot = true, 1
+                if hx and l2 > 0 then
+                    dot = (dx * hx + dy * hy) / sqrt(l2)
+                    dirOk = dot >= 0
+                end
                 if dz <= T.SCRIPTED_SNAP_Z and dirOk then
-                    local score = d + dz * 1.5
+                    -- with a heading: a lane that runs that way wins over a nearer one at an angle (junctions)
+                    local score = d + dz * 1.5 + (1 - dot) * 10
                     if not bestScore or score < bestScore then
                         bestLane, bestS, bestScore = id, t * Geo.length(id), score
                     end
@@ -366,6 +370,25 @@ local function clamp(v, lo, hi)
     return v
 end
 
+-- options.lane (navmesh lane id, the simulation uses the same ids) + options.u (0..1 along it): exactly that lane, so
+-- the side of the road and the direction are the caller's (police_system pathfinder); without u the point nearest to
+-- x, y on it. Else (or an unknown lane) the nearest lane by snap (heading, radius). -> lane, s | nil
+local function laneFromOptions(x, y, z, options, radius)
+    local id = tonumber(options.lane)
+    if id and id > 0 and Geo.llen[id] then
+        local len = Geo.length(id)
+        local u = tonumber(options.u)
+        if not u then
+            local x1, y1, x2, y2 = Geo.lx1[id], Geo.ly1[id], Geo.lx2[id], Geo.ly2[id]
+            local dx, dy = x2 - x1, y2 - y1
+            local l2 = dx * dx + dy * dy
+            u = l2 > 0 and ((x - x1) * dx + (y - y1) * dy) / l2 or 0
+        end
+        return id, clamp(u, 0, 1) * len
+    end
+    return snap(x, y, z, tonumber(options.heading), radius)
+end
+
 -- the script table of a new scripted vehicle from the createScriptedVehicle options. Profile "pursuit" (police
 -- chases) = navmesh "emergency" routes + drives through red lights slowly (sim.lua gate) + the traffic gives way to
 -- it while its v_els lights are on (els.lua)
@@ -393,7 +416,8 @@ local function addScripted(ag, script)
 end
 
 -- create a vehicle (with a driver) on the road nearest to x, y, z, standing; returns the vehicle and the
--- driver ped, or false and a reason. options: heading (degrees, picks the lane direction), skin (driver),
+-- driver ped, or false and a reason. options: heading (degrees, picks the lane direction), lane + u (an exact
+-- navmesh lane id and 0..1 position on it: side of the road and direction as given, heading not needed), skin (driver),
 -- speedFactor (0.3 - 1.5, multiplies the wanted speed), profile (navmesh vehicle profile for the routes: "car"
 -- (default), "bus", "truck", "emergency"..., or "pursuit": emergency routes + red lights passed slowly + traffic
 -- gives way while its v_els lights are on), keepDriver (true: a crash / damage does not hand the driver over to
@@ -404,7 +428,7 @@ function createScriptedVehicle(model, x, y, z, options)
     model, x, y, z = tonumber(model), tonumber(x), tonumber(y), tonumber(z)
     if not (model and x and y) then return false, "bad_arguments" end
     if not Net.ready then return false, "network_not_loaded" end
-    local lane, s = snap(x, y, z, tonumber(options.heading))
+    local lane, s = laneFromOptions(x, y, z, options)
     if not lane then return false, "no_road" end
     local len = Geo.length(lane)
     local ag = Agents.spawn(lane, clamp(s, 1, max(1, len - 1)), 0, { model = model, skin = tonumber(options.skin) })
@@ -422,7 +446,7 @@ local function addTarget(veh, kind, x, y, z, options)
     options = type(options) == "table" and options or {}
     x, y, z = tonumber(x), tonumber(y), tonumber(z)
     if not (x and y) then return false, "bad_arguments" end
-    local lane, s = snap(x, y, z, tonumber(options.heading), tonumber(options.radius))
+    local lane, s = laneFromOptions(x, y, z, options, tonumber(options.radius))
     if not lane then return false, "no_road" end
     local len = Geo.length(lane)
     if kind == "stop" then
@@ -447,7 +471,8 @@ end
 
 -- the front of the vehicle stops at the road point nearest to x, y, z (outer lane of that carriageway).
 -- options: wait (ms to stand, default 0), hold (true = stand until continueScriptedVehicle), tag (returned in
--- the events), heading (lane direction), radius (search). Returns the target id, or false and a reason.
+-- the events), heading (lane direction), radius (search), lane + u (exact navmesh lane and 0..1 position: the side
+-- of the road to stop on). Returns the target id, or false and a reason.
 function addScriptedStop(veh, x, y, z, options) return addTarget(veh, "stop", x, y, z, options) end
 
 -- the route has to pass the road point nearest to x, y, z (place it behind a turn to force the turn)
@@ -509,6 +534,24 @@ function destroyScriptedVehicle(veh)
     if not ag then return false end
     ag.script.silent = true
     Agents.destroy(ag, "destroyed")
+    return true
+end
+
+-- move a scripted vehicle (not standing at a stop) to another road point, standing, its targets kept and the route
+-- searched again. Meant for unseen moves (police_system pathfinder: a late service vehicle put closer); the caller
+-- checks visibility. options: lane + u / heading like createScriptedVehicle. -> true | false, reason
+function relocateScriptedVehicle(veh, x, y, z, options)
+    local ag = scripted(veh)
+    if not ag then return false, "not_scripted" end
+    if ag.script.dwell then return false, "standing" end
+    options = type(options) == "table" and options or {}
+    x, y, z = tonumber(x), tonumber(y), tonumber(z)
+    if not (x and y) then return false, "bad_arguments" end
+    local lane, s = laneFromOptions(x, y, z, options)
+    if not lane then return false, "no_road" end
+    if not Agents.place(ag, lane, clamp(s, 1, max(1, Geo.length(lane) - 1))) then return false, "place_failed" end
+    ag.script.seen, ag.script.missedId = nil, nil
+    reroute(ag)
     return true
 end
 
@@ -603,8 +646,13 @@ function setTrafficVehicleFlee(veh, from, opts)
     sc.held = nil
     sc.dwell = nil
     ag.held = nil
+    -- a stopped car speeding off: the pull-over state goes (server/pullover.lua)
+    Pull.clear(ag)
+    sc.pullLane, sc.pullS = nil, nil
     sc.flee = { from = from, next = 0 }
     sc.pursuitDrive = true
+    -- no give-way / claim / full exit lane gates, passes the cars in its way (sim.lua emergency driving)
+    sc.emergency = true
     sc.profile = "emergency"
     sc.speedFactor = clamp(tonumber(opts.speedFactor) or 1.35, 0.3, 1.5)
     return true
@@ -675,13 +723,17 @@ function pullOverTrafficVehicle(veh, byVeh)
     sc.targets = {}
     sc.endLeft = nil
     reroute(ag)
+    -- it looks for a place off the road and stops there (server/pullover.lua), 2026-11-12
+    Pull.start(ag, byVeh)
     return true
 end
 
--- the held vehicle drives on as ordinary traffic. -> true | false
+-- the held vehicle drives on as ordinary traffic (it first waits beside the lane for a gap). -> true | false
 function releaseTrafficHold(veh)
     local ag = isElement(veh) and Agents.byVeh[veh]
     if not ag or not ag.script or not ag.script.held then return false end
+    Pull.release(ag)
+    ag.script.pullLane, ag.script.pullS = nil, nil
     ag.held = nil
     -- back to random traffic: not a scripted vehicle any more
     S.list[ag] = nil

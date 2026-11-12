@@ -5,6 +5,9 @@
 --   pit     aims at the target's rear quarter; alongside it, turns into it (PIT manoeuvre)
 --   ram     straight at where the target will be in half a second, full throttle
 --   block   cuts off: aims at where the target will be in a few seconds
+--   flee    runs from the target (2026-11-12): always the road path (the server leads it away), never at the target;
+--           no path yet: straight away from it. Passes traffic more boldly. Stuck for good (CHASE_FLEE_BAIL_STUCKS
+--           stucks in CHASE_FLEE_BAIL_WINDOW ms), wrecked or upside down: EV_CHASE_BAIL once (the driver bails out)
 -- The mode's aim point is only used with the target in plain sight close by; otherwise the car follows the road path
 -- the server sends (EV_CHASE_PATH: navmesh route to the target, pure pursuit, slowing down before corners). Rays
 -- ahead steer it around walls; when it hardly moves for 1.5 s it reverses out (repeated stucks: longer, alternating
@@ -164,12 +167,33 @@ local function steer(veh, ped, o, st, now)
     local fwdSpeed = (svx * fx + svy * fy) * 180                        -- km/h, < 0 = rolling backwards
     local tspeed = sqrt(tvx * tvx + tvy * tvy) * 180
 
-    -- aim: the mode's point with the target in plain sight close by, else the road path to it
-    local direct = dist < 45 and not processLineOfSight(vx, vy, vz + 0.8, tx, ty, tz + 0.8, true, false, false, true,
-        false, false, false, false, veh)
+    local flee = o.m == "flee"
+    -- a fleeing car that cannot go on: the driver bails out (reported once)
+    if flee and not st.bailed then
+        local wrecked = getElementHealth(veh) < TRAFFIC.CHASE_FLEE_BAIL_HEALTH or m[3][3] < 0.15
+        if wrecked then st.wreckedAt = st.wreckedAt or now else st.wreckedAt = nil end
+        if (st.wreckedAt and now - st.wreckedAt > 1500) or (st.bailStucks or 0) >= TRAFFIC.CHASE_FLEE_BAIL_STUCKS then
+            st.bailed = true
+            releaseControls(ped)
+            triggerServerEvent(EV_CHASE_BAIL, resourceRoot, veh)
+            return
+        end
+    end
+    if st.bailed then releaseControls(ped) return end
+
+    -- aim: the mode's point with the target in plain sight close by, else the road path to it (flee: the road path
+    -- away from it, without one straight away from it)
+    local direct = not flee and dist < 45 and not processLineOfSight(vx, vy, vz + 0.8, tx, ty, tz + 0.8, true, false,
+        false, true, false, false, false, false, veh)
     local ax, ay, turn
     if not direct then
         ax, ay, turn = pathAim(st, vx, vy, 7 + speed / 3.6 * 0.7, 30 + speed / 3.6 * 1.5, now)
+    end
+    if not ax and flee then
+        local ox, oy = vx - tx, vy - ty
+        local ol = sqrt(ox * ox + oy * oy)
+        if ol < 1 then ox, oy, ol = fx, fy, 1 end
+        ax, ay, turn = vx + ox / ol * 40, vy + oy / ol * 40, 0
     end
     if not ax then
         ax, ay = aimPoint(o, vx, vy, tx, ty, tvx, tvy, tfx, tfy, dist)
@@ -196,7 +220,7 @@ local function steer(veh, ped, o, st, now)
     end
 
     ---------------------------------------------------------------- stuck: wants to move, hardly moved in 1.5 s
-    local wantMove = dist > 7 or not direct
+    local wantMove = flee or dist > 7 or not direct
     if not st.lastAt or not wantMove then
         st.lastX, st.lastY, st.lastAt = vx, vy, now
     elseif now - st.lastAt > 1500 then
@@ -206,6 +230,14 @@ local function steer(veh, ped, o, st, now)
             -- stuck again soon after: reverse longer, alternating the escape side
             st.stuckN = now - (st.stuckAt or 0) < 12000 and (st.stuckN or 0) + 1 or 1
             st.stuckAt = now
+            if flee then
+                -- stucks of a fleeing car within the bail window
+                st.bailList = st.bailList or {}
+                st.bailList[#st.bailList + 1] = now
+                local n = 0
+                for _, t in ipairs(st.bailList) do if now - t < TRAFFIC.CHASE_FLEE_BAIL_WINDOW then n = n + 1 end end
+                st.bailStucks = n
+            end
             startReverse(st, now, 1300 + min(3, st.stuckN) * 500,
                 st.stuckN >= 2 and ((st.stuckN % 2 == 0) and 1 or -1) or nil)
             return
@@ -244,12 +276,17 @@ local function steer(veh, ped, o, st, now)
             end
         end
         st.passSide, st.passUntil = side, now + 1200
-        avoid = avoid + side * 0.45
-        trafficCap = 90
+        avoid = avoid + side * (flee and 0.55 or 0.45)
+        trafficCap = flee and 120 or 90
     elseif side == 0 then
         local cvx, cvy = getElementVelocity(car)
         trafficCap = max(15, sqrt(cvx * cvx + cvy * cvy) * 180 - 5)
         st.hornUntil = now + 400
+        -- a runner squeezes past on the side with fewer walls (kerb / pavement) instead of queueing
+        if flee then
+            avoid = avoid + ((leftHit and not rightHit) and -0.5 or 0.5)
+            trafficCap = max(trafficCap, 30)
+        end
     end
     setPedControlState(ped, "horn", st.hornUntil ~= nil and now < st.hornUntil)
     angle = angle + avoid

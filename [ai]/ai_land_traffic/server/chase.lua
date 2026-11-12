@@ -17,9 +17,15 @@ Chase = { list = {} }
 
 local T = TRAFFIC
 local sqrt = math.sqrt
-local MODES = { follow = true, box = true, ram = true, pit = true, block = true }
+local MODES = { follow = true, box = true, ram = true, pit = true, block = true, flee = true }
 
 addEvent("onTrafficVehicleChaseMode")
+-- mode "flee" (2026-11-12): the car runs from the target (its pursuer). Its road path leads to a point far away from
+-- the pursuer (renewed when reached / every CHASE_FLEE_RETARGET ms), the syncer never aims at the target. Stuck for
+-- good (repeated stucks, wrecked, upside down) the syncer reports it: onTrafficVehicleBailOut (source vehicle;
+-- driver, pursuer) - the owner decides what the driver does (e.g. runs on foot).
+addEvent("onTrafficVehicleBailOut")
+addEvent(EV_CHASE_BAIL, true)
 
 local function order(c)
     return { t = c.target, m = c.mode, a = c.aggression, s = c.maxSpeed, f = c.fire or nil }
@@ -62,7 +68,8 @@ local function toSim(c)
     if not ag then return false end
     c.physics = false
     publish(c)
-    if isElement(c.target) then
+    -- a fleeing car keeps its lane flee (scripted.lua sc.flee, kept in the script table) in the simulation
+    if isElement(c.target) and c.mode ~= "flee" then
         setScriptedPursuit(c.veh, carrier(c.target), { engageDist = 0, closeDist = 0, lostDist = 5000, lostMs = 600000 })
     end
     triggerEvent("onTrafficVehicleChaseMode", c.veh, "sim")
@@ -96,14 +103,39 @@ local function pathPoints(lanes, conns, i, s)
     return pts
 end
 
+-- flee: a point CHASE_FLEE_DIST away, mostly ahead of the car and bent away from the pursuer
+local function fleeDestination(c, x, y, z, rz, now)
+    local d = c.fleeDest
+    if d and (x - d[1]) ^ 2 + (y - d[2]) ^ 2 > T.CHASE_FLEE_REACHED ^ 2 and now - d.at < T.CHASE_FLEE_RETARGET then
+        return d[1], d[2], d[3]
+    end
+    local px, py = getElementPosition(carrier(c.target))
+    local hx, hy = -math.sin(math.rad(rz)), math.cos(math.rad(rz))
+    local ax, ay = x - px, y - py
+    local l = sqrt(ax * ax + ay * ay)
+    if l < 1 then ax, ay, l = hx, hy, 1 end
+    local dx, dy = hx * 0.55 + ax / l * 0.45, hy * 0.55 + ay / l * 0.45
+    l = sqrt(dx * dx + dy * dy)
+    if l < 0.1 then dx, dy, l = hx, hy, 1 end
+    local turn = (math.random() - 0.5) * 0.8                      -- not always the same road
+    local cs, sn = math.cos(turn), math.sin(turn)
+    dx, dy = (dx * cs - dy * sn) / l, (dy * cs + dx * sn) / l
+    local tx = math.max(-2950, math.min(2950, x + dx * T.CHASE_FLEE_DIST))
+    local ty = math.max(-2950, math.min(2950, y + dy * T.CHASE_FLEE_DIST))
+    c.fleeDest = { tx, ty, z, at = now }
+    return tx, ty, z
+end
+
 local function updatePath(c, now)
     if now < (c.pathAt or 0) then return end
     c.pathAt = now + T.CHASE_PATH_EVERY
     local syncer = getElementSyncer(c.veh)
     if not syncer or getElementType(syncer) ~= "player" then return end
-    local tx, ty, tz = getElementPosition(carrier(c.target))
     local x, y, z = getElementPosition(c.veh)
     local _, _, rz = getElementRotation(c.veh)
+    local tx, ty, tz
+    if c.mode == "flee" then tx, ty, tz = fleeDestination(c, x, y, z, rz, now)
+    else tx, ty, tz = getElementPosition(carrier(c.target)) end
     -- the target moved away from the route's end: a new route is requested, the old one guides the car meanwhile
     local r = c.route
     if not c.nextRoute and (not r or (r.dx - tx) ^ 2 + (r.dy - ty) ^ 2 > T.CHASE_PATH_REROUTE ^ 2) then
@@ -189,6 +221,20 @@ function setScriptedChase(veh, target, opts)
     end
     return true
 end
+
+-- the syncer of a fleeing car: stuck for good / wrecked / upside down
+addEventHandler(EV_CHASE_BAIL, resourceRoot, function(veh)
+    local c = isElement(veh) and Chase.list[veh]
+    if not c or c.mode ~= "flee" or c.bailed or getElementSyncer(veh) ~= client then return end
+    local driver = getVehicleController(veh)
+    if not driver or getElementType(driver) ~= "ped" then return end
+    c.bailed = true
+    Chase.list[veh] = nil
+    removeElementData(veh, DATA_CHASE)
+    local ag = Agents.byVeh[veh]
+    if ag then Agents.release(ag, "export") end   -- the driver stays: the owner decides (onTrafficVehicleBailOut)
+    triggerEvent("onTrafficVehicleBailOut", veh, driver, c.target)
+end)
 
 function getScriptedChase(veh)
     local c = Chase.list[veh]

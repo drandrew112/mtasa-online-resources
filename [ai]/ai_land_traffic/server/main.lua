@@ -51,7 +51,7 @@ local function tick()
     end
 
     if now >= nextObstacles then nextObstacles = now + 200; Obstacles.rebuild(players) end
-    if now >= nextEls then nextEls = now + 250; Els.update(now) end
+    if now >= nextEls then nextEls = now + 250; Els.update(now); Pull.update(now) end
 
     Scripted.step(now, dt)
     Sim.step(dt, now)

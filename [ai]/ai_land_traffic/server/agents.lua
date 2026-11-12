@@ -359,6 +359,30 @@ function Agents.adopt(veh, ped, lane, s, v)
     return ag
 end
 
+-- a live agent to another lane position, standing (relocateScriptedVehicle): new plan, pose, element position; the
+-- clients get the new state at the next flush (sent record dropped). -> true | false
+function Agents.place(ag, lane, s)
+    local x, y, z, fx, fy, fz = Geo.pose(lane, s, 0)
+    if not x then return false end
+    for _, p in ipairs(ag.plan) do occRemove(p.code, ag) end
+    ag.plan = { { code = lane } }
+    occAdd(lane, ag)
+    ag.s, ag.v, ag.a = s, 0, 0
+    ag.lat, ag.latRate, ag.latTarget, ag.latSlope = 0, 0, 0, TRAFFIC.RETURN_SLOPE
+    ag.committed, ag.hold, ag.stopSince, ag.overtake, ag.blockedSince, ag.blockedBy = nil, nil, nil, nil, nil, nil
+    ag.lcUntil, ag.emPass, ag.stopGap = nil, nil, nil
+    ag.sent = nil
+    Agents.extendPlan(ag)
+    Agents.updatePose(ag)
+    if isElement(ag.veh) then
+        local rx, ry, rz = Geo.rotation(fx, fy, fz)
+        setElementPosition(ag.veh, ag.x, ag.y, ag.z + 1.0)
+        setElementRotation(ag.veh, rx, ry, rz)
+        setElementVelocity(ag.veh, 0, 0, 0)
+    end
+    return true
+end
+
 local function forget(ag, reason)
     for _, p in ipairs(ag.plan) do occRemove(p.code, ag) end
     if ag.script then Scripted.forget(ag, reason) end

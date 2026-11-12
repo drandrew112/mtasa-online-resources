@@ -131,6 +131,24 @@ TRAFFIC = {
     ELS_LEFT_STEPS = { 1.6, 1.0, 0.6 },
     ELS_MIDDLE_PULL = 1.2,
     ELS_LANE_MIN_SPEED = 1.0,   -- giving way: lane changes down to this speed (no cooldown, also while held)
+
+    -- traffic stop pull-over (server/pullover.lua, 2026-11-12): never in the road, never at a junction
+    PULL_MIN_AHEAD = 15,        -- m: the spot is at least this far ahead (or the braking distance + 6)
+    PULL_MAX_AHEAD = 260,       -- m of the planned route scanned at once (it keeps driving and scanning)
+    PULL_AFTER_JUNCTION = 15,   -- m after a junction at least
+    PULL_BEFORE_JUNCTION = 25,  -- m before a junction at least
+    PULL_LANE_HALF = 1.9,       -- m: half a lane; beyond this offset a car is beside the lane
+    PULL_LATS = { 4.2, 3.6, 3.0 },  -- offsets tried (car centre from the lane centre): fully outside the lane
+    PULL_PROBE = { -2.5, 0, 2.5 },  -- m along the lane around the spot: the whole car length must stand there
+    PULL_GROUND_DZ = 0.45,      -- ground beside the road may differ this much (kerb, pavement)
+    PULL_SPOT_CLEAR = 6,        -- m: no player / player vehicle / other stopped car this close to the spot
+    PULL_SCAN = 600,            -- ms between scans while seeking
+    PULL_SEEK_SPEED = 7,        -- m/s while looking for a spot
+    PULL_SEEK_LAT = 0.6,        -- m to the right while looking
+    PULL_LEAD = 24,             -- m before the spot it starts steering out
+    PULL_SPEED = 4,             -- m/s cap while steering out
+    PULL_MERGE_LOOK = 35,       -- m behind: traffic this close makes a released car wait beside the lane
+    PULL_MERGE_MAX = 8000,      -- ms: then it goes anyway
     RETURN_SLOPE = 0.15,        -- steering back to the lane centre
 
     -- lanes on multi-lane carriageways: traffic keeps to the outer (rightmost) lane, the inner lane is for passing
@@ -197,7 +215,13 @@ TRAFFIC = {
     PURSUIT_RED_SPEED = 8,      -- m/s: "pursuit" driving passes a red light at most this fast
     CHASE_NEAR = 80,            -- chase motor: closer than this to the target = physics, driven by the syncer client
                                 -- (below MTA's ped_syncer_distance, 100 m: a ped-driven vehicle farther away gets no syncer)
-    CHASE_FAR = 160,            -- ...farther than this and unseen = back into the simulation (lane pursuit)
+    CHASE_FAR = 160,
+    CHASE_FLEE_DIST = 500,      -- flee mode: the road path leads this far away (ahead, away from the pursuer)...
+    CHASE_FLEE_REACHED = 90,    -- ...a new point when this close to it...
+    CHASE_FLEE_RETARGET = 15000, -- ...or after this many ms
+    CHASE_FLEE_BAIL_STUCKS = 3, -- flee mode: this many stucks within CHASE_FLEE_BAIL_WINDOW ms = the driver bails out
+    CHASE_FLEE_BAIL_WINDOW = 20000,
+    CHASE_FLEE_BAIL_HEALTH = 380,            -- ...farther than this and unseen = back into the simulation (lane pursuit)
     CHASE_NO_SYNCER = 3000,     -- ms a physics chase car may stand without a syncer before it goes back into the simulation
     CHASE_STEP = 500,           -- ms between the server's near / far checks
     CHASE_STEER = 100,          -- ms between the client's steering updates
@@ -232,15 +256,15 @@ TRAFFIC = {
     DEBUG = false,
 }
 
--- vehicle pool: { model, weight, length }. No work_ems / work_police vehicle models (416 483 582 456 598 487 596 602 603).
+-- vehicle pool: { model, weight, length }. No work_ems / work_police vehicle models (416 483 582 456 598 487 596 602 603 and the police cars 409 438 467 507 566 599).
 TRAFFIC_MODELS = {
     -- compacts / sedans
     { 400, 3, 4.8 }, { 401, 3, 4.7 }, { 404, 2, 4.9 }, { 405, 3, 5.0 }, { 410, 3, 4.2 }, { 419, 2, 5.2 },
     { 421, 2, 5.3 }, { 426, 3, 5.0 }, { 436, 3, 4.6 }, { 458, 2, 5.0 }, { 466, 3, 5.2 },
-    { 467, 2, 5.2 }, { 479, 2, 5.0 }, { 491, 2, 5.1 }, { 492, 2, 5.0 }, { 496, 3, 4.4 }, { 507, 3, 5.3 },
+    { 479, 2, 5.0 }, { 491, 2, 5.1 }, { 492, 2, 5.0 }, { 496, 3, 4.4 },
     { 516, 3, 5.1 }, { 517, 2, 5.1 }, { 518, 2, 5.0 }, { 526, 2, 4.9 }, { 527, 2, 4.6 }, { 529, 2, 5.0 },
     { 533, 1, 4.8 }, { 540, 3, 5.2 }, { 542, 2, 5.0 }, { 547, 3, 5.0 }, { 549, 2, 4.9 },
-    { 550, 3, 5.2 }, { 551, 3, 5.4 }, { 560, 1, 4.7 }, { 561, 2, 5.0 }, { 562, 1, 4.6 }, { 566, 2, 5.4 },
+    { 550, 3, 5.2 }, { 551, 3, 5.4 }, { 560, 1, 4.7 }, { 561, 2, 5.0 }, { 562, 1, 4.6 },
     { 567, 1, 5.6 }, { 580, 2, 5.1 }, { 585, 2, 5.1 }, { 587, 1, 4.9 }, { 589, 2, 4.4 }, { 600, 2, 5.2 },
     -- SUVs, pickups, vans
     { 418, 2, 5.3 }, { 422, 2, 5.0 }, { 440, 2, 5.6 }, { 442, 1, 5.6 }, { 478, 1, 4.8 }, { 482, 2, 5.6 },
@@ -248,7 +272,7 @@ TRAFFIC_MODELS = {
     { 579, 2, 5.4 },
     -- work / heavy
     { 413, 1, 5.4 }, { 414, 1, 6.5 }, { 455, 1, 9.0 }, { 498, 1, 7.0 }, { 499, 1, 7.0 },
-    { 609, 1, 7.0 }, { 420, 2, 5.2 }, { 438, 1, 5.2 },
+    { 609, 1, 7.0 }, { 420, 2, 5.2 },
     -- no buses (431 Bus, 437 Coach): those only exist as scripted vehicles (server/scripted.lua)
 }
 
@@ -273,4 +297,5 @@ EV_RELEASE = "ai_traffic:release"     -- server -> client: vehicle left the simu
 EV_REPORT = "ai_traffic:report"       -- client -> server: crash / damage by the local player
 EV_VIEW = "ai_traffic:view"           -- client -> server: camera position + look direction
 EV_CHASE_PATH = "ai_traffic:chasePath" -- server -> syncer: road path of a physics chase car (vehicle, { x, y, z, ... })
+EV_CHASE_BAIL = "ai_traffic:chaseBail" -- syncer -> server: a fleeing chase car is stuck for good (vehicle)
 DATA_CHASE = "ai_traffic.chase"       -- vehicle: chase motor order { t = target, m = mode, a = aggression, s = max km/h, f = fire }

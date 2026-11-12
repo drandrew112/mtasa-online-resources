@@ -9,7 +9,8 @@ local function getP(ped)
 end
 
 local TASK_NAMES = { idle = true, wander = true, ["goto"] = true, patrol = true, guard = true, follow = true }
-local BEHAVIOURS = { civilian = true, scared = true, enemy = true, police = true, detained = true, cuffed = true, patient = true }
+local BEHAVIOURS = { civilian = true, scared = true, enemy = true, police = true, detained = true, cuffed = true, patient = true,
+                     hostage = true }   -- hostage: v_scenemanager hostage scenes (behaviours/hostage.lua, args.pose)
 
 -- createAIPed(skin, x, y, z, opts) -> ped | false, reason
 -- opts: rot, dimension, interior, behaviour ("civilian" default | "scared" | "enemy"), task (name), taskOpts,
@@ -45,7 +46,7 @@ function createAIPed(skin, x, y, z, opts)
         local t = p.task
         p.combat.home = { t.x or x, t.y or y, t.z or z }
     end
-    Peds.setBehaviour(p, beh, { target = opts.target, fightBack = opts.fightBack })
+    Peds.setBehaviour(p, beh, { target = opts.target, fightBack = opts.fightBack, pose = opts.pose })
     return p.el
 end
 
