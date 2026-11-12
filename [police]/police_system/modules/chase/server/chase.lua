@@ -63,7 +63,9 @@ function CH.join(player, c)
     if not unit or not c then return false end
     if not c.units[unit] then
         c.units[unit] = true
-        local inc = POL.events.open(unit, "pursuit", c.subject)
+        -- a traffic stop the NPC ran from goes on as this pursuit (stop.lua ST.npcRuns): no second incident
+        local inc = POL.events.incidentOf(unit, c.suspect)
+        if not inc or inc.type ~= "pursuit" then inc = POL.events.open(unit, "pursuit", c.subject) end
         inc.el = c.suspect
         inc.zone = getZoneName(getElementPosition(c.suspect))
         inc.level = c.level
@@ -120,19 +122,60 @@ function CH.start(player, target)
     return true
 end
 
+-- F4 on an NPC driver = an attempt to stop it: the traffic stop's flee decision (stop.lua, decided once per driver)
+-- says whether it runs; one that does not pulls over (the stop takes over, an existing stop is kept)
 function CH.npcReaction(player, c, row)
     local veh = suspectVehicle(c.suspect)
-    local flags = row and POL.db.unjson(row.flags) or {}
-    if veh and POL.running("ai_land_traffic") and exports.ai_land_traffic:isTrafficVehicle(veh) == true then
-        if flags.flee then
-            exports.ai_land_traffic:setTrafficVehicleFlee(veh, getPedOccupiedVehicle(player) or player, { speedFactor = C.NPC_FLEE_SPEED })
-            c.fleeing = true
+    if c.fleeing or not veh or not POL.running("ai_land_traffic") then return end
+    local t = exports.ai_land_traffic:isTrafficVehicle(veh)
+    if not t then return end
+    POL.stop.fleeDecision(veh, c.suspect, row, function(flee)
+        if CH.list[c.suspect] ~= c or c.fleeing or not isElement(veh) then return end
+        if flee then
+            CH.npcFlee(player, c, veh)
         else
             CH.finish(c, "stopped")
-            POL.stop.vehicle(player, veh)
+            if not POL.stop.of(veh) then POL.stop.vehicle(player, veh) end
         end
-    end
+    end)
 end
+
+-- the NPC runs: lane flee in the simulation, the chase motor's flee mode (physics, steered by the syncer: road path
+-- away from the police, around traffic and walls, never stuck on every small thing) when the police is close
+function CH.npcFlee(player, c, veh)
+    local t = exports.ai_land_traffic
+    if t:isTrafficVehicle(veh) == "released" then t:adoptTrafficVehicle(veh) end
+    if t:isTrafficVehicleHeld(veh) then t:releaseTrafficHold(veh) end
+    local from = getPedOccupiedVehicle(player) or player
+    t:setTrafficVehicleFlee(veh, from, { speedFactor = C.NPC_FLEE_SPEED, keepDriver = true })
+    t:setScriptedChase(veh, from, { mode = "flee", aggression = 0.8, maxSpeed = C.NPC_FLEE_MAX_KMH })
+    c.fleeing = true
+    c.fleeVeh = veh
+    POL.emit("chase.npcFled", c)
+end
+
+-- the running NPC's car is stuck for good / wrecked: it gets out and runs on foot (ai_peds scared, away from the
+-- pursuer); the chase goes on with the ped
+addEvent("onTrafficVehicleBailOut")
+addEventHandler("onTrafficVehicleBailOut", root, function(driver, pursuer)
+    local c = isElement(driver) and CH.list[driver]
+    if not c or c.kind ~= "npc" or not POL.running("ai_peds") then return end
+    local veh = source
+    local p = exports.ai_peds
+    local culprit = isElement(pursuer) and pursuer or nil
+    if culprit and getElementType(culprit) == "vehicle" then culprit = getVehicleController(culprit) or culprit end
+    if p:adoptTrafficDriver(driver, veh, { reason = "crash", culprit = culprit, behaviour = "scared" }) then
+        p:setAIPedKeep(driver, true)
+        c.onFoot = true
+        for unit in pairs(c.units) do
+            if POL.units.list[unit.id] then
+                POL.notify(POL.units.members(unit), "police_system.chase.npc_on_foot", { name = c.name or "?" })
+                POL.events.log(unit, nil, "fled_on_foot", { name = c.name or "?" }, POL.events.incidentOf(unit, driver))
+            end
+        end
+        POL.emit("chase.npcOnFoot", c)
+    end
+end)
 
 -- caught / lost / cleared: the units are told, AI demand gone
 function CH.finish(c, how)
@@ -155,6 +198,13 @@ function CH.finish(c, how)
         end
     end
     for _, b in pairs(c.blips) do if isElement(b) then destroyElement(b) end end
+    -- a caught runner's car: no more flee driving (a lost one keeps running in the traffic and vanishes later)
+    if how == "caught" and c.fleeVeh and isElement(c.fleeVeh) and POL.running("ai_land_traffic") then
+        pcall(function()
+            exports.ai_land_traffic:setScriptedChase(c.fleeVeh, false)
+            exports.ai_land_traffic:setTrafficVehicleFlee(c.fleeVeh, false)
+        end)
+    end
     POL.ai.release(c)
     if how == "caught" then POL.db.stat("pursuits_caught", 1) end
     POL.emit("chase.ended", c, how)

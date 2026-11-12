@@ -172,8 +172,14 @@ local function grabTick()
     if not any and isTimer(grabTimer) then killTimer(grabTimer); grabTimer = nil end
 end
 
+-- a hostage of a v_scenemanager scene (vsm.hostage held / safe) is led the same way, without cuffs (2026-11-12)
+function AR.isHostage(el)
+    local st = isElement(el) and getElementData(el, "vsm.hostage")
+    return st == "held" or st == "safe"
+end
+
 function AR.escort(officer, target)
-    if not AR.cuffed[target] or getPedOccupiedVehicle(target) then return false end
+    if not (AR.cuffed[target] or AR.isHostage(target)) or getPedOccupiedVehicle(target) then return false end
     if AR.escorts[target] == officer then return AR.stopEscort(target) end
     if getPedOccupiedVehicle(officer) or POL.dist(officer, target) > C.CUFF_DIST + 1.5 then return false end
     AR.escorts[target] = officer
@@ -190,7 +196,22 @@ end
 
 function AR.stopEscort(target)
     if not AR.escorts[target] then return false end
+    local officer = AR.escorts[target]
     AR.escorts[target] = nil
+    -- a hostage let go within HOSTAGE_SAFE_DIST of a police car is safe (v_scenemanager server/hostage.lua)
+    if AR.isHostage(target) and getElementData(target, "vsm.hostage") == "held" and isElement(target) then
+        local x, y, z = getElementPosition(target)
+        for _, v in ipairs(getElementsWithinRange(x, y, z, POLICE.ARREST.HOSTAGE_SAFE_DIST + 3, "vehicle")) do
+            if isPoliceVehicle(v) and POL.dist(target, v) <= POLICE.ARREST.HOSTAGE_SAFE_DIST + 2 then
+                triggerEvent("onPoliceHostageAction", target, "safe", isElement(officer) and officer or nil)
+                if isElement(officer) then
+                    POL.notify(officer, "police_system.hostage.safe")
+                    POL.events.logFor(officer, "hostage_safe", { name = POL.stop.nameOf(target) })
+                end
+                break
+            end
+        end
+    end
     if isElement(target) then
         if isElementAttached(target) then detachElements(target) end
         setElementCollisionsEnabled(target, true)
@@ -459,6 +480,8 @@ local function handover(officer, target, station, charges)
                 POL.events.log(unit, officer, "handover", { name = name, station = station.name, charges = charges }, inc)
                 inc.arrested = isPlayer and "player" or "npc"
             end
+            -- taken over from another unit (prisoner transport by a player unit): that unit's incident gets a line too
+            POL.transport.handedOver(target, unit, name)
             if isPlayer then
                 local level = POL.wanted.arrested(target)
                 if inc then inc.level = math.max(inc.level or 0, level) end
@@ -494,11 +517,14 @@ end
 
 -- the charges an officer can pick at the handover: the arrest warrant first, then the arrestable / warrant items of
 -- the penal code
-function AR.chargeItems(officer)
-    local out = { { id = AR.WARRANT_CHARGE, label = L.forPlayer(officer, btkKey(AR.WARRANT_CHARGE)) } }
+-- preset: ids ticked already (the charges another unit picked when it asked for the transport, transport.lua)
+function AR.chargeItems(officer, preset)
+    local tick = {}
+    for _, id in ipairs(type(preset) == "table" and preset or {}) do tick[id] = true end
+    local out = { { id = AR.WARRANT_CHARGE, label = L.forPlayer(officer, btkKey(AR.WARRANT_CHARGE)), checked = tick[AR.WARRANT_CHARGE] } }
     for _, e in ipairs(POL.btk.items) do
         if e.arrestable or e.warrant then
-            out[#out + 1] = { id = e.id, label = L.forPlayer(officer, btkKey(e.id)) }
+            out[#out + 1] = { id = e.id, label = L.forPlayer(officer, btkKey(e.id)), checked = tick[e.id] }
         end
     end
     return out
@@ -516,7 +542,7 @@ local function nextHandover(officer)
     subjectName(target, function(name)
         if AR.handovers[officer] ~= q or q.list[1] ~= target then return end
         POL.send(officer, "arrest:charges", target, L.forPlayer(officer, "police_system.arrest.charges_title", { name = name }),
-            AR.chargeItems(officer))
+            AR.chargeItems(officer, POL.transport.chargesFor(target)))
     end)
 end
 

@@ -135,7 +135,8 @@ POL.on("query.result", function(unit, r)
         }, { unit = unit })
     elseif r.kind == "person" then
         RV.say("QUERY_PERSON", {
-            callsign = unit.callsign, warrant = (tonumber(r.warrants) or 0) > 0,
+            callsign = unit.callsign, name = r.npc and r.name or nil, gender = r.gender,
+            warrant = (tonumber(r.warrants) or 0) > 0,
             licence = r.licence ~= nil and r.licence ~= "valid", wanted = (tonumber(r.wanted) or 0) > 0,
         }, { unit = unit })
     end

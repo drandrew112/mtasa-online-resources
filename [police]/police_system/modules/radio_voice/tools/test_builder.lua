@@ -54,9 +54,16 @@ items = B.build("QUERY_VEHICLE", { callsign = "L-7", plate = "ABC", color = "250
 str = B.text(items)
 check(not str:find("stolen") and not str:find("warrant"), "clean: " .. str)
 check(str:find("Lincoln seven", 1, true), "lincoln: " .. str)
--- area without audio drops "in"
+-- known zone: "in <area>" is spoken; unknown zone drops "in"
 items = B.build("CALL_OFFER", { callsign = "A-1", crime = "robbery", area = "Idlewood", priority = 2 })
-for _, it in ipairs(items) do check(it.tok ~= "CONJ.IN", "CONJ.IN left before a missing area") end
+local hasIn, hasArea = false, false
+for _, it in ipairs(items) do
+    if it.tok == "CONJ.IN" then hasIn = true end
+    if it.tok == "AREA.IDLEWOOD" then hasArea = true end
+end
+check(hasIn and hasArea, "in Idlewood spoken")
+items = B.build("CALL_OFFER", { callsign = "A-1", crime = "robbery", area = "Nowhere Land", priority = 2 })
+for _, it in ipairs(items) do check(it.tok ~= "CONJ.IN", "CONJ.IN left before an unknown area") end
 -- directions: 0 north, 90 west, 180 south, 270 east
 check(VOICE.dirIndex(0) == 1 and VOICE.dirIndex(90) == 2 and VOICE.dirIndex(180) == 3 and VOICE.dirIndex(270) == 4
     and VOICE.dirIndex(350) == 1 and VOICE.dirIndex(-90) == 4, "dirIndex")
@@ -73,4 +80,32 @@ items = B.build("QUERY_VEHICLE", S)
 local overl = false
 for i, it in ipairs(items) do if it.char and items[i - 1] and items[i - 1].char then overl = overl or it.gap < 0 end end
 check(overl, "char overlap")
+
+-- person names: every POLICE_NAMES entry has a clip; the {name} variable says first + last (gender picks the list)
+do
+    local want = { m = 56, f = 44, l = 66 }
+    for g, cnt in pairs(want) do
+        local c = 0
+        for _, tok in pairs(DB.maps.names[g]) do
+            c = c + 1
+            check(DB.tokens[tok] and DB.tokens[tok].clips and #DB.tokens[tok].clips > 0, "name token without clip " .. tok)
+        end
+        check(c == cnt, "names " .. g .. " = " .. c .. ", expected " .. cnt)
+    end
+    DB.phrases.__NAME = { { var = "name" } }
+    DB.triggers.__NAME = { frame = "short" }
+    local function say(a) local items = B.build("__NAME", a); return items and B.text(items) or "" end
+    local t = say({ name = "Michael O'Brien" })
+    check(t:find("Michael") and t:find("O'Brien"), "name var: " .. t)
+    check(say({ name = "Maria Garcia", gender = "f" }):find("Maria"), "name var female")
+    check(not say({ name = "Maria Garcia", gender = "m" }):find("Maria"), "name var wrong gender must drop the first name")
+    check(say({ name = "Zzz Johnson" }):find("Johnson"), "unknown first name must keep the last name")
+    local qp = B.build("QUERY_PERSON", { callsign = "A-12", name = "Maria Garcia", gender = "f", warrant = true })
+    check(qp and B.text(qp):find("Maria") and B.text(qp):find("Garcia"), "QUERY_PERSON must say the name")
+    local qn = B.build("QUERY_PERSON", { callsign = "A-12" })
+    check(qn and not B.text(qn):find("Maria"), "QUERY_PERSON without a name")
+    DB.phrases.__NAME = nil
+    DB.triggers.__NAME = nil
+end
+
 print(("OK: %d builds"):format(n))

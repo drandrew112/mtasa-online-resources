@@ -69,12 +69,74 @@ L.onChange(function()
     ui:updatePinnedNotification(PIN, opts(o, left))
 end)
 
-POL.key("callout", function(button, press)
-    local o = CP.offer
-    if not o or (button ~= "y" and button ~= "n") then return false end
-    if press then
-        POL.send("callout:answer", o.id, button == "y")
-        show(nil)
+------------------------------------------------------------------------ prisoner transport offer (2026-11-12)
+-- Another unit asks for a prisoner transport (transport.lua): the same highlighted pinned notification with Y / N.
+-- The server never shows a call offer and a transport offer to a unit at the same time.
+
+local TPIN = "pol.transport.offer"
+CP.transport, CP.tDeadline = nil, 0
+local tTimer
+
+local function topts(o, left)
+    local where = "#8C9EBE" .. safe(o.zone) .. "  ·  " .. L("police_system.callouts.distance", { m = o.distance or 0 })
+    return {
+        id = TPIN,
+        title = L.upper(L("police_system.transport.offer_header", { callsign = o.callsign })),
+        subtitle = safe(o.name),
+        description = L("police_system.transport.offer_text", { callsign = o.callsign }) .. "\n" .. where,
+        hint = "#40C86EY  #E1E8F5" .. L("police_system.callouts.accept") .. "#8C9EBE     ·     #EB4040N  #E1E8F5"
+            .. L("police_system.callouts.decline"),
+        accent = "#F58C32",
+        infinite = true,
+        countdown = left,
+        countdownTotal = (o.total or 20) * 1000,
+        silent = true,
+    }
+end
+
+local function showTransport(o)
+    CP.transport = o or nil
+    if isTimer(tTimer) then killTimer(tTimer) end
+    tTimer = nil
+    local ui = uic()
+    if CP.transport then
+        local left = (o.left or o.total or 20) * 1000
+        CP.tDeadline = getTickCount() + left
+        if ui then ui:addPinnedNotification(topts(o, left)) end
+        local offer = CP.transport
+        tTimer = setTimer(function() if CP.transport == offer then showTransport(nil) end end, left + 3000, 1)
+        playSoundFrontEnd(5)
+    elseif ui then
+        ui:removePinnedNotification(TPIN)
     end
-    return true
+end
+
+POL.handle("transport:offer", showTransport)
+POL.on("unit", function(u) if not u then showTransport(nil) end end)
+POL.on("right", function(on) if not on then showTransport(nil) end end)
+
+L.onChange(function()
+    local o, ui = CP.transport, uic()
+    if not o or not ui then return end
+    ui:updatePinnedNotification(TPIN, topts(o, math.max(0, CP.tDeadline - getTickCount())))
+end)
+
+POL.key("callout", function(button, press)
+    if button ~= "y" and button ~= "n" then return false end
+    local o = CP.offer
+    if o then
+        if press then
+            POL.send("callout:answer", o.id, button == "y")
+            show(nil)
+        end
+        return true
+    end
+    if CP.transport then
+        if press then
+            POL.send("transport:answer", button == "y")
+            showTransport(nil)
+        end
+        return true
+    end
+    return false
 end, 90)

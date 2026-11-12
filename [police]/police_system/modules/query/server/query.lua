@@ -12,15 +12,22 @@ local function keep(unit, r)
     if #unit.queries > 20 then unit.queries[21] = nil end
 end
 
-local function send(unit, r)
-    keep(unit, r)
-    POL.send(POL.units.members(unit), "query:result", r)
-    POL.emit("query.result", unit, r)
+-- the result goes out POLICE.QUERY.DELAY ms after the request at the earliest (the database time counts into it)
+local function send(unit, r, t0)
+    local wait = (POLICE.QUERY and POLICE.QUERY.DELAY or 0) - (getTickCount() - (t0 or 0))
+    local function go()
+        if not POL.units.list[unit.id] then return end
+        keep(unit, r)
+        POL.send(POL.units.members(unit), "query:result", r)
+        POL.emit("query.result", unit, r)
+    end
+    if t0 and wait >= 50 then setTimer(go, wait, 1) else go() end
 end
 
 function Q.person(officer, el)
     local unit = POL.units.of(officer)
     if not unit or not isElement(el) then return false end
+    local t0 = getTickCount()
     POL.records.citizenOf(el, function(row)
         if not row then return POL.notify(officer, "police_system.query.no_data") end
         POL.warrants.activeFor(row.id, function(warrants)
@@ -30,7 +37,7 @@ function Q.person(officer, el)
             local r = { kind = "person", id = tonumber(row.id), name = name, npc = row.kind == "npc", gender = row.gender,
                 birth = row.birth_date, licence = row.kind == "player" and "valid" or (f.licence or "valid"),
                 warrants = #warrants, wanted = wanted, at = POL.now() }
-            send(unit, r)
+            send(unit, r, t0)
             local inc = POL.events.incidentOf(unit, el) or POL.events.incidentOf(unit, getPedOccupiedVehicle(el))
             POL.events.log(unit, officer, "query_person", { name = name, warrant = #warrants > 0 }, inc)
         end)
@@ -41,6 +48,7 @@ end
 function Q.vehicle(officer, veh)
     local unit = POL.units.of(officer)
     if not unit or not isElement(veh) then return false end
+    local t0 = getTickCount()
     POL.records.vehicleOf(veh, function(row)
         if not row then return POL.notify(officer, "police_system.query.no_data") end
         POL.records.vehicleProfile(row.id, function(prof)
@@ -49,7 +57,7 @@ function Q.vehicle(officer, veh)
                 color = prof.color, owner = prof.owner and prof.owner.name or "-", ownerNpc = prof.owner and prof.owner.kind == "npc",
                 ownerWarrants = prof.owner and prof.owner.warrants or 0, registration = prof.registration,
                 inspection = prof.inspection, stolen = prof.stolen, at = POL.now() }
-            send(unit, r)
+            send(unit, r, t0)
             POL.events.log(unit, officer, "query_vehicle", { plate = r.plate, model = r.model, stolen = r.stolen,
                 inspection = (tostring(r.inspection):find("expired")) and r.inspection or nil }, POL.events.incidentOf(unit, veh))
         end)

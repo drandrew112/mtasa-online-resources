@@ -144,7 +144,10 @@ function W.table(id, x, y, w, h, cols, rows, onRow, rowH)
         local ry = areaY + (i - sc - 1) * rowH
         local hov = onRow and W.hit(id .. ":" .. i, x, ry, w, rowH, function() onRow(r, i) end)
         if hov then dxDrawRectangle(x, ry, w, rowH, C.hover)
+        elseif r.highlight then dxDrawRectangle(x, ry, w, rowH, tocolor(245, 140, 50, 34))
         elseif i % 2 == 0 then dxDrawRectangle(x, ry, w, rowH, tocolor(255, 255, 255, 6)) end
+        -- a highlighted row (e.g. the stopped citizen / vehicle on top of the MDC lists): orange stripe on the left
+        if r.highlight then dxDrawRectangle(x, ry, POL.px(3), rowH, C.orange) end
         cx = x
         for ci, c in ipairs(cols) do
             local cell = r.cells[ci]

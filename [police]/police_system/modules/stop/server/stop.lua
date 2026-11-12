@@ -254,7 +254,8 @@ function ST.vehicle(officer, veh)
         -- a released traffic vehicle (physics after a bump) goes back into the simulation first
         if t:isTrafficVehicle(veh) == "released" then t:adoptTrafficVehicle(veh) end
         s.held = t:pullOverTrafficVehicle(veh, pv) == true
-        if not s.held then outputDebugString("[police_system] stop: pullOverTrafficVehicle refused " .. getVehiclePlateText(veh), 2) end
+        if not s.held then outputDebugString("[police_system] stop: pullOverTrafficVehicle refused " .. getVehiclePlateText(veh), 2)
+        else POL.notify(POL.units.members(unit), "police_system.stop.seeking_spot") end
     elseif getElementType(driver) == "player" then
         POL.notify(driver, "police_system.stop.pull_over", { callsign = unit.callsign })
         s.pullover = { since = getTickCount(), driver = driver }
@@ -265,12 +266,77 @@ function ST.vehicle(officer, veh)
         POL.events.addSubject(s.inc, { vehicleId = row.id, plate = row.plate or getVehiclePlateText(veh),
             model = getElementModel(veh), color = nil })
     end)
-    attachPerson(s, driver, function()
+    attachPerson(s, driver, function(row)
         POL.events.log(unit, officer, "stop_vehicle", { plate = getVehiclePlateText(veh), model = getElementModel(veh), name = names[driver] }, s.inc)
+        -- an NPC driver: runs or not (decided once); a runner first slows down as if pulling over, then speeds off
+        if s.held then
+            ST.fleeDecision(veh, driver, row, function(flee)
+                if not flee then return end
+                local d = C.FLEE.DELAY
+                setTimer(function() ST.npcRuns(officer, s) end, math.random(d[1], d[2]), 1)
+            end)
+        end
     end)
     POL.units.setSub(unit, "traffic_stop")
     ST.refreshMenu(veh)
     return true
+end
+
+------------------------------------------------------------------------ running NPC drivers
+
+-- An NPC driver may run ONLY when a traffic stop is attempted (here, or F4 on it: chase.lua npcReaction). Who runs:
+-- a scene profile's flee true / false wins; an active warrant = C.FLEE.WARRANT; something to hide = C.FLEE.HIDE
+-- (a questionable / illegal item on it or in the car - drawn now and kept for the search -, a stolen car, a
+-- suspended licence, alcohol); nothing = never. Decided once per driver. cb(bool)
+ST.fleeCache = setmetatable({}, { __mode = "k" })
+function ST.fleeDecision(veh, driver, row, cb)
+    if not isElement(driver) or getElementType(driver) ~= "ped" or not row then return cb(false) end
+    if ST.fleeCache[driver] ~= nil then return cb(ST.fleeCache[driver]) end
+    local flags = POL.db.unjson(row.flags) or {}
+    local F = C.FLEE
+    local function done(p, why)
+        local v
+        if flags.flee ~= nil then v = flags.flee == true else v = p > 0 and math.random() < p end
+        ST.fleeCache[driver] = v
+        outputDebugString(("[police] flee decision %s: %s (%s %.2f)"):format(tostring(names[driver] or row.id), tostring(v),
+            tostring(why or "profile"), p or 0))
+        cb(v)
+    end
+    if flags.flee ~= nil then return done(0) end
+    POL.warrants.activeFor(row.id, function(w)
+        if not isElement(driver) then return end
+        if type(w) == "table" and #w > 0 then return done(F.WARRANT, "warrant") end
+        local hide = POL.search.suspicious(POL.search.preroll(driver, "person", flags, false))
+        hide = POL.search.suspicious(POL.search.preroll(veh, "vehicle", flags, false)) or hide
+        if hide then return done(F.HIDE, "items") end
+        if flags.licence == "suspended" or (tonumber(flags.bac) or 0) > 0 then return done(F.HIDE, "licence/alcohol") end
+        POL.records.vehicleOf(veh, function(vrow)
+            local vf = vrow and POL.db.unjson(vrow.flags) or {}
+            if vf.stolen then done(F.HIDE, "stolen") else done(0, "clean") end
+        end)
+    end)
+end
+
+-- the stopped NPC speeds off: the stop ends ("fled"), a pursuit starts with the stopping officer (chase.lua flees
+-- because the decision is cached)
+function ST.npcRuns(officer, s)
+    if ST.list[s.target] ~= s or not isElement(s.target) then return end
+    local driver = getVehicleController(s.target)
+    if not driver or driver ~= s.person or s.outside then return end
+    POL.events.log(s.unit, nil, "fled", { name = names[driver] or "?" }, s.inc)
+    -- one report for the whole story: the stop's incident goes on as the pursuit's (chase.lua CH.join reuses it)
+    if s.inc then
+        s.inc.type = "pursuit"
+        s.inc.el = driver
+        s.inc = nil
+    end
+    ST.finish(s, "fled")
+    if isElement(officer) and POL.units.of(officer) == s.unit then
+        POL.chase.start(officer, s.target)
+    else
+        local m = POL.units.members(s.unit)[1]
+        if m then POL.chase.start(m, s.target) end
+    end
 end
 
 -- Release / Code 4: the NPC walks / drives on, the stop ends
@@ -303,6 +369,15 @@ function ST.release(officer, s)
     if s.inc then POL.events.log(s.unit, officer, "released", { name = names[person] or "?" }, s.inc) end
     ST.finish(s, "released", officer)
 end
+
+-- the stopped traffic vehicle found a place off the road and stands there (ai_land_traffic server/pullover.lua)
+addEvent("onTrafficVehiclePulledOver")
+addEventHandler("onTrafficVehiclePulledOver", root, function(veh)
+    local s = ST.list[veh]
+    if not s or s.parked then return end
+    s.parked = true
+    if POL.units.list[s.unit.id] then POL.notify(POL.units.members(s.unit), "police_system.stop.pulled_over") end
+end)
 
 addEvent("onAIPedEnteredVehicle")
 addEventHandler("onAIPedEnteredVehicle", root, function(veh)

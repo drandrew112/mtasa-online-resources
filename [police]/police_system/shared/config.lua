@@ -15,7 +15,11 @@ POLICE = {
         -- [597] = { name = "GTA5 police car" },   -- later
         [546] = { name = "Audi A3 Sedan", ai = { weight = 5, zones = { city = true } } },
         [445] = { name = "Audi RS6 C7", ai = { weight = 5, zones = { city = true } } },
-        [599] = { name = "Police Ranger", ai = { weight = 6, zones = { rural = true } } },
+        [507] = { name = "LAPD 2016 Ford Explorer", ai = { weight = 5, zones = { city = true } } },
+        [566] = { name = "LAPD 2012 Dodge Charger", ai = { weight = 5, zones = { city = true } } },
+        [438] = { name = "NYPD Chevrolet Caprice", ai = { weight = 4, zones = { city = true } } },
+        [409] = { name = "Sheriff 2015 Dodge Charger", ai = { weight = 6, zones = { rural = true } } },
+        [467] = { name = "NYPD 2003 Chevrolet Suburban", ai = { weight = 6, zones = { rural = true } } },
         [432] = { name = "Rhino", aiOnly = true, ai = { minLevel = 5 } },
     },
     TANK_MODEL = 432,
@@ -34,9 +38,14 @@ POLICE = {
             tow = { 1550.83, -1626.90, 12.38 },
             jail = { 1571.88, -1692.76, 12.60, rot = 0, interior = 0, dimension = 0, radius = 4.5 },
             release = { 1544.0, -1675.5, 13.6, rot = 90 },
+            evidence = { 1560.23, -1669.29, 15.20 },   -- evidence drop-off port (modules/evidence), 2026-11-12
         },
     },
     HANDOVER_RADIUS = 3,
+
+    -- evidence (modules/evidence, 2026-11-12): seized items go straight into the unit's box when the unit vehicle is
+    -- within DIRECT_DIST m, otherwise into a bag in the officer's hand; delivered at STATIONS[i].evidence (PAY.evidence)
+    EVIDENCE = { DIRECT_DIST = 40, ITEM_WEIGHT = 0.1, TRUNK_CAPACITY = 40, PORT_RADIUS = 1.5 },
 
     WANTED = {
         MAX = 6,
@@ -77,6 +86,7 @@ POLICE = {
         PREDICT_DEVIATION = 40,   -- ...only when the suspect left the predicted path this far
         PREDICT_LENGTH = 450,
         NPC_FLEE_SPEED = 1.35,
+        NPC_FLEE_MAX_KMH = 165,   -- chase motor flee mode (physics, near the police): top speed of a running NPC
     },
 
     AI = {
@@ -144,8 +154,9 @@ POLICE = {
     PAY = {
         traffic_warning = 300, traffic_fine = 500, arrest_npc = 1500, arrest_player = 3000,
         pursuit_caught = 2000, backup = 200, duty_10min = 150,
+        evidence = 150,           -- per evidence item delivered at the station (to the officer who delivers it)
         xp_traffic_warning = 40, xp_traffic_fine = 60, xp_arrest_npc = 150, xp_arrest_player = 300,
-        xp_pursuit_caught = 200, xp_backup = 20, xp_duty_10min = 10,
+        xp_pursuit_caught = 200, xp_backup = 20, xp_duty_10min = 10, xp_evidence = 5,
         LEVEL_MULT = { 1, 1.4, 1.8, 2.2, 2.6, 3 },  -- player arrest pay x the wanted level
         WARNING_REPEAT = 600,     -- traffic stop with a warning: the same subject pays once per 10 min
         HOUR_CAP = 9000,          -- max pay per hour of shift
@@ -168,9 +179,15 @@ POLICE = {
         PULLOVER_TIME = 20,       -- s for a player driver to stop
         SIREN_BLIP = 500,         -- ms of siren when the lights were off
         MENU_RANGE = 3.5,
+        -- an NPC driver may run ONLY when a traffic stop is attempted (ST.fleeDecision): active warrant = WARRANT,
+        -- questionable / illegal item on it or in the car, stolen car, suspended licence or alcohol = HIDE, nothing = 0.
+        -- It first slows down as if pulling over, then speeds off after DELAY ms (2026-11-12)
+        FLEE = { WARRANT = 0.60, HIDE = 0.30, DELAY = { 1000, 3000 } },
     },
 
     ARREST = {
+        HOSTAGE_SAFE_DIST = 5,    -- m: a hostage let go this close to a police car (its bounding box ~2 m) is safe
+        HOSTAGE_EMS_DIST = 5,     -- m: "Hand over to EMS" needs a medic on duty this close
         CUFF_DIST = 1.5,
         CUFF_TIME = 2000,
         CUFF_BREAK = 2.0,
@@ -178,6 +195,7 @@ POLICE = {
     },
 
     -- QUERY: the check / search results are ui_core pinned notifications (their lifetime is ui_core's), 2026-11-11
+    QUERY = { DELAY = 1000 },     -- ms: a person / vehicle check answers no sooner than this after the request (2026-11-12)
     PLATES = { RANGE = 25, MAX = 8, INTERVAL = 300, CACHE = 60000 },   -- ALPR: only in a police vehicle; CACHE ms (flags)
     -- dispatcher voice (modules/radio_voice): the database is data/voice.json (tools/build_db.py), 2026-11-12
     VOICE = {
@@ -207,16 +225,32 @@ POLICE = {
     },
 
     -- ARRIVAL = { min, max } s: the AI tow truck / ambulance / transport van appears where its navmesh travel time to
-    -- the scene is in this window (POL.arrivalSpawn); SPAWN_MIN-MAX m = fallback when navmesh finds no hidden point
+    -- the scene is in this window (modules/pathfinder); SPAWN_MIN-MAX m = fallback when navmesh finds no hidden point
     TOW = { MODEL = 525, ARRIVAL = { 20, 40 }, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, SKIN = 50 },
-    MEDICAL = { MODEL = 416, ARRIVAL = { 20, 40 }, SPAWN_MIN = 150, SPAWN_MAX = 350, SKIN = 274, PAINTJOB = "hu_omsz" },
+    MEDICAL = { MODEL = 416, ARRIVAL = { 10, 30 }, SPAWN_MIN = 150, SPAWN_MAX = 350, SKIN = 274, PAINTJOB = "hu_omsz" },
+
+    -- pathfinder (modules/pathfinder, 2026-11-12): where an AI service vehicle appears and stops so it is on scene in
+    -- its ARRIVAL window. Goal = the navmesh lane within GOAL_RADIUS m of the scene: nearest wins, the scene on the left
+    -- of the driving direction costs LEFT_PENALTY m, an inner lane INNER_PENALTY m, a service road SERVICE_PENALTY m;
+    -- GOAL_TRIES lanes tried. Spawn = navmesh travel-time candidates towards exactly that lane (COUNT, SPACING m apart,
+    -- at least MIN_DISTANCE m straight from the scene, CLASSES), the first no player sees and none is within
+    -- PLAYER_DIST m (then PLAYER_DIST_MIN m); nothing in the window -> LATE_EXTRA s longer window. Watch: CHECK ms;
+    -- within ARRIVED m = there; not there GRACE s after the window -> put closer (RESCUE window) when nobody sees it
+    -- and no player is within RESCUE_PLAYER_DIST m, at most MAX_RESCUES times
+    PATHFINDER = { GOAL_RADIUS = 40, GOAL_TRIES = 3, LEFT_PENALTY = 15, INNER_PENALTY = 8, SERVICE_PENALTY = 5,
+                   COUNT = 30, SPACING = 20, MIN_DISTANCE = 50, CLASSES = { "highway", "ramp", "road" },
+                   PLAYER_DIST = 70, PLAYER_DIST_MIN = 35, LATE_EXTRA = 20,
+                   CHECK = 2000, ARRIVED = 25, GRACE = 10, RESCUE = { 5, 15 }, RESCUE_PLAYER_DIST = 50, MAX_RESCUES = 3 },
     -- prisoner transport (modules/transport): an AI van (Enforcer) takes a cuffed suspect to the nearest station.
     -- REQUEST_DIST: the officer this close to the suspect; LOAD_DIST: the suspect (on foot / in a car) this close to
     -- the standing van gets in; WAIT s for that, else the van leaves; a player rides RIDE s, then (faded out) the
     -- handover happens; the van drives to the station tow point (like TOW), an NPC is handed over (van + suspect
     -- vanish) when it gets there or nobody sees it
-    TRANSPORT = { MODEL = 427, SKIN = 280, ARRIVAL = { 20, 40 }, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, LOAD_DIST = 20,
-                  WAIT = 120, RIDE = 20, SPEED_FACTOR = 1.2, SEATS = { 2, 3, 1 } },
+    TRANSPORT = { MODEL = 427, SKIN = 280, ARRIVAL = { 10, 30 }, SPAWN_MIN = 150, SPAWN_MAX = 350, REQUEST_DIST = 15, LOAD_DIST = 20,
+                  WAIT = 120, RIDE = 20, SPEED_FACTOR = 1.2, SEATS = { 2, 3, 1 },
+                  -- a player unit first (2026-11-12): Available, free seat, within PLAYER_RADIUS m; PLAYER_OFFERS units
+                  -- one after the other, PLAYER_OFFER_TIME s each; on scene within PLAYER_ARRIVE m; PLAYER_TIMEOUT s to get there
+                  PLAYER_RADIUS = 900, PLAYER_OFFERS = 2, PLAYER_OFFER_TIME = 20, PLAYER_ARRIVE = 40, PLAYER_TIMEOUT = 240 },
 
     -- work_police levels = ranks (police_system decides the rights by them)
     RANKS = {
@@ -227,7 +261,7 @@ POLICE = {
     HISTORY = {
         WARRANT = 0.02, FINES = 0.20, WARNINGS = 0.15, SUSPENDED = 0.03,
         ALCOHOL = 0.04, ALCOHOL_NIGHT = 0.08, DRUG = 0.04,
-        EXPIRED_INSPECTION = 0.03, EXPIRED_REGISTRATION = 0.02, EXPIRED_LICENCE = 0.02, STOLEN = 0.02, FLEE = 0.02, FLEE_WARRANT = 0.05,
+        EXPIRED_INSPECTION = 0.03, EXPIRED_REGISTRATION = 0.02, EXPIRED_LICENCE = 0.02, STOLEN = 0.02,
         AGE = { 18, 72 },
         PLATE_CHECK = 12 * 3600 * 1000,   -- player vehicle plates re-read from v_ownveh
         -- history/server/cleanup.lua: NPC citizens / vehicles older than this (s) are deleted, unless a player

@@ -16,6 +16,13 @@ function getOfficerUnit(player)
     return u and (u.callsign or u.id) or false
 end
 
+-- Exported: { callsign, status, sub } of the officer's unit, or false (v_radar unit indicator)
+function getOfficerUnitInfo(player)
+    local u = isElement(player) and POL.units.of(player)
+    if not u then return false end
+    return { callsign = u.callsign or u.id, status = u.status, sub = u.sub }
+end
+
 -- on-duty officers are in the ai_peds group "police" (the AI cops too): scene NPCs hostile only to the police
 -- (v_scenemanager) attack them and nobody else
 local function setAIGroup(player, on)

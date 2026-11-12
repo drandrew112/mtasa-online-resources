@@ -1,7 +1,7 @@
 """police_system / modules/radio_voice/tools/build_db.py
 
 Builds data/voice.json, the fixed radio_voice database (loaded once at resource start on both sides):
-  clips     every wav under audio/: length, sample rate, measured lead/tail silence (trimmed at playback), level
+  clips     every wav under sounds_source/: length, sample rate, measured lead/tail silence (trimmed at playback), level
   tokens    one spoken unit (a word / phrase / sound effect) -> its clip variants (random pick) + the English text
   maps      game data -> tokens: colours (reference RGB, nearest wins), GTA SA vehicle models, scene categories,
             call kinds, priorities, directions, plate characters, unit types
@@ -12,7 +12,7 @@ Builds data/voice.json, the fixed radio_voice database (loaded once at resource 
 Run from anywhere:  python tools/build_db.py [--no-encode]     (python 3 + numpy, ffmpeg on PATH)
 Encode: every unique clip -> sounds/<folder>/<name>.ogg (silence trimmed, voice brought to TARGET_RMS, mono 22 kHz
 Vorbis); only missing / older files are encoded again. The <file> lines of police_system/meta.xml between the
-radio_voice markers are rewritten from the list. The audio folder (the wav sources) is never changed.
+radio_voice markers are rewritten from the list. The sounds_source folder (the wav sources, gitignored) is never changed.
 """
 import hashlib
 import json
@@ -28,7 +28,9 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODULE = os.path.dirname(HERE)
 RESOURCE = os.path.dirname(os.path.dirname(MODULE))     # police_system
-AUDIO = os.path.join(MODULE, "audio")
+AUDIO = os.path.join(MODULE, "sounds_source")   # wav sources (gitignored); sounds/ holds the built ogg files
+AREA_PITCH = os.path.join(HERE, "area_pitch.json")  # AREAS clip -> semitones (tools/pitch_fix.py), applied in encode()
+AREA_ZONES = os.path.join(HERE, "area_zones.json")  # getZoneName text -> AREAS clip id (AREA_<id>_01.wav)
 SOUNDS = os.path.join(MODULE, "sounds")
 OUT = os.path.join(MODULE, "data", "voice.json")
 META = os.path.join(RESOURCE, "meta.xml")
@@ -119,6 +121,12 @@ RULES = [
     ("VEHICLE_CATEGORY", r"VEHICLE_CATEGORY_(\w+?)_\d+", "VEH.{1}", "{veh}"),
     # conjunctives
     ("CONJUNCTIVES", r"(IN_A|ON_A|DRIVING_A|CLOSE_TO|INSIDE|NEAR|OVER|AN|AT|IN|ON|A)_\d+", "CONJ.{1}", "{1l}"),
+    # zone names (getZoneName)
+    ("AREAS", r"AREA_(\w+?)_\d+", "AREA.{1}", "{area}"),
+    # person names (tools/split_names.py): first names male / female, last names
+    ("NAMES_M", r"NAME_(\w+?)_\d+", "NAME.M.{1}", "{name}"),
+    ("NAMES_F", r"NAME_(\w+?)_\d+", "NAME.F.{1}", "{name}"),
+    ("NAMES_L", r"NAME_(\w+?)_\d+", "NAME.L.{1}", "{name}"),
     # crimes
     ("CRIMES", r"CRIME_(\w+?)_\d+", "CRIME.{1}", "{crime}"),
     ("CRIMES", r"(MOTOR_VEHICLE_ACCIDENT|PUBLIC_INTOX|SUSPICIOUS_VEHICLE)", "CRIME.{1}", "{crime}"),
@@ -172,12 +180,20 @@ VERIFY = {
 VEH_TEXT = {"SUV": "SUV", "MUSCLE_CAR": "muscle car", "OFF_ROAD_VEHICLE": "off-road vehicle"}
 
 
+AREA_IDS = json.load(open(AREA_ZONES, encoding="utf-8"))            # zone text -> id
+AREA_TEXT = {v: k.strip("'") for k, v in AREA_IDS.items()}           # id -> zone text
+
+
 def text_of(tpl, m, token):
     g = m.group(1) if m.lastindex else ""
     if tpl == "{phon}":
         return DIGITS[int(g)] if g.isdigit() else PHONETIC[g]
+    if tpl == "{name}":
+        return "O'Brien" if g == "OBRIEN" else g.capitalize()
     if tpl == "{crime}":
         return CRIME_TEXT.get(g, g.lower().replace("_", " "))
+    if tpl == "{area}":
+        return AREA_TEXT.get(g, g.lower().replace("_", " "))
     if tpl == "{veh}":
         return VEH_TEXT.get(g, g.lower().replace("_", " "))
     return tpl.replace("{1l}", g.lower().replace("_", " ")).replace("{1c}", g.capitalize())
@@ -287,9 +303,10 @@ VARS = OrderedDict([
     ("vehicle", "model id -> maps.vehicles (no entry: the item is dropped)"),
     ("direction", "heading in degrees (0 = north, counter-clockwise like GTA rotZ) -> DIR.HEADING.*"),
     ("bound", "heading -> DIR.BOUND.*"),
+    ("name", "'First Last' (+ optional gender m|f of the first name) -> NAME.* (first name, 120 ms, last name; a word without a clip is dropped)"),
     ("crime", "scene category / wanted reason -> maps.sceneCrime / maps.reasonCrime"),
     ("code", "call priority -> maps.priorityCode"),
-    ("area", "getZoneName -> AREA.* (no audio yet: always dropped, with the item before it when that is a CONJ)"),
+    ("area", "getZoneName -> AREA.* (maps.areas; a zone without a clip is dropped, with the item before it when that is a CONJ)"),
 ])
 
 PHRASES = OrderedDict()
@@ -326,11 +343,13 @@ phrase("QUERY_VEHICLE", [
              "caution = stolen or warrant, felony = stolen and warrant"))
 phrase("QUERY_PERSON", [
     {"var": "callsign"}, {"pause": 120},
+    {"if": "name", "then": [{"var": "name"}, {"pause": 180}]},
     {"if": "warrant", "then": ["PLATE.WARRANT", "PLATE.CAUTION"],
      "else": [{"if": "licence", "then": ["PLATE.VIOLATION"], "else": ["ACK.COPY"]}]},
     {"if": "wanted", "then": ["SUSPECT.IS", "CRIME.SUSPECT_ON_THE_RUN"]},
 ], dict(hook="Q.person send(unit, r)", audience="unit", priority=2, frame="full", ttl=15000,
-        args="warrant = r.warrants > 0, licence = r.licence ~= 'valid', wanted = r.wanted > 0"))
+        args="name = r.name of a generated citizen (NPC; a player name is never spoken), gender = r.gender, "
+             "warrant = r.warrants > 0, licence = r.licence ~= 'valid', wanted = r.wanted > 0"))
 # no ALPR phrase: the plate reader only shows its labels, the dispatcher speaks only when an officer asks (2026-11-12)
 
 # --- calls (modules/callouts)
@@ -406,8 +425,6 @@ AUDIENCES = OrderedDict([
 ])
 
 MISSING = [
-    {"what": "AREAS", "why": "getZoneName has no audio (audio/AREAS/no_audio_here.txt)",
-     "fallback": "the 'in <area>' part is dropped", "need": "one clip per GTA SA zone name (~370), same voice"},
     {"what": "aircraft category", "why": "no VEHICLE_CATEGORY plane / aircraft clip",
      "fallback": "the vehicle part is dropped for planes, trailers, RC models, kart", "need": "VEHICLE_CATEGORY_PLANE"},
     {"what": "tow truck request", "why": "no 'tow' crime / request clip", "fallback": "ACK.COPY only",
@@ -416,7 +433,11 @@ MISSING = [
      "fallback": "ACK.COPY + the all units call", "need": "UNIT_RESPONDING / BACKUP_EN_ROUTE"},
     {"what": "clean query result", "why": "no 'no record / clear' clip", "fallback": "ACK.COPY",
      "need": "NO_WANTS_OR_WARRANTS"},
-    {"what": "person name / licence suspended", "why": "names cannot be spoken, no licence clip",
+    {"what": "person name outside the lists", "why": "{name} speaks only the POLICE_NAMES lists (NAME.* clips); a word "
+                                 "outside them (e.g. POLICE_NAMES_EXTRA, a player name) is dropped",
+     "fallback": "the name part is dropped (QUERY_PERSON: only the first or last name, or none)",
+     "need": "clips for the extra names"},
+    {"what": "licence suspended", "why": "no licence clip",
      "fallback": "TrafficViolation for a bad licence", "need": "LICENCE_SUSPENDED / LICENCE_EXPIRED"},
     {"what": "status codes", "why": "no '10-8 / en route / on scene / code 4' replies",
      "fallback": "ACK.COPY", "need": "STATUS_AVAILABLE, EN_ROUTE, ON_SCENE, CODE_4"},
@@ -432,18 +453,27 @@ MISSING = [
 
 def encode(clips):
     done = 0
+    pitch = json.load(open(AREA_PITCH)) if os.path.exists(AREA_PITCH) else {}
+    pitch_rule = os.path.getmtime(AREA_PITCH) if pitch else 0     # a new pitch table re-encodes the AREAS clips only
     for rel, info in clips.items():
         if "file" not in info:
             continue
         src = os.path.join(AUDIO, rel)
         dst = os.path.join(RESOURCE, info["file"])
         if os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src) \
-                and os.path.getmtime(dst) >= os.path.getmtime(__file__):
+                and (rel not in pitch and not rel.startswith("AREAS/") or os.path.getmtime(dst) >= pitch_rule):
             continue
         os.makedirs(os.path.dirname(dst), exist_ok=True)
+        af = []
+        if rel.startswith("AREAS/"):
+            af.append("highpass=f=80")                      # the clone's clips carry a sub-80 Hz rumble
+        st = pitch.get(rel, 0)
+        if st:                                              # same voice pitch for every clip of the folder, length unchanged
+            af.append("rubberband=pitch=%.5f:formant=preserved:pitchq=quality" % (2 ** (st / 12.0)))
+        af.append("volume=%.1fdB" % info["gain"])
         cmd = ["ffmpeg", "-loglevel", "error", "-y", "-i", src, "-ss", "%.3f" % (info["lead"] / 1000.0),
                "-t", "%.3f" % (info["len"] / 1000.0), "-ac", "1", "-ar", "22050",
-               "-af", "volume=%.1fdB" % info["gain"], "-c:a", "libvorbis", "-q:a", "3", dst]
+               "-af", ",".join(af), "-c:a", "libvorbis", "-q:a", "3", dst]
         subprocess.run(cmd, check=True)
         done += 1
     total = sum(os.path.getsize(os.path.join(RESOURCE, i["file"])) for i in clips.values() if "file" in i)
@@ -476,7 +506,8 @@ def main():
     seen_md5 = {}
     for folder in sorted(os.listdir(AUDIO)):
         fp = os.path.join(AUDIO, folder)
-        if not os.path.isdir(fp):
+        if not os.path.isdir(fp) or folder.startswith("_") or any(
+                folder.startswith(a[9:]) for a in sys.argv if a.startswith("--ignore=")):   # e.g. --ignore=NAMES_
             continue
         for name in sorted(os.listdir(fp)):
             if not name.lower().endswith(".wav"):
@@ -531,7 +562,7 @@ def main():
     db = OrderedDict()
     db["format"] = 1
     db["about"] = "police_system radio_voice database, generated by tools/build_db.py - do not edit by hand"
-    db["audioRoot"] = "modules/radio_voice/audio/"
+    db["audioRoot"] = "modules/radio_voice/sounds_source/"
     db["settings"] = OrderedDict(targetRms=TARGET_RMS, gapMs=40, charGapMs=-20, pauseMs=120, noiseVolume=0.18,
                                  voiceVolume=1.0, maxQueue=4, fadeMs=60)
     db["varsHelp"] = VARS
@@ -552,7 +583,10 @@ def main():
         reasonCrime=REASON_CRIME,
         reasonOrder=list(REASON_CRIME.keys()),   # severity order (JSON objects lose their order in Lua)
         vehicles=vehicles,
-        areas={},
+        areas={k: "AREA." + v for k, v in AREA_IDS.items()},
+        # lower-case name without punctuation -> token; first names split by gender (m / f), last names under "l"
+        names={g: {t["text"].lower().replace("'", ""): tok for tok, t in tokens.items() if tok.startswith("NAME." + g.upper() + ".")}
+               for g in "mfl"},
     )
     db["tokens"] = tokens
     db["clips"] = clips

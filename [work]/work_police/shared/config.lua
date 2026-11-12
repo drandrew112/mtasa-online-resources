@@ -50,6 +50,16 @@ POLICE_WORK = {
           tuning = { engine = 3, turbo = 3, brakes = 3, driveType = "awd" } },
         { model = 445, name = L.text("work_police.config.audi_rs6"),
           tuning = { engine = 3, turbo = 3, brakes = 3, driveType = "awd" } },
+        { model = 507, name = L.text("work_police.config.lapd_explorer"),
+          tuning = { engine = 3, turbo = 3, brakes = 3, driveType = "awd" } },
+        { model = 566, name = L.text("work_police.config.lapd_charger"),
+          tuning = { engine = 3, turbo = 3, brakes = 3 } },
+        { model = 438, name = L.text("work_police.config.nypd_caprice"),
+          tuning = { engine = 2, turbo = 2, brakes = 2 } },
+        { model = 467, name = L.text("work_police.config.nypd_suburban"),
+          tuning = { engine = 2, turbo = 2, brakes = 2, driveType = "awd" } },
+        { model = 409, name = L.text("work_police.config.sheriff_charger"),
+          tuning = { engine = 3, turbo = 3, brakes = 3 } },
         -- { model = 597, name = "GTA5 police car" },   -- later
     },
 

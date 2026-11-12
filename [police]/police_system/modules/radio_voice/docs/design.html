@@ -127,14 +127,14 @@ pre { margin: 0; font: 12.5px/1.5 var(--f-mono); background: var(--sunk); border
 <section>
   <div class="eyebrow">1 · felmérés</div>
   <h2>Mit tud a hangkészlet</h2>
-  <p>Minden <code>audio/</code> alatti wav-fájl le van mérve: hossz, mintavétel, csend az elején és végén (lejátszáskor levágjuk), beszéd-hangerő. A táblázat a <code>data/voice.json</code>-ból készül, ugyanabból, amit a szerver induláskor betölt.</p>
+  <p>Minden <code>sounds_source/</code> alatti wav-fájl le van mérve: hossz, mintavétel, csend az elején és végén (lejátszáskor levágjuk), beszéd-hangerő. A táblázat a <code>data/voice.json</code>-ból készül, ugyanabból, amit a szerver induláskor betölt.</p>
   <div class="scroll"><table id="survey"><thead><tr><th>Mappa</th><th>Fájl</th><th>Token</th><th>Átl. hossz</th><th>Beszéd RMS</th><th>Max csend</th><th>Megjegyzés</th></tr></thead><tbody></tbody></table></div>
   <ul class="plain">
     <li><b>Hangerő:</b> a <code>PlateCheck</code> mondatai (Target plate, Stolen, Warrant…) kb. 8 dB-lel halkabbak a többinél. Az adatbázis minden klipnél tárolja a −16 dBFS célszinthez szükséges korrekciót (<code>gain</code>), a kódoló lépés ezt beégeti.</li>
     <li><b>Formátum:</b> vegyes mintavétel (16, 18, 32, 44,1 és 48 kHz), a <code>RESIDENT</code> effektek egy része sztereó. Kódolás után mind mono 22 kHz OGG: <b>18 MB → 3,1 MB</b> letöltés (scratchpadban kipróbálva).</li>
     <li><b>Duplikátumok:</b> a betűk az LAPD fonetikus ábécé (A = Adam, L = Lincoln), ezért <code>PlateCheck/A.wav</code> és <code>UNIT_TYPE/ADAM.wav</code> ugyanaz a fájl. Ugyanígy <code>GUNFIRE_03</code> = <code>SHOTS_FIRED_01</code>, és a <code>SUSPECT_LAST_SEEN_01</code> két mappában is megvan. 4 duplikátum, 281 egyedi klip.</li>
     <li><b>Ellenőrizendő szövegek:</b> néhány kötőszó-változat (<code>A_01</code> 2,3 s, <code>NEAR_01</code> 1,7 s) túl hosszú egy szóhoz, valószínűleg több szót mond. Ezeket a builder kerüli (<code>avoid</code>), amíg valaki meg nem hallgatja őket. Lista lent, a hiányoknál.</li>
-    <li><b>AREAS üres:</b> nincs körzetnév-hang (<code>no_audio_here.txt</code>). Addig az „in &lt;körzet&gt;” rész kimarad, a példákban áthúzva látszik.</li>
+    <li><b>AREAS:</b> 168 körzetnév-hang (<code>sounds_source/AREAS</code>, ElevenLabs „Dispatch Famale” hang). A zónanév → klip megfeleltetés a <code>tools/area_zones.json</code>-ban van; ismeretlen zónánál az „in &lt;körzet&gt;” rész kimarad.</li>
   </ul>
 </section>
 
@@ -270,7 +270,7 @@ pre { margin: 0; font: 12.5px/1.5 var(--f-mono); background: var(--sunk); border
       <tr><td class="mono">client/player.lua</td><td><span class="flag good">kész</span></td><td>Sor, keretek, zajágy, időzítés, felirat, /dispatchtest, hangerő export</td></tr>
       <tr><td class="mono">ui_pause Online</td><td><span class="flag good">kész</span></td><td>„Police dispatcher voice” 0–100 csúszka, fiókra mentve</td></tr>
       <tr><td class="mono">játékban</td><td><span class="flag warn">teszteletlen</span></td><td>Restart után /dispatchtest &lt;frázis&gt; szolgálatban</td></tr>
-      <tr><td class="mono">audio/AREAS</td><td><span class="flag bad">hiányzik</span></td><td>Körzetnevek hangja (később generálva)</td></tr>
+      <tr><td class="mono">sounds_source/AREAS</td><td><span class="flag warn">teszteletlen</span></td><td>168 körzetnév, generált hang (ElevenLabs), meghallgatás és játékbeli teszt hátra</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -310,8 +310,6 @@ pre { margin: 0; font: 12.5px/1.5 var(--f-mono); background: var(--sunk); border
       el('td', { class: 'num' }, rms.toFixed(1) + ' dB'), el('td', { class: 'num' }, sil + ' ms'),
       el('td', {}, nt ? el('span', { class: 'flag ' + nt[1] }, nt[0]) : '')));
   }
-  $('#survey tbody').append(el('tr', {}, el('td', { class: 'mono' }, 'AREAS'), el('td', { class: 'num' }, '0'), el('td', { class: 'num' }, '0'),
-    el('td', { class: 'num' }, '–'), el('td', { class: 'num' }, '–'), el('td', { class: 'num' }, '–'), el('td', {}, el('span', { class: 'flag bad' }, 'nincs hang'))));
 
   $('#grammar').textContent =
 `"TOKEN"                  egy token (véletlen változat)
@@ -386,6 +384,15 @@ QUERY_VEHICLE:
     } else if (v === 'bound') { push(out, DB.maps.directions.bound[dirIndex(a.heading)]);
     } else if (v === 'crime') { const t = crimeToken(a); if (t) push(out, t);
     } else if (v === 'code') { push(out, DB.maps.priorityCode[String(a.priority)] || 'RESPOND.CODE_2');
+    } else if (v === 'name') {
+      const w = String(a.name || '').toLowerCase().replace(/'/g, '').match(/[a-z]+/g) || [];
+      if (!w.length) return;
+      const N = DB.maps.names, g = a.gender === 'f' ? 'f' : (a.gender === 'm' ? 'm' : null);
+      const first = g ? N[g][w[0]] : (N.m[w[0]] || N.f[w[0]]);
+      const last = w.length > 1 ? N.l[w[w.length - 1]] : null;
+      if (first) push(out, first);
+      if (first && last) out.push({ pause: 120 });
+      if (last) push(out, last);
     } else if (v === 'area') {
       const t = DB.maps.areas[a.area];
       if (t) { push(out, t); return; }
@@ -523,7 +530,7 @@ QUERY_VEHICLE:
   /* ---------------- playback (real audio when opened from the module folder) ---------------- */
   const LOCAL = location.protocol === 'file:';
   $('#audioNote').textContent = LOCAL
-    ? 'Helyi megnyitás: a Lejátszás a valódi wav-fájlokat játssza le (../audio/), vágással, zajággyal.'
+    ? 'Helyi megnyitás: a Lejátszás a valódi wav-fájlokat játssza le (../sounds_source/), vágással, zajággyal.'
     : 'A hangfájlok nincsenek feltöltve (GTA V / LSPDFR hanganyag), itt a Lejátszás a valós időzítéssel mutatja a sorrendet. Hanggal: nyisd meg a police_system/modules/radio_voice/docs/design.html fájlt a böngészőben.';
   let timers = [], playing = [], noise = null;
   function stop() {
@@ -539,7 +546,7 @@ QUERY_VEHICLE:
     let t = 0;
     if (LOCAL) {
       const nc = DB.tokens['FX.NOISE'].clips[0];
-      noise = new Audio('../audio/' + nc); noise.loop = true; noise.volume = S.noiseVolume;
+      noise = new Audio('../sounds_source/' + nc); noise.loop = true; noise.volume = S.noiseVolume;
       noise.play().catch(() => {});
     }
     built.forEach((m, mi) => {
@@ -552,7 +559,7 @@ QUERY_VEHICLE:
             document.querySelectorAll('.now').forEach(e => e.classList.remove('now'));
             for (const e of [it.segEl, it.sayEl, it.chipEl]) if (e) e.classList.add('now');
             if (LOCAL) {
-              const a = new Audio('../audio/' + it.clip);
+              const a = new Audio('../sounds_source/' + it.clip);
               const c = DB.clips[it.clip];
               a.volume = Math.min(1, Math.pow(10, Math.min(0, c.gain) / 20));
               a.currentTime = it.lead / 1000;

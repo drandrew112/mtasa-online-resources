@@ -78,6 +78,17 @@ local function occupantToTakeOut(veh)
     return other
 end
 
+-- a medic on duty (med_erm unit) within HOSTAGE_EMS_DIST of the ped
+local function medicNear(ped)
+    if not POL.running("med_erm") then return false end
+    local x, y, z = getElementPosition(ped)
+    for _, p in ipairs(getElementsWithinRange(x, y, z, POLICE.ARREST.HOSTAGE_EMS_DIST, "player")) do
+        local ok, u = pcall(function() return exports.med_erm:getUnitData(p) end)
+        if ok and u then return p end
+    end
+    return false
+end
+
 function ST.openMenu(officer, target)
     if not POL.units.of(officer) or not isElement(target) then return end
     local s = ST.list[target]
@@ -111,6 +122,16 @@ function ST.openMenu(officer, target)
             if o then add("police_system.stop.take_out", "takeout") end
             if o and POL.arrest.isCuffed(o) and not POL.transport.jobOf(o) then add("police_system.stop.transport", "transport") end
         end
+    elseif getElementData(target, "vsm.hostage") then
+        -- a hostage (v_scenemanager): grab / let go, hand over to EMS (a medic close by), release (no EMS at all)
+        local state = getElementData(target, "vsm.hostage")
+        title = T(officer, "police_system.hostage.title")
+        if (state == "held" or state == "safe") and not getPedOccupiedVehicle(target) then
+            add(POL.arrest.escorts[target] == officer and "police_system.hostage.let_go" or "police_system.hostage.grab", "escort")
+            if medicNear(target) then add("police_system.hostage.to_ems", "hostage_ems") end
+            if getElementData(target, "vsm.hostage.release") == true then add("police_system.hostage.release", "hostage_release") end
+        end
+        add("police_system.stop.details", "details")
     else
         local cuffed = POL.arrest.isCuffed(target)
         title = T(officer, "police_system.stop.title_ped", { name = ST.nameOf(target) })
@@ -140,11 +161,34 @@ function ST.openMenu(officer, target)
         end
         if s then add("police_system.stop.release", "release", { desc = "Code 4" }) end
     end
-    -- the menu stays open after an action, only arrest and escort close it
+    -- evidence: the questionable / illegal items found by a search and not seized yet (modules/evidence)
+    local function seizeMenu(el, code)
+        local ids = isElement(el) and POL.evidence.seizable(el) or {}
+        if #ids == 0 then return end
+        local sub = { { label = T(officer, "police_system.evidence.seize_all", { count = #ids }), value = "seizeall:" .. code } }
+        for _, id in ipairs(ids) do
+            sub[#sub + 1] = { label = T(officer, "police_system.item." .. id), value = "seize:" .. code .. ":" .. id,
+                              desc = T(officer, "police_system.search.class_" .. POL.search.classOf(id)) }
+        end
+        items[#items + 1] = { label = T(officer, "police_system.evidence.seize", { count = #ids }), items = sub }
+    end
+    if s and s.kind == "vehicle" then
+        seizeMenu(person, "p")
+        seizeMenu(target, "v")
+    elseif getElementType(target) ~= "vehicle" then
+        seizeMenu(target, "p")
+        if s and s.fromVehicle then seizeMenu(s.fromVehicle, "v") end
+    end
+    if getElementType(target) == "vehicle" and isPoliceVehicle(target) and POL.units.of(officer)
+        and POL.units.of(officer).vehicle == target and POL.evidence.hasBags(officer) then
+        add("police_system.evidence.store", "store_evidence")
+    end
+    -- the menu stays open after an action, only these close it
+    local closing = { arrest = true, escort = true, transport = true, release = true, out = true, takeout = true }
     local function keepOpen(list)
         for _, it in ipairs(list) do
             if it.items then keepOpen(it.items)
-            elseif it.value ~= "arrest" and it.value ~= "escort" and it.value ~= "transport" then it.closeOnSelect = false end
+            elseif not closing[it.value] then it.closeOnSelect = false end
         end
     end
     keepOpen(items)
@@ -196,6 +240,10 @@ local function orderOut(officer, s)
     end
     local t, p = POL.running("ai_land_traffic") and exports.ai_land_traffic, aipeds()
     if not p then return end
+    -- an NPC still looking for a place off the road: not in the middle of the road
+    if s.held and not s.parked and t and t:isTrafficVehicleHeld(veh) then
+        return POL.notify(officer, "police_system.stop.err_not_stopped")
+    end
     if t and t:isTrafficVehicle(veh) == true then t:releaseTrafficVehicle(veh) end
     p:adoptTrafficDriver(driver, veh, { behaviour = "detained", args = { officer = officer }, keep = true })
     POL.events.log(s.unit, officer, "order_out", {}, s.inc)
@@ -304,6 +352,33 @@ function ST.action(officer, target, value, inMenu)
         outputDebugString(("[police] takeout: suspect=%s (%s) -> %s %s, still in vehicle: %s"):format(tostring(suspect),
             getElementType(suspect), tostring(ok), tostring(err), tostring(getPedOccupiedVehicle(suspect))))
         if not ok then POL.notify(officer, "police_system.arrest.err_" .. tostring(err)) end
+    elseif kind == "seizeall" or kind == "seize" then
+        -- "seizeall:p|v" / "seize:p|v:<item id>": p = the person, v = the vehicle of this stop / target
+        local code, id = arg:match("^(%a):?(.*)$")
+        local el
+        if code == "v" then el = getElementType(target) == "vehicle" and target or (s and s.fromVehicle)
+        else el = person end
+        if isElement(el) then
+            POL.evidence.seize(officer, el, (kind == "seize" and id ~= "") and { id } or nil, s)
+            ST.openMenu(officer, target)
+        end
+    elseif value == "hostage_ems" or value == "hostage_release" then
+        if not POL.arrest.isHostage(target) then return end
+        if POL.arrest.escorts[target] then POL.arrest.stopEscort(target) end
+        if value == "hostage_ems" then
+            if not medicNear(target) then return POL.notify(officer, "police_system.hostage.no_medic") end
+            triggerEvent("onPoliceHostageAction", target, "ems", officer)
+            POL.events.logFor(officer, "hostage_ems", { name = ST.nameOf(target) })
+            POL.notify(officer, "police_system.hostage.handed_ems")
+        else
+            if getElementData(target, "vsm.hostage.release") ~= true then return POL.notify(officer, "police_system.hostage.cannot_release") end
+            triggerEvent("onPoliceHostageAction", target, "release", officer)
+            POL.events.logFor(officer, "hostage_released", { name = ST.nameOf(target) })
+            POL.notify(officer, "police_system.hostage.released")
+        end
+        ST.openMenu(officer, target)
+    elseif value == "store_evidence" then
+        if getElementType(target) == "vehicle" then POL.evidence.store(officer, target) end
     elseif value == "tow" then
         if getElementType(target) == "vehicle" then POL.tow.request(officer, false, target) end
     elseif value == "transport" then

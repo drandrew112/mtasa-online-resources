@@ -6,7 +6,10 @@
 -- for now (no link to v_inventory yet; pol.search element data = { ids } is read when a script sets it). The result
 -- goes to the unit's query window (kind "search") and into the report (log line "search").
 
-local S = POL.module("search", { person = { items = {} }, vehicle = { items = {} }, boost = 5, byId = {}, done = {} })
+-- done[el] = the item ids it carries (drawn at the first search, or earlier by a traffic stop's flee decision: preroll);
+-- searched[el] = an officer searched it (only then can its items be seized, modules/evidence); seized[el] = { [id] = true }
+local S = POL.module("search", { person = { items = {} }, vehicle = { items = {} }, boost = 5, byId = {}, done = {},
+                                 searched = {}, seized = {} })
 
 local function load()
     local f = fileExists("shared/search_items.json") and fileOpen("shared/search_items.json", true)
@@ -55,6 +58,30 @@ local function roll(kind, ctx)
 end
 
 local function classOf(id) local e = S.byId[id]; return e and e.class or "legal" end
+S.classOf = classOf
+
+-- What an NPC (or its car) carries, drawn before anybody searches it (the traffic stop's flee decision: the driver
+-- knows what it has). Kept in S.done, so the later search finds exactly these. Players / player vehicles: nothing.
+-- -> ids
+function S.preroll(el, kind, flags, warrant)
+    if not isElement(el) then return {} end
+    if S.done[el] then return S.done[el] end
+    if (kind == "person" and getElementType(el) == "player") or (kind == "vehicle" and getElementData(el, "ownveh:id")) then
+        return {}
+    end
+    flags = flags or {}
+    S.done[el] = roll(kind, { drug = flags.drug == true, warrant = warrant == true })
+    return S.done[el]
+end
+
+-- any questionable / illegal item among ids
+function S.suspicious(ids)
+    for _, id in ipairs(ids or {}) do
+        local c = classOf(id)
+        if c == "illegal" or c == "questionable" then return true end
+    end
+    return false
+end
 
 -- the search of `el` (a ped / player: "person", a vehicle: "vehicle"); s = the stop (flags, citizenId, unit, inc)
 function S.search(officer, el, kind, s)
@@ -62,11 +89,13 @@ function S.search(officer, el, kind, s)
     if not unit or not isElement(el) then return end
     local name = kind == "vehicle" and (getVehiclePlateText(el) or "?") or POL.stop.nameOf(el)
     local function show(ids)
+        S.searched[el] = true
         local list, illegal = {}, 0
+        local seized = S.seized[el] or {}
         for _, id in ipairs(ids) do
             local cls = classOf(id)
             if cls == "illegal" then illegal = illegal + 1 end
-            list[#list + 1] = { id = id, class = cls }
+            list[#list + 1] = { id = id, class = cls, seized = seized[id] == true }
         end
         local r = { kind = "search", what = kind, name = name, items = list, at = POL.now() }
         POL.send(POL.units.members(unit), "query:result", r)
@@ -96,6 +125,9 @@ function S.search(officer, el, kind, s)
     end
 end
 
-addEventHandler("onElementDestroy", root, function() if S.done[source] then S.done[source] = nil end end)
+addEventHandler("onElementDestroy", root, function()
+    if S.done[source] then S.done[source] = nil end
+    S.searched[source], S.seized[source] = nil, nil
+end)
 
 function S.start() load() end

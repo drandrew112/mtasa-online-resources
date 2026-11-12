@@ -36,9 +36,23 @@ local function holdPatient(patient)
     exports.ai_peds:setAIPedKeep(patient, true)
 end
 
--- the patient: an injured / dead NPC near the caller (the stopped / arrested one first)
+-- hostages (v_scenemanager) near the caller: they always leave with the ambulance once one is asked for; the mark
+-- pol.ambulance (server only) keeps "Release" away from them (v_scenemanager server/hostage.lua), 2026-11-12
+local function hostagesNear(player)
+    local x, y, z = getElementPosition(player)
+    local out = {}
+    for _, p in ipairs(getElementsWithinRange(x, y, z, 30, "ped")) do
+        local st = getElementData(p, "vsm.hostage")
+        if (st == "held" or st == "safe") and not isPedDead(p) and not getPedOccupiedVehicle(p) then out[#out + 1] = p end
+    end
+    return out
+end
+
+-- the patient: a hostage near the caller first, else an injured / dead NPC near the caller
 local function patientNear(player)
     local x, y, z = getElementPosition(player)
+    local h = hostagesNear(player)
+    if h[1] then return h[1] end
     local best, bd
     for _, p in ipairs(getElementsWithinRange(x, y, z, 30, "ped")) do
         if not POL.ai.peds[p] and injured(p) and not getPedOccupiedVehicle(p) then
@@ -53,6 +67,7 @@ function MD.request(player)
     local unit = POL.units.of(player)
     local x, y, z = getElementPosition(player)
     local patient = patientNear(player)
+    for _, h in ipairs(hostagesNear(player)) do setElementData(h, "pol.ambulance", true, false) end
     if medicsOnDuty() then
         local inc = unit and POL.events.incidentOf(unit)
         local desc = L.forLang("en", "police_system.medical.task_desc", { callsign = unit and unit.callsign or "?",
@@ -72,16 +87,16 @@ function MD.request(player)
     local t = traffic()
     if not t then POL.notify(player, "police_system.medical.unavailable") return false end
     local px, py, pz = getElementPosition(patient)
-    local sx, sy, sz, rot = POL.arrivalSpawn(t, C, px, py, pz, "emergency", patient)
-    if not sx then POL.notify(player, "police_system.medical.unavailable") return false end
-    local amb = t:createScriptedVehicle(C.MODEL, sx, sy, sz, { heading = rot, skin = C.SKIN, profile = "pursuit", speedFactor = 1.2 })
+    -- modules/pathfinder: spawn + stop on the patient's side of the road, on scene in C.ARRIVAL s
+    local amb = POL.pathfinder.dispatch(t, C, px, py, pz, { model = C.MODEL, profile = "emergency", toward = patient,
+        vehicle = { skin = C.SKIN, profile = "pursuit", speedFactor = 1.2 },
+        stop = { tag = "amb_pickup", hold = true } })
     if not amb then POL.notify(player, "police_system.medical.unavailable") return false end
     if C.PAINTJOB and POL.running("v_paintjobs") then pcall(function() exports.v_paintjobs:setVehicleCustomPaintjob(amb, C.PAINTJOB) end) end
     if POL.running("v_els") then exports.v_els:setElsLights(amb, true); exports.v_els:setElsSiren(amb, true, 1) end
     MD.jobs[amb] = { patient = patient, caller = player, state = "coming",
                      blip = createBlipAttachedTo(amb, 0, 2, 255, 220, 0, 255, 5, 99999, player) }
     holdPatient(patient)
-    t:addScriptedStop(amb, px, py, pz, { tag = "amb_pickup", hold = true, radius = 40 })
     POL.events.logFor(player, "ambulance_requested", { ai = true })
     POL.notify(player, "police_system.medical.ai_coming")
     return true

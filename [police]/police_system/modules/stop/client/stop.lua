@@ -183,7 +183,9 @@ POL.handle("arrest:charges", function(target, title, list, mode)
     charges, chargeCount = {}, 0
     local items = {}
     for _, c in ipairs(list or {}) do
-        items[#items + 1] = { label = c.label, value = "c:" .. c.id, checked = false, closeOnSelect = false }
+        -- c.checked: ticked already (the charges of the unit that asked for the transport)
+        if c.checked then charges[c.id] = true; chargeCount = chargeCount + 1 end
+        items[#items + 1] = { label = c.label, value = "c:" .. c.id, checked = c.checked == true, closeOnSelect = false }
     end
     items[#items + 1] = { label = handoverLabel(), value = "handover", closeOnSelect = false,
                           desc = L("police_system.arrest.handover_hint") }

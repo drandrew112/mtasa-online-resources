@@ -64,7 +64,7 @@ function R.build(inc, lang)
                 model = d.model and MODEL_NAME(d.model) or (v.model and MODEL_NAME(v.model)) or "?", value = d.value,
                 result = d.result and T.drug.pos or T.drug.neg, amount = d.amount and L.money(d.amount, lang) or "",
                 item = d.item and L.forLang(lang, btkKey(d.item)) or "", station = d.station or "", level = d.level,
-                count = d.count, warrant = d.warrant and T.lines.warrant_found or "",
+                count = d.count, warrant = d.warrant and T.lines.warrant_found or "", other = d.unit or "",
                 found = type(d.items) == "table" and (#d.items > 0 and itemList(d.items, lang) or T.lines.search_none) or "",
                 charges = type(d.charges) == "table" and #d.charges > 0 and T.lines.charges
                     and fill(T.lines.charges, { list = chargeList(d.charges, lang) }) or "",

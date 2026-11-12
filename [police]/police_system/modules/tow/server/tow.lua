@@ -65,9 +65,9 @@ function TW.request(player, confirmed, veh)
     local t = traffic()
     if not t then POL.notify(player, "police_system.tow.unavailable") return false end
     local x, y, z = getElementPosition(veh)
-    local sx, sy, sz, rot = POL.arrivalSpawn(t, C, x, y, z, "truck", veh)
-    if not sx then POL.notify(player, "police_system.tow.unavailable") return false end
-    local truck, driver = t:createScriptedVehicle(C.MODEL, sx, sy, sz, { heading = rot, skin = C.SKIN, profile = "truck" })
+    -- modules/pathfinder: spawn + stop on the vehicle's side of the road, on scene in C.ARRIVAL s
+    local truck, driver = POL.pathfinder.dispatch(t, C, x, y, z, { model = C.MODEL, profile = "truck", toward = veh,
+        vehicle = { skin = C.SKIN, profile = "truck" }, stop = { tag = "tow_pickup", hold = true } })
     if not truck then POL.notify(player, "police_system.tow.unavailable") return false end
     setVehicleLocked(veh, true)
     local unit = POL.units.of(player)
@@ -75,7 +75,6 @@ function TW.request(player, confirmed, veh)
                   at = getTickCount() }
     TW.jobs[veh] = job
     job.blip = createBlipAttachedTo(truck, 0, 2, 255, 220, 0, 255, 5, 99999, player)
-    t:addScriptedStop(truck, x, y, z, { tag = "tow_pickup", hold = true, radius = 40 })
     POL.events.logFor(player, "tow_requested", { plate = getVehiclePlateText(veh) })
     POL.notify(player, "police_system.tow.coming")
     return true

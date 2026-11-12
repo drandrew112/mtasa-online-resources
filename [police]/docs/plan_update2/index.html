@@ -84,6 +84,7 @@ html{scroll-behavior:smooth}
     <li><a href="#lekerdezes">7. Lekérdezés késleltetés</a></li>
     <li><a href="#fajlok">Érintett fájlok</a></li>
     <li><a href="#teszt">Tesztelés</a></li>
+    <li><a href="#dontesek">Döntések</a></li>
     <li><a href="#kerdesek">Kérdések</a></li>
   </ol>
 </nav>
@@ -196,7 +197,8 @@ html{scroll-behavior:smooth}
   <ul>
     <li>Minden állomáson egy v_inventory port (<code>createPort</code>), a <code>POLICE.STATIONS[i].evidence</code> koordinátán. A koordinátát élőben mérem, vagy te adod meg (<a href="#kerdesek">K5</a>). Csak szolgálatban lévő rendőrök látják.</li>
     <li>A portban a tiszt a dobozt vagy annak egyes tárgyait áthúzza a portra. Ilyenkor a tárgy megsemmisül, és egy sor jön létre az új <code>pol_evidence</code> MySQL táblában (<code>id, citizen_id, item, class, officer_acc, unit, inc, seized_at, delivered_at, station</code>, 2 pool sor instance-onként a meglévő szabály szerint).</li>
-    <li>Az MDC állampolgár-adatlapján új „Evidence” fül jelenik meg a leadott bizonyítékokkal. A jelentés <code>evidence_delivered</code> sort kap. Jutalom: <a href="#kerdesek">K6</a>.</li>
+    <li>Az MDC állampolgár-adatlapján új „Evidence” fül jelenik meg a leadott bizonyítékokkal. A jelentés <code>evidence_delivered</code> sort kap. Minden leadott bizonyítékért fix összeg (<code>EVIDENCE.PAY_PER_ITEM</code>) kerül a leadó egység fizetésébe (K6).</li>
+    <li>A szolgálat nem zárható le, amíg az egység dobozában vagy egy tag kezében le nem adott bizonyíték van. A hibaüzenet és a v_radar objective a leadóhoz vezet (K7).</li>
   </ul>
   <p class="note">A játékosok átkutatása továbbra sem talál semmit (nincs v_inventory → keresés kapcsolat). Ez külön feladat lehet, ebben a körben nem nyúlok hozzá.</p>
 </section>
@@ -222,13 +224,13 @@ html{scroll-behavior:smooth}
   </ul>
   <h3>Biztonságba helyezés</h3>
   <ul>
-    <li><b>Rendőrautóhoz viszi:</b> „Place in vehicle” (custody ülés, bilincs nélkül). Ezzel a túsz biztonságban van (<a href="#kerdesek">K10</a>).</li>
+    <li><b>Rendőrautóhoz viszi:</b> ha a tiszt a túszt egy rendőrautótól 5 m-en belül engedi el, a túsz biztonságban van. Ott marad, és guggolva vagy állva vár (K10).</li>
     <li><b>Átadás a mentőknek:</b> ha szolgálatban lévő EMS játékos van 5 m-en belül, megjelenik a „<i>Hand over to EMS</i>” pont. A túsz a med_erm feladathoz kerül, a mentős páciense lesz, és mentővel távozik.</li>
     <li><b>AI mentő:</b> ha a rendőr a meglévő medical modullal mentőt hív, az AI mentő elviszi a túszt a rendőrautótól vagy a helyszínről.</li>
     <li><b>Nincs mentő:</b> ha senki nem hívott mentőt, nincs EMS egység a hívásra (EMS 1 senki nem vállalta), és a rendőr sem kért mentőt, akkor a menüben megjelenik a „<i>Release</i>” pont. Ekkor a túsz civil sétáló lesz (<code>civilian / wander</code>), a keep jelzője lekerül, és amint senki nem látja (és nincs játékos 60 m-en belül), eltűnik.</li>
     <li>A scene akkor zárható le, ha minden hostile semlegesítve van, és minden túsz biztonságban van, át lett adva vagy el lett engedve. A túsz halála jelentéssor, és a scene-ben „failed” jelölés.</li>
   </ul>
-  <p>Scene fájlokat nem írok tömegesen. Egy teszt túszhelyszínt teszek Los Santosba; a többit te építed az editorban (<a href="#kerdesek">K9</a>).</p>
+  <p>Egy túszhelyszínt generálok Los Santosba a navmesh (járható talaj, útelérés) és a claude-mcp élő világlekérdezése alapján: túsz, 2–3 hostile fedezékben, scene-formátum 2, en/hu szövegek. A többit te építed az editorban (K9).</p>
 </section>
 
 <section id="uldozes">
@@ -310,8 +312,30 @@ html{scroll-behavior:smooth}
   </ul>
 </section>
 
+<section id="dontesek">
+  <h2><span class="n">✓</span>Döntések (2026-11-12)</h2>
+  <div class="files"><table>
+    <thead><tr><th>Kérdés</th><th>Döntés</th></tr></thead>
+    <tbody>
+      <tr><td>K1</td><td>Először a legközelebbi, majd a második legközelebbi egység kap ajánlatot, egységenként 20 s-ig, utána indul az AI.</td></tr>
+      <tr><td>K2</td><td>Mindkét egység incidense jelentéssort kap; a fizetés a beszállító egységé.</td></tr>
+      <tr><td>K3</td><td>A kérő értesítést kap, és újra kérhet.</td></tr>
+      <tr><td>K4</td><td>40 m-en belüli autónál rögtön a dobozba kerül, egyébként zacskóban a kézbe.</td></tr>
+      <tr><td>K5</td><td>LSPD leadó: <code>1560.23, -1669.29, 15.20</code>. A többi állomásnak egyelőre nincs leadója (config <code>STATIONS[i].evidence</code>, üres = nincs).</td></tr>
+      <tr><td>K6</td><td>Minden leadott bizonyítékért fix összeg jár (config <code>EVIDENCE.PAY_PER_ITEM</code>, alapból $150), a leadó tiszt egységének fizetésébe (<code>PAY</code>, a műszakelszámolásban külön sor).</td></tr>
+      <tr><td>K7</td><td>A szolgálat nem zárható le, amíg le nem adott bizonyíték van a dobozban vagy zacskóban (a draft-blokkolás mintájára, a leadó helyét is megmutatja).</td></tr>
+      <tr><td>K8</td><td>Csak a gyanús és illegális tárgyak foglalhatók le.</td></tr>
+      <tr><td>K9</td><td>A safe-szabály lazítása elfogadva. 1 túszhelyszínt generálok a navmesh és az MCP segítségével (élőben ellenőrzött pozíciók: járható talaj, fedezék, a rendőrautóknak elérhető út).</td></tr>
+      <tr><td>K10</td><td>Akkor számít a rendőrautóhoz vittnek, ha a túszt 5 m-en belül engedik el egy rendőrautótól. Utána a túsz ott vár a mentőre, vagy ha nincs mentő, elengedhető.</td></tr>
+      <tr><td>K11</td><td>A lopott jármű, a felfüggesztett jogosítvány és az ittasság is 30%.</td></tr>
+      <tr><td>K12</td><td>Végleg elakadva kiszáll, és gyalog menekül.</td></tr>
+      <tr><td>K13</td><td>A késleltetés csak a személy- és járműlekérdezésre vonatkozik.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
 <section id="kerdesek">
-  <h2><span class="n">??</span>Kérdések</h2>
+  <h2><span class="n">??</span>Kérdések (megválaszolva, lásd Döntések)</h2>
   <div class="qs">
     <div class="q"><span class="id">K1 · rabszállító ajánlat</span><p>Csak a legközelebbi szabad egység kapjon ajánlatot, vagy elutasításkor menjen tovább a következőhöz?</p>
       <ul><li class="rec">Legközelebbi, majd a második legközelebbi; egységenként 20 s, utána AI</li><li>Csak a legközelebbi, 25 s, utána AI</li><li>Egyszerre mindenki a körzetben, aki először elfogadja</li></ul></div>

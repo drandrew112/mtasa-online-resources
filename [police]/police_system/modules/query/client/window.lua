@@ -77,6 +77,7 @@ local function searchOpts(r)
         if it.class == "illegal" then illegal = illegal + 1 end
         lines[#lines + 1] = (cls[it.class] or HEX.text) .. L("police_system.item." .. tostring(it.id))
             .. HEX.dim .. "  ·  " .. L("police_system.search.class_" .. tostring(it.class))
+            .. (it.seized and ("  ·  " .. L.upper(L("police_system.evidence.seized_tag"))) or "")
     end
     if #lines == 0 then lines[1] = HEX.dim .. L("police_system.search.nothing") end
     if illegal > 0 then

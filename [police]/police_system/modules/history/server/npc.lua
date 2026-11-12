@@ -132,11 +132,9 @@ local function makeCitizen(skin, prof, cb)
         drugType = prof and pf.drugType or nil,
     }
     if prof then flags.drug = pf.drug == true end
-    if pf.flee ~= nil then
-        flags.flee = pf.flee == true
-    else
-        flags.flee = chance((warrant or (prof and prof.warrants and #prof.warrants > 0)) and C.FLEE_WARRANT or C.FLEE)
-    end
+    -- flee: only a scene profile sets it (true = always / false = never runs at a traffic stop); otherwise the stop
+    -- decides by what the driver has to hide (stop.lua ST.fleeDecision, 2026-11-12)
+    if pf.flee ~= nil then flags.flee = pf.flee == true end
     local row = { kind = "npc", name = name, gender = gender, birth_date = birth, skin = skin, flags = POL.db.json(flags),
                   generated = 1, created_at = now, last_seen = now, ext_key = prof and prof.key or nil }
     POL.db.create("pol_citizens", row, function(id)

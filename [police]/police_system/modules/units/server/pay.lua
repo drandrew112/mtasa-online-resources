@@ -20,6 +20,7 @@ local WAGE_PARAMS = {
     { key = "pursuit_caught", label = "Pursuit with arrest", default = P.pursuit_caught },
     { key = "backup", label = "Backup / support", default = P.backup },
     { key = "duty_10min", label = "Duty time (per 10 minutes)", default = P.duty_10min },
+    { key = "evidence", label = "Evidence delivered (per item)", default = P.evidence },
     { key = "hour_cap", label = "Hourly cap", default = P.HOUR_CAP },
     { key = "xp_traffic_warning", label = "XP: stop with a warning", default = P.xp_traffic_warning, kind = "xp" },
     { key = "xp_traffic_fine", label = "XP: stop with a fine", default = P.xp_traffic_fine, kind = "xp" },
@@ -28,6 +29,7 @@ local WAGE_PARAMS = {
     { key = "xp_pursuit_caught", label = "XP: pursuit with arrest", default = P.xp_pursuit_caught, kind = "xp" },
     { key = "xp_backup", label = "XP: backup", default = P.xp_backup, kind = "xp" },
     { key = "xp_duty_10min", label = "XP: duty time (per 10 minutes)", default = P.xp_duty_10min, kind = "xp" },
+    { key = "xp_evidence", label = "XP: evidence delivered (per item)", default = P.xp_evidence, kind = "xp" },
 }
 local default = {}
 for _, p in ipairs(WAGE_PARAMS) do default[p.key] = p.default end
@@ -53,7 +55,8 @@ end)
 -- per account: { counts, sums, xp, total, ids } from the submitted reports of a shift
 -- reports: { { id, pay_type, level, members = { acc, ... }, subjects, at } }; active: { [acc] = minutes }
 -- paid: { [acc] = { ["r<id>"] = true } } reports already paid (skipped); paidTotal: { [acc] = money } (the cap)
-function PAY.compute(reports, active, accounts, startedAt, endedAt, paid, paidTotal)
+-- extra: { [acc] = { evidence = items delivered } } (counted on the unit, modules/evidence)
+function PAY.compute(reports, active, accounts, startedAt, endedAt, paid, paidTotal, extra)
     paid, paidTotal = paid or {}, paidTotal or {}
     local out = {}
     local function entry(acc)
@@ -98,6 +101,17 @@ function PAY.compute(reports, active, accounts, startedAt, endedAt, paid, paidTo
             end
         end
     end
+    -- delivered evidence: a fixed amount per item (2026-11-12)
+    for acc, x in pairs(type(extra) == "table" and extra or {}) do
+        local n = accounts[acc] and tonumber(x.evidence) or 0
+        if n > 0 then
+            local e = entry(acc)
+            e.counts.evidence = (e.counts.evidence or 0) + n
+            e.sums.evidence = (e.sums.evidence or 0) + n * PAY.wage("evidence")
+            e.total = e.total + n * PAY.wage("evidence")
+            e.xp = e.xp + n * PAY.wage("xp_evidence")
+        end
+    end
     -- duty time + the hourly cap
     local hours = math.max(1, ((endedAt or POL.now()) - (startedAt or POL.now())) / 3600)
     local fullCap = math.floor(PAY.wage("hour_cap") * hours)
@@ -120,7 +134,7 @@ local LABELS = {
     traffic_warning = "police_system.pay.traffic_warning", traffic_fine = "police_system.pay.traffic_fine",
     arrest_npc = "police_system.pay.arrest_npc", arrest_player = "police_system.pay.arrest_player",
     pursuit_caught = "police_system.pay.pursuit_caught", backup = "police_system.pay.backup",
-    duty_10min = "police_system.pay.duty_10min",
+    duty_10min = "police_system.pay.duty_10min", evidence = "police_system.pay.evidence",
 }
 
 local function payPlayer(player, e, callsign)
@@ -174,7 +188,7 @@ local function payout(shiftId, rec, accounts, active, endedAt, opts)
             reports[#reports + 1] = { id = r.id, pay_type = r.pay_type, level = r.level, members = POL.db.unjson(r.members),
                 subjects = POL.db.unjson(r.subjects), at = tonumber(r.submitted_at) or 0 }
         end
-        local result = PAY.compute(reports, active, accounts, rec.startedAt, endedAt, rec.paid, rec.paidTotal)
+        local result = PAY.compute(reports, active, accounts, rec.startedAt, endedAt, rec.paid, rec.paidTotal, opts.extra)
         for acc, e in pairs(result) do
             local again = rec.paidTotal[acc] ~= nil
             rec.paid[acc] = rec.paid[acc] or {}
@@ -201,7 +215,9 @@ function PAY.settle(unit)
     if not unit.shiftId then return end
     local rec = record(unit)
     rec.endedAt = POL.now()
-    payout(unit.shiftId, rec, unit.accounts, unit.active, rec.endedAt)
+    local extra = unit.evPay
+    unit.evPay = {}
+    payout(unit.shiftId, rec, unit.accounts, unit.active, rec.endedAt, { extra = extra })
 end
 
 -- a member's duty ended (left the unit, quit, lost the right): that member at once; quit = at the next login
@@ -209,8 +225,10 @@ function PAY.member(unit, player, acc, quit)
     if not unit.shiftId or not acc then return end
     local minutes = unit.active[acc] or 0
     unit.active[acc] = minutes % 10   -- the started 10 minutes stay for a later rejoin
+    local extra = unit.evPay and unit.evPay[acc] and { [acc] = unit.evPay[acc] } or nil
+    if unit.evPay then unit.evPay[acc] = nil end
     payout(unit.shiftId, record(unit), { [acc] = unit.accounts[acc] or POL.nameOf(player) }, { [acc] = minutes },
-        POL.now(), { offline = quit and { [acc] = true } or nil })
+        POL.now(), { offline = quit and { [acc] = true } or nil, extra = extra })
 end
 
 -- reports.lua: a report of an ended shift was submitted: its share is paid now

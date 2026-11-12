@@ -3,7 +3,7 @@
 -- appears and what it does (tactics.lua). Spawn only on a road 180-400 m from the suspect at a point no player camera
 -- sees (ai_land_traffic findHiddenRoadSpawn, with priority over the civilian traffic); removal only unseen and farther
 -- than DESPAWN_DIST from every player (setScriptedDespawnUnseen). Until then a unit retreats: siren off, it drives
--- on as normal traffic. Model by zone: city 596 / 598 (hu_pd, ELS extra 1), countryside 599, tank 432 (levels 5-6).
+-- on as normal traffic. Model by zone: city 596 / 598 (hu_pd, ELS extra 1) / 507 / 566 / 438, countryside 409 / 467, tank 432 (levels 5-6).
 -- Only dimension 0 / interior 0 (the scripted traffic vehicles only sync there).
 --
 -- Every unit has a radar blip (BLIP) that only its suspect (a player) sees, until it retreats.

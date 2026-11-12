@@ -81,11 +81,12 @@ local function drawCitizen(x, y, w, h)
     W.button("cz:warrant", x + w - POL.px(190), cy + POL.px(112), POL.px(174), POL.px(28), L("police_system.mdc.issue_warrant"),
         function() MDC.warrantForm(p.id, p.name) end, "danger")
     cy = cy + POL.px(160)
-    local tabs = { "records", "reports", "warrants", "vehicles" }
+    local tabs = { "records", "reports", "warrants", "vehicles", "evidence" }
     local tx = x
+    local tw = math.min(POL.px(170), (w - POL.px(4) * (#tabs - 1)) / #tabs)
     for _, t in ipairs(tabs) do
-        W.button("cz:tab:" .. t, tx, cy, POL.px(170), POL.px(30), L("police_system.mdc.tab_" .. t), function() S.tab = t end, S.tab == t and "active" or nil)
-        tx = tx + POL.px(174)
+        W.button("cz:tab:" .. t, tx, cy, tw, POL.px(30), L("police_system.mdc.tab_" .. t), function() S.tab = t end, S.tab == t and "active" or nil)
+        tx = tx + tw + POL.px(4)
     end
     cy = cy + POL.px(36)
     local rows, cols = {}, nil
@@ -117,6 +118,16 @@ local function drawCitizen(x, y, w, h)
             rows[#rows + 1] = { cells = { POL.date(wr.at), table.concat(rs, ", "), wr.description, L("police_system.mdc.status_" .. tostring(wr.status)) },
                 colors = { C.dim, wr.status == "active" and C.red or C.dim } }
         end
+    elseif S.tab == "evidence" then
+        -- delivered evidence seized from this person (modules/evidence)
+        cols = { { L("police_system.mdc.col_date"), 1.4 }, { L("police_system.mdc.col_item"), 2.4 }, { L("police_system.mdc.col_type"), 1.2 },
+                 { L("police_system.mdc.col_plate"), 1 }, { L("police_system.mdc.col_officer"), 1.8 } }
+        for _, e in ipairs(p.evidence or {}) do
+            rows[#rows + 1] = { cells = { POL.date(e.at), L("police_system.item." .. tostring(e.item)),
+                L.upper(L("police_system.search.class_" .. tostring(e.class))), tostring(e.plate or "-"),
+                (e.unit and (e.unit .. " ") or "") .. tostring(e.officer or "") },
+                colors = { C.dim, nil, e.class == "illegal" and C.red or C.orange, C.dim } }
+        end
     else
         cols = { { L("police_system.mdc.col_plate"), 1.4 }, { L("police_system.mdc.col_model"), 2 } }
         for _, v in ipairs(p.vehicles or {}) do
@@ -147,10 +158,12 @@ MDC.pages.citizens = {
         local rows = {}
         for _, r in ipairs(d.rows or {}) do
             local flags = {}
+            if r.stopped then flags[#flags + 1] = "STOPPED" end
             if (r.warrants or 0) > 0 then flags[#flags + 1] = "WARRANT" end
             if (r.wanted or 0) > 0 then flags[#flags + 1] = "WANTED " .. ("★"):rep(r.wanted) end
             rows[#rows + 1] = { cells = { r.name, r.kind == "npc" and "NPC" or L("police_system.mdc.player"), "#" .. r.id, tostring(r.birth or "-"),
-                table.concat(flags, "  ") }, colors = { nil, C.dim, C.dim, C.dim, C.red }, id = r.id }
+                table.concat(flags, "  ") }, colors = { nil, C.dim, C.dim, C.dim, (r.stopped and #flags == 1) and C.orange or C.red },
+                id = r.id, highlight = r.stopped }
         end
         local ty = y + POL.px(76)
         W.table("citizens", x, ty, w, y + h - ty - POL.px(40), { { L("police_system.mdc.col_name"), 3 }, { L("police_system.mdc.col_type"), 1 },
@@ -211,8 +224,9 @@ MDC.pages.vehicles = {
         local rows = {}
         for _, r in ipairs(d.rows or {}) do
             rows[#rows + 1] = { cells = { tostring(r.plate or "-"), exports.veh_manager:getModelName(r.model or 0) or "?", r.owner,
-                r.kind == "npc" and "NPC" or L("police_system.mdc.player"), r.stolen and "STOLEN" or "" },
-                colors = { nil, nil, nil, C.dim, C.red }, id = r.id }
+                r.kind == "npc" and "NPC" or L("police_system.mdc.player"),
+                (r.stopped and "STOPPED" or "") .. ((r.stopped and r.stolen) and "  " or "") .. (r.stolen and "STOLEN" or "") },
+                colors = { nil, nil, nil, C.dim, r.stolen and C.red or C.orange }, id = r.id, highlight = r.stopped }
         end
         local ty = y + POL.px(76)
         W.table("vehicles", x, ty, w, y + h - ty - POL.px(40), { { L("police_system.mdc.col_plate"), 1.4 }, { L("police_system.mdc.col_model"), 1.6 },

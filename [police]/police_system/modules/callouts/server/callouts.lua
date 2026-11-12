@@ -155,9 +155,12 @@ local function pushOffer(unit)
     for _, p in ipairs(POL.units.members(unit)) do sendOffer(unit, p) end
 end
 
+-- a unit with a prisoner transport offer on its screen (transport.lua) gets no call offer meanwhile (one Y / N at a
+-- time); it gets the nearest open call when that offer ends (CO.unitFree)
 local function offerable(unit, c)
     return c and c.status ~= "closed" and not c.units[unit.callsign] and not c.declined[unit.callsign]
         and unit.status == "available" and POL.units.list[unit.id] == unit
+        and not (POL.transport and POL.transport.offerOf and POL.transport.offerOf(unit))
 end
 
 local nextOffer
@@ -253,6 +256,10 @@ local function offerNearestOpen(unit)
         end
     end
     if best then offer(unit, best) end
+end
+
+function CO.unitFree(unit)
+    if unit and POL.units.list[unit.id] == unit and unit.status == "available" and not CO.offers[unit.id] then offerNearestOpen(unit) end
 end
 
 -- Y / N on the popup (any member of the unit answers for it)

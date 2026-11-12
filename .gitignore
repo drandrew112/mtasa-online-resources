@@ -88,3 +88,6 @@ desktop.ini
 
 # --- v_accounts stats: runtime player count history ---
 /\[accounts\]/v_accounts/stats/stats.json
+
+# radio_voice wav sources (large; the built ogg files in sounds/ are tracked)
+/\[police\]/police_system/modules/radio_voice/sounds_source/

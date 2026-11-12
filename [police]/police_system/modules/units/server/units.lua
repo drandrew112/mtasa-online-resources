@@ -275,6 +275,12 @@ function U.signOff(player, cb)
     if not unit then return cb(false, "not_in_unit") end
     if unit.leader ~= player then
         -- the drafts this member is in must be submitted first
+        -- evidence bags in the hands must be stored / delivered first (modules/evidence)
+        local ev = POL.evidence.pendingOf(player)
+        if ev > 0 then
+            POL.evidence.showDropOff(unit, player)
+            return cb(false, "evidence", ev)
+        end
         return POL.reports.draftCount(POL.accountOf(player), unit.shiftId, function(n)
             if n > 0 then return cb(false, "reports", n) end
             if U.byPlayer[player] ~= unit then return cb(false, "not_in_unit") end
@@ -284,6 +290,12 @@ function U.signOff(player, cb)
     end
     local pending = POL.reports.pendingCount(unit)
     if pending > 0 then return cb(false, "reports", pending) end
+    -- undelivered evidence (the unit's box, the members' bags): no sign off until it is delivered (2026-11-12)
+    local ev = POL.evidence.pendingCount(unit)
+    if ev > 0 then
+        POL.evidence.showDropOff(unit, player)
+        return cb(false, "evidence", ev)
+    end
     U.finish(unit, "sign_off")
     cb(true)
 end

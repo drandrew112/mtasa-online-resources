@@ -1035,6 +1035,28 @@ CREATE TABLE IF NOT EXISTS `pol_shifts` (
     KEY `idx_pols_pool` (`is_pool`, `server`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- police evidence delivered at a station (police_system/modules/evidence, 2026-11-12)
+CREATE TABLE IF NOT EXISTS `pol_evidence` (
+    `id`           INT AUTO_INCREMENT PRIMARY KEY,
+    `citizen_id`   INT          DEFAULT NULL,
+    `item`         VARCHAR(48)  DEFAULT NULL,
+    `class`        VARCHAR(16)  DEFAULT NULL,
+    `from_name`    VARCHAR(96)  DEFAULT NULL,
+    `plate`        VARCHAR(16)  DEFAULT NULL,
+    `officer_acc`  VARCHAR(50)  DEFAULT NULL,
+    `officer_name` VARCHAR(64)  DEFAULT NULL,
+    `unit`         VARCHAR(8)   DEFAULT NULL,
+    `incident_id`  VARCHAR(24)  DEFAULT NULL,
+    `seized_at`    INT          NOT NULL DEFAULT 0,
+    `delivered_at` INT          NOT NULL DEFAULT 0,
+    `delivered_by` VARCHAR(50)  DEFAULT NULL,
+    `station`      VARCHAR(16)  DEFAULT NULL,
+    `is_pool`      TINYINT(1)   NOT NULL DEFAULT 0,
+    `server`       VARCHAR(32)  DEFAULT NULL,
+    KEY `idx_pole_citizen` (`citizen_id`),
+    KEY `idx_pole_pool` (`is_pool`, `server`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
 CREATE TABLE IF NOT EXISTS `pol_stats` (
     `day`    DATE         NOT NULL,
     `stat`   VARCHAR(48)  NOT NULL,

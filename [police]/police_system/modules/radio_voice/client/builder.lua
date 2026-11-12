@@ -2,7 +2,7 @@
 -- phrase id + args -> the ordered list of sound items the player plays (the Lua twin of docs/design.html's builder).
 -- An item: { tok, file, len (ms, trimmed), text, gap (ms before it, negative = overlap), char, fx } or { pause = ms }.
 -- Variables (db.varsHelp): callsign, plate, color, vehicle, direction, bound, crime, code, area. A variable without
--- audio (no area clips yet, a plane model) is dropped; "in <area>" drops its conjunctive with it.
+-- audio (a zone or plane model without a clip) is dropped; "in <area>" drops its conjunctive with it.
 -- Pure Lua apart from VOICE.db, so tools/test_builder.lua runs it outside MTA.
 
 VOICE = VOICE or {}
@@ -89,6 +89,18 @@ local function expandVar(v, a, out)
         if t then push(out, t) end
     elseif v == "code" then
         push(out, DB.maps.priorityCode[tostring(a.priority)] or "RESPOND.CODE_2")
+    elseif v == "name" then
+        -- "First Last" (a.gender "m" | "f" picks the first-name list; none = either): first name, short pause, last name
+        local words = {}
+        for w in tostring(a.name or ""):lower():gsub("'", ""):gmatch("[%a]+") do words[#words + 1] = w end
+        if #words == 0 then return end
+        local names = DB.maps.names
+        local g = a.gender == "f" and "f" or (a.gender == "m" and "m" or nil)
+        local first = (g and names[g][words[1]]) or (not g and (names.m[words[1]] or names.f[words[1]]))
+        local last = #words > 1 and names.l[words[#words]] or nil
+        if first then push(out, first) end
+        if first and last then out[#out + 1] = { pause = 120 } end
+        if last then push(out, last) end
     elseif v == "area" then
         local t = a.area and DB.maps.areas[a.area]
         if t and push(out, t) then return end

@@ -108,8 +108,23 @@ function API.warrantRevoke(p, a, reply) POL.warrants.revoke(p, a.id, function(ok
 
 ------------------------------------------------------------------------ citizens / vehicles
 
+-- the citizen / vehicle ids of the active stops of the officer's unit, the newest stop first (pinned on top of the lists)
+local function stopPins(p, field)
+    local unit = POL.units.of(p)
+    if not unit then return nil end
+    local list = {}
+    for _, s in pairs(POL.stop.list) do
+        if s.unit == unit and s[field] then list[#list + 1] = s end
+    end
+    table.sort(list, function(x, y) return (x.startedAt or 0) > (y.startedAt or 0) end)
+    local ids = {}
+    for _, s in ipairs(list) do ids[#ids + 1] = s[field] end
+    return ids
+end
+
 function API.citizens(p, a, reply)
-    POL.records.searchCitizens(a.filter, a.q, a.page, function(rows, more) reply({ rows = rows, more = more }) end)
+    POL.records.searchCitizens(a.filter, a.q, a.page, function(rows, more) reply({ rows = rows, more = more }) end,
+        stopPins(p, "citizenId"))
 end
 
 function API.citizen(p, a, reply)
@@ -120,6 +135,7 @@ function API.citizen(p, a, reply)
 end
 
 function API.vehicles(p, a, reply)
+    local pins = stopPins(p, "vehicleId")
     POL.records.searchVehicles(a.filter, a.q, a.page, function(rows, more)
         if #rows == 0 and a.q and #tostring(a.q) >= 3 then
             -- a live NPC vehicle with this plate: registered now (History)
@@ -131,7 +147,7 @@ function API.vehicles(p, a, reply)
             end
         end
         reply({ rows = rows, more = more })
-    end)
+    end, pins)
 end
 
 function API.vehicle(p, a, reply)

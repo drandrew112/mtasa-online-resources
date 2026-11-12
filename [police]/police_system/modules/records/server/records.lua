@@ -87,8 +87,69 @@ end
 
 local function like(q) return "%" .. tostring(q):gsub("[%%_]", "") .. "%" end
 
+local CITIZEN_SELECT = [[SELECT c.id, c.kind, c.account_name, c.name, c.gender, c.birth_date, a.display_name AS dname,
+            (SELECT COUNT(*) FROM pol_warrants w WHERE w.citizen_id = c.id AND w.status = 'active' AND w.is_pool = 0) AS warrants
+        FROM pol_citizens c LEFT JOIN accounts a ON a.account_name = c.account_name
+        WHERE ]]
+local VEHICLE_SELECT = [[SELECT v.id, v.kind, v.plate, v.model, v.flags, c.id AS cid, c.kind AS ckind, c.name, c.account_name,
+            a.display_name AS dname
+        FROM pol_vehicles v LEFT JOIN pol_citizens c ON c.id = v.owner_citizen_id
+        LEFT JOIN accounts a ON a.account_name = c.account_name
+        WHERE ]]
+
+local function citizenRow(r)
+    local wanted = 0
+    local p = r.kind == "player" and POL.playerByAccount(r.account_name)
+    if p then wanted = getPlayerWantedLevel(p) end
+    return { id = r.id, kind = r.kind, name = R.nameOf(r), gender = r.gender, birth = r.birth_date,
+             warrants = tonumber(r.warrants) or 0, wanted = wanted }
+end
+
+local function vehicleRow(r)
+    local f = POL.db.unjson(r.flags)
+    return { id = r.id, kind = r.kind, plate = r.plate, model = r.model,
+        owner = r.cid and R.nameOf({ kind = r.ckind, name = r.name, account_name = r.account_name, dname = r.dname }) or "-",
+        ownerId = r.cid, stolen = f.stolen == true }
+end
+
+-- the citizens / vehicles of the unit's active stops (pins = ids, newest first) go to the top of the first page of a
+-- list without search text, marked stopped = true, without duplicates; the Player / NPC filter applies to them too
+local function pinned(kind, out, pins, filter, q, page, done)
+    local ids = {}
+    for _, id in ipairs(type(pins) == "table" and pins or {}) do
+        id = tonumber(id)
+        if id then ids[#ids + 1] = id end
+    end
+    if #ids == 0 or page ~= 1 or tostring(q or "") ~= "" then return done() end
+    local alias = kind == "citizens" and "c" or "v"
+    local where, args = { alias .. ".id IN (" .. ("?,"):rep(#ids):sub(1, -2) .. ")" }, {}
+    for _, id in ipairs(ids) do args[#args + 1] = id end
+    if filter == "player" or filter == "npc" then where[#where + 1] = alias .. ".kind = ?"; args[#args + 1] = filter end
+    POL.db.query(function(rows)
+        rows = type(rows) == "table" and rows or {}
+        local top, seen = {}, {}
+        for _, id in ipairs(ids) do
+            for _, r in ipairs(rows) do
+                if tonumber(r.id) == id and not seen[id] then
+                    seen[id] = true
+                    local row = kind == "citizens" and citizenRow(r) or vehicleRow(r)
+                    row.stopped = true
+                    top[#top + 1] = row
+                end
+            end
+        end
+        if #top == 0 then return done() end
+        for _, row in ipairs(out) do
+            if not seen[tonumber(row.id)] then top[#top + 1] = row end
+        end
+        for i = 1, math.max(#out, #top) do out[i] = top[i] end
+        done()
+    end, (kind == "citizens" and CITIZEN_SELECT or VEHICLE_SELECT) .. table.concat(where, " AND "), unpack(args))
+end
+
 -- kind "citizens": filter "all" | "player" | "npc"; q = name / citizen id / plate. cb(rows, total)
-function R.searchCitizens(filter, q, page, cb)
+-- pins: citizen ids shown first on page 1 (the unit's stopped persons, MDC)
+function R.searchCitizens(filter, q, page, cb, pins)
     local where, args = { "c.is_pool = 0" }, {}
     if filter == "player" or filter == "npc" then where[#where + 1] = "c.kind = ?"; args[#args + 1] = filter end
     q = tostring(q or ""):sub(1, 40)
@@ -113,18 +174,12 @@ function R.searchCitizens(filter, q, page, cb)
         local more = #rows > PAGE
         if more then rows[#rows] = nil end
         local out = {}
-        for _, r in ipairs(rows) do
-            local wanted = 0
-            local p = r.kind == "player" and POL.playerByAccount(r.account_name)
-            if p then wanted = getPlayerWantedLevel(p) end
-            out[#out + 1] = { id = r.id, kind = r.kind, name = R.nameOf(r), gender = r.gender, birth = r.birth_date,
-                              warrants = tonumber(r.warrants) or 0, wanted = wanted }
-        end
-        cb(out, more)
+        for _, r in ipairs(rows) do out[#out + 1] = citizenRow(r) end
+        pinned("citizens", out, pins, filter, q, page, function() cb(out, more) end)
     end, sql, unpack(args))
 end
 
-function R.searchVehicles(filter, q, page, cb)
+function R.searchVehicles(filter, q, page, cb, pins)
     local where, args = { "v.is_pool = 0" }, {}
     if filter == "player" or filter == "npc" then where[#where + 1] = "v.kind = ?"; args[#args + 1] = filter end
     q = tostring(q or ""):sub(1, 40)
@@ -146,13 +201,8 @@ function R.searchVehicles(filter, q, page, cb)
         local more = #rows > PAGE
         if more then rows[#rows] = nil end
         local out = {}
-        for _, r in ipairs(rows) do
-            local f = POL.db.unjson(r.flags)
-            out[#out + 1] = { id = r.id, kind = r.kind, plate = r.plate, model = r.model,
-                owner = r.cid and R.nameOf({ kind = r.ckind, name = r.name, account_name = r.account_name, dname = r.dname }) or "-",
-                ownerId = r.cid, stolen = f.stolen == true }
-        end
-        cb(out, more)
+        for _, r in ipairs(rows) do out[#out + 1] = vehicleRow(r) end
+        pinned("vehicles", out, pins, filter, q, page, function() cb(out, more) end)
     end, sql, unpack(args))
 end
 
@@ -184,7 +234,7 @@ function R.profile(id, cb)
                 if w then prof.wanted, prof.wantedReasons = w.level, w.reasonList end
             end
         end
-        local left = 4
+        local left = 5
         local function done() left = left - 1; if left == 0 then cb(prof) end end
         POL.db.query(function(rows)
             for _, r in ipairs(type(rows) == "table" and rows or {}) do
@@ -213,6 +263,15 @@ function R.profile(id, cb)
             end
             done()
         end, "SELECT id, plate, model FROM pol_vehicles WHERE owner_citizen_id = ? AND is_pool = 0 ORDER BY id DESC LIMIT 20", c.id)
+        -- delivered evidence (modules/evidence)
+        prof.evidence = {}
+        POL.db.query(function(rows)
+            for _, r in ipairs(type(rows) == "table" and rows or {}) do
+                prof.evidence[#prof.evidence + 1] = { id = r.id, item = r.item, class = r.class, at = tonumber(r.seized_at),
+                    delivered = tonumber(r.delivered_at), officer = r.officer_name, unit = r.unit, plate = r.plate }
+            end
+            done()
+        end, "SELECT * FROM pol_evidence WHERE citizen_id = ? AND is_pool = 0 ORDER BY id DESC LIMIT 50", c.id)
     end)
 end
 

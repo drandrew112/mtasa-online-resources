@@ -103,16 +103,226 @@ local function fail(job, key)
     if isElement(job.officer) then POL.notify(job.officer, key or "police_system.transport.failed") end
 end
 
--- step 2: the officer picked the charges
+------------------------------------------------------------------------ a player unit as the transport (2026-11-12)
+-- Before the AI van: the nearest Available player unit (not the requester's) whose police car has a free seat of
+-- SEATS within PLAYER_RADIUS gets a highlighted offer (callouts/client/popup.lua, Y / N, PLAYER_OFFER_TIME s), then the
+-- next nearest (PLAYER_OFFERS units at most). No / timeout of all of them: the AI van. Yes: the unit goes Responding
+-- (sub "transport") with a v_radar objective on the suspect (moved along when the suspect is moved); within
+-- PLAYER_ARRIVE m the objective goes, Busy "transport", and the rest is the officers' job (the script does not check
+-- the boarding). The picked charges stay on the suspect (TR.taken) and are ticked in the station handover menu;
+-- the requesting unit's incident gets a line at the arrival and at the handover; the pay is the handing over unit's.
+-- Not there in PLAYER_TIMEOUT s: both units are told, the requester may ask again.
+
+TR.pending = {}   -- [suspect] = { suspect, officer, unit, charges, tried = { [unit] = true }, offers = n, state, by }
+TR.offers = {}    -- [unit.id] = { pending, expires }
+TR.taken = {}     -- [suspect] = { charges, unit (requester), officer, by (transporting unit) }
+
+function TR.offerOf(unit) return unit and TR.offers[unit.id] ~= nil end
+
+local function freeSeat(veh)
+    local max = getVehicleMaxPassengers(veh) or 0
+    for _, seat in ipairs(C.SEATS) do
+        if seat <= max and not getVehicleOccupant(veh, seat) then return true end
+    end
+    return false
+end
+
+local function candidate(p)
+    local best, bd
+    for _, u in pairs(POL.units.list) do
+        local v = u.vehicle
+        if u ~= p.unit and not p.tried[u] and u.status == "available" and not TR.offers[u.id]
+            and not (POL.callouts.offers and POL.callouts.offers[u.id])
+            and isElement(v) and isPoliceVehicle(v) and not isVehicleBlown(v) and freeSeat(v)
+            and getElementInterior(v) == 0 and #POL.units.members(u) > 0 then
+            local d = POL.dist(v, p.suspect)
+            if d <= C.PLAYER_RADIUS and (not bd or d < bd) then best, bd = u, d end
+        end
+    end
+    return best, bd
+end
+
+local function offerPayload(player, p)
+    local x, y, z = POL.pos(p.suspect)
+    local px, py = getElementPosition(player)
+    local o = TR.offers[p.unitOffered and p.unitOffered.id or -1]
+    return { kind = "transport", callsign = p.unit.callsign, name = POL.stop.nameOf(p.suspect),
+             zone = getZoneName(x, y, z), distance = math.floor(math.sqrt((px - x) ^ 2 + (py - y) ^ 2)),
+             left = o and math.max(1, math.ceil((o.expires - getTickCount()) / 1000)) or C.PLAYER_OFFER_TIME,
+             total = C.PLAYER_OFFER_TIME }
+end
+
+local function pushTransportOffer(unit, p)
+    for _, m in ipairs(POL.units.members(unit)) do
+        POL.send(m, "transport:offer", p and offerPayload(m, p) or false)
+    end
+end
+
+local startAI
+
+-- the next unit gets the offer; nobody (left): the AI van
+local function nextCandidate(p)
+    if TR.pending[p.suspect] ~= p then return end
+    if not eligible(p.suspect) or not POL.units.list[p.unit.id] then
+        TR.pending[p.suspect] = nil
+        return
+    end
+    local u = p.offers < C.PLAYER_OFFERS and candidate(p)
+    if not u then
+        TR.pending[p.suspect] = nil
+        return startAI(p.officer, p.suspect, p.charges)
+    end
+    p.offers = p.offers + 1
+    p.tried[u] = true
+    p.unitOffered = u
+    TR.offers[u.id] = { pending = p, expires = getTickCount() + C.PLAYER_OFFER_TIME * 1000 }
+    pushTransportOffer(u, p)
+    POL.events.logFor(p.officer, "transport_offered", { name = POL.stop.nameOf(p.suspect), unit = u.callsign })
+    POL.emit("transport.offered", u, p.unit, p.suspect)
+    TR.ensureTimer()
+end
+
+local function endTransportOffer(unit, accepted)
+    local o = TR.offers[unit.id]
+    if not o then return end
+    TR.offers[unit.id] = nil
+    pushTransportOffer(unit, false)
+    local p = o.pending
+    p.unitOffered = nil
+    if not accepted then
+        -- a declined / missed offer: the unit may get a call offer again
+        if POL.callouts.unitFree then POL.callouts.unitFree(unit) end
+        nextCandidate(p)
+    end
+end
+
+local function accepted(unit, player, p)
+    if TR.pending[p.suspect] ~= p or not eligible(p.suspect) then
+        return POL.notify(player, "police_system.transport.offer_gone")
+    end
+    p.state, p.by, p.acceptedAt = "accepted", unit, getTickCount()
+    TR.taken[p.suspect] = { charges = p.charges, unit = p.unit, officer = p.officer, by = unit }
+    POL.units.setStatus(unit, "responding", player)
+    POL.units.setSub(unit, "transport")
+    local x, y, z = POL.pos(p.suspect)
+    p.ox, p.oy = x, y
+    POL.callouts.setObjective(unit, x, y, z, "police_system.transport.objective")
+    POL.notify(POL.units.members(unit), "police_system.transport.you_accepted", { name = POL.stop.nameOf(p.suspect), callsign = p.unit.callsign })
+    POL.notify(POL.units.members(p.unit), "police_system.transport.player_coming", { callsign = unit.callsign })
+    POL.events.logFor(p.officer, "transport_accepted", { name = POL.stop.nameOf(p.suspect), unit = unit.callsign })
+    POL.emit("transport.accepted", unit, p.unit, p.suspect)
+end
+
+-- the accepted unit is there (any member within PLAYER_ARRIVE m of the suspect)
+local function arrived(p, player)
+    TR.pending[p.suspect] = nil
+    POL.callouts.clearObjective(p.by)
+    if p.by.status == "responding" then
+        POL.units.setStatus(p.by, "busy", player)
+        POL.units.setSub(p.by, "transport")
+    end
+    local name = POL.stop.nameOf(p.suspect)
+    POL.events.logFor(player, "transport_pickup", { name = name, unit = p.unit.callsign })
+    if POL.units.list[p.unit.id] then
+        local inc = POL.events.incidentOf(p.unit, p.suspect)
+        POL.events.log(p.unit, nil, "transport_handed", { name = name, unit = p.by.callsign }, inc)
+        POL.notify(POL.units.members(p.unit), "police_system.transport.player_arrived", { callsign = p.by.callsign })
+    end
+end
+
+local function dropPending(p, keyReq, keyBy)
+    TR.pending[p.suspect] = nil
+    if TR.taken[p.suspect] and TR.taken[p.suspect].by == p.by then TR.taken[p.suspect] = nil end
+    if p.by and POL.units.list[p.by.id] then
+        POL.callouts.clearObjective(p.by)
+        if keyBy then POL.notify(POL.units.members(p.by), keyBy) end
+    end
+    if keyReq and POL.units.list[p.unit.id] then POL.notify(POL.units.members(p.unit), keyReq) end
+end
+
+local function tickPending(now)
+    for uid, o in pairs(TR.offers) do
+        local unit = POL.units.list[uid]
+        if not unit then TR.offers[uid] = nil; nextCandidate(o.pending)
+        elseif now >= o.expires or unit.status ~= "available" then endTransportOffer(unit, false) end
+    end
+    for s, p in pairs(TR.pending) do
+        if p.state == "accepted" then
+            if not POL.units.list[p.by.id] or not eligible(s) then
+                dropPending(p, "police_system.transport.player_cancelled", "police_system.transport.cancelled")
+            elseif now - p.acceptedAt > C.PLAYER_TIMEOUT * 1000 then
+                dropPending(p, "police_system.transport.player_late", "police_system.transport.late")
+            else
+                local x, y, z = POL.pos(s)
+                local here
+                for _, m in ipairs(POL.units.members(p.by)) do
+                    if getElementInterior(m) == getElementInterior(s) and POL.dist(m, s) <= C.PLAYER_ARRIVE then here = m; break end
+                end
+                if here then
+                    arrived(p, here)
+                elseif (x - p.ox) ^ 2 + (y - p.oy) ^ 2 > 100 then
+                    -- the suspect was moved: the objective follows it
+                    p.ox, p.oy = x, y
+                    POL.callouts.setObjective(p.by, x, y, z, "police_system.transport.objective")
+                end
+            end
+        end
+    end
+end
+
+-- the station handover of a suspect another unit asked a transport for: the charges to tick, and the requester's
+-- line in its incident (arrest.lua)
+function TR.chargesFor(suspect)
+    local t = TR.taken[suspect]
+    return t and t.charges or nil
+end
+
+function TR.handedOver(suspect, byUnit, name)
+    local t = TR.taken[suspect]
+    TR.taken[suspect] = nil
+    if not t or not POL.units.list[t.unit.id] or t.unit == byUnit then return end
+    local inc = POL.events.incidentOf(t.unit, suspect)
+    if inc then POL.events.log(t.unit, nil, "transport_delivered", { name = name, unit = byUnit and byUnit.callsign or "?" }, inc) end
+end
+
+-- the answer (any member of the unit; Y / N on the offer)
+POL.net("transport:answer", function(player, accept)
+    local unit = POL.units.of(player)
+    local o = unit and TR.offers[unit.id]
+    if not o then return POL.send(player, "transport:offer", false) end
+    endTransportOffer(unit, accept == true)
+    if accept == true then accepted(unit, player, o.pending) end
+end)
+
+-- step 2: the officer picked the charges: first a player unit, else the AI van
 function TR.request(officer, suspect, charges)
     if not POL.units.of(officer) or not eligible(suspect) then POL.notify(officer, "police_system.transport.no_suspect") return false end
+    if TR.pending[suspect] then POL.notify(officer, "police_system.transport.already_pending") return false end
+    if not POL.inWorld(suspect) then POL.notify(officer, "police_system.transport.unavailable") return false end
+    local p = { suspect = suspect, officer = officer, unit = POL.units.of(officer), charges = charges, tried = {}, offers = 0,
+                state = "offering" }
+    if candidate(p) then
+        TR.pending[suspect] = p
+        POL.notify(officer, "police_system.transport.asking_units")
+        nextCandidate(p)
+        return true
+    end
+    return startAI(officer, suspect, charges)
+end
+
+-- the AI van (the transport of a cuffed suspect nobody of the players took)
+function startAI(officer, suspect, charges)
+    if not isElement(officer) or not POL.units.of(officer) or not eligible(suspect) then
+        if isElement(officer) then POL.notify(officer, "police_system.transport.no_suspect") end
+        return false
+    end
     local t = traffic()
     if not t or not POL.inWorld(suspect) then POL.notify(officer, "police_system.transport.unavailable") return false end
     local x, y, z = POL.pos(suspect)
-    local sx, sy, sz, rot = POL.arrivalSpawn(t, C, x, y, z, "emergency", { x, y })
-    if not sx then POL.notify(officer, "police_system.transport.unavailable") return false end
-    local van, driver = t:createScriptedVehicle(C.MODEL, sx, sy, sz, { heading = rot, skin = C.SKIN, profile = "pursuit",
-        speedFactor = C.SPEED_FACTOR, keepDriver = true })
+    -- modules/pathfinder: spawn + pickup stop on the suspect's side of the road, on scene in C.ARRIVAL s
+    local van, driver = POL.pathfinder.dispatch(t, C, x, y, z, { model = C.MODEL, profile = "emergency", toward = { x, y },
+        vehicle = { skin = C.SKIN, profile = "pursuit", speedFactor = C.SPEED_FACTOR, keepDriver = true },
+        stop = { tag = "transport_pickup", hold = true } })
     if not van then POL.notify(officer, "police_system.transport.unavailable") return false end
     setVehiclePlateText(van, "SAPD" .. math.random(100, 999))
     setVehicleLocked(van, true)
@@ -122,7 +332,6 @@ function TR.request(officer, suspect, charges)
                   charges = charges, state = "coming", at = getTickCount() }
     TR.jobs[van] = job
     job.blip = createBlipAttachedTo(van, 0, 2, 255, 220, 0, 255, 5, 99999, officer)
-    t:addScriptedStop(van, x, y, z, { tag = "transport_pickup", hold = true, radius = 40 })
     POL.events.logFor(officer, "transport_requested", { name = POL.stop.nameOf(suspect) })
     POL.notify(officer, "police_system.transport.coming")
     POL.emit("transport.requested", officer, job.unit)
@@ -207,6 +416,7 @@ end
 
 local function tick()
     local now = getTickCount()
+    tickPending(now)
     local t = traffic()
     for van, driver in pairs(TR.leftovers) do
         if not isElement(van) then
@@ -252,7 +462,9 @@ local timer
 function TR.ensureTimer()
     if timer then return end
     timer = setTimer(function()
-        if not next(TR.jobs) and not next(TR.leftovers) then killTimer(timer); timer = nil return end
+        if not next(TR.jobs) and not next(TR.leftovers) and not next(TR.pending) and not next(TR.offers) then
+            killTimer(timer); timer = nil return
+        end
         local ok, err = pcall(tick)
         if not ok then outputDebugString("[police_system] transport: " .. tostring(err), 1) end
     end, 1000, 0)
@@ -304,6 +516,15 @@ addEventHandler("onPlayerQuit", root, function()
     local job = TR.jobOf(source)
     if job then fail(job, "police_system.transport.cancelled") end
     for _, j in pairs(TR.jobs) do if j.officer == source then j.officer = nil end end
+    TR.taken[source] = nil
+    local p = TR.pending[source]
+    if p then
+        if p.state == "accepted" then dropPending(p, nil, "police_system.transport.cancelled")
+        else
+            TR.pending[source] = nil
+            if p.unitOffered then endTransportOffer(p.unitOffered, true) end
+        end
+    end
 end)
 
 ------------------------------------------------------------------------ requests
@@ -344,4 +565,25 @@ function TR.stop()
         if isElement(van) then destroyElement(van) end
     end
     TR.jobs, TR.leftovers = {}, {}
+    for _, p in pairs(TR.pending) do
+        if p.by and POL.units.list[p.by.id] then POL.callouts.clearObjective(p.by) end
+    end
+    for uid in pairs(TR.offers) do
+        local u = POL.units.list[uid]
+        if u then pushTransportOffer(u, false) end
+    end
+    TR.pending, TR.offers, TR.taken = {}, {}, {}
 end
+
+-- a unit going off duty: its offer / accepted transport ends
+POL.on("unit.signedOff", function(unit)
+    if TR.offers[unit.id] then
+        local p = TR.offers[unit.id].pending
+        TR.offers[unit.id] = nil
+        nextCandidate(p)
+    end
+    for _, p in pairs(TR.pending) do
+        if p.by == unit then dropPending(p, "police_system.transport.player_cancelled", nil) end
+        if p.unit == unit and p.state ~= "accepted" then TR.pending[p.suspect] = nil end
+    end
+end)
