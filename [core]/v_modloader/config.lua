@@ -21,6 +21,15 @@ MODLOADER = {
         11326, 11387, 11389,    -- sf_garage: garage textures (sf_garage)
     },
 
+    -- event models: object IDs that are loaded ONLY while an event asks for them (server exports
+    -- setEventModelEnabled(id, bool) / isEventModelEnabled / getEventModels, like the event maps of
+    -- maps_loader). Not loaded at join, independent of the "Custom object models" setting; the files
+    -- are still downloaded with the resource. The state is not saved: a restart switches all off.
+    EVENT_OBJECTS = {
+        3985, 19577, 19574, 19576, 19575, 2703,
+    },
+    DATA_EVENT_MODELS = "modloader.events",   -- resourceRoot element data: { [id] = true } while on
+
     -- engineSetModelLODDistance while the replacement is loaded (reset when it unloads)
     MODEL_LOD = {
         [14802] = 300,          -- volan (was map_ls_busstation/client.lua)

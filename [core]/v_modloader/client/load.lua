@@ -107,6 +107,7 @@ local function unloadMod(category, id)
 end
 
 local function wanted(cat, id)
+    if isEventModel(cat.name, id) then return isEventModelOn(id) and isModelPresent(cat.name, id) end
     if not (optionValue(cat.setting) or isAlwaysLoaded(cat.name, id)) then return false end
     return isModelPresent(cat.name, id)
 end
@@ -198,6 +199,10 @@ function getLoadProgress()
 end
 
 addEventHandler("onClientLoadingStarted", root, start)
+
+addEventHandler("onClientElementDataChange", resourceRoot, function(key)
+    if key == MODLOADER.DATA_EVENT_MODELS and started then syncModels() end
+end)
 
 addEventHandler("onClientReadyCheck", root, function()
     if progress.finished then

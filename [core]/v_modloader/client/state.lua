@@ -32,6 +32,19 @@ function optionValue(id)
     return v == true
 end
 
+local EVENT = {}
+for _, id in ipairs(MODLOADER.EVENT_OBJECTS or {}) do EVENT[tonumber(id)] = true end
+
+function isEventModel(catName, id)
+    return catName == "objects" and EVENT[id] == true
+end
+
+-- event model that the server switched on right now
+function isEventModelOn(id)
+    local state = getElementData(resourceRoot, MODLOADER.DATA_EVENT_MODELS)
+    return type(state) == "table" and state[id] == true
+end
+
 function isAlwaysLoaded(catName, id)
     return catName == "objects" and ALWAYS[id] == true
 end

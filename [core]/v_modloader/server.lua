@@ -464,6 +464,57 @@ local function allowed(player)
     return ok and (tonumber(level) or 0) >= MODLOADER.ADMIN_LEVEL
 end
 
+-- ---------------------------------------------------------------------------
+-- event models (exports): config EVENT_OBJECTS, loaded on the clients only while switched on
+-- ---------------------------------------------------------------------------
+
+local eventOn = {}      -- [id] = true
+
+local function isEventModelId(id)
+    for _, v in ipairs(MODLOADER.EVENT_OBJECTS or {}) do
+        if v == id then return true end
+    end
+    return false
+end
+
+local function publishEventModels()
+    local state = {}
+    for id in pairs(eventOn) do state[id] = true end
+    setElementData(resourceRoot, MODLOADER.DATA_EVENT_MODELS, state)
+end
+
+-- -> true | false (not an event model)
+function setEventModelEnabled(id, enabled)
+    id = tonumber(id)
+    if not id or not isEventModelId(id) then return false end
+    enabled = enabled and true or nil
+    if eventOn[id] == enabled then return true end
+    eventOn[id] = enabled
+    publishEventModels()
+    local caller = sourceResource and getResourceName(sourceResource) or "console"
+    log("INFO", ("event model %d %s by %s"):format(id, enabled and "ON" or "OFF", caller))
+    return true
+end
+
+function isEventModelEnabled(id)
+    return eventOn[tonumber(id)] == true
+end
+
+-- -> { { id = , enabled = }, ... }
+function getEventModels()
+    local out = {}
+    for _, id in ipairs(MODLOADER.EVENT_OBJECTS or {}) do
+        out[#out + 1] = { id = id, enabled = eventOn[id] == true }
+    end
+    return out
+end
+
+addEvent("onModLoaderStart")
+addEventHandler("onResourceStart", resourceRoot, function()
+    publishEventModels()
+    triggerEvent("onModLoaderStart", root)
+end)
+
 addCommandHandler("modloader", function(player, _, sub)
     if not allowed(player) then return say(player, "Access denied.") end
     sub = tostring(sub or ""):lower()
@@ -480,12 +531,16 @@ addCommandHandler("modloader", function(player, _, sub)
         local ce = 0
         for _ in pairs(clientErrors) do ce = ce + 1 end
         say(player, ("%d pending (not in meta.xml), %d scan error(s), %d distinct client error(s)"):format(pendingCount, #scanErrors, ce))
+    elseif sub == "event" then
+        local list = {}
+        for _, m in ipairs(getEventModels()) do list[#list + 1] = m.id .. (m.enabled and "=ON" or "=off") end
+        say(player, "event models: " .. table.concat(list, " "))
     elseif sub == "errors" then
         local shown = 0
         for _, line in ipairs(scanErrors) do say(player, line); shown = shown + 1 end
         for line, e in pairs(clientErrors) do say(player, ("client (x%d): %s"):format(e.count, line)); shown = shown + 1 end
         if shown == 0 then say(player, "No errors. Full history: " .. MODLOADER.LOG_FILE) end
     else
-        say(player, "Usage: /modloader update | status | errors")
+        say(player, "Usage: /modloader update | status | event | errors")
     end
 end)
