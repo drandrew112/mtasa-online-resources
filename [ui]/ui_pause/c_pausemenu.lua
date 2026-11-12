@@ -180,6 +180,11 @@ local function elsAvailable()
     return res and getResourceState(res) == "running"
 end
 
+local function snowAvailable()
+    local res = getResourceFromName("wx_snow")
+    return res and getResourceState(res) == "running"
+end
+
 local function policeAvailable()
     local res = getResourceFromName("police_system")
     return res and getResourceState(res) == "running"
@@ -395,6 +400,21 @@ SETTINGS_TREE = {
                 end,
                 get = function() return elsAvailable() and exports.v_els:getEnvLightMode() end,
                 set = function(v) if elsAvailable() then exports.v_els:setEnvLightMode(v) end end,
+            },
+            {
+                -- "high" by default (wx_snow SNOW.DEFAULT_QUALITY); only matters while it snows
+                id = "gfx_snow", label = L("ui_pause.pausemenu.snow_quality"), type = "choice",
+                desc = L("ui_pause.pausemenu.snow_quality_desc"),
+                available = snowAvailable,
+                options = function()
+                    return {
+                        { id = "high", label = L("ui_pause.pausemenu.snow_quality_high") },
+                        { id = "low",  label = L("ui_pause.pausemenu.snow_quality_low") },
+                        { id = "off",  label = L("ui_pause.pausemenu.snow_quality_off") },
+                    }
+                end,
+                get = function() return snowAvailable() and exports.wx_snow:getSnowQuality() end,
+                set = function(v) if snowAvailable() then exports.wx_snow:setSnowQuality(v) end end,
             },
         },
     },

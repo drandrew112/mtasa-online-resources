@@ -92,9 +92,21 @@ local function clamp(value, low, high)
     return value
 end
 
+-- id -> { distance, res }: other resources may pull the fog closer (wx_snow blizzard).
+-- The nearest override wins; it never pushes the fog past farClip - FOG_OFFSET.
+local fogOverrides = {}
+
+local function fogDistance()
+    local fog = math.max(current.farClip - FOG_OFFSET, 100)
+    for _, o in pairs(fogOverrides) do
+        if o.distance < fog then fog = o.distance end
+    end
+    return math.max(fog, 20)
+end
+
 local function applyFarClip()
     setFarClipDistance(current.farClip)
-    setFogDistance(math.max(current.farClip - FOG_OFFSET, 100))
+    setFogDistance(fogDistance())
 end
 
 local function applyPedLOD()
@@ -377,6 +389,12 @@ addEventHandler("onClientResourceStop", root, function(res)
         end
     else
         unloadResource(res)
+        -- fog overrides of the stopped resource
+        local changed = false
+        for id, o in pairs(fogOverrides) do
+            if o.res == res then fogOverrides[id] = nil; changed = true end
+        end
+        if changed then applyFarClip() end
         -- twins of registered objects whose resource stopped (its elements go after this event)
         setTimer(function()
             for object, clone in pairs(registered) do
@@ -408,6 +426,22 @@ function getPedLOD() return current.pedLOD end
 -- Vehicle LOD distance, 200 .. 500 (the engine clamps to 500).
 function setVehicleLOD(value) return setValue("vehicleLOD", value) end
 function getVehicleLOD() return current.vehicleLOD end
+
+-- Fog override: setFogOverride(id, distance) pulls the fog to `distance` metres (nearest
+-- override wins), setFogOverride(id, false) removes it. Removed when the caller stops.
+function setFogOverride(id, distance)
+    if type(id) ~= "string" then return false end
+    distance = tonumber(distance)
+    if distance then
+        fogOverrides[id] = { distance = math.max(distance, 20), res = sourceResource }
+    else
+        fogOverrides[id] = nil
+    end
+    applyFarClip()
+    return true
+end
+
+function getFogDistance() return fogDistance() end
 
 function resetDrawDistance()
     for key, value in pairs(DEFAULT) do

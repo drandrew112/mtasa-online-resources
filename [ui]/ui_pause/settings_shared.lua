@@ -25,6 +25,7 @@ PAUSE_SETTINGS = {
     { id = "gfx_dynamicsky",     type = "boolean" },
     { id = "gfx_vehiclelights",  type = "boolean" },
     { id = "gfx_elslights",      type = "string" },
+    { id = "gfx_snow",           type = "string" },
     -- Settings > Models (v_modloader reads these keys too, for its own restart)
     { id = "models_vehicles",    type = "boolean" },
     { id = "models_objects",     type = "boolean" },

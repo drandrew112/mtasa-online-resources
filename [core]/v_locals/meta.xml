@@ -165,6 +165,7 @@
     <file src="locales/en/mg_fast.json" />
     <file src="locales/en/mg_chestdrain.json" />
     <file src="locales/en/mg_ecg.json" />
+    <file src="locales/en/wx_snow.json" />
     <file src="locales/hu/ai_land_traffic.json" />
     <file src="locales/hu/ai_peds.json" />
     <file src="locales/hu/avi_core.json" />
@@ -286,6 +287,7 @@
     <file src="locales/hu/mg_fast.json" />
     <file src="locales/hu/mg_chestdrain.json" />
     <file src="locales/hu/mg_ecg.json" />
+    <file src="locales/hu/wx_snow.json" />
 
     <!-- ================= EXPORTS: CLIENT ================= -->
     <export function="import"            type="client" />

@@ -1,0 +1,64 @@
+<meta>
+    <info author="DrAndrew112" name="wx_snow" version="1.0.0" type="script"
+          description="Snow: levels 0-5 from the weekly event (v_admin Weekly > Snow) or /snow, layered world shader (compatible with shader_detail / dynamic_lighting), roof map for covered places, snowfall, fog, colour grading. Never indoors. See DESIGN.md" />
+
+    <min_mta_version client="1.5.8" server="1.5.8" />
+
+    <!-- ================= SHARED ================= -->
+    <include resource="v_locals" />
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+    <script src="shared/coverage.lua" type="shared" />
+
+    <!-- ================= SERVER ================= -->
+    <script src="server/state.lua"    type="server" />
+    <script src="server/commands.lua" type="server" />
+    <script src="server/bake.lua"     type="server" />
+
+    <!-- ================= CLIENT ================= -->
+    <script src="client/state.lua"   type="client" />
+    <script src="client/roofmap.lua" type="client" />
+    <script src="client/ground.lua"  type="client" />
+    <script src="client/precip.lua"  type="client" />
+    <script src="client/env.lua"     type="client" />
+    <script src="client/bake.lua"    type="client" />
+    <script src="client/debug.lua"   type="client" />
+    <script src="client/tests.lua"   type="client" />
+
+    <!-- ================= FILES ================= -->
+    <file src="fx/mta-helper.fx" />
+    <file src="fx/snow_world.fx" />
+    <file src="fx/snow_flakes.fx" />
+    <file src="fx/snow_layer.fx" />
+    <file src="fx/snow_grass.fx" />
+    <file src="tex/noise.png" />
+    <file src="tex/flake.png" />
+    <file src="tex/layer.png" />
+    <file src="sounds/wind_loop.wav" />
+    <!-- roof map: /snowbake writes both (4 m grid, RG = 16 bit top surface height), restart to send it out -->
+    <file src="data/roofmap.png" />
+    <file src="data/roofmap.json" />
+    <!-- lane map: tools/build_roadmap.py from GTA data/Paths (wheel tracks on roads) -->
+    <file src="data/roadmap.png" />
+    <file src="data/roadmap2.png" />
+    <file src="data/roadmapz.png" />
+    <file src="data/roadmap.json" />
+
+    <!-- ================= SERVER EXPORTS ================= -->
+    <export function="getSnowLevel"     type="server" />
+    <export function="getSnowCoverage"  type="server" />
+    <export function="isSnowing"        type="server" />
+    <export function="setSnowOverride"  type="server" />
+
+    <!-- ================= CLIENT EXPORTS ================= -->
+    <export function="getSnowLevel"      type="client" />
+    <export function="getSnowCoverage"   type="client" />
+    <export function="isSnowing"         type="client" />
+    <export function="isSnowVisibleHere" type="client" />
+    <export function="getSnowDebugState" type="client" />
+    <!-- ui_pause Graphics > Snow quality -->
+    <export function="getSnowQuality"    type="client" />
+    <export function="setSnowQuality"    type="client" />
+    <!-- v_admin Weekly > Snow > Preview: local only -->
+    <export function="setSnowPreview"    type="client" />
+</meta>
