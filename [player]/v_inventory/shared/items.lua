@@ -28,6 +28,7 @@ ITEM_CATEGORIES = {
     blood = { 200, 40, 60 },
     sample = { 230, 150, 60 },
     cargo = { 150, 110, 60 },
+    evidence = { 70, 140, 255 },
 }
 
 ITEMS = {
@@ -70,6 +71,32 @@ ITEMS = {
         },
         icon = "icons/bt_blood_box.png", glyph = "BX",
     },
+
+    -- ----------------------------------------------------------------------- police evidence (police_system/modules/evidence)
+    -- The evidence box is the blood box (same model and offsets) with its own name and purpose: one per police unit,
+    -- in the trunk of the unit vehicle. Evidence = one generic item, meta = { item, class, from, citizenId, plate,
+    -- officer, unit, inc, at, display }. The bag carries seized evidence when the unit vehicle is far.
+    pol_evidence_box = {
+        category = "evidence", weight = 1.5, holdable = true, hand = "right",
+        container = { capacity = 15, accepts = { evidence = true } },
+        model = 2969, fallback = 1210, scale = 1.0,
+        offsets = {
+            right = { 0.12, -0.04, -0.35, 0, 0, 0 },
+            ground = { 0, 0, 0, 0, 0, 0 },
+        },
+        icon = "icons/pol_evidence_box.png", glyph = "EB",
+    },
+    pol_evidence_bag = {
+        category = "evidence", weight = 0.1, holdable = true, hand = "left",
+        container = { capacity = 3, accepts = { evidence = true } },
+        model = 2969, fallback = 1210, scale = 0.6,
+        offsets = {
+            left = { 0.10, -0.04, -0.25, 0, 0, 0 },
+            ground = { 0, 0, 0, 0, 0, 0 },
+        },
+        icon = "icons/pol_evidence_bag.png", glyph = "EV",
+    },
+    pol_evidence = { category = "evidence", weight = 0.1, glyph = "EV" },
 
     -- Cargo of the blood transport (bt_items): one item per task, amount = units, meta = { task, group, ... }
     bt_ffp = { category = "blood", weight = 0.5, stackable = true, glyph = "FF" },

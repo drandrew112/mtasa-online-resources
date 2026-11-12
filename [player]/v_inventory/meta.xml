@@ -39,6 +39,8 @@
     <file src="icons/splint.png" type="client" />
     <file src="icons/drug.png" type="client" />
     <file src="icons/bt_blood_box.png" type="client" />
+    <file src="icons/pol_evidence_box.png" type="client" />
+    <file src="icons/pol_evidence_bag.png" type="client" />
     <file src="icons/backpack.png" type="client" />
 
     <!-- ================= SERVER EXPORTS ================= -->
