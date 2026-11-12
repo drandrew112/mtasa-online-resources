@@ -1,0 +1,123 @@
+{
+    "format": 2,
+    "name": "ls_hostage1",
+    "category": "hostage",
+    "location": "Los Santos",
+    "enabled": true,
+    "weight": 1,
+    "center": [1934.0, -1775.0, 12.383],
+    "interior": 0,
+    "dimension": 0,
+    "safe": false,
+    "agencies": {
+        "ems": {
+            "need": 1,
+            "priority": 2,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Hostage at a gas station",
+                    "description": "Armed robbers are holding the cashier of the Idlewood gas station hostage. Shots were heard. Stage near the scene and wait until the police reports it safe."
+                },
+                "hu": {
+                    "title": "Túszejtés egy benzinkúton",
+                    "description": "Fegyveres rablók túszul ejtették az idlewoodi benzinkút pénztárosát. Lövéseket hallottak. Álljatok meg a helyszín közelében, és várjátok meg, amíg a rendőrség biztonságosnak jelenti."
+                }
+            }
+        },
+        "pd": {
+            "need": 2,
+            "priority": 1,
+            "lateJoin": true,
+            "locales": {
+                "en": {
+                    "title": "Hostage situation – Idlewood gas station",
+                    "description": "Three armed robbers are holding the cashier hostage in front of the Idlewood gas station shop. Neutralise the suspects, then lead the hostage out to a police car or hand them over to EMS."
+                },
+                "hu": {
+                    "title": "Túszhelyzet – idlewoodi benzinkút",
+                    "description": "Három fegyveres rabló tartja fogva a pénztárost az idlewoodi benzinkút boltja előtt. Ártalmatlanítsátok a gyanúsítottakat, majd vezessétek ki a túszt egy rendőrautóhoz, vagy adjátok át a mentőknek."
+                }
+            }
+        }
+    },
+    "vehicles": [],
+    "peds": [
+        {
+            "id": "p1",
+            "skin": 76,
+            "pos": [1930.6, -1774.2, 12.547],
+            "rot": 270,
+            "anim": "none",
+            "role": "hostage",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "pose": "cower"
+            }
+        },
+        {
+            "id": "p2",
+            "skin": 28,
+            "pos": [1930.7, -1771.6, 12.547],
+            "rot": 270,
+            "anim": "none",
+            "role": "hostile",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "targets": "police",
+                "weapon": 22,
+                "ammo": 120,
+                "accuracy": 0.35,
+                "aggroRadius": 35,
+                "leash": 15,
+                "task": "guard",
+                "surrenderHealth": 30,
+                "flee": 0
+            }
+        },
+        {
+            "id": "p3",
+            "skin": 29,
+            "pos": [1939.4, -1777.0, 12.4],
+            "rot": 270,
+            "anim": "none",
+            "role": "hostile",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "targets": "police",
+                "weapon": 30,
+                "ammo": 180,
+                "accuracy": 0.3,
+                "aggroRadius": 35,
+                "leash": 15,
+                "task": "guard",
+                "surrenderHealth": 30,
+                "flee": 0
+            }
+        },
+        {
+            "id": "p4",
+            "skin": 30,
+            "pos": [1930.8, -1782.4, 12.547],
+            "rot": 225,
+            "anim": "none",
+            "role": "hostile",
+            "injuries": [],
+            "state": {},
+            "ai": {
+                "targets": "police",
+                "weapon": 25,
+                "ammo": 60,
+                "accuracy": 0.35,
+                "aggroRadius": 35,
+                "leash": 15,
+                "task": "guard",
+                "surrenderHealth": 30,
+                "flee": 0
+            }
+        }
+    ]
+}

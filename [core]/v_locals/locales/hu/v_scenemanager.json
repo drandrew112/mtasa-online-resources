@@ -411,7 +411,7 @@
   "v_scenemanager.valid.no_agency": "Egyik szerv sem szükséges (minden szint 0)",
   "v_scenemanager.valid.stolen_own_vehicle": "{id}: lopott jármű nem lehet helyszíni ped tulajdona",
   "v_scenemanager.valid.tow_without_pd": "{id} vontatandó, de a rendőrség nem szükséges",
-  "v_scenemanager.valid.unsafe_needs_both": "Nem biztonságos helyszínhez EMS 2 és rendőrség 2 kell",
+  "v_scenemanager.valid.unsafe_needs_both": "Nem biztonságos helyszínhez PD 2 és EMS 1 vagy 2 kell.",
   "v_scenemanager.valid.unsafe_without_threat": "Fenyegetés nélkül nem biztonságos: csak a rendőr jelentése teheti biztonságossá",
   "v_scenemanager.valid.warning": "Figyelmeztetés",
   "v_scenemanager.veh.colour": "Szín",
@@ -517,5 +517,17 @@
   "v_scenemanager.ped.part_none": "nincs testrész",
   "v_scenemanager.ped.part": "Testrész: {part}",
   "v_scenemanager.ped.remove": "Törlés",
-  "v_scenemanager.ped.injury_entry": "{injury} ({severity}) · {part}"
+  "v_scenemanager.ped.injury_entry": "{injury} ({severity}) · {part}",
+  "v_scenemanager.role.hostage": "Túsz",
+  "v_scenemanager.cat.hostage": "Túszejtés",
+  "v_scenemanager.ai.pose": "Testtartás",
+  "v_scenemanager.ai.pose_cower": "Guggol",
+  "v_scenemanager.ai.pose_handsup": "Feltartott kéz",
+  "v_scenemanager.hostage.safe": "A rendőrség biztonságba helyezte a túszt.",
+  "v_scenemanager.hostage.ems": "A túszt átadták a mentőknek.",
+  "v_scenemanager.hostage.released": "A túszt sértetlenül szabadon engedték.",
+  "v_scenemanager.hostage.dead": "A túsz meghalt.",
+  "v_scenemanager.valid.hostage_needs_pd": "A(z) {id} túszhoz PD 2 szükséges.",
+  "v_scenemanager.valid.hostage_without_hostile": "A túszos helyszínhez legalább egy ellenséges NPC kell.",
+  "v_scenemanager.valid.hostage_needs_unsafe": "A túszos helyszín nem lehet biztonságos induláskor."
 }

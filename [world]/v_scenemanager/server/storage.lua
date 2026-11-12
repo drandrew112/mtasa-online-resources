@@ -155,6 +155,8 @@ local function normalizeAI(role, ai)
             surrenderHealth = int(ai.surrenderHealth, 30, 0, 99),
             flee = vsmRound(math.max(0, math.min(1, num(ai.flee, 0))), 2),
         }
+    elseif role == "hostage" then
+        return { pose = oneOf(ai.pose, VSM_HOSTAGE_POSES, "cower") }
     elseif role == "suspect" then
         return {
             weapon = oneOf(int(ai.weapon, 0), weapons, 0),
@@ -340,13 +342,19 @@ function Storage.validate(scene)
         end
     end
     if not any then add("error", "no_agency") end
-    if scene.safe == false and not (needs.ems == 2 and needs.pd == 2) then add("error", "unsafe_needs_both") end
+    -- not safe: EMS 2 + PD 2, or (hostage situations, 2026-11-12) PD 2 with EMS 1 at least
+    if scene.safe == false and not (needs.pd == 2 and needs.ems >= 1) then add("error", "unsafe_needs_both") end
 
-    local sides, threats = {}, 0
+    local sides, threats, hostages, hostiles = {}, 0, 0, 0
     for _, p in ipairs(scene.peds) do
         local role = vsmRoleById(p.role)
         if role and role.threat then threats = threats + 1 end
+        if p.role == "hostage" then
+            hostages = hostages + 1
+            if needs.pd ~= 2 then add("error", "hostage_needs_pd", { id = p.id }) end
+        end
         if p.role == "hostile" then
+            hostiles = hostiles + 1
             if needs.pd ~= 2 then add("error", "hostile_needs_pd", { id = p.id }) end
             if p.ai and p.ai.targets == "all" and scene.safe ~= false then add("error", "hostile_all_needs_unsafe", { id = p.id }) end
         elseif p.role == "fighter" and p.ai then
@@ -368,6 +376,8 @@ function Storage.validate(scene)
     end
     if (sides.a or 0) + (sides.b or 0) > 0 and ((sides.a or 0) == 0 or (sides.b or 0) == 0) then add("error", "fight_one_side") end
     if scene.safe == false and threats == 0 then add("warning", "unsafe_without_threat") end
+    if hostages > 0 and hostiles == 0 then add("error", "hostage_without_hostile") end
+    if hostages > 0 and scene.safe ~= false then add("error", "hostage_needs_unsafe") end
     for _, v in ipairs(scene.vehicles) do
         if v.tow and needs.pd == 0 then add("warning", "tow_without_pd", { id = v.id }) end
         if v.record and v.record.stolen and v.record.owner and v.record.owner ~= "none" then

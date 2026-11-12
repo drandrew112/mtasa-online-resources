@@ -8,6 +8,8 @@
 --          player (ai_peds hostilePlayers). guard / idle task, aggro, leash; below ai.surrenderHealth it gives up
 --          (detained + hands up, cuffable); ai.flee = chance to run when an officer comes near.
 -- suspect  stands where it was placed; ai.flee = chance to run (scared) when an officer comes near; armed = a threat.
+-- hostage  (2026-11-12) kneels / hands up among the hostiles (ai_peds "hostage", ai.pose), never flees; the police
+--          leads it out (server/hostage.lua).
 -- Every AI ped is kept + protected (only this script removes it) and has medev.saveLethal: a lethal hit puts it
 -- down (medsys) instead of killing it, so the fight's injured are patients of the EMS.
 --
@@ -110,6 +112,11 @@ function Npc.create(scene, entry, data)
         if a.task == "guard" then
             opts.task, opts.taskOpts = "guard", { x = p[1], y = p[2], z = p[3] }
         end
+    elseif entry.role == "hostage" then
+        -- ai_peds "hostage": stays in its pose, never flees / fights (server/hostage.lua runs the rest)
+        opts.behaviour = "hostage"
+        opts.group = group(scene, "g")
+        opts.pose = a.pose or "cower"
     else -- suspect
         opts.behaviour = "civilian"
         opts.task = "idle"
@@ -120,6 +127,7 @@ function Npc.create(scene, entry, data)
         vsmLog("scene '%s': ai_peds could not create %s (%s)", scene.name, entry.id, tostring(ped))
         return nil
     end
+    if entry.role == "hostage" then Hostage.add(scene, ped, entry) end
     pcall(function()
         A:setAIPedKeep(ped, true)
         A:setAIPedProtected(ped, true)

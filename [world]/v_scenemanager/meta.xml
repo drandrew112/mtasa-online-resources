@@ -14,6 +14,7 @@
     <script src="server/builder.lua"  type="server" />
     <script src="server/agencies.lua" type="server" />
     <script src="server/npc.lua"      type="server" />
+    <script src="server/hostage.lua"  type="server" />
     <script src="server/safety.lua"   type="server" />
     <script src="server/live.lua"     type="server" />
     <script src="server/variety.lua"  type="server" />

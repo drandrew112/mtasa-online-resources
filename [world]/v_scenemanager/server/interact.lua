@@ -89,6 +89,8 @@ local function aiItems(session, entry)
     elseif entry.role == "suspect" then
         choice("weapon", "v_scenemanager.ai.weapon", a.weapon, VSM_WEAPONS, weapon)
         choice("flee", "v_scenemanager.ai.flee", a.flee, VSM_FLEE_PRESETS, pct)
+    elseif entry.role == "hostage" then
+        choice("pose", "v_scenemanager.ai.pose", a.pose, VSM_HOSTAGE_POSES, function(v) return T(session, "v_scenemanager.ai.pose_" .. tostring(v)) end)
     end
     return items
 end

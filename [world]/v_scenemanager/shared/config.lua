@@ -92,6 +92,9 @@ VSM = {
         SURRENDER_ANIM = { "ped", "handsup" },
         TICK = 1000,              -- ms
         FLEE_SEEN_RADIUS = 30,    -- m: a suspect with a flee chance rolls it once when an officer gets this close
+        -- hostages (server/hostage.lua, 2026-11-12)
+        HOSTAGE_THREAT_RADIUS = 60,   -- m: a hostile still fighting this close keeps "Release" away
+        HOSTAGE_GONE_DIST = 45,       -- m: a released hostage vanishes once unseen and no player is this close
     },
 
     -- Flag scene (server/issues.lua)
@@ -179,7 +182,9 @@ for _, id in ipairs({ "heartattack", "mva", "hypertension", "stroke", "diabetes"
         "brawl", "armed", "wanted",
         -- police scene types (2026-11-05)
         "dui", "hitandrun", "stolenvehicle", "abandoned", "robbery", "burglary",
-        "shoplifting", "domestic", "disturbance", "drugs", "vandalism", "suspicious" }) do
+        "shoplifting", "domestic", "disturbance", "drugs", "vandalism", "suspicious",
+        -- hostage situation (2026-11-12): hostiles + hostage, PD 2 / EMS 1, not safe
+        "hostage" }) do
     VSM_CATEGORIES[#VSM_CATEGORIES + 1] = { id = id, label = "v_scenemanager.cat." .. id }
 end
 
@@ -214,6 +219,8 @@ VSM_ROLES = {
     { id = "fighter",   label = "v_scenemanager.role.fighter",  ai = true, threat = true },
     { id = "hostile",   label = "v_scenemanager.role.hostile",  ai = true, threat = true },
     { id = "suspect",   label = "v_scenemanager.role.suspect",  ai = true },
+    -- 2026-11-12: kneels / hands up among the hostiles, the police leads it out (server/hostage.lua)
+    { id = "hostage",   label = "v_scenemanager.role.hostage",  ai = true },
 }
 
 -- Drugs of a record: police flag + the medsys condition (nil = police only)
@@ -241,6 +248,7 @@ VSM_INSPECTIONS = { "valid", "expired" }
 VSM_PD_CLOSE = { "towed", "suspects" }   -- automatic PD call close conditions
 VSM_FLEE_PRESETS = { 0, 0.2, 0.5, 1 }
 VSM_SURRENDER_PRESETS = { 0, 20, 30, 50 }
+VSM_HOSTAGE_POSES = { "cower", "handsup" }   -- ai_peds behaviour "hostage" args.pose
 
 -- medsys setMedicalState keys the editor can preset, applied in this order.
 -- presets = values offered in the menu ({ label key | plain text, value }).

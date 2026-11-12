@@ -411,7 +411,7 @@
   "v_scenemanager.valid.no_agency": "No agency is needed (every need is 0)",
   "v_scenemanager.valid.stolen_own_vehicle": "{id}: a stolen vehicle cannot belong to a scene ped",
   "v_scenemanager.valid.tow_without_pd": "{id} is to be towed but the police are not needed",
-  "v_scenemanager.valid.unsafe_needs_both": "A not safe scene needs EMS 2 and police 2",
+  "v_scenemanager.valid.unsafe_needs_both": "A scene that is not safe needs PD 2 and EMS 1 or 2.",
   "v_scenemanager.valid.unsafe_without_threat": "Not safe without a threat: only the officer's report can make it safe",
   "v_scenemanager.valid.warning": "Warning",
   "v_scenemanager.veh.colour": "Colour",
@@ -517,5 +517,17 @@
   "v_scenemanager.ped.part_none": "no body part",
   "v_scenemanager.ped.part": "Body part: {part}",
   "v_scenemanager.ped.remove": "Remove",
-  "v_scenemanager.ped.injury_entry": "{injury} ({severity}) · {part}"
+  "v_scenemanager.ped.injury_entry": "{injury} ({severity}) · {part}",
+  "v_scenemanager.role.hostage": "Hostage",
+  "v_scenemanager.cat.hostage": "Hostage situation",
+  "v_scenemanager.ai.pose": "Pose",
+  "v_scenemanager.ai.pose_cower": "Crouching",
+  "v_scenemanager.ai.pose_handsup": "Hands up",
+  "v_scenemanager.hostage.safe": "The police brought the hostage to safety.",
+  "v_scenemanager.hostage.ems": "The hostage was handed over to EMS.",
+  "v_scenemanager.hostage.released": "The hostage was released unharmed.",
+  "v_scenemanager.hostage.dead": "The hostage died.",
+  "v_scenemanager.valid.hostage_needs_pd": "Hostage {id} needs PD need 2.",
+  "v_scenemanager.valid.hostage_without_hostile": "A hostage scene needs at least one hostile.",
+  "v_scenemanager.valid.hostage_needs_unsafe": "A hostage scene must not be safe at start."
 }
