@@ -108,7 +108,8 @@ Spawn points by travel time (scripted AI vehicles with a destination, e.g. polic
   results, 40), `step` (sampling along lanes, 10), `junctionMargin` (12), `minDistance` (straight from the target),
   `classes` (allowed spawn classes, e.g. `{"road","service"}`), `unpaved` (true), `emergencyOnly` (default: profiles
   that use those lanes freely), `avoidPlayers` (metres, 0: spawn out of sight), `avoidVehicles` (8), `dimension` (0;
-  false = any), `order` (`random` | `time` | `far`), `maxNodes`; z may be false.
+  false = any), `order` (`random` | `time` | `far`), `maxNodes`, `goalLane` / `goalU` (one exact goal lane: the
+  side of the road and the direction to arrive in, e.g. police_system pathfinder); z may be false.
   Result: `points` {{x, y, z (road surface), rotation (rotZ along the lane), lane, u, time, distance (2D), class,
   goalLane, goalU}...}, `candidates`, `expanded`, `goals`. Route of a point:
   `findVehicleRoute(p.x,p.y,p.z, x,y,z, {startLane = p.lane, startU = p.u, goalLane = p.goalLane, goalU = p.goalU})`

@@ -96,6 +96,7 @@ local function laneInfo(id)
         index = R.aidx[id], count = R.acount[id], left = R.aleft[id] or false, right = R.aright[id] or false,
         oneway = R.kab[k] == 0 or R.kba[k] == 0, unpaved = bitAnd(R.kfl[k], NAV_KF.UNPAVED) ~= 0,
         emergencyOnly = bitAnd(R.kfl[k], NAV_KF.EMERGENCY) ~= 0, trap = bitAnd(R.afl[id], NAV_LF.TRAP) ~= 0,
+        parking = bitAnd(R.afl[id], NAV_LF.PARKING) ~= 0,
         speed = Roads.laneSpeed(id), length = R.alen[id], heading = Roads.laneHeading(id),
         start = { R.ax1[id], R.ay1[id], R.az1[id] }, finish = { R.ax2[id], R.ay2[id], R.az2[id] }, next = nxt,
     }

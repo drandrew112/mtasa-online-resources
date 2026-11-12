@@ -135,7 +135,7 @@ end
 -- 2D distance from the target, 0), classes ({"highway","ramp","road","service"}: allowed spawn classes, all),
 -- unpaved (true), emergencyOnly (default: only for profiles that use those lanes freely), avoidPlayers (metres, 0),
 -- avoidVehicles (metres, 8), dimension (for the avoid checks, 0; false = any), order ("random" | "time" | "far"),
--- maxNodes. z may be false.
+-- maxNodes, goalLane / goalU (one exact goal lane instead of the lanes near the target). z may be false.
 function Nav.vehicleSpawnPoints(x, y, z, minTime, maxTime, opts)
     if not Roads.ready then return nil, "not_loaded" end
     opts = type(opts) == "table" and opts or {}
@@ -146,9 +146,16 @@ function Nav.vehicleSpawnPoints(x, y, z, minTime, maxTime, opts)
     x, y, z = tonumber(x), tonumber(y), tonumber(z) or false
     minTime, maxTime = tonumber(minTime) or 0, tonumber(maxTime)
     if not x or not y or not maxTime or maxTime <= 0 or maxTime < minTime then return nil, "bad_arguments" end
-    local goals = Roads.nearestLanes(x, y, z, { radius = opts.radius or 40, heading = opts.heading, maxZ = 8 })
-    if #goals == 0 and opts.heading then goals = Roads.nearestLanes(x, y, z, { radius = opts.radius or 40, maxZ = 8 }) end
-    if #goals == 0 and opts.fallback then goals = Roads.nearestLanes(x, y, false, { radius = opts.fallback }) end
+    local goals
+    if opts.goalLane then
+        -- one exact goal lane (police_system pathfinder: the side of the road + direction to stop in), 2026-11-12
+        goals = laneEnd(opts.goalLane, opts.goalU)
+        if not goals then return nil, "bad_goal_lane" end
+    else
+        goals = Roads.nearestLanes(x, y, z, { radius = opts.radius or 40, heading = opts.heading, maxZ = 8 })
+        if #goals == 0 and opts.heading then goals = Roads.nearestLanes(x, y, z, { radius = opts.radius or 40, maxZ = 8 }) end
+        if #goals == 0 and opts.fallback then goals = Roads.nearestLanes(x, y, false, { radius = opts.fallback }) end
+    end
     if #goals == 0 then return nil, "no_goal_lane" end
     for i = #goals, 7, -1 do goals[i] = nil end
 
