@@ -21,6 +21,7 @@
         <acl name="Admin"></acl>
         <acl name="RPC"></acl>
         <object name="user.drandrew112"></object>
+        <object name="resource.claude-mcp"></object>
     </group>
     <group name="Console">
         <acl name="Moderator"></acl>
@@ -74,6 +75,9 @@
         <object name="resource.claude-mcp"></object>
         <object name="resource.tiktok-live"></object>
         <object name="resource.v_accounts"></object>
+        <object name="resource.ui_help"></object>
+        <object name="resource.ai_llm"></object>
+        <object name="resource.v_mail"></object>
     </group>
     <group name="FileAccess">
         <acl name="FileAccess"></acl>
