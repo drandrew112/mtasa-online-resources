@@ -227,7 +227,7 @@ CATALOG.vehicles = {
     { name = L.text("v_jobcreator.catalog.muscle"), items = { 475, 474, 536, 535, 534, 567, 576, 412, 517, 518, 542, 600 } },
     { name = L.text("v_jobcreator.catalog.off_road"), items = { 495, 500, 444, 556, 557, 568, 424, 470, 489, 579, 400, 554, 543, 471 } },
     { name = L.text("v_jobcreator.catalog.bikes"), items = { 522, 521, 461, 463, 468, 581, 586, 462, 448, 509, 481, 510 } },
-    { name = L.text("v_jobcreator.catalog.sedans"), items = { 405, 426, 445, 507, 529, 540, 546, 547, 550, 551, 516, 585, 418, 482 } },
+    { name = L.text("v_jobcreator.catalog.sedans"), items = { 405, 426, 445, 529, 540, 546, 547, 550, 551, 516, 585, 418, 482 } },
     { name = L.text("v_jobcreator.catalog.special"), items = { 457, 539, 571, 572, 531, 583, 574, 485, 530, 431, 437, 408, 403, 515, 514 } },
     { name = L.text("v_jobcreator.catalog.boats"), items = { 446, 452, 453, 454, 472, 473, 484, 493, 595 } },
     { name = L.text("v_jobcreator.catalog.air"), items = { 513, 593, 512, 487, 469, 460, 511 } },
