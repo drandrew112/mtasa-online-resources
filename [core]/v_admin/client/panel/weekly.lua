@@ -196,7 +196,87 @@ local function drawNews(x, y, w, h)
     end, "active")
 end
 
-local DRAW = { bonuses = drawBonuses, trial = drawTrial, login = drawLogin, news = drawNews }
+-- Snow (wx_snow): level 0-5 + dynamic of the chosen week, local preview
+local function snowRunning()
+    local res = getResourceFromName("wx_snow")
+    return res and getResourceState(res) == "running"
+end
+
+local function drawSnow(x, y, w, h)
+    local week = curWeek()
+    local snow = week.snow or { level = 0, dynamic = false }
+    local cy = y
+    for _, line in ipairs(AP.wrap(L("v_admin.weekly.snow_hint"), w, 0.85)) do
+        AP.text(line, x, cy, w, S(26), C.dim, 0.85)
+        cy = cy + S(26)
+    end
+    if not st.data.snowRunning then
+        AP.text(L("v_admin.weekly.snow_not_running"), x, cy, w, S(26), C.bad, 0.85)
+        cy = cy + S(26)
+    end
+    cy = cy + S(10)
+
+    AP.text(L("v_admin.weekly.snow_level"), x, cy, w, S(28), C.dim, 0.9)
+    cy = cy + S(30)
+    local bw = math.floor((w - S(6) * 5) / 6)
+    for lvl = 0, 5 do
+        AP.button(x + lvl * (bw + S(6)), cy, bw, S(44), L("wx_snow.level." .. lvl),
+            function() edit("snow", lvl, (snow.dynamic and lvl > 0) and "1" or "0") end, snow.level == lvl and "active")
+    end
+    cy = cy + S(56)
+
+    if snow.level > 0 then
+        AP.button(x, cy, w, S(40), (snow.dynamic and "[x] " or "[ ] ") .. L("v_admin.weekly.snow_dynamic"),
+            function() edit("snow", snow.level, snow.dynamic and "0" or "1") end, snow.dynamic and "active")
+        cy = cy + S(52)
+    end
+
+    for _, line in ipairs(AP.wrap(L("v_admin.weekly.snow_levels"), w, 0.85)) do
+        AP.text(line, x, cy, w, S(26), C.dim, 0.85)
+        cy = cy + S(26)
+    end
+    cy = cy + S(14)
+
+    -- preview: only this admin's client, the server state is not touched
+    if snowRunning() then
+        AP.button(x, cy, S(260), S(44), L("v_admin.weekly.snow_preview"), function()
+            exports.wx_snow:setSnowPreview(snow.level, true)
+            AP.close()
+        end)
+        AP.button(x + S(270), cy, S(220), S(44), L("v_admin.weekly.snow_preview_off"), function()
+            exports.wx_snow:setSnowPreview(false)
+        end)
+    end
+end
+
+-- Events (events_core): the registered seasonal events, switched on / off for the chosen week.
+-- A week inherits the events of the previous one; the weekly system starts / stops them at the rollover.
+local function drawEvents(x, y, w, h)
+    local week = curWeek()
+    local cy = y
+    for _, line in ipairs(AP.wrap(L("v_admin.weekly.events_hint"), w, 0.85)) do
+        AP.text(line, x, cy, w, S(26), C.dim, 0.85)
+        cy = cy + S(26)
+    end
+    if not st.data.eventsRunning then
+        AP.text(L("v_admin.weekly.events_not_running"), x, cy, w, S(26), C.bad, 0.85)
+        return
+    end
+    cy = cy + S(10)
+    local list = st.data.eventList or {}
+    if #list == 0 then return AP.text(L("v_admin.weekly.events_none"), x, cy, w, S(40), C.dim, 1.0) end
+    local on = week.events or {}
+    for _, e in ipairs(list) do
+        local enabled = on[e.id] == true
+        AP.text(e.name, x, cy, w - S(190), S(30), C.text, 1.0, "default-bold")
+        AP.text(e.description or "", x, cy + S(28), w - S(190), S(24), C.dim, 0.8)
+        AP.button(x + w - S(170), cy, S(170), S(44), enabled and L("v_admin.weekly.events_on") or L("v_admin.weekly.events_off"),
+            function() edit("event", e.id, enabled and "0" or "1") end, enabled and "active")
+        cy = cy + S(66)
+    end
+end
+
+local DRAW = { bonuses = drawBonuses, trial = drawTrial, login = drawLogin, news = drawNews, snow = drawSnow, events = drawEvents }
 
 --------------------------------------------------------------------------------
 -- page
@@ -242,6 +322,8 @@ AP.addPage({
             { id = "trial", label = L("v_weekly.admin.time_trial") },
             { id = "login", label = L("v_weekly.admin.login_bonus") },
             { id = "news", label = L("v_weekly.admin.news") },
+            { id = "snow", label = L("v_admin.weekly.snow") },
+            { id = "events", label = L("v_admin.weekly.events") },
         }
         local th = AP.tabs(cx, y, cw, items, st.tab, function(id) st.tab = id; AP.setFocus(nil) end)
         DRAW[st.tab](cx, y + th, cw, h - th)

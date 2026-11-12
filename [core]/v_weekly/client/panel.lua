@@ -55,6 +55,7 @@ function drawPanel()
     for _, c in ipairs(bonuses) do h = h + ui(22) + #c.items * rowH end
     if d.loginBonus then h = h + ui(22) + rowH + ui(14) end
     if d.timetrial then h = h + ui(22) + rowH + ui(14) end
+    if d.snow then h = h + ui(22) + rowH + ui(14) end
 
     local x, y = (sw - w) / 2, (sh - h) / 2 - (1 - t) * ui(30)
     dxDrawRectangle(x, y, w, h, COL.bg)
@@ -117,6 +118,17 @@ function drawPanel()
         dxDrawText(d.timetrial.name, x + pad, cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold")
         dxDrawText(L("v_weekly.panel.limit_s", { time = d.timetrial.time or 0 }), x + w * 0.5, cy, x + w * 0.68, cy + rowH, COL.dim, ui(1.2), "default")
         dxDrawText(L("v_weekly.panel.reward", { reward = d.timetrial.reward or 0 }), x + w * 0.68, cy, x + w - pad, cy + rowH, COL.money, ui(1.2), "default-bold", "right")
+        cy = cy + rowH + ui(14)
+    end
+
+    -- wx_snow: snow of the week
+    if d.snow then
+        dxDrawText(L("v_weekly.panel.weather"), x + pad, cy, x + w - pad, cy + ui(18), COL.head, ui(1.1), "default-bold")
+        cy = cy + ui(22)
+        dxDrawText(L("wx_snow.level." .. d.snow.level), x + pad, cy, x + w * 0.5, cy + rowH, COL.text, ui(1.2), "default-bold")
+        if d.snow.dynamic then
+            dxDrawText(L("v_weekly.panel.snow_dynamic"), x + w * 0.5, cy, x + w - pad, cy + rowH, COL.dim, ui(1.0), "default", "right")
+        end
     end
 
     dxDrawText(L("v_weekly.panel.press_enter_to_close"), x, y + h - pad - ui(2), x + w, y + h, COL.dim, ui(1.0), "default", "center", "bottom")

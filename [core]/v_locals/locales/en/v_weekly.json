@@ -54,6 +54,8 @@
   "v_weekly.panel.weekly_update": "WEEKLY UPDATE",
   "v_weekly.panel.xp": "XP {xp}",
   "v_weekly.panel.xp_2": "{xp|int} XP",
+  "v_weekly.panel.snow_dynamic": "changes during the week",
+  "v_weekly.panel.weather": "Weather of the week",
   "v_weekly.period.day": "day",
   "v_weekly.period.week": "week"
 }

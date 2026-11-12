@@ -213,6 +213,16 @@ function setWeekValue(offset, key, value)
     end, caller())
 end
 
+-- seasonal events (events_core): custom.events = { [eventId] = true } of the week
+function setWeekEvent(offset, eventId, enabled)
+    return SCHED.edit(offset, function(d)
+        if type(eventId) ~= "string" or not eventId:match("^[%w_]+$") then return false, "bad event id" end
+        local list = type(d.custom.events) == "table" and d.custom.events or {}
+        list[eventId] = enabled and true or nil
+        d.custom.events = next(list) ~= nil and list or nil
+    end, caller())
+end
+
 function setWeekNews(offset, title, body)
     return SCHED.edit(offset, function(d)
         title = type(title) == "string" and title:sub(1, 60) or ""

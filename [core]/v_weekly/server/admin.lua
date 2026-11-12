@@ -12,6 +12,8 @@ local function overview()
         weeks[#weeks + 1] = {
             offset = off, from = formatUtc(ws), inherited = inherited,
             jobs = d.jobs, works = d.works, business = d.business, timetrial = d.timetrial, news = d.news, loginBonus = d.loginBonus,
+            snow = snowInfo(d) or { level = 0, dynamic = false },
+            events = type(d.custom.events) == "table" and d.custom.events or {},
         }
     end
 
@@ -57,11 +59,24 @@ local function overview()
             trials[i] = { name = t.name, reward = t.reward, time = t.time }
         end
     end
+    -- seasonal events registered in events_core (the editor's Events tab)
+    local eventList = {}
+    res = getResourceFromName("events_core")
+    if res and getResourceState(res) == "running" then
+        for _, e in ipairs(exports.events_core:getEvents() or {}) do
+            eventList[#eventList + 1] = { id = e.id, name = e.name, description = e.description, active = e.active, override = e.override }
+        end
+    end
     return {
+        eventList = eventList, eventsRunning = res and getResourceState(res) == "running" or false,
         weeks = weeks, jobs = jobs, communityJobs = communityJobs, works = works, trials = trials, nextChange = formatUtc(weekStartAt(1)),
         business = WEEKLY.BUSINESS_ACTIVITIES, businessMultipliers = WEEKLY.BUSINESS_MULTIPLIERS,
         multipliers = WEEKLY.MULTIPLIERS, period = WEEKLY.LOGIN_BONUS_PERIOD,
         maxMoney = WEEKLY.LOGIN_MAX_MONEY, maxXp = WEEKLY.LOGIN_MAX_XP,
+        snowRunning = (function()
+            local r = getResourceFromName("wx_snow")
+            return r and getResourceState(r) == "running" or false
+        end)(),
     }
 end
 

@@ -48,6 +48,7 @@
     <export function="getLoginBonus" type="server" />
     <export function="setActiveTimetrial" type="server" />
     <export function="setWeekValue" type="server" />
+    <export function="setWeekEvent" type="server" />
     <export function="setWeekNews" type="server" />
     <export function="setWeek" type="server" />
     <export function="clearWeek" type="server" />

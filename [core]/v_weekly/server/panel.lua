@@ -50,6 +50,14 @@ local function timetrialInfo(index)
     return { name = t.name, time = t.time, reward = t.reward }
 end
 
+-- wx_snow weekly snow (custom.snow = { level = 0..5, dynamic = bool }) -> { level, dynamic } | nil
+function snowInfo(data)
+    local s = type(data.custom) == "table" and data.custom.snow or nil
+    local level = type(s) == "table" and math.floor(tonumber(s.level) or 0) or 0
+    if level <= 0 then return nil end
+    return { level = math.min(level, 5), dynamic = s.dynamic == true }
+end
+
 function PANEL.payload(ws)
     local data = SCHED.resolve(ws)
     local names, community = jobNames()
@@ -104,6 +112,7 @@ function PANEL.payload(ws)
         bonuses = bonuses,
         bonusCount = #jobs + #works + #business,
         timetrial = timetrialInfo(data.timetrial),
+        snow = snowInfo(data),
     }
 end
 

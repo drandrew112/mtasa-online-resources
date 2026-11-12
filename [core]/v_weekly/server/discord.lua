@@ -121,6 +121,12 @@ function DISCORD.embed(ws)
         fields[#fields + 1] = { name = "⏱️ Time Trial", inline = true, value = table.concat(lines, "\n") }
     end
 
+    if w.snow then
+        local names = { "Flurries", "Light snow", "Snowy", "Heavy snow", "Blizzard" }
+        fields[#fields + 1] = { name = "❄️ Weather", inline = true,
+            value = "**" .. (names[w.snow.level] or "Snow") .. "**" .. (w.snow.dynamic and "\nchanges during the week" or "") }
+    end
+
     fields[#fields + 1] = { name = "⏰ Next Update", inline = true, value = ("<t:%d:R>"):format(nextWs) }
 
     return {

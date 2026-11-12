@@ -7,7 +7,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --  overview {}                                   -> v_weekly:getWeeklyAdminOverview()
 --  edit { action, offset, a, b, c }              -> fresh overview
 --       action: job (jobId, money, xp) | work (workId, money, xp) | business (activity, multiplier) | trial (index) |
---               login (money, xp) | news (title, body) | reset
+--               login (money, xp) | news (title, body) | snow (level 0-5, dynamic) | event (eventId, on) | reset
 --  preview {}                                    shows the weekly panel to the admin in game
 -- ============================================================
 
@@ -24,6 +24,15 @@ local SETTERS = {
     trial = function(o, a)       return exports.v_weekly:setActiveTimetrial(o, tonumber(a)) end,
     login = function(o, a, b)    return exports.v_weekly:setLoginBonus(o, tonumber(a), tonumber(b)) end,
     news  = function(o, a, b)    return exports.v_weekly:setWeekNews(o, tostring(a or ""), tostring(b or "")) end,
+    -- wx_snow: a = level 0..5, b = dynamic (true / "1")
+    snow  = function(o, a, b)
+        local level = math.floor(tonumber(a) or -1)
+        if level < 0 or level > 5 then return false, "bad level" end
+        local dynamic = (b == true or b == "1" or b == 1) and level > 0
+        return exports.v_weekly:setWeekValue(o, "snow", { level = level, dynamic = dynamic })
+    end,
+    -- events_core: a = event id, b = on ("1" / true)
+    event = function(o, a, b)    return exports.v_weekly:setWeekEvent(o, tostring(a or ""), b == true or b == "1" or b == 1) end,
     reset = function(o)          return exports.v_weekly:clearWeek(o) end,
 }
 
