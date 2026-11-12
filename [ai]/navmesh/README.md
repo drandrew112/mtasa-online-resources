@@ -47,7 +47,16 @@ Sources and what came from where:
 - **Walk grid**: every placed map model's collision (faces, boxes, spheres; interior 0, no LODs) rasterised
   like Recast: walkable slope 50 deg, 1.75 m clearance, 0.55 m step, water from `water.dat`, islands < 24 cells
   dropped. Cell flags: surface class from the COL material, road lane, ped crossing, GTA ped path, edge
-  (wall / drop next to it), steep. Vanilla map only (removed world models / custom objects are not in it), except the probe patches below.
+  (wall / drop next to it), steep. Vanilla map only (removed world models / custom objects are not in it), except the replaced COLs
+  and the probe patches below.
+- **Replaced road models**: a world model replaced by the server (v_modloader `objects/<id>.col|dff`) needs
+  - `data/source/custom_cols.json` `cols: [{model, file, reason}]`: `walkgrid.js` rasterises that COL instead of the
+    vanilla one (file relative to the navmesh folder; v_modloader objects are gitignored, the file must exist);
+    `maps: [file.map]`: their `removeWorldObject` lines drop the matching vanilla instances (added objects are not used);
+  - `data/source/road_fixes.json` `nodePos` {gid: [x, y]} (car nodes moved onto the new road, their surface scan
+    dropped), `linkLanes` [{from, to, lanes}] (one-way lane count), `pedNodePos` {gid: [x, y]} (sidewalk nodes);
+    keys starting with `_` are comments.
+  Done: 4139 Roads09_LAn (1406,-1418), divided Z road -> one S-curve, 2026-11-12.
 - **Probe patches** (`data/source/probe_walk/*.json`): boxes measured in game, where the live collision differs from
   the GTA files (custom maps, enterable replaced models). `walkgrid.js` replaces every rasterised floor inside a patch
   box with the patch floors before the island / edge / road / ped-path passes. Default material under a roof = class 5

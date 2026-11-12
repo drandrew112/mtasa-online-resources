@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-09 08:12",
+  "generated": "2026-11-12 09:05",
   "maps": [
     "desert_radar_lights",
     "int_sacontrol",
@@ -7,6 +7,7 @@
     "ls_busstation",
     "ls_int_pd",
     "ls_marketstation",
+    "ls_roads09_lan",
     "ls_shop_01",
     "ls_south_stuntpark",
     "ls_technoparty",

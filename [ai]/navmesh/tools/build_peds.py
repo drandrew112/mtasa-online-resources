@@ -18,6 +18,9 @@ SIGNAL_RADIUS = 45.0    # a lit crossing belongs to the signal group this close
 
 def r2(x): return round(x, 2)
 P = GP.load(GTA)['ped']
+# pedNodePos of data/source/road_fixes.json: ped node x / y override for replaced road models
+for _g, _p in json.load(open(os.path.join(ROOT, 'data', 'source', 'road_fixes.json'))).get('pedNodePos', {}).items():
+    if not _g.startswith('_'): P[int(_g)]['x'], P[int(_g)]['y'] = _p[0], _p[1]
 
 # ---------------------------------------------------------------- road lanes + signal groups
 lanes = []; groups = []

@@ -50,6 +50,16 @@ end
 --- The current copy of the entry is on this PC. A file without a registry entry is hashed once.
 local function isPresent(entry)
     if not fileExists(entry.p) then return false end
+    -- a wrong size is never the real file (e.g. an HTTP error page saved as the texture)
+    if (tonumber(entry.s) or 0) > 0 then
+        local f = fileOpen(entry.p, true)
+        local size = f and fileGetSize(f)
+        if f then fileClose(f) end
+        if size ~= entry.s then
+            registry[entry.p] = nil
+            return false
+        end
+    end
     if registry[entry.p] == entry.h then return true end
     if registry[entry.p] == nil then
         local ok, hash = pcall(function()
@@ -87,9 +97,17 @@ end
 local function acquire(entry)
     local item = items[entry.p]
     if not item then
+        -- fallbacks: with mips -> without mips -> default format -> raw 32 bit
         local texture = dxCreateTexture(entry.p, entry.f or "dxt5", true)
+            or dxCreateTexture(entry.p, entry.f or "dxt5", false)
+            or dxCreateTexture(entry.p)
+            or dxCreateTexture(entry.p, "argb", false)
         if not texture then
-            report(entry.p .. ": cannot create the texture")
+            local st = dxGetStatus and dxGetStatus() or {}
+            report(("%s: cannot create the texture (VRAM free for MTA %s MB, card %s MB, used by fonts %s MB, render targets %s MB, textures %s MB)"):format(
+                entry.p, tostring(st.VideoMemoryFreeForMTA), tostring(st.VideoCardRAM),
+                tostring(st.VideoMemoryUsedByFonts), tostring(st.VideoMemoryUsedByRenderTargets),
+                tostring(st.VideoMemoryUsedByTextures)))
             return nil
         end
         local shader = dxCreateShader("paintjob.fx", 0, 0, false, "vehicle")
@@ -147,7 +165,10 @@ end
 
 local function download(entry)
     if inflight[entry.p] then return end
-    inflight[entry.p] = { md5 = entry.h, tries = 0 }
+    inflight[entry.p] = { md5 = entry.h, size = tonumber(entry.s) or 0, tries = 0 }
+    -- isPresent said no: whatever is on disk is wrong (old version / error page) - force a fresh download
+    if fileExists(entry.p) then fileDelete(entry.p) end
+    registry[entry.p] = nil
     if not downloadFile(entry.p) then
         inflight[entry.p] = nil
         report(entry.p .. ": downloadFile refused")
@@ -222,6 +243,25 @@ addEventHandler("onClientFileDownloadComplete", resourceRoot, function(fileName,
         end
         inflight[path] = nil
         return report(path .. ": download failed")
+    end
+    if info.size > 0 then
+        local f = fileExists(path) and fileOpen(path, true)
+        local size = f and fileGetSize(f)
+        if f then fileClose(f) end
+        if size ~= info.size then
+            -- the HTTP download source answered with something else (403 / 404 page)
+            local head = ""
+            local g = fileExists(path) and fileOpen(path, true)
+            if g then head = fileRead(g, 120):gsub("%s+", " "); fileClose(g) end
+            if fileExists(path) then fileDelete(path) end
+            if info.tries < 2 then
+                info.tries = info.tries + 1
+                if downloadFile(path) then return end
+            end
+            inflight[path] = nil
+            return report(("%s: downloaded %s bytes instead of %d (HTTP source problem?) '%s'"):format(
+                path, tostring(size), info.size, head:sub(1, 80)))
+        end
     end
     inflight[path] = nil
     registry[path] = info.md5

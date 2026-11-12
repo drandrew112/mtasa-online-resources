@@ -1,0 +1,11 @@
+<map xmlns:edf="https://wiki.multitheftauto.com/wiki/Resource:Editor/EDF" edf:definitions="editor_main">
+    <removeWorldObject id="removeWorldObject (new_bushsm) (1)" radius="17" interior="-1" model="647" lodModel="0" posX="1409.03" posY="-1421.59" posZ="14.5" rotX="0" rotY="0" rotZ="0" scale="1"></removeWorldObject>
+    <removeWorldObject id="removeWorldObject (sm_bevhiltree) (1)" radius="8" interior="-1" model="673" lodModel="0" posX="1408.69" posY="-1423.34" posZ="13.1" rotX="0" rotY="0" rotZ="0" scale="1"></removeWorldObject>
+    <removeWorldObject id="removeWorldObject (billbrdlan_11) (1)" radius="10.95279" interior="-1" model="4239" lodModel="0" posX="1407.9063" posY="-1407.3984" posZ="33.98438" rotX="0" rotY="0" rotZ="0" scale="1"></removeWorldObject>
+    <removeWorldObject id="removeWorldObject (BillBd2) (1)" radius="16.84787" interior="-1" model="1267" lodModel="1261" posX="1408.6563" posY="-1407.1719" posZ="28.625" rotX="0" rotY="0" rotZ="0" scale="1"></removeWorldObject>
+    <object id="object (veg_tree3) (1)" dimension="0" model="615" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1416.17" posY="-1395.89" posZ="12.59" rotX="0" rotY="0" rotZ="47"></object>
+    <object id="object (veg_treea1) (1)" dimension="0" model="616" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1420.93" posY="-1412.67" posZ="12.55" rotX="0" rotY="0" rotZ="212"></object>
+    <object id="object (sm_veg_tree5) (1)" dimension="0" model="672" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1405.83" posY="-1444.76" posZ="12.55" rotX="0" rotY="0" rotZ="128"></object>
+    <object id="object (pinetree08) (1)" dimension="0" model="654" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1397.36" posY="-1440.83" posZ="12.55" rotX="0" rotY="0" rotZ="305"></object>
+    <object id="object (veg_treea3) (1)" dimension="0" model="618" interior="0" scale="1" alpha="255" collisions="true" doublesided="false" breakable="false" posX="1394.79" posY="-1424.99" posZ="12.55" rotX="0" rotY="0" rotZ="76"></object>
+</map>

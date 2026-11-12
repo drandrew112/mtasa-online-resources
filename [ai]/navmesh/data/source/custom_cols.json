@@ -1,0 +1,12 @@
+{
+  "cols": [
+    {
+      "model": 4139,
+      "file": "../../[core]/v_modloader/objects/4139.col",
+      "reason": "Roads09_LAn (1406,-1418) replaced by v_modloader: S-curve road + grass instead of the divided Z road (2026-11-12). The objects folder is gitignored: the file must exist when walkgrid.js runs."
+    }
+  ],
+  "maps": [
+    "../../[maps]/maps_loader/maps/ls_roads09_lan/ls_roads09_lan.map"
+  ]
+}

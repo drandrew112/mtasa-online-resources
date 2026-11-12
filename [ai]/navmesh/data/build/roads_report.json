@@ -2,8 +2,8 @@
  "counts": {
   "nodes": 28982,
   "links": 29800,
-  "lanes": 54399,
-  "connections": 59387,
+  "lanes": 54387,
+  "connections": 59375,
   "signalGroups": 552,
   "boatNodes": 1596,
   "boatEdges": 1658,

@@ -4,8 +4,9 @@
 // clearance, under-water, tiny islands removed) in up to MAX_LAYERS levels per cell and marks them with the
 // road lanes (data/runtime/roads.nav), the GTA ped paths and crossings (data/runtime/peds.nav).
 // Output: data/runtime/walk.nav (server only, see README "walk.nav format"), data/build/walk_report.json
-// Limit: vanilla map only (removeWorldModel / custom objects of the server are not in it), except the probe
-// patches of data/source/probe_walk (live-scanned boxes, tools/probe_walk) that replace the floors inside their box.
+// Limit: vanilla map only (removeWorldModel / custom objects of the server are not in it), except the replaced
+// COLs of data/source/custom_cols.json and the probe patches of data/source/probe_walk (live-scanned boxes,
+// tools/probe_walk) that replace the floors inside their box.
 'use strict';
 const fs = require('fs'), path = require('path');
 
@@ -129,6 +130,29 @@ for (const [name] of img.entries) {
             qx: b.readFloatLE(o + 12), qy: b.readFloatLE(o + 16), qz: b.readFloatLE(o + 20), qw: b.readFloatLE(o + 24) });
     }
 }
+// removeWorldObject lines of the server maps listed in data/source/custom_cols.json "maps" (paths relative to the
+// navmesh folder): matching instances (model or lodModel within radius, interior 0 / -1) are left out.
+const customCfg = (() => {
+    const f = path.join(ROOT, 'data', 'source', 'custom_cols.json');
+    return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : { cols: [], maps: [] };
+})();
+(() => {
+    const rm = [];
+    for (const m of customCfg.maps || []) {
+        const xml = fs.readFileSync(path.join(ROOT, m), 'utf8');
+        for (const tag of xml.match(/<removeWorldObject\b[^>]*>/g) || []) {
+            const a = {}; for (const [, k, v] of tag.matchAll(/(\w+)="([^"]*)"/g)) a[k] = v;
+            if (a.interior !== undefined && +a.interior !== 0 && +a.interior !== -1) continue;
+            rm.push([+a.model, +a.lodModel || -1, +a.posX, +a.posY, +a.posZ, +a.radius]);
+        }
+    }
+    let n = 0;
+    for (let i = inst.length - 1; i >= 0; i--) {
+        const s = inst[i];
+        if (rm.some(([m, l, x, y, z, r]) => (s.id === m || s.id === l) && Math.hypot(s.x - x, s.y - y, s.z - z) <= r)) { inst.splice(i, 1); n++; }
+    }
+    if (rm.length) console.log(`removeWorldObject: ${rm.length} lines, ${n} instances removed`);
+})();
 
 // ---------------------------------------------------------------- COL archives
 // model -> { tris: Float32Array (9 per tri), tmat: Uint8Array, boxes: [[minx..maxz, mat]], spheres: [[x,y,z,r]], r: bounding radius, c: centre }
@@ -189,6 +213,20 @@ for (const [name, e] of img.entries) {
         o = n;
     }
 }
+// Replaced world models (data/source/custom_cols.json "cols": [{model, file, reason}], file relative to the navmesh
+// folder): the server's custom COL (e.g. v_modloader objects) is rasterised instead of the vanilla one.
+(() => {
+    for (const c of customCfg.cols || []) {
+        const name = names.get(c.model);
+        const b = fs.readFileSync(path.join(ROOT, c.file));
+        const four = b.toString('latin1', 0, 4);
+        if (!name || !/^COL[L234]$/.test(four)) throw new Error(`custom col ${c.model}: bad model or file`);
+        cols.delete(name);
+        parseColEntry(b, 0);
+        if (!cols.has(name)) throw new Error(`custom col ${c.model}: the COL entry is not named ${name}`);
+        console.log(`custom col ${c.model} (${name}): ${cols.get(name).tmat.length} faces from ${c.file}`);
+    }
+})();
 
 // ---------------------------------------------------------------- water.dat
 const water = [];   // { x0,y0,x1,y1, verts:[[x,y,z]...] }

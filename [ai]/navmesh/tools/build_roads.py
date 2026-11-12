@@ -35,10 +35,19 @@ REMOVED = json.load(open(os.path.join(ROOT, 'data', 'source', 'removed_roads.jso
 for _r in REMOVED:
     for _g in _r['nodes']: V.pop(_g, None)
 # Probe-measured corrections (data/source/road_fixes.json): nodeZ = node height override (the surface scan z of the
-# node is dropped too), addLinks = missing links between two car nodes (lanes inherited from the chain next to them)
+# node is dropped too), addLinks = missing links between two car nodes (lanes inherited from the chain next to them),
+# nodePos = node x / y override for replaced road models (surface scans of the node and its links are dropped),
+# linkLanes = one-way lane count of a link {from, to, lanes} (0 lanes the other way, median 0)
 FIXES = json.load(open(os.path.join(ROOT, 'data', 'source', 'road_fixes.json')))
 for _g, _z in FIXES['nodeZ'].items():
     V[int(_g)]['z'] = _z; surf.pop(f"n{int(_g)}", None)
+_moved = set()
+for _g, _p in FIXES.get('nodePos', {}).items():
+    if _g.startswith('_'): continue
+    V[int(_g)]['x'], V[int(_g)]['y'] = _p[0], _p[1]; _moved.add(int(_g))
+for _k in [k for k in surf if (k[0] == 'n' and k[1:].isdigit() and int(k[1:]) in _moved)
+           or (k[0] == 'l' and any(int(p) in _moved for p in k[1:].split('_')[:2]))]:
+    surf.pop(_k)
 B ={g: n for g, n in ALL.items() if n['flags'] & GP.F_BOATS}
 for n in V.values(): n['nbs'] = [l[0] for l in n['links'] if l[0] in V]
 
@@ -75,6 +84,10 @@ for _fx in FIXES['addLinks']:
     if _a in V and _b in V and (_a, _b) not in links:
         links[(_a, _b)] = dict(a=_a, b=_b, len=math.hypot(V[_a]['x'] - V[_b]['x'], V[_a]['y'] - V[_b]['y']))
         V[_a]['nbs'].append(_b); V[_b]['nbs'].append(_a)
+for _fx in FIXES.get('linkLanes', []):
+    _f, _t = _fx['from'], _fx['to']; _lk = links[(min(_f, _t), max(_f, _t))]
+    _lk['ab'], _lk['ba'] = (_fx['lanes'], 0) if _lk['a'] == _f else (0, _fx['lanes'])
+    _lk['median'] = 0.0; _lk.setdefault('tl', 0)
 
 def nb_links(node, exclude):
     for c in V[node]['nbs']:
