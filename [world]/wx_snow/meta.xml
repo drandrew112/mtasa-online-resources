@@ -34,7 +34,6 @@
     <file src="tex/noise.png" />
     <file src="tex/flake.png" />
     <file src="tex/layer.png" />
-    <file src="sounds/wind_loop.wav" />
     <!-- roof map: /snowbake writes both (4 m grid, RG = 16 bit top surface height), restart to send it out -->
     <file src="data/roofmap.png" />
     <file src="data/roofmap.json" />

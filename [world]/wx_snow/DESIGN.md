@@ -40,7 +40,7 @@ Hómaszk: `smoothstep(1-c±0.11, zaj*0.85 + up*0.15) * up` × (1 − tető alatt
 
 Kategóriák (`SNOW.CATEGORIES`, mindegyik külön shader példány, egy textúra csak egyet kap): generic `*`, soft (fű/föld/homok), road, pavement, foliage. Kizárás: `SNOW.EXCLUDE` (dynamic_lighting removeList + víz, üveg, lámpák, árnyékok, effektek). GTA fű `tx*`: `fx/snow_grass.fx` (nem-layered, prioritás 5) fehérít / elrejt.
 
-Egyéb: köd `drawdistance:setFogOverride` (új export), színek `shader_colors:pushColorOverride("wx_snow")`, szélhang `sounds/wind_loop.wav` (generált). Mind csak kint.
+Egyéb: köd `drawdistance:setFogOverride` (új export), színek `shader_colors:pushColorOverride("wx_snow")`, szélhang eltávolítva (2026-11-12, kérésre; a wav már nincs a meta-ban). Mind csak kint.
 
 ## 4. Beltér kizárása
 

@@ -187,6 +187,9 @@ POL.handle("arrest:charges", function(target, title, list, mode)
         if c.checked then charges[c.id] = true; chargeCount = chargeCount + 1 end
         items[#items + 1] = { label = c.label, value = "c:" .. c.id, checked = c.checked == true, closeOnSelect = false }
     end
+    -- Skip above Hand over: so nobody who wants to play seriously presses Hand over by habit
+    items[#items + 1] = { label = L("police_system.arrest.skip_button"), value = "skip", closeOnSelect = false,
+                          desc = L("police_system.arrest.skip_hint") }
     items[#items + 1] = { label = handoverLabel(), value = "handover", closeOnSelect = false,
                           desc = L("police_system.arrest.handover_hint") }
     menuItemsCount = #items
@@ -211,10 +214,10 @@ addEventHandler("ui_inac:tempMenuSelect", localPlayer, function(rootId, value, p
                 m:updateTempMenuItem(path, { checked = charges[id] == true })
                 m:updateTempMenuItem(tostring(menuItemsCount), { label = handoverLabel() })
             end
-        elseif value == "handover" then
-            if chargeCount == 0 then return POL.notify(L("police_system.arrest.err_no_charges")) end
+        elseif value == "handover" or value == "skip" then
+            if value == "handover" and chargeCount == 0 then return POL.notify(L("police_system.arrest.err_no_charges")) end
             local list = {}
-            for k in pairs(charges) do list[#list + 1] = k end
+            if value == "handover" then for k in pairs(charges) do list[#list + 1] = k end end
             local target = menuTarget
             menuKind, menuTarget = nil, nil
             if m then m:closeTempMenu() end

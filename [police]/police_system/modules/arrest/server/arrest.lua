@@ -507,10 +507,11 @@ AR.handover = handover
 
 -- "Arrest warrant" charge: not a penal code item (no fine), always the first in the list
 AR.WARRANT_CHARGE = "arrest_warrant"
+AR.EVADE_CHARGE = "evading_measure"   -- evading a police measure (pursuit)
 
 -- a valid handover charge: the arrest warrant or an arrestable / warrant item of the penal code
 function AR.isCharge(id)
-    if id == AR.WARRANT_CHARGE then return true end
+    if id == AR.WARRANT_CHARGE or id == AR.EVADE_CHARGE then return true end
     local e = POL.btk.get(id)
     return e and (e.arrestable or e.warrant) and true or false
 end
@@ -521,7 +522,8 @@ end
 function AR.chargeItems(officer, preset)
     local tick = {}
     for _, id in ipairs(type(preset) == "table" and preset or {}) do tick[id] = true end
-    local out = { { id = AR.WARRANT_CHARGE, label = L.forPlayer(officer, btkKey(AR.WARRANT_CHARGE)), checked = tick[AR.WARRANT_CHARGE] } }
+    local out = { { id = AR.WARRANT_CHARGE, label = L.forPlayer(officer, btkKey(AR.WARRANT_CHARGE)), checked = tick[AR.WARRANT_CHARGE] },
+        { id = AR.EVADE_CHARGE, label = L.forPlayer(officer, btkKey(AR.EVADE_CHARGE)), checked = tick[AR.EVADE_CHARGE] } }
     for _, e in ipairs(POL.btk.items) do
         if e.arrestable or e.warrant then
             out[#out + 1] = { id = e.id, label = L.forPlayer(officer, btkKey(e.id)), checked = tick[e.id] }
@@ -572,7 +574,6 @@ POL.net("arrest:handover", function(officer, target, charges)
     for _, id in ipairs(type(charges) == "table" and charges or {}) do
         if AR.isCharge(id) and not seen[id] then seen[id] = true; valid[#valid + 1] = id end
     end
-    if #valid == 0 then return POL.notify(officer, "police_system.arrest.err_no_charges") end
     local h = q.st.handover
     local ox, oy, oz = getElementPosition(officer)
     if getDistanceBetweenPoints3D(ox, oy, oz, h[1], h[2], h[3]) > POLICE.HANDOVER_RADIUS + 6 then

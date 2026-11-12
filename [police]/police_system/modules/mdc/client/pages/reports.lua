@@ -62,7 +62,7 @@ MDC.pages.reports = {
                     W.button("rp:accept:" .. tostring(id), cx, cy + POL.px(3), cw, bh, L("police_system.mdc.accept_submit"), function()
                         if S.sending then return end
                         S.sending = id
-                        MDC.call("reportSave", { id = id, submit = true }, function() S.sending = nil; MDC.load() end)
+                        MDC.call("reportSave", { id = id, submit = true }, function() S.sending = nil; S.edit = nil; MDC.go("reports") end)
                     end, "primary", S.sending ~= nil)
                 end
             end

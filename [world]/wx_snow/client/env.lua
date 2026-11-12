@@ -55,15 +55,9 @@ local function update(dt)
 
     setGrade(lvl, on and p.grade or nil, placeChanged and 300 or 4000)
 
-    -- wind loop (quieter under a roof, off indoors)
-    local vol = on and (p.windVol or 0) * (CS.covered and 0.45 or 1) * 0.6 or 0
-    ENV.volume = ENV.volume + (vol - ENV.volume) * math.min(1, dt * 0.8)
-    if ENV.volume > 0.005 then
-        if not isElement(ENV.sound) then
-            ENV.sound = playSound("sounds/wind_loop.wav", true)
-        end
-        if ENV.sound then setSoundVolume(ENV.sound, ENV.volume) end
-    elseif isElement(ENV.sound) then
+    -- no wind sound during snowfall (removed on request): make sure none is left playing
+    ENV.volume = 0
+    if isElement(ENV.sound) then
         destroyElement(ENV.sound)
         ENV.sound = nil
     end

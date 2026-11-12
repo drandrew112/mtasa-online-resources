@@ -265,7 +265,7 @@ end
 
 POL.on("unit", function(u, old)
     if MDC.open then
-        if (u and true) ~= (old and true) then MDC.go(u and "overview" or MDC.page) end
+        if (u and true) ~= (old and true) then MDC.go((u and MDC.page ~= "reports") and "overview" or MDC.page) end
         MDC.dirty = true
     end
 end)
