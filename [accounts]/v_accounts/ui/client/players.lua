@@ -1,6 +1,6 @@
 if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIGN.md 4.7)
 -- Players card: under the Settings card. Top right: current/max players (green);
--- below it a green curve of the last 12 h in 30-minute slots. A slot without
+-- below it a green curve of the last 24 h in 30-minute slots. A slot without
 -- data is red and sits at zero. Data pushed by stats/server/stats.lua.
 
 Players = { data = nil }
@@ -47,10 +47,10 @@ function Players.draw(anchor)
         dxDrawLine(x1, y1, x2, y2, missing and RED or GREEN, ui(2))
     end
 
-    -- time labels: -12h .. now
+    -- time labels: -24h .. now
     local fy = cy + ch + ui(6)
-    dxDrawText("-12h", cx, fy, cx + ui(60), fy + ui(16), Theme.label, ui(1.0), "default", "left", "top")
-    dxDrawText("-6h", cx, fy, cx + cw, fy + ui(16), Theme.label, ui(1.0), "default", "center", "top")
+    dxDrawText("-24h", cx, fy, cx + ui(60), fy + ui(16), Theme.label, ui(1.0), "default", "left", "top")
+    dxDrawText("-12h", cx, fy, cx + cw, fy + ui(16), Theme.label, ui(1.0), "default", "center", "top")
     dxDrawText(L("v_accounts.ui.players.now"), cx + cw - ui(60), fy, cx + cw, fy + ui(16), Theme.label, ui(1.0), "default", "right", "top")
 end
 

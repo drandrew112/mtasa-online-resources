@@ -1,14 +1,14 @@
 -- stats module (server): player count history for the login screen's Players panel.
 -- stats.json (gitignored) = { samples = { { t = timestamp, n = playerCount }, ... } }.
--- A sample is taken every 15 minutes; samples older than 24 h are dropped.
--- The client gets the last 12 h in 30-minute slots (24 slots); a slot without
+-- A sample is taken every 15 minutes; samples older than 25 h are dropped.
+-- The client gets the last 24 h in 30-minute slots (48 slots); a slot without
 -- any sample is "missing" (drawn red, at 0).
 
 local FILE        = "stats/stats.json"
 local INTERVAL    = 15 * 60          -- seconds between samples
-local KEEP        = 24 * 3600        -- samples older than this are removed
+local KEEP        = 25 * 3600        -- samples older than this are removed
 local SLOT        = 30 * 60          -- chart resolution
-local SLOTS       = 24               -- 12 h
+local SLOTS       = 48               -- 24 h
 
 local samples = {}                   -- { { t, n } } oldest first
 
@@ -60,7 +60,7 @@ local function record()
     save()
 end
 
--- 24 slots, oldest first: { n = maxPlayers seen in the slot | nil (no data) }
+-- 48 slots, oldest first: { n = maxPlayers seen in the slot | nil (no data) }
 local function buildSlots()
     local t = now()
     local endT = t - (t % SLOT) + SLOT           -- end of the current slot
