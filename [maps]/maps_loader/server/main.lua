@@ -12,6 +12,7 @@ local maps = {}            -- array of { name, objects, removes, markers, zones,
 local mapByName = {}
 local payload = nil        -- what the clients get
 local copies = {}          -- [name][dim] = { mode = "all" | "interior", users = { [owner] = count } }
+local eventOn = {}         -- [name] = true: event map (settings.json "event") currently switched on
 
 local function log(msg) outputServerLog(LOG_PREFIX .. msg) end
 
@@ -75,6 +76,7 @@ local function parseMap(name)
 
     local m = { name = name, objects = {}, removes = {}, markers = {}, zones = zones,
                 lod = settings.lod == "none" and "none" or "auto", disabled = settings.disabled == true,
+                event = settings.event == true,
                 stats = { objects = 0, removes = 0, markers = 0, indoor = 0, moving = 0, unknown = {} } }
     local bx1, by1, bx2, by2 = math.huge, math.huge, -math.huge, -math.huge
     local function grow(x, y)
@@ -235,7 +237,7 @@ local function buildPayload()
     for i, m in ipairs(maps) do
         local zones = {}
         for j, z in ipairs(m.zones) do zones[j] = { z.min, z.max, z.margin } end
-        out[i] = { name = m.name, lod = m.lod, bbox = m.bbox, objects = m.objects, removes = m.removes,
+        out[i] = { name = m.name, event = m.event or nil, lod = m.lod, bbox = m.bbox, objects = m.objects, removes = m.removes,
                    markers = m.markers, zones = zones }
     end
     payload = { maps = out }
@@ -252,11 +254,17 @@ local function publishDims()
     setElementData(resourceRoot, DATA_DIMS, dims)
 end
 
+local function publishEvents()
+    setElementData(resourceRoot, DATA_EVENTS, eventOn)
+end
+
 local occlusionsWereOn = nil
 
 addEventHandler("onResourceStop", resourceRoot, function()
     if occlusionsWereOn then setOcclusionsEnabled(true) end
 end)
+
+addEvent("onMapsLoaderStart")
 
 addEventHandler("onResourceStart", resourceRoot, function()
     if MAPLOADER.DISABLE_OCCLUSIONS then
@@ -288,6 +296,8 @@ addEventHandler("onResourceStart", resourceRoot, function()
     end
     buildPayload()
     publishDims()
+    eventOn = {}
+    publishEvents()
     log(("%d map(s), %d object(s) loaded"):format(#maps, total))
 end)
 
@@ -376,6 +386,42 @@ function getMapDimensions(name)
     return out
 end
 
+---------------------------------------------------------------------------- event maps (exports)
+
+-- Event maps (settings.json "event": true) are known to the clients but not built until switched on,
+-- e.g. by event_core: exports.maps_loader:setEventMapEnabled("ls_xmas_tree", true).
+-- The state is not saved: a restart of maps_loader switches every event map off again
+-- (listen to onMapsLoaderStart on root to switch them back on).
+
+-- -> true | false (unknown map or not an event map)
+function setEventMapEnabled(name, enabled)
+    local m = mapByName[name]
+    if not m or not m.event then return false end
+    enabled = enabled and true or nil
+    if eventOn[name] == enabled then return true end
+    eventOn[name] = enabled
+    publishEvents()
+    log(("event map %s %s by %s"):format(name, enabled and "ON" or "OFF", ownerOf()))
+    return true
+end
+
+function isEventMapEnabled(name)
+    return eventOn[name] == true
+end
+
+-- -> { { name = , enabled = }, ... } of every event map
+function getEventMaps()
+    local out = {}
+    for _, m in ipairs(maps) do
+        if m.event then out[#out + 1] = { name = m.name, enabled = eventOn[m.name] == true } end
+    end
+    return out
+end
+
+addEventHandler("onResourceStart", resourceRoot, function()
+    triggerEvent("onMapsLoaderStart", root)
+end)
+
 ---------------------------------------------------------------------------- /maploader
 
 local function say(player, text)
@@ -389,7 +435,7 @@ local function allowed(player)
     return ok and (tonumber(level) or 0) >= MAPLOADER.ADMIN_LEVEL
 end
 
-addCommandHandler("maploader", function(player, _, sub)
+addCommandHandler("maploader", function(player, _, sub, arg1, arg2)
     if not allowed(player) then return say(player, "Access denied.") end
     sub = tostring(sub or ""):lower()
     if sub == "update" then
@@ -413,9 +459,13 @@ addCommandHandler("maploader", function(player, _, sub)
         for _, m in ipairs(maps) do
             local dims = {}
             for dim, c in pairs(copies[m.name] or {}) do dims[#dims + 1] = dim .. (c.mode == "interior" and "i" or "") end
-            say(player, ("%-22s %4d object(s)%s"):format(m.name, #m.objects, #dims > 0 and (" | dims " .. table.concat(dims, ",")) or ""))
+            say(player, ("%-22s %4d object(s)%s%s"):format(m.name, #m.objects, m.event and (eventOn[m.name] and " | EVENT on" or " | EVENT off") or "", #dims > 0 and (" | dims " .. table.concat(dims, ",")) or ""))
         end
+    elseif sub == "event" then
+        local name, state = tostring(arg1 or ""), tostring(arg2 or ""):lower()
+        if state ~= "on" and state ~= "off" then return say(player, "Usage: /maploader event <map> on|off") end
+        say(player, setEventMapEnabled(name, state == "on") and (name .. " event " .. state) or (name .. " is not an event map"))
     else
-        say(player, "Usage: /maploader update | status")
+        say(player, "Usage: /maploader update | status | event <map> on|off")
     end
 end)

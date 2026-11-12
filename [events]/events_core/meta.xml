@@ -1,0 +1,26 @@
+<meta>
+    <info author="DrAndrew112" name="events_core" type="script" version="1.0.0"
+          description="Seasonal events: registry (events_xmas ...), weekly on/off (v_weekly custom.events, v_admin Weekly > Events), asks v_modloader / maps_loader for the models and maps of the active events, /events test command" />
+
+    <script src="config.lua" type="shared" />
+    <script src="server/main.lua" type="server" />
+
+    <!-- registration (called by the event resources, e.g. events_xmas, on their start and on onEventsCoreStart):
+         registerEvent(id, { name, description, models = { objectId, ... }, maps = { "map_name", ... } }) -> bool
+         unregisterEvent(id) -> bool       (also done automatically when the registering resource stops) -->
+    <export function="registerEvent" type="server" />
+    <export function="unregisterEvent" type="server" />
+
+    <!-- queries
+         isEventRegistered(id)   isEventActive(id)   getActiveEvents() -> { id, ... }
+         getEvents() -> { { id, name, description, models, maps, resource, active, weekly, override }, ... } -->
+    <export function="isEventRegistered" type="server" />
+    <export function="isEventActive" type="server" />
+    <export function="getActiveEvents" type="server" />
+    <export function="getEvents" type="server" />
+
+    <!-- test override (until the next week change): state = true | false | nil (nil = follow the weekly schedule) -->
+    <export function="setEventOverride" type="server" />
+
+    <!-- server events (root): onEventsCoreStart (register now), onEventStarted(id), onEventStopped(id) -->
+</meta>

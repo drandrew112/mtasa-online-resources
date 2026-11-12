@@ -6,6 +6,8 @@
 --
 -- settings.json (all optional):
 --   { "disabled": false,
+--     "event": false,                     -- true: event map, built only while switched on
+--                                         -- (exports setEventMapEnabled / isEventMapEnabled, /maploader event)
 --     "lod": "auto" | "none",             -- "none": no low LOD clones for this map at all
 --     "indoor": [ { "name": "...", "min": [x, y, z], "max": [x, y, z], "margin": 12,
 --                   "keep": [model, ...] } ] }
@@ -47,3 +49,4 @@ MAPLOADER = {
 EV_REQUEST = "maploader:request"     -- client -> server: send me the maps
 EV_DATA = "maploader:data"           -- server -> client: { maps = { ... } }
 DATA_DIMS = "maploader.dims"         -- resourceRoot element data: { [map] = { [dim] = "all" | "interior" } }
+DATA_EVENTS = "maploader.events"     -- resourceRoot element data: { [event map] = true } while switched on

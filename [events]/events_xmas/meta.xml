@@ -1,0 +1,7 @@
+<meta>
+    <info author="DrAndrew112" name="events_xmas" type="script" version="1.0.0"
+          description="Christmas event: registers itself in events_core (models of v_modloader EVENT_OBJECTS + the ls_xmas_tree map of maps_loader); switched on / off in the v_admin Weekly page or with /events xmas" />
+
+    <script src="config.lua" type="shared" />
+    <script src="server.lua" type="server" />
+</meta>

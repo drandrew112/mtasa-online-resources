@@ -14,6 +14,7 @@ local maps = {}             -- array of { def, active, objects = {element}, zone
 local removals = {}         -- key -> { count, args }
 local copyObjects = {}      -- name -> { dim, mode, elements }
 local received, reported, loadingStarted = false, false, false
+local checkMaps, checkZones   -- defined below
 
 -- the GTA streamer loads models in the background (was in DOUBLE_ZEBRA/client.lua, kept as it was)
 engineSetAsynchronousLoading(true, false)
@@ -158,6 +159,22 @@ local function applyRemovals(def)
     end
 end
 
+-- releases one map's references; the world model comes back when nobody else removes it
+local function releaseRemovals(def)
+    for _, r in ipairs(def.removes) do
+        local key = removalKey(r)
+        local e = removals[key]
+        if e then
+            e.count = e.count - 1
+            if e.count <= 0 then
+                restoreWorldModel(r[1], r[3], r[4], r[5], r[6], r[7])
+                if r[2] and r[2] > 0 and r[2] ~= r[1] then restoreWorldModel(r[2], r[3], r[4], r[5], r[6], r[7]) end
+                removals[key] = nil
+            end
+        end
+    end
+end
+
 local function restoreAllRemovals()
     for key, e in pairs(removals) do
         local r = e.r
@@ -168,6 +185,26 @@ local function restoreAllRemovals()
 end
 
 ---------------------------------------------------------------------------- copies in other dimensions
+
+-- event maps (def.event) exist only while the server has them switched on
+local function setEnabled(m, on)
+    if m.enabled == on then return end
+    m.enabled = on
+    if on then
+        applyRemovals(m.def)
+    else
+        deactivate(m)
+        releaseRemovals(m.def)
+    end
+end
+
+local function syncEvents()
+    local state = getElementData(resourceRoot, DATA_EVENTS)
+    state = type(state) == "table" and state or {}
+    for _, m in ipairs(maps) do
+        if m.def.event then setEnabled(m, state[m.def.name] == true) end
+    end
+end
 
 local function syncCopies()
     local dims = getElementData(resourceRoot, DATA_DIMS)
@@ -197,6 +234,11 @@ end
 
 addEventHandler("onClientElementDataChange", resourceRoot, function(key)
     if key == DATA_DIMS then syncCopies() end
+    if key == DATA_EVENTS then
+        syncEvents()
+        checkMaps()
+        checkZones()
+    end
 end, false)
 addEventHandler("onClientElementDimensionChange", localPlayer, function() syncCopies() end, false)
 
@@ -204,12 +246,14 @@ addEventHandler("onClientElementDimensionChange", localPlayer, function() syncCo
 
 local lastZoneCheck = 0
 
-local function checkMaps()
+function checkMaps()
     local cx, cy = getCameraMatrix()
     local range = farClip() + MAPLOADER.ACTIVE_MARGIN
     for _, m in ipairs(maps) do
         local d = boxDistance2D(m.def.bbox, cx, cy)
-        if not m.active and d <= range then
+        if not m.enabled then
+            -- switched-off event map: nothing to build
+        elseif not m.active and d <= range then
             activate(m)
         elseif m.active and d > range + MAPLOADER.ACTIVE_HYSTERESIS then
             deactivate(m)
@@ -217,7 +261,7 @@ local function checkMaps()
     end
 end
 
-local function checkZones()
+function checkZones()
     local cx, cy, cz = getCameraMatrix()
     for _, m in ipairs(maps) do
         for zi, z in ipairs(m.def.zones) do
@@ -242,11 +286,14 @@ addEventHandler(EV_DATA, resourceRoot, function(data)
     restoreAllRemovals()
     maps = {}
     for i, def in ipairs(type(data) == "table" and data.maps or {}) do
-        local m = { def = def, active = false, objects = {}, lodCheck = {}, zoneObjects = {}, zoneOn = {} }
+        local m = { def = def, enabled = false, active = false, objects = {}, lodCheck = {}, zoneObjects = {}, zoneOn = {} }
         for zi in ipairs(def.zones) do m.zoneObjects[zi] = {} end
         maps[i] = m
-        applyRemovals(def)
     end
+    for _, m in ipairs(maps) do
+        if not m.def.event then setEnabled(m, true) end
+    end
+    syncEvents()
     checkMaps()
     checkZones()
     syncCopies()
@@ -290,6 +337,22 @@ function getActiveMaps()
     local out = {}
     for _, m in ipairs(maps) do
         if m.active then out[#out + 1] = m.def.name end
+    end
+    return out
+end
+
+-- exported (client): the settings.json "indoor" boxes of the active maps (all = true: of every map),
+-- so other resources can treat them as indoors (wx_snow: no snow on the floors, no snowfall inside).
+-- -> array of { minX, minY, minZ, maxX, maxY, maxZ, map = name }
+function getIndoorZones(all)
+    local out = {}
+    for _, m in ipairs(maps) do
+        if m.active or all then
+            for _, z in ipairs(m.def.zones) do
+                local mn, mx = z[1], z[2]
+                out[#out + 1] = { mn[1], mn[2], mn[3], mx[1], mx[2], mx[3], map = m.def.name }
+            end
+        end
     end
     return out
 end

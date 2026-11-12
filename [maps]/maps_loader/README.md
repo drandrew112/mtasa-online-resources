@@ -29,3 +29,12 @@ Other resources:
 - `extras/sacontrol`: the SA Control wall signs (were in map_int_sacontrol)
 - `extras/technoparty`: radio stream + two dancing peds of ls_technoparty, only within 250 m (were in map_ls_technoparty)
 - the old sf_garage radio and the /open garage door command are gone (v_customs will use the map)
+
+Event maps (e.g. `ls_xmas_tree`):
+
+- `settings.json` `"event": true` - the map is listed in `index.json` but its objects and world removals
+  exist on the clients only while it is switched on
+- server exports `setEventMapEnabled(name, bool)`, `isEventMapEnabled(name)`, `getEventMaps()`;
+  console / admin 5+ command `/maploader event <map> on|off`
+- the state is not saved: after a `maps_loader` restart every event map is off; the server event
+  `onMapsLoaderStart` (root) tells event_core to switch the active ones back on

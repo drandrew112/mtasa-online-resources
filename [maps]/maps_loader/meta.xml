@@ -29,6 +29,13 @@
     <export function="getLoadedMaps" type="server" />
     <export function="isMapLoaded" type="server" />
     <export function="getMapDimensions" type="server" />
+    <!-- event maps (settings.json "event": true): built only while switched on, off after a restart
+         setEventMapEnabled(name, bool) -> bool   isEventMapEnabled(name)   getEventMaps() -> { { name, enabled } }
+         server event onMapsLoaderStart (root) is triggered when the resource has started -->
+    <export function="setEventMapEnabled" type="server" />
+    <export function="isEventMapEnabled" type="server" />
+    <export function="getEventMaps" type="server" />
     <!-- client: maps whose objects exist right now (near the camera) -->
     <export function="getActiveMaps" type="client" />
+    <export function="getIndoorZones" type="client" />
 </meta>
