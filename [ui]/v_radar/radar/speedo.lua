@@ -1,10 +1,9 @@
--- Speedometer: square gauge panel attached to the right of the minimap, land vehicles only, km/h.
+-- Speedometer: gauge (no background) attached to the right of the minimap, land vehicles only, km/h.
 -- renderSpeedo() is called from renderMinimap (radar/sourceC.lua), so it follows the minimap's
 -- position, visibility (bigmap, hideHUD) and size.
 
 local SPEEDO_MAX = 240          -- km/h at a full arc
 local SPEEDO_SEG_DEG = 3        -- fill arc is a triangle strip, one segment per this many degrees
-local SPEEDO_CORNER = 0.226      -- top right corner radius, fraction of the panel size
 local SPEEDO_ARC_START = 135    -- deg, svg angles run clockwise from +x
 local SPEEDO_ARC_SPAN = 270
 local SPEEDO_SMOOTHING = 0.25   -- 0..1 per frame, lower = lazier needle
@@ -45,10 +44,7 @@ local function buildSpeedo(size)
 	speedoSize = size
 	if not svgCreate then return end
 	local track = arcPath(size, SPEEDO_ARC_START, SPEEDO_ARC_START + SPEEDO_ARC_SPAN):format("#ffffff", "0.15")
-	-- square panel, flat on the minimap side, only the top right corner rounded
-	local cr = size * SPEEDO_CORNER
-	local panel = string.format('<path d="M0 0 H%.2f A%.2f %.2f 0 0 1 %.2f %.2f V%.2f H0 Z" fill="#000000" fill-opacity="0.65"/>', size - cr, cr, cr, size, cr, size)
-	speedoBase = svgCreate(size * 2, size * 2, svgDoc(size, panel .. track))
+	speedoBase = svgCreate(size * 2, size * 2, svgDoc(size, track))
 	speedoFont = dxCreateFont("files/RobotoB.ttf", math.max(8, floor(size * 0.3)), false, "antialiased")
 end
 

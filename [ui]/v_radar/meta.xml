@@ -21,6 +21,8 @@
     <file src="radar/files/tick.png" type="client" />
     <file src="radar/files/tick_on.png" type="client" />
     <file src="radar/files/mic.png" type="client" />
+    <file src="radar/files/unit_pd.png" type="client" />
+    <file src="radar/files/unit_ems.png" type="client" />
 
     <file src="radar/files/blips/0.png" type="client" />
     <file src="radar/files/blips/1.png" type="client" />
@@ -118,6 +120,7 @@
     <script src="radar/sourceC.lua" type="client" />
     <script src="radar/speedo.lua" type="client" />
     <script src="radar/voiceicon.lua" type="client" />
+    <script src="radar/unitstatus.lua" type="client" />
 
     <file src="radar/gps/images/dot.png" type="client" />
 
@@ -127,6 +130,7 @@
     <script src="radar/route3d.lua" type="client" />
     <script src="client.lua" type="client" />
     <script src="server.lua" type="server" />
+    <script src="radar/unitstatus_server.lua" type="server" />
     <script src="radar/gps/server.lua" type="server" />
     <script src="radar/areas_server.lua" type="server" />
     <export function="createCustomBlip" type="client" />

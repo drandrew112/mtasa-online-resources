@@ -98,7 +98,7 @@ function renderRadioInfo(x, y, box)
 	end
 
 	local sp = radio.speaker
-	local talking = radio.state == "live" or (sp and sp.live)
+	local talking = radio.state == "live" or radio.state == "keying" or (sp and sp.live)
 	local step = (now - radioLast) / MIC_FADE_MS
 	radioLast = now
 	radioBlend = talking and math.min(1, radioBlend + step) or math.max(0, radioBlend - step)
