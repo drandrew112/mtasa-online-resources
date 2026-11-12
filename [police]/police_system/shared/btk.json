@@ -16,11 +16,19 @@
       { "id": "parking.crosswalk_parking", "amount": 200 },
       { "id": "parking.blocking_access", "amount": 300 }
     ] },
-    { "id": "vehicle", "items": [
+    { "id": "documents", "items": [
       { "id": "vehicle.no_plate", "amount": 600 },
       { "id": "vehicle.invalid_registration", "amount": 500 },
       { "id": "vehicle.expired_inspection", "amount": 300 },
       { "id": "vehicle.invalid_licence", "amount": 800 },
+      { "id": "documents.expired_licence", "amount": 500 },
+      { "id": "documents.no_id", "amount": 200 },
+      { "id": "documents.forged_plate", "amount": 3000, "warrant": true, "wanted": 1, "minutes": 3 },
+      { "id": "documents.forged_registration", "amount": 2000, "warrant": true, "minutes": 3 },
+      { "id": "documents.forged_licence", "amount": 2500, "warrant": true, "minutes": 3 },
+      { "id": "order.false_identity", "amount": 1200, "warrant": true, "minutes": 2 }
+    ] },
+    { "id": "vehicle", "items": [
       { "id": "vehicle.unsafe_vehicle", "amount": 700, "warning": "warning.minor_defect" },
       { "id": "vehicle.illegal_modification", "amount": 900 }
     ] },
@@ -41,7 +49,6 @@
     { "id": "order", "items": [
       { "id": "order.obstruction", "amount": 1500, "warrant": true, "minutes": 2 },
       { "id": "order.ignoring_order", "amount": 1000, "warrant": true, "minutes": 1 },
-      { "id": "order.false_identity", "amount": 1200, "warrant": true, "minutes": 2 },
       { "id": "order.false_report", "amount": 1500, "warrant": true, "minutes": 2 },
       { "id": "order.brawling", "amount": 800, "warrant": true, "minutes": 1 },
       { "id": "order.harassment", "amount": 1000, "warrant": true, "minutes": 1 }

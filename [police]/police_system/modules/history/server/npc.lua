@@ -29,7 +29,7 @@ local function pastFineIds()
     local out = {}
     for _, e in ipairs(POL.btk.items) do
         if not e.warning and not e.arrestable and (e.cat == "traffic" or e.cat == "parking" or e.cat == "vehicle"
-            or e.cat == "pedestrian" or e.cat == "public") then out[#out + 1] = e.id end
+            or e.cat == "pedestrian" or e.cat == "public" or e.cat == "documents") then out[#out + 1] = e.id end
     end
     return out
 end
