@@ -253,6 +253,12 @@ local function drawCard(sx, sy, k, a, v, inside, stem)
     local progH = prog and s(30) * k or 0
     local h = headH + hintH + progH
     local x, y = sx - w / 2, sy - h
+    -- keep the card (and the level bar above it) inside the safe zone
+    local topExtra = v.level and (s(5) + s(44)) * k or 0
+    local nx = math.max(UI.safe.x, math.min(x, sw - UI.safe.x - w))
+    local ny = math.max(UI.safe.y + topExtra, math.min(y, sh - UI.safe.y - h))
+    if ny ~= y then stem = false end
+    x, y = nx, ny
 
     round(x, y, w, h, s(7) * k, tocolor(14, 17, 21, 220 * a))
     round(x, y + h - s(3) * k, w, s(3) * k, s(1.5) * k, rgb(color, 235 * a))
@@ -300,7 +306,7 @@ local function drawCard(sx, sy, k, a, v, inside, stem)
     end
 
     if stem then
-        dxDrawRectangle(sx - s(1) * k, y + h, s(2) * k, s(10) * k, tocolor(14, 17, 21, 220 * a))
+        dxDrawRectangle(x + w / 2 - s(1) * k, y + h, s(2) * k, s(10) * k, tocolor(14, 17, 21, 220 * a))
     end
 
     if v.level then
@@ -349,7 +355,7 @@ function MarkerUIRender()
         end
 
         if v.pinned and not v.hidden and not hiddenOwners[e.owner] and (not v.work or v.work == myWork) then
-            drawCard(sw / 2, sh - s(60), 1, 1, v, inside, false)
+            drawCard(sw / 2, math.min(sh - s(60), sh - UI.safe.y), 1, 1, v, inside, false)
         else
             local lz = e.z + v.height
             local show = not v.hidden and not hiddenOwners[e.owner] and e.dist <= v.radius

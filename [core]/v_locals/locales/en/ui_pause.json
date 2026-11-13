@@ -29,6 +29,8 @@
   "ui_pause.pausemenu.emergency_lights_desc": "How sirens light up their surroundings. Dynamic: lights the road, walls and vehicles (costs FPS). Native: GTA's own lights, lighter on weaker PCs.",
   "ui_pause.pausemenu.emergency_lights_dynamic": "Dynamic",
   "ui_pause.pausemenu.emergency_lights_native": "Native",
+  "ui_pause.pausemenu.safe_zone": "Safe zone",
+  "ui_pause.pausemenu.safe_zone_desc": "How far the HUD (minimap, notifications, chat, menus) stays from the screen edge. 1 = closest to the edge, 6 = furthest. Default: 3.",
   "ui_pause.pausemenu.snow_quality": "Snow",
   "ui_pause.pausemenu.snow_quality_desc": "Snow during snowy weeks. High: snowy ground, falling flakes and snow layers. Low: fewer flakes, simpler ground (lighter on weaker PCs). Off: you see no snow at all.",
   "ui_pause.pausemenu.snow_quality_high": "High",

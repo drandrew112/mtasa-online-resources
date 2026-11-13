@@ -62,6 +62,8 @@ local function renderWanted()
     end
 end
 
+UI.relayoutWanted = layout
+
 addEventHandler("onClientResourceStart", resourceRoot, function()
     texGrey  = dxCreateTexture("client/images/star_grey.png", "argb", true, "clamp")
     texWhite = dxCreateTexture("client/images/star_white.png", "argb", true, "clamp")

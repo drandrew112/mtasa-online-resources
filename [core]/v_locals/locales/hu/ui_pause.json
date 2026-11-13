@@ -29,6 +29,8 @@
   "ui_pause.pausemenu.emergency_lights_desc": "A villogók fénye a környezetben. Dinamikus: megvilágítja az utat, a falakat és a járműveket (FPS-be kerül). Gyári: a GTA saját fényei, gyengébb gépen kíméletesebb.",
   "ui_pause.pausemenu.emergency_lights_dynamic": "Dinamikus",
   "ui_pause.pausemenu.emergency_lights_native": "Gyári",
+  "ui_pause.pausemenu.safe_zone": "Safe zone",
+  "ui_pause.pausemenu.safe_zone_desc": "Milyen messze marad a HUD (minitérkép, értesítések, chat, menük) a képernyő szélétől. 1 = legközelebb a széléhez, 6 = legtávolabb. Alapértelmezett: 3.",
   "ui_pause.pausemenu.snow_quality": "Hó",
   "ui_pause.pausemenu.snow_quality_desc": "Hó a havas heteken. Magas: havas talaj, hulló pelyhek és hórétegek. Alacsony: kevesebb pehely, egyszerűbb talaj (gyengébb gépen kíméletesebb). Ki: egyáltalán nem látsz havat.",
   "ui_pause.pausemenu.snow_quality_high": "Magas",

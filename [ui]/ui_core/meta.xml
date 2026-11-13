@@ -326,6 +326,8 @@
     <export function="ui" type="client" />
     <export function="getScreenWH" type="client" />
     <export function="getSafeZone" type="client" />
+    <export function="getSafeZoneLevel" type="client" />
+    <export function="setSafeZoneLevel" type="client" />
 
     <export function="toggleMoveControls" type="client" />
     <export function="toggleMoveControls_s" type="server" />

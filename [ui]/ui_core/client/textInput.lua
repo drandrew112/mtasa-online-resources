@@ -100,7 +100,7 @@ local function buildLayout(maxLen)
     lay.fs     = ui(1.25)
     lay.ts     = ui(1.35)
     lay.ss     = ui(1.0)
-    lay.w      = math.min(ui(640), UI.sw - ui(40))
+    lay.w      = math.min(ui(640), UI.sw - UI.safe.x * 2)
     lay.pad    = ui(22)
     lay.fpad   = ui(12)
     lay.lineH  = dxGetFontHeight(lay.fs, FONT) + ui(4)
@@ -472,6 +472,7 @@ function UI.textInput:draw()
 
     local x = (UI.sw - lay.w) / 2
     local y = (UI.sh - lay.h) / 2 + (1 - ease) * ui(16)
+    y = math.max(UI.safe.y, math.min(y, UI.sh - UI.safe.y - lay.h))
 
     -- backdrop + card
     rect(0, 0, UI.sw, UI.sh, COL.dim, a)

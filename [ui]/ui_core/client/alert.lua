@@ -45,13 +45,14 @@ function UI.alert:draw()
 
     local alpha = math.max(0, math.min(255, getAlpha()))
     local s = UI.slots.alert
+    local sy = math.max(s.y, UI.safe.y + ui(30)) -- stays below the safe zone edge
 
     local scale = ui(1.2)
 
     dxDrawText(
         self.text,
-        0, s.y - ui(30),
-        UI.sw, s.y + ui(30),
+        UI.safe.x, sy - ui(30),
+        UI.sw - UI.safe.x, sy + ui(30),
         tocolor(self.r, self.g, self.b, alpha),
         scale, "default-bold", "center", "center",
         false, false, false, true

@@ -11,13 +11,13 @@ function UI.subtitle:draw()
     -- Centered at 80% of screen height; up to 50% of screen width, wraps beyond.
     local scale = 1.7
     local font = "default-bold"
-    local maxW = UI.sw * 0.5
+    local maxW = math.min(UI.sw * 0.5, UI.sw - UI.safe.x * 2)
     local textW = dxGetTextWidth(self.text, scale, font, true)
     local w = math.min(textW, maxW)
     local x = (UI.sw - w) / 2
     local lineH = dxGetFontHeight(scale, font)
     local lines = math.max(1, math.ceil(textW / maxW))
-    local top = UI.sh * 0.9 - lineH / 2
+    local top = math.min(UI.sh * 0.9 - lineH / 2, UI.sh - UI.safe.y - lineH * lines)
     local bottom = top + lineH * lines
 
     -- Shadow for legibility, then text.

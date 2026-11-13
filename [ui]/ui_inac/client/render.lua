@@ -72,6 +72,7 @@ renderMenu = function()
     InacMouse.beginFrame()
 
     local sw, sh = uicore:getScreenWH()
+    sx, sy = uicore:getSafeZone() -- follows ui_core's safe zone (also after a ui_core restart)
 
     -- Méretek
     local hasHeader = menu.header ~= false   -- ideiglenes menuk fejlec nelkul
@@ -140,7 +141,15 @@ renderMenu = function()
     -- Windowing: sok elemnél (pl. a customs lista) csak egy ablaknyi látszik,
     -- a kijelölt elem köré igazítva, hogy ne lógjon le a képernyőről.
     local rowsTop  = titleY + titleH
-    local availH   = sh - rowsTop - sy - ui(72)
+    -- the arrows bar and the description box below the rows must also stay inside the bottom safe zone
+    local descPadX = ui(12)
+    local descRaw  = menu.items[MenuState.selected].desc or ""
+    if type(descRaw) == "function" then descRaw = tostring(descRaw() or "") end
+    local lines    = wrapText(descRaw, w - descPadX * 2, itemSize, "default")
+    local lineH    = dxGetFontHeight(itemSize, "default")
+    local descH    = math.max(ui(30), #lines * lineH + ui(10))
+    local belowH   = ui(2) + ui(30) + ui(2) + descH
+    local availH   = sh - sy - rowsTop - belowH
     -- temp menus (customs, ...) show half as many rows at once as the main menu
     local rowDiv   = menu.temporary and 2 or 1
     local maxRows  = math.max(4, math.floor(availH / itemH / rowDiv))
@@ -286,12 +295,6 @@ renderMenu = function()
 
     -- 5️⃣ Leírás sor (5px-el az arrow sor alatt)
     local descY = arrowsY + ui(30) + ui(2)
-    local desc = menu.items[MenuState.selected].desc or ""
-    if type(desc) == "function" then desc = tostring(desc() or "") end
-    local descPadX = ui(12)
-    local lines = wrapText(desc, w - descPadX * 2, itemSize, "default")
-    local lineH = dxGetFontHeight(itemSize, "default")
-    local descH = math.max(ui(30), #lines * lineH + ui(10))
     dxDrawRectangle(x, descY, w, descH, tocolor(20,20,20,170))
     dxDrawText(
         table.concat(lines, "\n"),

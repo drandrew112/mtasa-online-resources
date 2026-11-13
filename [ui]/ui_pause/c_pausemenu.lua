@@ -454,6 +454,14 @@ SETTINGS_TREE = {
                 set = function(v) if lookSyncAvailable() then exports.looksync:setLookSyncEnabled(v) end end,
             },
             {
+                -- ui_core safe zone: distance of the HUD from the screen edge, 6 levels (3 = default)
+                id = "safezone", label = L("ui_pause.pausemenu.safe_zone"), type = "range",
+                min = 1, max = 6, step = 1, default = 3,
+                desc = L("ui_pause.pausemenu.safe_zone_desc"),
+                get = function() return (uicore:getSafeZoneLevel()) end,
+                set = function(v) uicore:setSafeZoneLevel(v) end,
+            },
+            {
                 -- D12: the language of the game texts. v_locals stores it on the
                 -- account itself, so this id is not in PAUSE_SETTINGS.
                 id = "language", label = L("ui_pause.settings.language"), type = "choice",

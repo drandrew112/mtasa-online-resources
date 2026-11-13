@@ -219,6 +219,22 @@ function getSafeZone()
     return UI.safe.x, UI.safe.y
 end
 
+-- Safe zone level 1-6 (default 3). Fires "ui_core:safeZoneChanged" (client,
+-- on root) so resources that cached getSafeZone() can re-read it.
+function getSafeZoneLevel()
+    return UI.safeLevel, #UI.safeLevels
+end
+
+function setSafeZoneLevel(level)
+    local old = UI.safeLevel
+    local new = UI.setSafeLevel(level)
+    if new ~= old then
+        triggerEvent("ui_core:safeZoneChanged", root, UI.safe.x, UI.safe.y, new)
+    end
+    return new
+end
+addEvent("ui_core:safeZoneChanged")
+
 -- Az enter_exit-et csak a gomb (pl. Enter, F) felengedése után kapcsoljuk vissza:
 -- ha egy menü Enterre zárul, a még lenyomott gombot a GTA új kiszállásnak venné.
 local enterExitPending = false
