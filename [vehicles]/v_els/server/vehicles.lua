@@ -417,6 +417,11 @@ local typeCommands = {
     eriston = "eriston",
     dal     = "dal",
     code3   = "code3_z3",
+    fsomega = "fs_omega_90",
+    fstm4   = "fs_touchmaster_tm4",
+    so380   = "soundoff_380",
+    whelen  = "whelen_epsilon",
+    haztec  = "haztec_eurosmart",
 }
 
 for command, sirenType in pairs(typeCommands) do

@@ -216,6 +216,33 @@ function registerMenus()
                         end
                     },
                     {
+                        label = L("ui_inac.main.federal_signal_omega_90"),
+                        action = function()
+                            local veh = getPedOccupiedVehicle(localPlayer)
+                            if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
+                            else setElementData(veh, "sirenType", "fs_omega_90")
+                            end
+                        end
+                    },
+                    {
+                        label = L("ui_inac.main.federal_signal_touchmaster_tm4"),
+                        action = function()
+                            local veh = getPedOccupiedVehicle(localPlayer)
+                            if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
+                            else setElementData(veh, "sirenType", "fs_touchmaster_tm4")
+                            end
+                        end
+                    },
+                    {
+                        label = L("ui_inac.main.haztec_eurosmart_8_82613"),
+                        action = function()
+                            local veh = getPedOccupiedVehicle(localPlayer)
+                            if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
+                            else setElementData(veh, "sirenType", "haztec_eurosmart")
+                            end
+                        end
+                    },
+                    {
                         label = L("ui_inac.main.hella_rtk_7"),
                         action = function()
                             local veh = getPedOccupiedVehicle(localPlayer)
@@ -252,7 +279,16 @@ function registerMenus()
                         end
                     },
                     {
-                        label = L("ui_inac.main.soundoff_signal"),
+                        label = L("ui_inac.main.soundoff_signal_380"),
+                        action = function()
+                            local veh = getPedOccupiedVehicle(localPlayer)
+                            if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
+                            else setElementData(veh, "sirenType", "soundoff_380")
+                            end
+                        end
+                    },
+                    {
+                        label = L("ui_inac.main.soundoff_signal_nergy"),
                         action = function()
                             local veh = getPedOccupiedVehicle(localPlayer)
                             if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
@@ -261,7 +297,7 @@ function registerMenus()
                         end
                     },
                     {
-                        label = L("ui_inac.main.soundoff_signal_rumbler"),
+                        label = L("ui_inac.main.soundoff_signal_nergy_rumbler"),
                         action = function()
                             local veh = getPedOccupiedVehicle(localPlayer)
                             if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
@@ -278,6 +314,15 @@ function registerMenus()
                             end
                         end
                     },
+                    {
+                        label = L("ui_inac.main.whelen_epsilon"),
+                        action = function()
+                            local veh = getPedOccupiedVehicle(localPlayer)
+                            if not veh then uicore:addNotification(L("ui_inac.main.error"), L("ui_inac.main.you_need_vehicle_for_this"))
+                            else setElementData(veh, "sirenType", "whelen_epsilon")
+                            end
+                        end
+                    },
                 }
             },
         }
@@ -290,11 +335,8 @@ function registerMenus()
         id = "collectibles",
         title = L("ui_inac.main.collectibles"),
         back = "main",
-        items = {
-            { label = L("ui_inac.main.stunts_air"), type = "data", source = localPlayer, key = "collectibles_stuntsair" },
-            { label = L("ui_inac.main.stunts_land"), type = "data", source = localPlayer, key = "collectibles_stuntsland" },
-            { label = L("ui_inac.main.ufo_spaceship_parts"), type = "data", source = localPlayer, key = "collectibles_ufoshipparts" }
-        }
+        -- no fixed rows: only v_collectibles fills this menu (client/collectibles.lua)
+        items = {}
     })
 
     -- STATS
@@ -320,6 +362,7 @@ function registerMenus()
 
     registerOwnvehMenu()
     registerBusinessMenu()
+    syncCollectibleLists()     -- v_collectibles lists (client/collectibles.lua)
 
     exports.v_loading:resourceReady()
 end

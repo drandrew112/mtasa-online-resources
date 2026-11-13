@@ -9,14 +9,14 @@ L.config(function()  -- texts are refreshed once the player is loaded (v_locals 
 sirenVehicles = {
     [416] = "fsvas320",   -- Mercedes Sprinter (HU)
     [456] = "soundoff",   -- Mission Row Ambulance
-    [596] = "code3_z3",   -- Police LS
+    [596] = "fs_touchmaster_tm4", -- Police LS
     [597] = "hella_rtk7", -- Police SF
     [598] = "hella_rtk7", -- Police LV
-    [507] = "code3_z3",   -- LAPD 2016 Ford Explorer
-    [566] = "code3_z3",   -- LAPD 2012 Dodge Charger
+    [507] = "fs_touchmaster_tm4", -- LAPD 2016 Ford Explorer
+    [566] = "fs_touchmaster_tm4", -- LAPD 2012 Dodge Charger
     [467] = "rumbler",    -- NYPD 2003 Chevrolet Suburban
     [438] = "code3_z3",   -- NYPD Chevrolet Caprice
-    [409] = "code3_z3",   -- Sheriff 2015 Dodge Charger
+    [409] = "fs_omega_90", -- Sheriff 2015 Dodge Charger
     [490] = "code3_z3",   -- FBI Rancher (Mercedes B-Class)
     [407] = "premier_hazard_6009", -- Fire Truck
     [415] = "soundoff",   -- Skoda Octavia Blood Transporter
@@ -82,13 +82,65 @@ sirenTypes = {
         secondary = "sounds_fsvas320/POLICE_WARNING.wav",
     },
 
+    fs_omega_90 = { -- Federal Signal Omega 90
+        sirens = {
+            "sounds_fs_omega_90/SIREN_PA20A_WAIL.wav",
+            "sounds_fs_omega_90/SIREN_2.wav",
+            "sounds_fs_omega_90/POLICE_WARNING.wav",
+            "sounds_fs_omega_90/priority.wav",
+        },
+        horn = "sounds_fs_omega_90/AIRHORN_EQD.wav",
+        secondary = false,
+    },
+
+    fs_touchmaster_tm4 = { -- Federal Signal TouchMaster TM4
+        sirens = {
+            "sounds_fs_touchmaster_tm4/SIREN_PA20A_WAIL.wav",
+            "sounds_fs_touchmaster_tm4/SIREN_2.wav",
+            "sounds_fs_touchmaster_tm4/POLICE_WARNING.wav",
+        },
+        horn = "sounds_fs_touchmaster_tm4/AIRHORN_EQD.wav",
+        secondary = false,
+    },
+
     soundoff = {
         sirens = {
-            "sounds_soundoff/SIREN_PA20A_WAIL.wav",
-            "sounds_soundoff/SIREN_2.wav",
-            "sounds_soundoff/POLICE_WARNING.wav",
+            "sounds_soundoff_nergy/SIREN_PA20A_WAIL.wav",
+            "sounds_soundoff_nergy/SIREN_2.wav",
+            "sounds_soundoff_nergy/POLICE_WARNING.wav",
         },
-        horn = "sounds_soundoff/AIRHORN_EQD.wav",
+        horn = "sounds_soundoff_nergy/AIRHORN_EQD.wav",
+        secondary = false,
+    },
+
+    soundoff_380 = {
+        sirens = {
+            "sounds_soundoff_380/SIREN_PA20A_WAIL.wav",
+            "sounds_soundoff_380/SIREN_2.wav",
+            "sounds_soundoff_380/POLICE_WARNING.wav",
+        },
+        horn = "sounds_soundoff_380/AIRHORN_EQD.wav",
+        secondary = false,
+    },
+
+    whelen_epsilon = {
+        sirens = {
+            "sounds_whelen_epsilon/SIREN_PA20A_WAIL.wav",
+            "sounds_whelen_epsilon/SIREN_2.wav",
+            "sounds_whelen_epsilon/POLICE_WARNING.wav",
+        },
+        horn = "sounds_whelen_epsilon/AIRHORN_EQD.wav",
+        secondary = false,
+    },
+
+    haztec_eurosmart = { -- Haztec EuroSmart 8-82613
+        sirens = {
+            "sounds_haztec_eurosmart_8-82613/WAIL.wav",
+            "sounds_haztec_eurosmart_8-82613/YELP.wav",
+            "sounds_haztec_eurosmart_8-82613/HILO.wav",
+            "sounds_haztec_eurosmart_8-82613/PULSAR.wav",
+        },
+        horn = "sounds_haztec_eurosmart_8-82613/AIRHORN.wav",
         secondary = false,
     },
 
@@ -104,11 +156,11 @@ sirenTypes = {
 
     rumbler = {
         sirens = {
-            "sounds_rumbler/SIREN_PA20A_WAIL.wav",
-            "sounds_rumbler/SIREN_2.wav",
-            "sounds_rumbler/POLICE_WARNING.wav",
+            "sounds_soundoff_nergy_rumbler/SIREN_PA20A_WAIL.wav",
+            "sounds_soundoff_nergy_rumbler/SIREN_2.wav",
+            "sounds_soundoff_nergy_rumbler/POLICE_WARNING.wav",
         },
-        horn = "sounds_soundoff/AIRHORN_EQD.wav",
+        horn = "sounds_soundoff_nergy/AIRHORN_EQD.wav",
         secondary = false,
     },
 
@@ -116,7 +168,7 @@ sirenTypes = {
         sirens = {
             "sounds_italy/italy.wav",
         },
-        horn = "sounds_soundoff/AIRHORN_EQD.wav",
+        horn = "sounds_soundoff_nergy/AIRHORN_EQD.wav",
         secondary = false,
     },
 

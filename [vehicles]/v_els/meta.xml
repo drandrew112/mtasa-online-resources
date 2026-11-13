@@ -39,10 +39,10 @@
     <file src="sounds_fsvas320/SIREN_PA20A_WAIL.wav" />
     <file src="sounds_fsvas320/SIREN_2.wav" />
     <file src="sounds_fsvas320/POLICE_WARNING.wav" />
-    <file src="sounds_soundoff/AIRHORN_EQD.wav" />
-    <file src="sounds_soundoff/SIREN_PA20A_WAIL.wav" />
-    <file src="sounds_soundoff/SIREN_2.wav" />
-    <file src="sounds_soundoff/POLICE_WARNING.wav" />
+    <file src="sounds_soundoff_nergy/AIRHORN_EQD.wav" />
+    <file src="sounds_soundoff_nergy/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_soundoff_nergy/SIREN_2.wav" />
+    <file src="sounds_soundoff_nergy/POLICE_WARNING.wav" />
     <file src="sounds_rtk7/1.wav" />
     <file src="sounds_rtk7/2.wav" />
     <file src="sounds_rtk7/3.wav" />
@@ -55,9 +55,9 @@
     <file src="sounds_dal/2.wav" />
     <file src="sounds_dal/2_loop.wav" />
     <file src="sounds_dal/horn.wav" />
-    <file src="sounds_rumbler/SIREN_PA20A_WAIL.wav" />
-    <file src="sounds_rumbler/SIREN_2.wav" />
-    <file src="sounds_rumbler/POLICE_WARNING.wav" />
+    <file src="sounds_soundoff_nergy_rumbler/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_soundoff_nergy_rumbler/SIREN_2.wav" />
+    <file src="sounds_soundoff_nergy_rumbler/POLICE_WARNING.wav" />
     <file src="sounds_italy/italy.wav" />
     <file src="sounds_code3_Z3/SIREN_PA20A_WAIL.wav" />
     <file src="sounds_code3_Z3/SIREN_2.wav" />
@@ -78,6 +78,28 @@
     <file src="sounds_standby_rsg_mcs32/Hilo.wav" />
     <file src="sounds_standby_rsg_mcs32/Pulsar.wav" />
     <file src="sounds_standby_rsg_mcs32/Bullhorn.wav" />
+    <file src="sounds_fs_touchmaster_tm4/AIRHORN_EQD.wav" />
+    <file src="sounds_fs_touchmaster_tm4/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_fs_touchmaster_tm4/SIREN_2.wav" />
+    <file src="sounds_fs_touchmaster_tm4/POLICE_WARNING.wav" />
+    <file src="sounds_fs_omega_90/AIRHORN_EQD.wav" />
+    <file src="sounds_fs_omega_90/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_fs_omega_90/SIREN_2.wav" />
+    <file src="sounds_fs_omega_90/POLICE_WARNING.wav" />
+    <file src="sounds_fs_omega_90/priority.wav" />
+    <file src="sounds_soundoff_380/AIRHORN_EQD.wav" />
+    <file src="sounds_soundoff_380/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_soundoff_380/SIREN_2.wav" />
+    <file src="sounds_soundoff_380/POLICE_WARNING.wav" />
+    <file src="sounds_whelen_epsilon/AIRHORN_EQD.wav" />
+    <file src="sounds_whelen_epsilon/SIREN_PA20A_WAIL.wav" />
+    <file src="sounds_whelen_epsilon/SIREN_2.wav" />
+    <file src="sounds_whelen_epsilon/POLICE_WARNING.wav" />
+    <file src="sounds_haztec_eurosmart_8-82613/WAIL.wav" />
+    <file src="sounds_haztec_eurosmart_8-82613/YELP.wav" />
+    <file src="sounds_haztec_eurosmart_8-82613/HILO.wav" />
+    <file src="sounds_haztec_eurosmart_8-82613/PULSAR.wav" />
+    <file src="sounds_haztec_eurosmart_8-82613/AIRHORN.wav" />
 
     <!-- ================= DEPENDENCIES ================= -->
     <include resource="dynamic_lighting" />
