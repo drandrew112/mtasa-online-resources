@@ -24,6 +24,8 @@
   "ui_inac.business.rename_placeholder": "3-32 karakter",
   "ui_inac.business.rename_title": "A cég új neve",
   "ui_inac.business.set_gps_desc": "{city} · GPS ide",
+  "ui_inac.collectibles.event_desc": "Event gyűjthető: csak az event ideje alatt.",
+  "ui_inac.collectibles.progress": "{count}/{total}",
   "ui_inac.main.armcom_dal_257": "Armcom DAL-257",
   "ui_inac.main.code3_z3": "Code3 Z3",
   "ui_inac.main.collectibles": "Gyűjthető tárgyak",

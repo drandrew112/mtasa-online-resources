@@ -1099,3 +1099,16 @@ CREATE TABLE IF NOT EXISTS `work_exam_attempts` (
     PRIMARY KEY (`id`),
     KEY `idx_acc_exam` (`account`, `work_id`, `exam_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================================
+-- v_collectibles ([minigames]/v_collectibles/database.sql)
+-- collectibles_found: one row per collected item; list_id = data/lists/<id>.json, item_id = item "id" in it.
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS `collectibles_found` (
+    `account`  VARCHAR(64)  NOT NULL,
+    `list_id`  VARCHAR(32)  NOT NULL,
+    `item_id`  INT UNSIGNED NOT NULL,
+    `found_at` INT UNSIGNED NOT NULL,
+    PRIMARY KEY (`account`, `list_id`, `item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

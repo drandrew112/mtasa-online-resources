@@ -92,6 +92,7 @@
     <file src="locales/en/v_admin.json" />
     <file src="locales/en/v_arenawar.json" />
     <file src="locales/en/v_chat.json" />
+    <file src="locales/en/v_collectibles.json" />
     <file src="locales/en/v_customs.json" />
     <file src="locales/en/v_els.json" />
     <file src="locales/en/v_introduce.json" />
@@ -214,6 +215,7 @@
     <file src="locales/hu/v_admin.json" />
     <file src="locales/hu/v_arenawar.json" />
     <file src="locales/hu/v_chat.json" />
+    <file src="locales/hu/v_collectibles.json" />
     <file src="locales/hu/v_customs.json" />
     <file src="locales/hu/v_els.json" />
     <file src="locales/hu/v_introduce.json" />

@@ -24,6 +24,8 @@
   "ui_inac.business.rename_placeholder": "3-32 characters",
   "ui_inac.business.rename_title": "New organization name",
   "ui_inac.business.set_gps_desc": "{city} · set the GPS here",
+  "ui_inac.collectibles.event_desc": "Event collectible: only during the event.",
+  "ui_inac.collectibles.progress": "{count}/{total}",
   "ui_inac.main.armcom_dal_257": "Armcom DAL-257",
   "ui_inac.main.code3_z3": "Code3 Z3",
   "ui_inac.main.collectibles": "Collectibles",

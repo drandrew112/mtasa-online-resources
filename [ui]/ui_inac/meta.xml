@@ -17,6 +17,7 @@
     <script src="client/vehicles.lua" type="client" />
     <script src="client/ownveh.lua" type="client" />
     <script src="client/business.lua" type="client" />
+    <script src="client/collectibles.lua" type="client" />
 
     <export function="createTempMenu" type="client" />
     <export function="closeTempMenu" type="client" />

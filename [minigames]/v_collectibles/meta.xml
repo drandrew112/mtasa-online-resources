@@ -1,0 +1,36 @@
+<meta>
+    <info author="DrAndrew112" name="v_collectibles" type="script" version="1.0.0"
+          description="Collectibles: JSON lists of object positions (data/lists), per-player collected state (MySQL collectibles_found), pickup within 3 units + ui_core banner, ui_inac Collectibles menu, event lists switched by events_core, /collecteditor" />
+
+    <min_mta_version server="1.6.0-9.22470" />
+
+    <!-- soft dependencies: events_core (pushes event lists), v_loading (element data "loaded", onPlayerLoaded) -->
+    <include resource="v_locals" />
+    <include resource="v_mysql" />
+    <include resource="ui_core" />
+    <include resource="ui_inac" />
+
+    <script src="locals.lua" type="shared" />
+    <script src="shared/config.lua" type="shared" />
+
+    <script src="server/lists.lua" type="server" />
+    <script src="server/main.lua" type="server" />
+    <script src="server/editor.lua" type="server" />
+
+    <script src="client/main.lua" type="client" />
+    <script src="client/editor.lua" type="client" />
+
+    <!-- events_core: setEventListEnabled(listId, on) -> bool (false = unknown list / "event": true missing)
+         isEventListEnabled(listId) -> bool -->
+    <export function="setEventListEnabled" type="server" />
+    <export function="isEventListEnabled" type="server" />
+
+    <!-- queries: getLists() -> { { id, name, event, enabled, active, total, models }, ... }
+         isListActive(listId) -> bool      getPlayerProgress(player, listId) -> count, total | false -->
+    <export function="getLists" type="server" />
+    <export function="isListActive" type="server" />
+    <export function="getPlayerProgress" type="server" />
+
+    <!-- server events (source = player): onPlayerCollectibleFound(listId, itemId, count, total),
+         onPlayerCollectibleListCompleted(listId, total); root: onCollectiblesStart (events_core pushes again) -->
+</meta>
