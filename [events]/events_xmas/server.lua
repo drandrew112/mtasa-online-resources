@@ -1,4 +1,4 @@
--- events_xmas: only registers the event; events_core switches the models / map on and off.
+-- events_xmas: only registers the event; events_core switches the models / map / collectible lists on and off.
 -- Server events onEventStarted / onEventStopped (id == "xmas") are available for extra logic.
 
 local function register()
@@ -9,6 +9,7 @@ local function register()
         description = EVENT_XMAS.description,
         models = EVENT_XMAS.models,
         maps = EVENT_XMAS.maps,
+        collectibles = EVENT_XMAS.collectibles,
     })
 end
 

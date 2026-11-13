@@ -26,7 +26,9 @@ MODLOADER = {
     -- maps_loader). Not loaded at join, independent of the "Custom object models" setting; the files
     -- are still downloaded with the resource. The state is not saved: a restart switches all off.
     EVENT_OBJECTS = {
-        3985, 19577, 19574, 19576, 19575, 2703,
+        3985,                           -- xmas tree
+        2702, 2880, 2881, 2782, 2703,   -- xmas gifts (were SA-MP 19574-19577: no such GTA model)
+        1455,                   -- DVD_GTA6
     },
     DATA_EVENT_MODELS = "modloader.events",   -- resourceRoot element data: { [id] = true } while on
 

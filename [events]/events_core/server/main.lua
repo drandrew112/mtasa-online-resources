@@ -4,11 +4,11 @@
 --   * the running week of v_weekly has it switched on (v_admin Weekly > Events, week value "events"), or
 --   * the /events test override says so (until the next week change).
 -- events_core then asks v_modloader (setEventModelEnabled) and maps_loader (setEventMapEnabled) to load the
--- models / maps of every ON event and to drop those of every OFF one; a model or map shared by two events
--- stays loaded while either of them is on. Nothing is saved here: the weekly row is the source of truth, so a
+-- models / maps of every ON event and to drop those of every OFF one, and v_collectibles (setEventListEnabled)
+-- to show / hide its collectible lists; a model, map or list shared by two events stays on while either of them is. Nothing is saved here: the weekly row is the source of truth, so a
 -- restart of any resource just pushes the state again.
 
-local events = {}       -- [id] = { id, name, description, models, maps, resource }
+local events = {}       -- [id] = { id, name, description, models, maps, collectibles, resource }
 local order = {}        -- ids in registration order
 local weekly = {}       -- [id] = true: switched on by the running week
 local override = {}     -- [id] = true | false: /events test override
@@ -22,6 +22,7 @@ addEvent("onEventStopped")
 addEvent("onWeeklyChanged")
 addEvent("onModLoaderStart")
 addEvent("onMapsLoaderStart")
+addEvent("onCollectiblesStart")
 
 local function log(text) outputServerLog("[events_core] " .. text) end
 
@@ -62,11 +63,12 @@ end
 
 -- pushes the models / maps of every registered event and tells the event resources about changes
 local function apply()
-    local models, maps = {}, {}     -- [id / name] = wanted
+    local models, maps, lists = {}, {}, {}     -- [id / name] = wanted
     for _, id in ipairs(order) do
         local on = desired(id)
         for _, m in ipairs(events[id].models) do models[m] = models[m] or on end
         for _, m in ipairs(events[id].maps) do maps[m] = maps[m] or on end
+        for _, l in ipairs(events[id].collectibles) do lists[l] = lists[l] or on end
     end
 
     if running("v_modloader") then
@@ -84,6 +86,15 @@ local function apply()
             local ok, res = pcall(function() return exports.maps_loader:setEventMapEnabled(name, on) end)
             if not ok or res == false then
                 warnOnce("map" .. name, ("maps_loader refused event map %s (settings.json \"event\": true missing?)"):format(name))
+            end
+        end
+    end
+
+    if running("v_collectibles") then
+        for name, on in pairs(lists) do
+            local ok, res = pcall(function() return exports.v_collectibles:setEventListEnabled(name, on) end)
+            if not ok or res == false then
+                warnOnce("list" .. name, ("v_collectibles refused event list %s (no data/lists/%s.json or \"event\": true missing?)"):format(name, name))
             end
         end
     end
@@ -123,6 +134,7 @@ addEventHandler("onResourceStart", root, function(res)
 end)
 addEventHandler("onModLoaderStart", root, function() setTimer(apply, 500, 1) end)
 addEventHandler("onMapsLoaderStart", root, function() setTimer(apply, 500, 1) end)
+addEventHandler("onCollectiblesStart", root, function() setTimer(apply, 500, 1) end)
 
 ---------------------------------------------------------------------------- registry
 
@@ -136,7 +148,8 @@ local function cleanList(list, kind)
     return out
 end
 
---- registerEvent(id, { name, description, models = { id, ... }, maps = { "name", ... } }) -> bool
+--- registerEvent(id, { name, description, models = { id, ... }, maps = { "name", ... },
+---                     collectibles = { "list_id", ... } }) -> bool   (v_collectibles data/lists/<list_id>.json)
 --- Registering an id again replaces the earlier definition (event resources register on every start).
 function registerEvent(id, def)
     if type(id) ~= "string" or not id:match("^[%w_]+$") or type(def) ~= "table" then return false end
@@ -148,11 +161,12 @@ function registerEvent(id, def)
         description = type(def.description) == "string" and def.description or "",
         models = cleanList(def.models, "number"),
         maps = cleanList(def.maps, "string"),
+        collectibles = cleanList(def.collectibles, "string"),
         resource = owner and getResourceName(owner) or nil,
     }
     if not known then order[#order + 1] = id end
-    log(("event %s registered by %s (%d model(s), %d map(s))"):format(id, events[id].resource or "?",
-        #events[id].models, #events[id].maps))
+    log(("event %s registered by %s (%d model(s), %d map(s), %d collectible list(s))"):format(id,
+        events[id].resource or "?", #events[id].models, #events[id].maps, #events[id].collectibles))
     -- an event that is already on when its resource (re)starts hears about it from apply()
     refresh()
     return true
@@ -184,6 +198,15 @@ local function remove(id)
                 for _, om in ipairs(other.maps) do if om == m and desired(other.id) then shared = true end end
             end
             if not shared then pcall(function() exports.maps_loader:setEventMapEnabled(m, false) end) end
+        end
+    end
+    if running("v_collectibles") then
+        for _, l in ipairs(keep.collectibles) do
+            local shared = false
+            for _, other in pairs(events) do
+                for _, ol in ipairs(other.collectibles) do if ol == l and desired(other.id) then shared = true end end
+            end
+            if not shared then pcall(function() exports.v_collectibles:setEventListEnabled(l, false) end) end
         end
     end
     if wasOn then triggerEvent("onEventStopped", root, id) end
@@ -222,7 +245,8 @@ function getEvents()
     for _, id in ipairs(order) do
         local e = events[id]
         out[#out + 1] = {
-            id = id, name = e.name, description = e.description, models = e.models, maps = e.maps, resource = e.resource,
+            id = id, name = e.name, description = e.description, models = e.models, maps = e.maps,
+            collectibles = e.collectibles, resource = e.resource,
             active = active[id] == true, weekly = weekly[id] == true, override = override[id],
         }
     end
@@ -264,8 +288,8 @@ local function listEvents(player)
         local e = events[id]
         local src = override[id] ~= nil and (override[id] and "override ON" or "override OFF")
             or (weekly[id] and "weekly" or "weekly off")
-        say(player, ("%s (%s): %s [%s] - %d model(s), %d map(s)"):format(id, e.name,
-            active[id] and "ACTIVE" or "inactive", src, #e.models, #e.maps))
+        say(player, ("%s (%s): %s [%s] - %d model(s), %d map(s), %d collectible list(s)"):format(id, e.name,
+            active[id] and "ACTIVE" or "inactive", src, #e.models, #e.maps, #e.collectibles))
     end
 end
 

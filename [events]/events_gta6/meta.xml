@@ -1,0 +1,7 @@
+<meta>
+    <info author="DrAndrew112" name="events_gta6" type="script" version="1.0.0"
+          description="GTA 6 event: registers itself in events_core (model 1455 DVD_GTA6 of v_modloader EVENT_OBJECTS; collectible lists reserved); switched on / off in the v_admin Weekly page or with /events gta6" />
+
+    <script src="config.lua" type="shared" />
+    <script src="server.lua" type="server" />
+</meta>
