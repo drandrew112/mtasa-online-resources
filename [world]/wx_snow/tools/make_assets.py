@@ -1,8 +1,9 @@
-"""wx_snow asset generator (run from anywhere): tex/noise.png, tex/flake.png, tex/layer.png,
+"""wx_snow asset generator (run from anywhere): tex/noise.png, tex/macro.png, tex/flake.png, tex/layer.png,
 sounds/wind_loop.wav, and the empty roof map placeholder (data/roofmap.png + roofmap.json) when
 no baked map exists yet.
 
     python tools/make_assets.py [--force-roofmap]
+    python tools/make_assets.py --macro-only      only tex/macro.png (the other assets stay byte identical)
 
 Needs numpy + Pillow. Everything is tileable / loopable.
 """
@@ -62,6 +63,20 @@ def noise_png():
     a = rng.random((s, s)) # white noise (sparkle)
     rgba = np.stack([r, g, b, a], axis=-1)
     save(Image.fromarray((rgba * 255 + 0.5).astype(np.uint8), "RGBA"), "tex/noise.png")
+
+
+def macro_png():
+    """tex/macro.png: 1024 x 1024 tileable, every channel a multi scale fbm (shader: world / 256 m,
+    so one texel = 0.25 m): r = snow height, g / b = domain warp x / y, a = spare. Own seed, so
+    adding it never changes the other assets."""
+    global rng
+    old = rng
+    rng = np.random.default_rng(2112)
+    s = 1024
+    chans = [fbm(s, 4, 8) for _ in range(4)]
+    rng = old
+    rgba = np.stack(chans, axis=-1)
+    save(Image.fromarray((rgba * 255 + 0.5).astype(np.uint8), "RGBA"), "tex/macro.png")
 
 
 def flake_png():
@@ -144,7 +159,11 @@ def roofmap_placeholder(force):
 
 
 if __name__ == "__main__":
+    if "--macro-only" in sys.argv:
+        macro_png()
+        sys.exit(0)
     noise_png()
+    macro_png()
     flake_png()
     layer_png()
     wind_wav()

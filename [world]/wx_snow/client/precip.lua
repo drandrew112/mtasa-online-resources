@@ -2,7 +2,8 @@
 --
 -- Near flakes: static vertex batches (6 vertices per flake), all motion in fx/snow_flakes.fx.
 -- Layers: cylinders around the camera with a scrolling flake texture (fx/snow_layer.fx), one
--- shader per layer (dx draws are queued, so one shader could not carry different values).
+-- shader per PAIR of layers (layers 1+2, 3+4: F4, half the full screen overdraw; dx draws are
+-- queued, so one shader could not carry different values for two draws).
 -- Off indoors, faded out under roofs (camera check) and per flake / pixel by the roof map.
 
 PRECIP = {
@@ -81,16 +82,25 @@ local function create()
     dxSetShaderValue(flake, "gFlakeTex", PRECIP.flakeTex)
     local box = SNOW.PRECIP.BOX
     dxSetShaderValue(flake, "gBox", box[1], box[2], box[3])
-    for i, layer in ipairs(SNOW.PRECIP.LAYERS) do
+    local L = SNOW.PRECIP.LAYERS
+    for i = 1, #L do PRECIP.scroll[i] = { math.random(), math.random() } end
+    for pair = 1, math.ceil(#L / 2) do
+        local la, lb = L[pair * 2 - 1], L[pair * 2]
         local sh = dxCreateShader("fx/snow_layer.fx")
         if sh then
             dxSetShaderValue(sh, "gLayerTex", PRECIP.layerTex)
-            dxSetShaderValue(sh, "gRadius", layer.r)
+            dxSetShaderValue(sh, "gRadius", la.r)
             dxSetShaderValue(sh, "gHeight", SNOW.PRECIP.HEIGHT[1], SNOW.PRECIP.HEIGHT[2])
-            local tile = 4 / layer.scale
+            local tile = 4 / la.scale
             dxSetShaderValue(sh, "gTile", tile, tile * 1.6)
-            PRECIP.layers[i] = sh
-            PRECIP.scroll[i] = { math.random(), math.random() }
+            if lb then
+                local tile2 = 4 / lb.scale
+                dxSetShaderValue(sh, "gRatio", lb.r / la.r)
+                dxSetShaderValue(sh, "gTile2", tile2, tile2 * 1.6)
+            else
+                dxSetShaderValue(sh, "gRatio", 0)
+            end
+            PRECIP.layers[pair] = sh
         end
     end
     PRECIP.batches = PRECIP.batches or buildFlakes(SNOW.PRECIP.FLAKES.high)
@@ -130,7 +140,7 @@ addEventHandler("onClientPreRender", root, function()
     -- just came outside: no fade, the snow was falling all along
     if PRECIP.wasIndoor and not CS.indoor then PRECIP.intensity = target end
     PRECIP.wasIndoor = CS.indoor
-    if CS.indoor or CS.quality == "off" then
+    if CS.indoor or CS.quality == "off" or PRECIP.disabled then
         PRECIP.intensity = 0
     else
         local step = dt / SNOW.PRECIP_FADE
@@ -170,16 +180,27 @@ addEventHandler("onClientPreRender", root, function()
     PRECIP.drawn = math.floor(math.min(count, nBatches * BATCH) * PRECIP.intensity)
 
     -- layers
-    local nLayers = CS.quality == "high" and #PRECIP.layers or math.min(#PRECIP.layers, SNOW.PRECIP.LAYERS_LOW)
-    for i = 1, nLayers do
-        local sh, layer, sc = PRECIP.layers[i], SNOW.PRECIP.LAYERS[i], PRECIP.scroll[i]
-        local tile = 4 / layer.scale
-        sc[1] = (sc[1] + speed * 0.35 * dt / tile) % 1
-        sc[2] = (sc[2] + p.fall * dt / (tile * 1.6)) % 1
-        dxSetShaderValue(sh, "gScroll", sc[1], sc[2])
-        dxSetShaderValue(sh, "gAlpha", layer.alpha * math.min(1, PRECIP.intensity * 1.3))
-        dxSetShaderValue(sh, "gBright", bright)
-        dxDrawMaterialPrimitive3D("trianglelist", sh, false, unpack(PRECIP.cylinder))
+    local nLayers = CS.quality == "high" and #SNOW.PRECIP.LAYERS or math.min(#SNOW.PRECIP.LAYERS, SNOW.PRECIP.LAYERS_LOW)
+    local fade = math.min(1, PRECIP.intensity * 1.3)
+    for pair = 1, math.ceil(nLayers / 2) do
+        local sh = PRECIP.layers[pair]
+        if sh then
+            for k = 0, 1 do
+                local i = pair * 2 - 1 + k
+                local layer, sc = SNOW.PRECIP.LAYERS[i], PRECIP.scroll[i]
+                if layer and i <= nLayers then
+                    local tile = 4 / layer.scale
+                    sc[1] = (sc[1] + speed * 0.35 * dt / tile) % 1
+                    sc[2] = (sc[2] + p.fall * dt / (tile * 1.6)) % 1
+                    dxSetShaderValue(sh, k == 0 and "gScroll" or "gScroll2", sc[1], sc[2])
+                    dxSetShaderValue(sh, k == 0 and "gAlpha" or "gAlpha2", layer.alpha * fade)
+                elseif k == 1 then
+                    dxSetShaderValue(sh, "gAlpha2", 0)
+                end
+            end
+            dxSetShaderValue(sh, "gBright", bright)
+            dxDrawMaterialPrimitive3D("trianglelist", sh, false, unpack(PRECIP.cylinder))
+        end
     end
 end)
 

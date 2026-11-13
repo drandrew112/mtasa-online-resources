@@ -56,6 +56,36 @@ for path in files:
     check(ok, f"syntax {os.path.relpath(path, ROOT)}: {err}")
 print(f"syntax: {len(files)} files")
 
+# ------------------------------------------------------------------ 1b. shaders (fxc, when installed)
+import shutil
+import subprocess
+import tempfile
+
+
+def find_fxc():
+    hit = shutil.which("fxc")
+    if hit:
+        return hit
+    kits = os.path.join("C:\\", "Program Files (x86)", "Windows Kits", "10", "bin")
+    if os.path.isdir(kits):
+        for ver in sorted(os.listdir(kits), reverse=True):
+            cand = os.path.join(kits, ver, "x64", "fxc.exe")
+            if os.path.isfile(cand):
+                return cand
+    return None
+
+
+fxc = find_fxc()
+if fxc:
+    out = os.path.join(tempfile.gettempdir(), "wx_snow_fxc.out")
+    fx_files = sorted(glob.glob(os.path.join(glob.escape(RES), "fx", "snow_*.fx")))
+    for path in fx_files:
+        r = subprocess.run([fxc, "/nologo", "/T", "fx_2_0", "/Fo", out, path], capture_output=True, text=True)
+        check(r.returncode == 0, f"fxc {os.path.basename(path)}: {(r.stdout + r.stderr)[-400:]}")
+    print(f"shaders: {len(fx_files)} files compiled with fxc")
+else:
+    print("shaders: fxc not found, skipped")
+
 # ------------------------------------------------------------------ 2. coverage math
 lua = new_lua()
 lua.execute(read(os.path.join(RES, "shared", "config.lua")))

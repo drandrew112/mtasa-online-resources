@@ -69,20 +69,43 @@ SNOW = {
     --   debug  colour of /snow debug
     --------------------------------------------------------------------------------------------
     CATEGORIES = {
+        -- generic = every texture no other category takes (buildings, roofs, props): each one is drawn a second
+        -- time, which is the big fixed cost (/snowtest cost: ground shaders alone were -40 % fps at every
+        -- level), so it only reaches maxDist m. The terrain / road / pavement categories stay unlimited.
         { id = "generic", mult = 1.0, upLo = 0.62, upHi = 0.86, road = 0, debug = { 0.2, 0.45, 1.0 },
-          patterns = { "*" } },
+          maxDist = 250, patterns = { "*" } },
         { id = "soft", mult = 1.15, upLo = 0.45, upHi = 0.75, road = 0, debug = { 0.2, 0.9, 0.25 },
           patterns = { "*grass*", "*dirt*", "*mud*", "*sand*", "desertgryard256", "*gravel*", "*field*",
-                       "*forest*", "*rough*", "*hedge*", "*lawn*" } },
+                       "*forest*", "*rough*", "*hedge*", "*lawn*", "*grssdrt*" } },
         -- road: wheel tracks per lane from the lane map (data/roadmap.png), so the full coverage
         { id = "road", mult = 1.0, upLo = 0.55, upHi = 0.85, road = 1, debug = { 1.0, 0.2, 0.2 },
           patterns = { "*road*", "*tar*", "*asphalt*", "*freeway*", "*hiway*", "*junction*", "*carpark*",
-                       "*crossing*", "*snpedtest*" } },
+                       "*crossing*", "*snpedtest*", "lan_merge" } },
+        -- plain asphalt: the road models use greyground256 for the tarmac itself (the road_* textures are only the
+        -- markings / junctions), but plazas and lots use it too, so road = 2: lane tracks only where the lane map has a lane
+        { id = "roadplain", mult = 1.0, upLo = 0.55, upHi = 0.85, road = 2, debug = { 1.0, 0.45, 0.45 },
+          patterns = { "greyground256" } },
         { id = "pavement", mult = 0.8, upLo = 0.55, upHi = 0.85, road = 0, debug = { 1.0, 0.6, 0.1 },
           patterns = { "*walk*", "*pave*", "sidelatino*", "sjmhoodlawn41", "*kerb*", "*curb*" } },
+        -- maxDist: the shader is not applied farther than this (alpha tested leaves = a lot of overdraw,
+        -- and trees that far are green in the fog anyway); lowSkip: no foliage snow on Low quality
         { id = "foliage", mult = 0.9, upLo = 0.35, upHi = 0.7, road = 0, debug = { 0.0, 0.6, 0.4 },
+          maxDist = 110, lowSkip = true,
           patterns = { "*leave*", "*leaf*", "*tree*", "*branch*", "*bush*", "*pine*", "*fir*", "*foliage*",
                        "*cedar*", "*oak*", "*palm*", "*hedge*" } },
+    },
+
+    -- ground shader file: "v2" = fx/snow_world.fx (F1 speed-up), "v1" = fx/snow_world_v1.fx (the old one,
+    -- for A/B measuring: /snow shader v1|v2 on the own client)
+    SHADER = "v2",
+
+    -- F1 distance tiers of the ground shader (m from the camera); Low quality multiplies them by LOW_SCALE
+    --   roof   bilinear roof map up to x, point sample up to y, ignored farther
+    --   road   lane map fully on up to x, off from y
+    --   noise  finest noise octave up to x, middle octave up to y, sparkle up to z (mip-blurred to the mean after)
+    LOD = {
+        roof = { 80, 250 }, road = { 70, 110 }, noise = { 100, 300, 30 },
+        LOW_SCALE = 0.6,
     },
 
     -- never snowed on (every category). Mostly the dynamic_lighting removeList + water, glass, lights.
@@ -159,7 +182,11 @@ SNOW = {
     CHECK_MS = 150,
 
     -- lane map (tools/build_roadmap.py from GTA data/Paths): wheel tracks on roads
-    ROAD = { FILES = { "data/roadmap.png", "data/roadmap2.png", "data/roadmapz.png" }, INFO = "data/roadmap.json" },
+    -- the lane map is streamed: a WINDOW x WINDOW cell (4 m) window around the camera, refilled from the chunks
+    -- (data/road/c_<cx>_<cy>.png) when the camera comes closer than MARGIN cells to its edge. The shader only uses
+    -- the lane map within SNOW.LOD.road[2] m (110 m = 28 cells), so MARGIN 32 cells (128 m) is always enough.
+    ROAD = { INFO = "data/roadmap.json", DIR = "data/road/", WINDOW = 128, MARGIN = 32, SNAP = 16,
+             CACHE = 4, ROWS_PER_FRAME = 8 },
 }
 
 -- level -> params (clamped)

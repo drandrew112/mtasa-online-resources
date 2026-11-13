@@ -5,7 +5,8 @@
 --   /snowtest zones      the same for every maps_loader "indoor" box (int 0)
 --   /snowtest tour       outdoor points: level 0 / 2 / 4 / 5 by day, 4 at night: FPS, share of
 --                        snow white pixels, screenshot (@shots/<point>_<case>.png in the client's
---                        wx_snow private folder), report @wx_snow_tour.json
+--                        wx_snow private folder), report @wx_snow_tour_<variant>_<quality>.json
+--   /snowtest cost       where the fixed fps cost comes from (ground / snowfall / foliage / generic distance)
 --   /snowtest stop
 --
 -- Local only: the levels are a /snow preview, the weather / server state is not touched.
@@ -308,16 +309,71 @@ local function runTour()
     return results
 end
 
+-------------------------------------------------------------------------------- cost split
+
+-- Where does the fixed fps drop come from? Same spot, same camera, level 4 by day: nothing / everything /
+-- only snowfall / only ground shaders / ground without foliage. Run it with vsync off and the fps limit
+-- high, otherwise the numbers jump between frame limiter steps.
+local function runCost()
+    local results = {}
+    local function measure(name, level, groundOff, flakesOff, noFoliage, genericDist, noGeneric)
+        GROUND.costMode(groundOff, noFoliage, genericDist, noGeneric)
+        PRECIP.disabled = flakesOff
+        setSnowPreview(level, true)
+        wait(2500)
+        local f = fps(3000)
+        results[#results + 1] = { name = name, fps = math.floor(f * 10) / 10 }
+        outputConsole(("[snowtest] cost %-26s fps %6.1f"):format(name, f))
+    end
+    setElementFrozen(localPlayer, true)
+    setTime(12, 0)
+    measure("warm up (ignore)", 0, false, false, false)
+    measure("level 0 (no snow)", 0, false, false, false)
+    measure("level 4 snowfall only", 4, true, false, false)
+    measure("ground, generic unlimited", 4, false, true, false, 0)
+    measure("ground, generic 250 m", 4, false, true, false, 250)
+    measure("ground, generic 120 m", 4, false, true, false, 120)
+    measure("ground, generic 60 m", 4, false, true, false, 60)
+    measure("ground, no generic at all", 4, false, true, false, nil, true)
+    measure("ground, no generic, no foliage", 4, false, true, true, nil, true)
+    measure("level 4 config (everything)", 4, false, false, false)
+    measure("level 0 (no snow) again", 0, false, false, false)
+    GROUND.costMode(false, false)
+    PRECIP.disabled = false
+    setElementFrozen(localPlayer, false)
+    return results
+end
+
 -------------------------------------------------------------------------------- runner
 
 local function summary(kind, results)
+    if kind == "cost" then
+        writeReport("wx_snow_cost_" .. tostring(GROUND.variant) .. ".json", results)
+        snowMessage("wx_snow.test.tour_done", { n = #results, drop = 0, low = "see the console" })
+        return
+    end
     if kind == "tour" then
         local drop, n, low = 0, 0, {}
         for _, r in ipairs(results) do
             drop, n = drop + r.fpsDrop4, n + 1
             if r.whiteGain4 < 0.05 then low[#low + 1] = r.id end
         end
-        writeReport("wx_snow_tour.json", results)
+        -- one file per shader variant / quality, so v1 (before F1) and v2 can be compared; the console
+        -- prints the average fps of every case and its drop against the snow free case d0
+        local name = ("wx_snow_tour_%s_%s.json"):format(tostring(GROUND.variant), tostring(CS.quality))
+        writeReport(name, results)
+        local sum, cnt = {}, 0
+        for _, r in ipairs(results) do
+            cnt = cnt + 1
+            for id, cs in pairs(r.cases) do sum[id] = (sum[id] or 0) + cs.fps end
+        end
+        if cnt > 0 and (sum.d0 or 0) > 0 then
+            for _, c in ipairs(CASES) do
+                local avg = (sum[c.id] or 0) / cnt
+                outputConsole(("[snowtest] %s/%s %-3s avg fps %6.1f  (-%4.1f%% vs d0)  report @%s"):format(
+                    tostring(GROUND.variant), tostring(CS.quality), c.id, avg, (1 - (sum[c.id] or 0) / sum.d0) * 100, name))
+            end
+        end
         snowMessage("wx_snow.test.tour_done", { n = n, drop = n > 0 and math.floor(drop / n * 10) / 10 or 0,
             low = #low > 0 and table.concat(low, ", ") or "-" })
         return
@@ -380,6 +436,8 @@ SNOW_COMMANDS.test = function(a)
             results = runInteriors(type(a.list) == "table" and a.list or {})
         elseif a.action == "zones" then
             results = runZones()
+        elseif a.action == "cost" then
+            results = runCost()
         else
             results = runTour()
         end

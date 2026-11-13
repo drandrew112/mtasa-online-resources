@@ -45,8 +45,8 @@
   "wx_snow.test.indoor_done": "'{kind}' hóteszt: {n} hely, {failed} hibás: {list}. Részletek: F8 konzol + @wx_snow_{kind}.json",
   "wx_snow.test.started": "'{kind}' hóteszt elindult. /snowtest stop leállítja.",
   "wx_snow.test.stopped": "Hóteszt leállítva.",
-  "wx_snow.test.tour_done": "Hó körút: {n} hely, átlag FPS -{drop}% 4. szinten. Kevés hó a képen: {list}. Jelentés: @wx_snow_tour.json, képek: @shots/",
-  "wx_snow.test.usage": "Használat: /snowtest interiors | zones | tour | stop",
+  "wx_snow.test.tour_done": "Hó körút: {n} hely, átlag FPS -{drop}% 4. szinten. Kevés hó a képen: {low}. Jelentés: @wx_snow_tour.json, képek: @shots/",
+  "wx_snow.test.usage": "Használat: /snowtest interiors | zones | tour | cost | stop",
   "wx_snow.title": "Hó",
   "wx_snow.yes": "igen"
 }

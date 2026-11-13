@@ -9,8 +9,10 @@
 --   /snow global reset            back to the weekly value
 --   /snow debug                   own client: category colour view
 --   /snow quality off|low|high    own client quality (same as ui_pause)
+--   /snow shader v1|v2            own client: old (v1) or F1 (v2) ground shader, for A/B measuring
 --   /snowbake start|stop|status   roof map bake on the own client (client/bake.lua)
---   /snowtest interiors|zones|tour|stop
+--   /snowtest interiors|zones|tour|cost|stop   (cost: where the fixed fps drop comes from, at the
+--                                 current spot)
 
 local function adminLevel(player)
     local ok, v = pcall(function() return exports.v_mysql:getAccData(player, "admin_level") end)
@@ -92,6 +94,9 @@ addCommandHandler("snow", function(player, _, a, b, c)
     if a == "quality" and (b == "off" or b == "low" or b == "high") then
         return toClient(player, "quality", { value = b })
     end
+    if a == "shader" and (b == "v1" or b == "v2") then
+        return toClient(player, "shader", { value = b })
+    end
     snowNotify(player, "wx_snow.cmd.usage")
 end)
 
@@ -103,7 +108,7 @@ end)
 addCommandHandler("snowtest", function(player, _, a)
     if not allowed(player) then return end
     a = (a or ""):lower()
-    if a ~= "interiors" and a ~= "zones" and a ~= "tour" and a ~= "stop" then
+    if a ~= "interiors" and a ~= "zones" and a ~= "tour" and a ~= "cost" and a ~= "stop" then
         return snowNotify(player, "wx_snow.test.usage")
     end
     local args = { action = a }

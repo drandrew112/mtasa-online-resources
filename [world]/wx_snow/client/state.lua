@@ -298,6 +298,9 @@ SNOW_COMMANDS = {
         snowMessage("wx_snow.cmd.preview_reset")
     end,
     debug = function()
+        outputConsole(("[wx_snow] lane map: %s, roof map: %s, ground shaders: %d"):format(
+            ROAD.isLoaded() and "loaded" or "NOT loaded (see the client log)", ROOF.isLoaded() and "loaded" or "no",
+            getSnowDebugState().groundShaders or 0))
         CS.debug = not CS.debug
         snowChanged("debug")
         snowMessage(CS.debug and "wx_snow.cmd.debug_on" or "wx_snow.cmd.debug_off")

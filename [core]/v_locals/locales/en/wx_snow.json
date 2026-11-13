@@ -45,8 +45,8 @@
   "wx_snow.test.indoor_done": "Snow test '{kind}': {n} places, {failed} failed: {list}. Details: F8 console + @wx_snow_{kind}.json",
   "wx_snow.test.started": "Snow test '{kind}' started. /snowtest stop ends it.",
   "wx_snow.test.stopped": "Snow test stopped.",
-  "wx_snow.test.tour_done": "Snow tour: {n} places, FPS -{drop}% at level 4 on average. Little snow on screen: {list}. Report: @wx_snow_tour.json, pictures: @shots/",
-  "wx_snow.test.usage": "Usage: /snowtest interiors | zones | tour | stop",
+  "wx_snow.test.tour_done": "Snow tour: {n} places, FPS -{drop}% at level 4 on average. Little snow on screen: {low}. Report: @wx_snow_tour.json, pictures: @shots/",
+  "wx_snow.test.usage": "Usage: /snowtest interiors | zones | tour | cost | stop",
   "wx_snow.title": "Snow",
   "wx_snow.yes": "yes"
 }

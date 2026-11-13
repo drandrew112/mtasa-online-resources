@@ -28,19 +28,59 @@
     <!-- ================= FILES ================= -->
     <file src="fx/mta-helper.fx" />
     <file src="fx/snow_world.fx" />
+    <file src="fx/snow_world_v1.fx" />
     <file src="fx/snow_flakes.fx" />
     <file src="fx/snow_layer.fx" />
     <file src="fx/snow_grass.fx" />
     <file src="tex/noise.png" />
+    <file src="tex/macro.png" />
     <file src="tex/flake.png" />
     <file src="tex/layer.png" />
     <!-- roof map: /snowbake writes both (4 m grid, RG = 16 bit top surface height), restart to send it out -->
     <file src="data/roofmap.png" />
     <file src="data/roofmap.json" />
     <!-- lane map: tools/build_roadmap.py from GTA data/Paths (wheel tracks on roads) -->
-    <file src="data/roadmap.png" />
-    <file src="data/roadmap2.png" />
-    <file src="data/roadmapz.png" />
+    <!-- the lane map is streamed from these chunks (tools/build_roadmap.py rewrites the block) -->
+    <!-- ROAD CHUNKS BEGIN -->
+    <file src="data/road/c_0_0.png" />
+    <file src="data/road/c_1_0.png" />
+    <file src="data/road/c_2_0.png" />
+    <file src="data/road/c_3_0.png" />
+    <file src="data/road/c_4_0.png" />
+    <file src="data/road/c_5_0.png" />
+    <file src="data/road/c_0_1.png" />
+    <file src="data/road/c_1_1.png" />
+    <file src="data/road/c_2_1.png" />
+    <file src="data/road/c_3_1.png" />
+    <file src="data/road/c_4_1.png" />
+    <file src="data/road/c_5_1.png" />
+    <file src="data/road/c_0_2.png" />
+    <file src="data/road/c_1_2.png" />
+    <file src="data/road/c_2_2.png" />
+    <file src="data/road/c_3_2.png" />
+    <file src="data/road/c_4_2.png" />
+    <file src="data/road/c_5_2.png" />
+    <file src="data/road/c_0_3.png" />
+    <file src="data/road/c_1_3.png" />
+    <file src="data/road/c_2_3.png" />
+    <file src="data/road/c_3_3.png" />
+    <file src="data/road/c_4_3.png" />
+    <file src="data/road/c_5_3.png" />
+    <file src="data/road/c_0_4.png" />
+    <file src="data/road/c_1_4.png" />
+    <file src="data/road/c_2_4.png" />
+    <file src="data/road/c_3_4.png" />
+    <file src="data/road/c_4_4.png" />
+    <file src="data/road/c_5_4.png" />
+    <file src="data/road/c_0_5.png" />
+    <file src="data/road/c_1_5.png" />
+    <file src="data/road/c_2_5.png" />
+    <file src="data/road/c_3_5.png" />
+    <file src="data/road/c_4_5.png" />
+    <file src="data/road/c_5_5.png" />
+    <file src="data/road/jpaths.png" />
+    <file src="data/road/jlists.png" />
+    <!-- ROAD CHUNKS END -->
     <file src="data/roadmap.json" />
 
     <!-- ================= SERVER EXPORTS ================= -->
@@ -55,6 +95,7 @@
     <export function="isSnowing"         type="client" />
     <export function="isSnowVisibleHere" type="client" />
     <export function="getSnowDebugState" type="client" />
+    <export function="getSnowRoadSample" type="client" />
     <!-- ui_pause Graphics > Snow quality -->
     <export function="getSnowQuality"    type="client" />
     <export function="setSnowQuality"    type="client" />
