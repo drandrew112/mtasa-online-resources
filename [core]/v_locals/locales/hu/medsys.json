@@ -546,5 +546,10 @@
   "medsys.host.monitor_on": "Monitor fent",
   "medsys.host.attach_monitor": "Monitor fel",
   "medsys.host.wait": "Várj…",
-  "medsys.treatment.in_hospital_care": "A beteg a kórház ellátásában van: a sürgősségi személyzet kezeli"
+  "medsys.treatment.in_hospital_care": "A beteg a kórház ellátásában van: a sürgősségi személyzet kezeli",
+  "medsys.ecg12.recorded": "12 elvezetéses EKG felvéve.",
+  "medsys.ecg12.failed": "Rosszul felhelyezett elektródák: nem készült 12 elvezetéses EKG. Próbáld újra.",
+  "medsys.ecg12.expired": "Lejárt az idő: nem készült 12 elvezetéses EKG. Próbáld újra.",
+  "medsys.ecg12.int_acute_mi": "***AKUT MI GYANÚJA***",
+  "medsys.ecg12.int_nstemi": "ST-depresszió (I, II, aVF, V4–V6), ST-eleváció aVR-ben – ischaemia / NSTEMI?"
 }

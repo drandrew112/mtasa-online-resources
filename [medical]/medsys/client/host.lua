@@ -167,7 +167,7 @@ local function render()
     local data = host.data
     local rx, ry = getCursorPosition()
     local cx, cy = (rx or -1) * screenW, (ry or -1) * screenH
-    ecgSetInput(data.rhythm, data.ecgRate, data.spo2)
+    ecgSetInput(data.rhythm, data.ecgRate, data.spo2, data.ischemia)
     local showLifepak = host.lifepak and data.monitor
     ecgSetBeep(showLifepak and data.monitor.sound ~= false or false)
     ecgUpdate()

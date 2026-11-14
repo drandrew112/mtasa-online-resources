@@ -9,6 +9,7 @@
     <include resource="mg_intravenous" />
     <include resource="mg_airway" />
     <include resource="mg_splinting" />
+    <include resource="mg_ecg" /> <!-- Lifepak 12-LEAD: electrode placement -->
     <!-- "Examine patient" world menu -->
     <include resource="ui_interactobject" />
 

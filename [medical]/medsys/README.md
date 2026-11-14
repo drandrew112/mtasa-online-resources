@@ -190,9 +190,14 @@ runs with the rhythm name under it (most players cannot read an ECG), the monito
 window appears left of the panel. Close the panel with **X** or **Backspace**. It also closes
 when you walk away (`PANEL_RANGE`).
 
-The Lifepak window: HR (the counted QRS rate; `---` in VF, PEA and asystole: a PEA has broad low
-waves without an R wave, no pulse and no beep), SpO2 and NIBP (`---` without a pulse), the ECG with the rhythm name, the pleth wave, the clock, the selected energy and
-a status line. Buttons:
+The Lifepak window: HR (the counted QRS rate of sinus / SVT / AF / AV block / VT; `---` in VF, PEA and
+asystole: a PEA has broad low waves without an R wave, no pulse and no beep), SpO2 and NIBP (`---` without
+a pulse), the ECG with the rhythm name, the pleth wave, the clock, the selected energy and a status line.
+Since 2026-11-13 lead II shows the ischaemia of an ACS (snapshot `ischemia`, `getECGIschemia` in
+server/conditions.lua): the ST segment is lifted / depressed by the lead II projection of the same injury
+vector the 12-lead uses (inferior STEMI about +2 mm, anterior a reciprocal -0.7 mm, left main -2.5 mm,
+NSTEMI -0.9 mm), hyperacute T waves are taller, evolved ones inverted; `ST II ±x.x mm` is shown above the
+trace (yellow from 1 mm) for narrow-QRS rhythms. Buttons:
 
 | button | what it does |
 |---|---|
@@ -202,6 +207,7 @@ a status line. Buttons:
 | ANALYZE | AED mode, unresponsive patient only: `DEFIB_ANALYZE_TIME` (4 s), then SHOCK ADVISED (and it charges on its own) or NO SHOCK ADVISED |
 | SYNC | synchronised shock (cardioversion of VT with pulse) |
 | SOUND | ECG beep + alarm on / off for this patient (LED = on). Stored on the patient's monitor: a new patient starts with it on. The defibrillator sounds always play |
+| 12-LEAD | 12-lead ECG (`action.ecg12`, B+ competency): the medic places the ten electrodes in the `mg_ecg` minigame (procedure `ecg12`, guide for everyone, 180 s), the placement errors go into the curves; then the viewer with PRINT. EMS and hospital staff alike. Without mg_ecg it is recorded at once. The result fires `onMedicalECG12` (med_hospitals: it completes an ordered 12-lead ECG) and stays on the patient as element data `ecg.last12` |
 
 Screen rows: status bar (shocks, clock, SYNC, energy), message line (analysis / charge bar /
 advice), HR + ECG + rhythm name (the tallest row), then SpO2 + pleth and NIBP at the bottom
@@ -401,6 +407,7 @@ addEventHandler("onMedicalRevived", root, function() end)                       
 addEventHandler("onMedicalDeath", root, function() end)                                    -- biological death
 addEventHandler("onMedicalTreatment", root, function(medic, action, success, option, dose) end)  -- source = patient, option = medicine id, dose = dose option index (nil = default)
 addEventHandler("onMedicalDefibrillation", root, function(medic, joules, rhythmBefore, rhythmAfter) end) -- source = patient
+addEventHandler("onMedicalECG12", root, function(medic, spec) end)                         -- source = patient, a Lifepak 12-lead was recorded
 addEventHandler("onMedicalTransportRequested", root, function(medic, kind) end)            -- source = ped, kind = "alive" | "dead"
 addEventHandler("onMedicalPatientTransported", root, function(medic, kind) end)            -- source = ped, right before it is destroyed
 ```

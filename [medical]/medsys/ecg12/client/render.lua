@@ -24,6 +24,8 @@ local INJURY = {
     anterior = norm({ 0.1, -0.35, 0.95 }), inferior = norm({ -0.25, 1, -0.05 }),
     lateral = norm({ 1, -0.35, 0.1 }), lm = norm({ -0.8, -0.55, 0.05 }),
 }
+-- NSTEMI: subendocardial ischaemia, a small diffuse ST depression (I, II, aVF, V4-V6) with ST elevation in aVR
+local NSTEMI = norm({ -0.6, -0.5, -0.35 })
 
 local function rng(seed)
     local s = seed % 2147483647
@@ -71,18 +73,24 @@ local function dipole(spec, t, t0, beatIndex, hv)
     end
     local inj = spec.stemi and INJURY[spec.stemi.territory]
     local stage = spec.stemi and spec.stemi.stage or nil
+    -- the ST / T timing follows the beat length: at a fast rate the ST plateau and the T wave of one beat
+    -- must not run into the next complex (it lifted the whole trace during a tachycardic STEMI)
+    local rr = 60 / math.max(spec.rate or 75, 20)
     -- QRS
     add({ -0.55, -0.1, 0.55 }, 0.22 * G(dt, pr + 0.012 * k, 0.006 * k))
     add({ 0.62, 0.72, -0.25 }, 1.35 * alt * G(dt, pr + 0.040 * k, 0.011 * k))
     add({ -0.25, -0.45, -0.75 }, 0.55 * alt * G(dt, pr + 0.068 * k, 0.010 * k))
     if inj and stage == "evolved" then add(inj, -0.55 * G(dt, pr + 0.022 * k, 0.012 * k)) end   -- pathological Q
     -- ST plateau + T
-    local stStart, tC = pr + spec.qrs - 0.005, pr + spec.qrs + 0.19
+    local stStart, tC = pr + spec.qrs - 0.005, pr + spec.qrs + math.min(0.19, rr * 0.3)
+    local stLen = math.min(0.26, rr * 0.42)
     if inj then
         local amp = stage == "evolved" and 0.12 or (stage == "reperfused" and 0.04 or 0.28)
-        add(inj, amp * sig((dt - stStart) / 0.008) * (1 - sig((dt - (stStart + 0.26)) / 0.03)))
+        add(inj, amp * sig((dt - stStart) / 0.008) * (1 - sig((dt - (stStart + stLen)) / 0.03)))
+    elseif spec.nstemi then
+        add(NSTEMI, 0.1 * sig((dt - stStart) / 0.008) * (1 - sig((dt - (stStart + stLen)) / 0.03)))
     end
-    local tv, ta, ts = { 0.55, 0.62, 0.05 }, 0.38, 0.05
+    local tv, ta, ts = { 0.55, 0.62, 0.05 }, 0.38, math.min(0.05, rr * 0.09)
     if hyper >= 6.0 then ta, ts = 0.38 * (1 + (hyper - 5.5) * 0.9), 0.026 end
     if inj and stage == "hyperacute" then add(inj, 0.45 * G(dt, tC, 0.055)) end
     if inj and stage == "evolved" then tv, ta = { -inj[1], -inj[2], -inj[3] }, 0.3 end

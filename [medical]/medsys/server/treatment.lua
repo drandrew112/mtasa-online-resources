@@ -527,6 +527,35 @@ PROCEDURES.airway = {
     end,
 }
 
+-- 12-lead ECG from the Lifepak (12-LEAD button, EMS and hospital): the electrodes are placed in the
+-- mg_ecg minigame, the placement errors go into the curves (getECGSpec). The finished spec is kept in
+-- state.ecg12Pending; ecg12/server/spec.lua hands it to the medic (viewer + PRINT) on onMedicalTreatment
+-- and tells the hospital (onMedicalECG12: an ordered 12-lead ECG is accepted from it).
+PROCEDURES.ecg12 = {
+    resource = "mg_ecg",
+    can = function(state)
+        if state.monitor then return true end
+        return false, L.msg("medsys.ecg12.needs_monitor")
+    end,
+    start = function(medic, target)
+        return exports.mg_ecg:startEcgGame(medic, target, {})
+    end,
+    stop = function(medic) exports.mg_ecg:stopEcgGame(medic) end,
+    finishEvent = "onEcgGameFinish",
+    sessionArg = 4, -- success, percent, reason, sessionId, details
+    apply = function(state, success, _, reason, _, details)
+        state.ecg12Pending = nil
+        if not success then
+            if reason == "cancelled" or reason == "quit" or reason == "died" then return nil end
+            return reason == "expired" and L.msg("medsys.ecg12.expired") or L.msg("medsys.ecg12.failed")
+        end
+        if not state.monitor then return L.msg("medsys.ecg12.needs_monitor") end
+        details = type(details) == "table" and details or {}
+        state.ecg12Pending = getECGSpec(state.element, { swapRALA = details.swapRALA == true, wrongV = tonumber(details.wrongV) or 0 })
+        return L.msg("medsys.ecg12.recorded")
+    end,
+}
+
 -- Puts the oxygen mask on / takes it off (the button label follows it)
 PROCEDURES.oxygen = {
     duration = MEDIC.OXYGEN_TIME,
@@ -596,8 +625,20 @@ PROCEDURES.medication = {
         local option = medicDrugDose(drug, dose)
         local scale = medicDoseScale(drug, option)
         local amount = option and medicDoseText(drug, option, state.weight) or nil
+        -- who gave it (the hospital panel lists the drugs in the body: the EMS doses too)
+        local medic = state.actingMedic
+        local by, byWork = nil, nil
+        if isElement(medic) then
+            by = getDisplayName(medic)
+            local res = getResourceFromName("work_core")
+            if res and getResourceState(res) == "running" then
+                local ok, work = pcall(function() return exports.work_core:getPlayerWork(medic) end)
+                if ok and type(work) == "string" then byWork = work end
+            end
+        end
         state.drugs[#state.drugs + 1] = { id = drugId, tick = now, scale = scale, dose = amount,
-            untilTick = now + drug.duration * 1000 * getDoseTimeFactor(scale) }
+            untilTick = now + drug.duration * 1000 * getDoseTimeFactor(scale),
+            givenAt = getRealTime().timestamp, by = by, byWork = byWork }
         if drug.glucose then
             state.glucose = math.min(MEDIC.GLUCOSE_MAX, state.glucose + drug.glucose * scale)
         end
@@ -893,12 +934,14 @@ local function finishTreatment(medic, success, ...)
         success, message, isError = true, treatment.interrupt, treatment.interruptError
     else
         local procedure = PROCEDURES[treatment.action]
+        state.actingMedic = medic   -- for apply (medication: who gave it)
         if procedure.pick then
             local picked = isPickedOpen(state, treatment.picked) and treatment.picked or nil
             message = procedure.apply(state, success, picked)
         else
             message = procedure.apply(state, success, ...)
         end
+        state.actingMedic = nil
         isError = not success
         if success == true then onEquipmentTreatmentDone(medic, target, treatment.action, treatment.option, state) end
     end

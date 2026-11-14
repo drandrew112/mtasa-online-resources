@@ -25,6 +25,8 @@ local signalTime = 0        -- seconds of signal generated
 local beatTime = 0          -- seconds since the last QRS
 local lastTick
 local input = { wave = "flat", rate = 0, pulse = false, spo2 = 0 }
+-- ischaemia in lead II (Lifepak monitor): ST shift (in R = 1 units, ~mV) and T wave gain
+local stLevel, tGain, stMm = 0, 1, nil
 local beepOn = false
 local beepSound
 
@@ -34,14 +36,22 @@ local beepSound
 
 -- The R peak (0.04 s) falls exactly on a sample: every beat starts on a sample (generateSample),
 -- so every QRS is drawn the same height.
+-- ST shift from the end of the S wave to the end of the T wave (ramps in and out)
+local function stAt(tb, tEnd)
+    if stLevel == 0 or tb < 0.055 or tb >= tEnd then return 0 end
+    return stLevel * math.min(1, (tb - 0.055) / 0.02) * math.min(1, (tEnd - tb) / 0.06)
+end
+
 local function sinusWave(tb, rr)
     if tb < 0.02 then return -0.12 * tb / 0.02 end                      -- Q
     if tb < 0.04 then return -0.12 + 1.12 * (tb - 0.02) / 0.02 end      -- R
-    if tb < 0.07 then return 1.0 - 1.3 * (tb - 0.04) / 0.03 end         -- S
-    if tb < 0.09 then return -0.3 + 0.3 * (tb - 0.07) / 0.02 end
     local tStart, tLength = 0.09 + math.min(0.13, rr * 0.15), math.min(0.18, rr * 0.3)
-    if tb >= tStart and tb < tStart + tLength then                    -- T
-        return 0.28 * math.sin(math.pi * (tb - tStart) / tLength)
+    local st = stAt(tb, tStart + tLength)
+    if tb < 0.07 then return 1.0 - 1.3 * (tb - 0.04) / 0.03 + st end    -- S
+    if tb < 0.09 then return -0.3 + 0.3 * (tb - 0.07) / 0.02 + st end
+    if tb < tStart then return st end                                   -- ST segment
+    if tb < tStart + tLength then                                       -- T
+        return 0.28 * tGain * math.sin(math.pi * (tb - tStart) / tLength) + st
     end
     local toNext = rr - tb
     local pEnd, pLength = math.min(0.12, rr * 0.18), math.min(0.09, rr * 0.15)
@@ -53,10 +63,14 @@ end
 
 -- SVT: the narrow QRS of the sinus beat, a peaked T right after it, no P wave (the fast rate hides it)
 local function svtWave(tb, rr)
-    if tb < 0.09 then return sinusWave(tb, rr) end
     local tStart, tLength = 0.09 + rr * 0.08, rr * 0.38
-    if tb >= tStart and tb < tStart + tLength then
-        return 0.32 * math.sin(math.pi * (tb - tStart) / tLength)
+    local st = stAt(tb, tStart + tLength)
+    if tb < 0.04 then return sinusWave(tb, rr) end
+    if tb < 0.07 then return 1.0 - 1.3 * (tb - 0.04) / 0.03 + st end
+    if tb < 0.09 then return -0.3 + 0.3 * (tb - 0.07) / 0.02 + st end
+    if tb < tStart then return st end
+    if tb < tStart + tLength then
+        return 0.32 * tGain * math.sin(math.pi * (tb - tStart) / tLength) + st
     end
     return 0
 end
@@ -88,7 +102,9 @@ local function afibWave(tb, rr, t)
     local base = 0.035 * math.sin(TWO_PI * 6.3 * t) + 0.025 * math.sin(TWO_PI * 8.7 * t + 1.1)
     if tb < 0.09 then return sinusWave(tb, rr) + base end
     local tStart, tLength = 0.09 + math.min(0.13, rr * 0.15), math.min(0.18, rr * 0.3)
-    if tb >= tStart and tb < tStart + tLength then return 0.25 * math.sin(math.pi * (tb - tStart) / tLength) + base end
+    local st = stAt(tb, tStart + tLength)
+    if tb < tStart then return st + base end
+    if tb < tStart + tLength then return 0.25 * tGain * math.sin(math.pi * (tb - tStart) / tLength) + st + base end
     return base
 end
 
@@ -176,14 +192,43 @@ function ecgReset()
     head, filled, beatTime, lastTick = 0, 0, 0, nil
 end
 
--- rhythm: MEDIC_RHYTHMS key, rate: ECG complexes per minute, spo2: for the pleth amplitude
-function ecgSetInput(rhythm, rate, spo2)
+-- Lead II projection of the ST injury vector per territory (same vectors as the 12-lead renderer,
+-- ecg12/client/render.lua) and the ST amplitude per stage (mV)
+local II_DOT = { inferior = 0.72, anterior = -0.25, lateral = 0.19, lm = -0.90, nstemi = -0.86 }
+local ST_AMP = { hyperacute = 0.28, acute = 0.28, evolved = 0.12, reperfused = 0.04, nstemi = 0.1 }
+local ST_WAVES = { sinus = true, svt = true, afib = true }   -- narrow QRS: the ST segment is readable
+local ST_GAIN = 1.3                                          -- the monitor trace is drawn a bit taller
+
+-- -> ST shift in lead II (mV), T wave gain
+local function ischemiaLeadII(ischemia)
+    if type(ischemia) ~= "table" then return 0, 1 end
+    if ischemia.nstemi then return ST_AMP.nstemi * II_DOT.nstemi, 0.6 end
+    local dot = II_DOT[ischemia.territory] or 0
+    local st = (ST_AMP[ischemia.stage] or 0.28) * dot
+    local tg = 1
+    if ischemia.stage == "hyperacute" then tg = 1 + math.max(0, dot) * 1.6 end
+    if ischemia.stage == "evolved" and dot > 0.3 then tg = -0.8 end   -- inverted T in the infarcted leads
+    return st, tg
+end
+
+-- rhythm: MEDIC_RHYTHMS key, rate: ECG complexes per minute, spo2: for the pleth amplitude,
+-- ischemia: the snapshot's ischemia ({ territory, stage } | { nstemi = true } | nil)
+function ecgSetInput(rhythm, rate, spo2, ischemia)
     local def = MEDIC_RHYTHMS[rhythm] or MEDIC_RHYTHMS.ASYSTOLE
     input.wave = def.wave
     input.rate = tonumber(rate) or 0
     input.pulse = def.pulse == true
     input.spo2 = tonumber(spo2) or 0
+    if ST_WAVES[def.wave] and input.rate > 0 then
+        local st, tg = ischemiaLeadII(ischemia)
+        stLevel, tGain, stMm = st * ST_GAIN, tg, st * 10
+    else
+        stLevel, tGain, stMm = 0, 1, nil
+    end
 end
+
+-- ST shift of lead II in mm (nil: no readable ST segment)
+function ecgGetST() return stMm end
 
 -- The monitor beeps on every QRS (the panel turns it on while it is open with a monitor attached)
 function ecgSetBeep(enabled)

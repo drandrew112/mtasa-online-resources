@@ -234,11 +234,18 @@ local function drawScreen(sx, sy, sw, sh, data, defib, elapsed)
     local tx, tw = sx + VALUE_W + s(8), sw - VALUE_W - s(14)
 
     -- HR (the ECG rate) + ECG with the rhythm name under it
-    local hasComplexes = def.wave == "sinus" or def.wave == "vt" -- PEA: no QRS the monitor can count
+    -- every rhythm with QRS complexes the monitor counts (PEA: no; VF / asystole: none)
+    local hasComplexes = def.wave == "sinus" or def.wave == "vt" or def.wave == "svt" or def.wave == "afib" or def.wave == "avb3"
     drawValue(sx, hrY, hrH, "HR", "bpm", (hasComplexes and data.ecgRate > 0) and tostring(data.ecgRate) or "---", C.hr)
     local labelH = s(38)
     local ecgY, ecgH = hrY + s(8), hrH - labelH - s(10)
     dxDrawText("II  x1.0", tx, hrY + s(3), tx + tw, hrY + s(16), C.hr, 1, fonts.tiny, "right", "top")
+    -- ST monitoring of lead II (an inferior STEMI lifts it, the others show a reciprocal depression)
+    local st = ecgGetST and ecgGetST()
+    if st and not data.dead then
+        dxDrawText(("ST II %+.1f mm"):format(st), tx, hrY + s(3), tx + tw - s(70), hrY + s(16),
+            math.abs(st) >= 1 and C.warn or C.hr, 1, fonts.tiny, "right", "top")
+    end
     ecgDraw("ecg", tx, ecgY, tw, ecgH, ECG_SECONDS, C.hr, lineW, 0.62, 0.55)
     dxDrawText(def.label, tx, hrY + hrH - labelH, tx + tw, hrY + hrH - s(2), rhythmColor(data.rhythm), 1,
         fonts.title, "left", "center", false, true)

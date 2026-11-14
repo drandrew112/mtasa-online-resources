@@ -694,7 +694,7 @@ local function render()
     end
 
     -- monitor: the signal runs (and beeps) only while it is attached
-    ecgSetInput(data.rhythm, data.ecgRate, data.spo2)
+    ecgSetInput(data.rhythm, data.ecgRate, data.spo2, data.ischemia)
     ecgSetBeep(data.monitor ~= nil and data.monitor.sound ~= false) -- SOUND button of the Lifepak
     ecgUpdate()
     if data.monitor then

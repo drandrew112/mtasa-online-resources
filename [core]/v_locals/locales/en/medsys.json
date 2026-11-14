@@ -546,5 +546,10 @@
   "medsys.host.monitor_on": "Monitor on",
   "medsys.host.attach_monitor": "Attach monitor",
   "medsys.host.wait": "Wait…",
-  "medsys.treatment.in_hospital_care": "The patient is in hospital care: the ER staff treat them"
+  "medsys.treatment.in_hospital_care": "The patient is in hospital care: the ER staff treat them",
+  "medsys.ecg12.recorded": "12-lead ECG recorded.",
+  "medsys.ecg12.failed": "Electrodes placed wrong: no 12-lead ECG was recorded. Try again.",
+  "medsys.ecg12.expired": "Time ran out: no 12-lead ECG was recorded. Try again.",
+  "medsys.ecg12.int_acute_mi": "***ACUTE MI SUSPECTED***",
+  "medsys.ecg12.int_nstemi": "ST depression (I, II, aVF, V4–V6), ST elevation in aVR – ischaemia / NSTEMI?"
 }

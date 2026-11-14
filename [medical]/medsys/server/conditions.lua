@@ -198,11 +198,28 @@ LE.anaphylaxis = function(v) v.lact = v.lact + 1 end
 ---------------------------------------------------------------- 12-lead ECG of the new conditions
 
 local EE = MEDIC_ECG_EFFECTS
-EE.acs = function(spec, inj)
-    if inj.severity < 2 then spec.nstemi = true return end
+
+-- the ECG stage of an ACS: NSTEMI (severity 1) or STEMI hyperacute / acute / evolved / reperfused
+local function acsECG(inj)
+    if inj.severity < 2 then return { nstemi = true } end
     local age = clinMin(inj.onset)
     local stage = inj.reperfused and "reperfused" or (age < 10 and "hyperacute" or (age > 120 and "evolved" or "acute"))
-    spec.stemi = { territory = inj.territory or "anterior", stage = stage }
+    return { territory = inj.territory or "anterior", stage = stage }
+end
+
+-- The ischaemia the monitor shows (Lifepak lead II ST segment, buildSnapshot): { territory, stage } |
+-- { nstemi = true } | nil
+function getECGIschemia(state)
+    for _, inj in ipairs(state.injuries) do
+        if inj.type == "acs" then return acsECG(inj) end
+    end
+    return nil
+end
+
+EE.acs = function(spec, inj)
+    local e = acsECG(inj)
+    if e.nstemi then spec.nstemi = true return end
+    spec.stemi = e
 end
 EE.tamponade = function(spec) spec.alternans, spec.lowVoltage = true, true end
 EE.poison_tca = function(spec, inj) spec.qrs = math.max(spec.qrs, 0.12 + 0.02 * inj.severity) end

@@ -458,7 +458,9 @@ function buildSnapshot(state)
     local drugs = {}
     for i, dose in ipairs(state.drugs) do
         drugs[i] = { id = dose.id, name = MEDIC_DRUGS[dose.id].name, dose = dose.dose,
-            timeLeft = math.max(0, math.ceil((dose.untilTick - now) / 1000)) }
+            timeLeft = math.max(0, math.ceil((dose.untilTick - now) / 1000)),
+            total = math.max(1, math.ceil((dose.untilTick - dose.tick) / 1000)),
+            givenAt = dose.givenAt, by = dose.by, byWork = dose.byWork }
     end
 
     local rhythmKey = state.rhythm
@@ -516,6 +518,7 @@ function buildSnapshot(state)
         rhythm = rhythmKey,
         rhythmLabel = rhythm.label,
         ecgRate = ecgRate,              -- rate of the ECG complexes (the pulse is heartRate)
+        ischemia = getECGIschemia and getECGIschemia(state) or nil, -- ST changes on the monitor (server/conditions.lua)
         monitor = getMonitorSnapshot(state, now), -- nil while no monitor is attached
         clinicalDeath = isInClinicalDeath(state),
         deathTimeLeft = deathTimeLeft,
