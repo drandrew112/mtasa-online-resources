@@ -103,15 +103,15 @@ end
 --------------------------------------------------------------------------------
 
 -- Creates a fresh account row. `pwHash` must already be a bcrypt hash.
--- Returns the new row id, or false.
-function createAccountRow(name, pwHash, email)
+-- displayName defaults to the account name. Returns the new row id, or false.
+function createAccountRow(name, pwHash, email, displayName)
     if not mysqlReady() then return false end
     local ts = getRealTime().timestamp
     local id = exports.v_mysql:mysqlInsert(
         "INSERT INTO `" .. TABLE .. "` " ..
         "(account_name, password, email, display_name, admin_level, account_data, created_at, updated_at) " ..
         "VALUES (?, ?, ?, ?, 0, '{}', ?, ?)",
-        name, pwHash, email, name, ts, ts)
+        name, pwHash, email, displayName or name, ts, ts)
     if type(id) ~= "number" then return false end
 
     accountRowCreated(name)
@@ -124,14 +124,14 @@ end
 -- UNIQUE). Call accountRowCreated(name) once it succeeded.
 -- -> true if the insert was sent (false: no answer event will come, unless
 --    the database is down, in which case it already came)
-function createAccountRowAsync(name, pwHash, email, eventName, requestId)
+function createAccountRowAsync(name, pwHash, email, eventName, requestId, displayName)
     if not mysqlReady() then return false end
     local ts = getRealTime().timestamp
     return exports.v_mysql:mysqlInsertAsync(eventName, requestId,
         "INSERT INTO `" .. TABLE .. "` " ..
         "(account_name, password, email, display_name, admin_level, account_data, created_at, updated_at) " ..
         "VALUES (?, ?, ?, ?, 0, '{}', ?, ?)",
-        name, pwHash, email, name, ts, ts) == true
+        name, pwHash, email, displayName or name, ts, ts) == true
 end
 
 function accountRowCreated(name)

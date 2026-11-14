@@ -6,7 +6,7 @@ if not L then loadstring(exports.v_locals:import())() end -- v_locals lib (DESIG
 --                               the UNIQUE account_name / email decide a race
 --   4. v_accounts:registerRow     log in as the new account (onPlayerAccountLogin, isNew = true)
 
-local registerPending = {} -- [player] = { id, username, password, email, timer } until step 4 or an error
+local registerPending = {} -- [player] = { id, username, password, email, displayName, timer } until step 4 or an error
 local registerById    = {} -- [id] = player
 local registerSeq     = 0
 
@@ -47,6 +47,20 @@ function normalizeEmail(email)
         return false
     end
     return email
+end
+
+-- Display name chosen at registration (same rules as v_socialpanel
+-- SP.validateDisplayName). -> clean name, nil when empty, false when invalid.
+local DISPLAY_MIN, DISPLAY_MAX = 3, 24
+function normalizeDisplayName(name)
+    if type(name) ~= "string" then return nil end
+    name = name:gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
+    if name == "" then return nil end
+    local len = utf8.len(name)
+    if not len or len < DISPLAY_MIN or len > DISPLAY_MAX or name:find("[%z\1-\31#]") then
+        return false
+    end
+    return name
 end
 
 local function finishRegister(player, username, id)
@@ -91,11 +105,11 @@ addEventHandler("v_accounts:registerName", resourceRoot, function(id, rows)
         if type(hashed) ~= "string" then
             return registerError(player, "v_accounts.auth.server.registration_failed")
         end
-        if not createAccountRowPooled(p.username, hashed, p.email, "v_accounts:registerRow", id) then
+        if not createAccountRowPooled(p.username, hashed, p.email, "v_accounts:registerRow", id, p.displayName) then
             -- No answer is coming (v_mysql stopped): without a database connection
             -- the answer already came and cleared the request.
             if registerOf(id) ~= player then return end
-            local newId = createAccountRow(p.username, hashed, p.email)
+            local newId = createAccountRow(p.username, hashed, p.email, p.displayName)
             if not newId then
                 return registerError(player, "v_accounts.auth.server.registration_failed")
             end
@@ -104,9 +118,9 @@ addEventHandler("v_accounts:registerName", resourceRoot, function(id, rows)
     end)
 end)
 
--- Step 1: the client asks to register. email may be empty.
+-- Step 1: the client asks to register. email and displayName may be empty.
 addEvent("v_accounts:register", true)
-addEventHandler("v_accounts:register", root, function(username, password, email)
+addEventHandler("v_accounts:register", root, function(username, password, email, displayName)
     local player = client
     if not isElement(player) then return end
     if getElementData(player, "banned") == true then return end
@@ -129,6 +143,10 @@ addEventHandler("v_accounts:register", root, function(username, password, email)
     if mail == false then
         return authError(player, "v_accounts.auth.server.invalid_email")
     end
+    local disp = normalizeDisplayName(displayName)
+    if disp == false then
+        return authError(player, "v_accounts.auth.server.display_name_must_be_3_24_chars")
+    end
     if knownAccountName(username) then
         return authError(player, "v_accounts.auth.server.account_already_exists")
     end
@@ -136,7 +154,7 @@ addEventHandler("v_accounts:register", root, function(username, password, email)
     registerSeq = registerSeq + 1
     local id = registerSeq
     registerPending[player] = {
-        id = id, username = username, password = password, email = mail,
+        id = id, username = username, password = password, email = mail, displayName = disp or username,
         timer = setTimer(function()
             if registerOf(id) == player then
                 registerError(player, "v_accounts.auth.server.registration_failed")

@@ -17,7 +17,10 @@ function RegisterPanel:create()
 
     local userLabelY = Y + headerH + ui(16)
     local userY      = userLabelY + ui(20)
-    local passLabelY = userY + fieldH + ui(12)
+    local dispLabelY = userY + fieldH + ui(12)
+    local dispY      = dispLabelY + ui(20)
+    local dispNoteY  = dispY + fieldH + ui(6)
+    local passLabelY = dispNoteY + ui(18) + ui(8)
     local passY      = passLabelY + ui(20)
     local confLabelY = passY + fieldH + ui(12)
     local confY      = confLabelY + ui(20)
@@ -31,6 +34,8 @@ function RegisterPanel:create()
     self.X, self.Y, self.W, self.H = X, Y, W, H -- anchor for the side cards
 
     self.user = DGS:dgsCreateEdit(cx, userY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
+    self.disp = DGS:dgsCreateEdit(cx, dispY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
+    DGS:dgsSetProperty(self.disp, "maxLength", 24)
     self.pass = DGS:dgsCreateEdit(cx, passY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
     self.conf = DGS:dgsCreateEdit(cx, confY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
     self.mail = DGS:dgsCreateEdit(cx, mailY, fieldW, fieldH, "", false, false, tocolor(255,255,255), 1,1, _, Theme.fieldBG, false)
@@ -45,6 +50,9 @@ function RegisterPanel:create()
     function self:draw()
         drawPanelFrame(X, Y, W, H, L("v_accounts.ui.register.title"))
         drawFieldLabel(L("v_accounts.ui.login.username"), cx, userLabelY, fieldW)
+        drawFieldLabel(L("v_accounts.ui.register.display_name_optional"), cx, dispLabelY, fieldW)
+        dxDrawText(L("v_accounts.ui.register.display_name_note"), cx, dispNoteY, cx + fieldW, dispNoteY + ui(18),
+            Theme.label, ui(1.0), "default", "left", "center", true)
         drawFieldLabel(L("v_accounts.ui.login.password"), cx, passLabelY, fieldW)
         drawFieldLabel(L("v_accounts.ui.register.confirm_password"), cx, confLabelY, fieldW)
         drawFieldLabel(L("v_accounts.ui.register.email_optional"), cx, mailLabelY, fieldW)
@@ -59,14 +67,21 @@ function RegisterPanel:create()
         local p = DGS:dgsGetText(self.pass)
         local c = DGS:dgsGetText(self.conf)
         local m = DGS:dgsGetText(self.mail)
+        local d = DGS:dgsGetText(self.disp):gsub("^%s+", ""):gsub("%s+$", ""):gsub("%s+", " ")
 
         if u == "" then return uicore:setInfobox(L("v_accounts.ui.login.username_missing")) end
+        if d ~= "" then
+            local len = utf8.len(d)
+            if not len or len < 3 or len > 24 or d:find("[%z\1-\31#]") then
+                return uicore:setInfobox(L("v_accounts.auth.server.display_name_must_be_3_24_chars"))
+            end
+        end
         if p == "" then return uicore:setInfobox(L("v_accounts.ui.login.password_missing")) end
         if p ~= c then return uicore:setInfobox(L("v_accounts.ui.register.passwords_do_not_match")) end
         if #p < 5 then return uicore:setInfobox(L("v_accounts.ui.register.password_too_short")) end
 
         uiSound("ui/audio/ui_btn_click.mp3")
-        register(u, p, m)
+        register(u, p, m, d)
     end)
 
     addEventHandler("onDgsMouseClick", self.back, function(_, state)

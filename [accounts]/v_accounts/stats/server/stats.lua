@@ -1,14 +1,15 @@
 -- stats module (server): player count history for the login screen's Players panel.
 -- stats.json (gitignored) = { samples = { { t = timestamp, n = playerCount }, ... } }.
--- A sample is taken every 15 minutes; samples older than 25 h are dropped.
--- The client gets the last 24 h in 30-minute slots (48 slots); a slot without
--- any sample is "missing" (drawn red, at 0).
+-- A sample is taken every 15 minutes; samples older than 49 h are dropped.
+-- The client gets the last 24 h in 15-minute slots (96 slots) plus the same
+-- 96 slots shifted back by 24 h (prev, the grey comparison line); a slot
+-- without any sample is "missing" (false).
 
 local FILE        = "stats/stats.json"
 local INTERVAL    = 15 * 60          -- seconds between samples
-local KEEP        = 25 * 3600        -- samples older than this are removed
-local SLOT        = 30 * 60          -- chart resolution
-local SLOTS       = 48               -- 24 h
+local KEEP        = 49 * 3600        -- samples older than this are removed
+local SLOT        = 15 * 60          -- chart resolution
+local SLOTS       = 96               -- 24 h
 
 local samples = {}                   -- { { t, n } } oldest first
 
@@ -60,26 +61,33 @@ local function record()
     save()
 end
 
--- 48 slots, oldest first: { n = maxPlayers seen in the slot | nil (no data) }
-local function buildSlots()
-    local t = now()
-    local endT = t - (t % SLOT) + SLOT           -- end of the current slot
-    local startT = endT - SLOTS * SLOT
+-- SLOTS slots, oldest first: maxPlayers seen in the slot | false (no data).
+-- shift = seconds back (0 = last 24 h, 86400 = the 24 h before that).
+local function buildSlots(endT, shift)
+    local stopT = endT - shift
+    local startT = stopT - SLOTS * SLOT
     local slots = {}
     for i = 1, SLOTS do slots[i] = false end
     for _, s in ipairs(samples) do
-        if s.t >= startT and s.t < endT then
+        if s.t >= startT and s.t < stopT then
             local i = math.floor((s.t - startT) / SLOT) + 1
             if slots[i] == false or s.n > slots[i] then slots[i] = s.n end
         end
     end
-    -- the running slot always has the live value
-    slots[SLOTS] = math.max(slots[SLOTS] or 0, getPlayerCount())
     return slots
 end
 
 local function payload()
-    return { current = getPlayerCount(), max = getMaxPlayers(), slots = buildSlots(), slotSeconds = SLOT }
+    local t = now()
+    local endT = t - (t % SLOT) + SLOT           -- end of the current slot
+    local slots = buildSlots(endT, 0)
+    -- the running slot always has the live value
+    slots[SLOTS] = math.max(slots[SLOTS] or 0, getPlayerCount())
+    return {
+        current = getPlayerCount(), max = getMaxPlayers(),
+        slots = slots, prev = buildSlots(endT, 86400),
+        slotSeconds = SLOT, startT = endT - SLOTS * SLOT,
+    }
 end
 
 local function sendTo(player)

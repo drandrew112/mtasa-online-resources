@@ -57,8 +57,14 @@ function Lang.draw(x, y, w, h)
     dxDrawText(currentLabel(), btn.x + ui(15), btn.y, btn.x + btn.w - ui(30), btn.y + btn.h,
         Theme.text, ui(1.15), "default-bold", "left", "center", true)
     drawCaret(btn.x + btn.w - ui(16), btn.y + btn.h / 2, ui(4), open)
+end
 
-    if not open then return end
+-- The open list; render.lua calls it after every card (it overlaps the Players card).
+function Lang.drawList()
+    if not open or btn.w <= 0 then return end
+    local cx, cy = getCursorPosition()
+    local mx, my
+    if cx then mx, my = cx * sw, cy * sh end
 
     local list = languages()
     local lx, ly, lw, lh = listRect(#list)

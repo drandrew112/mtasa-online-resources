@@ -27,6 +27,6 @@ function Settings.draw(anchor)
     drawFieldLabel(L("v_accounts.ui.settings.language"), x + pad + colW + colGap, labelY, colW)
 
     if Music then Music.drawToggle(x + pad, ctrlY, colW, btnH) end
-    if Lang then Lang.draw(x + pad + colW + colGap, ctrlY, colW, btnH) end -- last: its list opens over everything
+    if Lang then Lang.draw(x + pad + colW + colGap, ctrlY, colW, btnH) end -- its open list: Lang.drawList() from render.lua
     return { X = x, Y = y, W = w, H = h }
 end

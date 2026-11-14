@@ -91,12 +91,13 @@ end)
 --   triggerEvent(eventName, resourceRoot, requestId, id | false, err)
 -- Takes a free pool row when there is one, else inserts a new row.
 -- -> true if the answer is coming
-function createAccountRowPooled(name, pwHash, email, eventName, requestId)
+function createAccountRowPooled(name, pwHash, email, eventName, requestId, displayName)
+    displayName = displayName or name
     local s
     for _, slot in ipairs(slots) do
         if slot.id and not slot.busy then s = slot break end
     end
-    if not s then return createAccountRowAsync(name, pwHash, email, eventName, requestId) end
+    if not s then return createAccountRowAsync(name, pwHash, email, eventName, requestId, displayName) end
 
     s.busy = true
     local rowId, gen, ts = s.id, s.gen, getRealTime().timestamp
@@ -120,13 +121,13 @@ function createAccountRowPooled(name, pwHash, email, eventName, requestId)
             refill()
             local id = type(rows) == "table" and rows[1] and tonumber(rows[1].id)
             if id then return answer(id) end
-            if not createAccountRowAsync(name, pwHash, email, eventName, requestId) then
+            if not createAccountRowAsync(name, pwHash, email, eventName, requestId, displayName) then
                 answer(false, "registration failed")
             end
         end, "SELECT id FROM `" .. TABLE .. "` WHERE id = ? AND account_name = ? LIMIT 1", rowId, name)
     end, "UPDATE `" .. TABLE .. "` SET id = LAST_INSERT_ID(id), account_name = ?, password = ?, email = ?, "
         .. "display_name = ?, admin_level = 0, account_data = '{}', created_at = ?, updated_at = ? "
         .. "WHERE id = ? AND account_name = ?",
-        name, pwHash, email, name, ts, ts, rowId, s.name)
+        name, pwHash, email, displayName, ts, ts, rowId, s.name)
     return true
 end

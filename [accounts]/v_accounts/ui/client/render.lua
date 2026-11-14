@@ -21,12 +21,12 @@ local function renderPanels()
     if form and News then News.draw(panel) end
     if form and Weekly then Weekly.draw(panel) end
 
-    -- Settings card (music + language) under the panel; last, so the language
-    -- list opens over everything else.
+    -- Settings card (music + language) under the panel, Players card under that.
     local settingsRect = Settings and Settings.draw(panel)
-    -- Players card under the Settings card (drawn before it would hide the
-    -- language list, so it goes first in z-order only visually: it does not overlap)
     if Players and settingsRect then Players.draw(settingsRect) end
+
+    -- The open language list hangs down over the Players card: draw it last.
+    if Lang and Lang.drawList then Lang.drawList() end
 end
 
 -- attached only while a panel is up (setPanel calls this)

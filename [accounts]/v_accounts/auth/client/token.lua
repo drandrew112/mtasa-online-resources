@@ -54,8 +54,9 @@ function loginWithToken()
     return true
 end
 
-function register(username, password, email)
-    triggerServerEvent("v_accounts:register", localPlayer, tostring(username or ""), tostring(password or ""), tostring(email or ""))
+-- displayName may be empty (the account name is used then)
+function register(username, password, email, displayName)
+    triggerServerEvent("v_accounts:register", localPlayer, tostring(username or ""), tostring(password or ""), tostring(email or ""), tostring(displayName or ""))
 end
 
 function requestPasswordReset(email)
