@@ -21,8 +21,9 @@ local MODES = { follow = true, box = true, ram = true, pit = true, block = true,
 
 addEvent("onTrafficVehicleChaseMode")
 -- mode "flee" (2026-11-12): the car runs from the target (its pursuer). Its road path leads to a point far away from
--- the pursuer (renewed when reached / every CHASE_FLEE_RETARGET ms), the syncer never aims at the target. Stuck for
--- good (repeated stucks, wrecked, upside down) the syncer reports it: onTrafficVehicleBailOut (source vehicle;
+-- the pursuer (renewed when reached / every CHASE_FLEE_RETARGET ms), the syncer never aims at the target. Without
+-- a navmesh route (computing, or the car left it) the path follows the lane graph from the car's lane (laneFleePath,
+-- 2026-11-14). Stuck for good (repeated stucks, wrecked, upside down) the syncer reports it: onTrafficVehicleBailOut (source vehicle;
 -- driver, pursuer) - the owner decides what the driver does (e.g. runs on foot).
 addEvent("onTrafficVehicleBailOut")
 addEvent(EV_CHASE_BAIL, true)
@@ -126,6 +127,40 @@ local function fleeDestination(c, x, y, z, rz, now)
     return tx, ty, z
 end
 
+-- flee without a navmesh route (being computed, or the car left it): the lane graph onwards from the car's own lane,
+-- at every junction the exit whose lane ends farthest from the pursuer (no roadblocks, parking, emergency-only or
+-- trap lanes when there is another way). Keeps a fleeing car on the road instead of straight across the pavement.
+local BAD_LANE = LF_ROADBLOCK + LF_PARKING + LF_TRAP + LF_EMERGENCY
+local function laneFleePath(c, x, y, z, rz)
+    if not Net.ready then return nil end
+    local lane, s = Navmesh.laneAt(x, y, z, rz, 14)
+    if not lane then return nil end
+    local px, py = getElementPosition(carrier(c.target))
+    local lanes, conns, cur = { lane }, {}, lane
+    local d = Geo.length(lane) - s
+    while d < T.CHASE_PATH_LENGTH and #lanes < 24 do
+        local nexts = Net.lnext[cur]
+        if not nexts or #nexts == 0 then break end
+        local best, bestScore
+        for _, cn in ipairs(nexts) do
+            local to = Net.cto[cn]
+            if to and Geo.llen[to] then
+                local ex, ey = Geo.lx2[to], Geo.ly2[to]
+                local score = (ex - px) ^ 2 + (ey - py) ^ 2
+                if bitAnd(Net.lflags[to] or 0, BAD_LANE) ~= 0 then score = score * 0.01 end
+                if Net.cturn[cn] == "U" then score = score * 0.05 end
+                if not bestScore or score > bestScore then best, bestScore = cn, score end
+            end
+        end
+        if not best then break end
+        cur = Net.cto[best]
+        lanes[#lanes + 1] = cur
+        conns[#lanes] = best
+        d = d + Geo.length(cur) + (Geo.isCurve(best) and Geo.length(-best) or 0)
+    end
+    return lanes, conns, s
+end
+
 local function updatePath(c, now)
     if now < (c.pathAt or 0) then return end
     c.pathAt = now + T.CHASE_PATH_EVERY
@@ -146,11 +181,16 @@ local function updatePath(c, now)
         Navmesh.track(n, x, y, z, rz, n.dx, n.dy, n.dz, "emergency", now, 1500)
         if n.lanes then c.route, c.nextRoute, r = n, nil, n end
     end
-    if not r then return end
-    local i, s = Navmesh.track(r, x, y, z, rz, r.dx, r.dy, r.dz, "emergency", now, 1500)
-    if not i then return end
-    local pts = pathPoints(r.lanes, r.conns, i, s)
-    if #pts >= 6 then triggerClientEvent(syncer, EV_CHASE_PATH, resourceRoot, c.veh, pts) end
+    local i, s
+    if r then i, s = Navmesh.track(r, x, y, z, rz, r.dx, r.dy, r.dz, "emergency", now, 1500) end
+    local pts
+    if i then
+        pts = pathPoints(r.lanes, r.conns, i, s)
+    elseif c.mode == "flee" then
+        local lanes, conns, ls = laneFleePath(c, x, y, z, rz)
+        if lanes then pts = pathPoints(lanes, conns, 1, ls) end
+    end
+    if pts and #pts >= 6 then triggerClientEvent(syncer, EV_CHASE_PATH, resourceRoot, c.veh, pts) end
 end
 
 function Chase.step(now)

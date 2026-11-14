@@ -6,7 +6,9 @@
 --   ram     straight at where the target will be in half a second, full throttle
 --   block   cuts off: aims at where the target will be in a few seconds
 --   flee    runs from the target (2026-11-12): always the road path (the server leads it away), never at the target;
---           no path yet: straight away from it. Passes traffic more boldly. Stuck for good (CHASE_FLEE_BAIL_STUCKS
+--           no path yet: on along its heading. 2026-11-14: keeps to the carriageway - short look-ahead, back onto
+--           the path from up to 45 m, passes traffic only within about one lane, never over the pavement; low rays
+--           (under the bumper line) see bins / benches / bollards. Passes traffic more boldly. Stuck for good (CHASE_FLEE_BAIL_STUCKS
 --           stucks in CHASE_FLEE_BAIL_WINDOW ms), wrecked or upside down: EV_CHASE_BAIL once (the driver bails out)
 -- The mode's aim point is only used with the target in plain sight close by; otherwise the car follows the road path
 -- the server sends (EV_CHASE_PATH: navmesh route to the target, pure pursuit, slowing down before corners). Rays
@@ -70,9 +72,10 @@ addEventHandler(EV_CHASE_PATH, resourceRoot, function(veh, pts)
     if st and type(pts) == "table" then st.path, st.pathAt, st.pathI = pts, getTickCount(), 1 end
 end)
 
--- the point `look` metres along the path ahead of the car (pure pursuit) and the sharpest turn (radians) within the
--- next `scan` metres; nil when the path is old or the car is off it
-local function pathAim(st, vx, vy, look, scan, now)
+-- the point `look` metres along the path ahead of the car (pure pursuit), the sharpest turn (radians) within the
+-- next `scan` metres and the car's side offset from the path (m, > 0 = left of it); nil when the path is old or the
+-- car is off it (`maxOff` m, default 22)
+local function pathAim(st, vx, vy, look, scan, now, maxOff)
     local p = st.path
     if not p or now - st.pathAt > 4000 then return nil end
     local n = #p / 3
@@ -81,8 +84,23 @@ local function pathAim(st, vx, vy, look, scan, now)
         local d = (p[i * 3 - 2] - vx) ^ 2 + (p[i * 3 - 1] - vy) ^ 2
         if d < bd then best, bd = i, d end
     end
-    if not best or bd > 22 * 22 then return nil end
+    maxOff = maxOff or 22
+    if not best or bd > maxOff * maxOff then return nil end
     st.pathI = best
+    -- side offset from the path segment at the nearest point
+    local off = 0
+    do
+        local j = best < n and best or best - 1
+        if j >= 1 then
+            local sx, sy = p[j * 3 - 2], p[j * 3 - 1]
+            local ex, ey = p[j * 3 + 1], p[j * 3 + 2]
+            local ux, uy = ex - sx, ey - sy
+            local ul = sqrt(ux * ux + uy * uy)
+            if ul > 0.1 then off = (ux * (vy - sy) - uy * (vx - sx)) / ul end
+        end
+    end
+    -- well off the path (pushed aside, after a stuck): back onto it with a short look-ahead, not across the corner
+    if abs(off) > 4 then look = max(5, look * 0.5) end
     -- distances and turns along the path from its nearest point (the car may be just past it)
     local ax, ay, turn, acc = nil, nil, 0, 0
     local px, py, hx, hy = p[best * 3 - 2], p[best * 3 - 1], nil, nil
@@ -103,13 +121,22 @@ local function pathAim(st, vx, vy, look, scan, now)
         px, py = x, y
     end
     if not ax then ax, ay = p[n * 3 - 2], p[n * 3 - 1] end
-    return ax, ay, turn
+    return ax, ay, turn, off
 end
 
--- a wall (building / object, not a vehicle) in direction (dx, dy) within len m from (x, y, z); the target never
--- counts, nor a surface facing up (the road rising ahead, a kerb)
+-- height of the low obstacle rays above the car's centre (negative): 0.35 m above the wheels' base, under the bumper
+-- line, where bins, benches, bollards and hydrants are (the normal ray at +0.4 passes over them); a kerb (0.15 m)
+-- stays under it
+local lowDz = -0.2
+
+-- a wall (building / object, not a vehicle) in direction (dx, dy) within len m from (x, y, z) - at that height and
+-- low (lowDz) for street furniture; the target never counts, nor a surface facing up (the road rising, a kerb)
 local function blocked(veh, x, y, z, dx, dy, len, target)
     local hit, _, _, _, el, _, _, nz = processLineOfSight(x, y, z, x + dx * len, y + dy * len, z, true, false, false,
+        true, false, false, false, false, veh)
+    if hit and el ~= target and (nz or 0) < 0.55 then return true end
+    local lz = z - 0.4 + lowDz
+    hit, _, _, _, el, _, _, nz = processLineOfSight(x, y, lz, x + dx * len, y + dy * len, lz, true, false, false,
         true, false, false, false, false, veh)
     return hit and el ~= target and (nz or 0) < 0.55
 end
@@ -166,6 +193,8 @@ local function steer(veh, ped, o, st, now)
     local speed = sqrt(svx * svx + svy * svy + svz * svz) * 180          -- km/h
     local fwdSpeed = (svx * fx + svy * fy) * 180                        -- km/h, < 0 = rolling backwards
     local tspeed = sqrt(tvx * tvx + tvy * tvy) * 180
+    st.base = st.base or getElementDistanceFromCentreOfMassToBaseOfModel(veh) or 0.6
+    lowDz = min(-0.05, 0.35 - st.base)
 
     local flee = o.m == "flee"
     -- a fleeing car that cannot go on: the driver bails out (reported once)
@@ -185,16 +214,23 @@ local function steer(veh, ped, o, st, now)
     -- away from it, without one straight away from it)
     local direct = not flee and dist < 45 and not processLineOfSight(vx, vy, vz + 0.8, tx, ty, tz + 0.8, true, false,
         false, true, false, false, false, false, veh)
-    local ax, ay, turn
+    local ax, ay, turn, off
     if not direct then
-        ax, ay, turn = pathAim(st, vx, vy, 7 + speed / 3.6 * 0.7, 30 + speed / 3.6 * 1.5, now)
+        -- a runner keeps to the lane: shorter look-ahead (no corner cutting over the pavement), and it finds its way
+        -- back to the road from farther off
+        local look = flee and 5 + speed / 3.6 * 0.45 or 7 + speed / 3.6 * 0.7
+        ax, ay, turn, off = pathAim(st, vx, vy, look, 30 + speed / 3.6 * 1.5, now, flee and 45 or 22)
     end
     if not ax and flee then
+        -- no road path yet (the server sends one within a second): on along the own heading, only slightly away
+        -- from the pursuer - never sideways across the pavement
         local ox, oy = vx - tx, vy - ty
         local ol = sqrt(ox * ox + oy * oy)
         if ol < 1 then ox, oy, ol = fx, fy, 1 end
-        ax, ay, turn = vx + ox / ol * 40, vy + oy / ol * 40, 0
+        local hx, hy = fx * 0.8 + ox / ol * 0.2, fy * 0.8 + oy / ol * 0.2
+        ax, ay, turn = vx + hx * 40, vy + hy * 40, 0
     end
+    off = off or 0
     if not ax then
         ax, ay = aimPoint(o, vx, vy, tx, ty, tvx, tvy, tfx, tfy, dist)
         turn = 0
@@ -267,6 +303,14 @@ local function steer(veh, ped, o, st, now)
     local trafficCap
     local tprobe = 7 + max(0, fwdSpeed) / 3.6 * 1.1
     local side, car = trafficSide(veh, bx, by, bz, fx, fy, tprobe, tgt)
+    -- a runner passes only on the carriageway: left up to about one lane over (the next / oncoming lane), right only
+    -- while still near its lane centre - never onto the kerb, pavement and the street furniture there
+    if flee and side and side ~= 0 then
+        if (side > 0 and off > 4.5) or (side < 0 and off < -1.2) then
+            side, car = 0, vehicleAhead(veh, bx, by, bz, fx, fy, tprobe, tgt) or car
+        end
+    end
+    if side == 0 and not car then side = nil end
     if side and side ~= 0 then
         -- keep the side for a moment (no zig-zag between two free sides)
         if st.passSide and now < (st.passUntil or 0) and side ~= st.passSide then
@@ -282,10 +326,11 @@ local function steer(veh, ped, o, st, now)
         local cvx, cvy = getElementVelocity(car)
         trafficCap = max(15, sqrt(cvx * cvx + cvy * cvy) * 180 - 5)
         st.hornUntil = now + 400
-        -- a runner squeezes past on the side with fewer walls (kerb / pavement) instead of queueing
-        if flee then
-            avoid = avoid + ((leftHit and not rightHit) and -0.5 or 0.5)
-            trafficCap = max(trafficCap, 30)
+        -- a runner squeezes past on the left (into the next lane) while there is room on the carriageway, never
+        -- over the pavement; otherwise it stays behind with the horn
+        if flee and off < 3.5 and not leftHit then
+            avoid = avoid + 0.35
+            trafficCap = max(trafficCap, 25)
         end
     end
     setPedControlState(ped, "horn", st.hornUntil ~= nil and now < st.hornUntil)
