@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="MySQL Core" type="script" version="2.0.0" />
-    <download_priority_group>1000</download_priority_group>
+    <download_priority_group>2000</download_priority_group>
 
     <!-- Credentials + connection wrapper, then the account-data store. -->
     <script src="config.lua"            type="server" />

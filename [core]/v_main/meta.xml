@@ -30,6 +30,8 @@
 
     <script src="locals.lua" type="server" />
     <script src="server.lua" type="server" />
+    <!-- Hand-maintained start order + client download-order audit -->
+    <script src="dependencies.lua" type="server" />
     <script src="loadResources.lua" type="server" />
 
     <!-- Privileged console commands: server console or admin_level >= 5 -->

@@ -1,6 +1,7 @@
 <meta>
     <info author="DrAndrew112" name="gov_core" version="1.0.0" type="script"
           description="The state, foundation of the gov_* resources: settings (owned per module), permission checks (gov_perms), change log, state companies, the /gov panel shell (grouped menu, pages of the modules), the module helper lib (importLib)" />
+    <download_priority_group>201</download_priority_group>
 
     <include resource="v_locals" />
     <include resource="v_mysql" />

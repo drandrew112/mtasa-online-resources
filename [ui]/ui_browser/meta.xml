@@ -1,6 +1,6 @@
 <meta>
     <info author="DrAndrew112" name="ui_browser" type="script" version="1.2.0" />
-    <download_priority_group>997</download_priority_group>
+    <download_priority_group>201</download_priority_group>
 
     <include resource="v_locals" />
     <include resource="ui_core" />

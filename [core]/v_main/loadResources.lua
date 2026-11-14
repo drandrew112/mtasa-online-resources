@@ -75,6 +75,12 @@ local function buildOrder()
                 log("WARNING: '" .. name .. "' includes a missing resource: " .. dep)
             end
         end
+        -- Hand-maintained start order (dependencies.lua) on top of the includes.
+        for _, dep in ipairs((RESOURCE_DEPENDENCIES or {})[name] or {}) do
+            if resources[dep] and dep ~= name then
+                list[#list + 1] = dep
+            end
+        end
         deps[name] = list
     end
 
@@ -119,6 +125,10 @@ end
 
 local function startAll()
     log("Resource loading started...")
+
+    if type(auditClientOrder) == "function" then
+        auditClientOrder()
+    end
 
     local resources, order = buildOrder()
     log(("Dependency order ready: %d resources in the list."):format(#order))
