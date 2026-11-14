@@ -38,6 +38,8 @@
 
     <!-- dispatcher console - forwarded to med_erm (server/api.lua), first arg = session token -->
     <export function="ermLogin"       type="server" http="true" />
+    <!-- FreeV VoiceClient: ermDispatcherCheck(code) -> { ok, name, display } (no session) -->
+    <export function="ermDispatcherCheck" type="server" http="true" />
     <export function="ermLogout"      type="server" http="true" />
     <export function="ermGetState"    type="server" http="true" />
     <export function="ermSetPriority" type="server" http="true" />

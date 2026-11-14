@@ -30,6 +30,8 @@ for _, fn in ipairs({
     "ermTabletLeaveCase", "ermTabletCloseCase", "ermTabletSendMessage", "ermTabletEndShift",
     -- ERM admin (web/admin.html)
     "ermAdminLogin", "ermAdminLogout", "ermAdminQuery", "ermAdminAuto", "ermAdminAutoSet",
+    -- FreeV VoiceClient: dispatcher code check (no session)
+    "ermDispatcherCheck",
 }) do
     _G[fn] = forward(fn)
 end
