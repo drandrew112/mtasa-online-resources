@@ -253,7 +253,9 @@ local function makeResult(c, o, extra)
         local snap = medsys() and medsys():getMedicalState(c.ped) or {}
         r.image = ECG_IMAGE[snap.rhythm or "SINUS"] or "sinus"
         r.rhythm = snap.rhythm
-        r.spec = medsys() and medsys():getECGSpec(c.ped, extra) or false
+        -- a Lifepak 12-lead (medsys onMedicalECG12) brings its own spec: the curves the medic saw
+        r.spec = (extra and type(extra.spec) == "table" and extra.spec) or (medsys() and medsys():getECGSpec(c.ped, extra)) or false
+        r.via = extra and extra.via or nil
         r.positive = r.image ~= "sinus" or (r.spec and r.spec.stemi) and true or false
         for _, x in ipairs(ER.findings(c)) do
             local d = ERC.FINDINGS[x.id]
@@ -349,6 +351,7 @@ function ER.order(c, player, key, side)
     c.orders[#c.orders + 1] = ord
     ER.log(c, "order", key .. (side and (" " .. side) or ""), player)
     ER.syncCase(c)
+    if o.kind == "ecg" and ER.lifepakEcgFor then ER.lifepakEcgFor(c, ord, player) end
     return ord
 end
 
@@ -382,6 +385,43 @@ local function finishOrder(c, ord, player, extra)
 end
 
 ER.finishOrder = finishOrder
+
+---------------------------------------------------------------- 12-lead ECG from the Lifepak (medsys)
+
+-- The ordered 12-lead ECG may be recorded on the Lifepak at the bedside too (12-LEAD button, mg_ecg
+-- electrode minigame): it completes the open order with the same curves. Points only for the staff.
+local LIFEPAK_ECG_MAX_AGE = 600   -- s: a Lifepak 12-lead this fresh (taken in this ER case) answers a new order
+
+local function ecgOrderFromLifepak(c, ord, medic, spec)
+    ord.performer = isElement(medic) and (getElementData(medic, "displayName") or getPlayerName(medic)) or ord.performer
+    ord.via = "lifepak"
+    local staff = isElement(medic) and ER.isStaff(medic, c.hospital) and medic or nil
+    finishOrder(c, ord, staff, { spec = spec, via = "lifepak", swapRALA = spec.swapRALA, wrongV = spec.wrongV })
+end
+
+addEvent("onMedicalECG12")
+addEventHandler("onMedicalECG12", root, function(medic, spec)
+    local c = ER.cases[source]
+    if not c or type(spec) ~= "table" then return end
+    for _, ord in ipairs(c.orders or {}) do
+        if ord.kind == "ecg" and ord.status == "ordered" then
+            ecgOrderFromLifepak(c, ord, medic, spec)
+            if isElement(medic) then ER.notify(medic, L.forPlayer(medic, "med_hospitals.erc.ecg_lifepak_accepted")) end
+            return
+        end
+    end
+end)
+
+-- a new 12-lead ECG order: a fresh Lifepak 12-lead of this ER case answers it at once
+function ER.lifepakEcgFor(c, ord, player)
+    local last = isElement(c.ped) and getElementData(c.ped, "ecg.last12")
+    if type(last) ~= "table" or type(last.spec) ~= "table" then return false end
+    local now = getRealTime().timestamp
+    if (tonumber(last.at) or 0) < (c.created or now) or now - (tonumber(last.at) or 0) > LIFEPAK_ECG_MAX_AGE then return false end
+    ecgOrderFromLifepak(c, ord, nil, last.spec)
+    if isElement(player) then ER.notify(player, L.forPlayer(player, "med_hospitals.erc.ecg_lifepak_used")) end
+    return true
+end
 
 ---------------------------------------------------------------- CT: one patient at a time, a queue, the table slides into the gantry
 
@@ -782,6 +822,14 @@ local function detail(c, viewer)
     s.gcs, s.nrs, s.temperature, s.nihss = c.gcs, c.nrs, c.temperature, c.nihssLast
     s.allergy = c.allergy or false
     s.drugOrders = c.drugOrders or {}
+    -- the medicines in the patient's body now (medsys doses, the EMS ones too): Drugs tab
+    s.activeDrugs = {}
+    if not (snap.dead or c.dead) then
+        for _, d in ipairs(snap.drugs or {}) do
+            s.activeDrugs[#s.activeDrugs + 1] = { id = d.id, name = d.name, dose = d.dose, timeLeft = d.timeLeft or 0,
+                total = d.total, givenAt = d.givenAt, by = d.by, ems = d.byWork == "ems" }
+        end
+    end
     s.surgeryOptions = ER.surgeryOptions and ER.surgeryOptions(c) or {}
     s.icu = ER.icuView and ER.icuView(c) or false
     s.texts = { anamnesis = s.anamnesis, status = c.statusText or "", epicrisis = c.epicrisis or "" }

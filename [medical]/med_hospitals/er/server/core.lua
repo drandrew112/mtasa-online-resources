@@ -269,10 +269,10 @@ addEventHandler("onMedicalTreatment", root, function(medic, action, success, opt
         if o.drug == option and o.status == "ordered" then
             o.status, o.givenBy, o.givenAt, o.givenDose = "done", isElement(medic) and (getElementData(medic, "displayName") or getPlayerName(medic)) or "", getRealTime().timestamp, dose
             ER.log(c, "drug_given", tostring(option) .. (dose and (" " .. tostring(dose)) or ""), medic)
-            ER.syncCase(c)
             break
         end
     end
+    ER.syncCase(c)   -- the Drugs tab lists the medicines in the body: refresh it after every dose
 end)
 
 ---------------------------------------------------------------- stretchers and spots

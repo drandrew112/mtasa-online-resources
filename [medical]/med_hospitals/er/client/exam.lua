@@ -538,14 +538,60 @@ local function drugDose(d, opt)
     return ("%s %s%s"):format(tostring(opt.dose), d.dosing.unit, d.dosing.perKg and "/kg" or "")
 end
 
+-- the medicines in the patient's body now (medsys doses, the EMS ones too), under the drug list:
+-- name + dose, who gave it (EMS marked) and when, the time left of its effect
+local function drawActiveDrugs(c, x, y, w, h)
+    local passed = (getTickCount() - (HIS.caseTick or getTickCount())) / 1000
+    local list = {}
+    for _, d in ipairs(c.activeDrugs or {}) do
+        local left = (d.timeLeft or 0) - passed
+        if left > 0 then list[#list + 1] = { d = d, left = left } end
+    end
+    HGfx.round(x, y, w, h, s(6), T.panel)
+    HGfx.text(t("active_drugs"), x + s(10), y + s(4), w - s(20), s(18), T.faint, HGfx.font(8, true))
+    if #list == 0 then
+        return HGfx.text(t("active_drugs_none"), x + s(10), y + s(24), w - s(20), s(18), T.dim, HGfx.font(9))
+    end
+    local colW = (w - s(28)) / 2
+    local rowH = s(22)
+    local rows = math.max(1, math.floor((h - s(28)) / rowH))
+    for i = 1, math.min(#list, rows * 2) do
+        local e, d = list[i], list[i].d
+        local col, row = (i - 1) % 2, math.floor((i - 1) / 2)
+        local rx, ry = x + s(10) + col * (colW + s(8)), y + s(24) + row * rowH
+        local left = math.ceil(e.left)
+        local timeText = ("%d:%02d"):format(math.floor(left / 60), left % 60)
+        local tw = s(44)
+        HGfx.text(timeText, rx + colW - tw, ry, tw, rowH, left < 60 and tocolor(255, 170, 90) or T.dim, HGfx.font(8, true), "right")
+        local tagW = 0
+        if d.ems then
+            tagW = s(34)
+            HGfx.round(rx, ry + s(3), tagW - s(4), rowH - s(6), s(3), tocolor(170, 40, 40))
+            HGfx.text(t("active_drugs_ems"), rx, ry, tagW - s(4), rowH, T.text, HGfx.font(7, true), "center")
+        end
+        local name = d.dose and (d.name .. " " .. d.dose) or d.name
+        local who = d.by and (d.by .. (d.givenAt and (" · " .. HIS.hhmm(d.givenAt)) or "")) or (d.givenAt and HIS.hhmm(d.givenAt) or "")
+        local line = who ~= "" and (name .. "  ·  " .. who) or name
+        HGfx.text(HGfx.fit(line, colW - tw - tagW - s(6), HGfx.font(8)), rx + tagW, ry, colW - tw - tagW - s(6), rowH, T.text, HGfx.font(8))
+    end
+    if #list > rows * 2 then
+        HGfx.text(t("active_drugs_more", { n = #list - rows * 2 }), x + s(10), y + h - s(18), w - s(20), s(16), T.faint, HGfx.font(8), "right")
+    end
+end
+
 local function drawDrugs(c, x, y, w, h)
     local drugs = HIS.drugs or {}
     local listW = w * 0.62
     local colW = (listW - s(8)) / 2
     local rowH = s(44)
-    local visible = math.floor(h / rowH) * 2
+    -- the bottom of the left side: the medicines in the body now
+    local nActive = #(c.activeDrugs or {})
+    local activeH = math.min(h * 0.4, s(32) + math.max(1, math.ceil(nActive / 2)) * s(22))
+    drawActiveDrugs(c, x, y + h - activeH, listW, activeH)
+    local listH = h - activeH - s(8)
+    local visible = math.floor(listH / rowH) * 2
     local off = HGfx.getScroll("drugs", math.ceil((#drugs - visible) / 2)) * 2
-    HGfx.scrollArea("drugs", x, y, listW, h)
+    HGfx.scrollArea("drugs", x, y, listW, listH)
     for i = 1, math.min(visible, #drugs - off) do
         local d = drugs[i + off]
         local col, row = (i - 1) % 2, math.floor((i - 1) / 2)

@@ -130,6 +130,7 @@ addEventHandler("his:list", resourceRoot, function(list, board) HIS.list, HIS.bo
 addEvent("his:case", true)
 addEventHandler("his:case", resourceRoot, function(c)
     HIS.case = c or nil
+    HIS.caseTick = getTickCount()   -- the countdowns of the case (active drugs) run from here
     if not c then HIS.caseId = nil end
     if EXAM and EXAM.onCase then EXAM.onCase(c) end
 end)

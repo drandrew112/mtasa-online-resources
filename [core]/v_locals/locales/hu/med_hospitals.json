@@ -1082,5 +1082,11 @@
   "med_hospitals.bar.bedside_only": "Beavatkozás csak a betegágynál",
   "med_hospitals.bar.connecting": "Kapcsolódás a beteghez…",
   "med_hospitals.bar.patient_dead": "A beteg elhunyt",
-  "med_hospitals.his.pc_status_cases": "{n|int} lezárt eset"
+  "med_hospitals.his.pc_status_cases": "{n|int} lezárt eset",
+  "med_hospitals.erc.ecg_lifepak_accepted": "A Lifepak 12 elvezetéses EKG-ja teljesítette az EKG-kérést.",
+  "med_hospitals.erc.ecg_lifepak_used": "A beteg friss Lifepak 12 elvezetéses EKG-ja teljesítette a kérést.",
+  "med_hospitals.his.active_drugs": "Jelenleg a beteg szervezetében",
+  "med_hospitals.his.active_drugs_none": "Nincs hatásban lévő gyógyszer.",
+  "med_hospitals.his.active_drugs_ems": "MENTŐ",
+  "med_hospitals.his.active_drugs_more": "+{n|int} további"
 }

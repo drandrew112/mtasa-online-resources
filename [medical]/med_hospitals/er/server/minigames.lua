@@ -58,7 +58,7 @@ end
 
 addEventHandler("onPlayerQuit", root, function() sessions[source] = nil end)
 
--- 12-lead ECG electrode guide (mg_ecg options.guide): for Nurses and Residents, not from Physician up
+-- 12-lead ECG electrode guide (mg_ecg options.guide): mg_ecg shows it to everyone since 2026-11-13 (ignored)
 function ER.ecgGuide(player)
     if not ER.running("work_core") then return true end
     local ok, has = pcall(function() return exports.work_core:hasCompetency(player, "hospital", "physician") end)

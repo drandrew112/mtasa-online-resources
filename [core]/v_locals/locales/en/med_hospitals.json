@@ -1082,5 +1082,11 @@
   "med_hospitals.bar.bedside_only": "Interventions only at the bedside",
   "med_hospitals.bar.connecting": "Connecting to the patient…",
   "med_hospitals.bar.patient_dead": "The patient is dead",
-  "med_hospitals.his.pc_status_cases": "{n|int} closed cases"
+  "med_hospitals.his.pc_status_cases": "{n|int} closed cases",
+  "med_hospitals.erc.ecg_lifepak_accepted": "The 12-lead ECG from the Lifepak completed the ECG order.",
+  "med_hospitals.erc.ecg_lifepak_used": "A fresh Lifepak 12-lead ECG of this patient completed the order.",
+  "med_hospitals.his.active_drugs": "In the patient's body now",
+  "med_hospitals.his.active_drugs_none": "No active medicine.",
+  "med_hospitals.his.active_drugs_ems": "EMS",
+  "med_hospitals.his.active_drugs_more": "+{n|int} more"
 }

@@ -41,7 +41,13 @@ Related: `med_equipments/stretcher/server/hospital.lua` (hospital stretchers + f
 - Walk-in handover (`ER.walkInHandover`, outcome.lua): pushing the patient into a ward / ICU / OR / morgue marker,
   3 s countdown on the marker card, then `med_equipments:releaseHospitalStretcher` and the handover. Putting the
   stretcher down still works.
-- 12-lead ECG (mg_ecg): bigger electrodes, `options.guide` for Nurses / Residents (`ER.ecgGuide`).
+- 12-lead ECG (mg_ecg): bigger electrodes; since 2026-11-13 the guide is on for everyone and the time is 180 s
+  (`ER.ecgGuide` is no longer used by mg_ecg). The ordered 12-lead ECG is also completed by a Lifepak 12-LEAD
+  recording at the bedside (medsys `onMedicalECG12`, his.lua: same spec, points only for staff), or at order
+  time by a Lifepak 12-lead of this case not older than 10 min (`ER.lifepakEcgFor`).
+- Drugs tab: "In the patient's body now" under the drug list: every active medsys dose (EMS ones marked
+  MENTŐ / EMS) with dose, who gave it and when, and the time left of its effect (case detail `activeDrugs`;
+  every given dose refreshes the case).
 
 ## Oxygen
 `server/oxygen.lua`: wall oxygen (shock room, ICU, ward beds) is unlimited and refills the stretcher tank (empty to full in 90 s). Elsewhere the patient breathes from the tank of the hospital stretcher (element data `er.o2`, 20 min of mask time); empty = mask off / tube without effect (medsys noOxygen) until a wall-oxygen room. medsys sees the level as `stock.oxygen` (stock.lua getHospitalEquipment).
