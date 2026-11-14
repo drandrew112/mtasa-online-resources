@@ -336,6 +336,8 @@ blipTooltips = {
 	["blips/markblip.png"] = L("v_radar.objectives.waypoint"),
 	["blips/waypoint.png"] = L("v_radar.objectives.waypoint"),
 	["blips/objective.png"] = L("v_radar.objectives.objective"),
+	["blips/red_circle.png"] = "",
+	["blips/orange_circle.png"] = "",
 	["blips/north.png"] = L("v_radar.sourcec.north"),
 }
 end
@@ -413,6 +415,13 @@ function getIconTexture(path)
 	return tex
 end
 
+-- Custom icon of a blip: element data "radarIcon" = file name in radar/files/blips without ".png"
+-- (e.g. "red_circle", "orange_circle"). A GTA blip only knows ids 0-63, so scripts set this on the blip;
+-- it is drawn white (no tint). Without it the normal GTA icon id is used.
+function getRadarBlipIcon(blip)
+	return getElementData(blip, "radarIcon") or getBlipIcon(blip)
+end
+
 -- "blips/<n>.png" strings per GTA blip icon id, built once
 local blipIconPath = setmetatable({}, { __index = function(t, ico)
 	local s = "blips/" .. tostring(ico) .. ".png"
@@ -446,6 +455,7 @@ function refreshRadarLists(now)
 		local e = cachedBlips[i]
 		if not e then e = {}; cachedBlips[i] = e end
 		e.el, e.farVis = b, getElementData(b, "isFarVisibility") and true or false
+		e.custom = getElementData(b, "radarIcon") or false
 	end
 	for i = #blips + 1, #cachedBlips do cachedBlips[i] = nil end
 
@@ -801,7 +811,7 @@ function renderMinimap(x, y, w, h)
 					local blipPosX, blipPosY = getElementPosition(blip)
 					local blipSize = getBlipSize(blip)*12
 
-					renderBlip(blipIconPath[getBlipIcon(blip)], blipPosX, blipPosY, remapPlayerPosX, remapPlayerPosY, blipSize, blipSize, blipTint(blip), cameraRotation, entry.farVis, tableId)
+					renderBlip(blipIconPath[entry.custom or getBlipIcon(blip)], blipPosX, blipPosY, remapPlayerPosX, remapPlayerPosY, blipSize, blipSize, entry.custom and 0xFFFFFFFF or blipTint(blip), cameraRotation, entry.farVis, tableId)
 
 					defaultBlipsCount = defaultBlipsCount + 1
 				end
@@ -1105,7 +1115,7 @@ function renderTheBigmap()
 				local blipPosX, blipPosY = getElementPosition(v)
 				local blipSize = getBlipSize(v)*16
 
-				renderBigBlip("blips/"..getBlipIcon(v)..".png", blipPosX, blipPosY, mapPlayerPosX, mapPlayerPosY, 9999, blipSize, blipSize, blipTint(v), v, k)
+				renderBigBlip("blips/"..getRadarBlipIcon(v)..".png", blipPosX, blipPosY, mapPlayerPosX, mapPlayerPosY, 9999, blipSize, blipSize, blipTint(v), v, k)
 			end
 		end
 
@@ -1330,7 +1340,7 @@ addEventHandler("onClientRestore", getRootElement(),
 
 -- icon 0 (the plain square) takes the blip's own colour (police units, race checkpoints...); the other icons stay white
 function blipTint(blip)
-	if getBlipIcon(blip) == 0 then
+	if getBlipIcon(blip) == 0 and not getElementData(blip, "radarIcon") then
 		local r, g, b, a = getBlipColor(blip)
 		return tocolor(r, g, b, a)
 	end
@@ -1517,7 +1527,7 @@ function render3DBlips()
 					if getDistanceBetweenPoints3D(playerPosX,playerPosY,playerPosZ, blipPosX,blipPosY,blipPosZ) <= blipDist then
 						if screenX and screenY then
 							local distanceBetweenBlip = getDistanceBetweenPoints3D(playerPosX, playerPosY, playerPosZ, blipPosX, blipPosY, blipPosZ)
-							local blipIcon = getBlipIcon(blipTable[i])
+							local blipIcon = getRadarBlipIcon(blipTable[i])
 
 							dxDrawText(L("v_radar.sourcec.m", { distance_between_blip = floor(distanceBetweenBlip), i = (getBlipName(blipTable[i]) or "") }), screenX + 1, screenY + 1 + 7.5 + respc(4), screenX, 0, tocolor(0, 0, 0, 255), 0.75, getFont("Roboto"), "center", "top")
 							dxDrawText(L("v_radar.sourcec.m_2", { distance_between_blip = floor(distanceBetweenBlip), i = (getBlipName(blipTable[i]) or "") }), screenX, screenY + 7.5 + respc(4), screenX, 0, 0xFFFFFFFF, 0.75, getFont("Roboto"), "center", "top", false, false, false, true)
@@ -1843,7 +1853,7 @@ function buildBigmapBlipMenu()
 	for _, v in ipairs(getElementsByType("blip")) do
 		if getElementAttachedTo(v) ~= localPlayer then
 			local x, y = getElementPosition(v)
-			add("blips/" .. getBlipIcon(v) .. ".png", x, y, getBlipName(v))
+			add("blips/" .. getRadarBlipIcon(v) .. ".png", x, y, getBlipName(v))
 		end
 	end
 
@@ -1971,7 +1981,7 @@ function renderPausePreview(px, py, pw, ph)
 			local wx, wy = getElementPosition(v)
 			local bx, by = toScreen(wx, wy)
 			if bx >= px and bx <= px + pw and by >= py and by <= py + ph then
-				dxDrawImage(bx - 9, by - 9, 18, 18, "radar/files/blips/" .. getBlipIcon(v) .. ".png")
+				dxDrawImage(bx - 9, by - 9, 18, 18, "radar/files/blips/" .. getRadarBlipIcon(v) .. ".png")
 			end
 		end
 	end

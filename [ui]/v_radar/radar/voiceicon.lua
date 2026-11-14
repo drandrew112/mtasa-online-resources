@@ -44,10 +44,12 @@ function renderVoiceIcon(mx, my, mw, mh)
 	renderRadioInfo(x + box, y, box)
 end
 
------------------------------------------------------------------------- radio (v_voice radio module)
--- Right of the mic: the radio channel while we are on a frequency ("CH 104"), blue while anybody
--- talks on it (us or someone else). Further right: the other speaker's name and unit
--- (police / EMS unit from the v_voice agency watcher), kept a moment after the transmission.
+------------------------------------------------------------------------ radio (v_voiceclient_connector)
+-- Right of the mic: the radio channel while we are on a frequency ("CH 140"), blue while anybody
+-- talks on it (us or someone else). Further right: the other speaker's name and unit (police / EMS
+-- unit, nothing for a dispatcher: "Dispatcher DrAndres"), kept a moment after the transmission.
+-- The radio audio runs on the FreeV VoiceServer; v_voiceclient_connector gives the state.
+local RADIO_RESOURCE = "v_voiceclient_connector"
 
 local RADIO_POLL_MS = 100
 local RADIO_IDLE = { 220, 220, 220 }
@@ -62,15 +64,16 @@ local radioLast = getTickCount()
 local function pollRadio(now)
 	if now < radioNext then return end
 	radioNext = now + RADIO_POLL_MS
-	local res = getResourceFromName("v_voice")
+	local res = getResourceFromName(RADIO_RESOURCE)
 	if not res or getResourceState(res) ~= "running" then
 		radio.freq, radio.state, radio.speaker = false, "off", false
 		return
 	end
 	local ok = pcall(function()
-		radio.freq = exports.v_voice:getRadioFrequency()
-		radio.state = radio.freq and exports.v_voice:getRadioState() or "off"
-		radio.speaker = radio.freq and exports.v_voice:getRadioSpeaker() or false
+		local api = exports[RADIO_RESOURCE]
+		radio.freq = api:getRadioFrequency()
+		radio.state = radio.freq and api:getRadioState() or "off"
+		radio.speaker = radio.freq and api:getRadioSpeaker() or false
 	end)
 	if not ok then radio.freq, radio.state, radio.speaker = false, "off", false end
 end

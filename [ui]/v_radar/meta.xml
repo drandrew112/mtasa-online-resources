@@ -91,6 +91,8 @@
     <file src="radar/files/blips/64.png" type="client" />
     <file src="radar/files/blips/waypoint.png" type="client" />
     <file src="radar/files/blips/objective.png" type="client" />
+    <file src="radar/files/blips/red_circle.png" type="client" />
+    <file src="radar/files/blips/orange_circle.png" type="client" />
 
     <file src="radar/files/cross.png" type="client" />
     <file src="radar/files/route_ribbon.png" type="client" />
