@@ -8,6 +8,7 @@
 --   "enabled": true,                  false = never active (work in progress)
 --   "spin": true,                     the objects turn slowly
 --   "reward": 2000,                   money (euro, cash) for every item picked up (default COLLECT.DEFAULT_REWARD, 0 = none)
+--   "sound": "gta6.mp3",              quiet loop near the nearest uncollected item (file in sounds/, listed in meta.xml; "" = none)
 --   "nextId": 3,                      next item id (ids are never reused, the collected state refers to them)
 --   "items": [ { "id": 1, "model": 1276, "x": 0, "y": 0, "z": 3, "rx": 0, "ry": 0, "rz": 0, "int": 0, "dim": 0 }, ... ]
 -- }
@@ -16,6 +17,9 @@
 
 Lists = {}          -- [id] = list (sanitized, items + byId)
 ListOrder = {}      -- ids, sorted by name
+SoundFiles = {}     -- file names of sounds/ listed as <file> in meta.xml (only these reach the clients), sorted
+
+local SOUND_EXT = { mp3 = true, ogg = true, wav = true, flac = true }
 
 local function log(text) outputServerLog("[v_collectibles] " .. text) end
 
@@ -59,6 +63,39 @@ function cleanName(name, fallback)
     return name
 end
 
+--- "" or a plain file name with a sound extension (no path)
+function cleanSound(s)
+    if type(s) ~= "string" or s == "" or #s > COLLECT.SOUND_MAX or not s:match("^[%w_%-%.]+$") then return "" end
+    local ext = s:match("%.(%w+)$")
+    return (ext and SOUND_EXT[ext:lower()]) and s or ""
+end
+
+function isSoundFile(s)
+    for _, f in ipairs(SoundFiles) do
+        if f == s then return true end
+    end
+    return false
+end
+
+--- SoundFiles from the <file src="sounds/..."> entries of meta.xml
+function loadSoundFiles()
+    SoundFiles = {}
+    local xml = xmlLoadFile("meta.xml", true)
+    if not xml then return end
+    local prefix = COLLECT.SOUND_FOLDER
+    for _, node in ipairs(xmlNodeGetChildren(xml)) do
+        if xmlNodeGetName(node) == "file" then
+            local src = tostring(xmlNodeGetAttribute(node, "src") or ""):gsub("\\", "/")
+            if src:sub(1, #prefix) == prefix then
+                local name = cleanSound(src:sub(#prefix + 1))
+                if name ~= "" and fileExists(prefix .. name) then SoundFiles[#SoundFiles + 1] = name end
+            end
+        end
+    end
+    xmlUnloadFile(xml)
+    table.sort(SoundFiles, function(a, b) return a:lower() < b:lower() end)
+end
+
 --- validated copy of a decoded list (also used for hand-edited files)
 function sanitizeList(id, t)
     t = type(t) == "table" and t or {}
@@ -68,6 +105,7 @@ function sanitizeList(id, t)
         event = t.event == true,
         enabled = t.enabled ~= false,
         spin = t.spin == true,
+        sound = cleanSound(t.sound),
         reward = math.max(0, math.min(COLLECT.MAX_REWARD, math.floor(num(t.reward, COLLECT.DEFAULT_REWARD)))),
         models = {},
         items = {},
@@ -110,7 +148,7 @@ local function serialize(list)
     return (toJSON({
         id = list.id, name = list.name, models = list.models,
         event = list.event, enabled = list.enabled, spin = list.spin,
-        reward = list.reward, nextId = list.nextId, items = items,
+        reward = list.reward, sound = list.sound, nextId = list.nextId, items = items,
     }, false, "spaces"):sub(2, -2))   -- toJSON wraps the value in [ ]
 end
 
@@ -149,6 +187,7 @@ end
 
 --- (re)loads every list file
 function loadAllLists()
+    loadSoundFiles()
     Lists = {}
     for _, id in ipairs(listFileIds()) do
         local text = readFile(COLLECT.FOLDER .. id .. ".json")
@@ -156,6 +195,10 @@ function loadAllLists()
             local t = fromJSON(text)
             if type(t) == "table" then
                 Lists[id] = sanitizeList(id, t)
+                local snd = Lists[id].sound
+                if snd ~= "" and not isSoundFile(snd) then
+                    log(("list %s: sound %s is missing from sounds/ or meta.xml"):format(id, snd))
+                end
             else
                 log("list " .. id .. ".json is not valid JSON, skipped")
             end

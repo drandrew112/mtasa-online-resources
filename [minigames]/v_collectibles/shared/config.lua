@@ -9,6 +9,14 @@ COLLECT = {
     PICKUP_MS     = 150,        -- client: pickup distance check interval
     SPIN_SPEED    = 90,         -- degrees / second for lists with "spin": true
 
+    SOUND_FOLDER  = "sounds/",  -- list header "sound": file name in this folder (must be a <file> in meta.xml)
+    SOUND_RANGE   = 20,         -- client: the loop of the nearest uncollected item is audible closer than this (3D)
+    SOUND_FULL    = 2,          -- ... at full (SOUND_VOLUME) volume closer than this, fading out towards SOUND_RANGE
+    SOUND_VOLUME  = 0.08,       -- very quiet on purpose
+    SOUND_MS      = 300,        -- client: nearest item check interval
+    SOUND_PREVIEW_MS = 6000,    -- editor: length of the sound preview
+    SOUND_MAX     = 64,         -- max file name length
+
     FOLDER        = "data/lists/",      -- one <id>.json per list
     INDEX         = "data/index.json",  -- list ids (fallback when pathListDir is missing)
 

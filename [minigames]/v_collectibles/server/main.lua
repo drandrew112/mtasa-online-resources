@@ -60,6 +60,7 @@ function syncPlayer(player)
             end
             out[#out + 1] = {
                 id = id, name = list.name, event = list.event, spin = list.spin,
+                sound = isSoundFile(list.sound) and list.sound or "",
                 total = #list.items, found = foundCount(player, list), items = items,
             }
         end

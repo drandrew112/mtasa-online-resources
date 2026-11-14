@@ -20,6 +20,11 @@
     <script src="client/main.lua" type="client" />
     <script src="client/editor.lua" type="client" />
 
+    <!-- proximity loop sounds (list header "sound"): every file of sounds/ must be listed here,
+         the editor offers exactly these -->
+    <file src="sounds/christmas_bell.mp3" />
+    <file src="sounds/gta6.mp3" />
+
     <!-- events_core: setEventListEnabled(listId, on) -> bool (false = unknown list / "event": true missing)
          isEventListEnabled(listId) -> bool -->
     <export function="setEventListEnabled" type="server" />

@@ -16,6 +16,7 @@ has no `pathListDir`). The header says which object models the items may use:
     "enabled": true,
     "spin": true,
     "reward": 2000,
+    "sound": "gta6.mp3",
     "nextId": 3,
     "items": [
         { "id": 1, "model": 1276, "x": 2495.1, "y": -1687.4, "z": 13.9, "rx": 0, "ry": 0, "rz": 90, "int": 0, "dim": 0 }
@@ -25,6 +26,7 @@ has no `pathListDir`). The header says which object models the items may use:
 
 - `event: true` = the list is only active while an events_core event switches it on (see below).
 - `reward` = cash (euro) for every picked-up item of the list, default 2000, 0 = none. Set per list in the editor (R > Reward), which also shows the total money available with the current item count (reward x items; also in the hint bar).
+- `sound` = file name in `sounds/` (must also be a `<file>` in meta.xml), "" = none. A very quiet 3D loop plays at the nearest uncollected item of the list within `COLLECT.SOUND_RANGE` (20 m, volume `SOUND_VOLUME` 0.08, full volume within `SOUND_FULL`). Set in the editor (R > Sound): picking a file plays a short, louder preview; new sound files: copy to `sounds/` + add a `<file>` line to meta.xml.
 - `enabled: false` = nobody sees it (new lists start disabled, so a half-made list never reaches the players).
 - Item ids are never reused: the collected state refers to them. Deleted items no longer count in `found/total`.
 - Hand edits are fine; restart v_collectibles afterwards.

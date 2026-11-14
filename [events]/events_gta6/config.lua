@@ -14,5 +14,6 @@ EVENT_GTA6 = {
     -- v_collectibles list ids (data/lists/<id>.json made in /collecteditor with "Event list" on);
     -- they are only visible while the event runs, e.g. collectibles = { "gta6_dvds" }
     collectibles = {
+        "gta_6_release_event" -- GTA 6 release event collectible list (data/lists/gta_6_release_event.json)
     },
 }

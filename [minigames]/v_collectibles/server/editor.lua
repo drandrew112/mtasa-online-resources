@@ -24,6 +24,7 @@ end
 -- editor view of one list (with every item, collected or not)
 local function editorList(list)
     return { id = list.id, name = list.name, event = list.event, enabled = list.enabled, spin = list.spin, reward = list.reward,
+        sound = list.sound,
         models = list.models, items = list.items, active = isListActive(list.id), eventOn = isEventListEnabled(list.id) }
 end
 
@@ -37,7 +38,7 @@ function pushEditors()
     local data = editorData()
     for p in pairs(editors) do
         if isElement(p) then
-            triggerLatentClientEvent(p, "v_collectibles:editorData", 500000, false, resourceRoot, data)
+            triggerLatentClientEvent(p, "v_collectibles:editorData", 500000, false, resourceRoot, data, SoundFiles)
         else
             editors[p] = nil
         end
@@ -66,7 +67,7 @@ end
 
 local function setEditor(player, on)
     editors[player] = on or nil
-    triggerClientEvent(player, "v_collectibles:editorState", resourceRoot, on, on and editorData() or nil)
+    triggerClientEvent(player, "v_collectibles:editorState", resourceRoot, on, on and editorData() or nil, SoundFiles)
 end
 
 addCommandHandler("collecteditor", function(player)
@@ -118,6 +119,7 @@ addEventHandler("v_collectibles:editorDeleteList", resourceRoot, function(listId
 end)
 
 -- field: "name" (string) | "reward" (number) | "event" | "enabled" | "spin" (bool) | "addModel" | "removeModel" (model id)
+--        | "sound" (file name of SoundFiles, "" = none)
 addEvent("v_collectibles:editorSet", true)
 addEventHandler("v_collectibles:editorSet", resourceRoot, function(listId, field, value)
     if not editorCall(client) then return end
@@ -136,6 +138,13 @@ addEventHandler("v_collectibles:editorSet", resourceRoot, function(listId, field
         changed(list, client)
         return notify(client, "v_collectibles.editor.reward_set",
             { reward = money(list.reward), total = money(list.reward * #list.items), count = #list.items })
+    elseif field == "sound" then
+        local s = cleanSound(value)
+        if s ~= "" and not isSoundFile(s) then return notify(client, "v_collectibles.editor.bad_sound") end
+        list.sound = s
+        changed(list, client)
+        if s == "" then return notify(client, "v_collectibles.editor.sound_off") end
+        return notify(client, "v_collectibles.editor.sound_set", { sound = s })
     elseif field == "event" or field == "enabled" or field == "spin" then
         list[field] = value == true
     elseif field == "addModel" then

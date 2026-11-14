@@ -1,5 +1,5 @@
 -- /collecteditor client.
---   R   menu (ui_inac temp menu): pick / create list, header (name, models, event, enabled, spin), items, delete
+--   R   menu (ui_inac temp menu): pick / create list, header (name, models, sound, event, enabled, spin), items, delete
 --   F4  add an item to the current list: the cursor appears, the ghost object follows it on the world surface,
 --       wheel = next / previous model of the list header, Shift + wheel = rotate, left click = place
 --       (Ctrl + left click = place and keep placing), right click / Backspace / F4 = cancel
@@ -12,7 +12,9 @@ local sw, sh = guiGetScreenSize()
 
 Editor = {
     active = false,
-    lists = {},         -- from the server: { id, name, event, enabled, spin, models, items, active, eventOn }
+    lists = {},         -- from the server: { id, name, event, enabled, spin, sound, models, items, active, eventOn }
+    sounds = {},        -- file names of sounds/ (meta.xml) the "sound" header may use
+    preview = nil,      -- { sound, timer } sound preview
     current = nil,      -- current list id
     menuId = nil,
     ghosts = {},        -- [itemId] = object of the current list
@@ -40,6 +42,26 @@ local function currentList()
         if l.id == E.current then return l end
     end
     return nil
+end
+
+---------------------------------------------------------------------------- sound preview
+
+local function stopPreview()
+    local p = E.preview
+    if not p then return end
+    if isElement(p.sound) then destroyElement(p.sound) end
+    if isTimer(p.timer) then killTimer(p.timer) end
+    E.preview = nil
+end
+
+-- louder than in game (COLLECT.SOUND_VOLUME), only to recognise the file
+local function playPreview(file)
+    stopPreview()
+    if not file or file == "" then return end
+    local snd = playSound(COLLECT.SOUND_FOLDER .. file, true)
+    if not snd then return notify("v_collectibles.editor.bad_sound") end
+    setSoundVolume(snd, 0.5)
+    E.preview = { sound = snd, timer = setTimer(stopPreview, COLLECT.SOUND_PREVIEW_MS, 1) }
 end
 
 ---------------------------------------------------------------------------- ghosts (all items of the current list)
@@ -267,6 +289,25 @@ local function buildMenu()
             items = models,
         }
 
+        -- proximity loop sound
+        local snd = list.sound or ""
+        local sounds = {
+            { label = L("v_collectibles.editor.sound_none"), value = { "sound", "" }, checked = snd == "" },
+        }
+        for _, f in ipairs(E.sounds) do
+            sounds[#sounds + 1] = { label = f, desc = L("v_collectibles.editor.sound_pick_desc"), value = { "sound", f }, checked = f == snd }
+        end
+        if snd ~= "" then
+            sounds[#sounds + 1] = { label = L("v_collectibles.editor.sound_preview"), desc = L("v_collectibles.editor.sound_preview_desc"),
+                value = { "soundpreview", snd }, closeOnSelect = false }
+        end
+        items[#items + 1] = {
+            label = L("v_collectibles.editor.sound", { sound = snd ~= "" and snd or L("v_collectibles.editor.sound_none") }),
+            desc = L("v_collectibles.editor.sound_desc", { range = COLLECT.SOUND_RANGE }),
+            title = L("v_collectibles.editor.sound_title"),
+            items = sounds,
+        }
+
         items[#items + 1] = { label = L("v_collectibles.editor.enabled"), desc = L("v_collectibles.editor.enabled_desc"),
             value = { "toggle", "enabled" }, checked = list.enabled, closeOnSelect = false }
         items[#items + 1] = { label = L("v_collectibles.editor.event"),
@@ -332,6 +373,11 @@ addEventHandler("ui_inac:tempMenuSelect", root, function(menuId, value, path)
         ask("model", "v_collectibles.editor.add_model", "", "v_collectibles.editor.model_placeholder", 5)
     elseif act == "modeldel" then
         setField("removeModel", arg)
+    elseif act == "sound" and list then
+        setField("sound", arg)
+        playPreview(arg)
+    elseif act == "soundpreview" then
+        playPreview(arg)
     elseif act == "toggle" and list then
         local v = not list[arg]
         list[arg] = v       -- the server confirms with editorData
@@ -414,10 +460,11 @@ local function keyPlace()
     startPlacing()
 end
 
-local function setActive(on, data)
+local function setActive(on, data, sounds)
     if on then
         E.active = true
         E.lists = type(data) == "table" and data or {}
+        E.sounds = type(sounds) == "table" and sounds or {}
         if not currentList() then E.current = E.lists[1] and E.lists[1].id or nil end
         bindKey("r", "down", keyMenu)
         bindKey("F4", "down", keyPlace)
@@ -428,6 +475,7 @@ local function setActive(on, data)
         if not E.active then return end
         E.active = false
         stopPlacing()
+        stopPreview()
         clearGhosts()
         if E.menuId and inac:isTempMenuOpen() then inac:closeTempMenu() end
         E.menuId = nil
@@ -439,14 +487,15 @@ local function setActive(on, data)
 end
 
 addEvent("v_collectibles:editorState", true)
-addEventHandler("v_collectibles:editorState", resourceRoot, function(on, data)
-    setActive(on == true, data)
+addEventHandler("v_collectibles:editorState", resourceRoot, function(on, data, sounds)
+    setActive(on == true, data, sounds)
 end)
 
 addEvent("v_collectibles:editorData", true)
-addEventHandler("v_collectibles:editorData", resourceRoot, function(data)
+addEventHandler("v_collectibles:editorData", resourceRoot, function(data, sounds)
     if not E.active then return end
     E.lists = type(data) == "table" and data or {}
+    if type(sounds) == "table" then E.sounds = sounds end
     if not currentList() then E.current = E.lists[1] and E.lists[1].id or nil end
     buildGhosts()
     -- a placement whose model left the header

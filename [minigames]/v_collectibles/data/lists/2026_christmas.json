@@ -2,6 +2,7 @@
   {
     "enabled": true,
     "spin": true,
+    "sound": "christmas_bell.mp3",
     "id": "2026_christmas",
     "event": true,
     "nextId": 62,

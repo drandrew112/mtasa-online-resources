@@ -1,15 +1,17 @@
 -- v_collectibles client: streams the objects of the uncollected items, picks them up within PICKUP_RANGE,
 -- shows the ui_core banner and keeps the LOCAL element data COLLECT.DATA_KEY for the ui_inac Collectibles menu.
+-- Lists with a "sound" play it as a very quiet 3D loop at the nearest uncollected item within COLLECT.SOUND_RANGE.
 
 local uicore = exports.ui_core
 
 Collect = {
-    lists = {},         -- [listId] = { id, name, event, spin, total, found, items = { [itemId] = item } }
+    lists = {},         -- [listId] = { id, name, event, spin, sound, total, found, items = { [itemId] = item } }
     order = {},         -- list ids in server order
     objects = {},       -- [key] = object      key = listId .. "#" .. itemId
     keyInfo = {},       -- [key] = { listId, item }
     pending = {},       -- [key] = true: pickup sent, waiting for the server
     suspended = false,  -- the editor hides the gameplay objects
+    loop = nil,         -- { key, sound } proximity loop of the nearest item
 }
 
 local C = Collect
@@ -23,8 +25,45 @@ local function destroyObject(k)
     C.keyInfo[k] = nil
 end
 
+---------------------------------------------------------------------------- proximity loop
+
+local function stopLoop()
+    local l = C.loop
+    if l and isElement(l.sound) then destroyElement(l.sound) end
+    C.loop = nil
+end
+
+local function soundTick()
+    if C.suspended or getElementData(localPlayer, "loaded") ~= true then return stopLoop() end
+    local px, py, pz = getElementPosition(localPlayer)
+    local bestKey, bestInfo, bestD
+    for k, info in pairs(C.keyInfo) do         -- streamed items only: same dimension / interior, within STREAM_IN
+        local list = C.lists[info.listId]
+        if list and list.sound and list.sound ~= "" and not C.pending[k] then
+            local it = info.item
+            local d = getDistanceBetweenPoints3D(px, py, pz, it.x, it.y, it.z)
+            if d < COLLECT.SOUND_RANGE and (not bestD or d < bestD) then
+                bestKey, bestInfo, bestD = k, info, d
+            end
+        end
+    end
+    if not bestKey then return stopLoop() end
+    if C.loop and C.loop.key == bestKey and isElement(C.loop.sound) then return end
+    stopLoop()
+    local it = bestInfo.item
+    local snd = playSound3D(COLLECT.SOUND_FOLDER .. C.lists[bestInfo.listId].sound, it.x, it.y, it.z, true)
+    if not snd then return end
+    setElementInterior(snd, it.int)
+    setElementDimension(snd, it.dim)
+    setSoundMinDistance(snd, COLLECT.SOUND_FULL)
+    setSoundMaxDistance(snd, COLLECT.SOUND_RANGE)
+    setSoundVolume(snd, COLLECT.SOUND_VOLUME)
+    C.loop = { key = bestKey, sound = snd }
+end
+
 local function destroyAll()
     for k in pairs(C.objects) do destroyObject(k) end
+    stopLoop()
 end
 
 ---------------------------------------------------------------------------- ui_inac menu data
@@ -75,6 +114,7 @@ local function pickupTick()
         local it = info.item
         if not C.pending[k] and getDistanceBetweenPoints3D(px, py, pz, it.x, it.y, it.z) < COLLECT.PICKUP_RANGE then
             C.pending[k] = true
+            if C.loop and C.loop.key == k then stopLoop() end
             local o = C.objects[k]
             if isElement(o) then destroyElement(o) end
             C.objects[k] = nil
@@ -107,7 +147,7 @@ addEventHandler("v_collectibles:sync", resourceRoot, function(data)
     for _, l in ipairs(type(data) == "table" and data or {}) do
         local items = {}
         for _, it in ipairs(l.items or {}) do items[it.id] = it end
-        C.lists[l.id] = { id = l.id, name = l.name, event = l.event, spin = l.spin,
+        C.lists[l.id] = { id = l.id, name = l.name, event = l.event, spin = l.spin, sound = l.sound,
             total = l.total, found = l.found, items = items }
         C.order[#C.order + 1] = l.id
     end
@@ -144,6 +184,7 @@ end
 
 setTimer(streamTick, COLLECT.STREAM_MS, 0)
 setTimer(pickupTick, COLLECT.PICKUP_MS, 0)
+setTimer(soundTick, COLLECT.SOUND_MS, 0)
 
 addEventHandler("onClientResourceStart", resourceRoot, function()
     triggerServerEvent("v_collectibles:clientReady", resourceRoot)
