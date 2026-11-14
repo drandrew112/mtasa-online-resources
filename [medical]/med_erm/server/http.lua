@@ -24,6 +24,7 @@ for _, fn in ipairs({
     "ermTabletLogin", "ermTabletLogout", "ermTabletState", "ermTabletCaseAction",
     "ermTabletLeaveCase", "ermTabletCloseCase", "ermTabletSendMessage", "ermTabletEndShift",
     "ermAdminLogin", "ermAdminLogout", "ermAdminQuery", "ermAdminAuto", "ermAdminAutoSet",
+    "ermDispatcherCheck",
 }) do WEB_FUNCTIONS[fn] = true end
 
 -- webCall(callerId, fn, ...) -> the result of one web API function (med_web/server/api.lua)
@@ -50,6 +51,16 @@ function ermLogin(_, code)
     local session, token = Dispatchers.login(code)
     if not session then return { ok = false, error = token } end
     return { ok = true, token = token, name = session.name, displayName = session.display }
+end
+
+-- FreeV VoiceClient: is the code a dispatcher code? No session is opened.
+-- Body ["CODE"] (or [null, "CODE"] like ermLogin) -> { ok, name, display } | { ok = false, error }
+function ermDispatcherCheck(a, b)
+    local code = b ~= nil and b or a
+    if type(code) ~= "string" then return { ok = false, error = L.msg("med_erm.dispatchers.invalid_dispatcher_code") } end
+    local name, err = Dispatchers.verify(code)
+    if not name then return { ok = false, error = err } end
+    return { ok = true, name = name, display = L.msg("med_erm.dispatchers.dispatcher", { name = name }) }
 end
 
 function ermLogout(token)

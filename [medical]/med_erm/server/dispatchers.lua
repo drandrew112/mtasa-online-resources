@@ -83,6 +83,23 @@ function Dispatchers.login(code)
     return session, token
 end
 
+-- Code check without a session (FreeV VoiceClient: is this user a dispatcher?).
+-- Same throttle as the login. -> name | nil, error
+function Dispatchers.verify(code)
+    local id = clientId()
+    if tooManyFails(id) then
+        return nil, L.msg("med_erm.dispatchers.too_many_failed_attempts_try_again")
+    end
+    code = trim(tostring(code or "")):upper()
+    local name = code ~= "" and loadCodes()[code]
+    if not name then
+        table.insert(fails[id], now())
+        outputServerLog("[erm] failed dispatcher code check from " .. id)
+        return nil, L.msg("med_erm.dispatchers.invalid_dispatcher_code")
+    end
+    return name
+end
+
 function Dispatchers.logout(token)
     local s = Dispatchers.sessions[token]
     if s then
