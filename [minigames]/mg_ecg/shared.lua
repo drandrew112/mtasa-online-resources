@@ -25,16 +25,18 @@ MGDEF = {
 
 local function clamp(v, a, b) return math.max(a, math.min(b, v)) end
 
--- options: { time = 60, passPercent = 80, stand = nil, guide = false }
--- guide = true (hospital Nurse / Resident): the target spots are labelled, the spot of the electrode
--- in hand is highlighted
+-- options: { time = 180, passPercent = 80, stand = nil }
+-- Since 2026-11-13 the guide is on for everyone (every target spot labelled, the spot of the electrode
+-- in hand highlighted) and the time is at least 180 s (3x the old 60 s); options.guide is ignored.
+ECG.MIN_TIME = 180
+
 function MGDEF.normalize(o)
     o = type(o) == "table" and o or {}
     return {
-        time = clamp(tonumber(o.time) or 60, 20, 150),
+        time = clamp(tonumber(o.time) or ECG.MIN_TIME, ECG.MIN_TIME, 450),
         passPercent = clamp(tonumber(o.passPercent) or 80, 0, 100),
         stand = (o.stand == true or o.stand == false) and o.stand or nil,
-        guide = o.guide == true,
+        guide = true,
     }
 end
 

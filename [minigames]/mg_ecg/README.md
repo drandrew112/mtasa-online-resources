@@ -18,10 +18,12 @@ exports.mg_ecg:isEcgGameActive(player)
 
 - `ped` - optional patient: the player is placed next to it (standing at a stretcher / bed, kneeling
   at a patient on the ground; `options.stand` forces it) and the animation is synced
-- `options` - { time = 60, passPercent = 80, stand = nil, guide = false }
-- `guide = true` (med_hospitals: Nurse / Resident): every target spot is drawn dashed with its label, and the
-  spot of the electrode in hand pulses in its colour. Electrodes: radius 22 in the tray, 16 on the patient,
-  bold labels with an outline (2026-11-06)
+- `options` - { time = 180, passPercent = 80, stand = nil }
+- Since 2026-11-13 the guide is on for everyone: every target spot is drawn dashed with its label, and the
+  spot of the electrode in hand pulses in its colour (`options.guide` is ignored). The time is at least
+  180 s (3x the old 60 s), at most 450 s. Electrodes: radius 22 in the tray, 16 on the patient, bold labels
+  with an outline (2026-11-06)
+- Used by med_hospitals (12-lead ECG order) and medsys (Lifepak 12-LEAD button, EMS and hospital)
 
 Result:
 

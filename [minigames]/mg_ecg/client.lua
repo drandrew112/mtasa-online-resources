@@ -162,7 +162,7 @@ GAME = {
             end
             MGK.text(id, x - w / 2, y - h / 2, w, h, color or COL.white, size, "center")
         end
-        -- guide (Nurse / Resident): every target spot dashed + labelled, the one of the electrode in
+        -- guide (everyone since 2026-11-13): every target spot dashed + labelled, the one of the electrode in
         -- hand pulsing in its colour
         if g.options.guide then
             for _, id in ipairs(ECG.ELECTRODES) do
