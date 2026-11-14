@@ -166,6 +166,9 @@ function API.report(p, a, reply) POL.reports.get(p, a.id, function(r) reply(r or
 function API.reportSave(p, a, reply)
     POL.reports.save(p, a.id, a.title, a.body, a.lang, a.submit == true, function(ok, err) reply(ok, err) end)
 end
+function API.reportSubmitAll(p, a, reply)
+    POL.reports.submitAll(p, a.scope, function(n) reply(n) end)
+end
 function API.reportManual(p, a, reply)
     POL.reports.manual(p, a.title, a.body, a.lang, function(ok) reply(ok) end)
 end

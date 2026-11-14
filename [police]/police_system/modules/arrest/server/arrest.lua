@@ -11,7 +11,13 @@
 
 local AR = POL.module("arrest", { cuffed = {}, escorts = {}, pending = {}, markers = {}, custody = {} })
 local C = POLICE.ARREST
-local PLAYER_CONTROLS = { "sprint", "jump", "fire", "aim_weapon", "next_weapon", "previous_weapon", "enter_exit", "crouch" }
+-- cuffed: no running (walk is forced on the client too), no weapons, no getting in / out, no driving
+local PLAYER_CONTROLS = { "sprint", "jump", "fire", "aim_weapon", "next_weapon", "previous_weapon", "enter_exit", "crouch",
+    "enter_passenger", "accelerate", "brake_reverse", "handbrake", "vehicle_left", "vehicle_right", "steer_forward",
+    "steer_back", "horn", "vehicle_fire", "vehicle_secondary_fire", "special_control_left", "special_control_right",
+    "special_control_up", "special_control_down" }
+-- while the cuffing runs neither the officer nor the suspect moves or gets into a vehicle
+local CUFFING_CONTROLS = { "forwards", "backwards", "left", "right", "sprint", "jump", "crouch", "enter_exit", "enter_passenger" }
 
 function AR.isCuffed(el) return AR.cuffed[el] ~= nil end
 function AR.cuffedBy(el) local c = AR.cuffed[el]; return c and c.unit end
@@ -104,11 +110,25 @@ function AR.cuff(officer, target, cb)
     AR.startCuff(officer, target, cb)
 end
 
+-- AR.cuffing[officer] = target while the cuffing runs (both locked in place, see CUFFING_CONTROLS)
+AR.cuffing = {}
+local function lockForCuffing(p, on)
+    if isElement(p) and getElementType(p) == "player" then
+        for _, c in ipairs(CUFFING_CONTROLS) do toggleControl(p, c, not on) end
+    end
+end
+
 function AR.startCuff(officer, target, cb)
     AR.pending[target] = true
+    AR.cuffing[officer] = target
+    lockForCuffing(officer, true)
+    lockForCuffing(target, true)
     POL.send(officer, "arrest:progress", target, C.CUFF_TIME)
     setTimer(function()
         AR.pending[target] = nil
+        AR.cuffing[officer] = nil
+        lockForCuffing(officer, false)
+        lockForCuffing(target, false)
         if not isElement(target) or not isElement(officer) or isPedDead(target) then return cb(false, "gone") end
         if POL.dist(officer, target) > C.CUFF_BREAK + 0.5 then
             POL.notify(officer, "police_system.arrest.cuff_failed")
@@ -349,17 +369,23 @@ custodyTick = function()
     end
 end
 
--- who may be taken out of a police vehicle: a cuffed suspect, or anyone else in it but an officer (on duty / AI)
+-- who may be taken out: a cuffed suspect out of any vehicle (got in by accident / warped in by another script),
+-- anyone else out of a police vehicle but an officer (on duty / AI)
 function AR.canTakeOut(target)
     local veh = isElement(target) and getElementType(target) ~= "vehicle" and getPedOccupiedVehicle(target)
-    if not veh or not isPoliceVehicle(veh) then return false end
+    if not veh then return false end
     if AR.cuffed[target] then return true end
+    if not isPoliceVehicle(veh) then return false end
     if POL.ai.peds[target] then return false end
     return not (getElementType(target) == "player" and POL.units.isOnDuty(target))
 end
 
-addEventHandler("onVehicleEnter", root, function(ped)
+addEventHandler("onVehicleEnter", root, function(ped, seat)
     if isPoliceVehicle(source) then setCustody(ped, AR.canTakeOut(ped)) end
+    -- a cuffed suspect in the driver seat (warped in by another script): the engine off, the controls are off already
+    if AR.cuffed[ped] and seat == 0 then setVehicleEngineState(source, false) end
+    -- a cuffed suspect in any other vehicle: the take out menu on it too
+    if AR.cuffed[ped] and not isPoliceVehicle(source) then setCustody(ped, true) end
     -- warped into another vehicle by some other script: back into the custody car (not inside this event)
     local veh = AR.custody[ped]
     if veh and source ~= veh and not reseating[ped] then
@@ -379,12 +405,12 @@ addEventHandler("onVehicleExit", root, function(ped)
     end
 end)
 
--- only out of a police vehicle (a stopped driver is ordered out instead); the person stands at its own door:
--- seats 0 / 2 on the left, 1 / 3 on the right, the rear seats farther back
+-- out of a police vehicle, or a cuffed suspect out of any vehicle (a stopped driver is ordered out instead); the
+-- person stands at its own door: seats 0 / 2 on the left, 1 / 3 on the right, the rear seats farther back
 function AR.takeOut(officer, target)
     local veh = getPedOccupiedVehicle(target)
     if not veh then return false, "bad" end
-    if not isPoliceVehicle(veh) then return false, "not_police_vehicle" end
+    if not isPoliceVehicle(veh) and not AR.cuffed[target] then return false, "not_police_vehicle" end
     if not AR.canTakeOut(target) then return false, "bad" end
     local seat = getPedOccupiedVehicleSeat(target) or 0
     -- getElementBoundingBox is client-only: a fixed half width (police cars are ~1 m) + a step away from the door
@@ -412,9 +438,9 @@ addEventHandler("onVehicleStartExit", root, function(player)
     if AR.cuffed[player] then cancelEvent() end
 end)
 
--- a cuffed player may only get in on a rear seat (G at a back door) of a police vehicle
-addEventHandler("onVehicleStartEnter", root, function(player, seat)
-    if AR.cuffed[player] and (seat < 2 or not isPoliceVehicle(source)) then cancelEvent() end
+-- a cuffed player never gets in on its own (the officer places it: warp), nor the two sides of a running cuffing
+addEventHandler("onVehicleStartEnter", root, function(player)
+    if AR.cuffed[player] or AR.pending[player] or AR.cuffing[player] then cancelEvent() end
 end)
 
 -- cuff / escort / custody state of an element, also what is left on it without an AR.cuffed entry (element data

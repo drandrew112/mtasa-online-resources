@@ -48,6 +48,9 @@ local function refreshBlips(c)
         else
             if not (b and isElement(b)) then
                 b = createBlipAttachedTo(c.suspect, 0, 2, 235, 64, 64, 255, 10, 99999, root)
+                -- v_radar: custom red circle icon, pinned to the minimap edge when far away
+                setElementData(b, "radarIcon", "red_circle")
+                setElementData(b, "isFarVisibility", true)
                 setElementVisibleTo(b, root, false)
                 c.blips[unit] = b
             end

@@ -192,6 +192,35 @@ function R.save(player, id, title, body, lang, submit, cb)
     end, "SELECT * FROM pol_reports WHERE id = ? AND is_pool = 0", tonumber(id))
 end
 
+-- submit every draft of the list scope as it is ("mine": author or member; "unit": the current shift); cb(n submitted)
+function R.submitAll(player, scope, cb)
+    local acc = POL.accountOf(player)
+    if not acc or not POL.db.ready then return cb(0) end
+    local unit = POL.units.of(player)
+    local sql, args
+    if scope == "unit" and unit and unit.shiftId then
+        sql, args = "SELECT id FROM pol_reports WHERE shift_id = ? AND is_pool = 0 AND status = 'draft'", { unit.shiftId }
+    else
+        sql, args = "SELECT id FROM pol_reports WHERE is_pool = 0 AND status = 'draft' AND (author = ? OR members LIKE ?)",
+            { acc, '%"' .. acc .. '"%' }
+    end
+    POL.db.query(function(rows)
+        local ids = {}
+        for _, r in ipairs(type(rows) == "table" and rows or {}) do ids[#ids + 1] = r.id end
+        -- one after the other (R.save checks visibility + draft status and pays an ended shift's report)
+        local done, i = 0, 0
+        local function nextOne()
+            i = i + 1
+            if not ids[i] or not isElement(player) then return cb(done) end
+            R.save(player, ids[i], nil, nil, nil, true, function(ok)
+                if ok then done = done + 1 end
+                nextOne()
+            end)
+        end
+        nextOne()
+    end, sql, unpack(args))
+end
+
 -- manual report (Other): submitted at once, no pay
 function R.manual(player, title, body, lang, cb)
     local unit = POL.units.of(player)

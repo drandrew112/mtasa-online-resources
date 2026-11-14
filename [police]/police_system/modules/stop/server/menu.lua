@@ -64,15 +64,17 @@ local function suspectToPlace(officer)
     return best
 end
 
--- who comes out of a police vehicle: a cuffed suspect first, else anyone else who is not an officer
+-- who comes out of a police vehicle: a cuffed suspect first, else anyone else who is not an officer.
+-- Any other vehicle: only a cuffed suspect (got in by accident / warped in)
 local function occupantToTakeOut(veh)
     -- seat by seat (getVehicleOccupants did not return the placed suspect in a live test)
     local other
+    local police = isPoliceVehicle(veh)
     for seat = 0, getVehicleMaxPassengers(veh) or 3 do
         local o = getVehicleOccupant(veh, seat)
         if o then
             if POL.arrest.isCuffed(o) then return o end
-            if not other and POL.arrest.canTakeOut(o) then other = o end
+            if police and not other and POL.arrest.canTakeOut(o) then other = o end
         end
     end
     return other
@@ -121,6 +123,8 @@ function ST.openMenu(officer, target)
             local o = occupantToTakeOut(target)
             if o then add("police_system.stop.take_out", "takeout") end
             if o and POL.arrest.isCuffed(o) and not POL.transport.jobOf(o) then add("police_system.stop.transport", "transport") end
+        elseif occupantToTakeOut(target) then
+            add("police_system.stop.take_out", "takeout")
         end
     elseif getElementData(target, "vsm.hostage") then
         -- a hostage (v_scenemanager): grab / let go, hand over to EMS (a medic close by), release (no EMS at all)
@@ -260,6 +264,8 @@ local function orderOut(officer, s)
     setElementData(driver, "pol.stop", s.unit.callsign, "subscribe")
     for _, m in ipairs(POL.units.members(s.unit)) do addElementDataSubscriber(driver, "pol.stop", m) end
     local b = createBlipAttachedTo(driver, 0, 2, 245, 140, 50, 255, 5, 99999, root)
+    setElementData(b, "radarIcon", "orange_circle")
+    setElementData(b, "isFarVisibility", true)
     setElementVisibleTo(b, root, false)
     for _, m in ipairs(POL.units.members(s.unit)) do setElementVisibleTo(b, m, true) end
     s.blip = b
@@ -332,7 +338,7 @@ function ST.action(officer, target, value, inMenu)
         -- a police vehicle: its cuffed suspect / other occupant, else the driver of a stopped vehicle is ordered out
         local suspect = target
         if getElementType(target) == "vehicle" then
-            suspect = isPoliceVehicle(target) and occupantToTakeOut(target) or nil
+            suspect = occupantToTakeOut(target)
             if not suspect and s and s.kind == "vehicle" then return orderOut(officer, s) end
         end
         if not suspect then

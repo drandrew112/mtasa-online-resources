@@ -230,12 +230,24 @@ end
 -- a new call goes to the Available units near it; everybody else on duty gets the usual notification
 local function announce(c)
     local offered = {}
+    local auto = {}
     for _, u in pairs(POL.units.list) do
-        if u.status == "available" then
+        if u.status == "responding" and not c.units[u.callsign] and not c.declined[u.callsign]
+            and POL.units.list[u.id] == u then
+            -- a unit already Responding takes new calls around it by itself (no popup)
+            local d = unitDist(u, c.x, c.y)
+            local m = POL.units.members(u)[1]
+            if d and d <= C.OFFER_RADIUS and m then auto[#auto + 1] = { unit = u, player = m } end
+        elseif u.status == "available" then
             local d = unitDist(u, c.x, c.y)
             if d and d <= C.OFFER_RADIUS and offer(u, c) then
                 for _, p in ipairs(POL.units.members(u)) do offered[p] = true end
             end
+        end
+    end
+    for _, a in ipairs(auto) do
+        if CO.respond(a.player, c.id) then
+            for _, p in ipairs(POL.units.members(a.unit)) do offered[p] = true end
         end
     end
     for _, p in ipairs(POL.units.onDuty()) do

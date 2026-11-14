@@ -130,6 +130,9 @@ end
 
 local function stopBlip(s)
     local b = createBlipAttachedTo(s.target, 0, 2, 245, 140, 50, 255, 5, 99999, root)
+    -- v_radar: custom orange circle icon, pinned to the minimap edge when far away
+    setElementData(b, "radarIcon", "orange_circle")
+    setElementData(b, "isFarVisibility", true)
     setElementVisibleTo(b, root, false)
     for _, p in ipairs(POL.units.members(s.unit)) do setElementVisibleTo(b, p, true) end
     s.blip = b

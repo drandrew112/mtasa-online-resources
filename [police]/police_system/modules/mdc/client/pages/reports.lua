@@ -51,6 +51,17 @@ MDC.pages.reports = {
                 W.fieldOf("rp:body", { max = 8000, multiline = true }):setText("")
             end, "primary")
         end
+        -- every draft of the list at once (accepted as they are)
+        local drafts = 0
+        for _, r in ipairs(MDC.data.reports or {}) do if r.status == "draft" then drafts = drafts + 1 end end
+        if drafts > 0 then
+            local bx = x + POL.px(POL.onDuty() and 268 or 134)
+            W.button("rp:all", bx, y + POL.px(36), POL.px(210), POL.px(28), L("police_system.mdc.submit_all", { n = drafts }), function()
+                if S.sending then return end
+                S.sending = "all"
+                MDC.call("reportSubmitAll", { scope = S.scope }, function() S.sending = nil; S.edit = nil; MDC.go("reports") end)
+            end, "primary", S.sending ~= nil)
+        end
         local rows = {}
         for _, r in ipairs(MDC.data.reports or {}) do
             -- a draft can be accepted as it is and submitted from the list (the button is hit before the row)
