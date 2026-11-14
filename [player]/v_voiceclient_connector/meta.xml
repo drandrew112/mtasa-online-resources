@@ -13,10 +13,13 @@
     <script src="server/codes.lua"  type="server" /> <!-- radio code database (codes, Q_ questions, RAD_ERROR) -->
     <script src="server/voice.lua"  type="server" /> <!-- pipeline: check -> ai_llm -> execute -> subtitle -->
     <script src="server/http.lua"   type="server" /> <!-- HTTP API of the voice client -->
+    <script src="server/radio.lua"  type="server" /> <!-- radio frequency / unit of the players (was v_voice radio) -->
+    <script src="server/voiceserver.lua" type="server" /> <!-- FreeV VoiceServer sync (outgoing HTTPS) -->
     <script src="server/main.lua"   type="server" />
 
     <!-- ================= CLIENT ================= -->
     <script src="client/subtitle.lua" type="client" />
+    <script src="client/radio.lua"    type="client" /> <!-- radio state for v_radar, in-game CEF listener -->
 
     <!-- ================= EXPORTS ================= -->
     <!-- HTTP (voice client): POST /v_voiceclient_connector/call/<fn>, body = JSON array; token = v_accounts webLogin -->
@@ -25,4 +28,29 @@
     <export function="voiceStatus" type="server" http="true" />
     <!-- server: submitRadioText(player, text) -> same answer as voiceRadio (no token) -->
     <export function="submitRadioText" type="server" />
+
+    <!-- radio (FreeV VoiceServer), server – same names / shapes as the old v_voice radio exports:
+         getPlayerRadioFrequency(player) -> freq | false, setPlayerRadioFrequency(player, freq | false) -> true | false, err
+         getPlayerRadioUnit(player) -> label | false, getRadioFrequencyPlayers(freq) -> { player, ... }
+         getRadioSpeakers(freq) -> { { player | false, name, unit | false, live, clientType }, ... }
+         isPlayerRadioTalking(player) -> bool, isPlayerVoiceClientConnected(player) -> false | { clientType, clients }
+         events: onVoiceRadioTransmitStart/Stop, onVoiceClientConnect/Disconnect, onVoiceRadioFrequencyChange,
+                 onVoiceServerOffline/Online -->
+    <export function="getPlayerRadioFrequency"      type="server" />
+    <export function="setPlayerRadioFrequency"      type="server" />
+    <export function="getPlayerRadioUnit"           type="server" />
+    <export function="getRadioFrequencyPlayers"     type="server" />
+    <export function="getRadioSpeakers"             type="server" />
+    <export function="isPlayerRadioTalking"         type="server" />
+    <export function="isPlayerVoiceClientConnected" type="server" />
+    <!-- radio, client (v_radar): getRadioFrequency(), getRadioUnit(), getRadioState() -> "off" | "keying" | "live",
+         isRadioTalking(), getRadioSpeaker() -> { player | false, name, unit | false, live } | false,
+         isVoiceListenerActive(), isVoiceClientExternal() -->
+    <export function="getRadioFrequency"     type="client" />
+    <export function="getRadioUnit"          type="client" />
+    <export function="getRadioState"         type="client" />
+    <export function="isRadioTalking"        type="client" />
+    <export function="getRadioSpeaker"       type="client" />
+    <export function="isVoiceListenerActive" type="client" />
+    <export function="isVoiceClientExternal" type="client" />
 </meta>

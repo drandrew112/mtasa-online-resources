@@ -31,6 +31,32 @@ VC.CONFIG = {
     DEBUG = false,
 }
 
+-- FreeV VoiceServer (real time radio over Cloudflare Realtime). This file is server only
+-- (meta.xml type="server"): KEY is the VoiceServer's INTEGRATION_KEY and never goes to a client.
+-- Every call is an OUTGOING HTTPS request (fetchRemote): no new port on the MTA server.
+VC.VOICESERVER = {
+    URL = "https://andrashevesy.eu/tools/freev_voiceserver",  -- base URL, no trailing slash
+    KEY = "ada92f8f4a507fb74d36b5af5dfec776074cd58ee684d6c2b19cd5af6a68d2ec",  -- INTEGRATION_KEY of the VoiceServer .env
+    SYNC_MS = 1000,                   -- player state push + active speaker pull
+    TIMEOUT_MS = 5000,
+    OFFLINE_AFTER = 3,                -- failed syncs in a row -> onVoiceServerOffline
+
+    -- radio frequencies: whole numbers FREQ_MIN..FREQ_MAX; work on duty (work_core id) -> frequency
+    FREQ_MIN = 100,
+    FREQ_MAX = 499,
+    FREQ = { ems = 140, police = 170 },
+    UNIT_TAG = { ems = "EMS", police = "PD" },   -- callsign prefix ("EMS M-12")
+    ASSIGN_MS = 2000,                 -- safety poll of the duty / unit state (events do the rest)
+
+    SPEAKER_HOLD_MS = 2500,           -- the last speaker stays on the radar this long (old v_voice value)
+
+    -- in-game listener: MTA CEF browser that plays the radio (listen only)
+    CEF = {
+        ENABLED = true,
+        VOLUME = 1.0,
+    },
+}
+
 VC.SYSTEM = [[
 You are the radio code classifier of an emergency services roleplay game.
 The input is the speech-to-text transcript of one radio message of a player (Hungarian or English,
